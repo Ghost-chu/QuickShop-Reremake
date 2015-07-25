@@ -216,9 +216,14 @@ public class ContainerShop implements Shop {
 	/**
 	 * @return The chest this shop is based on.
 	 */
-	public Inventory getInventory() {
-		InventoryHolder container = (InventoryHolder) this.loc.getBlock().getState();
-		return container.getInventory();
+	public Inventory getInventory() throws IllegalStateException {
+		InventoryHolder container;
+		try {
+			container = (InventoryHolder) this.loc.getBlock().getState();
+			return container.getInventory();
+		} catch (Exception e) {
+			throw new IllegalStateException("Inventory doesn't exist anymore");
+		}
 	}
 
 	/**

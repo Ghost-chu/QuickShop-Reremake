@@ -396,12 +396,17 @@ public class QS implements CommandExecutor {
 			int i = 0;
 			while (shIt.hasNext()) {
 				Shop shop = shIt.next();
-				if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0 && shop instanceof ContainerShop) {
-					ContainerShop cs = (ContainerShop) shop;
-					if (cs.isDoubleShop())
-						continue;
-					shIt.remove(); // Is selling, but has no stock, and is a chest shop, but is not a double shop. Can be deleted safely.
-					i++;
+				
+				try {
+					if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0 && shop instanceof ContainerShop) {
+						ContainerShop cs = (ContainerShop) shop;
+						if (cs.isDoubleShop())
+							continue;
+						shIt.remove(); // Is selling, but has no stock, and is a chest shop, but is not a double shop. Can be deleted safely.
+						i++;
+					}
+				} catch (IllegalStateException e) {
+					shIt.remove(); // The shop is not there anymore, remove it
 				}
 			}
 			MsgUtil.clean();
