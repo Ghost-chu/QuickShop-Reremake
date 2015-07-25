@@ -400,9 +400,7 @@ public class QS implements CommandExecutor {
 					ContainerShop cs = (ContainerShop) shop;
 					if (cs.isDoubleShop())
 						continue;
-					shIt.remove(); // Is selling, but has no stock, and is a
-									// chest shop, but is not a double shop. Can
-									// be deleted safely.
+					shIt.remove(); // Is selling, but has no stock, and is a chest shop, but is not a double shop. Can be deleted safely.
 					i++;
 				}
 			}
