@@ -789,7 +789,7 @@ public class Util {
 	 *            The first item stack
 	 * @param stack2
 	 *            The second item stack
-	 * @return true if the itemstacks match. (Material, durability, enchants)
+	 * @return true if the itemstacks match. (Material, durability, enchants, name)
 	 */
 	public static boolean matches(ItemStack stack1, ItemStack stack2) {
 		if (stack1 == stack2)
@@ -802,6 +802,15 @@ public class Util {
 			return false; // Not the same durability
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
+		if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {
+			if (stack1.getItemMeta().hasDisplayName() && stack2.getItemMeta().hasDisplayName()) {
+				if (!stack1.getItemMeta().getDisplayName().equals(stack2.getItemMeta().getDisplayName())) {
+					return false; // items have different display name
+				}
+			} else {
+				return false; // one of the item stacks have a display name
+			}
+		}
 		try {
 			Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
 			boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
