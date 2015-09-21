@@ -33,7 +33,13 @@ public class Util {
 	private static HashSet<Material> shoppables = new HashSet<Material>();
 	private static HashSet<Material> transparent = new HashSet<Material>();
 	private static QuickShop plugin;
-	static {
+
+	public static void initialize() {
+		tools.clear();
+		blacklist.clear();
+		shoppables.clear();
+		transparent.clear();
+		
 		plugin = QuickShop.instance;
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
 			Material mat = Material.getMaterial(s.toUpperCase());
@@ -110,7 +116,7 @@ public class Util {
 			}
 			blacklist.add(mat);
 		}
-		transparent.clear();
+
 		// ToDo: add extras to config file
 		addTransparentBlock(Material.AIR);
 		/* Misc */

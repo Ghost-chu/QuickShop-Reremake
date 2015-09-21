@@ -119,6 +119,10 @@ public class QuickShop extends JavaPlugin {
 			debug = true;
 		if (loadEcon() == false)
 			return;
+
+		// Initialize Util
+		Util.initialize();
+		
 		// Create the shop manager.
 		this.shopManager = new ShopManager(this);
 		if (this.display) {
@@ -250,6 +254,7 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getLogger().severe("Could not load shops.");
 		}
+		
 		getLogger().info("Loaded " + count + " shops.");
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
