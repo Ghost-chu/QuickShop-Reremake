@@ -49,7 +49,7 @@
        </dependency>
    </dependencies>
    <properties>
-   	<version>0.9.6</version>
+   	<version>0.9.7</version>
    	<package>org.maxgamer.quickshop</package>
    	<name>QuickShop</name>
    </properties>
