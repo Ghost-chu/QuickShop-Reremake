@@ -266,7 +266,7 @@ public class QuickShop extends JavaPlugin {
 			Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
-		if (Bukkit.getPluginManager().getPlugin("Herochat") != null) {
+		if (this.getConfig().getBoolean("force-bukkit-chat-handler", false) && Bukkit.getPluginManager().getPlugin("Herochat") != null) {
 			this.getLogger().info("Found Herochat... Hooking!");
 			this.heroChatListener = new HeroChatListener(this);
 			Bukkit.getServer().getPluginManager().registerEvents(heroChatListener, this);
