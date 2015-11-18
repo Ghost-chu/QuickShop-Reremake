@@ -28,61 +28,6 @@ public class NMS {
 	
 	static {
 		NMSDependent dep;
-		dep = new NMSDependent("v1_6_R3") {
-			@Override
-			public void safeGuard(Item item) {
-				org.bukkit.inventory.ItemStack iStack = item.getItemStack();
-				net.minecraft.server.v1_6_R3.ItemStack nmsI = org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack.asNMSCopy(iStack);
-				nmsI.count = 0;
-				iStack = org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack.asBukkitCopy(nmsI);
-				item.setItemStack(iStack);
-			}
-
-			@Override
-			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
-				net.minecraft.server.v1_6_R3.ItemStack is = org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack.asNMSCopy(iStack);
-				net.minecraft.server.v1_6_R3.NBTTagCompound itemCompound = new net.minecraft.server.v1_6_R3.NBTTagCompound();
-				itemCompound = is.save(itemCompound);
-				return net.minecraft.server.v1_6_R3.NBTCompressedStreamTools.a(itemCompound);
-			}
-
-			@Override
-			public org.bukkit.inventory.ItemStack getItemStack(byte[] bytes) {
-				net.minecraft.server.v1_6_R3.NBTTagCompound c = net.minecraft.server.v1_6_R3.NBTCompressedStreamTools.a(bytes);
-				net.minecraft.server.v1_6_R3.ItemStack is = net.minecraft.server.v1_6_R3.ItemStack.createStack(c);
-				return org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack.asBukkitCopy(is);
-			}
-		};
-		dependents.add(dep);
-		dep = new NMSDependent("v1_7_R1") {
-			@Override
-			public void safeGuard(Item item) {
-				if(QuickShop.debug)System.out.println("safeGuard");
-				org.bukkit.inventory.ItemStack iStack = item.getItemStack();
-				net.minecraft.server.v1_7_R1.ItemStack nmsI = org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack.asNMSCopy(iStack);
-				nmsI.count = 0;
-				iStack = org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack.asBukkitCopy(nmsI);
-				item.setItemStack(iStack);
-			}
-
-			@Override
-			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
-				if(QuickShop.debug)System.out.println("getNBTBytes");
-				net.minecraft.server.v1_7_R1.ItemStack is = org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack.asNMSCopy(iStack);
-				net.minecraft.server.v1_7_R1.NBTTagCompound itemCompound = new net.minecraft.server.v1_7_R1.NBTTagCompound();
-				itemCompound = is.save(itemCompound);
-				return net.minecraft.server.v1_7_R1.NBTCompressedStreamTools.a(itemCompound);
-			}
-
-			@Override
-			public org.bukkit.inventory.ItemStack getItemStack(byte[] bytes) {
-				if(QuickShop.debug)System.out.println("getItemStack");
-				net.minecraft.server.v1_7_R1.NBTTagCompound c = net.minecraft.server.v1_7_R1.NBTCompressedStreamTools.a(bytes);
-				net.minecraft.server.v1_7_R1.ItemStack is = net.minecraft.server.v1_7_R1.ItemStack.createStack(c);
-				return org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack.asBukkitCopy(is);
-			}
-		};
-		dependents.add(dep);
 		dep = new NMSDependent("v1_7_R3") {
 			@Override
 			public void safeGuard(Item item) {

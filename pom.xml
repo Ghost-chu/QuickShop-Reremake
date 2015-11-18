@@ -83,20 +83,6 @@
 			<systemPath>${basedir}/lib/HeroChat.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_6_R3</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>v1_6_R3</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/craftbukkit-1.6.4-R2.0.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_7_R1</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>v1_7_R1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/craftbukkit-1.7.2-R0.4.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>org.bukkit.craftbukkit.v1_7_R3</groupId>
 			<artifactId>craftbukkit</artifactId>
 			<version>v1_7_R3</version>
