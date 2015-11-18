@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Shop;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -297,6 +298,14 @@ public class ShopManager {
 							p.sendMessage(MsgUtil.getMessage("price-too-cheap"));
 							return;
 						}
+						// Check price restriction
+						Entry<Double,Double> priceRestriction = Util.getPriceRestriction(info.getItem().getType());
+						if (priceRestriction!=null) {
+							if (price<priceRestriction.getKey() || price>priceRestriction.getValue()) {
+								p.sendMessage(ChatColor.RED+"Restricted prices for "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max "+priceRestriction.getValue());
+							}
+						}
+						
 						double tax = plugin.getConfig().getDouble("shop.cost");
 						// Tax refers to the cost to create a shop. Not actual
 						// tax, that would be silly

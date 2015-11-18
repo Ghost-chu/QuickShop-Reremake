@@ -1,9 +1,12 @@
 package org.maxgamer.quickshop.Util;
 
 import java.text.DecimalFormat;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -33,6 +35,7 @@ public class Util {
 	private static HashSet<Material> blacklist = new HashSet<Material>();
 	private static HashSet<Material> shoppables = new HashSet<Material>();
 	private static HashSet<Material> transparent = new HashSet<Material>();
+	private static Map<Material, Entry<Double,Double>> restrictedPrices = new HashMap<Material, Entry<Double,Double>>();
 	private static QuickShop plugin;
 
 	public static void initialize() {
@@ -40,6 +43,7 @@ public class Util {
 		blacklist.clear();
 		shoppables.clear();
 		transparent.clear();
+		restrictedPrices.clear();
 		
 		plugin = QuickShop.instance;
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
@@ -200,6 +204,27 @@ public class Util {
 		addTransparentBlock(Material.BREWING_STAND);
 		addTransparentBlock(Material.WOODEN_DOOR);
 		addTransparentBlock(Material.WOOD_STEP);
+		
+		for (String s : plugin.getConfig().getStringList("price-restriction")) {
+			String[] sp = s.split(";");
+			if (sp.length==3) {
+				try {
+					Material mat = Material.matchMaterial(sp[0]);
+					if (mat == null) {
+						throw new Exception();
+					}
+					
+					restrictedPrices.put(mat, new SimpleEntry<Double,Double>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+				} catch (Exception e) {
+					plugin.getLogger().info("Invalid price restricted material: " + s);
+				}
+			}
+		}
+	}
+	
+	/** Return an entry with min and max prices, but null if there isn't a price restriction */
+	public static Entry<Double,Double> getPriceRestriction(Material material) {
+		return restrictedPrices.get(material);
 	}
 
 	public static boolean isTransparent(Material m) {

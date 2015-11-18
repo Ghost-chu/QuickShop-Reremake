@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -641,6 +642,18 @@ public class ContainerShop implements Shop {
 		
 		// update sign
 		this.setSignText();
+		
+		// check price restriction
+		Entry<Double,Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
+		if (priceRestriction!=null) {
+			if (price<priceRestriction.getKey()) {
+				price=priceRestriction.getKey();
+				this.update();
+			} else if (price>priceRestriction.getValue()) {
+				price=priceRestriction.getValue();
+				this.update();
+			}
+		}
 	}
 
 	public void onClick() {
