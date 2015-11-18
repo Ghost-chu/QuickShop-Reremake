@@ -69,8 +69,15 @@ public class PlayerListener implements Listener {
 		// Get the shop
 		Shop shop = plugin.getShopManager().getShop(loc);
 		// If that wasn't a shop, search nearby shops
-		if (shop == null && b.getType() == Material.WALL_SIGN) {
-			Block attached = Util.getAttached(b);
+		if (shop == null) {
+			Block attached = null;
+			
+			if (b.getType() == Material.WALL_SIGN) {
+				attached = Util.getAttached(b);
+			} else if (b.getType() == Material.CHEST || b.getType() == Material.TRAPPED_CHEST) {
+				attached = Util.getSecondHalf(b);
+			}
+			
 			if (attached != null) {
 				shop = plugin.getShopManager().getShop(attached.getLocation());
 			}
