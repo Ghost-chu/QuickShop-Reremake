@@ -610,14 +610,7 @@ public class ContainerShop implements Shop {
 			}
 			DisplayItem disItem = this.getDisplayItem();
 			Location dispLoc = disItem.getDisplayLocation();
-			if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) { // Flowing
-												// water.
-												// Stationery
-												// water
-												// does
-												// not
-												// move
-												// items.
+			if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
 				disItem.remove();
 				return;
 			}
@@ -645,6 +638,9 @@ public class ContainerShop implements Shop {
 
 	public void onLoad() {
 		checkDisplay();
+		
+		// update sign
+		this.setSignText();
 	}
 
 	public void onClick() {
