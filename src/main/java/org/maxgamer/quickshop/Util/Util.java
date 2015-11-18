@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -263,7 +264,7 @@ public class Util {
 	 * @return the block which is also a chest and connected to b.
 	 */
 	public static Block getSecondHalf(Block b) {
-		if (b.getType().toString().contains("CHEST") == false)
+		if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
 			return null;
 		Block[] blocks = new Block[4];
 		blocks[0] = b.getRelative(1, 0, 0);
