@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -44,7 +45,6 @@ import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
-import org.maxgamer.quickshop.Util.Converter;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
@@ -185,14 +185,14 @@ public class QuickShop extends JavaPlugin {
 		Connection con;
 		try {
 			getLogger().info("Loading shops from database...");
-			int res = Converter.convert();
+			/*int res = Converter.convert();
 			if (res < 0) {
 				System.out.println("Could not convert shops. Exitting.");
 				return;
 			}
 			if (res > 0) {
 				System.out.println("Conversion success. Continuing...");
-			}
+			}*/
 			con = database.getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = ps.executeQuery();
@@ -210,21 +210,33 @@ public class QuickShop extends JavaPlugin {
 					World world = Bukkit.getWorld(worldName);
 					ItemStack item = Util.deserialize(rs.getString("itemConfig"));
 					String owner = rs.getString("owner");
+					UUID ownerUUID = null;
+					try {
+						ownerUUID = UUID.fromString(owner);
+					} catch (IllegalArgumentException e) {
+						// This could be old data to be converted... check if it's a player
+						@SuppressWarnings("deprecation")
+						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
+						if (player.hasPlayedBefore()) {
+							ownerUUID = player.getUniqueId();
+							getDB().getConnection().createStatement().executeUpdate("UPDATE shops SET owner = \""+ownerUUID.toString()+"\" WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
+						} else {
+							// Invalid shop owner
+							getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
+							continue;
+						}
+					}
+					
 					double price = rs.getDouble("price");
 					Location loc = new Location(world, x, y, z);
 					/* Skip invalid shops, if we know of any */
 					if (world != null && (loc.getBlock().getState() instanceof InventoryHolder) == false) {
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x + ", " + y + ", " + z + ".  Deleting.");
-						PreparedStatement delps = getDB().getConnection().prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-						delps.setInt(1, x);
-						delps.setInt(2, y);
-						delps.setInt(3, z);
-						delps.setString(4, worldName);
-						delps.execute();
+						getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
 						continue;
 					}
 					int type = rs.getInt("type");
-					Shop shop = new ContainerShop(loc, price, item, UUID.fromString(owner));
+					Shop shop = new ContainerShop(loc, price, item, ownerUUID);
 					shop.setUnlimited(rs.getBoolean("unlimited"));
 					shop.setShopType(ShopType.fromID(type));
 					shopManager.loadShop(rs.getString("world"), shop);
