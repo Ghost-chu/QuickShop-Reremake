@@ -98,7 +98,7 @@
 		</dependency>
    </dependencies>
    <properties>
-   	<version>0.9.9</version>
+   	<version>0.9.10</version>
    	<package>org.maxgamer.quickshop</package>
    	<name>QuickShop</name>
    </properties>
