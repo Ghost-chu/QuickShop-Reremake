@@ -117,9 +117,9 @@ public class NMS {
 			public void safeGuard(Item item) {
 				if(QuickShop.debug)System.out.println("safeGuard");
 				org.bukkit.inventory.ItemStack iStack = item.getItemStack();
-				net.minecraft.server.v1_8_R1.ItemStack nmsI = org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack.asNMSCopy(iStack);
+				net.minecraft.server.v1_8_R3.ItemStack nmsI = org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asNMSCopy(iStack);
 				nmsI.count = 0;
-				iStack = org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack.asBukkitCopy(nmsI);
+				iStack = org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asBukkitCopy(nmsI);
 				item.setItemStack(iStack);
 			}
 
@@ -127,13 +127,13 @@ public class NMS {
 			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
 				try{
 					if(QuickShop.debug)System.out.println("getNBTBytes");
-					net.minecraft.server.v1_8_R1.ItemStack is = org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack.asNMSCopy(iStack);
-					net.minecraft.server.v1_8_R1.NBTTagCompound itemCompound = new net.minecraft.server.v1_8_R1.NBTTagCompound();
+					net.minecraft.server.v1_8_R3.ItemStack is = org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asNMSCopy(iStack);
+					net.minecraft.server.v1_8_R3.NBTTagCompound itemCompound = new net.minecraft.server.v1_8_R3.NBTTagCompound();
 					itemCompound = is.save(itemCompound);
 					ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
 					DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream));
 					try {
-						net.minecraft.server.v1_8_R1.NBTCompressedStreamTools.a(itemCompound, (DataOutput) dataoutputstream);
+						net.minecraft.server.v1_8_R3.NBTCompressedStreamTools.a(itemCompound, (DataOutput) dataoutputstream);
 					} finally {
 						dataoutputstream.close();
 					}
@@ -149,15 +149,15 @@ public class NMS {
 				try{
 					if(QuickShop.debug)System.out.println("getItemStack");
 					DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
-					net.minecraft.server.v1_8_R1.NBTTagCompound nbttagcompound;
+					net.minecraft.server.v1_8_R3.NBTTagCompound nbttagcompound;
 					try {
-						nbttagcompound = net.minecraft.server.v1_8_R1.NBTCompressedStreamTools.a((DataInput) datainputstream, null);
+						nbttagcompound = net.minecraft.server.v1_8_R3.NBTCompressedStreamTools.a((DataInput) datainputstream, null);
 					} finally {
 						datainputstream.close();
 					}
 					//net.minecraft.server.v1_8_R1.NBTTagCompound c = net.minecraft.server.v1_8_R1.NBTCompressedStreamTools.a(bytes, null);
-					net.minecraft.server.v1_8_R1.ItemStack is = net.minecraft.server.v1_8_R1.ItemStack.createStack(nbttagcompound);
-					return org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack.asBukkitCopy(is);
+					net.minecraft.server.v1_8_R3.ItemStack is = net.minecraft.server.v1_8_R3.ItemStack.createStack(nbttagcompound);
+					return org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asBukkitCopy(is);
 				}catch(Exception e){
 					return new ItemStack(Material.AIR);
 				}
