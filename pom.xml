@@ -3,14 +3,35 @@
   <groupId>org.maxgamer</groupId>
   <artifactId>${name}</artifactId>
   <version>${version}</version>
+   
+  <licenses>
+    <license>
+      <name>GPL v3 License</name>
+      <url>http://www.gnu.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <issueManagement>
+    <url>https://github.com/${developer}/${name}/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/${developer}/${version}</url>
+    <connection>scm:git:git://github.com/${developer}/${version}.git</connection>
+    <developerConnection>scm:git:git@github.com:${developer}/${version}.git</developerConnection>
+  </scm>
+  
   <build>
       <plugins>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.1</version>
               <configuration>
-                  <source>1.7</source>
-                  <target>1.7</target>
+                  <source>1.8</source>
+                  <target>1.8</target>
               </configuration>
           </plugin>
       </plugins>
@@ -24,32 +45,74 @@
    <repositories>
        <repository>
            <id>bukkit-repo</id>
-<!--            <url>http://repo.bukkit.org/content/groups/public/</url> -->
            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
        </repository>
        	<repository>
 	        <id>sk89q-repo</id>
 	        <url>http://maven.sk89q.com/repo/</url>
 	    </repository>
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+		</repository>
    </repositories>
    <dependencies>
-       <dependency>
-           <groupId>org.bukkit</groupId>
-           <artifactId>bukkit</artifactId>
-<!--            <version>1.6.4-R2.0</version> -->
-<!--            <version>1.7.9-R0.2</version> -->
-           <version>1.8-R0.1-SNAPSHOT</version>
-           <type>jar</type>
-           <scope>provided</scope>
-       </dependency>
-       <dependency>
-        <groupId>com.sk89q</groupId>
-        <artifactId>worldguard</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
-       </dependency>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.8-R0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>6.0.0-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.5</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+			<groupId>com.dthielke.herochat</groupId>
+			<artifactId>herochat</artifactId>
+			<version>5.6.7</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/HeroChat.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_6_R3</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_6_R3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.6.4-R2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_7_R1</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_7_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.7.2-R0.4.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_7_R3</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_7_R3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.7.9-R0.2.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_8_R3</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_8_R3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.8.8-R0.1.jar</systemPath>
+		</dependency>
    </dependencies>
    <properties>
-   	<version>0.9.8</version>
+   	<version>0.9.9</version>
    	<package>org.maxgamer.quickshop</package>
    	<name>QuickShop</name>
    </properties>
