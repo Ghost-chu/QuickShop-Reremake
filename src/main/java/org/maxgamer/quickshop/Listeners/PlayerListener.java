@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -192,5 +193,25 @@ public class PlayerListener implements Listener {
 		} catch (NullPointerException ex) {
 		} // if meta/displayname/stack is null. We don't really care in that
 			// case.
+	}
+	
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		if (e.getInventory().getHolder() instanceof Block) {
+			Block block = (Block) e.getInventory().getHolder();
+			if (Util.canBeShop(block)) {
+				Shop shop = plugin.getShopManager().getShop(block.getLocation());
+				if (shop==null && (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) {
+					Block attached = Util.getSecondHalf(block);
+					if (attached!=null) {
+						shop = plugin.getShopManager().getShop(attached.getLocation());
+					}
+				}
+				
+				if (shop!=null) {
+					shop.setSignText();
+				}
+			}
+		}
 	}
 }
