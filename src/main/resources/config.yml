@@ -1,7 +1,9 @@
 #Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
 tax: 0.05
+
 #The fake player who money from taxing people goes to
 tax-account: tax
+
 #Whether or not to show taxes paid when selling to a shop
 show-tax: false
 
@@ -26,8 +28,10 @@ database:
 limits:
     #Disable these if you're not using them! If this is false, the rest of this section is ignored
     use: false
+    
     #The default number of shops players can make
     default: 10
+    
     #Players with these permissions can create these amounts of shops.
     ranks:
         #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
@@ -58,19 +62,24 @@ shop:
 
     #Should we try and lock their shops from other players, so people can't steal from them?
     lock: true
+    
     #Should we require players be sneaking to create and use shops?
     sneak-to-create: false
     sneak-to-trade: false
     
     #Should we automatically create the sign for the chest?
     auto-sign: true
+    
     #If a player owns an unlimited shop, should they receive the cash from it or not?
     #If you buy from YOUR unlimited shop, you will NEVER be charged $$, regardless of this setting
     pay-unlimited-shop-owners: false
-    #Should we place display items on the chests?
-    display-items: true
+    
+    #Should we place display items on the chests? This may cause duped items, especially for modded servers.
+    display-items: false
+    
     #Should we place item frames on chests?
-    frame-items: true
+    frame-items: false
+    
     #When someone uses /qs find <item>, how far should we search in blocks?
     #This command lets users shop quickly without wasting time searching
     #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
