@@ -101,7 +101,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		// Handles creating shops
-		else if (!e.isCancelled() && shop == null && item != null && item.getType() != Material.AIR && p.hasPermission("quickshop.create.sell") && Util.canBeShop(b) && p.getGameMode() != GameMode.CREATIVE && (plugin.sneakCreate == false || p.isSneaking())) {
+		else if (shop == null && item != null && item.getType() != Material.AIR && p.hasPermission("quickshop.create.sell") && Util.canBeShop(b) && p.getGameMode() != GameMode.CREATIVE && (plugin.sneakCreate == false || p.isSneaking())) {
 			if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
 				// As of the new checking system, most plugins will tell the
 				// player why they can't create a shop there.
