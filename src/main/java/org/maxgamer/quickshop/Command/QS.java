@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -17,16 +18,20 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Shop.ContainerShop;
+import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopType;
+import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Shop.ShopChunk;
+import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 public class QS implements CommandExecutor {
 	QuickShop plugin;
@@ -269,6 +274,52 @@ public class QS implements CommandExecutor {
 		}
 	}
 
+	private void create(CommandSender sender) {
+		if (sender instanceof Player) {
+			Player p = (Player) sender;
+			ItemStack item = p.getItemInHand();
+			if (item.getType()!=Material.AIR && (plugin.sneakCreate == false || p.isSneaking())) {
+				if (sender.hasPermission("quickshop.create.sell")) {
+					BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+
+					while (bIt.hasNext()) {
+						Block b = bIt.next();
+
+						if (Util.canBeShop(b)) {
+							if (!plugin.getShopManager().canBuildShop(p, b, Util.getYawFace(p.getLocation().getYaw()))) {
+								// As of the new checking system, most plugins will tell the
+								// player why they can't create a shop there.
+								// So telling them a message would cause spam etc.
+								return;
+							}
+
+							if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
+								p.sendMessage(MsgUtil.getMessage("no-double-chests"));
+								return;
+							}
+							if (Util.isBlacklisted(item.getType()) && !p.hasPermission("quickshop.bypass." + item.getTypeId())) {
+								p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
+								return;
+							}
+
+							// Send creation menu.
+							Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(), b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
+							plugin.getShopManager().getActions().put(p.getUniqueId(), info);
+							p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+						}
+					}
+				} else {
+					sender.sendMessage(MsgUtil.getMessage("no-permission"));
+				}
+			} else {
+				sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+			}
+		} else {
+			sender.sendMessage("This command can't be run by console");
+		}
+		return;
+	}
+
 	private void setBuy(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.create.buy")) {
 			BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
@@ -396,7 +447,7 @@ public class QS implements CommandExecutor {
 			int i = 0;
 			while (shIt.hasNext()) {
 				Shop shop = shIt.next();
-				
+
 				try {
 					if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0 && shop instanceof ContainerShop) {
 						ContainerShop cs = (ContainerShop) shop;
@@ -440,6 +491,9 @@ public class QS implements CommandExecutor {
 				return true;
 			} else if (subArg.equals("find")) {
 				find(sender, args);
+				return true;
+			} else if (subArg.startsWith("create")) {
+				create(sender);
 				return true;
 			} else if (subArg.startsWith("buy")) {
 				setBuy(sender);
@@ -558,8 +612,10 @@ public class QS implements CommandExecutor {
 			s.sendMessage(ChatColor.GREEN + "/qs setowner <player>" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.setowner"));
 		if (s.hasPermission("quickshop.create.buy"))
 			s.sendMessage(ChatColor.GREEN + "/qs buy" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.buy"));
-		if (s.hasPermission("quickshop.create.sell"))
+		if (s.hasPermission("quickshop.create.sell")) {
 			s.sendMessage(ChatColor.GREEN + "/qs sell" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.sell"));
+			s.sendMessage(ChatColor.GREEN + "/qs create" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.create"));
+		}
 		if (s.hasPermission("quickshop.create.changeprice"))
 			s.sendMessage(ChatColor.GREEN + "/qs price" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.price"));
 		if (s.hasPermission("quickshop.clean"))

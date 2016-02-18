@@ -95,6 +95,7 @@ command:
        reload: "&eReloads QuickShop from config.yml"
        refill: "&eAdds a given number of items to a shop"
        empty: "&eRemoves all stock from a shop"
+       create: "&eCreates a new shop at the target chest"
        
 signs:
     #Line 1 is used as an identifier at the moment, so I kind of need it to work, thats why I won't let you change it

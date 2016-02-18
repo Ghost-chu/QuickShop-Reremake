@@ -29,6 +29,7 @@ public class ShopManager {
 	private QuickShop plugin;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
 	private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>();
+	final private static ItemStack AIR = new ItemStack(Material.AIR);
 
 	public ShopManager(QuickShop plugin) {
 		this.plugin = plugin;
@@ -236,10 +237,10 @@ public class ShopManager {
 				return false;
 			}
 		}
-		PlayerInteractEvent pie = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR), b, bf); // PIE = PlayerInteractEvent -  What else?
+		PlayerInteractEvent pie = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, AIR, b, bf); // PIE = PlayerInteractEvent -  What else?
 		Bukkit.getPluginManager().callEvent(pie);
 		pie.getPlayer().closeInventory(); // If the player has chat open, this
-											// will close their chat.
+		// will close their chat.
 		if (pie.isCancelled()) {
 			return false;
 		}
@@ -305,7 +306,7 @@ public class ShopManager {
 								p.sendMessage(ChatColor.RED+"Restricted prices for "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max "+priceRestriction.getValue());
 							}
 						}
-						
+
 						double tax = plugin.getConfig().getDouble("shop.cost");
 						// Tax refers to the cost to create a shop. Not actual
 						// tax, that would be silly

@@ -44,7 +44,7 @@ public class Util {
 		shoppables.clear();
 		transparent.clear();
 		restrictedPrices.clear();
-		
+
 		plugin = QuickShop.instance;
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
 			Material mat = Material.getMaterial(s.toUpperCase());
@@ -204,7 +204,7 @@ public class Util {
 		addTransparentBlock(Material.BREWING_STAND);
 		addTransparentBlock(Material.WOODEN_DOOR);
 		addTransparentBlock(Material.WOOD_STEP);
-		
+
 		for (String s : plugin.getConfig().getStringList("price-restriction")) {
 			String[] sp = s.split(";");
 			if (sp.length==3) {
@@ -213,7 +213,7 @@ public class Util {
 					if (mat == null) {
 						throw new Exception();
 					}
-					
+
 					restrictedPrices.put(mat, new SimpleEntry<Double,Double>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
 				} catch (Exception e) {
 					plugin.getLogger().info("Invalid price restricted material: " + s);
@@ -221,7 +221,7 @@ public class Util {
 			}
 		}
 	}
-	
+
 	/** Return an entry with min and max prices, but null if there isn't a price restriction */
 	public static Entry<Double,Double> getPriceRestriction(Material material) {
 		return restrictedPrices.get(material);
@@ -373,19 +373,19 @@ public class Util {
 		if (nameParts.length==1) {
 			return firstUppercase(ugly);
 		}
-		
+
 		StringBuilder sb=new StringBuilder();
 		for (String part : nameParts) {
 			sb.append(firstUppercase(part)+" ");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
 		String name = getDataName(itemStack.getType(), itemStack.getDurability());
-		
+
 		String[] nameParts = name.split("_");
 		if (nameParts.length==1) {
 			return firstUppercase(nameParts[0]);
@@ -399,12 +399,12 @@ public class Util {
 				nameParts[i] = firstUppercase(nameParts[i]);
 			}
 		}
-		
+
 		nameParts[nameParts.length-1] = firstUppercase(nameParts[nameParts.length-1]);
 
 		return StringUtils.join(nameParts);
 	}
-	
+
 	public static String firstUppercase(String string) {
 		if (string.length()>1) {
 			return Character.toUpperCase(string.charAt(0))+string.substring(1).toLowerCase();
@@ -412,7 +412,7 @@ public class Util {
 			return string.toUpperCase();
 		}
 	}
-	
+
 
 	public static String toRomain(Integer value) {
 		return toRoman(value.intValue());
@@ -850,8 +850,8 @@ public class Util {
 			if (book1 != book2)
 				return false;// One has enchantment meta, the other does not.
 			if (book1 == true) { // They are the same here (both true or both
-									// false). So if one is true, the other is
-									// true.
+				// false). So if one is true, the other is
+				// true.
 				Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
 				Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
 				if (!ench1.equals(ench2))
@@ -896,7 +896,7 @@ public class Util {
 	public static Block getAttached(Block b) {
 		try {
 			Sign sign = (Sign) b.getState().getData(); // Throws a NPE
-														// sometimes??
+			// sometimes??
 			BlockFace attached = sign.getAttachedFace();
 			if (attached == null)
 				return null;
@@ -973,6 +973,18 @@ public class Util {
 		} else {
 			// System.out.println("Chunk is NOT loaded " + x + ", " + z);
 			return false;
+		}
+	}
+
+	public static BlockFace getYawFace(float yaw) {
+		if (yaw > 315 && yaw <= 45) {
+			return BlockFace.NORTH;
+		} else if (yaw > 45 && yaw <= 135) {
+			return BlockFace.EAST;
+		} else if (yaw > 135 && yaw <= 225) {
+			return BlockFace.SOUTH;
+		} else {
+			return BlockFace.WEST;
 		}
 	}
 }
