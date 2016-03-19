@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
@@ -940,21 +941,18 @@ public class Util {
 	 */
 	public static int countSpace(Inventory inv, ItemStack item) {
 		int space = 0;
-		try {
-			for (ItemStack iStack : inv.getStorageContents()) {
-				if (iStack == null || iStack.getType() == Material.AIR) {
-					space += item.getMaxStackSize();
-				} else if (matches(item, iStack)) {
-					space += item.getMaxStackSize() - iStack.getAmount();
-				}
-			}
-		} catch(Exception e) {
-			for (ItemStack iStack : inv.getContents()) {
-				if (iStack == null || iStack.getType() == Material.AIR) {
-					space += item.getMaxStackSize();
-				} else if (matches(item, iStack)) {
-					space += item.getMaxStackSize() - iStack.getAmount();
-				}
+		ItemStack[] contents;
+		try { // Bukkit API MC 1.9+ : Get actual storage slots (not armor...)
+			Method storageContents = Inventory.class.getMethod("getStorageContents");
+			contents = (ItemStack[])storageContents.invoke(inv);
+		} catch (Exception e) {
+			contents = inv.getContents(); // Bukkit API MC 1.8- fallback: Get all slots
+		}
+		for (ItemStack iStack : contents) {
+			if (iStack == null || iStack.getType() == Material.AIR) {
+				space += item.getMaxStackSize();
+			} else if (matches(item, iStack)) {
+				space += item.getMaxStackSize() - iStack.getAmount();
 			}
 		}
 		return space;
