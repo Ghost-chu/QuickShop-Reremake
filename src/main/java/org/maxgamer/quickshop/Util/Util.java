@@ -940,11 +940,21 @@ public class Util {
 	 */
 	public static int countSpace(Inventory inv, ItemStack item) {
 		int space = 0;
-		for (ItemStack iStack : inv.getContents()) {
-			if (iStack == null || iStack.getType() == Material.AIR) {
-				space += item.getMaxStackSize();
-			} else if (matches(item, iStack)) {
-				space += item.getMaxStackSize() - iStack.getAmount();
+		try {
+			for (ItemStack iStack : inv.getStorageContents()) {
+				if (iStack == null || iStack.getType() == Material.AIR) {
+					space += item.getMaxStackSize();
+				} else if (matches(item, iStack)) {
+					space += item.getMaxStackSize() - iStack.getAmount();
+				}
+			}
+		} catch(Exception e) {
+			for (ItemStack iStack : inv.getContents()) {
+				if (iStack == null || iStack.getType() == Material.AIR) {
+					space += item.getMaxStackSize();
+				} else if (matches(item, iStack)) {
+					space += item.getMaxStackSize() - iStack.getAmount();
+				}
 			}
 		}
 		return space;
