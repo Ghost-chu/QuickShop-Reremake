@@ -38,6 +38,7 @@ public class Util {
 	private static HashSet<Material> transparent = new HashSet<Material>();
 	private static Map<Material, Entry<Double,Double>> restrictedPrices = new HashMap<Material, Entry<Double,Double>>();
 	private static QuickShop plugin;
+	private static Method storageContents;
 
 	public static void initialize() {
 		tools.clear();
@@ -219,6 +220,16 @@ public class Util {
 				} catch (Exception e) {
 					plugin.getLogger().info("Invalid price restricted material: " + s);
 				}
+			}
+		}
+		
+		try {
+			storageContents = Inventory.class.getMethod("getStorageContents");
+		} catch (Exception e) {
+			try {
+				storageContents = Inventory.class.getMethod("getContents");
+			} catch (Exception e1) {
+				throw new RuntimeException(e1);
 			}
 		}
 	}
@@ -941,19 +952,18 @@ public class Util {
 	 */
 	public static int countSpace(Inventory inv, ItemStack item) {
 		int space = 0;
-		ItemStack[] contents;
-		try { // Bukkit API MC 1.9+ : Get actual storage slots (not armor...)
-			Method storageContents = Inventory.class.getMethod("getStorageContents");
-			contents = (ItemStack[])storageContents.invoke(inv);
-		} catch (Exception e) {
-			contents = inv.getContents(); // Bukkit API MC 1.8- fallback: Get all slots
-		}
-		for (ItemStack iStack : contents) {
-			if (iStack == null || iStack.getType() == Material.AIR) {
-				space += item.getMaxStackSize();
-			} else if (matches(item, iStack)) {
-				space += item.getMaxStackSize() - iStack.getAmount();
+		
+		try {
+			ItemStack[] contents = (ItemStack[])storageContents.invoke(inv);
+			for (ItemStack iStack : contents) {
+				if (iStack == null || iStack.getType() == Material.AIR) {
+					space += item.getMaxStackSize();
+				} else if (matches(item, iStack)) {
+					space += item.getMaxStackSize() - iStack.getAmount();
+				}
 			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 		return space;
 	}
