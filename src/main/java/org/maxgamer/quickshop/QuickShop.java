@@ -222,7 +222,7 @@ public class QuickShop extends JavaPlugin {
 							getDB().getConnection().createStatement().executeUpdate("UPDATE shops SET owner = \""+ownerUUID.toString()+"\" WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
 						} else {
 							// Invalid shop owner
-							getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
+							getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\""+(getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 							continue;
 						}
 					}
@@ -232,7 +232,7 @@ public class QuickShop extends JavaPlugin {
 					/* Skip invalid shops, if we know of any */
 					if (world != null && (loc.getBlock().getState() instanceof InventoryHolder) == false) {
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x + ", " + y + ", " + z + ".  Deleting.");
-						getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
+						getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\""+(getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 						continue;
 					}
 					int type = rs.getInt("type");
