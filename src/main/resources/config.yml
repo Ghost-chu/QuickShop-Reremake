@@ -94,9 +94,9 @@ blacklist:
 price-restriction:
 - Bedrock;100;200
 
-#Custom names for items. Format: <ItemID[:DataValueOrPotionType]>;<CustomSignName>;<CustomFullName>
+#Custom names for items. Format: <ItemID[*DataValueOrPotionType]>;<CustomSignName>;<CustomFullName>
 # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
 custom-names:
 - NETHER_STALK;Nether Wart;Nether Wart
-- POTION:INVISIBILITY;Invis.Potion;Invisibility Potion
+- POTION*INVISIBILITY;Invis.Potion;Invisibility Potion
 

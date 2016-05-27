@@ -164,7 +164,7 @@ public class QuickShop extends JavaPlugin {
 						throw new Exception("Invalid format (main args length must be 3)");
 					}
 					
-					String[] matVal = mainVal[0].split("[:]");
+					String[] matVal = mainVal[0].split("[*]");
 					Material material = Material.matchMaterial(matVal[0]);
 					if (material==null) {
 						throw new Exception("Invalid material: "+matVal[0]);
