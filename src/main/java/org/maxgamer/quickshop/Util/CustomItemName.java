@@ -21,6 +21,9 @@ public class CustomItemName {
 	public String getFullName() {
 		return fullName;
 	}
+	public boolean matches(ItemStack otherItemStack) {
+		return otherItemStack.getType()==this.itemStack.getType() && otherItemStack.getDurability()==this.itemStack.getDurability();
+	}
 	
 	@Override
 	public int hashCode() {
@@ -51,7 +54,7 @@ public class CustomItemName {
 		} else if (!fullName.equals(other.fullName)) {
 			return false;
 		}
-		if (itemStack == null) {
+		if (itemStack.getItemMeta() == null) {
 			if (other.itemStack != null) {
 				return false;
 			}
@@ -72,4 +75,6 @@ public class CustomItemName {
 	public String toString() {
 		return "CustomItemName [itemStack=" + itemStack + ", signName=" + signName + ", fullName=" + fullName + "]";
 	}
+	
+	
 }

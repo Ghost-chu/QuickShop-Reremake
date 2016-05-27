@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -19,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
 @SuppressWarnings("deprecation")
@@ -146,6 +146,9 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", Bukkit.getOfflinePlayer(shop.getOwner()).getName()==null ? (shop.isUnlimited() ? "AdminShop" : "Unknown") : Bukkit.getOfflinePlayer(shop.getOwner()).getName()));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", shop.getDataName()));
+		if (items.getType()==Material.POTION) {
+			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.effects", CustomPotionsName.getEffects(items)));
+		}
 		if (Util.isTool(items.getType())) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
 		}

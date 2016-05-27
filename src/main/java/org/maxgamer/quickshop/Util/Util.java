@@ -363,19 +363,21 @@ public class Util {
 	 * Fetches an ItemStack's name - For example, converting INK_SAC:11 to
 	 * Dandellion Yellow, or WOOL:14 to Red Wool
 	 * 
-	 * @param i
+	 * @param itemStack
 	 *            The itemstack to fetch the name of
 	 * @return The human readable item name.
 	 */
-	public static String getName(ItemStack i) {
-		ItemStack is = i.clone();
-		is.setAmount(1);
-		CustomItemName customItemName = QuickShop.instance.getCustomItemNames().get(is);
+	public static String getName(ItemStack itemStack) {
+		if (itemStack.getType()==Material.POTION) {
+			return CustomPotionsName.getFullName(itemStack);
+		}
+		
+		CustomItemName customItemName = QuickShop.instance.getCustomItemNames(itemStack);
 		if (customItemName!=null) {
 			return customItemName.getFullName();
 		}
 		
-		String vanillaName = getDataName(i.getType(), i.getDurability());
+		String vanillaName = getDataName(itemStack.getType(), itemStack.getDurability());
 		return prettifyText(vanillaName);
 	}
 
@@ -403,9 +405,13 @@ public class Util {
 
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
+		if (itemStack.getType()==Material.POTION) {
+			return CustomPotionsName.getSignName(itemStack);
+		}
+		
 		ItemStack is = itemStack.clone();
 		is.setAmount(1);
-		CustomItemName customItemName = QuickShop.instance.getCustomItemNames().get(is);
+		CustomItemName customItemName = QuickShop.instance.getCustomItemNames(is);
 		if (customItemName!=null) {
 			return customItemName.getSignName();
 		}

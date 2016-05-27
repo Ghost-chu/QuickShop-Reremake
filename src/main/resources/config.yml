@@ -94,9 +94,24 @@ blacklist:
 price-restriction:
 - Bedrock;100;200
 
-#Custom names for items. Format: <ItemID[*DataValueOrPotionType]>;<CustomSignName>;<CustomFullName>
-# PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
-custom-names:
+#Custom name for items. Format: <ItemID[*DataValue]>;<CustomSignName>;<CustomFullName>
+custom-items-name:
 - NETHER_STALK;Nether Wart;Nether Wart
-- POTION*INVISIBILITY;Invis.Potion;Invisibility Potion
 
+custom-potions-name:
+  format-full: "%splash %type %tier"
+  format-sign: "%splash%type%tier"
+  splash-sign: "Splash"
+  splash-full: "Splash"
+  
+  #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
+  # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+  types:
+  - INVISIBILITY;Invis.Potion;Potion of Invisibility
+
+  #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
+  # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+  effects:
+  - FIRE_RESISTANCE;Fire resistance
+  - INVISIBILITY;Invisibility
+  

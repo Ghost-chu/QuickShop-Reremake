@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -25,7 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
@@ -50,6 +52,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.CustomItemName;
+import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
@@ -104,7 +107,7 @@ public class QuickShop extends JavaPlugin {
 	/** Whether debug info should be shown in the console */
 	public static boolean debug = false;
 	
-	private Map<ItemStack,CustomItemName> customItemNames = new HashMap<ItemStack,CustomItemName>();
+	private Map<Material,List<CustomItemName>> customItemsName = new HashMap<Material,List<CustomItemName>>();
 
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
@@ -156,8 +159,8 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
 		
-		if (this.getConfig().isSet("custom-names")) {
-			for (String s : this.getConfig().getStringList("custom-names")) {
+		if (this.getConfig().isSet("custom-items-name")) {
+			for (String s : this.getConfig().getStringList("custom-items-name")) {
 				try {
 					String[] mainVal = s.split("[;]");
 					if (mainVal.length!=3) {
@@ -172,18 +175,10 @@ public class QuickShop extends JavaPlugin {
 					
 					ItemStack is;
 					if (matVal.length>1) {
-						if (material==Material.POTION) {
-							PotionType potionType = PotionType.valueOf(matVal[1].toUpperCase());
-							if (potionType==null) {
-								throw new Exception("Invalid PotionType: "+matVal[1]);
-							}
-							is = new Potion(potionType).toItemStack(1);
-						} else {
-							try {
-								is = new ItemStack(material, 1, Short.valueOf(matVal[1]));
-							} catch (Exception e) {
-								throw new Exception("Invalid data value: "+matVal[1]);
-							}
+						try {
+							is = new ItemStack(material, 1, Short.valueOf(matVal[1]));
+						} catch (Exception e) {
+							throw new Exception("Invalid data value: "+matVal[1]);
 						}
 					} else {
 						is = new ItemStack(material, 1, (short) 0);
@@ -193,13 +188,66 @@ public class QuickShop extends JavaPlugin {
 						Bukkit.getLogger().warning("Custom item name definition {"+s+"} sign name is longer than 16 characters. Only the first 16 characters will be shown.");
 					}
 					
-					customItemNames.put(is, new CustomItemName(is, mainVal[1], mainVal[2]));
+					List<CustomItemName> cinList = customItemsName.get(material);
+					if (cinList==null) {
+						cinList = new ArrayList<CustomItemName>();
+						customItemsName.put(material, cinList);
+					}
+					
+					cinList.add(new CustomItemName(is, mainVal[1], mainVal[2]));
 				} catch (Exception e) {
 					Bukkit.getLogger().warning("Invalid custom item name definition {"+s+"} Error: "+e.getMessage());
 				}
 			}
 		}
 		
+		ConfigurationSection customPotionsName = this.getConfig().getConfigurationSection("custom-potions-name");
+		if (customPotionsName!=null) {
+			CustomPotionsName.setFullPotionFormat(customPotionsName.getString("format-full"));
+			CustomPotionsName.setSignPotionFormat(customPotionsName.getString("format-sign"));
+			CustomPotionsName.setSplashFull(customPotionsName.getString("splash-full"));
+			CustomPotionsName.setSplashSign(customPotionsName.getString("splash-sign"));
+			Map<PotionType,CustomPotionsName.Names> potionTypes = new HashMap<PotionType,CustomPotionsName.Names>();
+			for (String s : customPotionsName.getStringList("types")) {
+				try {
+					String[] a = s.split("[;]");
+					if (a.length!=3) {
+						throw new Exception("Invalid format (main args length must be 3)");
+					}
+					
+					PotionType type = PotionType.valueOf(a[0].toUpperCase());
+					if (type==null) {
+						throw new Exception("Invalid PotionType "+a[0]);
+					}
+					
+					potionTypes.put(type, new CustomPotionsName.Names(a[1], a[2]));
+				} catch (Exception e) {
+					Bukkit.getLogger().warning("Invalid potion item name definition {"+s+"} Error: "+e.getMessage());
+				}
+			}
+			CustomPotionsName.setPotionTypes(potionTypes);
+			
+			Map<PotionEffectType,String> potionEffects = new HashMap<PotionEffectType,String>();
+			for (String s : customPotionsName.getStringList("effects")) {
+				try {
+					String[] a = s.split("[;]");
+					if (a.length!=2) {
+						throw new Exception("Invalid format (main args length must be 2)");
+					}
+					
+					PotionEffectType type = PotionEffectType.getByName(a[0]);
+					if (type==null) {
+						throw new Exception("Invalid PotionEffectType "+a[0]);
+					}
+					
+					potionEffects.put(type, a[1]);
+				} catch (Exception e) {
+					Bukkit.getLogger().warning("Invalid potion effect type name definition {"+s+"} Error: "+e.getMessage());
+				}
+			}
+			CustomPotionsName.setPotionEffects(potionEffects);
+		}
+	
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
 		if (limitCfg != null) {
 			getLogger().info("Limit cfg found...");
@@ -474,7 +522,18 @@ public class QuickShop extends JavaPlugin {
 		return this.shopManager;
 	}
 
-	public Map<ItemStack, CustomItemName> getCustomItemNames() {
-		return customItemNames;
+	public Map<Material, List<CustomItemName>> getCustomItemsNameMap() {
+		return customItemsName;
+	}
+	
+	public CustomItemName getCustomItemNames(ItemStack is) {
+		List<CustomItemName> list = customItemsName.get(is.getType());
+		for (CustomItemName cin : list) {
+			if (cin.matches(is)) {
+				return cin;
+			}
+		}
+		
+		return null;
 	}
 }
