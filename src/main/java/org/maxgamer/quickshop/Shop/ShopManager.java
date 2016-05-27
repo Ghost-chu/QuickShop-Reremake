@@ -459,7 +459,7 @@ public class ShopManager {
 							// themselves.
 							// Do charge an amount of tax though.
 							double tax = plugin.getConfig().getDouble("tax");
-							if (shop.getOwner().equals(p.getUniqueId())) {
+							if (shop.getOwner().equals(p.getUniqueId()) || p.hasPermission("quickshop.taxexemption")) {
 								tax = 0;
 							}
 							
