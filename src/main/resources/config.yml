@@ -87,9 +87,16 @@ shop:
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
-    - 7 #Bedrock
+- 7 #Bedrock
     
     
 #List of items with restricted prices. Format: <ItemID>;<MinPrice>;<MaxPrice>
 price-restriction:
 - Bedrock;100;200
+
+#Custom names for items. Format: <ItemID[:DataValueOrPotionType]>;<CustomSignName>;<CustomFullName>
+# PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+custom-names:
+- NETHER_STALK;Nether Wart;Nether Wart
+- POTION:INVISIBILITY;Invis.Potion;Invisibility Potion
+

@@ -368,6 +368,13 @@ public class Util {
 	 * @return The human readable item name.
 	 */
 	public static String getName(ItemStack i) {
+		ItemStack is = i.clone();
+		is.setAmount(1);
+		CustomItemName customItemName = QuickShop.instance.getCustomItemNames().get(is);
+		if (customItemName!=null) {
+			return customItemName.getFullName();
+		}
+		
 		String vanillaName = getDataName(i.getType(), i.getDurability());
 		return prettifyText(vanillaName);
 	}
@@ -396,6 +403,13 @@ public class Util {
 
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
+		ItemStack is = itemStack.clone();
+		is.setAmount(1);
+		CustomItemName customItemName = QuickShop.instance.getCustomItemNames().get(is);
+		if (customItemName!=null) {
+			return customItemName.getSignName();
+		}
+		
 		String name = getDataName(itemStack.getType(), itemStack.getDurability());
 
 		String[] nameParts = name.split("_");

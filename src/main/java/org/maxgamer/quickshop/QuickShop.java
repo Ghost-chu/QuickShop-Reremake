@@ -10,12 +10,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,6 +25,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Database.Database;
@@ -45,12 +49,14 @@ import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
+import org.maxgamer.quickshop.Util.CustomItemName;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 
 
+@SuppressWarnings("deprecation")
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
 	public static QuickShop instance;
@@ -96,6 +102,8 @@ public class QuickShop extends JavaPlugin {
 	// private Metrics metrics;
 	/** Whether debug info should be shown in the console */
 	public static boolean debug = false;
+	
+	private Map<ItemStack,CustomItemName> customItemNames = new HashMap<ItemStack,CustomItemName>();
 
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
@@ -140,6 +148,51 @@ public class QuickShop extends JavaPlugin {
 			LockListener ll = new LockListener(this);
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
+		
+		if (this.getConfig().isSet("custom-names")) {
+			for (String s : this.getConfig().getStringList("custom-names")) {
+				try {
+					String[] mainVal = s.split("[;]");
+					if (mainVal.length!=3) {
+						throw new Exception("Invalid format (main args length must be 3)");
+					}
+					
+					String[] matVal = mainVal[0].split("[:]");
+					Material material = Material.matchMaterial(matVal[0]);
+					if (material==null) {
+						throw new Exception("Invalid material: "+matVal[0]);
+					}
+					
+					ItemStack is;
+					if (matVal.length>1) {
+						if (material==Material.POTION) {
+							PotionType potionType = PotionType.valueOf(matVal[1].toUpperCase());
+							if (potionType==null) {
+								throw new Exception("Invalid PotionType: "+matVal[1]);
+							}
+							is = new Potion(potionType).toItemStack(1);
+						} else {
+							try {
+								is = new ItemStack(material, 1, Short.valueOf(matVal[1]));
+							} catch (Exception e) {
+								throw new Exception("Invalid data value: "+matVal[1]);
+							}
+						}
+					} else {
+						is = new ItemStack(material, 1, (short) 0);
+					}
+					
+					if (mainVal[1].length()>16) {
+						Bukkit.getLogger().warning("Custom item name definition {"+s+"} sign name is longer than 16 characters. Only the first 16 characters will be shown.");
+					}
+					
+					customItemNames.put(is, new CustomItemName(is, mainVal[1], mainVal[2]));
+				} catch (Exception e) {
+					Bukkit.getLogger().warning("Invalid custom item name definition {"+s+"} Error: "+e.getMessage());
+				}
+			}
+		}
+		
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
 		if (limitCfg != null) {
 			getLogger().info("Limit cfg found...");
@@ -215,7 +268,6 @@ public class QuickShop extends JavaPlugin {
 						ownerUUID = UUID.fromString(owner);
 					} catch (IllegalArgumentException e) {
 						// This could be old data to be converted... check if it's a player
-						@SuppressWarnings("deprecation")
 						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
 						if (player.hasPlayedBefore()) {
 							ownerUUID = player.getUniqueId();
@@ -413,5 +465,9 @@ public class QuickShop extends JavaPlugin {
 	 */
 	public ShopManager getShopManager() {
 		return this.shopManager;
+	}
+
+	public Map<ItemStack, CustomItemName> getCustomItemNames() {
+		return customItemNames;
 	}
 }
