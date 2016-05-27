@@ -459,6 +459,10 @@ public class ShopManager {
 							// themselves.
 							// Do charge an amount of tax though.
 							double tax = plugin.getConfig().getDouble("tax");
+							if (shop.getOwner().equals(p.getUniqueId())) {
+								tax = 0;
+							}
+							
 							double total = amount * shop.getPrice();
 							if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
 								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getName()))));
