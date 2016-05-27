@@ -52,3 +52,6 @@ permissions:
     quickshop.export:
         description: Allows exporting database to mysql or sqlite
         default: op
+    quickshop.taxexemption:
+        description: Tax exemption
+        default: false

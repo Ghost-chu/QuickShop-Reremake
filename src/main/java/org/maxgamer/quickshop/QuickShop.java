@@ -51,6 +51,7 @@ import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.CustomItemName;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
@@ -128,6 +129,12 @@ public class QuickShop extends JavaPlugin {
 		if (loadEcon() == false)
 			return;
 
+		if (Permissions.init()) {
+			getLogger().info("Found permission provider.");
+		} else {
+			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
+		}
+		
 		// Initialize Util
 		Util.initialize();
 		
