@@ -528,6 +528,9 @@ public class QuickShop extends JavaPlugin {
 	
 	public CustomItemName getCustomItemNames(ItemStack is) {
 		List<CustomItemName> list = customItemsName.get(is.getType());
+		if (list==null) {
+			return null;
+		}
 		for (CustomItemName cin : list) {
 			if (cin.matches(is)) {
 				return cin;
