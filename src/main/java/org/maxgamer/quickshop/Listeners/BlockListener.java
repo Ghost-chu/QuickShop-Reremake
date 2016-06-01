@@ -116,13 +116,27 @@ public class BlockListener implements Listener {
 		if (!plugin.display) {
 			return;
 		}
-
+		
 		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
 		Shop shop = plugin.getShopManager().getShop(block.getLocation());
 		if (shop != null) {
 			event.setCancelled(true);
 			plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
 			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
+			return;
+		}
+		
+		for (Block oBlock : event.getBlocks()) {
+			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+			if (Util.canBeShop(otherBlock)) {
+				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
+				if (shop!=null) {
+					event.setCancelled(true);
+					plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
+					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
+					return;
+				}
+			}
 		}
 	}
 

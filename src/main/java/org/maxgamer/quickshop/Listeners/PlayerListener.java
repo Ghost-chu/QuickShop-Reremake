@@ -15,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -192,8 +191,7 @@ public class PlayerListener implements Listener {
 				// You shouldn't be able to pick up that...
 			}
 		} catch (NullPointerException ex) {
-		} // if meta/displayname/stack is null. We don't really care in that
-			// case.
+		} // if meta/displayname/stack is null. We don't really care in that case.
 	}
 	
 	@EventHandler
@@ -212,21 +210,6 @@ public class PlayerListener implements Listener {
 				if (shop!=null) {
 					shop.setSignText();
 				}
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onInventoryOpen(InventoryOpenEvent event) {
-		if (!plugin.display) {
-			return;
-		}
-		
-		for (ItemStack is : event.getInventory().getContents()) {
-			if (is!=null && is.getItemMeta()!=null && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ")) {
-				plugin.getLogger().warning(event.getPlayer().getName()+" had a QuickShop display item on inventory: "+event.getInventory());
-				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] "+event.getPlayer().getName()+" had a QuickShop display item on inventory: "+event.getInventory());
-				is.setType(Material.AIR);
 			}
 		}
 	}

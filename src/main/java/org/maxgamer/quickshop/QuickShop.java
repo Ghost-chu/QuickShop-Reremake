@@ -43,6 +43,7 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.BlockListener;
 import org.maxgamer.quickshop.Listeners.ChatListener;
 import org.maxgamer.quickshop.Listeners.ChunkListener;
+import org.maxgamer.quickshop.Listeners.InventoryListener;
 import org.maxgamer.quickshop.Listeners.HeroChatListener;
 import org.maxgamer.quickshop.Listeners.LockListener;
 import org.maxgamer.quickshop.Listeners.PlayerListener;
@@ -79,10 +80,11 @@ public class QuickShop extends JavaPlugin {
 	private ChatListener chatListener;
 	private HeroChatListener heroChatListener;
 	// Listeners (These don't)
-	private BlockListener blockListener = new BlockListener(this);
-	private PlayerListener playerListener = new PlayerListener(this);
-	private ChunkListener chunkListener = new ChunkListener(this);
-	private WorldListener worldListener = new WorldListener(this);
+	private BlockListener blockListener;
+	private PlayerListener playerListener;
+	private InventoryListener inventoryListener;
+	private ChunkListener chunkListener;
+	private WorldListener worldListener;
 	private BukkitTask itemWatcherTask;
 	private LogWatcher logWatcher;
 	/** Whether players are required to sneak to create/buy from a shop */
@@ -379,9 +381,16 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.clean();
 		// Register events
 		getLogger().info("Registering Listeners");
+		blockListener = new BlockListener(this);
+		playerListener = new PlayerListener(this);
+		worldListener = new WorldListener(this);
+		
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
 		if (this.display) {
+			inventoryListener = new InventoryListener(this);
+			chunkListener = new ChunkListener(this);
+			Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
 			Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
