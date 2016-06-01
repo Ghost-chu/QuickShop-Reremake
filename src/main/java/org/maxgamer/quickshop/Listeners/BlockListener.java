@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -92,7 +91,7 @@ public class BlockListener implements Listener {
 			if (e.isCancelled())
 				return;
 			e.setCancelled(true); // Cancel the event so that the sign does not
-									// drop.. TODO: Find a better way.
+			// drop.. TODO: Find a better way.
 			b.setType(Material.AIR);
 		}
 	}
@@ -112,13 +111,13 @@ public class BlockListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onPistonExtend(BlockPistonExtendEvent event) {
 		if (!plugin.display) {
 			return;
 		}
-		
+
 		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
 		Shop shop = plugin.getShopManager().getShop(block.getLocation());
 		if (shop != null) {
