@@ -22,13 +22,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.QuickShop;
 
 public class NMS {
-	private static ArrayList<NMSDependent> dependents = new ArrayList<NMSDependent>();
+	private static ArrayList<NMSDependent> nmsDependencies = new ArrayList<NMSDependent>();
 	private static int nextId = 0;
 	private static NMSDependent nms;
 	
 	static {
-		NMSDependent dep;
-		dep = new NMSDependent("v1_7_R3") {
+		nmsDependencies.add(new NMSDependent("v1_7_R3") {
 			@Override
 			public void safeGuard(Item item) {
 				if(QuickShop.debug)System.out.println("safeGuard");
@@ -55,9 +54,9 @@ public class NMS {
 				net.minecraft.server.v1_7_R3.ItemStack is = net.minecraft.server.v1_7_R3.ItemStack.createStack(c);
 				return org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack.asBukkitCopy(is);
 			}
-		};
-		dependents.add(dep);
-		dep = new NMSDependent("v1_8") {
+		});
+		
+		nmsDependencies.add(new NMSDependent("v1_8") {
 			@Override
 			public void safeGuard(Item item) {
 				if(QuickShop.debug)System.out.println("safeGuard");
@@ -86,7 +85,6 @@ public class NMS {
 				}catch(Exception e){
 					return new byte[0];
 				}
-				//return net.minecraft.server.v1_8_R1.NBTCompressedStreamTools.a(itemCompound);
 			}
 
 			@Override
@@ -100,15 +98,63 @@ public class NMS {
 					} finally {
 						datainputstream.close();
 					}
-					//net.minecraft.server.v1_8_R1.NBTTagCompound c = net.minecraft.server.v1_8_R1.NBTCompressedStreamTools.a(bytes, null);
 					net.minecraft.server.v1_8_R3.ItemStack is = net.minecraft.server.v1_8_R3.ItemStack.createStack(nbttagcompound);
 					return org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asBukkitCopy(is);
 				}catch(Exception e){
 					return new ItemStack(Material.AIR);
 				}
 			}
-		};
-		dependents.add(dep);
+		});
+		
+		nmsDependencies.add(new NMSDependent("v1_9_R2") {
+			@Override
+			public void safeGuard(Item item) {
+				if(QuickShop.debug)System.out.println("safeGuard");
+				org.bukkit.inventory.ItemStack iStack = item.getItemStack();
+				net.minecraft.server.v1_9_R2.ItemStack nmsI = org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack.asNMSCopy(iStack);
+				nmsI.count = 0;
+				iStack = org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack.asBukkitCopy(nmsI);
+				item.setItemStack(iStack);
+			}
+
+			@Override
+			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
+				try{
+					if(QuickShop.debug)System.out.println("getNBTBytes");
+					net.minecraft.server.v1_9_R2.ItemStack is = org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack.asNMSCopy(iStack);
+					net.minecraft.server.v1_9_R2.NBTTagCompound itemCompound = new net.minecraft.server.v1_9_R2.NBTTagCompound();
+					itemCompound = is.save(itemCompound);
+					ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+					DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream));
+					try {
+						net.minecraft.server.v1_9_R2.NBTCompressedStreamTools.a(itemCompound, (DataOutput) dataoutputstream);
+					} finally {
+						dataoutputstream.close();
+					}
+					return bytearrayoutputstream.toByteArray();
+				}catch(Exception e){
+					return new byte[0];
+				}
+			}
+
+			@Override
+			public org.bukkit.inventory.ItemStack getItemStack(byte[] bytes) {
+				try{
+					if(QuickShop.debug)System.out.println("getItemStack");
+					DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
+					net.minecraft.server.v1_9_R2.NBTTagCompound nbttagcompound;
+					try {
+						nbttagcompound = net.minecraft.server.v1_9_R2.NBTCompressedStreamTools.a((DataInput) datainputstream, null);
+					} finally {
+						datainputstream.close();
+					}
+					net.minecraft.server.v1_9_R2.ItemStack is = net.minecraft.server.v1_9_R2.ItemStack.createStack(nbttagcompound);
+					return org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack.asBukkitCopy(is);
+				}catch(Exception e){
+					return new ItemStack(Material.AIR);
+				}
+			}
+		});
 	}
 
 	public static void safeGuard(Item item) throws ClassNotFoundException {
@@ -176,7 +222,7 @@ public class NMS {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 		packageName = packageName.substring(packageName.lastIndexOf(".") + 1);
 		// System.out.println("Package: " + packageName);
-		for (NMSDependent dep : dependents) {
+		for (NMSDependent dep : nmsDependencies) {
 			if ((packageName.startsWith(dep.getVersion())) || ((dep.getVersion().isEmpty()) && ((packageName.equals("bukkit")) || (packageName.equals("craftbukkit"))))) {
 				nms = dep;
 				return;
