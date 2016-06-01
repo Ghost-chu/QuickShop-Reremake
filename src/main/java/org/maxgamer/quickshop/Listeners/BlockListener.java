@@ -1,9 +1,12 @@
 package org.maxgamer.quickshop.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
@@ -11,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -20,6 +24,8 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class BlockListener implements Listener {
 	private QuickShop plugin;
@@ -103,6 +109,25 @@ public class BlockListener implements Listener {
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop != null) {
 				shop.delete();
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
+	public void onPistonExtend(BlockPistonExtendEvent event) {
+		if (!plugin.display) {
+			return;
+		}
+		
+		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+		Shop shop = plugin.getShopManager().getShop(block.getLocation());
+		if (shop != null) {
+			event.setCancelled(true);
+			plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (player.isOp()) {
+					player.sendMessage(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
+				}
 			}
 		}
 	}
