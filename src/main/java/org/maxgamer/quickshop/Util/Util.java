@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +21,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -1033,6 +1035,14 @@ public class Util {
 			return true;
 		} catch (ClassNotFoundException e) {
 			return false;
+		}
+	}
+	
+	public static void sendMessageToOps(String message) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (player.isOp()) {
+				player.sendMessage(message);
+			}
 		}
 	}
 }

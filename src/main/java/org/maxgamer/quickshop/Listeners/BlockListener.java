@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -123,11 +122,7 @@ public class BlockListener implements Listener {
 		if (shop != null) {
 			event.setCancelled(true);
 			plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				if (player.isOp()) {
-					player.sendMessage(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
-				}
-			}
+			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
 		}
 	}
 
