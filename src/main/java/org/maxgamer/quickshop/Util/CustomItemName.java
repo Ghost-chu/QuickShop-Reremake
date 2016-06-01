@@ -75,6 +75,4 @@ public class CustomItemName {
 	public String toString() {
 		return "CustomItemName [itemStack=" + itemStack + ", signName=" + signName + ", fullName=" + fullName + "]";
 	}
-	
-	
 }

@@ -11,18 +11,6 @@ public class Info {
 	private Block last;
 	private Shop shop;
 
-	/**
-	 * Stores info for the players last shop interact.
-	 * 
-	 * @param loc
-	 *            The location they clicked (Block.getLocation())
-	 * @param action
-	 *            The action (ShopAction.*)
-	 * @param material
-	 *            The material they were holding
-	 * @param data
-	 *            The data value of the material
-	 */
 	public Info(Location loc, ShopAction action, ItemStack item, Block last) {
 		this.loc = loc;
 		this.action = action;
@@ -31,20 +19,6 @@ public class Info {
 			this.item = item.clone();
 	}
 
-	/**
-	 * Stores info for the players last shop interact.
-	 * 
-	 * @param loc
-	 *            The location they clicked (Block.getLocation())
-	 * @param action
-	 *            The action (ShopAction.*)
-	 * @param material
-	 *            The material they were holding
-	 * @param data
-	 *            The data value of the material
-	 * @param shop
-	 *            The shop they interacted with, or null if none
-	 */
 	public Info(Location loc, ShopAction action, ItemStack item, Block last, Shop shop) {
 		this.loc = loc;
 		this.action = action;
