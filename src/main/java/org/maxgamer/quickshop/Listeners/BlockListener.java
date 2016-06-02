@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,8 +23,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class BlockListener implements Listener {
 	private QuickShop plugin;
