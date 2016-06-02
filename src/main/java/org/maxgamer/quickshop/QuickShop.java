@@ -55,6 +55,7 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.CustomItemName;
 import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.NMS;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
@@ -123,6 +124,8 @@ public class QuickShop extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		NMS.init();
+		
 		instance = this;
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
@@ -203,14 +206,13 @@ public class QuickShop extends JavaPlugin {
 			}
 		}
 		
-		ConfigurationSection customPotionsName = this.getConfig().getConfigurationSection("custom-potions-name");
-		if (customPotionsName!=null) {
-			CustomPotionsName.setFullPotionFormat(customPotionsName.getString("format-full"));
-			CustomPotionsName.setSignPotionFormat(customPotionsName.getString("format-sign"));
-			CustomPotionsName.setSplashFull(customPotionsName.getString("splash-full"));
-			CustomPotionsName.setSplashSign(customPotionsName.getString("splash-sign"));
+		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
+		if (cPotionSection!=null) {
+			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
+			CustomPotionsName.setShopInfoFormat(new String[]{cPotionSection.getString("shopinfo.format"), cPotionSection.getString("shopinfo.variety.normal"), cPotionSection.getString("shopinfo.variety.splash"), cPotionSection.getString("shopinfo.variety.lingering")});
+
 			Map<PotionType,CustomPotionsName.Names> potionTypes = new HashMap<PotionType,CustomPotionsName.Names>();
-			for (String s : customPotionsName.getStringList("types")) {
+			for (String s : cPotionSection.getStringList("types")) {
 				try {
 					String[] a = s.split("[;]");
 					if (a.length!=3) {
@@ -230,7 +232,7 @@ public class QuickShop extends JavaPlugin {
 			CustomPotionsName.setPotionTypes(potionTypes);
 			
 			Map<PotionEffectType,String> potionEffects = new HashMap<PotionEffectType,String>();
-			for (String s : customPotionsName.getStringList("effects")) {
+			for (String s : cPotionSection.getStringList("effects")) {
 				try {
 					String[] a = s.split("[;]");
 					if (a.length!=2) {

@@ -1,3 +1,5 @@
+#Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
+
 #Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
 tax: 0.05
 
@@ -99,19 +101,26 @@ custom-items-name:
 - NETHER_STALK;Nether Wart;Nether Wart
 
 custom-potions-name:
-  format-full: "%splash %type %tier"
-  format-sign: "%splash%type%tier"
-  splash-sign: "Splash"
-  splash-full: "Splash"
-  
+  sign:
+    format: "%variety%type"
+    variety:
+      normal: ""
+      splash: "Splash"
+      lingering: "Ling"
+  shopinfo:
+    format: "%variety %type"
+    variety:
+      normal: ""
+      splash: "Splash"
+      lingering: "Lingering"
+
   #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
   # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
   types:
-  - INVISIBILITY;Invis.Potion;Potion of Invisibility
+  - INVISIBILITY;Invis;Invisibility
 
   #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
   # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
   effects:
   - FIRE_RESISTANCE;Fire resistance
   - INVISIBILITY;Invisibility
-  

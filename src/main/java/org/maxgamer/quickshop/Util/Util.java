@@ -370,7 +370,7 @@ public class Util {
 	 * @return The human readable item name.
 	 */
 	public static String getName(ItemStack itemStack) {
-		if (itemStack.getType()==Material.POTION) {
+		if (NMS.isPotion(itemStack.getType())) {
 			return CustomPotionsName.getFullName(itemStack);
 		}
 		
@@ -407,7 +407,7 @@ public class Util {
 
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
-		if (itemStack.getType()==Material.POTION) {
+		if (NMS.isPotion(itemStack.getType())) {
 			return CustomPotionsName.getSignName(itemStack);
 		}
 		

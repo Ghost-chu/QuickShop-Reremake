@@ -1,59 +1,110 @@
 package org.maxgamer.quickshop.Util;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-@SuppressWarnings("deprecation")
 public class CustomPotionsName {
-	private static String fullPotionFormat, signPotionFormat, splashSign, splashFull;
 	private static Map<PotionType,Names> potionTypes;
 	private static Map<PotionEffectType,String> potionEffects;
+	private static String[] signFormat, shopInfoFormat;
 	
 	private CustomPotionsName() {}
 	
 	public static String getSignName(ItemStack potionItemStack) {
-		Potion potion = Potion.fromItemStack(potionItemStack);
+		GenericPotionData potion = NMS.getPotionData(potionItemStack);
 		if (potion==null) {
-			return "Invalid";
+			return "InvalidPotion";
+		}
+		
+		if (potion.isCustom() && potionItemStack.hasItemMeta() && potionItemStack.getItemMeta().hasDisplayName()) {
+			// return potion name for custom potions
+			return potionItemStack.getItemMeta().getDisplayName().replace(" ", "");
 		}
 		
 		Names names = potionTypes.get(potion.getType());
 		String type;
 		if (names==null) {
-			type = Util.prettifyText(potion.getType().toString());
+			if (potion.getType()==PotionType.WATER) {
+				return "WaterBottle";
+			}
+			type = Util.prettifyText(potion.getType().toString()).replace(" ", "")+"Potion";
 		} else {
 			type = names.getSign();
 		}
 		
-		return (getSignPotionFormat().replace("%splash", potion.isSplash() ? splashSign : "").replace("%type", type).replace("%tier", (potion.getLevel()!=0 ? ""+potion.getLevel() : ""))).trim();
+		type+=(potion.getAmplifier()>1 ? potion.getAmplifier() : "")+(potion.getDuration()==-1 ? "+" : "");
+		
+		String variety;
+		switch(potion.getCategory()) {
+		case NORMAL:
+			variety = getSignFormat()[1];
+			break;
+		case SPLASH:
+			variety = getSignFormat()[2];
+			break;
+		case LINGERING:
+			variety = getSignFormat()[3];
+			break;
+		default:
+			variety = "Invalid";
+			break;
+		}
+		
+		return (getSignFormat()[0].replace("%variety", variety).replace("%type", type)).trim();
 	}
 	
 	public static String getFullName(ItemStack potionItemStack) {
-		Potion potion = Potion.fromItemStack(potionItemStack);
+		GenericPotionData potion = NMS.getPotionData(potionItemStack);
 		if (potion==null) {
-			return "Invalid";
+			return "InvalidPotion";
+		}
+		
+		if (potion.isCustom() && potionItemStack.hasItemMeta() && potionItemStack.getItemMeta().hasDisplayName()) {
+			// return potion name for custom potions
+			return potionItemStack.getItemMeta().getDisplayName().replace(" ", "");
 		}
 		
 		Names names = potionTypes.get(potion.getType());
 		String type;
 		if (names==null) {
-			type = Util.prettifyText(potion.getType().toString());
+			if (potion.getType()==PotionType.WATER) {
+				return "Water Bottle";
+			}
+			type = Util.prettifyText(potion.getType().toString())+" Potion";
 		} else {
 			type = names.getFull();
 		}
 		
-		return (getFullPotionFormat().replace("%splash", potion.isSplash() ? splashFull : "").replace("%type", type).replace("%tier", (potion.getLevel()!=0 ? ""+potion.getLevel() : ""))).trim();
+		type+=(potion.getAmplifier()>1 ? " "+potion.getAmplifier() : "")+(potion.getDuration()>0 ? " ("+((int)(potion.getDuration()/20))+"s)" : potion.getDuration()==-1 ? "+" : "");
+		
+		String variety;
+		switch(potion.getCategory()) {
+		case NORMAL:
+			variety = getShopInfoFormat()[1];
+			break;
+		case SPLASH:
+			variety = getShopInfoFormat()[2];
+			break;
+		case LINGERING:
+			variety = getShopInfoFormat()[3];
+			break;
+		default:
+			variety = "Invalid";
+			break;
+		}
+		
+		return (getShopInfoFormat()[0].replace("%variety", variety).replace("%type", type)).trim();
 	}
 	
 	public static String getEffects(ItemStack potionItemStack) {
-		Potion potion = Potion.fromItemStack(potionItemStack);
+		GenericPotionData potion = NMS.getPotionData(potionItemStack);
 		if (potion==null) {
-			return "Invalid";
+			return "InvalidPotion";
 		}
 		
 		StringBuilder sb = new StringBuilder();
@@ -65,7 +116,7 @@ public class CustomPotionsName {
 				name = Util.prettifyText(type.getName());
 			}
 			
-			sb.append(name+(potionEffect.getAmplifier()!=0 ? " "+potionEffect.getAmplifier() : "")+" ("+((int)(potionEffect.getDuration()/20))+"s) | ");
+			sb.append(name.trim()+(potionEffect.getAmplifier()>1 ? " "+potionEffect.getAmplifier() : "")+(potionEffect.getDuration()>0 ? " ("+((int)(potionEffect.getDuration()/20))+"s)" : potionEffect.getDuration()==-1 ? "+" : "")+" | ");
 		}
 		
 		if (sb.length()>0) {
@@ -135,38 +186,66 @@ public class CustomPotionsName {
 		}
 		
 	}
+	
+	public static class GenericPotionData {
+		private PotionType type;
+		private Collection<PotionEffect> effects;
+		private Category category;
+		private boolean custom;
+		private int amplifier, duration;
+		
+		public GenericPotionData(PotionType type, Collection<PotionEffect> effects, Category category, boolean isCustom, int duration, int amplifier) {
+			this.type = type;
+			this.effects = effects;
+			this.category = category;
+			this.custom = isCustom;
+			this.duration = duration;
+			this.amplifier = amplifier;
+		}
 
+		public PotionType getType() {
+			return type;
+		}
 
-	public static String getFullPotionFormat() {
-		return fullPotionFormat;
+		public Collection<PotionEffect> getEffects() {
+			return effects;
+		}
+
+		public Category getCategory() {
+			return category;
+		}
+
+		public boolean isCustom() {
+			return custom;
+		}
+
+		public int getAmplifier() {
+			return amplifier;
+		}
+
+		public int getDuration() {
+			return duration;
+		}
+
+		public enum Category {
+			NORMAL, SPLASH, LINGERING;
+		}
 	}
 
-	public static void setFullPotionFormat(String fullPotionFormat) {
-		CustomPotionsName.fullPotionFormat = fullPotionFormat;
+	public static String[] getSignFormat() {
+		return signFormat;
 	}
 
-	public static String getSignPotionFormat() {
-		return signPotionFormat;
+	public static String[] getShopInfoFormat() {
+		return shopInfoFormat;
+	}
+	
+	public static void setSignFormat(String[] signFormat) {
+		CustomPotionsName.signFormat = signFormat;
 	}
 
-	public static void setSignPotionFormat(String fullSignFormat) {
-		CustomPotionsName.signPotionFormat = fullSignFormat;
-	}
-
-	public static String getSplashSign() {
-		return splashSign;
-	}
-
-	public static void setSplashSign(String splashSign) {
-		CustomPotionsName.splashSign = splashSign;
-	}
-
-	public static String getSplashFull() {
-		return splashFull;
-	}
-
-	public static void setSplashFull(String splashFull) {
-		CustomPotionsName.splashFull = splashFull;
+	public static void setShopInfoFormat(String[] shopInfoFormat) {
+		CustomPotionsName.shopInfoFormat = shopInfoFormat;
 	}
 
 	public static Map<PotionType, Names> getPotionTypes() {
