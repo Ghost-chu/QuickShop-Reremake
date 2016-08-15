@@ -258,6 +258,97 @@ public class NMS {
 				}
 			}
 		});
+		
+		nmsDependencies.add(new NMSDependent("v1_10") {
+			@Override
+			public void safeGuard(Item item) {
+				if(QuickShop.debug)System.out.println("safeGuard");
+				org.bukkit.inventory.ItemStack iStack = item.getItemStack();
+				net.minecraft.server.v1_10_R1.ItemStack nmsI = org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack.asNMSCopy(iStack);
+				nmsI.count = 0;
+				iStack = org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack.asBukkitCopy(nmsI);
+				item.setItemStack(iStack);
+			}
+
+			@Override
+			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
+				try{
+					if(QuickShop.debug)System.out.println("getNBTBytes");
+					net.minecraft.server.v1_10_R1.ItemStack is = org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack.asNMSCopy(iStack);
+					net.minecraft.server.v1_10_R1.NBTTagCompound itemCompound = new net.minecraft.server.v1_10_R1.NBTTagCompound();
+					itemCompound = is.save(itemCompound);
+					ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+					DataOutputStream dataoutputstream = new DataOutputStream(new GZIPOutputStream(bytearrayoutputstream));
+					try {
+						net.minecraft.server.v1_10_R1.NBTCompressedStreamTools.a(itemCompound, (DataOutput) dataoutputstream);
+					} finally {
+						dataoutputstream.close();
+					}
+					return bytearrayoutputstream.toByteArray();
+				}catch(Exception e){
+					return new byte[0];
+				}
+			}
+
+			@Override
+			public org.bukkit.inventory.ItemStack getItemStack(byte[] bytes) {
+				try{
+					if(QuickShop.debug)System.out.println("getItemStack");
+					DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
+					net.minecraft.server.v1_10_R1.NBTTagCompound nbttagcompound;
+					try {
+						nbttagcompound = net.minecraft.server.v1_10_R1.NBTCompressedStreamTools.a((DataInput) datainputstream, null);
+					} finally {
+						datainputstream.close();
+					}
+					net.minecraft.server.v1_10_R1.ItemStack is = net.minecraft.server.v1_10_R1.ItemStack.createStack(nbttagcompound);
+					return org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack.asBukkitCopy(is);
+				}catch(Exception e){
+					return new ItemStack(Material.AIR);
+				}
+			}
+			
+			@Override
+			public GenericPotionData getPotionData(ItemStack potionItemStack) {
+				PotionMeta potionMeta = (PotionMeta) potionItemStack.getItemMeta();
+				
+				Category category;
+				switch(potionItemStack.getType()) {
+				case POTION:
+					category = Category.NORMAL;
+					break;
+				case SPLASH_POTION:
+					category = Category.SPLASH;
+					break;
+				case LINGERING_POTION:
+					category = Category.LINGERING;
+					break; 
+				default:
+					return null;
+				}
+				List<PotionEffect> effects = new ArrayList<PotionEffect>(potionMeta.getCustomEffects().size()+1);
+				
+				if (potionMeta.hasCustomEffects()) {
+					effects.addAll(potionMeta.getCustomEffects());
+				}
+				
+				PotionType potionType = potionMeta.getBasePotionData().getType();
+				
+				return new GenericPotionData(potionType, effects, category, (potionType==PotionType.WATER || potionType==PotionType.MUNDANE || potionType==PotionType.UNCRAFTABLE || potionType==PotionType.THICK || potionType==PotionType.AWKWARD) && !effects.isEmpty(), potionMeta.getBasePotionData().isExtended() ? -1 : 0, potionMeta.getBasePotionData().isUpgraded() ? 2 : 1);
+			}
+
+			@Override
+			public boolean isPotion(Material material) {
+				switch(material) {
+				case POTION:
+				case SPLASH_POTION:
+				case LINGERING_POTION:
+					return true;
+				default:
+					return false;
+				}
+			}
+		});
 	}
 	
 	public static void safeGuard(Item item) throws ClassNotFoundException {
