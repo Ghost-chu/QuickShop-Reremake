@@ -1,62 +1,63 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.maxgamer</groupId>
-  <artifactId>QuickShop</artifactId>
-  <version>0.9.22</version>
-   
-  <licenses>
-    <license>
-      <name>GPL v3 License</name>
-      <url>http://www.gnu.org/licenses/</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  
-  <issueManagement>
-    <url>https://github.com/${developer}/${name}/issues</url>
-    <system>GitHub Issues</system>
-  </issueManagement>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.maxgamer</groupId>
+	<artifactId>QuickShop</artifactId>
+	<version>0.9.22</version>
 
-  <scm>
-    <url>https://github.com/${developer}/${version}</url>
-    <connection>scm:git:git://github.com/${developer}/${version}.git</connection>
-    <developerConnection>scm:git:git@github.com:${developer}/${version}.git</developerConnection>
-  </scm>
-  
-  <build>
-      <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <version>3.1</version>
-              <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-              </configuration>
-          </plugin>
-      </plugins>
-      <resources>
-		<resource>
-			<directory>src/main/resources</directory>
-			<filtering>true</filtering>
-		</resource>
-      </resources>
-   </build>
-   <repositories>
-       <repository>
-           <id>bukkit-repo</id>
-           <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-       </repository>
-       	<repository>
-	        <id>sk89q-repo</id>
-	        <url>http://maven.sk89q.com/repo/</url>
-	    </repository>
+	<licenses>
+		<license>
+			<name>GPL v3 License</name>
+			<url>http://www.gnu.org/licenses/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<url>https://github.com/${developer}/${name}/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/${developer}/${version}</url>
+		<connection>scm:git:git://github.com/${developer}/${version}.git</connection>
+		<developerConnection>scm:git:git@github.com:${developer}/${version}.git</developerConnection>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+	<repositories>
+		<repository>
+			<id>bukkit-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>sk89q-repo</id>
+			<url>http://maven.sk89q.com/repo/</url>
+		</repository>
 		<repository>
 			<id>vault-repo</id>
-			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
-   </repositories>
-   <dependencies>
+	</repositories>
+	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
@@ -69,12 +70,12 @@
 			<artifactId>worldguard</artifactId>
 			<version>6.0.0-SNAPSHOT</version>
 		</dependency>
-        <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.5</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.5</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.dthielke.herochat</groupId>
 			<artifactId>herochat</artifactId>
@@ -96,9 +97,9 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/craftbukkit-1.8.8-R0.1.jar</systemPath>
 		</dependency>
-   </dependencies>
-   <properties>
-   	<package>org.maxgamer.quickshop</package>
-   	<developer>KaiNoMood</developer>
-   </properties>
+	</dependencies>
+	<properties>
+		<package>org.maxgamer.quickshop</package>
+		<developer>KaiNoMood</developer>
+	</properties>
 </project>
