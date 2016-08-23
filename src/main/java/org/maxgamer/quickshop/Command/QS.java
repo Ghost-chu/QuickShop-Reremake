@@ -274,11 +274,12 @@ public class QS implements CommandExecutor {
 		}
 	}
 
-	private void create(CommandSender sender) {
+	@SuppressWarnings("deprecation")
+	private void create(CommandSender sender, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
 			ItemStack item = p.getItemInHand();
-			if (item.getType()!=Material.AIR && (plugin.sneakCreate == false || p.isSneaking())) {
+			if (item.getType()!=Material.AIR) {
 				if (sender.hasPermission("quickshop.create.sell")) {
 					BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
 
@@ -302,10 +303,14 @@ public class QS implements CommandExecutor {
 								return;
 							}
 
-							// Send creation menu.
-							Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(), b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
-							plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-							p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+							if (args.length<2) {
+								// Send creation menu.
+								Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(), b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
+								plugin.getShopManager().getActions().put(p.getUniqueId(), info);
+								p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+							} else {
+								plugin.getShopManager().handleChat(p, args[1]);
+							}
 						}
 					}
 				} else {
@@ -493,7 +498,7 @@ public class QS implements CommandExecutor {
 				find(sender, args);
 				return true;
 			} else if (subArg.startsWith("create")) {
-				create(sender);
+				create(sender, args);
 				return true;
 			} else if (subArg.startsWith("buy")) {
 				setBuy(sender);
@@ -614,7 +619,7 @@ public class QS implements CommandExecutor {
 			s.sendMessage(ChatColor.GREEN + "/qs buy" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.buy"));
 		if (s.hasPermission("quickshop.create.sell")) {
 			s.sendMessage(ChatColor.GREEN + "/qs sell" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.sell"));
-			s.sendMessage(ChatColor.GREEN + "/qs create" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.create"));
+			s.sendMessage(ChatColor.GREEN + "/qs create [price]" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.create"));
 		}
 		if (s.hasPermission("quickshop.create.changeprice"))
 			s.sendMessage(ChatColor.GREEN + "/qs price" + ChatColor.YELLOW + " - " + MsgUtil.getMessage("command.description.price"));
