@@ -58,9 +58,10 @@ public class InventoryListener implements Listener {
 			ItemStack is = event.getItem().getItemStack();
 			if (itemStackCheck(is)) {
 				event.setCancelled(true);
-				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory()+" picked up display item "+is);
-				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert]  Inventory "+event.getInventory()+" picked up display item "+is);
+				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getInventory().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 				event.getItem().remove();
+				event.getInventory().clear();
 			}
 		} catch (Exception e) {}
 	}
