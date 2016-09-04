@@ -311,6 +311,7 @@ public class QS implements CommandExecutor {
 							} else {
 								plugin.getShopManager().handleChat(p, args[1]);
 							}
+							return;
 						}
 					}
 				} else {
