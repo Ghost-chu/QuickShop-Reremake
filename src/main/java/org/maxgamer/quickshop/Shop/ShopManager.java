@@ -254,7 +254,7 @@ public class ShopManager {
 	}
 
 	public void handleChat(final Player p, String msg) {
-		final String message = ChatColor.stripColor(msg).replaceAll("[^\\d]+", "");
+		final String message = ChatColor.stripColor(msg);
 		// Use from the main thread, because Bukkit hates life
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			@SuppressWarnings("deprecation")
