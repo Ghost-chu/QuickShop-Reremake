@@ -1,7 +1,7 @@
 name: ${name}
 main: ${package}.${name}
 version: ${version}
-author: Netherfoam, Timtower, KaiNoMood
+authors: [Netherfoam, Timtower, KaiNoMood]
 
 description: Economy Shops plugin
 softdepend: [Herochat, Vault]
