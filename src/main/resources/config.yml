@@ -97,6 +97,7 @@ price-restriction:
 - Bedrock;100;200
 
 #Custom name for items. Format: <ItemID[*DataValue]>;<CustomSignName>;<CustomFullName>
+# Vanilla Material list (ItemIDs): https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 custom-items-name:
 - NETHER_STALK;Nether Wart;Nether Wart
 
