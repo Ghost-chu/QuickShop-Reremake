@@ -75,12 +75,19 @@ public class PlayerListener implements Listener {
 			
 			if (b.getType() == Material.WALL_SIGN) {
 				attached = Util.getAttached(b);
+				if (attached != null) {
+					shop = plugin.getShopManager().getShop(attached.getLocation());
+				}
 			} else if (b.getType() == Material.CHEST || b.getType() == Material.TRAPPED_CHEST) {
 				attached = Util.getSecondHalf(b);
-			}
-			
-			if (attached != null) {
-				shop = plugin.getShopManager().getShop(attached.getLocation());
+				if (attached != null) {
+					Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+					if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+						// If player not the owner of the shop, make him select the second half of the shop
+						// Otherwise owner will be able to create new double chest shop
+						shop = secondHalfShop;
+					}
+				}
 			}
 		}
 		// Purchase handling
