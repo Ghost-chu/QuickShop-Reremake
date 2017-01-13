@@ -101,6 +101,7 @@ public class DisplayItem {
 		if (this.item == null)
 			return;
 		this.item.remove();
+		this.item = null;
 	}
 
 	/**

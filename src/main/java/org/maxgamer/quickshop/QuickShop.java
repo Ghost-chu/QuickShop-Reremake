@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Database.Database;
@@ -43,8 +45,8 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.BlockListener;
 import org.maxgamer.quickshop.Listeners.ChatListener;
 import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.InventoryListener;
 import org.maxgamer.quickshop.Listeners.HeroChatListener;
+import org.maxgamer.quickshop.Listeners.InventoryListener;
 import org.maxgamer.quickshop.Listeners.LockListener;
 import org.maxgamer.quickshop.Listeners.PlayerListener;
 import org.maxgamer.quickshop.Listeners.WorldListener;
@@ -111,6 +113,8 @@ public class QuickShop extends JavaPlugin {
 	public static boolean debug = false;
 	
 	private Map<Material,List<CustomItemName>> customItemsName = new HashMap<Material,List<CustomItemName>>();
+	
+	private int displayItemCheckTicks;
 
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
@@ -410,17 +414,31 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getInt("shop.find-distance") > 100) {
 			getLogger().severe("Shop.find-distance is too high! Pick a number under 100!");
 		}
-		/**
-		 * If the server has Spout we can get the names of custom items. Latest
-		 * SpoutPlugin http://get.spout.org/1412/SpoutPlugin.jar
-		 * http://build.spout.org/view/Legacy/job/SpoutPlugin/1412/
-		 */
-//		if (Bukkit.getPluginManager().getPlugin("Spout") != null) {
-//			this.getLogger().info("Found Spout...");
-//			this.useSpout = true;
-//		} else {
-//			this.useSpout = false;
-//		}
+
+		if (display && displayItemCheckTicks>0) {
+			new BukkitRunnable() {		
+				@Override
+				public void run() {
+					Iterator<Shop> it = getShopManager().getShopIterator();
+					while (it.hasNext()) {
+						Shop shop = it.next();
+						if (shop instanceof ContainerShop) {
+							ContainerShop cShop = (ContainerShop) shop;
+							if (cShop.checkDisplayMoved()) {
+								log("Display item for "+shop+" is not on the correct location and has been removed. Probably someone is trying to cheat.");
+								for (Player player : getServer().getOnlinePlayers()) {
+									if (player.hasPermission("quickshop.alerts")) {
+										player.sendMessage(ChatColor.RED + "[QuickShop] Display item for "+shop+" is not on the correct location and has been removed. Probably someone is trying to cheat.");
+									}
+								}
+								cShop.getDisplayItem().remove();
+							}
+						}
+					}
+				}
+			}.runTaskTimer(this, 1L, displayItemCheckTicks);
+		}
+		
 		getLogger().info("QuickShop loaded!");
 	}
 
@@ -434,6 +452,7 @@ public class QuickShop extends JavaPlugin {
 		this.sneakCreate = this.getConfig().getBoolean("shop.sneak-to-create");
 		this.sneakTrade = this.getConfig().getBoolean("shop.sneak-to-trade");
 		this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
+		this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
 		MsgUtil.loadCfgMessages();
 	}
 

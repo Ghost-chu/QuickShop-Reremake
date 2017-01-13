@@ -79,6 +79,9 @@ shop:
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
     display-items: false
     
+    #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
+    display-items-check-ticks: 0
+    
     #Should we place item frames on chests?
     frame-items: false
     

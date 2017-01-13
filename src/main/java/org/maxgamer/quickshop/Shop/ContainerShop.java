@@ -629,6 +629,29 @@ public class ContainerShop implements Shop {
 			}
 		}
 	}
+	
+	public boolean checkDisplayMoved() {
+		// don't check if the plugin doesn't know about the object
+		if (this.getDisplayItem() == null) {
+			return false;
+		}
+		
+		Item item = this.getDisplayItem().getItem();
+		if (item == null) {
+			return false;
+		}
+		
+		if (item.isDead()) {
+			return false;
+		}
+		
+		// don't check if the chunk is not loaded
+		if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) { 
+			return false;
+		}
+
+		return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
+	}
 
 	public void onUnload() {
 		if (this.getDisplayItem() != null) {
