@@ -690,7 +690,7 @@ public class ContainerShop implements Shop {
 		if (isUnlimited())
 			sb.append(" Unlimited: true");
 		sb.append(" Price: " + getPrice());
-		sb.append("Item: " + getItem().toString());
+		sb.append(" Item: " + getItem().toString());
 		return sb.toString();
 	}
 }
