@@ -7,8 +7,6 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,9 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.Potion.Tier;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
-import org.bukkit.potion.Potion.Tier;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.CustomPotionsName.GenericPotionData;
 import org.maxgamer.quickshop.Util.CustomPotionsName.GenericPotionData.Category;
@@ -445,8 +443,8 @@ public class NMS {
 	public static void safeGuard(Item item) throws ClassNotFoundException {
 		if(QuickShop.debug)System.out.println("Renaming");
 		rename(item.getItemStack());
-		if(QuickShop.debug)System.out.println("Protecting");
-		protect(item);
+		//if(QuickShop.debug)System.out.println("Protecting");
+		//protect(item);
 		if(QuickShop.debug)System.out.println("Seting pickup delay");
 		item.setPickupDelay(2147483647);
 	}
@@ -486,7 +484,7 @@ public class NMS {
 		return nms.getPotionData(potion);
 	}
 
-	private static void protect(Item item) {
+	/*private static void protect(Item item) {
 		try {
 			Field itemField = item.getClass().getDeclaredField("item");
 			itemField.setAccessible(true);
@@ -517,7 +515,7 @@ public class NMS {
 			System.out.println("Other error");
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	private static abstract class NMSDependent {
 		private String version;
