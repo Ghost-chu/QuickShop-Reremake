@@ -275,8 +275,11 @@ public class MsgUtil {
 
 	public static String getMessage(String loc, String... args) {
 		String raw = messages.getString(loc);
-		if (raw == null || raw.isEmpty()) {
+		if (raw == null) {
 			return "Invalid message: " + loc;
+		}
+		if (raw.isEmpty()) {
+			return "";
 		}
 		if (args == null) {
 			return raw;
