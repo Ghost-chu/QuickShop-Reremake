@@ -21,7 +21,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-@SuppressWarnings("deprecation")
 public class MsgUtil {
 	private static QuickShop plugin;
 	private static YamlConfiguration messages;
