@@ -513,6 +513,10 @@ public class ShopManager {
 							p.sendMessage(MsgUtil.getMessage("negative-amount"));
 							return;
 						}
+						ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
+						Bukkit.getPluginManager().callEvent(e);
+						if (e.isCancelled())
+							return; // Cancelled
 						// Money handling
 						if (!p.getUniqueId().equals(shop.getOwner())) {
 							// Don't tax them if they're purchasing from
