@@ -40,6 +40,8 @@ buying-more-than-selling: "&cWARNING: You are buying items for more than you are
 not-enough-space: "&cYou only have room for {0} more of that!"
 refill-success: "&aRefill success"
 empty-success: "&aEmpty success"
+admin-shop: "AdminShop"
+unknown-owner: "Unknown"
 
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
@@ -99,8 +101,8 @@ command:
        create: "&eCreates a new shop at the target chest"
        
 signs:
-    #Line 1 is used as an identifier at the moment, so I kind of need it to work, thats why I won't let you change it
-    #Line 3 is the item name... There really isnt anything to change.
+    header: "&c{0}"
     selling: "Selling {0}"
     buying: "Buying {0}"
-    price: "For {0} each"
+    item: "{0}"
+    price: "{0} each"

@@ -3,12 +3,11 @@ package org.maxgamer.quickshop.Shop;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -462,15 +461,15 @@ public class ContainerShop implements Shop {
 		if (Util.isLoaded(this.getLocation()) == false)
 			return;
 		String[] lines = new String[4];
-		lines[0] = ChatColor.RED + "[QuickShop]";
+		lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
 		if (this.isBuying()) {
 			lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
 		}
 		if (this.isSelling()) {
 			lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
 		}
-		lines[2] = Util.getNameForSign(this.item);
-		lines[3] = MsgUtil.getMessage("signs.price", "" + this.getPrice());
+		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
+		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
 	}
 
@@ -682,11 +681,28 @@ public class ContainerShop implements Shop {
 	public void onClick() {
 		this.setSignText();
 	}
+	
+	public String ownerName() {
+		if (this.isUnlimited()) {
+			return MsgUtil.getMessage("admin-shop");
+		}
+		
+		if (this.getOwner() == null) {
+			return MsgUtil.getMessage("unknown-owner");
+		}
+		
+		final String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
+		if (name == null) {
+			return MsgUtil.getMessage("unknown-owner");
+		}
+		
+		return name;
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ? "unloaded world" : loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
-		sb.append(" Owner: " + getOwner().toString());
+		sb.append(" Owner: " + this.ownerName() + " - " + getOwner().toString());
 		if (isUnlimited())
 			sb.append(" Unlimited: true");
 		sb.append(" Price: " + getPrice());

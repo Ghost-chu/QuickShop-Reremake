@@ -143,7 +143,7 @@ public class MsgUtil {
 		p.sendMessage("");
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", Bukkit.getOfflinePlayer(shop.getOwner()).getName()==null ? (shop.isUnlimited() ? "AdminShop" : "Unknown") : Bukkit.getOfflinePlayer(shop.getOwner()).getName()));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", shop.getDataName()));
 		if (NMS.isPotion(items.getType())) {
 			String effects = CustomPotionsName.getEffects(items);
