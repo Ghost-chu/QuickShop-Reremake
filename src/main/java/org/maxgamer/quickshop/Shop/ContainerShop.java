@@ -462,11 +462,10 @@ public class ContainerShop implements Shop {
 			return;
 		String[] lines = new String[4];
 		lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
-		if (this.isBuying()) {
-			lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
-		}
 		if (this.isSelling()) {
 			lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+		} else if (this.isBuying()) {
+			lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
 		}
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
@@ -506,13 +505,14 @@ public class ContainerShop implements Shop {
 		blocks[1] = loc.getBlock().getRelative(-1, 0, 0);
 		blocks[2] = loc.getBlock().getRelative(0, 0, 1);
 		blocks[3] = loc.getBlock().getRelative(0, 0, -1);
+		final String signHeader = MsgUtil.getMessage("signs.header", "");
 		for (Block b : blocks) {
 			if (b.getType() != Material.WALL_SIGN)
 				continue;
 			if (!isAttached(b))
 				continue;
 			Sign sign = (Sign) b.getState();
-			if (sign.getLine(0).contains("[QuickShop")) {
+			if (sign.getLine(0).contains(signHeader)) {
 				signs.add(sign);
 			} else {
 				boolean text = false;
