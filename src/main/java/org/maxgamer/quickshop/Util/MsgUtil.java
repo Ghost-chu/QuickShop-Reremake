@@ -131,10 +131,6 @@ public class MsgUtil {
 	}
 
 	public static void sendShopInfo(Player p, Shop shop) {
-		sendShopInfo(p, shop, shop.getRemainingStock());
-	}
-
-	public static void sendShopInfo(Player p, Shop shop, int stock) {
 		// Potentially faster with an array?
 		ItemStack items = shop.getItem();
 		p.sendMessage("");
@@ -153,10 +149,9 @@ public class MsgUtil {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
 		}
 		if (shop.isSelling()) {
-			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.stock", "" + stock));
+			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.stock", "" + shop.getRemainingStock()));
 		} else {
-			int space = shop.getRemainingSpace();
-			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + space));
+			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + shop.getRemainingSpace()));
 		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.price-per", shop.getDataName(), Util.format(shop.getPrice())));
 		if (shop.isBuying()) {
