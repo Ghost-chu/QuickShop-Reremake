@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
@@ -203,21 +204,21 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
-		if (e.getInventory().getHolder() instanceof Block) {
-			Block block = (Block) e.getInventory().getHolder();
-			if (Util.canBeShop(block)) {
-				Shop shop = plugin.getShopManager().getShop(block.getLocation());
-				if (shop==null && (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) {
-					Block attached = Util.getSecondHalf(block);
-					if (attached!=null) {
-						shop = plugin.getShopManager().getShop(attached.getLocation());
-					}
-				}
-				
-				if (shop!=null) {
-					shop.setSignText();
-				}
-			}
+		final Inventory inventory = e.getInventory();
+		if (inventory == null) {
+			return;
 		}
+		
+		final Location location = inventory.getLocation();
+		if (location == null) {
+			return;
+		}
+		
+		final Shop shop = plugin.getShopManager().getShop(location);
+		if (shop == null) {
+			return;
+		}
+		
+		shop.setSignText();
 	}
 }

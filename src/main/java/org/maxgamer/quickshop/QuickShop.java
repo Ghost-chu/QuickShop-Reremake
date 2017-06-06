@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.Listeners.BlockListener;
 import org.maxgamer.quickshop.Listeners.ChatListener;
 import org.maxgamer.quickshop.Listeners.ChunkListener;
 import org.maxgamer.quickshop.Listeners.HeroChatListener;
-import org.maxgamer.quickshop.Listeners.InventoryListener;
+import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
 import org.maxgamer.quickshop.Listeners.LockListener;
 import org.maxgamer.quickshop.Listeners.PlayerListener;
 import org.maxgamer.quickshop.Listeners.WorldListener;
@@ -85,7 +85,7 @@ public class QuickShop extends JavaPlugin {
 	// Listeners (These don't)
 	private BlockListener blockListener;
 	private PlayerListener playerListener;
-	private InventoryListener inventoryListener;
+	private DisplayProtectionListener inventoryListener;
 	private ChunkListener chunkListener;
 	private WorldListener worldListener;
 	private BukkitTask itemWatcherTask;
@@ -394,7 +394,7 @@ public class QuickShop extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
 		if (this.display) {
-			inventoryListener = new InventoryListener(this);
+			inventoryListener = new DisplayProtectionListener(this);
 			chunkListener = new ChunkListener(this);
 			Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
 			Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
