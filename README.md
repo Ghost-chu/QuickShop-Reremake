@@ -15,8 +15,12 @@ Open a new issue here: https://github.com/KaiKikuchi/QuickShop/issues
 - Checks a player can open a chest before letting them create a shop!
 - UUID support
 
+## Releases
+Github projects have a "releases" link on their home page. If you still don't see it, [click here](https://github.com/KaiKikuchi/QuickShop/releases) for QuickShop releases.
+
+## Links
+- [SpigotMC](https://www.spigotmc.org/resources/quickshop.18676/)
+- [dev.bukkit.org](http://dev.bukkit.org/bukkit-plugins/quickshop-notlikeme/) (no longer maintained)
+
 ## Contribute
 If you're a developer, you can contribute to the QuickShop code! Just make a fork, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
-
-## Bukkit page
-You can find the project page here: http://dev.bukkit.org/bukkit-plugins/quickshop-notlikeme/
