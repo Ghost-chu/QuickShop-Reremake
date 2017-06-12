@@ -204,21 +204,25 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
-		final Inventory inventory = e.getInventory();
-		if (inventory == null) {
-			return;
+		try {
+			final Inventory inventory = e.getInventory();
+			if (inventory == null) {
+				return;
+			}
+			
+			final Location location = inventory.getLocation();
+			if (location == null) {
+				return;
+			}
+			
+			final Shop shop = plugin.getShopManager().getShop(location);
+			if (shop == null) {
+				return;
+			}
+			
+			shop.setSignText();
+		} catch (Throwable t) {
+			
 		}
-		
-		final Location location = inventory.getLocation();
-		if (location == null) {
-			return;
-		}
-		
-		final Shop shop = plugin.getShopManager().getShop(location);
-		if (shop == null) {
-			return;
-		}
-		
-		shop.setSignText();
 	}
 }
