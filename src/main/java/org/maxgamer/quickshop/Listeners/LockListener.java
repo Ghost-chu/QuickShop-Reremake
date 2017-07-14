@@ -64,29 +64,16 @@ public class LockListener implements Listener {
 		} catch (NoSuchFieldError er) {
 			return; // Your server doesn't have hoppers
 		}
-		Block c = e.getBlockAgainst();
-		if (Util.canBeShop(c) == false)
-			return;
 		Player p = e.getPlayer();
-		Shop shop = plugin.getShopManager().getShop(c.getLocation());
-		if (shop == null) {
-			c = Util.getSecondHalf(c);
-			if (c == null)
-				return; // You didn't place a hopper on a shop. Meh.
-			else
-				shop = plugin.getShopManager().getShop(c.getLocation());
-			if (shop == null)
-				return;
-		}
-		if (p.getUniqueId().equals(shop.getOwner()) == false) {
-			if (p.hasPermission("quickshop.other.open")) {
-				p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
-				return;
-			}
-			p.sendMessage(MsgUtil.getMessage("that-is-locked"));
-			e.setCancelled(true);
+		if (Util.isOtherShopWithinHopperReach(b, p) == false)
+			return;
+
+		if (p.hasPermission("quickshop.other.open")) {
+			p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
 			return;
 		}
+		p.sendMessage(MsgUtil.getMessage("that-is-locked"));
+		e.setCancelled(true);
 	}
 
 	/**
