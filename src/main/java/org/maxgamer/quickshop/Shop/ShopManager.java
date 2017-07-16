@@ -20,6 +20,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
+import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -224,31 +225,48 @@ public class ShopManager {
 	 * @return True if they're allowed to place a shop there.
 	 */
 	public boolean canBuildShop(Player p, Block b, BlockFace bf) {
-		if (plugin.limit) {
-			int owned = 0;
-			Iterator<Shop> it = getShopIterator();
-			while (it.hasNext()) {
-				if (it.next().getOwner().equals(p.getUniqueId())) {
-					owned++;
+		RegisteredListener openInvRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
+		try {
+			if (plugin.openInvPlugin != null) {
+				for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
+					if (listener.getPlugin() == plugin.openInvPlugin) {
+						openInvRegisteredListener = listener;
+						PlayerInteractEvent.getHandlerList().unregister(listener);
+						break;
+					}
 				}
 			}
-			int max = plugin.getShopLimit(p);
-			if (owned + 1 > max) {
-				p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
+			
+			if (plugin.limit) {
+				int owned = 0;
+				Iterator<Shop> it = getShopIterator();
+				while (it.hasNext()) {
+					if (it.next().getOwner().equals(p.getUniqueId())) {
+						owned++;
+					}
+				}
+				int max = plugin.getShopLimit(p);
+				if (owned + 1 > max) {
+					p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
+					return false;
+				}
+			}
+			PlayerInteractEvent pie = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, AIR, b, bf); // PIE = PlayerInteractEvent -  What else?
+			Bukkit.getPluginManager().callEvent(pie);
+			pie.getPlayer().closeInventory(); // If the player has chat open, this
+			// will close their chat.
+			if (pie.isCancelled()) {
 				return false;
 			}
-		}
-		PlayerInteractEvent pie = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, AIR, b, bf); // PIE = PlayerInteractEvent -  What else?
-		Bukkit.getPluginManager().callEvent(pie);
-		pie.getPlayer().closeInventory(); // If the player has chat open, this
-		// will close their chat.
-		if (pie.isCancelled()) {
-			return false;
-		}
-		ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
-		Bukkit.getPluginManager().callEvent(spce);
-		if (spce.isCancelled()) {
-			return false;
+			ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
+			Bukkit.getPluginManager().callEvent(spce);
+			if (spce.isCancelled()) {
+				return false;
+			} 
+		} finally {
+			if (plugin.openInvPlugin != null && openInvRegisteredListener != null) {
+				PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
+			}
 		}
 		return true;
 	}

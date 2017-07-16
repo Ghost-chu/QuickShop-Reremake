@@ -27,6 +27,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -105,6 +106,10 @@ public class QuickShop extends JavaPlugin {
 	public boolean priceChangeRequiresFee = false;
 	/** Whether or not to limit players shop amounts */
 	public boolean limit = false;
+	
+	/** The plugin OpenInv (null if not present) */
+	public Plugin openInvPlugin;
+	
 	private HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
@@ -438,6 +443,9 @@ public class QuickShop extends JavaPlugin {
 				}
 			}.runTaskTimer(this, 1L, displayItemCheckTicks);
 		}
+		
+		// added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
+		this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
 		
 		getLogger().info("QuickShop loaded!");
 	}

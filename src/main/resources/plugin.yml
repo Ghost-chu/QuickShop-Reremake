@@ -4,7 +4,7 @@ version: ${version}
 authors: [Netherfoam, Timtower, KaiNoMood]
 
 description: Economy Shops plugin
-softdepend: [Herochat, Vault, Essentials]
+softdepend: [Herochat, Vault, Essentials, OpenInv]
 
 commands:
     qs:
