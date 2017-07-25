@@ -97,6 +97,34 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/craftbukkit-1.8.8-R0.1.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_9_R2</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_9_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.9.4-R0.1-SNAPSHOT-latest.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_10_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_10_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_11_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_11_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.11.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_12_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_12_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.12-SNAPSHOT.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<properties>
 		<package>org.maxgamer.quickshop</package>
