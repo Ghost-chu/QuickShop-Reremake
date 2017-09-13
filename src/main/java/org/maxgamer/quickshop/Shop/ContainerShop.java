@@ -222,7 +222,7 @@ public class ContainerShop implements Shop {
 			container = (InventoryHolder) this.loc.getBlock().getState();
 			return container.getInventory();
 		} catch (Exception e) {
-			throw new IllegalStateException("Inventory doesn't exist anymore");
+			throw new IllegalStateException("Inventory doesn't exist anymore: "+this);
 		}
 	}
 
