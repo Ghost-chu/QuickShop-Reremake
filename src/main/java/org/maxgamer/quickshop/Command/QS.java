@@ -347,7 +347,7 @@ public class QS implements CommandExecutor {
 				sender.sendMessage("You do not have any pending action!");
 				return;
 			}
-			plugin.getShopManager().handleChat(player, args[0]);
+			plugin.getShopManager().handleChat(player, args[1]);
 		} else {
 			sender.sendMessage("This command can't be run by console");
 		}
