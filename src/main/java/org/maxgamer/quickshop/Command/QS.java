@@ -334,6 +334,25 @@ public class QS implements CommandExecutor {
 		}
 		return;
 	}
+	
+	private void amount(CommandSender sender, String[] args) {
+		if (args.length < 2) {
+			sender.sendMessage("Missing amount");
+			return;
+		}
+		
+		if (sender instanceof Player) {
+			final Player player = (Player) sender;
+			if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
+				sender.sendMessage("You do not have any pending action!");
+				return;
+			}
+			plugin.getShopManager().handleChat(player, args[0]);
+		} else {
+			sender.sendMessage("This command can't be run by console");
+		}
+		return;
+	}
 
 	private void setBuy(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.create.buy")) {
@@ -509,6 +528,9 @@ public class QS implements CommandExecutor {
 				return true;
 			} else if (subArg.startsWith("create")) {
 				create(sender, args);
+				return true;
+			} else if (subArg.startsWith("amount")) {
+				amount(sender, args);
 				return true;
 			} else if (subArg.startsWith("buy")) {
 				setBuy(sender);
