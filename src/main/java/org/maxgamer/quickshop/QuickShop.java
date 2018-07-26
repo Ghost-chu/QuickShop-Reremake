@@ -46,7 +46,6 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.BlockListener;
 import org.maxgamer.quickshop.Listeners.ChatListener;
 import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.HeroChatListener;
 import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
 import org.maxgamer.quickshop.Listeners.LockListener;
 import org.maxgamer.quickshop.Listeners.PlayerListener;
@@ -82,7 +81,6 @@ public class QuickShop extends JavaPlugin {
 	private Database database;
 	// Listeners - We decide which one to use at runtime
 	private ChatListener chatListener;
-	private HeroChatListener heroChatListener;
 	// Listeners (These don't)
 	private BlockListener blockListener;
 	private PlayerListener playerListener;
@@ -133,6 +131,8 @@ public class QuickShop extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		getLogger().info("Quickshop Remake by Ghost_chu(Minecraft SunnySide Server)");
+		getLogger().info("THIS VERSION ONLY SUPPORT 1.13 VERSION!");
 		NMS.init();
 		
 		instance = this;
@@ -395,9 +395,11 @@ public class QuickShop extends JavaPlugin {
 		blockListener = new BlockListener(this);
 		playerListener = new PlayerListener(this);
 		worldListener = new WorldListener(this);
+		chatListener = new ChatListener(this);
 		
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
+		Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
 		if (this.display) {
 			inventoryListener = new DisplayProtectionListener(this);
 			chunkListener = new ChunkListener(this);
@@ -405,14 +407,6 @@ public class QuickShop extends JavaPlugin {
 			Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
-		if (this.getConfig().getBoolean("force-bukkit-chat-handler", false) && Bukkit.getPluginManager().getPlugin("Herochat") != null) {
-			this.getLogger().info("Found Herochat... Hooking!");
-			this.heroChatListener = new HeroChatListener(this);
-			Bukkit.getServer().getPluginManager().registerEvents(heroChatListener, this);
-		} else {
-			this.chatListener = new ChatListener(this);
-			Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
-		}
 		// Command handlers
 		QS commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);

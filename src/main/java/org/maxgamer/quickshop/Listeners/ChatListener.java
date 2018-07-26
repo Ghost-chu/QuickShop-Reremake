@@ -21,6 +21,7 @@ public class ChatListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(final AsyncPlayerChatEvent e) {
 		if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
+			plugin.log(plugin.getShopManager().getActions().toString());
 			return;
 		}
 		plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());

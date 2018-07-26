@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -368,12 +369,18 @@ public class ShopManager {
 						// Figures out which way we should put the sign on and
 						// sets its text.
 						if (info.getSignBlock() != null && info.getSignBlock().getType() == Material.AIR && plugin.getConfig().getBoolean("shop.auto-sign")) {
-							BlockState bs = info.getSignBlock().getState();
-							BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-							bs.setType(Material.WALL_SIGN);
-							Sign sign = (Sign) bs.getData();
-							sign.setFacingDirection(bf);
-							bs.update(true);
+				             final BlockState bs = info.getSignBlock().getState();
+				                final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+				                bs.setType(Material.WALL_SIGN);
+				                final Sign sign = (Sign) bs.getData();
+				                sign.setFacingDirection(bf);
+				                plugin.log(sign.getFacing().toString());
+				                Bukkit.getScheduler().runTask(plugin, new Runnable() {
+				                    @Override
+				                    public void run() {
+				                        bs.update(true);
+				                    }
+				                });
 							shop.setSignText();
 							/*
 							 * Block b = shop.getLocation().getBlock();

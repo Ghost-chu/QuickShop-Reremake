@@ -55,7 +55,7 @@ public class Util {
 			Material mat = Material.getMaterial(s.toUpperCase());
 			if (mat == null) {
 				try {
-					mat = Material.getMaterial(Integer.parseInt(s));
+					mat = Material.matchMaterial(s);
 				} catch (NumberFormatException e) {
 				}
 			}
@@ -73,11 +73,11 @@ public class Util {
 		tools.add(Material.CHAINMAIL_CHESTPLATE);
 		tools.add(Material.CHAINMAIL_HELMET);
 		tools.add(Material.CHAINMAIL_LEGGINGS);
-		tools.add(Material.WOOD_AXE);
-		tools.add(Material.WOOD_HOE);
-		tools.add(Material.WOOD_PICKAXE);
-		tools.add(Material.WOOD_SPADE);
-		tools.add(Material.WOOD_SWORD);
+		tools.add(Material.WOODEN_AXE);
+		tools.add(Material.WOODEN_HOE);
+		tools.add(Material.WOODEN_PICKAXE);
+		tools.add(Material.WOODEN_SHOVEL);
+		tools.add(Material.WOODEN_SWORD);
 		tools.add(Material.LEATHER_BOOTS);
 		tools.add(Material.LEATHER_CHESTPLATE);
 		tools.add(Material.LEATHER_HELMET);
@@ -85,7 +85,7 @@ public class Util {
 		tools.add(Material.DIAMOND_AXE);
 		tools.add(Material.DIAMOND_HOE);
 		tools.add(Material.DIAMOND_PICKAXE);
-		tools.add(Material.DIAMOND_SPADE);
+		tools.add(Material.DIAMOND_SHOVEL);
 		tools.add(Material.DIAMOND_SWORD);
 		tools.add(Material.DIAMOND_BOOTS);
 		tools.add(Material.DIAMOND_CHESTPLATE);
@@ -94,21 +94,21 @@ public class Util {
 		tools.add(Material.STONE_AXE);
 		tools.add(Material.STONE_HOE);
 		tools.add(Material.STONE_PICKAXE);
-		tools.add(Material.STONE_SPADE);
+		tools.add(Material.STONE_SHOVEL);
 		tools.add(Material.STONE_SWORD);
-		tools.add(Material.GOLD_AXE);
-		tools.add(Material.GOLD_HOE);
-		tools.add(Material.GOLD_PICKAXE);
-		tools.add(Material.GOLD_SPADE);
-		tools.add(Material.GOLD_SWORD);
-		tools.add(Material.GOLD_BOOTS);
-		tools.add(Material.GOLD_CHESTPLATE);
-		tools.add(Material.GOLD_HELMET);
-		tools.add(Material.GOLD_LEGGINGS);
+		tools.add(Material.GOLDEN_AXE);
+		tools.add(Material.GOLDEN_HOE);
+		tools.add(Material.GOLDEN_PICKAXE);
+		tools.add(Material.GOLDEN_SHOVEL);
+		tools.add(Material.GOLDEN_SWORD);
+		tools.add(Material.GOLDEN_BOOTS);
+		tools.add(Material.GOLDEN_CHESTPLATE);
+		tools.add(Material.GOLDEN_HELMET);
+		tools.add(Material.GOLDEN_LEGGINGS);
 		tools.add(Material.IRON_AXE);
 		tools.add(Material.IRON_HOE);
 		tools.add(Material.IRON_PICKAXE);
-		tools.add(Material.IRON_SPADE);
+		tools.add(Material.IRON_SHOVEL);
 		tools.add(Material.IRON_SWORD);
 		tools.add(Material.IRON_BOOTS);
 		tools.add(Material.IRON_CHESTPLATE);
@@ -118,7 +118,7 @@ public class Util {
 		for (String s : configBlacklist) {
 			Material mat = Material.getMaterial(s.toUpperCase());
 			if (mat == null) {
-				mat = Material.getMaterial(Integer.parseInt(s));
+				mat = Material.matchMaterial(s);
 				if (mat == null) {
 					plugin.getLogger().info(s + " is not a valid material.  Check your spelling or ID");
 					continue;
@@ -130,41 +130,40 @@ public class Util {
 		// ToDo: add extras to config file
 		addTransparentBlock(Material.AIR);
 		/* Misc */
-		addTransparentBlock(Material.CAKE_BLOCK);
+		addTransparentBlock(Material.CAKE);
 		/* Redstone Material */
 		addTransparentBlock(Material.REDSTONE_WIRE);
 		/* Redstone Torches */
-		addTransparentBlock(Material.REDSTONE_TORCH_OFF);
-		addTransparentBlock(Material.REDSTONE_TORCH_ON);
+		addTransparentBlock(Material.REDSTONE_TORCH);
 		/* Diodes (Repeaters) */
-		addTransparentBlock(Material.DIODE_BLOCK_OFF);
-		addTransparentBlock(Material.DIODE_BLOCK_ON);
+		addTransparentBlock(Material.LEGACY_DIODE_BLOCK_OFF);
+		addTransparentBlock(Material.LEGACY_DIODE_BLOCK_ON);
 		/* Power Sources */
 		addTransparentBlock(Material.DETECTOR_RAIL);
 		addTransparentBlock(Material.LEVER);
 		addTransparentBlock(Material.STONE_BUTTON);
-		addTransparentBlock(Material.WOOD_BUTTON);
-		addTransparentBlock(Material.STONE_PLATE);
-		addTransparentBlock(Material.WOOD_PLATE);
+		addTransparentBlock(Material.LEGACY_WOOD_BUTTON);
+		addTransparentBlock(Material.LEGACY_STONE_PLATE);
+		addTransparentBlock(Material.LEGACY_WOOD_PLATE);
 		/* Nature Material */
 		addTransparentBlock(Material.RED_MUSHROOM);
 		addTransparentBlock(Material.BROWN_MUSHROOM);
-		addTransparentBlock(Material.RED_ROSE);
-		addTransparentBlock(Material.YELLOW_FLOWER);
+		addTransparentBlock(Material.LEGACY_RED_ROSE);
+		addTransparentBlock(Material.LEGACY_YELLOW_FLOWER);
 		addTransparentBlock(Material.FLOWER_POT);
 		/* Greens */
-		addTransparentBlock(Material.LONG_GRASS);
+		addTransparentBlock(Material.LEGACY_LONG_GRASS);
 		addTransparentBlock(Material.VINE);
-		addTransparentBlock(Material.WATER_LILY);
+		addTransparentBlock(Material.LEGACY_WATER_LILY);
 		/* Seedy things */
 		addTransparentBlock(Material.MELON_STEM);
 		addTransparentBlock(Material.PUMPKIN_STEM);
-		addTransparentBlock(Material.CROPS);
-		addTransparentBlock(Material.NETHER_WARTS);
+		addTransparentBlock(Material.LEGACY_CROPS);
+		addTransparentBlock(Material.LEGACY_NETHER_WARTS);
 		/* Semi-nature */
 		addTransparentBlock(Material.SNOW);
 		addTransparentBlock(Material.FIRE);
-		addTransparentBlock(Material.WEB);
+		addTransparentBlock(Material.COBWEB);
 		addTransparentBlock(Material.TRIPWIRE);
 		addTransparentBlock(Material.TRIPWIRE_HOOK);
 		/* Stairs */
@@ -172,43 +171,47 @@ public class Util {
 		addTransparentBlock(Material.BRICK_STAIRS);
 		addTransparentBlock(Material.SANDSTONE_STAIRS);
 		addTransparentBlock(Material.NETHER_BRICK_STAIRS);
-		addTransparentBlock(Material.SMOOTH_STAIRS);
+		addTransparentBlock(Material.LEGACY_SMOOTH_STAIRS);
 		/* Wood Stairs */
-		addTransparentBlock(Material.BIRCH_WOOD_STAIRS);
-		addTransparentBlock(Material.WOOD_STAIRS);
-		addTransparentBlock(Material.JUNGLE_WOOD_STAIRS);
-		addTransparentBlock(Material.SPRUCE_WOOD_STAIRS);
+		addTransparentBlock(Material.LEGACY_BIRCH_WOOD_STAIRS);
+		addTransparentBlock(Material.LEGACY_WOOD_STAIRS);
+		addTransparentBlock(Material.LEGACY_JUNGLE_WOOD_STAIRS);
+		addTransparentBlock(Material.LEGACY_SPRUCE_WOOD_STAIRS);
+		addTransparentBlock(Material.PURPUR_STAIRS);
+		addTransparentBlock(Material.DARK_PRISMARINE_STAIRS);
+		addTransparentBlock(Material.PRISMARINE_STAIRS);
+		addTransparentBlock(Material.PRISMARINE_BRICK_STAIRS);
 		/* Lava & Water */
 		addTransparentBlock(Material.LAVA);
-		addTransparentBlock(Material.STATIONARY_LAVA);
+		addTransparentBlock(Material.LEGACY_STATIONARY_LAVA);
 		addTransparentBlock(Material.WATER);
-		addTransparentBlock(Material.STATIONARY_WATER);
+		addTransparentBlock(Material.LEGACY_STATIONARY_WATER);
 		/* Saplings and bushes */
-		addTransparentBlock(Material.SAPLING);
+		addTransparentBlock(Material.LEGACY_SAPLING);
 		addTransparentBlock(Material.DEAD_BUSH);
 		/* Construction Material */
 		/* Fences */
-		addTransparentBlock(Material.FENCE);
-		addTransparentBlock(Material.FENCE_GATE);
-		addTransparentBlock(Material.IRON_FENCE);
-		addTransparentBlock(Material.NETHER_FENCE);
+		addTransparentBlock(Material.LEGACY_FENCE);
+		addTransparentBlock(Material.LEGACY_FENCE_GATE);
+		addTransparentBlock(Material.LEGACY_IRON_FENCE);
+		addTransparentBlock(Material.LEGACY_NETHER_FENCE);
 		/* Ladders, Signs */
 		addTransparentBlock(Material.LADDER);
-		addTransparentBlock(Material.SIGN_POST);
+		addTransparentBlock(Material.LEGACY_SIGN_POST);
 		addTransparentBlock(Material.WALL_SIGN);
 		/* Bed */
-		addTransparentBlock(Material.BED_BLOCK);
+		addTransparentBlock(Material.LEGACY_BED_BLOCK);
 		/* Pistons */
-		addTransparentBlock(Material.PISTON_EXTENSION);
-		addTransparentBlock(Material.PISTON_MOVING_PIECE);
-		addTransparentBlock(Material.RAILS);
+		addTransparentBlock(Material.LEGACY_PISTON_EXTENSION);
+		addTransparentBlock(Material.LEGACY_PISTON_MOVING_PIECE);
+		addTransparentBlock(Material.LEGACY_RAILS);
 		/* Torch & Trapdoor */
 		addTransparentBlock(Material.TORCH);
-		addTransparentBlock(Material.TRAP_DOOR);
+		addTransparentBlock(Material.LEGACY_TRAP_DOOR);
 		/* New */
 		addTransparentBlock(Material.BREWING_STAND);
-		addTransparentBlock(Material.WOODEN_DOOR);
-		addTransparentBlock(Material.WOOD_STEP);
+		addTransparentBlock(Material.LEGACY_WOODEN_DOOR);
+		addTransparentBlock(Material.LEGACY_WOOD_STEP);
 
 		for (String s : plugin.getConfig().getStringList("price-restriction")) {
 			String[] sp = s.split(";");
@@ -362,7 +365,7 @@ public class Util {
 	public static ItemStack makeItem(String itemString) {
 		String[] itemInfo = itemString.split(":");
 		ItemStack item = new ItemStack(Material.getMaterial(itemInfo[0]));
-		MaterialData data = new MaterialData(Integer.parseInt(itemInfo[1]));
+		MaterialData data = new MaterialData(Material.matchMaterial(itemInfo[1]));
 		item.setData(data);
 		item.setDurability(Short.parseShort(itemInfo[2]));
 		item.setAmount(Integer.parseInt(itemInfo[3]));

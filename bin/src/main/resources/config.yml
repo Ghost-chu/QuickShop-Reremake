@@ -1,0 +1,129 @@
+#Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
+
+#Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
+tax: 0.05
+
+#The fake player who money from taxing people goes to
+tax-account: tax
+
+#Whether or not to show taxes paid when selling to a shop
+show-tax: false
+
+#Should we log transactions/creations to Bukkit\Plugins\QuickShop\qs.log?
+log-actions: true
+
+#For item-item based economies that don't use virtual coins.
+whole-number-prices-only: false
+
+#Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
+force-bukkit-chat-handler: false
+
+database:
+    mysql: false
+    host: localhost
+    port: 3306
+    database: quickshop
+    user: root
+    password: passwd
+    
+#Limits the number of shops a person can create and own at a single time.
+limits:
+    #Disable these if you're not using them! If this is false, the rest of this section is ignored
+    use: false
+    
+    #The default number of shops players can make
+    default: 10
+    
+    #Players with these permissions can create these amounts of shops.
+    ranks:
+        #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
+        quickshop.vip: 20 #Players with quickshop.vip can make 20 shops.
+
+#A list of block (materials) which can be used to create shops.
+#By default, chests are added to this list.
+#This will only work for blocks which implement InventoryHolder
+#in other words, no enderchest shops, no shops on dirt blocks, etc.
+#May cause unexpected behaviour with some blocks... Eg don't make a 
+#shop on a hopper (It sucks the display item in) and furnace shops
+#allow players to put whatever item they want in all 3 slots and
+#dispenser shops aren't protected from redstone... Etc.
+shop-blocks:
+    - CHEST
+    - TRAPPED_CHEST
+
+shop:
+    #Cost to make a stall
+    cost: 10
+    #Should we refund when their shops are deleted/removed/broken?
+    refund: false
+
+    #Is there a fee for changing prices on a shop (Help deter endless undercutting)
+    price-change-requires-fee: true
+    #If price changes require a fee, how much is the fee
+    fee-for-price-change: 50
+
+    #Should we try and lock their shops from other players, so people can't steal from them?
+    lock: true
+    
+    #Should we require players be sneaking to create and use shops?
+    sneak-to-create: false
+    sneak-to-trade: false
+    
+    #Should we automatically create the sign for the chest?
+    auto-sign: true
+    
+    #If a player owns an unlimited shop, should they receive the cash from it or not?
+    #If you buy from YOUR unlimited shop, you will NEVER be charged $$, regardless of this setting
+    pay-unlimited-shop-owners: false
+    
+    #Should we place display items on the chests? This may cause duped items, especially for modded servers.
+    display-items: false
+    
+    #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
+    display-items-check-ticks: 0
+    
+    #When someone uses /qs find <item>, how far should we search in blocks?
+    #This command lets users shop quickly without wasting time searching
+    #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
+    find-distance: 45
+
+#List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
+blacklist:
+- 7 #Bedrock
+    
+    
+#List of items with restricted prices. Format: <ItemID>;<MinPrice>;<MaxPrice>
+price-restriction:
+- Bedrock;100;200
+
+#Custom name for items. Format: <ItemID[*DataValue]>;<CustomSignName>;<CustomFullName>
+# Vanilla Material list (ItemIDs): https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+custom-items-name:
+- NETHER_STALK;Nether Wart;Nether Wart
+
+custom-potions-name:
+  sign:
+    format: "%variety%type"
+    variety:
+      normal: ""
+      splash: "Splash"
+      lingering: "Ling"
+  shopinfo:
+    format: "%variety %type"
+    variety:
+      normal: ""
+      splash: "Splash"
+      lingering: "Lingering"
+
+  #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
+  # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+  types:
+  - INVISIBILITY;Invis;Invisibility
+
+  #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
+  # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+  effects:
+  - FIRE_RESISTANCE;Fire resistance
+  - INVISIBILITY;Invisibility
+
+  

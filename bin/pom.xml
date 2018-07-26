@@ -59,25 +59,71 @@
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.9.4-R0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldguard</artifactId>
-			<scope>system</scope>
-			<version>7.0.0</version>
-			<systemPath>${basedir}/lib/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar</systemPath>
+			<version>6.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.5</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Vault-1.6.6.jar</systemPath>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_13_R1</groupId>
-			<artifactId>spigot</artifactId>
-			<version>v1_13_R1</version>
+			<groupId>com.dthielke.herochat</groupId>
+			<artifactId>herochat</artifactId>
+			<version>5.6.7</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/spigot-1.13-SNAPSHOT.jar</systemPath>
+			<systemPath>${basedir}/lib/HeroChat.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_7_R3</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_7_R3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.7.9-R0.2.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_8_R3</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_8_R3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.8.8-R0.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_9_R2</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>v1_9_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/craftbukkit-1.9.4-R0.1-SNAPSHOT-latest.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_10_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_10_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_11_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_11_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.11.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_12_R1</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_12_R1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.12-SNAPSHOT.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<properties>

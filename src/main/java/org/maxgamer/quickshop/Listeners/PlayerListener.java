@@ -120,7 +120,7 @@ public class PlayerListener implements Listener {
 				p.sendMessage(MsgUtil.getMessage("no-double-chests"));
 				return;
 			}
-			if (Util.isBlacklisted(item.getType()) && !p.hasPermission("quickshop.bypass." + item.getTypeId())) {
+			if (Util.isBlacklisted(item.getType()) && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
 				p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
 				return;
 			}
