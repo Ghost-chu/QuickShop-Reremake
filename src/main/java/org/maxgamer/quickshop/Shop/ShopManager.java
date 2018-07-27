@@ -11,11 +11,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -276,7 +276,6 @@ public class ShopManager {
 		final String message = ChatColor.stripColor(msg);
 		// Use from the main thread, because Bukkit hates life
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				HashMap<UUID, Info> actions = getActions();
@@ -330,7 +329,7 @@ public class ShopManager {
 						double tax = plugin.getConfig().getDouble("shop.cost");
 						// Tax refers to the cost to create a shop. Not actual
 						// tax, that would be silly
-						if (tax != 0 && plugin.getEcon().getBalance(p.getName()) < tax) {
+						if (tax != 0 && plugin.getEcon().getBalance(p.getUniqueId()) < tax) {
 							p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(tax)));
 							return;
 						}
@@ -347,12 +346,16 @@ public class ShopManager {
 						// Else, if the event is cancelled, they won't get their
 						// money back.
 						if (tax != 0) {
-							if (!plugin.getEcon().withdraw(p.getName(), tax)) {
+							if (!plugin.getEcon().withdraw(p.getUniqueId(), tax)) {
 								p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(tax)));
 								shop.onUnload();
 								return;
 							}
-							plugin.getEcon().deposit(plugin.getConfig().getString("tax-account"), tax);
+							for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+								if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+									plugin.getEcon().deposit(player.getUniqueId(), tax);
+								}
+							}						
 						}
 						/* The shop has hereforth been successfully created */
 						createShop(shop);
@@ -472,8 +475,8 @@ public class ShopManager {
 						if (!p.getUniqueId().equals(shop.getOwner())) {
 							// Check their balance. Works with *most* economy
 							// plugins*
-							if (plugin.getEcon().getBalance(p.getName()) < amount * shop.getPrice()) {
-								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getName()))));
+							if (plugin.getEcon().getBalance(p.getUniqueId()) < amount * shop.getPrice()) {
+								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getUniqueId()))));
 								return;
 							}
 							// Don't tax them if they're purchasing from
@@ -486,13 +489,17 @@ public class ShopManager {
 							
 							double total = amount * shop.getPrice();
 							if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
-								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getName()))));
+								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getUniqueId()))));
 								return;
 							}
 							if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
 								plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
 								if (tax != 0) {
-									plugin.getEcon().deposit(plugin.getConfig().getString("tax-account"), total * tax);
+									for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+										if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+											plugin.getEcon().deposit(player.getUniqueId(), total * tax);
+										}
+									}	
 								}
 							}
 							// Notify the shop owner
@@ -557,11 +564,15 @@ public class ShopManager {
 									return;
 								}
 								if (tax != 0) {
-									plugin.getEcon().deposit(plugin.getConfig().getString("tax-account"), total * tax);
+									for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+										if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+											plugin.getEcon().deposit(player.getUniqueId(), total * tax);
+										}
+									}
 								}
 							}
 							// Give them the money after we know we succeeded
-							plugin.getEcon().deposit(p.getName(), total * (1 - tax));
+							plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
 							// Notify the owner of the purchase.
 							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, shop.getDataName());
 							if (space == amount)

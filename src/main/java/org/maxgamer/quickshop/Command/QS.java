@@ -396,7 +396,6 @@ public class QS implements CommandExecutor {
 		return;
 	}
 
-	@SuppressWarnings("deprecation")
 	private void setPrice(CommandSender sender, String[] args) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.create.changeprice")) {
 			Player p = (Player) sender;
@@ -440,7 +439,11 @@ public class QS implements CommandExecutor {
 							return;
 						}
 						sender.sendMessage(MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
-						plugin.getEcon().deposit(plugin.getConfig().getString("tax-account"), fee);
+						for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+							if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+								plugin.getEcon().deposit(player.getUniqueId(), fee);
+							}
+						}
 					}
 					// Update the shop
 					shop.setPrice(price);
