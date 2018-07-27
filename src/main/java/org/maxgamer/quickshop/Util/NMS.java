@@ -1,16 +1,10 @@
 package org.maxgamer.quickshop.Util;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.bukkit.Bukkit;
@@ -20,14 +14,12 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.CustomPotionsName.GenericPotionData;
 import org.maxgamer.quickshop.Util.CustomPotionsName.GenericPotionData.Category;
 
-@SuppressWarnings("deprecation")
 public class NMS {
 	private static ArrayList<NMSDependent> nmsDependencies = new ArrayList<NMSDependent>();
 	private static int nextId = 0;

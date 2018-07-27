@@ -1,4 +1,3 @@
-<<<<<<< master
 *.class
 lib/
 src/test/
@@ -9,27 +8,3 @@ target/
 .classpath
 .project
 /bin/
-=======
-<<<<<<< master
-*.class
-lib/
-src/test/
-.settings/
-target/
-.idea/
-*.iml
-.classpath
-.project
-=======
-*.class
-lib/
-src/test/
-.settings/
-target/
-.idea/
-*.iml
-.classpath
-.project
->>>>>>> master
-/bin/
->>>>>>> master

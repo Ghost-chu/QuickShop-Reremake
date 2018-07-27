@@ -14,11 +14,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
@@ -53,7 +53,6 @@ public class PlayerListener implements Listener {
 	 * Handles players left clicking a chest. Left click a NORMAL chest with
 	 * item : Send creation menu Left click a SHOP chest : Send purchase menu
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction() != Action.LEFT_CLICK_BLOCK)
@@ -191,7 +190,7 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerPickup(PlayerPickupItemEvent e) {
+	public void onPlayerPickup(EntityPickupItemEvent e) {
 		ItemStack stack = e.getItem().getItemStack();
 		try {
 			if (stack.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ")) {
