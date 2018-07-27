@@ -374,12 +374,8 @@ public class ShopManager {
 				                bs.setType(Material.WALL_SIGN);
 				                final Sign sign = (Sign) bs.getData();
 				                sign.setFacingDirection(bf);
-				                Bukkit.getScheduler().runTask(plugin, new Runnable() {
-				                    @Override
-				                    public void run() {
-				                        bs.update(true);
-				                    }
-				                });
+				                bs.setData(sign);
+				                bs.update(true);
 							shop.setSignText();
 							/*
 							 * Block b = shop.getLocation().getBlock();

@@ -131,8 +131,15 @@ public class QuickShop extends JavaPlugin {
 	}
 
 	public void onEnable() {
-		getLogger().info("Quickshop Remake by Ghost_chu(Minecraft SunnySide Server)");
-		getLogger().info("THIS VERSION ONLY SUPPORT 1.13 VERSION!");
+		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
+		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13 VERSION! (Not included 1.13.x)");
+		getLogger().info("Author:Ghost_chu");
+		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
+		getLogger().info("Reremake changelog:");
+		getLogger().info("1.Update API to 1.13");
+		getLogger().info("2.Add some 1.13 new block and tools");
+		getLogger().info("Have a nice day :)");
+		getLogger().info("Let's us start load plugin");
 		NMS.init();
 		
 		instance = this;
