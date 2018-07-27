@@ -38,7 +38,6 @@ public class Util {
 	private static HashSet<Material> tools = new HashSet<Material>();
 	private static HashSet<Material> blacklist = new HashSet<Material>();
 	private static HashSet<Material> shoppables = new HashSet<Material>();
-	private static HashSet<Material> transparent = new HashSet<Material>();
 	private static Map<Material, Entry<Double,Double>> restrictedPrices = new HashMap<Material, Entry<Double,Double>>();
 	private static QuickShop plugin;
 	private static Method storageContents;
@@ -47,7 +46,6 @@ public class Util {
 		tools.clear();
 		blacklist.clear();
 		shoppables.clear();
-		transparent.clear();
 		restrictedPrices.clear();
 
 		plugin = QuickShop.instance;
@@ -125,93 +123,7 @@ public class Util {
 				}
 			}
 			blacklist.add(mat);
-		}
-
-		// ToDo: add extras to config file
-		addTransparentBlock(Material.AIR);
-		/* Misc */
-		addTransparentBlock(Material.CAKE);
-		/* Redstone Material */
-		addTransparentBlock(Material.REDSTONE_WIRE);
-		/* Redstone Torches */
-		addTransparentBlock(Material.REDSTONE_TORCH);
-		/* Diodes (Repeaters) */
-		addTransparentBlock(Material.LEGACY_DIODE_BLOCK_OFF);
-		addTransparentBlock(Material.LEGACY_DIODE_BLOCK_ON);
-		/* Power Sources */
-		addTransparentBlock(Material.DETECTOR_RAIL);
-		addTransparentBlock(Material.LEVER);
-		addTransparentBlock(Material.STONE_BUTTON);
-		addTransparentBlock(Material.LEGACY_WOOD_BUTTON);
-		addTransparentBlock(Material.LEGACY_STONE_PLATE);
-		addTransparentBlock(Material.LEGACY_WOOD_PLATE);
-		/* Nature Material */
-		addTransparentBlock(Material.RED_MUSHROOM);
-		addTransparentBlock(Material.BROWN_MUSHROOM);
-		addTransparentBlock(Material.LEGACY_RED_ROSE);
-		addTransparentBlock(Material.LEGACY_YELLOW_FLOWER);
-		addTransparentBlock(Material.FLOWER_POT);
-		/* Greens */
-		addTransparentBlock(Material.LEGACY_LONG_GRASS);
-		addTransparentBlock(Material.VINE);
-		addTransparentBlock(Material.LEGACY_WATER_LILY);
-		/* Seedy things */
-		addTransparentBlock(Material.MELON_STEM);
-		addTransparentBlock(Material.PUMPKIN_STEM);
-		addTransparentBlock(Material.LEGACY_CROPS);
-		addTransparentBlock(Material.LEGACY_NETHER_WARTS);
-		/* Semi-nature */
-		addTransparentBlock(Material.SNOW);
-		addTransparentBlock(Material.FIRE);
-		addTransparentBlock(Material.COBWEB);
-		addTransparentBlock(Material.TRIPWIRE);
-		addTransparentBlock(Material.TRIPWIRE_HOOK);
-		/* Stairs */
-		addTransparentBlock(Material.COBBLESTONE_STAIRS);
-		addTransparentBlock(Material.BRICK_STAIRS);
-		addTransparentBlock(Material.SANDSTONE_STAIRS);
-		addTransparentBlock(Material.NETHER_BRICK_STAIRS);
-		addTransparentBlock(Material.LEGACY_SMOOTH_STAIRS);
-		/* Wood Stairs */
-		addTransparentBlock(Material.LEGACY_BIRCH_WOOD_STAIRS);
-		addTransparentBlock(Material.LEGACY_WOOD_STAIRS);
-		addTransparentBlock(Material.LEGACY_JUNGLE_WOOD_STAIRS);
-		addTransparentBlock(Material.LEGACY_SPRUCE_WOOD_STAIRS);
-		addTransparentBlock(Material.PURPUR_STAIRS);
-		addTransparentBlock(Material.DARK_PRISMARINE_STAIRS);
-		addTransparentBlock(Material.PRISMARINE_STAIRS);
-		addTransparentBlock(Material.PRISMARINE_BRICK_STAIRS);
-		/* Lava & Water */
-		addTransparentBlock(Material.LAVA);
-		addTransparentBlock(Material.LEGACY_STATIONARY_LAVA);
-		addTransparentBlock(Material.WATER);
-		addTransparentBlock(Material.LEGACY_STATIONARY_WATER);
-		/* Saplings and bushes */
-		addTransparentBlock(Material.LEGACY_SAPLING);
-		addTransparentBlock(Material.DEAD_BUSH);
-		/* Construction Material */
-		/* Fences */
-		addTransparentBlock(Material.LEGACY_FENCE);
-		addTransparentBlock(Material.LEGACY_FENCE_GATE);
-		addTransparentBlock(Material.LEGACY_IRON_FENCE);
-		addTransparentBlock(Material.LEGACY_NETHER_FENCE);
-		/* Ladders, Signs */
-		addTransparentBlock(Material.LADDER);
-		addTransparentBlock(Material.LEGACY_SIGN_POST);
-		addTransparentBlock(Material.WALL_SIGN);
-		/* Bed */
-		addTransparentBlock(Material.LEGACY_BED_BLOCK);
-		/* Pistons */
-		addTransparentBlock(Material.LEGACY_PISTON_EXTENSION);
-		addTransparentBlock(Material.LEGACY_PISTON_MOVING_PIECE);
-		addTransparentBlock(Material.LEGACY_RAILS);
-		/* Torch & Trapdoor */
-		addTransparentBlock(Material.TORCH);
-		addTransparentBlock(Material.LEGACY_TRAP_DOOR);
-		/* New */
-		addTransparentBlock(Material.BREWING_STAND);
-		addTransparentBlock(Material.LEGACY_WOODEN_DOOR);
-		addTransparentBlock(Material.LEGACY_WOOD_STEP);
+		}		
 
 		for (String s : plugin.getConfig().getStringList("price-restriction")) {
 			String[] sp = s.split(";");
@@ -246,16 +158,8 @@ public class Util {
 	}
 
 	public static boolean isTransparent(Material m) {
-		boolean trans = transparent.contains(m);
+		boolean trans = m.isTransparent();
 		return trans;
-	}
-
-	public static void addTransparentBlock(Material m) {
-		if (transparent.add(m) == false) {
-			System.out.println("Already added as transparent: " + m.toString());
-		}
-		if (!m.isBlock())
-			System.out.println(m + " is not a block!");
 	}
 
 	public static void parseColours(YamlConfiguration config) {
