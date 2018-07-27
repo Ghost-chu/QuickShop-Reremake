@@ -51,6 +51,7 @@ public class QS implements CommandExecutor {
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
 				if (shop != null) {
 					shop.setUnlimited(!shop.isUnlimited());
+					shop.setSignText();
 					shop.update();
 					sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited", (shop.isUnlimited() ? "unlimited" : "limited")));
 					return;
