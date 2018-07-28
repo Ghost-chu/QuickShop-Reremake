@@ -469,10 +469,11 @@ public class QuickShop extends JavaPlugin {
 	 *         and vault cannot be used.
 	 */
 	public boolean loadEcon() {
+		try {
 		EconomyCore core = new Economy_Vault();
 		if (core == null || !core.isValid()) {
 			// getLogger().severe("Economy is not valid!");
-			getLogger().severe("QuickShop could not hook an economy!");
+			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 			getLogger().severe("QuickShop CANNOT start!");
 			this.getPluginLoader().disablePlugin(this);
 			// if(econ.equals("Vault"))
@@ -481,6 +482,12 @@ public class QuickShop extends JavaPlugin {
 		} else {
 			this.economy = new Economy(core);
 			return true;
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
+			getLogger().severe("QuickShop CANNOT start!");
+			return false;
 		}
 	}
 
