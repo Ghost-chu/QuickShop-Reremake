@@ -442,16 +442,18 @@ public class QS implements CommandExecutor {
 							return;
 						}
 						sender.sendMessage(MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
-						try {
-							for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-								if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-									plugin.getEcon().deposit(player.getUniqueId(), fee);
-								}
-							}						
-						}catch (IOException ex){
-							ex.getMessage();
-							plugin.getLogger().log(Level.WARNING, "QuickShop can't pay fee to player `"+plugin.getConfig().getString("tax-account")+"` account,Are you set the default tax account name to your playername?");
-						}
+							try {
+								for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+									if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+										plugin.getEcon().deposit(player.getUniqueId(), fee);
+									}
+								}	
+							} catch (Exception e) {
+								e.getMessage();
+								plugin.getLogger().log(Level.WARNING,"QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
+							}
+							
+					}
 					// Update the shop
 					shop.setPrice(price);
 					shop.setSignText();
