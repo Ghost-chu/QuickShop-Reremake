@@ -126,4 +126,15 @@ custom-potions-name:
   - FIRE_RESISTANCE;Fire resistance
   - INVISIBILITY;Invisibility
 
-  
+#WARNING! These all in the testing!
+protect:
+  #Protect shop item can or cannot pull our by HopperMincart (Will remove HopprtMincart
+  minecart: false
+  #Protect shop block can or cannot pick up by entity (Will remove Entity
+  entity: false
+  #Protect shop block can or cannot active by Redstone
+  redstone: false
+  #Protect shop block can or cannot break by something growup
+  structuregrow: false
+  #Protect shop block can or cannot break by Entity and Block explode
+  explode: false

@@ -7,25 +7,40 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.data.type.Hopper;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
+import org.bukkit.entity.Wither;
+import org.bukkit.entity.Zombie;
+import org.bukkit.entity.minecart.ExplosiveMinecart;
+import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
+import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class BlockListener implements Listener {
 	private QuickShop plugin;
+	private ShopManager shop;
 
 	public BlockListener(QuickShop plugin) {
 		this.plugin = plugin;
@@ -93,23 +108,112 @@ public class BlockListener implements Listener {
 			b.setType(Material.AIR);
 		}
 	}
+	//Protect Minecart steal shop
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	public void onInventoryMove(InventoryMoveItemEvent event){
+		if (plugin.getConfig().getBoolean("protect.minecart")){
+				// Additional Hopper Minecart Check
+				if (event.getDestination().getHolder() instanceof HopperMinecart) {
+					HopperMinecart hm = (HopperMinecart) event.getDestination().getHolder();
+					Location minecartLoc = new Location(hm.getWorld(), hm.getLocation().getBlockX(),  hm.getLocation().getBlockY()+1,  hm.getLocation().getBlockZ());
+					if(shop.getShop(minecartLoc)!=null)
+					event.setCancelled(true);
+					plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of "+shop);
+					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A HopperMinecart tried to move the item of "+shop);
+					hm.remove();
+					}
+				}
+				return;
+		}
+	//Protect Entity pickup shop
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onMobChangeBlock(EntityChangeBlockEvent event) {
+		
+		if ((event.getEntity() instanceof Enderman) ||
+				(event.getEntity() instanceof Wither) ||
+				(event.getEntity() instanceof Zombie) ||
+				(event.getEntity() instanceof Silverfish)){
+			if (shop.getShop(event.getBlock().getLocation())!=null){
+				if(plugin.getConfig().getBoolean("protect.entity")) {
+				event.setCancelled(true);
+				plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of "+shop);
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A Entity tried to break the shop of "+shop);
+				event.getEntity().remove();
+				}else {	
+				shop.getShop(event.getBlock().getLocation()).delete();
+			}
+			}
+		}
+	}
+	//Protect Redstone active shop
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onBlockRedstoneChange(BlockRedstoneEvent event){
+		if (!plugin.getConfig().getBoolean("protect.redstone")){
+			return;
+		}
+		if (shop.getShop(event.getBlock().getLocation()) != null){
+			event.setNewCurrent(event.getOldCurrent());
+			plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of "+shop);
+			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A Redstone tried to active of "+shop);
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onStructureGrow(StructureGrowEvent event){
+		if (!plugin.getConfig().getBoolean("protect.structuregrow")) {
+			return;
+		}
+		for (BlockState blockstate : event.getBlocks()){
+			if(shop.getShop(blockstate.getLocation())!=null) {
+				event.setCancelled(true);
+				plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of "+shop);
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of "+shop);
+			}
+				
+		}
+	}
 
 	/**
 	 * Handles shops breaking through explosions
 	 */
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onExplode(EntityExplodeEvent e) {
-		if (e.isCancelled())
+		if (e.isCancelled()) {
 			return;
+		}
 		for (int i = 0; i < e.blockList().size(); i++) {
 			Block b = e.blockList().get(i);
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop != null) {
-				shop.delete();
+				if(plugin.getConfig().getBoolean("protect.explode")) {
+					plugin.getLogger().warning("[Exploit Alert] a EntityExplode tried to break the shop of "+shop);
+					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A EntityExplode tried to break the shop of "+shop);
+					e.setCancelled(true);
+				}else {
+					shop.delete();
+				}
 			}
 		}
 	}
-
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onBlockExplode(BlockExplodeEvent e) {
+		if (e.isCancelled()) {
+			return;
+		}
+		for (int i = 0; i < e.blockList().size(); i++) {
+			Block b = e.blockList().get(i);
+			Shop shop = plugin.getShopManager().getShop(b.getLocation());
+			if (shop != null) {
+				if(plugin.getConfig().getBoolean("protect.explode")) {
+					plugin.getLogger().warning("[Exploit Alert] a BlockExplode tried to break the shop of "+shop);
+					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A BlockExplode tried to break the shop of "+shop);
+					e.setCancelled(true);
+				}else {
+					shop.delete();
+				}
+			}
+		}
+	}
+	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onPistonExtend(BlockPistonExtendEvent event) {
 		if (!plugin.display) {
