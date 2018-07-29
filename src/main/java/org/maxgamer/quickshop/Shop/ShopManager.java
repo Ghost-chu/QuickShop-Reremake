@@ -1,8 +1,10 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -351,11 +353,15 @@ public class ShopManager {
 								shop.onUnload();
 								return;
 							}
+							try {
 							for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
 								if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
 									plugin.getEcon().deposit(player.getUniqueId(), tax);
 								}
 							}						
+						}catch (IOException ex){
+							ex.getMessage();
+							plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to player `"+plugin.getConfig().getString("tax-account")+"` account,Are you set the default tax account name to your playername?");
 						}
 						/* The shop has hereforth been successfully created */
 						createShop(shop);
@@ -495,10 +501,15 @@ public class ShopManager {
 							if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
 								plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
 								if (tax != 0) {
-									for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-										if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-											plugin.getEcon().deposit(player.getUniqueId(), total * tax);
-										}
+									try {
+										for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+											if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+												plugin.getEcon().deposit(player.getUniqueId(), tax);
+											}
+										}						
+									}catch (IOException ex){
+										ex.getMessage();
+										plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to player `"+plugin.getConfig().getString("tax-account")+"` account,Are you set the default tax account name to your playername?");
 									}	
 								}
 							}
@@ -564,12 +575,16 @@ public class ShopManager {
 									return;
 								}
 								if (tax != 0) {
-									for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-										if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-											plugin.getEcon().deposit(player.getUniqueId(), total * tax);
-										}
+									try {
+										for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+											if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+												plugin.getEcon().deposit(player.getUniqueId(), tax);
+											}
+										}						
+									}catch (IOException ex){
+										ex.getMessage();
+										plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to player `"+plugin.getConfig().getString("tax-account")+"` account,Are you set the default tax account name to your playername?");
 									}
-								}
 							}
 							// Give them the money after we know we succeeded
 							plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));

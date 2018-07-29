@@ -1,8 +1,10 @@
 package org.maxgamer.quickshop.Command;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -440,12 +442,16 @@ public class QS implements CommandExecutor {
 							return;
 						}
 						sender.sendMessage(MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
-						for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-							if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-								plugin.getEcon().deposit(player.getUniqueId(), fee);
-							}
+						try {
+							for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+								if(player.getName().equals(plugin.getConfig().getString("tax-account"))) {
+									plugin.getEcon().deposit(player.getUniqueId(), fee);
+								}
+							}						
+						}catch (IOException ex){
+							ex.getMessage();
+							plugin.getLogger().log(Level.WARNING, "QuickShop can't pay fee to player `"+plugin.getConfig().getString("tax-account")+"` account,Are you set the default tax account name to your playername?");
 						}
-					}
 					// Update the shop
 					shop.setPrice(price);
 					shop.setSignText();
