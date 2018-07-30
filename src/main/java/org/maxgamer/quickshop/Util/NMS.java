@@ -1,10 +1,15 @@
 package org.maxgamer.quickshop.Util;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.bukkit.Bukkit;
@@ -26,7 +31,7 @@ public class NMS {
 	private static NMSDependent nms;
 	
 	static {
-		nmsDependencies.add(new NMSDependent("v1_13") {
+		nmsDependencies.add(new NMSDependent("v1_12") {
 			@Override
 			public void safeGuard(Item item) {
 				if(QuickShop.debug)System.out.println("safeGuard");
@@ -57,6 +62,23 @@ public class NMS {
 				}
 			}
 
+			@Override
+			public org.bukkit.inventory.ItemStack getItemStack(byte[] bytes) {
+				try{
+					if(QuickShop.debug)System.out.println("getItemStack");
+					DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
+					net.minecraft.server.v1_13_R1.NBTTagCompound nbttagcompound;
+					try {
+						nbttagcompound = net.minecraft.server.v1_13_R1.NBTCompressedStreamTools.a((DataInput) datainputstream, null);
+					} finally {
+						datainputstream.close();
+					}
+					net.minecraft.server.v1_13_R1.ItemStack is = new net.minecraft.server.v1_13_R1.ItemStack(nbttagcompound);
+					return org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asBukkitCopy(is);
+				}catch(Exception e){
+					return new ItemStack(Material.AIR);
+				}
+			}
 			
 			@Override
 			public GenericPotionData getPotionData(ItemStack potionItemStack) {
