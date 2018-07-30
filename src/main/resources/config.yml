@@ -128,7 +128,7 @@ custom-potions-name:
 
 #WARNING! These all in the testing!
 protect:
-  #Protect shop item can or cannot pull our by HopperMincart (Will remove HopprtMincart
+  #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
   minecart: false
   #Protect shop block can or cannot pick up by entity (Will remove Entity
   entity: false
@@ -138,3 +138,5 @@ protect:
   structuregrow: false
   #Protect shop block can or cannot break by Entity and Block explode
   explode: false
+   #Protect shop block can or cannot pull out by Hopper
+  hopper: false
