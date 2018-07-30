@@ -11,5 +11,3 @@ deploy:
     secure: $Github_token
   file:
     - "QuickShop-Reremake *.jar"
-  on:
-    tags: true
