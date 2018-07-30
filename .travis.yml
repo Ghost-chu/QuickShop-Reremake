@@ -4,10 +4,15 @@ jdk:
 install: true
 script:
   - mvn install
+after_success:
+  - mkdir push
+  - cp ./target/*.jar ./push/
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: $Github_token
   file:
-    - "QuickShop-Reremake *.jar"
+    - ./push/*
+  on:
+    tags: true
