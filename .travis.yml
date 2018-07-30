@@ -14,5 +14,6 @@ deploy:
     secure: $Github_token
   file:
     - ./push/*
+  file_glob: true
   on:
     tags: true
