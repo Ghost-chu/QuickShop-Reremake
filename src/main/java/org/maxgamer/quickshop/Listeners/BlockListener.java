@@ -9,7 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
-import org.bukkit.block.data.type.Hopper;
+import org.bukkit.block.Hopper;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Silverfish;
@@ -123,7 +123,16 @@ public class BlockListener implements Listener {
 					hm.remove();
 					}
 				}
-				return;
+		if(plugin.getConfig().getBoolean("protect.hopper")) {
+			if (event.getDestination().getHolder() instanceof Hopper) {
+				Hopper h = (Hopper) event.getDestination().getHolder();
+				Location minecartLoc = new Location(h.getWorld(), h.getLocation().getBlockX(),  h.getLocation().getBlockY()+1, h.getLocation().getBlockZ());
+				if(shop.getShop(minecartLoc)!=null)
+				event.setCancelled(true);
+				plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of "+shop);
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A HopperMinecart tried to move the item of "+shop);
+				}
+		}
 		}
 	//Protect Entity pickup shop
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
