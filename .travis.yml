@@ -1,3 +1,15 @@
 language: java
 jdk:
   - oraclejdk8
+install: true
+script:
+  - mvn install
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: $Github_token
+  file:
+    - "QuickShop-Reremake *.jar"
+  on:
+    tags: true
