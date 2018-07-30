@@ -285,7 +285,6 @@ public class Util {
 				item.addEnchantment(ench, level);
 			}
 		}
-		Bukkit.getServer().broadcastMessage("´¥·¢makeItem");
 		return item;
 	}
 

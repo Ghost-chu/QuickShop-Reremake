@@ -117,7 +117,7 @@ public class BlockListener implements Listener {
 					HopperMinecart hm = (HopperMinecart) event.getDestination().getHolder();
 					Location minecartLoc = new Location(hm.getWorld(), hm.getLocation().getBlockX(),  hm.getLocation().getBlockY()+1,  hm.getLocation().getBlockZ());
 					if(shop.getShop(minecartLoc)!=null)
-					event.setCancelled(true);
+					event.setCancelled(true);{
 					plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of "+shop);
 					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A HopperMinecart tried to move the item of "+shop);
 					hm.remove();
@@ -127,17 +127,18 @@ public class BlockListener implements Listener {
 			if (event.getDestination().getHolder() instanceof Hopper) {
 				Hopper h = (Hopper) event.getDestination().getHolder();
 				Location minecartLoc = new Location(h.getWorld(), h.getLocation().getBlockX(),  h.getLocation().getBlockY()+1, h.getLocation().getBlockZ());
-				if(shop.getShop(minecartLoc)!=null)
+				if(shop.getShop(minecartLoc)!=null) {
 				event.setCancelled(true);
 				plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of "+shop);
 				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A HopperMinecart tried to move the item of "+shop);
 				}
 		}
 		}
+		}
+	}
 	//Protect Entity pickup shop
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onMobChangeBlock(EntityChangeBlockEvent event) {
-		
 		if ((event.getEntity() instanceof Enderman) ||
 				(event.getEntity() instanceof Wither) ||
 				(event.getEntity() instanceof Zombie) ||
