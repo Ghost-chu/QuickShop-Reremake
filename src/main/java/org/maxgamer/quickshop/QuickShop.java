@@ -55,9 +55,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.CustomItemName;
-import org.maxgamer.quickshop.Util.CustomPotionsName;
+//import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.NMS;
+//import org.maxgamer.quickshop.Util.NMS;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
@@ -136,7 +136,7 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
-		NMS.init();
+		//NMS.init();
 		
 		instance = this;
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
@@ -218,52 +218,52 @@ public class QuickShop extends JavaPlugin {
 			}
 		}
 		
-		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
-		if (cPotionSection!=null) {
-			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
-			CustomPotionsName.setShopInfoFormat(new String[]{cPotionSection.getString("shopinfo.format"), cPotionSection.getString("shopinfo.variety.normal"), cPotionSection.getString("shopinfo.variety.splash"), cPotionSection.getString("shopinfo.variety.lingering")});
-
-			Map<PotionType,CustomPotionsName.Names> potionTypes = new HashMap<PotionType,CustomPotionsName.Names>();
-			for (String s : cPotionSection.getStringList("types")) {
-				try {
-					String[] a = s.split("[;]");
-					if (a.length!=3) {
-						throw new Exception("Invalid format (main args length must be 3)");
-					}
-					
-					PotionType type = PotionType.valueOf(a[0].toUpperCase());
-					if (type==null) {
-						throw new Exception("Invalid PotionType "+a[0]);
-					}
-					
-					potionTypes.put(type, new CustomPotionsName.Names(a[1], a[2]));
-				} catch (Exception e) {
-					Bukkit.getLogger().warning("Invalid potion item name definition {"+s+"} Error: "+e.getMessage());
-				}
-			}
-			CustomPotionsName.setPotionTypes(potionTypes);
-			
-			Map<PotionEffectType,String> potionEffects = new HashMap<PotionEffectType,String>();
-			for (String s : cPotionSection.getStringList("effects")) {
-				try {
-					String[] a = s.split("[;]");
-					if (a.length!=2) {
-						throw new Exception("Invalid format (main args length must be 2)");
-					}
-					
-					PotionEffectType type = PotionEffectType.getByName(a[0]);
-					if (type==null) {
-						throw new Exception("Invalid PotionEffectType "+a[0]);
-					}
-					
-					potionEffects.put(type, a[1]);
-				} catch (Exception e) {
-					Bukkit.getLogger().warning("Invalid potion effect type name definition {"+s+"} Error: "+e.getMessage());
-				}
-			}
-			CustomPotionsName.setPotionEffects(potionEffects);
-		}
-	
+//		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
+//		if (cPotionSection!=null) {
+//			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
+//			CustomPotionsName.setShopInfoFormat(new String[]{cPotionSection.getString("shopinfo.format"), cPotionSection.getString("shopinfo.variety.normal"), cPotionSection.getString("shopinfo.variety.splash"), cPotionSection.getString("shopinfo.variety.lingering")});
+//
+//			Map<PotionType,CustomPotionsName.Names> potionTypes = new HashMap<PotionType,CustomPotionsName.Names>();
+//			for (String s : cPotionSection.getStringList("types")) {
+//				try {
+//					String[] a = s.split("[;]");
+//					if (a.length!=3) {
+//						throw new Exception("Invalid format (main args length must be 3)");
+//					}
+//					
+//					PotionType type = PotionType.valueOf(a[0].toUpperCase());
+//					if (type==null) {
+//						throw new Exception("Invalid PotionType "+a[0]);
+//					}
+//					
+//					potionTypes.put(type, new CustomPotionsName.Names(a[1], a[2]));
+//				} catch (Exception e) {
+//					Bukkit.getLogger().warning("Invalid potion item name definition {"+s+"} Error: "+e.getMessage());
+//				}
+//			}
+//			CustomPotionsName.setPotionTypes(potionTypes);
+//			
+//			Map<PotionEffectType,String> potionEffects = new HashMap<PotionEffectType,String>();
+//			for (String s : cPotionSection.getStringList("effects")) {
+//				try {
+//					String[] a = s.split("[;]");
+//					if (a.length!=2) {
+//						throw new Exception("Invalid format (main args length must be 2)");
+//					}
+//					
+//					PotionEffectType type = PotionEffectType.getByName(a[0]);
+//					if (type==null) {
+//						throw new Exception("Invalid PotionEffectType "+a[0]);
+//					}
+//					
+//					potionEffects.put(type, a[1]);
+//				} catch (Exception e) {
+//					Bukkit.getLogger().warning("Invalid potion effect type name definition {"+s+"} Error: "+e.getMessage());
+//				}
+//			}
+//			CustomPotionsName.setPotionEffects(potionEffects);
+//		}
+//	
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
 		if (limitCfg != null) {
 			getLogger().info("Limit cfg found...");

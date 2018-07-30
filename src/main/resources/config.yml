@@ -101,30 +101,30 @@ price-restriction:
 custom-items-name:
 - NETHER_STALK;Nether Wart;Nether Wart
 
-custom-potions-name:
-  sign:
-    format: "%variety%type"
-    variety:
-      normal: ""
-      splash: "Splash"
-      lingering: "Ling"
-  shopinfo:
-    format: "%variety %type"
-    variety:
-      normal: ""
-      splash: "Splash"
-      lingering: "Lingering"
+# custom-potions-name:
+  # sign:
+    # format: "%variety%type"
+    # variety:
+      # normal: ""
+      # splash: "Splash"
+      # lingering: "Ling"
+  # shopinfo:
+    # format: "%variety %type"
+    # variety:
+      # normal: ""
+      # splash: "Splash"
+      # lingering: "Lingering"
 
-  #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
-  # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
-  types:
-  - INVISIBILITY;Invis;Invisibility
+  # #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
+  # # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
+  # types:
+  # - INVISIBILITY;Invis;Invisibility
 
-  #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
-  # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
-  effects:
-  - FIRE_RESISTANCE;Fire resistance
-  - INVISIBILITY;Invisibility
+  # #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
+  # # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+  # effects:
+  # - FIRE_RESISTANCE;Fire resistance
+  # - INVISIBILITY;Invisibility
 
 #WARNING! These all in the testing!
 protect:

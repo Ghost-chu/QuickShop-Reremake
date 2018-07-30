@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -7,7 +8,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Util.NMS;
+//import org.maxgamer.quickshop.Util.NMS;
+import org.maxgamer.quickshop.Util.Util;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -17,6 +19,7 @@ public class DisplayItem {
 	private Shop shop;
 	private ItemStack iStack;
 	private Item item;
+	private static int nextId = 0;
 
 	// private Location displayLoc;
 	/**
@@ -46,7 +49,8 @@ public class DisplayItem {
 			System.out.println("Spawned item. Safeguarding.");
 		}
 		try {
-			NMS.safeGuard(this.item);
+			this.safeGuard(this.item);
+			//NMS.safeGuard
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
@@ -60,7 +64,10 @@ public class DisplayItem {
 		remove();
 		spawn();
 	}
-
+	public void safeGuard(Item item) {
+		item.setPickupDelay(Integer.MAX_VALUE);
+		item.setCustomName(ChatColor.RED + "QuickShop " + Util.getName(iStack) + " " + nextId++);
+	}
 	/**
 	 * Removes all items floating ontop of the chest that aren't the display
 	 * item.

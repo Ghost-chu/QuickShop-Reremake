@@ -139,12 +139,12 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", shop.getDataName()));
-		if (NMS.isPotion(items.getType())) {
-			String effects = CustomPotionsName.getEffects(items);
-			if (!effects.isEmpty()) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.effects", effects));
-			}
-		}
+//		if (NMS.isPotion(items.getType())) {
+//			String effects = CustomPotionsName.getEffects(items);
+//			if (!effects.isEmpty()) {
+//				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.effects", effects));
+//			}
+//		}
 		if (Util.isTool(items.getType())) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
 		}

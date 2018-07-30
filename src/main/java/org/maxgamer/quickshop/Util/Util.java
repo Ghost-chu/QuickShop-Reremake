@@ -310,9 +310,9 @@ public class Util {
 	 * @return The human readable item name.
 	 */
 	public static String getName(ItemStack itemStack) {
-		if (NMS.isPotion(itemStack.getType())) {
-			return CustomPotionsName.getFullName(itemStack);
-		}
+//		if (NMS.isPotion(itemStack.getType())) {
+//			return CustomPotionsName.getFullName(itemStack);
+//		}
 		
 		CustomItemName customItemName = QuickShop.instance.getCustomItemNames(itemStack);
 		if (customItemName!=null) {
@@ -347,9 +347,9 @@ public class Util {
 
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
-		if (NMS.isPotion(itemStack.getType())) {
-			return CustomPotionsName.getSignName(itemStack);
-		}
+//		if (NMS.isPotion(itemStack.getType())) {
+//			return CustomPotionsName.getSignName(itemStack);
+//		}
 		
 		ItemStack is = itemStack.clone();
 		is.setAmount(1);
