@@ -1,5 +1,4 @@
 *.class
-lib/
 src/test/
 .settings/
 target/
