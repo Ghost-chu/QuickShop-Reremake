@@ -99,7 +99,7 @@ price-restriction:
 #Custom name for items. Format: <ItemID[*DataValue]>;<CustomSignName>;<CustomFullName>
 # Vanilla Material list (ItemIDs): https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 custom-items-name:
-- NETHER_STALK;Nether Wart;Nether Wart
+- NETHER_WART;Nether Wart;Nether Wart
 
 # custom-potions-name:
   # sign:
