@@ -1,17 +1,15 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
+import java.util.ArrayList;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
 //import org.maxgamer.quickshop.Util.NMS;
-import org.maxgamer.quickshop.Util.Util;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -21,7 +19,6 @@ public class DisplayItem {
 	private Shop shop;
 	private ItemStack iStack;
 	private Item item;
-	private static int nextId = 0;
 
 	// private Location displayLoc;
 	/**
@@ -68,7 +65,13 @@ public class DisplayItem {
 	}
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
-		item.setCustomName(ChatColor.RED + "QuickShop "+UUID.randomUUID().toString().replaceAll("-", ""));
+		item.setCustomName("QuickShop");
+		ItemMeta iMeta = item.getItemStack().getItemMeta();
+		iMeta.setDisplayName("QuickShop");
+		java.util.List<String> lore = new ArrayList<String>();
+	    lore.add("QuickShop DisplayItem");
+		iMeta.setLore(lore);
+		item.getItemStack().setItemMeta(iMeta);
 	}
 	/**
 	 * Removes all items floating ontop of the chest that aren't the display

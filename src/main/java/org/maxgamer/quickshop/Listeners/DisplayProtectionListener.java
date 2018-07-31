@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.Event.Result;
@@ -67,6 +69,19 @@ public class DisplayProtectionListener implements Listener {
 	}
 
 	boolean itemStackCheck(ItemStack is) {
-		return is!=null & is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ");
+		if(is==null) {
+			return false;
+		}
+		if(is.getItemMeta().hasDisplayName()) {
+			if( is.getItemMeta().getDisplayName().equals("QuickShop")) {
+				return true;
+			}
+		}
+		java.util.List<String> lore = new ArrayList<String>();
+	    lore.add("QuickShop DisplayItem");
+		if(is.getItemMeta().getLore().equals(lore)) {
+			return true;
+		}
+			return false;
 	}
 }
