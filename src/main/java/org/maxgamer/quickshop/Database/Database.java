@@ -6,9 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+
+import org.maxgamer.quickshop.QuickShop;
 
 public class Database {
 	private DatabaseCore core;
+	private QuickShop plugin;
 
 	/**
 	 * Creates a new database and validates its connection.
@@ -159,7 +163,7 @@ public class Database {
 		for (String table : tables) {
 			if (table.toLowerCase().startsWith("sqlite_autoindex_"))
 				continue;
-			System.out.println("Copying " + table);
+			plugin.getLogger().log(Level.WARNING, "Copying " + table);
 			// Wipe the old records
 			db.getConnection().prepareStatement("DELETE FROM " + table).execute();
 			// Fetch all the data from the existing database
@@ -185,7 +189,7 @@ public class Database {
 				ps.addBatch();
 				if (n % 100 == 0) {
 					ps.executeBatch();
-					System.out.println(n + " records copied...");
+					plugin.getLogger().log(Level.WARNING, n + " records copied...");
 				}
 			}
 			ps.executeBatch();

@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Command;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -258,7 +257,7 @@ public class QS implements CommandExecutor {
 					if (inChunk == null)
 						continue;
 					for (Shop shop : inChunk.values()) {
-						if (shop.getDataName().toLowerCase().contains(lookFor) && shop.getLocation().distanceSquared(loc) < minDistanceSquared) {
+						if (MsgUtil.getItemi18n(shop.getDataName()).toLowerCase().contains(lookFor) && shop.getLocation().distanceSquared(loc) < minDistanceSquared) {
 							closest = shop;
 							minDistanceSquared = shop.getLocation().distanceSquared(loc);
 						}

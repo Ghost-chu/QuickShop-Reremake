@@ -28,8 +28,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sign;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -315,7 +313,7 @@ public class Util {
 //			return CustomPotionsName.getFullName(itemStack);
 //		}
 		
-		CustomItemName customItemName = QuickShop.instance.getCustomItemNames(itemStack);
+		CustomItemNameAAA customItemName = QuickShop.instance.getCustomItemNames(itemStack);
 		if (customItemName!=null) {
 			return customItemName.getFullName();
 		}
@@ -573,9 +571,9 @@ public class Util {
 	 * @return true if the given location is loaded or not.
 	 */
 	public static boolean isLoaded(Location loc) {
-		// System.out.println("Checking isLoaded(Location loc)");
+		// plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
 		if (loc.getWorld() == null) {
-			// System.out.println("Is not loaded. (No world)");
+			// plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
 			return false;
 		}
 		// Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
@@ -583,10 +581,10 @@ public class Util {
 		int x = (int) Math.floor((loc.getBlockX()) / 16.0);
 		int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
 		if (loc.getWorld().isChunkLoaded(x, z)) {
-			// System.out.println("Chunk is loaded " + x + ", " + z);
+			// plugin.getLogger().log(Level.WARNING, "Chunk is loaded " + x + ", " + z);
 			return true;
 		} else {
-			// System.out.println("Chunk is NOT loaded " + x + ", " + z);
+			// plugin.getLogger().log(Level.WARNING, "Chunk is NOT loaded " + x + ", " + z);
 			return false;
 		}
 	}

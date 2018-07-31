@@ -2,11 +2,11 @@ package org.maxgamer.quickshop.Util;
 
 import org.bukkit.inventory.ItemStack;
 
-public class CustomItemName {
+public class CustomItemNameAAA {
 	private ItemStack itemStack;
 	private String signName, fullName;
 	
-	public CustomItemName(ItemStack itemStack, String signName, String fullName) {
+	public CustomItemNameAAA(ItemStack itemStack, String signName, String fullName) {
 		this.itemStack = itemStack;
 		this.signName = signName;
 		this.fullName = fullName;
@@ -43,10 +43,10 @@ public class CustomItemName {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof CustomItemName)) {
+		if (!(obj instanceof CustomItemNameAAA)) {
 			return false;
 		}
-		CustomItemName other = (CustomItemName) obj;
+		CustomItemNameAAA other = (CustomItemNameAAA) obj;
 		if (fullName == null) {
 			if (other.fullName != null) {
 				return false;
