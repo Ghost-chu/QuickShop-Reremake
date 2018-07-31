@@ -193,7 +193,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerPickup(EntityPickupItemEvent e) {
 		ItemStack stack = e.getItem().getItemStack();
 		try {
-			if (stack.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ")) {
+			if (stack.getItemMeta().getDisplayName().equals("QuickShop")) {
 				e.setCancelled(true);
 				// You shouldn't be able to pick up that...
 			}

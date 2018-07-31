@@ -12,7 +12,9 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -20,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import net.minecraft.server.v1_13_R1.StatusChallengeUtils;
 
 public class MsgUtil {
 	private static QuickShop plugin;
@@ -64,11 +68,35 @@ public class MsgUtil {
 					msgs = new LinkedList<String>();
 					player_messages.put(owner, msgs);
 				}
-				msgs.add(message);
-			}
+			msgs.add(message);
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Could not load transaction messages from database. Skipping.");
+		}
+	}
+	public static void loadItemi18n() {
+		plugin.getLogger().info("Starting loading Itemname i18n...");
+		FileConfiguration config =  plugin.getConfig();
+		Material[] itemsi18n = Material.values();
+		for (Material material : itemsi18n) {
+			String itemname = config.getString("itemi18n."+material.name());
+			if(itemname==null || itemname.equals("")) {
+				plugin.getLogger().info("Found new items/blocks,add it in config...");
+				config.set("itemi18n."+material.name(), material.name());
+			}
+		}
+		plugin.getLogger().info("Complete to load Itemname i18n.");
+	}
+	public static String getItemi18n(String ItemBukkitName) {
+		String Itemname_i18n = plugin.getConfig().getString("itemi18n."+ItemBukkitName);
+		if(ItemBukkitName==null) {
+			return "";
+		}
+		if(Itemname_i18n==null || Itemname_i18n.equals("")) {
+			return Material.matchMaterial("ItemBukkitName").name();
+		}else {
+			return Itemname_i18n;
 		}
 	}
 
