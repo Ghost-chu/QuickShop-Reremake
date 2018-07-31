@@ -176,48 +176,7 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
 		
-		if (this.getConfig().isSet("custom-items-name")) {
-			for (String s : this.getConfig().getStringList("custom-items-name")) {
-				try {
-					String[] mainVal = s.split("[;]");
-					if (mainVal.length!=3) {
-						throw new Exception("Invalid format (main args length must be 3)");
-					}
-					
-					String[] matVal = mainVal[0].split("[*]");
-					Material material = Material.matchMaterial(matVal[0]);
-					if (material==null) {
-						throw new Exception("Invalid material: "+matVal[0]);
-					}
-					
-					ItemStack is;
-					if (matVal.length>1) {
-						try {
-							is = new ItemStack(material, 1, Short.valueOf(matVal[1]));
-						} catch (Exception e) {
-							throw new Exception("Invalid data value: "+matVal[1]);
-						}
-					} else {
-						is = new ItemStack(material, 1, (short) 0);
-					}
-					
-					if (mainVal[1].length()>16) {
-						Bukkit.getLogger().warning("Custom item name definition {"+s+"} sign name is longer than 16 characters. Only the first 16 characters will be shown.");
-					}
-					
-					List<CustomItemName> cinList = customItemsName.get(material);
-					if (cinList==null) {
-						cinList = new ArrayList<CustomItemName>();
-						customItemsName.put(material, cinList);
-					}
-					
-					cinList.add(new CustomItemName(is, mainVal[1], mainVal[2]));
-				} catch (Exception e) {
-					Bukkit.getLogger().warning("Invalid custom item name definition {"+s+"} Error: "+e.getMessage());
-				}
-			}
-		}
-		
+
 //		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
 //		if (cPotionSection!=null) {
 //			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
@@ -326,6 +285,7 @@ public class QuickShop extends JavaPlugin {
 				int y = 0;
 				int z = 0;
 				String worldName = null;
+				//==========================================================================================
 				try {
 					x = rs.getInt("x");
 					y = rs.getInt("y");
