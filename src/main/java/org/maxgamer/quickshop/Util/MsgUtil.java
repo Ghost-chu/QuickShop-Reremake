@@ -86,6 +86,7 @@ public class MsgUtil {
 				config.set("itemi18n."+material.name(), material.name());
 			}
 		}
+		plugin.saveConfig();
 		plugin.getLogger().info("Complete to load Itemname i18n.");
 	}
 	public static String getItemi18n(String ItemBukkitName) {
