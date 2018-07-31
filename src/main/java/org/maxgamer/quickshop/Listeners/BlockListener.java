@@ -127,10 +127,6 @@ public class BlockListener implements Listener {
 					return;
 				}
 				event.setCancelled(true);	
-				Block removeHopper=(Block)h;
-				removeHopper.setType(Material.AIR);
-				plugin.getLogger().warning("[Exploit Alert] a Hopper tried to move the item of "+shop);
-				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A Hopper tried to move the item of "+shop);
 				}
 			}
 		}

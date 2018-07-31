@@ -67,6 +67,6 @@ public class DisplayProtectionListener implements Listener {
 	}
 
 	boolean itemStackCheck(ItemStack is) {
-		return is!=null && is.getItemMeta()!=null && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ");
+		return is!=null & is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(ChatColor.RED + "QuickShop ");
 	}
 }
