@@ -38,7 +38,7 @@
 //		nmsDependencies.add(new NMSDependent("v1_13") {
 //			@Override
 //			public void safeGuard(Item item) {
-//				if(QuickShop.debug)System.out.println("safeGuard");
+//				if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "safeGuard");
 //				ItemStack iStack = item.getItemStack();
 //				net.minecraft.server.v1_13_R1.ItemStack nmsItemStack = org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asNMSCopy(iStack);
 //				nmsItemStack.setCount(0);
@@ -49,7 +49,7 @@
 //			@Override
 //			public byte[] getNBTBytes(org.bukkit.inventory.ItemStack iStack) {
 //				try{
-//					if(QuickShop.debug)System.out.println("getNBTBytes");
+//					if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "getNBTBytes");
 //					net.minecraft.server.v1_13_R1.ItemStack is = org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asNMSCopy(iStack);
 //					net.minecraft.server.v1_13_R1.NBTTagCompound itemCompound = new net.minecraft.server.v1_13_R1.NBTTagCompound();
 //					itemCompound = is.save(itemCompound);
@@ -71,7 +71,7 @@
 //				ItemStack is = null;
 //				is.setData(null);
 //				try{
-//					if(QuickShop.debug)System.out.println("getItemStack");
+//					if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "getItemStack");
 //					DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes))));
 //					net.minecraft.server.v1_13_R1.NBTTagCompound nbttagcompound;
 //					try {
@@ -131,18 +131,18 @@
 //	}
 //	
 //	public static void safeGuard(Item item) throws ClassNotFoundException {
-//		if(QuickShop.debug)System.out.println("Renaming");
+//		if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "Renaming");
 //		rename(item.getItemStack());
-//		//if(QuickShop.debug)System.out.println("Protecting");
+//		//if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "Protecting");
 //		//protect(item);
-//		if(QuickShop.debug)System.out.println("Seting pickup delay");
+//		if(QuickShop.debug)plugin.getLogger().log(Level.WARNING, "Seting pickup delay");
 //		item.setPickupDelay(2147483647);
 //	}
 //
 //	public static void init() {
 //		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 //		packageName = packageName.substring(packageName.lastIndexOf(".") + 1);
-//		//System.out.println("Package: " + packageName);
+//		//plugin.getLogger().log(Level.WARNING, "Package: " + packageName);
 //		for (NMSDependent dep : nmsDependencies) {
 //			if ((packageName.startsWith(dep.getVersion())) || ((dep.getVersion().isEmpty()) && ((packageName.equals("bukkit")) || (packageName.equals("craftbukkit"))))) {
 //				nms = dep;
@@ -200,9 +200,9 @@
 //			countField.set(itemStack, Integer.valueOf(0));
 //		} catch (NoSuchFieldException e) {
 //			e.printStackTrace();
-//			System.out.println("[QuickShop] Could not protect item from pickup properly! Dupes are now possible.");
+//			plugin.getLogger().log(Level.WARNING, "[QuickShop] Could not protect item from pickup properly! Dupes are now possible.");
 //		} catch (Exception e) {
-//			System.out.println("Other error");
+//			plugin.getLogger().log(Level.WARNING, "Other error");
 //			e.printStackTrace();
 //		}
 //	}*/

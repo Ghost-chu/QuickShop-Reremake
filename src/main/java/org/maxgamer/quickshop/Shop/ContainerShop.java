@@ -202,7 +202,7 @@ public class ContainerShop implements Shop {
 			plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Could not update shop in database! Changes will revert after a reboot!");
+			plugin.getLogger().log(Level.WARNING, "Could not update shop in database! Changes will revert after a reboot!");
 		}
 	}
 

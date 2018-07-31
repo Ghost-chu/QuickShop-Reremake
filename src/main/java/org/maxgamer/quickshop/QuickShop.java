@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,8 +28,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
@@ -54,7 +51,7 @@ import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
-import org.maxgamer.quickshop.Util.CustomItemName;
+import org.maxgamer.quickshop.Util.CustomItemNameAAA;
 //import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
 //import org.maxgamer.quickshop.Util.NMS;
@@ -113,9 +110,9 @@ public class QuickShop extends JavaPlugin {
 	public boolean useSpout = false;
 	// private Metrics metrics;
 	/** Whether debug info should be shown in the console */
-	public static boolean debug = false;
+	public static boolean debug = true;
 	
-	private Map<Material,List<CustomItemName>> customItemsName = new HashMap<Material,List<CustomItemName>>();
+	private Map<Material,List<CustomItemNameAAA>> customItemsName = new HashMap<Material,List<CustomItemNameAAA>>();
 	
 	private int displayItemCheckTicks;
 
@@ -270,11 +267,11 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Loading shops from database...");
 			/*int res = Converter.convert();
 			if (res < 0) {
-				System.out.println("Could not convert shops. Exitting.");
+				plugin.getLogger().log(Level.WARNING, "Could not convert shops. Exitting.");
 				return;
 			}
 			if (res > 0) {
-				System.out.println("Conversion success. Continuing...");
+				plugin.getLogger().log(Level.WARNING, "Conversion success. Continuing...");
 			}*/
 			con = database.getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
@@ -525,16 +522,16 @@ public class QuickShop extends JavaPlugin {
 		return this.shopManager;
 	}
 
-	public Map<Material, List<CustomItemName>> getCustomItemsNameMap() {
+	public Map<Material, List<CustomItemNameAAA>> getCustomItemsNameMap() {
 		return customItemsName;
 	}
 	
-	public CustomItemName getCustomItemNames(ItemStack is) {
-		List<CustomItemName> list = customItemsName.get(is.getType());
+	public CustomItemNameAAA getCustomItemNames(ItemStack is) {
+		List<CustomItemNameAAA> list = customItemsName.get(is.getType());
 		if (list==null) {
 			return null;
 		}
-		for (CustomItemName cin : list) {
+		for (CustomItemNameAAA cin : list) {
 			if (cin.matches(is)) {
 				return cin;
 			}

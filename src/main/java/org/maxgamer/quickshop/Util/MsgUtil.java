@@ -1,21 +1,21 @@
 package org.maxgamer.quickshop.Util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.UUID;
-
-import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -24,11 +24,10 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import net.minecraft.server.v1_13_R1.StatusChallengeUtils;
-
 public class MsgUtil {
 	private static QuickShop plugin;
 	private static YamlConfiguration messages;
+	private static YamlConfiguration itemi18n;
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
 	static {
 		plugin = QuickShop.instance;
@@ -73,30 +72,47 @@ public class MsgUtil {
 				}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Could not load transaction messages from database. Skipping.");
+			plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.");
 		}
 	}
 	public static void loadItemi18n() {
-		plugin.getLogger().info("Starting loading Itemname i18n...");
-		FileConfiguration config =  plugin.getConfig();
+		plugin.getLogger().info("Starting loading itemname i18n...");
+		File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
+		if (!itemi18nFile.exists()) {
+			plugin.getLogger().info("Creating itemi18n.yml");
+			plugin.saveResource("itemi18n.yml", true);
+		}
+		// Store it
+		itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
+		itemi18n.options().copyDefaults(true);
+		YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("itemi18n.yml")));
+		itemi18n.setDefaults(itemi18nYAML);
+		Util.parseColours(messages);
 		Material[] itemsi18n = Material.values();
 		for (Material material : itemsi18n) {
-			String itemname = config.getString("itemi18n."+material.name());
+			String itemname = itemi18n.getString("itemi18n."+material.name());
 			if(itemname==null || itemname.equals("")) {
-				plugin.getLogger().info("Found new items/blocks,add it in config...");
-				config.set("itemi18n."+material.name(), material.name());
+				plugin.getLogger().info("Found new items/blocks ["+material.name()+"] ,add it in config...");
+				itemi18n.set("itemi18n."+material.name(), material.name());
 			}
 		}
-		plugin.saveConfig();
+		try {
+			itemi18n.save(itemi18nFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
+		}
 		plugin.getLogger().info("Complete to load Itemname i18n.");
 	}
 	public static String getItemi18n(String ItemBukkitName) {
-		String Itemname_i18n = plugin.getConfig().getString("itemi18n."+ItemBukkitName);
+		ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
+		String Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim();
 		if(ItemBukkitName==null) {
 			return "";
 		}
-		if(Itemname_i18n==null || Itemname_i18n.equals("")) {
-			return Material.matchMaterial("ItemBukkitName").name();
+		if(Itemname_i18n==null) {
+			return Material.matchMaterial(ItemBukkitName).name();
 		}else {
 			return Itemname_i18n;
 		}
@@ -131,7 +147,7 @@ public class MsgUtil {
 	 * on space.
 	 */
 	public static void clean() {
-		System.out.println("Cleaning purchase messages from database that are over a week old...");
+		plugin.getLogger().log(Level.WARNING, "Cleaning purchase messages from database that are over a week old...");
 		// 604800,000 msec = 1 week.
 		long weekAgo = System.currentTimeMillis() - 604800000;
 		plugin.getDB().execute("DELETE FROM messages WHERE time < ?", weekAgo);
@@ -168,7 +184,7 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName().replaceAll(" ", "_"))));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
 //		if (NMS.isPotion(items.getType())) {
 //			String effects = CustomPotionsName.getEffects(items);
 //			if (!effects.isEmpty()) {
@@ -183,7 +199,7 @@ public class MsgUtil {
 		} else {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + shop.getRemainingSpace()));
 		}
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.price-per", MsgUtil.getItemi18n(shop.getDataName().replaceAll(" ", "_")), Util.format(shop.getPrice())));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.price-per", MsgUtil.getItemi18n(shop.getDataName()),Util.format(shop.getPrice())));
 		if (shop.isBuying()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.this-shop-is-buying"));
 		} else {
@@ -219,7 +235,7 @@ public class MsgUtil {
 	public static void sendPurchaseSuccess(Player p, Shop shop, int amount) {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.successful-purchase"));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, shop.getDataName(), Util.format((amount * shop.getPrice()))));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, MsgUtil.getItemi18n(shop.getDataName()), Util.format((amount * shop.getPrice()))));
 		Map<Enchantment, Integer> enchs = shop.getItem().getItemMeta().getEnchants();
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.enchants") + "-----------------------+");
@@ -257,7 +273,7 @@ public class MsgUtil {
 	public static void sendSellSuccess(Player p, Shop shop, int amount) {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.successfully-sold"));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, shop.getDataName(), Util.format((amount * shop.getPrice()))));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount,  MsgUtil.getItemi18n(shop.getDataName()), Util.format((amount * shop.getPrice()))));
 		if (plugin.getConfig().getBoolean("show-tax")) {
 			double tax = plugin.getConfig().getDouble("tax");
 			double total = amount * shop.getPrice();

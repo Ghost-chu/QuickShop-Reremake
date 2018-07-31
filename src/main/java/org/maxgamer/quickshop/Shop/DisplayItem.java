@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -19,6 +21,7 @@ public class DisplayItem {
 	private Shop shop;
 	private ItemStack iStack;
 	private Item item;
+	private QuickShop plugin;
 
 	// private Location displayLoc;
 	/**
@@ -45,14 +48,14 @@ public class DisplayItem {
 		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
 		this.item.setVelocity(new Vector(0, 0.1, 0));
 		if (QuickShop.debug) {
-			System.out.println("Spawned item. Safeguarding.");
+			plugin.getLogger().log(Level.WARNING, "Spawned item. Safeguarding.");
 		}
 		try {
 			this.safeGuard(this.item);
 			//NMS.safeGuard
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+			plugin.getLogger().log(Level.WARNING, "QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
 		}
 	}
 
@@ -98,7 +101,7 @@ public class DisplayItem {
 					e.remove();
 					removed = true;
 					if (QuickShop.debug) {
-						System.out.println("Removed rogue item: " + near.getType());
+						plugin.getLogger().log(Level.WARNING, "Removed rogue item: " + near.getType());
 					}
 				}
 			}

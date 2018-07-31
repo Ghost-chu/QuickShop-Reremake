@@ -29,8 +29,6 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 
-import net.minecraft.server.v1_13_R1.WorldGenDecoratorHeight32;
-
 public class ShopManager {
 	private QuickShop plugin;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
@@ -64,7 +62,7 @@ public class ShopManager {
 			addShop(loc.getWorld().getName(), shop);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Could not create shop! Changes will revert after a reboot!");
+			plugin.getLogger().log(Level.WARNING, "Could not create shop! Changes will revert after a reboot!");
 		}
 	}
 
@@ -114,7 +112,7 @@ public class ShopManager {
 		// long start = System.nanoTime();
 		HashMap<Location, Shop> shops = getShops(c.getWorld().getName(), c.getX(), c.getZ());
 		// long end = System.nanoTime();
-		// System.out.println("Chunk lookup in " + ((end - start)/1000000.0) +
+		// plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
 		// "ms.");
 		return shops;
 	}
@@ -458,7 +456,7 @@ public class ShopManager {
 					if (shop.isSelling()) {
 						int stock = shop.getRemainingStock();
 						if (stock < amount) {
-							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", "" + shop.getRemainingStock(), shop.getDataName()));
+							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()),MsgUtil.getItemi18n(shop.getDataName())));
 							return;
 						}
 						if (amount == 0) {
