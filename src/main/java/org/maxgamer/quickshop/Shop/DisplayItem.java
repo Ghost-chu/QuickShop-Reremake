@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -66,7 +68,7 @@ public class DisplayItem {
 	}
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
-		item.setCustomName(ChatColor.RED + "QuickShop " + Util.getName(iStack) + " " + nextId++);
+		item.setCustomName(ChatColor.RED + "QuickShop "+UUID.randomUUID().toString().replaceAll("-", ""));
 	}
 	/**
 	 * Removes all items floating ontop of the chest that aren't the display
