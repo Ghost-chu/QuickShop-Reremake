@@ -297,6 +297,7 @@ public class Util {
 	public static ItemStack deserialize(String config) throws InvalidConfigurationException {
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.loadFromString(config);
+		cfg.getString("item");
 		ItemStack stack = cfg.getItemStack("item");
 		return stack;
 	}
@@ -319,7 +320,7 @@ public class Util {
 			return customItemName.getFullName();
 		}
 		
-		String vanillaName = MsgUtil.getItemi18n(itemStack.getType().name());
+		String vanillaName = itemStack.getType().name();
 		return prettifyText(vanillaName);
 	}
 
@@ -353,10 +354,6 @@ public class Util {
 		
 		ItemStack is = itemStack.clone();
 		is.setAmount(1);
-		CustomItemName customItemName = QuickShop.instance.getCustomItemNames(is);
-		if (customItemName!=null) {
-			return customItemName.getSignName();
-		}
 		
 		String name = MsgUtil.getItemi18n(itemStack.getType().name());
 
