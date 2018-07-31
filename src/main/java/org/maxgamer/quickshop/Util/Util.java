@@ -319,7 +319,7 @@ public class Util {
 			return customItemName.getFullName();
 		}
 		
-		String vanillaName = getDataName(itemStack.getType(), itemStack.getDurability());
+		String vanillaName = MsgUtil.getItemi18n(itemStack.getType().name());
 		return prettifyText(vanillaName);
 	}
 
@@ -358,7 +358,7 @@ public class Util {
 			return customItemName.getSignName();
 		}
 		
-		String name = getDataName(itemStack.getType(), itemStack.getDurability());
+		String name = MsgUtil.getItemi18n(itemStack.getType().name());
 
 		String[] nameParts = name.split("_");
 		if (nameParts.length==1) {
@@ -416,23 +416,6 @@ public class Util {
 		}
 		return roman;
 	}
-
-	/**
-	 * Converts a given material and data value into a format similar to
-	 * Material.<?>.toString(). Upper case, with underscores. Includes material
-	 * name in result.
-	 * 
-	 * @param mat
-	 *            The base material.
-	 * @param damage
-	 *            The durability/damage of the item.
-	 * @return A string with the name of the item.
-	 */
-	private static String getDataName(Material mat, short damage) {
-		return mat.name();
-		//Not need in 1.13
-	}
-
 	/**
 	 * @param mat
 	 *            The material to check

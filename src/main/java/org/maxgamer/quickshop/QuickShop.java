@@ -392,6 +392,7 @@ public class QuickShop extends JavaPlugin {
 		
 		getLogger().info("Loaded " + count + " shops.");
 		MsgUtil.loadTransactionMessages();
+		MsgUtil.loadItemi18n();
 		MsgUtil.clean();
 		// Register events
 		getLogger().info("Registering Listeners");
