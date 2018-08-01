@@ -51,7 +51,6 @@ import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
-import org.maxgamer.quickshop.Util.CustomItemNameAAA;
 //import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
 //import org.maxgamer.quickshop.Util.NMS;
@@ -111,8 +110,7 @@ public class QuickShop extends JavaPlugin {
 	// private Metrics metrics;
 	/** Whether debug info should be shown in the console */
 	public static boolean debug = false;
-	
-	private Map<Material,List<CustomItemNameAAA>> customItemsName = new HashMap<Material,List<CustomItemNameAAA>>();
+
 	
 	private int displayItemCheckTicks;
 
@@ -520,23 +518,5 @@ public class QuickShop extends JavaPlugin {
 	 */
 	public ShopManager getShopManager() {
 		return this.shopManager;
-	}
-
-	public Map<Material, List<CustomItemNameAAA>> getCustomItemsNameMap() {
-		return customItemsName;
-	}
-	
-	public CustomItemNameAAA getCustomItemNames(ItemStack is) {
-		List<CustomItemNameAAA> list = customItemsName.get(is.getType());
-		if (list==null) {
-			return null;
-		}
-		for (CustomItemNameAAA cin : list) {
-			if (cin.matches(is)) {
-				return cin;
-			}
-		}
-		
-		return null;
 	}
 }

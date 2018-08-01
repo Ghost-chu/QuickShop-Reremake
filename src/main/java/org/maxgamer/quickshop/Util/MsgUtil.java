@@ -56,7 +56,7 @@ public class MsgUtil {
 	/**
 	 * loads all player purchase messages from the database.
 	 */
-	public static void loadTransactionMessages() {	//TODO Converted to UUID
+	public static void loadTransactionMessages() {
 		player_messages.clear(); // Delete old messages
 		try {
 			ResultSet rs = plugin.getDB().getConnection().prepareStatement("SELECT * FROM messages").executeQuery();
