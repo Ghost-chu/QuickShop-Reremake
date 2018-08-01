@@ -28,6 +28,35 @@ public class Economy_Vault implements EconomyCore {
 		return this.vault != null;
 	}
 
+	@Deprecated
+	public boolean deposit(String name, double amount) {
+		return this.vault.depositPlayer(name, amount).transactionSuccess();
+	}
+
+	@Deprecated
+	public boolean withdraw(String name, double amount) {
+		return this.vault.withdrawPlayer(name, amount).transactionSuccess();
+	}
+
+	@Deprecated
+	public boolean transfer(String from, String to, double amount) {
+		if (this.vault.getBalance(from) >= amount) {
+			if (this.vault.withdrawPlayer(from, amount).transactionSuccess()) {
+				if (!this.vault.depositPlayer(to, amount).transactionSuccess()) {
+					this.vault.depositPlayer(from, amount);
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	@Deprecated
+	public double getBalance(String name) {
+		return this.vault.getBalance(name);
+	}
 
 	@Override
 	public String format(double balance) {
