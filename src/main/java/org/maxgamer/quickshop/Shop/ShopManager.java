@@ -29,6 +29,8 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 
+import com.sk89q.worldguard.protection.FlagValueCalculator.Result;
+
 public class ShopManager {
 	private QuickShop plugin;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
@@ -435,6 +437,7 @@ public class ShopManager {
 				}
 				/* Purchase Handling */
 				else if (info.getAction() == ShopAction.BUY) {
+					if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Starting buy");}
 					int amount = 0;
 					try {
 						amount = Integer.parseInt(message);
@@ -475,8 +478,9 @@ public class ShopManager {
 						}
 						ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
 						Bukkit.getPluginManager().callEvent(e);
-						if (e.isCancelled())
-							return; // Cancelled
+						if (e.isCancelled()) {
+							return;
+							} // Cancelled
 						// Money handling
 						if (!p.getUniqueId().equals(shop.getOwner())) {
 							// Check their balance. Works with *most* economy
@@ -494,12 +498,14 @@ public class ShopManager {
 							}
 							
 							double total = amount * shop.getPrice();
+							if(QuickShop.debug) {plugin.getLogger().info("Economy debug: trade total: "+total);}
 							if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
 								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getUniqueId()))));
 								return;
 							}
 							if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-								plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
+								boolean depositresult = plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
+								if(QuickShop.debug) {plugin.getLogger().info("Economy debug:deposit in shop manager result:"+depositresult);}
 								if (tax != 0) {
 									try {
 										for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
@@ -529,6 +535,7 @@ public class ShopManager {
 						// Transfers the item from A to B
 						shop.sell(p, amount);
 						MsgUtil.sendPurchaseSuccess(p, shop, amount);
+						if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Trade purchase success completed.");}
 						plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
 					} else if (shop.isBuying()) {
 						int space = shop.getRemainingSpace();
@@ -588,7 +595,8 @@ public class ShopManager {
 								}
 							}
 							// Give them the money after we know we succeeded
-							plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
+							boolean depositresult = plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
+							if(QuickShop.debug) {plugin.getLogger().info("Economy debug:deposit2 in shopmanager result:"+depositresult);}
 							// Notify the owner of the purchase.
 							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, shop.getDataName());
 							if (space == amount)
@@ -597,6 +605,7 @@ public class ShopManager {
 						}
 						shop.buy(p, amount);
 						MsgUtil.sendSellSuccess(p, shop, amount);
+						if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Trade sell success completed");}
 						plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
 					}
 					shop.setSignText(); // Update the signs count
