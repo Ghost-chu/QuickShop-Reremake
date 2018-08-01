@@ -70,7 +70,7 @@
 			<artifactId>VaultAPI</artifactId>
 			<version>1.5</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/Vault-1.6.6.jar</systemPath>
+			<systemPath>${basedir}/lib/Vault-1.6.10.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit.craftbukkit.v1_13_R1</groupId>
