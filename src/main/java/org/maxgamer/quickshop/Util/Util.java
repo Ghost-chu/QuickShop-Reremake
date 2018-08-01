@@ -311,13 +311,7 @@ public class Util {
 	public static String getName(ItemStack itemStack) {
 //		if (NMS.isPotion(itemStack.getType())) {
 //			return CustomPotionsName.getFullName(itemStack);
-//		}
-		
-		CustomItemNameAAA customItemName = QuickShop.instance.getCustomItemNames(itemStack);
-		if (customItemName!=null) {
-			return customItemName.getFullName();
-		}
-		
+//		}		
 		String vanillaName = itemStack.getType().name();
 		return prettifyText(vanillaName);
 	}
