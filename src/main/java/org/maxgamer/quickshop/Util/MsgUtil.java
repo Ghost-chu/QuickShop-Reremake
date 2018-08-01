@@ -112,7 +112,13 @@ public class MsgUtil {
 			return "";
 		}
 		if(Itemname_i18n==null) {
-			return Material.matchMaterial(ItemBukkitName).name();
+			String material = null;
+			try {
+			material =  Material.matchMaterial(ItemBukkitName).name();
+			}catch (Exception e) {
+				material = "ERROR";
+			}
+			return material;
 		}else {
 			return Itemname_i18n;
 		}
