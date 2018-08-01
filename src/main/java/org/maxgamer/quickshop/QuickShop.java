@@ -109,7 +109,7 @@ public class QuickShop extends JavaPlugin {
 	public boolean useSpout = false;
 	// private Metrics metrics;
 	/** Whether debug info should be shown in the console */
-	public static boolean debug = true;
+	public static boolean debug = false;
 
 	
 	private int displayItemCheckTicks;
