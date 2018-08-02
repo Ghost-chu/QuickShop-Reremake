@@ -660,7 +660,6 @@ public class Util {
 		finalItemdata += "\n";
 		List<String> a = new ArrayList<>();
 		List<Integer> b = new ArrayList<>();
-
 		a.addAll(Itemenchs.keySet());
 		b.addAll(Itemenchs.values());
 		for (int i = 0; i < a.size(); i++) {
@@ -672,7 +671,7 @@ public class Util {
 				finalItemdata += ChatColor.DARK_PURPLE +""+ ChatColor.ITALIC + string + "\n";
 			}
 		}
-		TextComponent normalmessage = new TextComponent(normalText);
+		TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
 		ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
 		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
 		normalmessage.setHoverEvent(he);
