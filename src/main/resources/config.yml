@@ -76,6 +76,9 @@ shop:
     #If you buy from YOUR unlimited shop, you will NEVER be charged $$, regardless of this setting
     pay-unlimited-shop-owners: false
     
+    #Still discounts money when shop's owner tradeing with himself shop...
+    bypass-owner-check: false
+    
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
     display-items: true
     
@@ -89,7 +92,7 @@ shop:
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
-- 7 #Bedrock
+- Bedrock
     
     
 #List of items with restricted prices. Format: <ItemID>;<MinPrice>;<MaxPrice>
