@@ -107,7 +107,12 @@ public class MsgUtil {
 	}
 	public static String getItemi18n(String ItemBukkitName) {
 		ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
-		String Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim();
+		String Itemname_i18n = null;
+		try {
+		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim().replaceAll(" ", "_");
+		}catch (Exception e) {
+			Itemname_i18n = null;
+		}
 		if(ItemBukkitName==null) {
 			return "";
 		}
