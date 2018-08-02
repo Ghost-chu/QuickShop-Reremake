@@ -136,7 +136,7 @@ public class MsgUtil {
 	    YamlConfiguration enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
 		enchi18n.options().copyDefaults(true);
 		YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("enchi18n.yml")));
-		itemi18n.setDefaults(enchi18nYAML);
+		enchi18n.setDefaults(enchi18nYAML);
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
 		for (Enchantment ench : enchsi18n) {
@@ -159,17 +159,17 @@ public class MsgUtil {
 		if(key==null) {
 			return "ERROR";
 		}
-		String finalEnchString = key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
-		String finalEnch_i18n = null;
+		String EnchString = key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
+		String Ench_i18n = null;
 		try {
-			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_").replaceAll(":", "-");
+			Ench_i18n = enchi18n.getString("enchi18n."+EnchString).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		}catch (Exception e) {
-			finalEnch_i18n = null;
+			Ench_i18n = null;
 		}
-		if(finalEnch_i18n==null) {
+		if(Ench_i18n==null) {
 			return  key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		}else {
-			return finalEnch_i18n;
+			return Ench_i18n;
 		}
 	}
 	/**
