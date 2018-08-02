@@ -674,8 +674,7 @@ public class Util {
 		ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
 		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
 		normalmessage.setHoverEvent(he);
-		player.sendRawMessage(normalmessage.getText());
-
+		player.spigot().sendMessage(normalmessage);
 	}
 	private static String formatEnchLevel(Integer level) {
 		switch (level) {
