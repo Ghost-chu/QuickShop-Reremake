@@ -29,8 +29,6 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 
-import com.sk89q.worldguard.protection.FlagValueCalculator.Result;
-
 public class ShopManager {
 	private QuickShop plugin;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();

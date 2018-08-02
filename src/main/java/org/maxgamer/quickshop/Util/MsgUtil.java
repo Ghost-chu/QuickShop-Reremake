@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,14 +26,11 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class MsgUtil {
-	private static QuickShop plugin;
+	static QuickShop plugin = QuickShop.instance;
 	private static YamlConfiguration messages;
 	private static YamlConfiguration itemi18n;
+	private static YamlConfiguration enchi18n;
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
-	static {
-		plugin = QuickShop.instance;
-	}
-
 	/**
 	 * Loads all the messages from messages.yml
 	 */
@@ -76,7 +74,6 @@ public class MsgUtil {
 		}
 	}
 	public static void loadItemi18n() {
-		plugin.getLogger().info("Starting loading itemname i18n...");
 		File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
 		if (!itemi18nFile.exists()) {
 			plugin.getLogger().info("Creating itemi18n.yml");
@@ -87,7 +84,7 @@ public class MsgUtil {
 		itemi18n.options().copyDefaults(true);
 		YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("itemi18n.yml")));
 		itemi18n.setDefaults(itemi18nYAML);
-		Util.parseColours(messages);
+		Util.parseColours(itemi18n);
 		Material[] itemsi18n = Material.values();
 		for (Material material : itemsi18n) {
 			String itemname = itemi18n.getString("itemi18n."+material.name());
@@ -128,7 +125,60 @@ public class MsgUtil {
 			return Itemname_i18n;
 		}
 	}
-
+	public static void loadEnchi18n() {
+		plugin.getLogger().info("Starting loading Enchantment i18n...");
+		File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
+		if (!enchi18nFile.exists()) {
+			plugin.getLogger().info("Creating enchi18n.yml");
+			plugin.saveResource("enchi18n.yml", true);
+		}
+		// Store it
+	    YamlConfiguration enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
+		enchi18n.options().copyDefaults(true);
+		YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("enchi18n.yml")));
+		itemi18n.setDefaults(enchi18nYAML);
+		Util.parseColours(enchi18n);
+		Enchantment[] enchsi18n = Enchantment.values();
+		for (Enchantment ench : enchsi18n) {
+			String enchname = enchi18n.getString("enchi18n."+ench.getKey().toString());
+			if(enchname==null || enchname.equals("")) {
+				plugin.getLogger().info("Found new ench ["+ench.getKey().toString()+"] ,add it in config...");
+				enchi18n.set("enchi18n."+ench.getKey().toString(), ench.getKey().toString());
+			}
+		}
+		try {
+			enchi18n.save(enchi18nFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from itemi18n.yml. Skipping.");
+		}
+		plugin.getLogger().info("Complete to load Itemname i18n.");
+	}
+	public static String getEnchi18n(Enchantment EnchBukkitName) {
+		Enchantment finalEnch = null;
+		for (Enchantment ench : Enchantment.values()) {
+			if(ench instanceof Enchantment) {
+				finalEnch = ench;
+				break;
+			}
+		}
+		if(finalEnch==null) {
+			return "ERROR";
+		}
+		String finalEnchString = finalEnch.getKey().toString();
+		String finalEnch_i18n = null;
+		try {
+			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_");
+		}catch (Exception e) {
+			finalEnch_i18n = null;
+		}
+		if(finalEnch_i18n==null) {
+			return finalEnch.getKey().toString();
+		}else {
+			return finalEnch_i18n;
+		}
+	}
 	/**
 	 * @param player
 	 *            The name of the player to message
@@ -220,7 +270,7 @@ public class MsgUtil {
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.enchants") + "-----------------------+");
 			for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
 		try {
@@ -232,7 +282,7 @@ public class MsgUtil {
 				if (enchs != null && !enchs.isEmpty()) {
 					p.sendMessage(ChatColor.DARK_PURPLE + "+-----------------" + MsgUtil.getMessage("menu.stored-enchants") + "--------------------+");
 					for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 					}
 				}
 			}
@@ -251,14 +301,14 @@ public class MsgUtil {
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.enchants") + "-----------------------+");
 			for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW +MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
 		enchs = shop.getItem().getItemMeta().getEnchants();
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+-----------------" + MsgUtil.getMessage("menu.stored-enchants") + "--------------------+");
 			for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
 		try {
@@ -270,7 +320,7 @@ public class MsgUtil {
 				if (enchs != null && !enchs.isEmpty()) {
 					p.sendMessage(ChatColor.DARK_PURPLE + "+-----------------" + MsgUtil.getMessage("menu.stored-enchants") + "--------------------+");
 					for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey())+ " " + entries.getValue());
 					}
 				}
 			}
@@ -300,7 +350,7 @@ public class MsgUtil {
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.enchants") + "-----------------------+");
 			for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
 		try {
@@ -312,7 +362,7 @@ public class MsgUtil {
 				if (enchs != null && !enchs.isEmpty()) {
 					p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.stored-enchants") + "-----------------------+");
 					for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + entries.getKey() + " " + entries.getValue());
+						p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 					}
 				}
 			}

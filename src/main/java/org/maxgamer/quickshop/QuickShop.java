@@ -11,15 +11,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -132,7 +129,6 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
 		//NMS.init();
-		
 		instance = this;
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
@@ -275,6 +271,8 @@ public class QuickShop extends JavaPlugin {
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = ps.executeQuery();
 			int errors = 0;
+			MsgUtil.loadItemi18n();
+			MsgUtil.loadEnchi18n();
 			while (rs.next()) {
 				int x = 0;
 				int y = 0;
@@ -346,9 +344,7 @@ public class QuickShop extends JavaPlugin {
 		}
 		
 		getLogger().info("Loaded " + count + " shops.");
-		MsgUtil.loadTransactionMessages();
-		MsgUtil.loadItemi18n();
-		MsgUtil.clean();
+		
 		// Register events
 		getLogger().info("Registering Listeners");
 		blockListener = new BlockListener(this);
@@ -400,6 +396,8 @@ public class QuickShop extends JavaPlugin {
 		// added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
 		this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
 		
+		MsgUtil.loadTransactionMessages();
+		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
 	}
 
