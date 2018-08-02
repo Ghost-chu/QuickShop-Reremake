@@ -242,7 +242,10 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
+		//p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
+		//Enabled
+		Util.sendItemholochat(shop.getItem(),p,ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())), MsgUtil.getMessage("menu.hold-to-view"));
+		
 //		if (NMS.isPotion(items.getType())) {
 //			String effects = CustomPotionsName.getEffects(items);
 //			if (!effects.isEmpty()) {
