@@ -137,7 +137,7 @@ public class PlayerListener implements Listener {
 			// Send creation menu.
 			Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
 			plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-			p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+			p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", MsgUtil.getItemi18n(Util.getName(info.getItem()))));
 		}
 	}
 
