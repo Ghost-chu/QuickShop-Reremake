@@ -64,8 +64,6 @@ menu:
     this-shop-is-selling: "&aThis shop is &bSELLING&a items."
     effects: "&aEffects: &e{0}"
     
-    hold-to-view: "&a(Move mouse on there)"
-    
     
 bypassing-lock: "&cBypassing a QuickShop lock!"
 that-is-locked: "&cThat shop is locked."
