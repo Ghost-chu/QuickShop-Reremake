@@ -52,10 +52,10 @@ menu:
     sell-tax-self: "&aYou own this shop so you don't pay taxes."
     enchants: "&5Enchants"
     stored-enchants: "&5Stored Enchants"
-    
     shop-information: "&aShop Information:"
     owner: "&aOwner: {0}"
     item: "&aItem: &e{0}"
+    preview: "&b[Preview Item]"
     space: "&aSpace: &e{0}"
     stock: "&aStock &e{0}"
     price-per: "&aPrice per &e{0} &a- &e{1}"
