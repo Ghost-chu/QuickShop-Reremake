@@ -108,6 +108,7 @@ public class MsgUtil {
 		try {
 		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim().replaceAll(" ", "_");
 		}catch (Exception e) {
+			e.printStackTrace();
 			Itemname_i18n = null;
 		}
 		if(ItemBukkitName==null) {
@@ -125,6 +126,8 @@ public class MsgUtil {
 			return Itemname_i18n;
 		}
 	}
+	
+	
 	public static void loadEnchi18n() {
 		plugin.getLogger().info("Starting loading Enchantment i18n...");
 		File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -133,17 +136,17 @@ public class MsgUtil {
 			plugin.saveResource("enchi18n.yml", true);
 		}
 		// Store it
-	    YamlConfiguration enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
+	    enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
 		enchi18n.options().copyDefaults(true);
 		YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("enchi18n.yml")));
 		enchi18n.setDefaults(enchi18nYAML);
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
 		for (Enchantment ench : enchsi18n) {
-			String enchname = enchi18n.getString("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-"));
+			String enchname = enchi18n.getString("enchi18n."+ench.getKey().getKey().toString().trim());
 			if(enchname==null || enchname.equals("")) {
-				plugin.getLogger().info("Found new ench ["+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-")+"] ,add it in config...");
-				enchi18n.set("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_"),ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-"));
+				plugin.getLogger().info("Found new ench ["+ench.getKey().getKey().toString()+"] ,add it in config...");
+				enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
 			}
 		}
 		try {
@@ -159,15 +162,16 @@ public class MsgUtil {
 		if(key==null) {
 			return "ERROR";
 		}
-		String EnchString = key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
+		String EnchString = key.getKey().getKey().toString().trim();
 		String Ench_i18n = null;
 		try {
-			Ench_i18n = enchi18n.getString("enchi18n."+EnchString).trim().replaceAll(" ", "_").replaceAll(":", "-");
+			Ench_i18n = enchi18n.getString("enchi18n."+EnchString);
 		}catch (Exception e) {
+			e.printStackTrace();
 			Ench_i18n = null;
 		}
 		if(Ench_i18n==null) {
-			return  key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
+			return EnchString;
 		}else {
 			return Ench_i18n;
 		}
