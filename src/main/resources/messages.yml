@@ -42,6 +42,7 @@ refill-success: "&aRefill success"
 empty-success: "&aEmpty success"
 admin-shop: "AdminShop"
 unknown-owner: "Unknown"
+owner-bypass-check: "&eBypass all check,Trade successful! (You are shop owner)"
 
 menu:
     successful-purchase: "&aSuccessfully Purchased:"

@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 
 public class ShopManager {
-	private QuickShop plugin;
+	QuickShop plugin = QuickShop.instance;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
 	private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>();
 	final private static ItemStack AIR = new ItemStack(Material.AIR);
@@ -562,10 +562,13 @@ public class ShopManager {
 						if (e.isCancelled())
 							return; // Cancelled
 						// Money handling
-						if (!p.getUniqueId().equals(shop.getOwner())) {
+						if (!p.getUniqueId().equals(shop.getOwner()) || plugin.getConfig().getBoolean("shop.bypass-owner-check")) {
 							// Don't tax them if they're purchasing from
 							// themselves.
 							// Do charge an amount of tax though.
+							
+							//Add a warning
+							
 							double tax = plugin.getConfig().getDouble("tax");
 							double total = amount * shop.getPrice();
 							if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
@@ -601,6 +604,11 @@ public class ShopManager {
 							if (space == amount)
 								msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ());
 							MsgUtil.send(shop.getOwner(), msg);
+						}else {
+							if(p.getUniqueId().equals(shop.getOwner()) && !plugin.getConfig().getBoolean("shop.bypass-owner-check")) {
+								p.sendMessage(MsgUtil.getMessage("owner-bypass-check"));
+								//Bypass check message
+							}
 						}
 						shop.buy(p, amount);
 						MsgUtil.sendSellSuccess(p, shop, amount);
