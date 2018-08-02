@@ -155,7 +155,7 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load Itemname i18n.");
 	}
-	public static String getEnchi18n(Enchantment EnchBukkitName) {
+	public static String getEnchi18n(Enchantment key) {
 		Enchantment finalEnch = null;
 		for (Enchantment ench : Enchantment.values()) {
 			if(ench instanceof Enchantment) {
@@ -166,7 +166,7 @@ public class MsgUtil {
 		if(finalEnch==null) {
 			return "ERROR";
 		}
-		String finalEnchString = finalEnch.getKey().toString();
+		String finalEnchString = finalEnch.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_");
 		String finalEnch_i18n = null;
 		try {
 			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_").replaceAll(" ", "_");
