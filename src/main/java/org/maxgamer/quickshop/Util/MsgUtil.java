@@ -159,7 +159,7 @@ public class MsgUtil {
 		if(key==null) {
 			return "ERROR";
 		}
-		String finalEnchString = key.toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
+		String finalEnchString = key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		String finalEnch_i18n = null;
 		try {
 			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_").replaceAll(":", "-");
@@ -167,7 +167,7 @@ public class MsgUtil {
 			finalEnch_i18n = null;
 		}
 		if(finalEnch_i18n==null) {
-			return  key.toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
+			return  key.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		}else {
 			return finalEnch_i18n;
 		}
