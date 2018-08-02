@@ -140,10 +140,10 @@ public class MsgUtil {
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
 		for (Enchantment ench : enchsi18n) {
-			String enchname = enchi18n.getString("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_"));
+			String enchname = enchi18n.getString("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-"));
 			if(enchname==null || enchname.equals("")) {
-				plugin.getLogger().info("Found new ench ["+ench.getKey().toString()+"] ,add it in config...");
-				enchi18n.set("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_"),ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_"));
+				plugin.getLogger().info("Found new ench ["+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-")+"] ,add it in config...");
+				enchi18n.set("enchi18n."+ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_"),ench.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-"));
 			}
 		}
 		try {
@@ -151,9 +151,9 @@ public class MsgUtil {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from itemi18n.yml. Skipping.");
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
 		}
-		plugin.getLogger().info("Complete to load Itemname i18n.");
+		plugin.getLogger().info("Complete to load enchname i18n.");
 	}
 	public static String getEnchi18n(Enchantment key) {
 		Enchantment finalEnch = null;
@@ -166,15 +166,15 @@ public class MsgUtil {
 		if(finalEnch==null) {
 			return "ERROR";
 		}
-		String finalEnchString = finalEnch.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_");
+		String finalEnchString = finalEnch.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		String finalEnch_i18n = null;
 		try {
-			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_").replaceAll(" ", "_");
+			finalEnch_i18n = enchi18n.getString("enchi18n."+finalEnchString).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		}catch (Exception e) {
 			finalEnch_i18n = null;
 		}
 		if(finalEnch_i18n==null) {
-			return finalEnch.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_");
+			return finalEnch.getKey().toString().toUpperCase(Locale.ROOT).trim().replaceAll(" ", "_").replaceAll(":", "-");
 		}else {
 			return finalEnch_i18n;
 		}
