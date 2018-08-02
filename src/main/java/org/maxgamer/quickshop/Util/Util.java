@@ -621,6 +621,7 @@ public class Util {
 	}
 
 	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
+		try {
 		String Itemname = null;
 		List<String> Itemlore = new ArrayList<>();
 		String finalItemdata = null;
@@ -676,6 +677,9 @@ public class Util {
 		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
 		normalmessage.setHoverEvent(he);
 		player.spigot().sendMessage(normalmessage);
+		}catch (Exception e) {
+			player.sendMessage(normalText);
+		}
 	}
 	private static String formatEnchLevel(Integer level) {
 		switch (level) {
