@@ -620,7 +620,7 @@ public class Util {
 		}
 	}
 
-	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText, String actionText) {
+	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
 		String Itemname = null;
 		List<String> Itemlore = new ArrayList<>();
 		String finalItemdata = null;
@@ -671,11 +671,9 @@ public class Util {
 			}
 		}
 		TextComponent normalmessage = new TextComponent(normalText);
-		TextComponent actionmessage = new TextComponent(actionText);
 		ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
 		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
-		actionmessage.setHoverEvent(he);
-		normalmessage.addExtra(actionmessage);
+		normalmessage.setHoverEvent(he);
 		player.sendRawMessage(normalmessage.getText());
 
 	}
