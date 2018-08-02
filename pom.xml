@@ -44,6 +44,10 @@
 		</resources>
 	</build>
 	<repositories>
+	<repository>
+			<id>fanciful-repo</id>
+			<url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
+		</repository>
 		<repository>
 			<id>bukkit-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
