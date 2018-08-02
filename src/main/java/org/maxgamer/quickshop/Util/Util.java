@@ -620,13 +620,12 @@ public class Util {
 		}
 	}
 
-	@SuppressWarnings("null")
-	public void sendItemholochat(ItemStack itemStack, Player player, String normalText, String actionText) {
+	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText, String actionText) {
 		String Itemname = null;
-		List<String> Itemlore = null;
+		List<String> Itemlore = new ArrayList<>();
 		String finalItemdata = null;
-		Map<Enchantment, Integer> enchs = null;
-		Map<String, Integer> Itemenchs = null;
+		Map<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
+		Map<String, Integer> Itemenchs = new HashMap<String, Integer>();
 		if (itemStack.hasItemMeta()) {
 			ItemMeta iMeta = itemStack.getItemMeta();
 			if (iMeta.hasDisplayName()) {
