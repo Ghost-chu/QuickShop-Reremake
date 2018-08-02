@@ -668,7 +668,7 @@ public class Util {
 
 		if (Itemlore != null) {
 			for (String string : Itemlore) {
-				finalItemdata += ChatColor.DARK_PURPLE+ string + "\n";
+				finalItemdata += ChatColor.DARK_PURPLE +""+ ChatColor.ITALIC + string + "\n";
 			}
 		}
 		TextComponent normalmessage = new TextComponent(normalText);
