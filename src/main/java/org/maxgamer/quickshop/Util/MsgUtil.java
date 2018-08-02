@@ -106,7 +106,7 @@ public class MsgUtil {
 		ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
 		String Itemname_i18n = null;
 		try {
-		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim().replaceAll(" ", "_");
+		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim();
 		}catch (Exception e) {
 			e.printStackTrace();
 			Itemname_i18n = null;
