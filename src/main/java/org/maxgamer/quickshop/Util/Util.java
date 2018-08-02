@@ -634,7 +634,8 @@ public class Util {
 				Itemname = MsgUtil.getItemi18n(itemStack.getType().name());
 			}
 			if (iMeta.hasLore()) {
-			} else {
+				Itemlore = iMeta.getLore();
+				} else {
 				Itemlore = new ArrayList<String>();
 			}
 			if (iMeta.hasEnchants()) {
