@@ -3,11 +3,13 @@ package org.maxgamer.quickshop.Util;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,10 +28,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sign;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @SuppressWarnings("deprecation")
 public class Util {
@@ -612,4 +619,83 @@ public class Util {
 			}
 		}
 	}
+
+	@SuppressWarnings("null")
+	public void sendItemholochat(ItemStack itemStack, Player player, String normalText, String actionText) {
+		String Itemname = null;
+		List<String> Itemlore = null;
+		String finalItemdata = null;
+		Map<Enchantment, Integer> enchs = null;
+		Map<String, Integer> Itemenchs = null;
+		if (itemStack.hasItemMeta()) {
+			ItemMeta iMeta = itemStack.getItemMeta();
+			if (iMeta.hasDisplayName()) {
+				Itemname = iMeta.getDisplayName();
+			} else {
+				Itemname = MsgUtil.getItemi18n(itemStack.getType().name());
+			}
+			if (iMeta.hasLore()) {
+			} else {
+				Itemlore = new ArrayList<String>();
+			}
+			if (iMeta.hasEnchants()) {
+				enchs = iMeta.getEnchants();
+				for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+					String i18n = MsgUtil.getEnchi18n(entries.getKey());
+					if (i18n != null) {
+						Itemenchs.put(i18n, entries.getValue());
+					} else {
+						Itemenchs = null;
+					}
+				}
+			}
+		} else {
+			Itemname = MsgUtil.getItemi18n(itemStack.getType().name());
+			Itemlore = null;
+			Itemenchs = null;
+		}
+
+		finalItemdata = Itemname;
+		finalItemdata += "\n";
+		List<String> a = new ArrayList<>();
+		List<Integer> b = new ArrayList<>();
+
+		a.addAll(Itemenchs.keySet());
+		b.addAll(Itemenchs.values());
+		for (int i = 0; i < a.size(); i++) {
+			finalItemdata += ChatColor.GRAY + a.get(i) + " " + Util.formatEnchLevel(b.get(i)) + "\n";
+		}
+
+		if (Itemlore != null) {
+			for (String string : Itemlore) {
+				finalItemdata += string + "\n";
+			}
+		}
+		TextComponent normalmessage = new TextComponent(normalText);
+		TextComponent actionmessage = new TextComponent(actionText);
+		ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
+		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
+		actionmessage.setHoverEvent(he);
+		normalmessage.addExtra(actionmessage);
+		player.sendRawMessage(normalmessage.getText());
+
+	}
+	private static String formatEnchLevel(Integer level) {
+		switch (level) {
+		case 1:
+			return "I";
+		case 2:
+			return "II";
+		case 3:
+			return "III";
+		case 4:
+			return "IV";
+		case 5:
+			return "V";
+		default:
+			return String.valueOf(level);
+
+	}
+	}
+		
 }
