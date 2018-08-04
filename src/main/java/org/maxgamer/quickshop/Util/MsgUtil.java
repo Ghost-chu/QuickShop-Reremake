@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -30,6 +33,7 @@ public class MsgUtil {
 	private static YamlConfiguration messages;
 	private static YamlConfiguration itemi18n;
 	private static YamlConfiguration enchi18n;
+	private static YamlConfiguration potioni18n;
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
 	/**
 	 * Loads all the messages from messages.yml
@@ -176,6 +180,58 @@ public class MsgUtil {
 			return Ench_i18n;
 		}
 	}
+	
+	
+	public static void loadPotioni18n() {
+		plugin.getLogger().info("Starting loading Potion i18n...");
+		File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
+		if (!potioni18nFile.exists()) {
+			plugin.getLogger().info("Creating potioni18n.yml");
+			plugin.saveResource("potioni18n.yml", true);
+		}
+		// Store it
+	    potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
+	    potioni18n.options().copyDefaults(true);
+		YamlConfiguration potioni18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("potioni18n.yml")));
+		potioni18n.setDefaults(potioni18nYAML);
+		Util.parseColours(potioni18n);
+		PotionEffectType[] potionsi18n = PotionEffectType.values();
+		for (PotionEffectType potion : potionsi18n) {
+			String potionname =potioni18n.getString("potioni18n."+potion.getName().trim());
+			if(potionname==null || potionname.equals("")) {
+				plugin.getLogger().info("Found new ench ["+potion.getName()+"] ,add it in config...");
+				enchi18n.set("enchi18n."+potion.getName().trim(),potion.getName().trim());
+			}
+		}
+		try {
+			enchi18n.save(potioni18nFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
+		}
+		plugin.getLogger().info("Complete to load enchname i18n.");
+	}
+	public static String getPotioni18n(PotionEffectType potion) {
+		if(potion==null) {
+			return "ERROR";
+		}
+		String PotionString = potion.getName().trim();
+		String Potion_i18n = null;
+		try {
+			Potion_i18n = enchi18n.getString("potioni18n."+PotionString);
+		}catch (Exception e) {
+			e.printStackTrace();
+			Potion_i18n = null;
+		}
+		if(Potion_i18n==null) {
+			return PotionString;
+		}else {
+			return Potion_i18n;
+		}
+	}
+	
+	
 	/**
 	 * @param player
 	 *            The name of the player to message
