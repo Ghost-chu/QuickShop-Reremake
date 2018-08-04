@@ -197,20 +197,22 @@ public class MsgUtil {
 		Util.parseColours(potioni18n);
 		PotionEffectType[] potionsi18n = PotionEffectType.values();
 		for (PotionEffectType potion : potionsi18n) {
-			String potionname =potioni18n.getString("potioni18n."+potion.getName().trim());
-			if(potionname==null || potionname.equals("")) {
-				plugin.getLogger().info("Found new ench ["+potion.getName()+"] ,add it in config...");
-				enchi18n.set("enchi18n."+potion.getName().trim(),potion.getName().trim());
-			}
+			if(potion!=null) {
+				String potionname = potioni18n.getString("potioni18n."+potion.getName().trim());
+				if(potionname == null || potionname.equals("")) {
+					plugin.getLogger().info("Found new potion ["+potion.getName()+"] ,add it in config...");
+					potioni18n.set("potioni18n."+potion.getName().trim(),potion.getName().trim());
+				}
+			}	
 		}
 		try {
-			enchi18n.save(potioni18nFile);
+			potioni18n.save(potioni18nFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
 		}
-		plugin.getLogger().info("Complete to load enchname i18n.");
+		plugin.getLogger().info("Complete to load potionname i18n.");
 	}
 	public static String getPotioni18n(PotionEffectType potion) {
 		if(potion==null) {
