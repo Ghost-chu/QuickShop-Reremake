@@ -716,18 +716,23 @@ public class Util {
 		List<String> pEffects =  new ArrayList<String>();
 		PotionMeta pMeta = (PotionMeta)iStack.getItemMeta();
 		if(pMeta.getBasePotionData().getType()!=null) {
-			pEffects.add(MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
+			if(!(pMeta.getBasePotionData().isUpgraded())){
+				pEffects.add(ChatColor.BLUE+MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
+			}else {
+				pEffects.add(ChatColor.BLUE+MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType())+" II");
+			}
+			
 		}
 		if(pMeta.hasCustomEffects()) {
 			List<PotionEffect> cEffects = pMeta.getCustomEffects();
 			for (PotionEffect potionEffect : cEffects) {
-				pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()));
+				pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType())+" "+formatEnchLevel(potionEffect.getAmplifier()));
 			}
 		}
 		if(pEffects != null && pEffects.isEmpty() == false) {
 			String result = new String();
 			for (String effectString : pEffects) {
-				result+=ChatColor.BLUE + effectString+"\n";
+				result+=effectString+"\n";
 			}
 			return result;
 		}else {

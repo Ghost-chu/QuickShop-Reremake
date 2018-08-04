@@ -221,7 +221,7 @@ public class MsgUtil {
 		String PotionString = potion.getName().trim();
 		String Potion_i18n = null;
 		try {
-			Potion_i18n = enchi18n.getString("potioni18n."+PotionString);
+			Potion_i18n = potioni18n.getString("potioni18n."+PotionString);
 		}catch (Exception e) {
 			e.printStackTrace();
 			Potion_i18n = null;
