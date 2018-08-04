@@ -24,7 +24,6 @@ public class WorldListener implements Listener {
 
 	@EventHandler
 	public void onWorldLoad(WorldLoadEvent e) {
-		Bukkit.getServer().broadcastMessage("´¥·¢WorldLoadEvent");
 		/* *************************************
 		 * This listener fixes any broken world references. Such as hashmap
 		 * lookups will fail, because the World reference is different, but the
@@ -66,7 +65,6 @@ public class WorldListener implements Listener {
 
 	@EventHandler
 	public void onWorldUnload(WorldUnloadEvent e) {
-		Bukkit.getServer().broadcastMessage("´¥·¢WorldUnloadEvent");
 		// This is a workaround, because I don't get parsed chunk events when a
 		// world unloads, I think...
 		// So manually tell all of these shops they're unloaded.
