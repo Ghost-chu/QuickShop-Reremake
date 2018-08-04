@@ -271,8 +271,11 @@ public class QuickShop extends JavaPlugin {
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = ps.executeQuery();
 			int errors = 0;
+			//========================
 			MsgUtil.loadItemi18n();
 			MsgUtil.loadEnchi18n();
+			MsgUtil.loadPotioni18n();
+			//========================
 			while (rs.next()) {
 				int x = 0;
 				int y = 0;
