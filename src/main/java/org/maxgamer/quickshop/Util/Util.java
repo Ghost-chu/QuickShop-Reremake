@@ -12,9 +12,11 @@ import java.util.Map.Entry;
 
 import java.util.Set;
 
+import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,10 +31,15 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sign;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -665,6 +672,11 @@ public class Util {
 		for (int i = 0; i < a.size(); i++) {
 			finalItemdata += ChatColor.GRAY + a.get(i) + " " + Util.formatEnchLevel(b.get(i)) + "\n";
 		}
+		
+		String potionResult = getPotiondata(itemStack);
+		if(potionResult!=null) {
+			finalItemdata += potionResult;
+		}
 
 		if (Itemlore != null) {
 			for (String string : Itemlore) {
@@ -696,6 +708,31 @@ public class Util {
 			return String.valueOf(level);
 
 	}
+	}
+	public static String getPotiondata(ItemStack iStack) {
+		if((iStack.getType() != Material.POTION)==true && (iStack.getType() !=Material.LINGERING_POTION)==true && (iStack.getType() !=Material.SPLASH_POTION)==true){
+			return null;
+		}
+		List<String> pEffects =  new ArrayList<String>();
+		PotionMeta pMeta = (PotionMeta)iStack.getItemMeta();
+		if(pMeta.getBasePotionData().getType()!=null) {
+			pEffects.add(MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
+		}
+		if(pMeta.hasCustomEffects()) {
+			List<PotionEffect> cEffects = pMeta.getCustomEffects();
+			for (PotionEffect potionEffect : cEffects) {
+				pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()));
+			}
+		}
+		if(pEffects != null && pEffects.isEmpty() == false) {
+			String result = new String();
+			for (String effectString : pEffects) {
+				result+=ChatColor.BLUE + effectString+"\n";
+			}
+			return result;
+		}else {
+		return null;
+		}
 	}
 		
 }
