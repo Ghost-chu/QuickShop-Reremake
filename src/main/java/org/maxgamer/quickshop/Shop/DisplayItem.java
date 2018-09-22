@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -8,7 +7,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +15,6 @@ import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
 //import org.maxgamer.quickshop.Util.NMS;
 
-import com.google.common.util.concurrent.ForwardingListenableFuture;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -60,6 +57,7 @@ public class DisplayItem {
 		FileConfiguration config = plugin.getConfig();
 		if(config.getBoolean("float.enable")){
 			//Enabled! Check start!
+			
 			//Item
 			boolean found_item = false;
 			boolean found_lore = false;
@@ -104,12 +102,11 @@ public class DisplayItem {
 					String itemname = iStack.getItemMeta().getDisplayName();
 					for (Object name : displaynamelist) {
 						String listname = String.valueOf(name);
-						if(listname.contains(listname)) {
+						if(itemname.contains(listname)) {
 							found_displayname = true;
 							break;
 						}
 					}
-					
 				}
 				if(blacklist) {
 					if(found_displayname) {
@@ -126,6 +123,7 @@ public class DisplayItem {
 			//End DisplayName check
 			}
 			
+			//Lore
 			if(config.getBoolean("float.lore.enable")) {
 				boolean blacklist = config.getBoolean("float.lore.blacklist");
 				lorelist.clear();
