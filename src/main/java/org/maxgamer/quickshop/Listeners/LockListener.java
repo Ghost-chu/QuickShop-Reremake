@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -95,6 +96,14 @@ public class LockListener implements Listener {
 				return;
 			}
 		} else if (b.getType() == Material.WALL_SIGN) {
+			if(b instanceof Sign) {
+				Sign sign = (Sign)b;
+				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
+					//Ignore break lockette sign
+					plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
+					return;
+				}
+			}
 			b = Util.getAttached(b);
 			if (b == null)
 				return;
