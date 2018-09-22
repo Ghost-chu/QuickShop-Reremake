@@ -61,8 +61,8 @@ public class PlayerListener implements Listener {
 		Block b = e.getClickedBlock();
 		if (!Util.canBeShop(b) && b.getType() != Material.WALL_SIGN)
 			return;
-		if(b.getState() instanceof Sign || b instanceof WallSign) {
-			Sign sign = (Sign)b;
+		if(b.getState() instanceof Sign) {
+			Sign sign = (Sign)b.getState();
 			if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
 				//Ignore break lockette sign
 				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
