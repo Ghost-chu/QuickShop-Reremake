@@ -54,18 +54,17 @@ public class DisplayItem {
 		Location dispLoc = this.getDisplayLocation();
 		//Check is or not in blacklist/whitelist
 		boolean showFloatItem = true;
-		FileConfiguration config = plugin.getConfig();
-		if(config.getBoolean("float.enable")){
+		if(plugin.getConfig().getBoolean("float.enable")){
 			//Enabled! Check start!
 			
 			//Item
 			boolean found_item = false;
 			boolean found_lore = false;
 			boolean found_displayname = false;
-			if(config.getBoolean("float.item.enable")) {
-				boolean blacklist = config.getBoolean("float.item.blacklist");
+			if(plugin.getConfig().getBoolean("float.item.enable")) {
+				boolean blacklist = plugin.getConfig().getBoolean("float.item.blacklist");
 				itemlist.clear();
-				itemlist = config.getList("float.item.list");
+				itemlist = plugin.getConfig().getList("float.item.list");
 				for (Object material : itemlist) {
 					String materialname = String.valueOf(material);
 					Material item = Material.matchMaterial(materialname);
@@ -92,10 +91,10 @@ public class DisplayItem {
 			//End Item check
 			
 			//DisplayName
-			if(config.getBoolean("float.displayname.enable")) {
-				boolean blacklist = config.getBoolean("float.displayname.blacklist");
+			if(plugin.getConfig().getBoolean("float.displayname.enable")) {
+				boolean blacklist = plugin.getConfig().getBoolean("float.displayname.blacklist");
 				displaynamelist.clear();
-				displaynamelist = config.getList("float.displayname.list");
+				displaynamelist = plugin.getConfig().getList("float.displayname.list");
 				if(!iStack.hasItemMeta()) {
 					found_displayname=false;
 				}else {
@@ -124,10 +123,10 @@ public class DisplayItem {
 			}
 			
 			//Lore
-			if(config.getBoolean("float.lore.enable")) {
-				boolean blacklist = config.getBoolean("float.lore.blacklist");
+			if(plugin.getConfig().getBoolean("float.lore.enable")) {
+				boolean blacklist = plugin.getConfig().getBoolean("float.lore.blacklist");
 				lorelist.clear();
-				lorelist=config.getList("float.lore.list");
+				lorelist=plugin.getConfig().getList("float.lore.list");
 				if(!iStack.hasItemMeta()) {
 					found_lore = false;
 				}else {
