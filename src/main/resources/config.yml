@@ -148,3 +148,7 @@ protect:
 #BukkitName should auto added when you startup server.
 itemi18n:
   STONE: STONE
+lockette:
+  private: "[Private]"
+  more_users: "[More Users]"
+  #Make Quickshop not cancel break lock sign event(Inpossible break locked chest)

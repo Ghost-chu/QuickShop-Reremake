@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Hopper;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.event.EventHandler;
@@ -93,9 +94,18 @@ public class BlockListener implements Listener {
 				p.sendMessage(MsgUtil.getMessage("no-creative-break"));
 				return;
 			}
-			if (e.isCancelled())
+			if (e.isCancelled()) {
 				return;
-			e.setCancelled(true); // Cancel the event so that the sign does not
+			}
+			if(b instanceof Sign) {
+				Sign sign = (Sign)b;
+				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
+					//Ignore break lockette sign
+					return;
+				}
+			}
+			e.setCancelled(true);
+			 // Cancel the event so that the sign does not
 			// drop.. TODO: Find a better way.
 			//b.setType(Material.AIR);
 		}
