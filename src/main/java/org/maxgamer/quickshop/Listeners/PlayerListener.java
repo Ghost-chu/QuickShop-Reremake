@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,11 +61,12 @@ public class PlayerListener implements Listener {
 		Block b = e.getClickedBlock();
 		if (!Util.canBeShop(b) && b.getType() != Material.WALL_SIGN)
 			return;
-		if(b instanceof Sign) {
+		if(b.getState() instanceof Sign || b instanceof WallSign) {
 			Sign sign = (Sign)b;
 			if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
 				//Ignore break lockette sign
 				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
+				b.breakNaturally();
 				return;
 			}
 		}
