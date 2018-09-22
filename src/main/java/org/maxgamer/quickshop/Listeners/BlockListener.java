@@ -84,6 +84,14 @@ public class BlockListener implements Listener {
 			shop.delete();
 			p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
 		} else if (b.getType() == Material.WALL_SIGN) {
+			if(b instanceof Sign) {
+				Sign sign = (Sign)b;
+				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
+					//Ignore break lockette sign
+					plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
+					return;
+				}
+			}
 			Shop shop = getShopNextTo(b.getLocation());
 			if (shop == null)
 				return;
@@ -96,13 +104,6 @@ public class BlockListener implements Listener {
 			}
 			if (e.isCancelled()) {
 				return;
-			}
-			if(b instanceof Sign) {
-				Sign sign = (Sign)b;
-				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
-					//Ignore break lockette sign
-					return;
-				}
 			}
 			e.setCancelled(true);
 			 // Cancel the event so that the sign does not
