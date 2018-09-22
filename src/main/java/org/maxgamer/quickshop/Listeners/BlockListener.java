@@ -64,11 +64,11 @@ public class BlockListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBreak(BlockBreakEvent e) {
 		Block b = e.getBlock();
-		if(b instanceof Sign) {
-			Sign sign = (Sign)b;
+		if(b.getState() instanceof Sign) {
+			Sign sign = (Sign)b.getState();
 			if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
 				//Ignore break lockette sign
-				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
+				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
 				return;
 			}
 		}
