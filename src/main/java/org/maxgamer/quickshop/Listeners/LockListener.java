@@ -83,6 +83,14 @@ public class LockListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onBreak(BlockBreakEvent e) {
 		Block b = e.getBlock();
+		if(b instanceof Sign) {
+			Sign sign = (Sign)b;
+			if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
+				//Ignore break lockette sign
+				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
+				return;
+			}
+		}
 		Player p = e.getPlayer();
 		// If the chest was a chest
 		if (Util.canBeShop(b)) {
