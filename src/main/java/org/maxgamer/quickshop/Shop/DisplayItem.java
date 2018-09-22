@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +23,7 @@ public class DisplayItem {
 	private Shop shop;
 	private ItemStack iStack;
 	private Item item;
-	private QuickShop plugin;
+	static QuickShop plugin = QuickShop.instance;
 	private java.util.List<?> itemlist;
 	private java.util.List<?> lorelist;
 	private java.util.List<?> displaynamelist;
