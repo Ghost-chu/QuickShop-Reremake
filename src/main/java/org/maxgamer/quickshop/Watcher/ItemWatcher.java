@@ -17,7 +17,7 @@ import org.maxgamer.quickshop.Shop.ShopChunk;
  *         Also deletes invalid items.
  */
 public class ItemWatcher implements Runnable {
-	private QuickShop plugin;
+	static QuickShop plugin = QuickShop.instance;
 
 	public ItemWatcher(QuickShop plugin) {
 		this.plugin = plugin;
