@@ -1,10 +1,14 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +16,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
 //import org.maxgamer.quickshop.Util.NMS;
+
+import com.google.common.util.concurrent.ForwardingListenableFuture;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -22,9 +28,12 @@ public class DisplayItem {
 	private ItemStack iStack;
 	private Item item;
 	private QuickShop plugin;
+	private java.util.List<?> itemlist;
+	private java.util.List<?> lorelist;
+	private java.util.List<?> displaynamelist;
 
 	// private Location displayLoc;
-	/**
+	/**ZZ
 	 * Creates a new display item.
 	 * 
 	 * @param shop
@@ -35,6 +44,7 @@ public class DisplayItem {
 	public DisplayItem(Shop shop, ItemStack iStack) {
 		this.shop = shop;
 		this.iStack = iStack.clone();
+		
 		// this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
 	}
 
@@ -45,6 +55,118 @@ public class DisplayItem {
 		if (shop.getLocation().getWorld() == null)
 			return;
 		Location dispLoc = this.getDisplayLocation();
+		//Check is or not in blacklist/whitelist
+		boolean showFloatItem = true;
+		FileConfiguration config = plugin.getConfig();
+		if(config.getBoolean("float.enable")){
+			//Enabled! Check start!
+			//Item
+			boolean found_item = false;
+			boolean found_lore = false;
+			boolean found_displayname = false;
+			if(config.getBoolean("float.item.enable")) {
+				boolean blacklist = config.getBoolean("float.item.blacklist");
+				itemlist.clear();
+				itemlist = config.getList("float.item.list");
+				for (Object material : itemlist) {
+					String materialname = String.valueOf(material);
+					Material item = Material.matchMaterial(materialname);
+					if(item!=null) {
+						found_item=true;
+						break;
+					}else {
+						plugin.getLogger().info(materialname+" not a bukkit item.");
+					}
+				}	
+				if(found_item) {
+					if(blacklist) {
+						showFloatItem=false;
+					}
+				}else {
+					if(!blacklist) {
+						showFloatItem=false;
+					}
+				}
+			}
+			if(!showFloatItem) {
+				return;
+			}
+			//End Item check
+			
+			//DisplayName
+			if(config.getBoolean("float.displayname.enable")) {
+				boolean blacklist = config.getBoolean("float.displayname.blacklist");
+				displaynamelist.clear();
+				displaynamelist = config.getList("float.displayname.list");
+				if(!iStack.hasItemMeta()) {
+					found_displayname=false;
+				}else {
+					String itemname = iStack.getItemMeta().getDisplayName();
+					for (Object name : displaynamelist) {
+						String listname = String.valueOf(name);
+						if(listname.contains(listname)) {
+							found_displayname = true;
+							break;
+						}
+					}
+					
+				}
+				if(blacklist) {
+					if(found_displayname) {
+						showFloatItem = false;
+					}
+				}else {
+					if(!found_displayname) {
+						showFloatItem = false;
+					}
+				}
+				if(!showFloatItem) {
+					return;
+				}
+			//End DisplayName check
+			}
+			
+			if(config.getBoolean("float.lore.enable")) {
+				boolean blacklist = config.getBoolean("float.lore.blacklist");
+				lorelist.clear();
+				lorelist=config.getList("float.lore.list");
+				if(!iStack.hasItemMeta()) {
+					found_lore = false;
+				}else {
+					java.util.List<String> itemlores = iStack.getItemMeta().getLore();
+					for (String loreinItem : itemlores) {
+						String loreinItem_String = loreinItem;
+						for (Object loreinList : lorelist) {
+							String loreinList_String = String.valueOf(loreinList);
+							if(loreinItem_String.contains(loreinList_String)) {
+								found_lore = true;
+								break;
+							}
+						}
+						if(found_lore) {
+							break;
+						}
+					}
+					if(blacklist) {
+						if(found_lore) {
+							showFloatItem=false;
+						}
+					}else {
+						if(!found_lore) {
+							showFloatItem=false;
+						}
+					}
+					if(!showFloatItem) {
+						return;
+					}
+					
+				}
+			}	
+		}
+		//Check end
+		if(!showFloatItem) {
+			return;
+		}
 		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
 		this.item.setVelocity(new Vector(0, 0.1, 0));
 		if (QuickShop.debug) {
