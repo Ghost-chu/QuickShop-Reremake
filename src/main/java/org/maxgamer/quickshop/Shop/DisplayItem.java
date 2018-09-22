@@ -62,7 +62,6 @@ public class DisplayItem {
 			boolean found_displayname = false;
 			if(plugin.getConfig().getBoolean("float.item.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.item.blacklist");
-				itemlist.clear();
 				itemlist = plugin.getConfig().getList("float.item.list");
 				for (Object material : itemlist) {
 					String materialname = String.valueOf(material);
@@ -92,7 +91,6 @@ public class DisplayItem {
 			//DisplayName
 			if(plugin.getConfig().getBoolean("float.displayname.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.displayname.blacklist");
-				displaynamelist.clear();
 				displaynamelist = plugin.getConfig().getList("float.displayname.list");
 				if(!iStack.hasItemMeta()) {
 					found_displayname=false;
@@ -124,7 +122,6 @@ public class DisplayItem {
 			//Lore
 			if(plugin.getConfig().getBoolean("float.lore.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.lore.blacklist");
-				lorelist.clear();
 				lorelist=plugin.getConfig().getList("float.lore.list");
 				if(!iStack.hasItemMeta()) {
 					found_lore = false;
