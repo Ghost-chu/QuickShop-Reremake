@@ -66,8 +66,8 @@ public class DisplayItem {
 				itemlist = plugin.getConfig().getList("float.item.list");
 				for (Object material : itemlist) {
 					String materialname = String.valueOf(material);
-					Material item = Material.matchMaterial(materialname);
-					if (item != null) {
+					String itemname = iStack.getType().name();
+					if (materialname.equals(itemname)) {
 						found_item = true;
 						break;
 					} else {
