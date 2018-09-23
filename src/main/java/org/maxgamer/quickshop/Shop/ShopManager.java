@@ -19,6 +19,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
@@ -54,14 +55,31 @@ public class ShopManager {
 	public void createShop(Shop shop) {
 		Location loc = shop.getLocation();
 		ItemStack item = shop.getItem();
+		Player player = Bukkit.getPlayer(shop.getOwner());
+		if(player==null || !player.isOnline()) {
+			plugin.getLogger().info("Warning! Something wrong happed when createing shop,Canceling... (Code: Target player not online)");
+			return;
+		}
+		PlayerInteractEvent e = new PlayerInteractEvent(player, Action.LEFT_CLICK_BLOCK, item, shop.getLocation().getBlock(), BlockFace.UP);
+		Bukkit.getPluginManager().callEvent(e);
+		if (e.isCancelled()) {
+			e.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
+			return;
+		}
+		BlockBreakEvent be = new BlockBreakEvent(shop.getLocation().getBlock(),player);
+		Bukkit.getPluginManager().callEvent(be);
+		if (be.isCancelled()) {
+			be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
+			return;
+		}
 		try {
 			// Write it to the database
 			String q = "INSERT INTO shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			plugin.getDB().execute(q, shop.getOwner().toString(), shop.getPrice(), Util.serialize(item), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID());
 			// Add it to the world
 			addShop(loc.getWorld().getName(), shop);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception error) {
+			error.printStackTrace();
 			plugin.getLogger().log(Level.WARNING, "Could not create shop! Changes will revert after a reboot!");
 		}
 	}
