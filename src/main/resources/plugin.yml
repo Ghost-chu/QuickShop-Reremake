@@ -61,3 +61,6 @@ permissions:
     quickshop.alerts:
         description: Alert the player when someone tries to cheat with the display item
         default: op
+    quickshop.about:
+        description: Show QuickShop about message
+        default: true

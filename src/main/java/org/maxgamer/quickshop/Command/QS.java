@@ -516,6 +516,16 @@ public class QS implements CommandExecutor {
 		sender.sendMessage(MsgUtil.getMessage("no-permission"));
 		return;
 	}
+	private void about(CommandSender sender) {
+			sender.sendMessage("[QuickShop] About QuickShop");
+			sender.sendMessage("[QuickShop] Hello, I'm Ghost_chu Author of QS reremake.");
+			sender.sendMessage("[QuickShop] This plugin is remake by SunnySide Community.");
+			sender.sendMessage("[QuickShop] Original author is KaiNoMood. This is QS unofficial version.");
+			sender.sendMessage("[QuickShop] Have more feature, and design for 1.13.");
+			sender.sendMessage("[QuickShop] You can see our SpigotMC page to read more:");
+			sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/quickshop-reremake-for-1-13.59134/");
+			sender.sendMessage("[QuickShop] Thanks for use QuickShop-Reremake.");
+	}
 
 	private void reload(CommandSender sender) {
 		if (sender.hasPermission("quickshop.reload")) {
@@ -572,6 +582,9 @@ public class QS implements CommandExecutor {
 				return true;
 			} else if (subArg.equals("export")) {
 				export(sender, args);
+				return true;
+			} else if (subArg.equals("about")) {
+				about(sender);
 				return true;
 			} else if (subArg.equals("info")) {
 				if (sender.hasPermission("quickshop.info")) {
