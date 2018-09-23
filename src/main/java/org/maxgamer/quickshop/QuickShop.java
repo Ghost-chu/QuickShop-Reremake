@@ -156,10 +156,10 @@ public class QuickShop extends JavaPlugin {
 		String qsVer = pdf.getVersion();
 		Metrics metrics = new Metrics(this);
 		//Version
-		metrics.addCustomChart(new Metrics.SimplePie("QuickShop Reremake Version", () -> qsVer));
+		metrics.addCustomChart(new Metrics.SimplePie("plugin_version", () -> qsVer));
 		//Language Env
 		Locale locale = Locale.getDefault();
-		metrics.addCustomChart(new Metrics.SimplePie("Country", () -> String.valueOf(locale)));
+		metrics.addCustomChart(new Metrics.SimplePie("country", () -> String.valueOf(locale)));
 		getLogger().info("This computer using language: "+String.valueOf(locale));
 		}else {
 			getLogger().info("Metrics is disabled, Skipping...");
