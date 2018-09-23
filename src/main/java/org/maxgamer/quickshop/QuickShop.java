@@ -11,9 +11,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.bstats.bukkit.Metrics;
+import org.bstats.bukkit.Metrics.CustomChart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -124,7 +128,7 @@ public class QuickShop extends JavaPlugin {
 
 	public void onEnable() {
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
-		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13 VERSION! (Not included 1.13.x)");
+		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
@@ -144,6 +148,21 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Found permission provider.");
 		} else {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
+		}
+		
+		//Metrics
+		if(getConfig().getBoolean("metrics")) {
+		PluginDescriptionFile pdf = Bukkit.getServer().getPluginManager().getPlugin("QuickShop").getDescription();
+		String qsVer = pdf.getVersion();
+		Metrics metrics = new Metrics(this);
+		//Version
+		metrics.addCustomChart(new Metrics.SimplePie("QuickShop Reremake Version", () -> qsVer));
+		//Language Env
+		Locale locale = Locale.getDefault();
+		metrics.addCustomChart(new Metrics.SimplePie("Country", () -> String.valueOf(locale)));
+		getLogger().info("This computer using language: "+String.valueOf(locale));
+		}else {
+			getLogger().info("Metrics is disabled, Skipping...");
 		}
 		
 		// Initialize Util

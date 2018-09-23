@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maxgamer</groupId>
 	<artifactId>QuickShop</artifactId>
-	<version>Reremake 1.2.0-beta8</version>
+	<version>Reremake 1.2.0-beta9</version>
 	<!-- Fuck version -->
 	<licenses>
 		<license>
@@ -35,6 +36,28 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<relocations>
+						<relocation>
+							<pattern>org.bstats</pattern>
+							<!-- Replace this with your package! -->
+							<shadedPattern>org.maxgamer.quickshop</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -44,7 +67,7 @@
 		</resources>
 	</build>
 	<repositories>
-	<repository>
+		<repository>
 			<id>fanciful-repo</id>
 			<url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
 		</repository>
@@ -60,6 +83,10 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -68,6 +95,12 @@
 			<scope>system</scope>
 			<version>7.0.0</version>
 			<systemPath>${basedir}/lib/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.2</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
