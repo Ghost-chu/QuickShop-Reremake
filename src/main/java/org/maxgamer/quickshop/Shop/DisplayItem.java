@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -51,113 +52,113 @@ public class DisplayItem {
 		if (shop.getLocation().getWorld() == null)
 			return;
 		Location dispLoc = this.getDisplayLocation();
-		//Check is or not in blacklist/whitelist
+		// Check is or not in blacklist/whitelist
 		boolean showFloatItem = true;
-		if(plugin.getConfig().getBoolean("float.enable")){
-			//Enabled! Check start!
-			
-			//Item
+		if (plugin.getConfig().getBoolean("float.enable")) {
+			// Enabled! Check start!
+
+			// Item
 			boolean found_item = false;
 			boolean found_lore = false;
 			boolean found_displayname = false;
-			if(plugin.getConfig().getBoolean("float.item.enable")) {
+			if (plugin.getConfig().getBoolean("float.item.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.item.blacklist");
 				itemlist = plugin.getConfig().getList("float.item.list");
 				for (Object material : itemlist) {
 					String materialname = String.valueOf(material);
 					Material item = Material.matchMaterial(materialname);
-					if(item!=null) {
-						found_item=true;
+					if (item != null) {
+						found_item = true;
 						break;
-					}else {
-						plugin.getLogger().info(materialname+" not a bukkit item.");
+					} else {
+						plugin.getLogger().info(materialname + " not a bukkit item.");
 					}
-				}	
-				if(found_item) {
-					if(blacklist) {
-						showFloatItem=false;
+				}
+				if (blacklist) {
+					if (found_item) {
+						return;
 					}
-				}else {
-					if(!blacklist) {
-						showFloatItem=false;
+				} else {
+					if (!found_item) {
+						return;
 					}
 				}
 			}
-			if(!showFloatItem) {
+			if (!showFloatItem) {
 				return;
 			}
-			//End Item check
-			
-			//DisplayName
-			if(plugin.getConfig().getBoolean("float.displayname.enable")) {
+			// End Item check
+
+			// DisplayName
+			if (plugin.getConfig().getBoolean("float.displayname.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.displayname.blacklist");
 				displaynamelist = plugin.getConfig().getList("float.displayname.list");
-				if(!iStack.hasItemMeta()) {
-					found_displayname=false;
-				}else {
+				if (!iStack.hasItemMeta()) {
+					found_displayname = false;
+				} else {
 					String itemname = iStack.getItemMeta().getDisplayName();
 					for (Object name : displaynamelist) {
 						String listname = String.valueOf(name);
-						if(itemname.contains(listname)) {
+						if (itemname.contains(listname)) {
 							found_displayname = true;
 							break;
 						}
 					}
 				}
-				if(blacklist) {
-					if(found_displayname) {
+				if (blacklist) {
+					if (found_displayname) {
 						showFloatItem = false;
 					}
-				}else {
-					if(!found_displayname) {
+				} else {
+					if (!found_displayname) {
 						showFloatItem = false;
 					}
 				}
-				if(!showFloatItem) {
+				if (!showFloatItem) {
 					return;
 				}
-			//End DisplayName check
+				// End DisplayName check
 			}
-			
-			//Lore
-			if(plugin.getConfig().getBoolean("float.lore.enable")) {
+
+			// Lore
+			if (plugin.getConfig().getBoolean("float.lore.enable")) {
 				boolean blacklist = plugin.getConfig().getBoolean("float.lore.blacklist");
-				lorelist=plugin.getConfig().getList("float.lore.list");
-				if(!iStack.hasItemMeta()) {
+				lorelist = plugin.getConfig().getList("float.lore.list");
+				if (!iStack.hasItemMeta()) {
 					found_lore = false;
-				}else {
+				} else {
 					java.util.List<String> itemlores = iStack.getItemMeta().getLore();
 					for (String loreinItem : itemlores) {
 						String loreinItem_String = loreinItem;
 						for (Object loreinList : lorelist) {
 							String loreinList_String = String.valueOf(loreinList);
-							if(loreinItem_String.contains(loreinList_String)) {
+							if (loreinItem_String.contains(loreinList_String)) {
 								found_lore = true;
 								break;
 							}
 						}
-						if(found_lore) {
+						if (found_lore) {
 							break;
 						}
 					}
-					if(blacklist) {
-						if(found_lore) {
-							showFloatItem=false;
+					if (blacklist) {
+						if (found_lore) {
+							showFloatItem = false;
 						}
-					}else {
-						if(!found_lore) {
-							showFloatItem=false;
+					} else {
+						if (!found_lore) {
+							showFloatItem = false;
 						}
 					}
-					if(!showFloatItem) {
+					if (!showFloatItem) {
 						return;
 					}
-					
+
 				}
-			}	
+			}
 		}
-		//Check end
-		if(!showFloatItem) {
+		// Check end
+		if (!showFloatItem) {
 			return;
 		}
 		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
@@ -167,10 +168,11 @@ public class DisplayItem {
 		}
 		try {
 			this.safeGuard(this.item);
-			//NMS.safeGuard
+			// NMS.safeGuard
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getLogger().log(Level.WARNING, "QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+			plugin.getLogger().log(Level.WARNING,
+					"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
 		}
 	}
 

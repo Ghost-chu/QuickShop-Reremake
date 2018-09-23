@@ -20,6 +20,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
@@ -290,14 +291,17 @@ public class QS implements CommandExecutor {
 
 					while (bIt.hasNext()) {
 						Block b = bIt.next();
-
 						if (Util.canBeShop(b)) {
 							PlayerInteractEvent e = new PlayerInteractEvent(p, Action.LEFT_CLICK_BLOCK, item, b, BlockFace.UP);
 							Bukkit.getPluginManager().callEvent(e);
 							if (e.isCancelled()) {
 								return;
 							}
-							
+							BlockBreakEvent be = new BlockBreakEvent(b,p);
+							Bukkit.getPluginManager().callEvent(be);
+							if (be.isCancelled()) {
+								return;
+							}
 							if (!plugin.getShopManager().canBuildShop(p, b, Util.getYawFace(p.getLocation().getYaw()))) {
 								// As of the new checking system, most plugins will tell the
 								// player why they can't create a shop there.
