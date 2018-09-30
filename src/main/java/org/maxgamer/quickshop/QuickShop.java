@@ -1,6 +1,10 @@
 package org.maxgamer.quickshop;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +17,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
+
 import java.util.UUID;
 
 import org.bstats.bukkit.Metrics;
-import org.bstats.bukkit.Metrics.CustomChart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -126,13 +130,14 @@ public class QuickShop extends JavaPlugin {
 		return max;
 	}
 
+	@SuppressWarnings("resource")
 	public void onEnable() {
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
 		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
-		//NMS.init();
+		// NMS.init();
 		instance = this;
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
@@ -149,25 +154,25 @@ public class QuickShop extends JavaPlugin {
 		} else {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
 		}
-		
-		//Metrics
-		if(getConfig().getBoolean("metrics")) {
-		PluginDescriptionFile pdf = Bukkit.getServer().getPluginManager().getPlugin("QuickShop").getDescription();
-		String qsVer = pdf.getVersion();
-		Metrics metrics = new Metrics(this);
-		//Version
-		metrics.addCustomChart(new Metrics.SimplePie("plugin_version", () -> qsVer));
-		//Language Env
-		Locale locale = Locale.getDefault();
-		metrics.addCustomChart(new Metrics.SimplePie("country", () -> String.valueOf(locale)));
-		getLogger().info("This computer using language: "+String.valueOf(locale));
-		}else {
+
+		// Metrics
+		if (getConfig().getBoolean("metrics")) {
+			PluginDescriptionFile pdf = Bukkit.getServer().getPluginManager().getPlugin("QuickShop").getDescription();
+			String qsVer = pdf.getVersion();
+			Metrics metrics = new Metrics(this);
+			// Version
+			metrics.addCustomChart(new Metrics.SimplePie("plugin_version", () -> qsVer));
+			// Language Env
+			Locale locale = Locale.getDefault();
+			metrics.addCustomChart(new Metrics.SimplePie("country", () -> String.valueOf(locale)));
+			getLogger().info("This computer using language: " + String.valueOf(locale));
+		} else {
 			getLogger().info("Metrics is disabled, Skipping...");
 		}
-		
+
 		// Initialize Util
 		Util.initialize();
-		
+
 		// Create the shop manager.
 		this.shopManager = new ShopManager(this);
 		if (this.display) {
@@ -185,7 +190,6 @@ public class QuickShop extends JavaPlugin {
 			LockListener ll = new LockListener(this);
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
-		
 
 //		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
 //		if (cPotionSection!=null) {
@@ -278,103 +282,209 @@ public class QuickShop extends JavaPlugin {
 		Connection con;
 		try {
 			getLogger().info("Loading shops from database...");
-			/*int res = Converter.convert();
-			if (res < 0) {
-				plugin.getLogger().log(Level.WARNING, "Could not convert shops. Exitting.");
-				return;
-			}
-			if (res > 0) {
-				plugin.getLogger().log(Level.WARNING, "Conversion success. Continuing...");
-			}*/
+			/*
+			 * int res = Converter.convert(); if (res < 0) {
+			 * plugin.getLogger().log(Level.WARNING, "Could not convert shops. Exitting.");
+			 * return; } if (res > 0) { plugin.getLogger().log(Level.WARNING,
+			 * "Conversion success. Continuing..."); }
+			 */
 			con = database.getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = ps.executeQuery();
 			int errors = 0;
-			//========================
+			// ========================
 			MsgUtil.loadItemi18n();
 			MsgUtil.loadEnchi18n();
 			MsgUtil.loadPotioni18n();
-			//========================
+			// ========================
+
+			boolean isBackuped = false;
+
 			while (rs.next()) {
 				int x = 0;
 				int y = 0;
 				int z = 0;
 				String worldName = null;
-				//==========================================================================================
+				ItemStack item = null;
+				String owner = null;
+				UUID ownerUUID = null;
+				String step = "Crycle";
+				// ==========================================================================================
 				try {
 					x = rs.getInt("x");
 					y = rs.getInt("y");
 					z = rs.getInt("z");
 					worldName = rs.getString("world");
 					World world = Bukkit.getWorld(worldName);
-					ItemStack item = Util.deserialize(rs.getString("itemConfig"));
-					String owner = rs.getString("owner");
-					UUID ownerUUID = null;
+					item = Util.deserialize(rs.getString("itemConfig"));
+					owner = rs.getString("owner");
+					ownerUUID = null;
+					step = "Covert owner to UUID";
 					try {
 						ownerUUID = UUID.fromString(owner);
 					} catch (IllegalArgumentException e) {
 						// This could be old data to be converted... check if it's a player
+						step = "Update owner to UUID";
 						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
 						if (player.hasPlayedBefore()) {
 							ownerUUID = player.getUniqueId();
-							getDB().getConnection().createStatement().executeUpdate("UPDATE shops SET owner = \""+ownerUUID.toString()+"\" WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\" LIMIT 1");
+							getDB().getConnection().createStatement()
+									.executeUpdate("UPDATE shops SET owner = \"" + ownerUUID.toString()
+											+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
+											+ " AND world = \"" + worldName + "\" LIMIT 1");
 						} else {
 							// Invalid shop owner
-							getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\""+(getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+							getDB().getConnection().createStatement()
+									.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = "
+											+ z + " AND world = \"" + worldName + "\""
+											+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 							continue;
 						}
 					}
-					
+					step = "Loading shop price";
 					double price = rs.getDouble("price");
+					step = "Createing Location object";
 					Location loc = new Location(world, x, y, z);
 					/* Skip invalid shops, if we know of any */
+					step = "Checking InventoryHolder";
 					if (world != null && (loc.getBlock().getState() instanceof InventoryHolder) == false) {
-						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x + ", " + y + ", " + z + ".  Deleting.");
-						getDB().getConnection().createStatement().executeUpdate("DELETE FROM shops WHERE x = "+x+" AND y = "+y+" AND z = "+z+" AND world = \""+worldName+"\""+(getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+						step = "Removeing shop in world: Because it not a correct InventoryHolder";
+						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
+								+ ", " + y + ", " + z + ".  Deleting.");
+						getDB().getConnection().createStatement()
+								.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
+										+ " AND world = \"" + worldName + "\""
+										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 						continue;
 					}
+					step = "Loading shop type";
 					int type = rs.getInt("type");
+					step = "Loading shop in world";
 					Shop shop = new ContainerShop(loc, price, item, ownerUUID);
+					step = "Setting shop unlitmited status";
 					shop.setUnlimited(rs.getBoolean("unlimited"));
+					step = "Setting shop type";
 					shop.setShopType(ShopType.fromID(type));
+					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
+					} else {
+						step = "Loading shop to memory >> Chunk not loaded, Skipping";
 					}
+					step = "Finish";
 					count++;
 				} catch (Exception e) {
 					errors++;
+					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
+							+ ", " + z + ")] Item: " + item.getType().name() + "...");
+					getLogger().severe(
+							"Are you running quickshop in 1.13 and use QuickShop before 1.13 Minecraft Version?");
+
+					getLogger().severe("===========Error Reporting Start===========");
+					getLogger().severe("#Java throw >>");
+					getLogger().severe("StackTrace:");
 					e.printStackTrace();
-					getLogger().severe("Error loading a shop! Coords: " + worldName + " (" + x + ", " + y + ", " + z + ")...");
+					getLogger().severe("#Shop data >>");
+					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+					getLogger().severe(
+							"Item: " + item.getType().name() + "MetaData: " + item.getItemMeta().spigot().toString());
+					getLogger().severe("Owner: " + owner + "(" + ownerUUID.toString() + ")");
+					try {
+						getLogger().severe(
+								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
+					} catch (Exception e2) {
+						// TODO: handle exception
+						getLogger().severe("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
+					}
+					try {
+						getLogger().severe(
+								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
+					} catch (Exception e2) {
+						// TODO: handle exception
+						getLogger().severe("Target Block: Can't get block!");
+					}
+					getLogger().severe("#Database info >>");
+
+					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
+					getLogger().severe("Read Only:" + !getDB().getConnection().isReadOnly());
+					getLogger().severe("Client Info:" + getDB().getConnection().getClientInfo().toString());
+					getLogger().severe("Read Only:" + !getDB().getConnection().isReadOnly());
+
+					getLogger().severe("#Debuging >>");
+					getLogger().severe("Runnnig on step: " + step);
+
+					getLogger().severe("#Tips >>");
+					getLogger().severe("Please report this issues to author, And you database will auto backup!");
+
+					if (!isBackuped) {
+						File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+								.getAbsolutePath().toString() + "\\shop.db");
+						if (!sqlfile.exists()) {
+							getLogger().severe("Failed to backup! (File not found)");
+						}
+						String uuid = UUID.randomUUID().toString().replaceAll("_", "");
+						File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+								.getAbsolutePath().toString() + "\\shop_backup_" + uuid + ".db");
+						try {
+							bksqlfile.createNewFile();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							getLogger().severe("Failed to backup! (Create)");
+						}
+						FileChannel inputChannel = null;
+						FileChannel outputChannel = null;
+						try {
+							inputChannel = new FileInputStream(sqlfile).getChannel();
+							outputChannel = new FileOutputStream(bksqlfile).getChannel();
+							outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+						} catch (Exception e3) {
+							e3.printStackTrace();
+							getLogger().severe("Failed to backup! (Copy)");
+						}
+						try {
+							inputChannel.close();
+							outputChannel.close();
+						} catch (IOException e1) {
+							inputChannel=null;
+							outputChannel=null;
+						}
+
+					}
+
 					if (errors < 3) {
-						getLogger().info("Skipping load this shop...");
-						return;
-//						PreparedStatement delps = getDB().getConnection().prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-//						delps.setInt(1, x);
-//						delps.setInt(2, y);
-//						delps.setInt(3, z);
-//						delps.setString(4, worldName);
-//						delps.execute();
+						getLogger().info("Removeing shop from database...");
+						// return;
+						PreparedStatement delps = getDB().getConnection()
+								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
+						delps.setInt(1, x);
+						delps.setInt(2, y);
+						delps.setInt(3, z);
+						delps.setString(4, worldName);
+						delps.execute();
 					} else {
-						getLogger().severe("Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
+						getLogger().severe(
+								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
 						e.printStackTrace();
 					}
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			getLogger().severe("Could not load shops.");
+			getLogger().severe("Could not load shops Because SQLException.");
 		}
-		
+
 		getLogger().info("Loaded " + count + " shops.");
-		
+
 		// Register events
 		getLogger().info("Registering Listeners");
 		blockListener = new BlockListener(this);
 		playerListener = new PlayerListener(this);
 		worldListener = new WorldListener(this);
 		chatListener = new ChatListener(this);
-		
+
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
@@ -392,8 +502,8 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("Shop.find-distance is too high! Pick a number under 100!");
 		}
 
-		if (display && displayItemCheckTicks>0) {
-			new BukkitRunnable() {		
+		if (display && displayItemCheckTicks > 0) {
+			new BukkitRunnable() {
 				@Override
 				public void run() {
 					Iterator<Shop> it = getShopManager().getShopIterator();
@@ -402,10 +512,12 @@ public class QuickShop extends JavaPlugin {
 						if (shop instanceof ContainerShop) {
 							ContainerShop cShop = (ContainerShop) shop;
 							if (cShop.checkDisplayMoved()) {
-								log("Display item for "+shop+" is not on the correct location and has been removed. Probably someone is trying to cheat.");
+								log("Display item for " + shop
+										+ " is not on the correct location and has been removed. Probably someone is trying to cheat.");
 								for (Player player : getServer().getOnlinePlayers()) {
 									if (player.hasPermission("quickshop.alerts")) {
-										player.sendMessage(ChatColor.RED + "[QuickShop] Display item for "+shop+" is not on the correct location and has been removed. Probably someone is trying to cheat.");
+										player.sendMessage(ChatColor.RED + "[QuickShop] Display item for " + shop
+												+ " is not on the correct location and has been removed. Probably someone is trying to cheat.");
 									}
 								}
 								cShop.getDisplayItem().remove();
@@ -415,10 +527,11 @@ public class QuickShop extends JavaPlugin {
 				}
 			}.runTaskTimer(this, 1L, displayItemCheckTicks);
 		}
-		
-		// added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
+
+		// added for compatibility reasons with OpenInv - see
+		// https://github.com/KaiKikuchi/QuickShop/issues/139
 		this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-		
+
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");

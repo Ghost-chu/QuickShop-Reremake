@@ -20,7 +20,7 @@ public class ItemWatcher implements Runnable {
 	static QuickShop plugin = QuickShop.instance;
 
 	public ItemWatcher(QuickShop plugin) {
-		this.plugin = plugin;
+		ItemWatcher.plugin = plugin;
 	}
 
 	public void run() {
