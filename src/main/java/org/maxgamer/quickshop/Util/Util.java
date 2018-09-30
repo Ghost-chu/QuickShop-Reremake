@@ -12,11 +12,9 @@ import java.util.Map.Entry;
 
 import java.util.Set;
 
-import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -34,12 +32,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sign;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
-
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
