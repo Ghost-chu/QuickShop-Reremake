@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -64,8 +65,8 @@ public class DisplayItem {
 				itemlist = plugin.getConfig().getList("float.item.list");
 				for (Object material : itemlist) {
 					String materialname = String.valueOf(material);
-					String itemname = iStack.getType().name();
-					if (materialname.equals(itemname)) {
+//					String itemname = iStack.getType().name();
+					if (Material.getMaterial(materialname).equals(iStack.getType())) {
 						found_item = true;
 						break;
 					} else {
