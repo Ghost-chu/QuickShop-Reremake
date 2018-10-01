@@ -26,8 +26,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import net.minecraft.server.v1_13_R1.DataWatcher.Item;
-
 public class MsgUtil {
 	static QuickShop plugin = QuickShop.instance;
 	private static YamlConfiguration messages;
