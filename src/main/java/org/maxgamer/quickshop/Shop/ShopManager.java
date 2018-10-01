@@ -169,12 +169,6 @@ public class ShopManager {
 		ShopChunk shopChunk = new ShopChunk(world, x, z);
 		HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
 		// That chunk data hasn't been created yet - Create it!
-		BlockBreakEvent be = new BlockBreakEvent(shop.getLocation().getBlock(),Bukkit.getPlayer(shop.getOwner()));
-		Bukkit.getPluginManager().callEvent(be);
-		if (be.isCancelled()) {
-			be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
-			return;
-		}
 		if (inChunk == null) {
 			inChunk = new HashMap<Location, Shop>(1);
 			// Put it in the world
