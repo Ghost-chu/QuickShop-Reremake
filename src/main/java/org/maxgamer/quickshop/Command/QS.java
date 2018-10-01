@@ -284,25 +284,31 @@ public class QS implements CommandExecutor {
 	private void create(CommandSender sender, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			ItemStack item = p.getItemInHand();
-			if (item.getType()!=Material.AIR) {
+			ItemStack item = p.getInventory().getItemInMainHand();
+			if (item.getType() != Material.AIR) {
 				if (sender.hasPermission("quickshop.create.sell")) {
 					BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
 
 					while (bIt.hasNext()) {
 						Block b = bIt.next();
 						if (Util.canBeShop(b)) {
-							PlayerInteractEvent e = new PlayerInteractEvent(p, Action.LEFT_CLICK_BLOCK, item, b, BlockFace.UP);
-							Bukkit.getPluginManager().callEvent(e);
-							if (e.isCancelled()) {
-								return;
+							if (p != null && b != null && p.isOnline()) {
+								PlayerInteractEvent e = new PlayerInteractEvent(p, Action.LEFT_CLICK_BLOCK, item, b,
+										BlockFace.UP);
+								Bukkit.getPluginManager().callEvent(e);
+								if (e.isCancelled()) {
+									return;
+								}
+
+								BlockBreakEvent be = new BlockBreakEvent(b, p);
+								Bukkit.getPluginManager().callEvent(be);
+								if (be.isCancelled()) {
+									return;
+								}
 							}
-							BlockBreakEvent be = new BlockBreakEvent(b,p);
-							Bukkit.getPluginManager().callEvent(be);
-							if (be.isCancelled()) {
-								return;
-							}
-							if (!plugin.getShopManager().canBuildShop(p, b, Util.getYawFace(p.getLocation().getYaw()))) {
+
+							if (!plugin.getShopManager().canBuildShop(p, b,
+									Util.getYawFace(p.getLocation().getYaw()))) {
 								// As of the new checking system, most plugins will tell the
 								// player why they can't create a shop there.
 								// So telling them a message would cause spam etc.
@@ -313,16 +319,19 @@ public class QS implements CommandExecutor {
 								p.sendMessage(MsgUtil.getMessage("no-double-chests"));
 								return;
 							}
-							if (Util.isBlacklisted(item.getType()) && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
+							if (Util.isBlacklisted(item.getType())
+									&& !p.hasPermission("quickshop.bypass." + item.getType().name())) {
 								p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
 								return;
 							}
 
-							if (args.length<2) {
+							if (args.length < 2) {
 								// Send creation menu.
-								Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(), b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
+								Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(),
+										b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
 								plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-								p.sendMessage(MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+								p.sendMessage(
+										MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
 							} else {
 								plugin.getShopManager().handleChat(p, args[1]);
 							}
