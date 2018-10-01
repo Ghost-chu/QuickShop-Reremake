@@ -26,6 +26,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
+import net.minecraft.server.v1_13_R1.DataWatcher.Item;
+
 public class MsgUtil {
 	static QuickShop plugin = QuickShop.instance;
 	private static YamlConfiguration messages;
@@ -428,7 +430,16 @@ public class MsgUtil {
 		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
-
+	public static String getDisplayName(ItemStack iStack, String DataName){
+		ItemStack is = iStack.clone();
+		
+		if(is.hasItemMeta()&&is.getItemMeta().hasDisplayName()) {
+			return is.getItemMeta().getDisplayName();
+		}else {
+			return MsgUtil.getItemi18n(DataName);
+		}
+		
+	}
 	public static String getMessage(String loc, String... args) {
 		String raw = messages.getString(loc);
 		if (raw == null) {
