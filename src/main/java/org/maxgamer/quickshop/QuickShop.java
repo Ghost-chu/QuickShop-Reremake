@@ -439,7 +439,7 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
 							+ ", " + z + ")] Item: " + item.getType().name() + "...");
 					getLogger().severe(
-							"Are you running quickshop in 1.13 and use QuickShop before 1.13 Minecraft Version?");
+							"Are you deleted world included QuickShop shops? All shops will auto fixed.");
 
 					getLogger().severe("===========Error Reporting Start===========");
 					getLogger().severe("#Java throw >>");
