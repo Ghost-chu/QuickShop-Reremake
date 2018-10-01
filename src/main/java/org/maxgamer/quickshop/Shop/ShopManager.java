@@ -379,7 +379,7 @@ public class ShopManager {
 						/* The shop has hereforth been successfully created */
 						createShop(shop);
 						Location loc = shop.getLocation();
-						plugin.log(p.getName() + " created a " + MsgUtil.getItemi18n(shop.getDataName()) + " shop at (" + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
+						plugin.log(p.getName() + " created a " +  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()) + " shop at (" + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
 						if (!plugin.getConfig().getBoolean("shop.lock")) {
 							// Warn them if they haven't been warned since
 							// reboot
@@ -471,7 +471,7 @@ public class ShopManager {
 					if (shop.isSelling()) {
 						int stock = shop.getRemainingStock();
 						if (stock < amount) {
-							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()),MsgUtil.getItemi18n(shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()), MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
 							return;
 						}
 						if (amount == 0) {
@@ -533,12 +533,12 @@ public class ShopManager {
 							}
 							// Notify the shop owner
 							if (plugin.getConfig().getBoolean("show-tax")) {
-								String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount, MsgUtil.getItemi18n(shop.getDataName()), Util.format((tax * total)));
+								String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()), Util.format((tax * total)));
 								if (stock == amount)
-									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil.getItemi18n(shop.getDataName()));
+									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
 								MsgUtil.send(shop.getOwner(), msg);
 							} else {
-								String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount, shop.getDataName());
+								String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
 								if (stock == amount)
 									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), shop.getDataName());
 								MsgUtil.send(shop.getOwner(), msg);
@@ -552,13 +552,13 @@ public class ShopManager {
 					} else if (shop.isBuying()) {
 						int space = shop.getRemainingSpace();
 						if (space < amount) {
-							p.sendMessage(MsgUtil.getMessage("shop-has-no-space", "" + space, MsgUtil.getItemi18n(shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("shop-has-no-space", "" + space, MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
 							return;
 						}
 						int count = Util.countItems(p.getInventory(), shop.getItem());
 						// Not enough items
 						if (amount > count) {
-							p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, MsgUtil.getItemi18n(shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
 							return;
 						}
 						if (amount == 0) {
@@ -613,7 +613,7 @@ public class ShopManager {
 							boolean depositresult = plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
 							if(QuickShop.debug) {plugin.getLogger().info("Economy debug:deposit2 in shopmanager result:"+depositresult);}
 							// Notify the owner of the purchase.
-							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, MsgUtil.getItemi18n(shop.getDataName()));
+							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
 							if (space == amount)
 								msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ());
 							MsgUtil.send(shop.getOwner(), msg);

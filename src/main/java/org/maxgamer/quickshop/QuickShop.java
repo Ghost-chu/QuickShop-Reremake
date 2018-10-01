@@ -512,6 +512,7 @@ public class QuickShop extends JavaPlugin {
 						}
 
 					}
+					getLogger().severe("===========Error Reporting End===========");
 
 					if (errors < 3) {
 						getLogger().info("Removeing shop from database...");

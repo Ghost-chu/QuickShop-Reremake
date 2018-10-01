@@ -356,6 +356,12 @@ public class Util {
 		ItemStack is = itemStack.clone();
 		is.setAmount(1);
 		
+		if(is.hasItemMeta()) {
+			if(is.getItemMeta().hasDisplayName()) {
+				return is.getItemMeta().getDisplayName();
+			}
+		}
+		
 		String name = MsgUtil.getItemi18n(itemStack.getType().name()).trim();
 
 		String[] nameParts = name.split("_");
