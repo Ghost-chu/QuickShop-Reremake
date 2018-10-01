@@ -155,8 +155,52 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
 		}
 
+		int CurrentConfigVersion = 1;
+
+		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning(
+					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+			getLogger().warning("WARNING! Server will continue boot in 5 seconds...");
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		// Metrics
-		if (getConfig().getBoolean("metrics")) {
+		if (!getConfig().getBoolean("disabled-metrics")) {
 			PluginDescriptionFile pdf = Bukkit.getServer().getPluginManager().getPlugin("QuickShop").getDescription();
 			String qsVer = pdf.getVersion();
 			Metrics metrics = new Metrics(this);
@@ -389,7 +433,7 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("#Shop data >>");
 					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
 					getLogger().severe(
-							"Item: " + item.getType().name() + "MetaData: " + item.getItemMeta().spigot().toString());
+							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
 					getLogger().severe("Owner: " + owner + "(" + ownerUUID.toString() + ")");
 					try {
 						getLogger().severe(
@@ -408,9 +452,9 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("#Database info >>");
 
 					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
-					getLogger().severe("Read Only:" + !getDB().getConnection().isReadOnly());
+					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
 					getLogger().severe("Client Info:" + getDB().getConnection().getClientInfo().toString());
-					getLogger().severe("Read Only:" + !getDB().getConnection().isReadOnly());
+					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
 
 					getLogger().severe("#Debuging >>");
 					getLogger().severe("Runnnig on step: " + step);
@@ -420,13 +464,13 @@ public class QuickShop extends JavaPlugin {
 
 					if (!isBackuped) {
 						File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-								.getAbsolutePath().toString() + "\\shop.db");
+								.getAbsolutePath().toString() + "/shop.db");
 						if (!sqlfile.exists()) {
 							getLogger().severe("Failed to backup! (File not found)");
 						}
 						String uuid = UUID.randomUUID().toString().replaceAll("_", "");
 						File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-								.getAbsolutePath().toString() + "\\shop_backup_" + uuid + ".db");
+								.getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
 						try {
 							bksqlfile.createNewFile();
 						} catch (IOException e1) {
@@ -448,8 +492,8 @@ public class QuickShop extends JavaPlugin {
 							inputChannel.close();
 							outputChannel.close();
 						} catch (IOException e1) {
-							inputChannel=null;
-							outputChannel=null;
+							inputChannel = null;
+							outputChannel = null;
 						}
 
 					}
