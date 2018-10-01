@@ -64,6 +64,9 @@ import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiversePlugin;
+
 
 @SuppressWarnings("deprecation")
 public class QuickShop extends JavaPlugin {
@@ -116,6 +119,7 @@ public class QuickShop extends JavaPlugin {
 	/** Whether debug info should be shown in the console */
 	public static boolean debug = false;
 
+	MultiverseCore mPlugin = null;
 	
 	private int displayItemCheckTicks;
 
