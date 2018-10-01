@@ -159,6 +159,12 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
 		}
 
+		mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+
+		if (mPlugin != null) {
+			getLogger().info("Successfully loaded MultiverseCore support!");
+		}
+
 		int CurrentConfigVersion = 1;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
@@ -364,6 +370,11 @@ public class QuickShop extends JavaPlugin {
 					z = rs.getInt("z");
 					worldName = rs.getString("world");
 					World world = Bukkit.getWorld(worldName);
+					if (world == null && mPlugin != null) {
+						// Maybe world not loaded? Try call MV to load world.
+						mPlugin.getCore().getMVWorldManager().loadWorld(worldName);
+						world = Bukkit.getWorld(worldName);
+					}
 					item = Util.deserialize(rs.getString("itemConfig"));
 					owner = rs.getString("owner");
 					ownerUUID = null;
