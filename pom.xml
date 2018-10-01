@@ -87,6 +87,10 @@
 			<id>bstats-repo</id>
 			<url>http://repo.bstats.org/content/repositories/releases/</url>
 		</repository>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -115,6 +119,13 @@
 			<version>v1_13_R1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.13-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.onarandombox.MultiverseCore</groupId>
+			<artifactId>Multiverse-Core</artifactId>
+			<version>2.6.0-b738</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Multiverse-Core-2.6.0.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<properties>
