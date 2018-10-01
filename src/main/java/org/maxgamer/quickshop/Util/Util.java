@@ -659,12 +659,16 @@ public class Util {
 				}
 			}
 		} else {
-			Itemname = MsgUtil.getItemi18n(itemStack.getType().name());
+			Itemname = MsgUtil.getDisplayName(itemStack,MsgUtil.getItemi18n(itemStack.getType().name()));
 			Itemlore = null;
 			Itemenchs = null;
 		}
-
-		finalItemdata = Itemname;
+		if(Itemname!=MsgUtil.getItemi18n(itemStack.getType().name())) {
+			finalItemdata = Itemname+" "+ChatColor.GRAY+"("+MsgUtil.getItemi18n(itemStack.getType().name())+ChatColor.GRAY+")";
+		}else {
+			finalItemdata = Itemname;
+		}
+		
 		finalItemdata += "\n";
 		List<String> a = new ArrayList<>();
 		List<Integer> b = new ArrayList<>();
