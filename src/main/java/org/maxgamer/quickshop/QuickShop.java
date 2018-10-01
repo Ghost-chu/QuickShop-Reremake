@@ -454,14 +454,12 @@ public class QuickShop extends JavaPlugin {
 						getLogger().severe(
 								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
 					} catch (Exception e2) {
-						// TODO: handle exception
 						getLogger().severe("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
 					}
 					try {
 						getLogger().severe(
 								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
 					} catch (Exception e2) {
-						// TODO: handle exception
 						getLogger().severe("Target Block: Can't get block!");
 					}
 					getLogger().severe("#Database info >>");
@@ -524,9 +522,18 @@ public class QuickShop extends JavaPlugin {
 						delps.setInt(3, z);
 						delps.setString(4, worldName);
 						delps.execute();
+						getLogger().info("Trying keep loading...");
 					} else {
 						getLogger().severe(
 								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
+						getLogger().info("Removeing shop from database...");
+						PreparedStatement delps = getDB().getConnection()
+								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
+						delps.setInt(1, x);
+						delps.setInt(2, y);
+						delps.setInt(3, z);
+						delps.setString(4, worldName);
+						delps.execute();
 						e.printStackTrace();
 					}
 				}
