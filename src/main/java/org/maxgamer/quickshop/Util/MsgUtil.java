@@ -110,7 +110,7 @@ public class MsgUtil {
 		try {
 		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim();
 		}catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			Itemname_i18n = null;
 		}
 		if(ItemBukkitName==null) {
