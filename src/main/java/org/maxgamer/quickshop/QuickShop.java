@@ -212,10 +212,12 @@ public class QuickShop extends JavaPlugin {
 		if(getConfig().getBoolean("disabled-metrics")!=true) {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
+			String serverName = Bukkit.getServerName();
 			Metrics metrics = new Metrics(this);
 			// Version
 			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
 			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName)); //When yours report errors, I can know your settings...If you have set servername....
 			
 			// Language Env
 			Locale locale = Locale.getDefault();

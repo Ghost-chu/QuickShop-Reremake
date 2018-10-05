@@ -149,16 +149,10 @@ protect:
   explode: false
   #Protect shop block can or cannot pull out by Hopper
   hopper: false
-#You can translate QuickShop display name in there
-# - BukkitName:TranslatedName
-#BukkitName should auto added when you startup server.
-itemi18n:
-  STONE: STONE
 lockette:
   private: "[Private]"
   more_users: "[More Users]"
   #Make Quickshop not cancel break lock sign event(Inpossible break locked chest)
-  
 #Float items advanced filter manager
 #These all in testing and have many bugs, Use your own risk!
 float:
