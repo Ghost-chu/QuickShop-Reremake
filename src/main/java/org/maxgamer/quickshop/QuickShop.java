@@ -164,42 +164,44 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 
-		int CurrentConfigVersion = 1;
+		int CurrentConfigVersion = 2;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning(
-					"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-			getLogger().warning("WARNING! Server will continue boot in 5 seconds...");
+			if(!updateConfig(getConfig().getInt("config-version"),CurrentConfigVersion)) {
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning(
+						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+				getLogger().warning("WARNING! Server will continue boot in 5 seconds...");
+			}
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
@@ -207,22 +209,22 @@ public class QuickShop extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
-
-		// Metrics
-		if (!getConfig().getBoolean("disabled-metrics")) {
-			PluginDescriptionFile pdf = Bukkit.getServer().getPluginManager().getPlugin("QuickShop").getDescription();
-			String qsVer = pdf.getVersion();
+		if(getConfig().getBoolean("disabled-metrics")!=true) {
+			String serverVer = Bukkit.getVersion();
+			String bukkitVer = Bukkit.getBukkitVersion();
 			Metrics metrics = new Metrics(this);
 			// Version
-			metrics.addCustomChart(new Metrics.SimplePie("plugin_version", () -> qsVer));
+			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
+			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+			
 			// Language Env
 			Locale locale = Locale.getDefault();
 			metrics.addCustomChart(new Metrics.SimplePie("country", () -> String.valueOf(locale)));
-			getLogger().info("This computer using language: " + String.valueOf(locale));
-		} else {
-			getLogger().info("Metrics is disabled, Skipping...");
+			getLogger().info("This server using language: " + String.valueOf(locale));
+		}else {
+			getLogger().info("You have disabled mertics, Skipping...");
 		}
-
+		
 		// Initialize Util
 		Util.initialize();
 
@@ -601,6 +603,19 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
+	}
+
+	private boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
+		// TODO Auto-generated method stub
+		
+		if(oldConfigVersion == 1 && currentConfigVersion == 2) {
+			getConfig().set("disabled-metrics", false);
+			getConfig().set("config-version", 2);
+			getLogger().info("");
+		}
+		
+		getLogger().info("Successfully updated config.");
+		return true;
 	}
 
 	/** Reloads QuickShops config */

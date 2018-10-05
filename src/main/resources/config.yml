@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 1
+config-version: 2
 
 #Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
 tax: 0.05
@@ -22,7 +22,7 @@ whole-number-prices-only: false
 force-bukkit-chat-handler: false
 
 #Disallow QuickShop-Reremake send anonymous metrics data to bStats.
-disabled-metrics: true
+disabled-metrics: false
 
 database:
     mysql: false
