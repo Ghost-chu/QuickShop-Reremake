@@ -138,17 +138,17 @@ custom-items-name:
 #WARNING! These all in the testing!
 protect:
   #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
-  minecart: false
+  minecart: true
   #Protect shop block can or cannot pick up by entity (Will remove Entity
-  entity: false
+  entity: true
   #Protect shop block can or cannot active by Redstone
-  redstone: false
+  redstone: true
   #Protect shop block can or cannot break by something growup
-  structuregrow: false
+  structuregrow: true
   #Protect shop block can or cannot break by Entity and Block explode
-  explode: false
+  explode: true
   #Protect shop block can or cannot pull out by Hopper
-  hopper: false
+  hopper: true
 lockette:
   private: "[Private]"
   more_users: "[More Users]"

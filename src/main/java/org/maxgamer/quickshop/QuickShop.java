@@ -1,9 +1,12 @@
 package org.maxgamer.quickshop;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import java.util.UUID;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -170,41 +175,13 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
 			if(!updateConfig(getConfig().getInt("config-version"),CurrentConfigVersion)) {
 				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+						"WARNING! You not have lastet version config.yml, And Failed to auto update, Please follow SpigotMC updatelog to update your config.yml!");
 				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, Please follow SpigotMC updatelog to update your config.yml!");
+						"WARNING! You not have lastet version config.yml, And Failed to auto update, Please follow SpigotMC updatelog to update your config.yml!");
 				getLogger().warning("WARNING! Server will continue boot in 5 seconds...");
 			}
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -287,7 +264,7 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-minecart",() -> use_protect_minecart)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-entity",() -> use_protect_entity)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-redstone",() -> use_protect_redstone)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-structuregrow",() ->use_protect_redstone)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use-protect-structuregrow",() ->use_protect_structuregrow)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-explode",() -> use_protect_explode)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-hopper", () ->use_protect_hopper)); 
 			
@@ -673,19 +650,50 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
+		getLogger().info("Async checking for updates...");
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				checkUpdate("59134");
+			}
+		}.runTaskTimerAsynchronously(this, 1, 1000*60*30);
 	}
 
-	private boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
+	public boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
 		// TODO Auto-generated method stub
-		
-		if(oldConfigVersion == 1 && currentConfigVersion == 2) {
-			getConfig().set("disabled-metrics", false);
-			getConfig().set("config-version", 2);
-			getLogger().info("");
+		while (currentConfigVersion-oldConfigVersion!=0 && oldConfigVersion<currentConfigVersion) {
+			oldConfigVersion = updateConfig(oldConfigVersion+1);
+			if(oldConfigVersion==-1) {
+				getLogger().info("Failed to config update!.");
+				return false;
+			}
 		}
 		
-		getLogger().info("Successfully updated config.");
+		getLogger().info("Complete config update!.");
 		return true;
+	}
+	
+	public int updateConfig(int selectedVersion) {
+		if(selectedVersion == 1) {
+			//Run 0-1 update
+			getConfig().set("disabled-metrics", false);
+			getConfig().set("config-version", 2);
+			return selectedVersion+1;
+		}
+		if(selectedVersion == 2) {
+			//Run 1-2 update
+			getConfig().set("protect.minecart", true);
+			getConfig().set("protect.entity", true);
+			getConfig().set("protect.redstone", true);
+			getConfig().set("protect.structuregrow", true);
+			getConfig().set("protect.explode", true);
+			getConfig().set("protect.hopper", true);
+			getConfig().set("config-version", 3);
+			return selectedVersion+1;
+		}
+		
+		return -1;
 	}
 
 	/** Reloads QuickShops config */
@@ -804,4 +812,21 @@ public class QuickShop extends JavaPlugin {
 	public ShopManager getShopManager() {
 		return this.shopManager;
 	}
+    public void checkUpdate(String resourceID) {
+        try {
+            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceID).openConnection();
+            int timed_out = 300000; // check if API is avaible, set your time as you want
+            connection.setConnectTimeout(timed_out);
+            connection.setReadTimeout(timed_out);
+            String localPluginVersion = this.getDescription().getVersion();
+            String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
+            if (!spigotPluginVersion.equals(localPluginVersion) && spigotPluginVersion != null) {
+                getLogger().info("New QuickShop release now updated on SpigotMC.org! ");
+                getLogger().info("Update plugin in there:https://www.spigotmc.org/resources/59134/");
+            }
+            connection.disconnect();
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to check for an update on SpigotMC.org!");
+        }
+    }
 }
