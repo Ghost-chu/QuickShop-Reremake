@@ -7,17 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import com.mysql.jdbc.ConnectionGroup;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +35,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * Check out https://bStats.org/ to learn more about bStats!
  */
+@SuppressWarnings("unchecked")
 public class Metrics {
 
 
@@ -168,7 +163,7 @@ public class Metrics {
      *
      * @return The plugin specific data.
      */
-    public JSONObject getPluginData() {
+	public JSONObject getPluginData() {
         JSONObject data = new JSONObject();
 
         String pluginName = "QuickShop-Reremake";
@@ -195,7 +190,7 @@ public class Metrics {
      *
      * @return The server specific data.
      */
-    public JSONObject getServerData() {
+	public JSONObject getServerData() {
         // Minecraft specific data
         int playerAmount;
         try {
@@ -239,7 +234,8 @@ public class Metrics {
     /**
      * Collects the data and sends it afterwards.
      */
-    public void submitData() {
+
+	public void submitData() {
     	
         final JSONObject data = getServerData();
         plugin.getLogger().info("Posting stats data...");
@@ -282,16 +278,14 @@ public class Metrics {
      * @param data The data to send.
      * @throws Exception If the request failed.
      */
-    private void sendData(JSONObject data) throws Exception {
+    @SuppressWarnings("unused")
+	private void sendData(JSONObject data) throws Exception {
     	if (data == null) {
-    		plugin.getLogger().warning("Data cannot be null");
             throw new IllegalArgumentException("Data cannot be null!");
         }
         if (Bukkit.isPrimaryThread()) {
-        	plugin.getLogger().warning("Not working on main thread");
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
-        plugin.getLogger().info("Connecting to bStats...");
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
 
         // Compress the data to save bandwidth
@@ -307,14 +301,12 @@ public class Metrics {
         connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
         connection.setConnectTimeout(300000);
         connection.setReadTimeout(300000);
-        plugin.getLogger().info("Sending stats data...");
         // Send data
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.write(compressedData);
         outputStream.flush();
         outputStream.close();
         String result = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-        plugin.getLogger().info("Complete to send stats to bStats:"+result);
         connection.getInputStream().close(); // We don't care about the response - Just send our data :)
     }
 
