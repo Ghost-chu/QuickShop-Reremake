@@ -18,8 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import java.util.UUID;
@@ -39,6 +37,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
@@ -169,10 +168,10 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 
-		int CurrentConfigVersion = 3;
+		int CurrentConfigVersion = 4;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
-			if(!updateConfig(getConfig().getInt("config-version"),CurrentConfigVersion)) {
+			if (!updateConfig(getConfig().getInt("config-version"), CurrentConfigVersion)) {
 				getLogger().warning(
 						"WARNING! You not have lastet version config.yml, And Failed to auto update, Please follow SpigotMC updatelog to update your config.yml!");
 				getLogger().warning(
@@ -186,8 +185,7 @@ public class QuickShop extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
-		
-		
+
 		// Initialize Util
 		Util.initialize();
 
@@ -402,8 +400,7 @@ public class QuickShop extends JavaPlugin {
 					errors++;
 					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
 							+ ", " + z + ")] Item: " + item.getType().name() + "...");
-					getLogger().severe(
-							"Are you deleted world included QuickShop shops? All shops will auto fixed.");
+					getLogger().severe("Are you deleted world included QuickShop shops? All shops will auto fixed.");
 
 					getLogger().severe("===========Error Reporting Start===========");
 					getLogger().severe("#Java throw >>");
@@ -529,9 +526,9 @@ public class QuickShop extends JavaPlugin {
 		// Command handlers
 		QS commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);
-		if (getConfig().getInt("shop.find-distance") > 100) {
-			getLogger().severe("Shop.find-distance is too high! Pick a number under 100!");
-		}
+//		if (getConfig().getInt("shop.find-distance") > 100) {
+//			getLogger().severe("Shop.find-distance is too high! Pick a number under 100!");
+//		}
 
 		if (display && displayItemCheckTicks > 0) {
 			new BukkitRunnable() {
@@ -566,99 +563,128 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
-		if(getConfig().getBoolean("disabled-metrics")!=true) {
+		if (getConfig().getBoolean("disabled-metrics") != true) {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
 			String serverName = Bukkit.getServerName();
 			Metrics metrics = new Metrics(this);
-			String display_Items; 
-			if(getConfig().getBoolean("shop.display-items")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				display_Items = "Enabled"; 
-			}else {
+			String display_Items;
+			if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
+																// number items need disabled?
+				display_Items = "Enabled";
+			} else {
 				display_Items = "Disabled";
 			}
-			
-			String locks; 
-			if(getConfig().getBoolean("shop.lock")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				locks = "Enabled"; 
-			}else {
+
+			String locks;
+			if (getConfig().getBoolean("shop.lock")) {
+				locks = "Enabled";
+			} else {
 				locks = "Disabled";
 			}
-			
+
 			String sneak_action;
-			if(getConfig().getBoolean("shop.sneak-to-create")||getConfig().getBoolean("shop.sneak-to-trade")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				sneak_action = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("shop.sneak-to-create") || getConfig().getBoolean("shop.sneak-to-trade")) {
+				sneak_action = "Enabled";
+			} else {
 				sneak_action = "Disabled";
 			}
 
-
 			String use_protect_minecart;
-			if(getConfig().getBoolean("protect.minecart")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_minecart = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.minecart")) {
+				use_protect_minecart = "Enabled";
+			} else {
 				use_protect_minecart = "Disabled";
 			}
 			String use_protect_entity;
-			if(getConfig().getBoolean("protect.entity")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_entity = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.entity")) {
+				use_protect_entity = "Enabled";
+			} else {
 				use_protect_entity = "Disabled";
 			}
 			String use_protect_redstone;
-			if(getConfig().getBoolean("protect.redstone")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_redstone = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.redstone")) {
+				use_protect_redstone = "Enabled";
+			} else {
 				use_protect_redstone = "Disabled";
 			}
 			String use_protect_structuregrow;
-			if(getConfig().getBoolean("protect.structuregrow")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_structuregrow = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.structuregrow")) {
+				use_protect_structuregrow = "Enabled";
+			} else {
 				use_protect_structuregrow = "Disabled";
 			}
 			String use_protect_explode;
-			if(getConfig().getBoolean("protect.explode")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_explode = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.explode")) {
+				use_protect_explode = "Enabled";
+			} else {
 				use_protect_explode = "Disabled";
 			}
 			String use_protect_hopper;
-			if(getConfig().getBoolean("protect.hopper")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_hopper = "Enabled"; 
-			}else {
+			if (getConfig().getBoolean("protect.hopper")) {
+				use_protect_hopper = "Enabled";
+			} else {
 				use_protect_hopper = "Disabled";
 			}
+			
+			String shop_find_distance = getConfig().getString("shop.find-distance");
+			
+			String float_filter_enable = boolean2String(getConfig().getBoolean("float.enable"));
+			String float_filter_item_enable = boolean2String(getConfig().getBoolean("float.item.enable"));
+			String float_filter_lore_enable = boolean2String(getConfig().getBoolean("float.lore.enable"));
+			String float_filter_displayname_enable = boolean2String(getConfig().getBoolean("float.displayname.enable"));
+			
+			String float_filter_item_blacklist = boolean2String(getConfig().getBoolean("float.item.blacklist"));
+			String float_filter_lore_blacklist = boolean2String(getConfig().getBoolean("float.lore.blacklist"));
+			String float_filter_displayname_blacklist = boolean2String(getConfig().getBoolean("float.displayname.blacklist"));
 			
 			
 			// Version
 			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
 			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
-			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName)); //When yours report errors, I can know your settings...If you have set servername....
+			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName));
 			metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
-			metrics.addCustomChart(new Metrics.SimplePie("use-locks", () -> locks));
-			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart",() -> use_protect_minecart)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity",() -> use_protect_entity)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone",() -> use_protect_redstone)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow",() ->use_protect_structuregrow)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode",() -> use_protect_explode)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () ->use_protect_hopper)); 
-			metrics.submitData(); //Submit now!
+			metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
+			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart", () -> use_protect_minecart));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity", () -> use_protect_entity));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone", () -> use_protect_redstone));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow", () -> use_protect_structuregrow));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode", () -> use_protect_explode));
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () -> use_protect_hopper));
+			metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
+			//Exp for stats, maybe i need improve this, so i add this.
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_enable", () -> float_filter_enable));
+			
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_item_enable", () -> float_filter_item_enable));
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_lore_enable", () -> float_filter_lore_enable));
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_enable", () -> float_filter_displayname_enable));
+			
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_item_blacklist", () -> float_filter_item_blacklist));
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_lore_blacklist", () -> float_filter_lore_blacklist));
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_blacklist", () -> float_filter_displayname_blacklist));
+			
+			metrics.submitData(); // Submit now!
 			getLogger().info("Mertics submited.");
-		}else {
+		} else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
 		getLogger().info("Async checking for updates...");
 		new BukkitRunnable() {
-			
+
 			@Override
 			public void run() {
 				checkUpdate("59134");
 			}
-		}.runTaskTimerAsynchronously(this, 1, 1000*60*30);
+		}.runTaskTimerAsynchronously(this, 1, 1000 * 60 * 30);
 	}
-
+	public String boolean2String(boolean bool) {
+		if(bool) {
+			return "Enabled";
+		}else {
+			return "Disabled";
+		}
+	}
 	public boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
 		// TODO Auto-generated method stub
 		while (currentConfigVersion-oldConfigVersion!=0 && oldConfigVersion<currentConfigVersion) {
@@ -674,14 +700,14 @@ public class QuickShop extends JavaPlugin {
 	}
 	
 	public int updateConfig(int selectedVersion) {
-		if(selectedVersion == 1) {
-			//Run 0-1 update
+		if (selectedVersion == 1) {
+			// Run 0-1 update
 			getConfig().set("disabled-metrics", false);
 			getConfig().set("config-version", 2);
-			return selectedVersion+1;
+			return selectedVersion + 1;
 		}
-		if(selectedVersion == 2) {
-			//Run 1-2 update
+		if (selectedVersion == 2) {
+			// Run 1-2 update
 			getConfig().set("protect.minecart", true);
 			getConfig().set("protect.entity", true);
 			getConfig().set("protect.redstone", true);
@@ -689,9 +715,14 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("protect.explode", true);
 			getConfig().set("protect.hopper", true);
 			getConfig().set("config-version", 3);
-			return selectedVersion+1;
+			return selectedVersion + 1;
 		}
-		
+		if (selectedVersion == 3) {
+			getConfig().set("shop.alternate-currency-symbol", '$');
+			getConfig().set("config-version", 4);
+			return selectedVersion + 1;
+		}
+
 		return -1;
 	}
 
@@ -814,7 +845,7 @@ public class QuickShop extends JavaPlugin {
     public void checkUpdate(String resourceID) {
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceID).openConnection();
-            int timed_out = 300000; // check if API is avaible, set your time as you want
+            int timed_out = 300000;
             connection.setConnectTimeout(timed_out);
             connection.setReadTimeout(timed_out);
             String localPluginVersion = this.getDescription().getVersion();

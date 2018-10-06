@@ -72,9 +72,13 @@ public class Economy_Vault implements EconomyCore {
 	public String format(double balance) {
 		try {
 			return this.vault.format(balance);
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 		}
-		return "$" + balance;
+		try {
+		return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
+		}catch(Exception e) {
+			return String.valueOf('$' + balance);
+		}
 	}
 
 	@Override
