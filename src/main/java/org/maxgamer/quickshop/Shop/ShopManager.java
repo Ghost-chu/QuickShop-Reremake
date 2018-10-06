@@ -261,6 +261,11 @@ public class ShopManager {
 			if (pie.isCancelled()) {
 				return false;
 			}
+			BlockBreakEvent be = new BlockBreakEvent(b, p);
+			Bukkit.getPluginManager().callEvent(be);
+			if (be.isCancelled()) {
+				return false;
+			}
 			ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
 			Bukkit.getPluginManager().callEvent(spce);
 			if (spce.isCancelled()) {

@@ -299,7 +299,6 @@ public class QS implements CommandExecutor {
 								if (e.isCancelled()) {
 									return;
 								}
-
 								BlockBreakEvent be = new BlockBreakEvent(b, p);
 								Bukkit.getPluginManager().callEvent(be);
 								if (be.isCancelled()) {
