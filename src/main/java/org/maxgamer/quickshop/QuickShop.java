@@ -267,6 +267,7 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode",() -> use_protect_explode)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () ->use_protect_hopper)); 
 			metrics.submitData(); //Submit now!
+			getLogger().info("Mertics submited.");
 		}else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
