@@ -169,7 +169,7 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 
-		int CurrentConfigVersion = 2;
+		int CurrentConfigVersion = 3;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
 			if(!updateConfig(getConfig().getInt("config-version"),CurrentConfigVersion)) {
@@ -186,91 +186,7 @@ public class QuickShop extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
-		if(getConfig().getBoolean("disabled-metrics")!=true) {
-			String serverVer = Bukkit.getVersion();
-			String bukkitVer = Bukkit.getBukkitVersion();
-			String serverName = Bukkit.getServerName();
-			Metrics metrics = new Metrics(this);
-			String display_Items; 
-			if(getConfig().getBoolean("shop.display-items")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				display_Items = "Enabled"; 
-			}else {
-				display_Items = "Disabled";
-			}
-			
-			String locks; 
-			if(getConfig().getBoolean("shop.lock")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				locks = "Enabled"; 
-			}else {
-				locks = "Disabled";
-			}
-			
-			String sneak_action;
-			if(getConfig().getBoolean("shop.sneak-to-create")||getConfig().getBoolean("shop.sneak-to-trade")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				sneak_action = "Enabled"; 
-			}else {
-				sneak_action = "Disabled";
-			}
-
-
-			String use_protect_minecart;
-			if(getConfig().getBoolean("protect.minecart")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_minecart = "Enabled"; 
-			}else {
-				use_protect_minecart = "Disabled";
-			}
-			String use_protect_entity;
-			if(getConfig().getBoolean("protect.entity")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_entity = "Enabled"; 
-			}else {
-				use_protect_entity = "Disabled";
-			}
-			String use_protect_redstone;
-			if(getConfig().getBoolean("protect.redstone")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_redstone = "Enabled"; 
-			}else {
-				use_protect_redstone = "Disabled";
-			}
-			String use_protect_structuregrow;
-			if(getConfig().getBoolean("protect.structuregrow")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_structuregrow = "Enabled"; 
-			}else {
-				use_protect_structuregrow = "Disabled";
-			}
-			String use_protect_explode;
-			if(getConfig().getBoolean("protect.explode")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_explode = "Enabled"; 
-			}else {
-				use_protect_explode = "Disabled";
-			}
-			String use_protect_hopper;
-			if(getConfig().getBoolean("protect.hopper")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
-				use_protect_hopper = "Enabled"; 
-			}else {
-				use_protect_hopper = "Disabled";
-			}
-			
-			
-			// Version
-			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
-			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
-			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName)); //When yours report errors, I can know your settings...If you have set servername....
-			
-			
-			metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
-			metrics.addCustomChart(new Metrics.SimplePie("use-locks", () -> locks));
-			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart",() -> use_protect_minecart)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity",() -> use_protect_entity)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone",() -> use_protect_redstone)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow",() ->use_protect_structuregrow)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode",() -> use_protect_explode)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () ->use_protect_hopper)); 
-			metrics.submitData(); //Submit now!
-			getLogger().info("Mertics submited.");
-		}else {
-			getLogger().info("You have disabled mertics, Skipping...");
-		}
+		
 		
 		// Initialize Util
 		Util.initialize();
@@ -650,6 +566,89 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
+		if(getConfig().getBoolean("disabled-metrics")!=true) {
+			String serverVer = Bukkit.getVersion();
+			String bukkitVer = Bukkit.getBukkitVersion();
+			String serverName = Bukkit.getServerName();
+			Metrics metrics = new Metrics(this);
+			String display_Items; 
+			if(getConfig().getBoolean("shop.display-items")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				display_Items = "Enabled"; 
+			}else {
+				display_Items = "Disabled";
+			}
+			
+			String locks; 
+			if(getConfig().getBoolean("shop.lock")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				locks = "Enabled"; 
+			}else {
+				locks = "Disabled";
+			}
+			
+			String sneak_action;
+			if(getConfig().getBoolean("shop.sneak-to-create")||getConfig().getBoolean("shop.sneak-to-trade")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				sneak_action = "Enabled"; 
+			}else {
+				sneak_action = "Disabled";
+			}
+
+
+			String use_protect_minecart;
+			if(getConfig().getBoolean("protect.minecart")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_minecart = "Enabled"; 
+			}else {
+				use_protect_minecart = "Disabled";
+			}
+			String use_protect_entity;
+			if(getConfig().getBoolean("protect.entity")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_entity = "Enabled"; 
+			}else {
+				use_protect_entity = "Disabled";
+			}
+			String use_protect_redstone;
+			if(getConfig().getBoolean("protect.redstone")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_redstone = "Enabled"; 
+			}else {
+				use_protect_redstone = "Disabled";
+			}
+			String use_protect_structuregrow;
+			if(getConfig().getBoolean("protect.structuregrow")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_structuregrow = "Enabled"; 
+			}else {
+				use_protect_structuregrow = "Disabled";
+			}
+			String use_protect_explode;
+			if(getConfig().getBoolean("protect.explode")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_explode = "Enabled"; 
+			}else {
+				use_protect_explode = "Disabled";
+			}
+			String use_protect_hopper;
+			if(getConfig().getBoolean("protect.hopper")) { //Maybe mod server use this plugin more? Or have big number items need disabled?
+				use_protect_hopper = "Enabled"; 
+			}else {
+				use_protect_hopper = "Disabled";
+			}
+			
+			
+			// Version
+			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
+			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName)); //When yours report errors, I can know your settings...If you have set servername....
+			metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
+			metrics.addCustomChart(new Metrics.SimplePie("use-locks", () -> locks));
+			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart",() -> use_protect_minecart)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity",() -> use_protect_entity)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone",() -> use_protect_redstone)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow",() ->use_protect_structuregrow)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode",() -> use_protect_explode)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () ->use_protect_hopper)); 
+			metrics.submitData(); //Submit now!
+			getLogger().info("Mertics submited.");
+		}else {
+			getLogger().info("You have disabled mertics, Skipping...");
+		}
 		getLogger().info("Async checking for updates...");
 		new BukkitRunnable() {
 			

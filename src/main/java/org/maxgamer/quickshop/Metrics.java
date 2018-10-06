@@ -11,6 +11,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.mysql.jdbc.ConnectionGroup;
+
 import javax.net.ssl.HttpsURLConnection;
 
 import java.io.BufferedReader;
@@ -281,12 +283,15 @@ public class Metrics {
      * @throws Exception If the request failed.
      */
     private void sendData(JSONObject data) throws Exception {
-        if (data == null) {
+    	if (data == null) {
+    		plugin.getLogger().warning("Data cannot be null");
             throw new IllegalArgumentException("Data cannot be null!");
         }
         if (Bukkit.isPrimaryThread()) {
+        	plugin.getLogger().warning("Not working on main thread");
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
+        plugin.getLogger().info("Connecting to bStats...");
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
 
         // Compress the data to save bandwidth
@@ -300,9 +305,10 @@ public class Metrics {
         connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
         connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
         connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
-
+        connection.setConnectTimeout(300000);
+        connection.setReadTimeout(300000);
+        plugin.getLogger().info("Sending stats data...");
         // Send data
-        connection.setDoOutput(true);
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.write(compressedData);
         outputStream.flush();
