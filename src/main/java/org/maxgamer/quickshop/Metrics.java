@@ -67,10 +67,11 @@ public class Metrics {
      */
     public Metrics(JavaPlugin plugin) {
         if (plugin == null) {
+        	
             throw new IllegalArgumentException("Plugin cannot be null!");
         }
         this.plugin = plugin;
-
+        plugin.getLogger().info("bStats module loaded.");
         // Get the config file
         File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
         File configFile = new File(bStatsFolder, "config.yml");
@@ -237,8 +238,9 @@ public class Metrics {
      * Collects the data and sends it afterwards.
      */
     public void submitData() {
+    	
         final JSONObject data = getServerData();
-
+        plugin.getLogger().info("Posting stats data...");
         JSONArray pluginData = new JSONArray();
         // Search for all other bStats Metrics classes to get their plugin data
         for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
@@ -260,6 +262,7 @@ public class Metrics {
             public void run() {
                 try {
                     // Send the data
+                	plugin.getLogger().info("Sending stats data...");
                     sendData(data);
                 } catch (Exception e) {
                     // Something went wrong! :(
@@ -277,7 +280,7 @@ public class Metrics {
      * @param data The data to send.
      * @throws Exception If the request failed.
      */
-    private static void sendData(JSONObject data) throws Exception {
+    private void sendData(JSONObject data) throws Exception {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
@@ -305,7 +308,7 @@ public class Metrics {
         outputStream.flush();
         outputStream.close();
         String result = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-        QuickShop.instance.getLogger().info("bStats data sended:"+result);
+        plugin.getLogger().info("Complete to send stats to bStats:"+result);
         connection.getInputStream().close(); // We don't care about the response - Just send our data :)
     }
 
