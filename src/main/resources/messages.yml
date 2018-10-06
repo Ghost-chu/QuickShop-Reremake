@@ -2,16 +2,19 @@
 # &0-9, &a-f
 # {0}, {1}, {2}, etc are variables. You can swap them around, but adding a new variable won't work. Removing them will work
 
-# Translate dara.
+# Translate data.
 # ======================================================================
 # For Translator: These string can changed by your self.
 language-author: "&c&lTranslator: &b&lGhost_chu"
 language-contributors: "&c&lContributors: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul"
-language-version: "&c&lSupport Version: &b&lReremake 1.1.9-1.2.0"
+language-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 language-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
+language-version: 1
+
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
+no-anythings-in-your-hand: "&cNo anythings in your hand."
 no-permission: "&cYou do not have permission to do that."
 no-creative-break: "&cYou cannot break other players shops in creative mode.  Use survival instead."
 no-double-chests: "&cYou don't have permission to create a double-chest shop."

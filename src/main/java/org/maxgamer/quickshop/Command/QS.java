@@ -335,7 +335,7 @@ public class QS implements CommandExecutor {
 					sender.sendMessage(MsgUtil.getMessage("no-permission"));
 				}
 			} else {
-				sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+				sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand"));
 			}
 		} else {
 			sender.sendMessage("This command can't be run by console");
