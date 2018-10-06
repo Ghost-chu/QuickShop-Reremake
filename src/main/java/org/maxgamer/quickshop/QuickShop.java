@@ -257,15 +257,15 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName)); //When yours report errors, I can know your settings...If you have set servername....
 			
 			
-			metrics.addCustomChart(new Metrics.SimplePie("use-display-items", () -> display_Items));
+			metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
 			metrics.addCustomChart(new Metrics.SimplePie("use-locks", () -> locks));
-			metrics.addCustomChart(new Metrics.SimplePie("use-sneak-action", () -> sneak_action)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-minecart",() -> use_protect_minecart)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-entity",() -> use_protect_entity)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-redstone",() -> use_protect_redstone)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-structuregrow",() ->use_protect_structuregrow)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-explode",() -> use_protect_explode)); 
-			metrics.addCustomChart(new Metrics.SimplePie("use-protect-hopper", () ->use_protect_hopper)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart",() -> use_protect_minecart)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity",() -> use_protect_entity)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone",() -> use_protect_redstone)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow",() ->use_protect_structuregrow)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode",() -> use_protect_explode)); 
+			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () ->use_protect_hopper)); 
 			metrics.submitData(); //Submit now!
 		}else {
 			getLogger().info("You have disabled mertics, Skipping...");
