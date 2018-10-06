@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -267,7 +266,7 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-structuregrow",() ->use_protect_structuregrow)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-explode",() -> use_protect_explode)); 
 			metrics.addCustomChart(new Metrics.SimplePie("use-protect-hopper", () ->use_protect_hopper)); 
-			
+			metrics.submitData(); //Submit now!
 		}else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
