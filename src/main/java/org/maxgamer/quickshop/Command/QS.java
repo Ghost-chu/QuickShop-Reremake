@@ -293,12 +293,6 @@ public class QS implements CommandExecutor {
 						Block b = bIt.next();
 						if (Util.canBeShop(b)) {
 							if (p != null && b != null && p.isOnline()) {
-								PlayerInteractEvent e = new PlayerInteractEvent(p, Action.LEFT_CLICK_BLOCK, item, b,
-										BlockFace.UP);
-								Bukkit.getPluginManager().callEvent(e);
-								if (e.isCancelled()) {
-									return;
-								}
 								BlockBreakEvent be = new BlockBreakEvent(b, p);
 								Bukkit.getPluginManager().callEvent(be);
 								if (be.isCancelled()) {
@@ -326,7 +320,7 @@ public class QS implements CommandExecutor {
 
 							if (args.length < 2) {
 								// Send creation menu.
-								Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(),
+								Info info = new Info(b.getLocation(), ShopAction.CREATE, p.getInventory().getItemInMainHand(),
 										b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
 								plugin.getShopManager().getActions().put(p.getUniqueId(), info);
 								p.sendMessage(
