@@ -300,7 +300,7 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
 		//p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
 		//Enabled
-		Util.sendItemholochat(shop.getItem(),p,ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
+		Util.sendItemholochat(shop.getItem(),p,ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
 		
 //		if (NMS.isPotion(items.getType())) {
 //			String effects = CustomPotionsName.getEffects(items);
@@ -352,7 +352,7 @@ public class MsgUtil {
 	public static void sendPurchaseSuccess(Player p, Shop shop, int amount) {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.successful-purchase"));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, MsgUtil.getItemi18n(shop.getDataName()), Util.format((amount * shop.getPrice()))));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, MsgUtil.getDisplayName(shop.getItem()), Util.format((amount * shop.getPrice()))));
 		Map<Enchantment, Integer> enchs = shop.getItem().getItemMeta().getEnchants();
 		if (enchs != null && !enchs.isEmpty()) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "+--------------------" + MsgUtil.getMessage("menu.enchants") + "-----------------------+");
@@ -390,7 +390,7 @@ public class MsgUtil {
 	public static void sendSellSuccess(Player p, Shop shop, int amount) {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.successfully-sold"));
-		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount,  MsgUtil.getItemi18n(shop.getDataName()), Util.format((amount * shop.getPrice()))));
+		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item-name-and-price", "" + amount, MsgUtil.getDisplayName(shop.getItem()), Util.format((amount * shop.getPrice()))));
 		if (plugin.getConfig().getBoolean("show-tax")) {
 			double tax = plugin.getConfig().getDouble("tax");
 			double total = amount * shop.getPrice();
@@ -428,13 +428,13 @@ public class MsgUtil {
 		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
-	public static String getDisplayName(ItemStack iStack, String DataName){
+	public static String getDisplayName(ItemStack iStack){
 		ItemStack is = iStack.clone();
 		
 		if(is.hasItemMeta()&&is.getItemMeta().hasDisplayName()) {
 			return is.getItemMeta().getDisplayName();
 		}else {
-			return MsgUtil.getItemi18n(DataName);
+			return MsgUtil.getItemi18n(is.getType().name());
 		}
 		
 	}

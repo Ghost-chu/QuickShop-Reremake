@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Shop;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -160,11 +161,14 @@ public class DisplayItem {
 		if (!showFloatItem) {
 			return;
 		}
+		//Call Event for QSAPI
+		ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+		Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+		if(shopDisplayItemSpawnEvent.isCancelled()) {
+			return;
+		}
 		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
 		this.item.setVelocity(new Vector(0, 0.1, 0));
-		if (QuickShop.debug) {
-			plugin.getLogger().log(Level.WARNING, "Spawned item. Safeguarding.");
-		}
 		try {
 			this.safeGuard(this.item);
 			// NMS.safeGuard
@@ -216,9 +220,6 @@ public class DisplayItem {
 				if (this.shop.matches(near)) {
 					e.remove();
 					removed = true;
-					if (QuickShop.debug) {
-						plugin.getLogger().log(Level.WARNING, "Removed rogue item: " + near.getType());
-					}
 				}
 			}
 		}

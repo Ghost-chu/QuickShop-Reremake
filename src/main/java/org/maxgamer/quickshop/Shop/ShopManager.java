@@ -29,7 +29,6 @@ import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
-
 public class ShopManager {
 	QuickShop plugin = QuickShop.instance;
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
@@ -53,6 +52,8 @@ public class ShopManager {
 	}
 
 	public void createShop(Shop shop) {
+		ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
+		Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
 		Location loc = shop.getLocation();
 		ItemStack item = shop.getItem();
 		try {
@@ -154,6 +155,12 @@ public class ShopManager {
 	 *            The shop to add
 	 */
 	private void addShop(String world, Shop shop) {
+		ShopLoadEvent shopLoadEvent = new ShopLoadEvent(shop);
+		Bukkit.getPluginManager().callEvent(shopLoadEvent);
+		if(shopLoadEvent.isCancelled()) {
+			return;
+		}
+		
 		HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
 		// There's no world storage yet. We need to create that hashmap.
 		if (inWorld == null) {
@@ -186,6 +193,8 @@ public class ShopManager {
 	 *            The shop to remove
 	 */
 	public void removeShop(Shop shop) {
+		ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(shop);
+		Bukkit.getPluginManager().callEvent(shopUnloadEvent);
 		Location loc = shop.getLocation();
 		String world = loc.getWorld().getName();
 		HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
@@ -250,7 +259,8 @@ public class ShopManager {
 				}
 				int max = plugin.getShopLimit(p);
 				if (owned + 1 > max) {
-					p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
+					//p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
+					MsgUtil.getMessage("reached-maximum-can-create", String.valueOf(owned),String.valueOf(max));
 					return false;
 				}
 			}
@@ -335,7 +345,8 @@ public class ShopManager {
 						Entry<Double,Double> priceRestriction = Util.getPriceRestriction(info.getItem().getType());
 						if (priceRestriction!=null) {
 							if (price<priceRestriction.getKey() || price>priceRestriction.getValue()) {
-								p.sendMessage(ChatColor.RED+"Restricted prices for "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max "+priceRestriction.getValue());
+								//p.sendMessage(ChatColor.RED+"Restricted prices for "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max "+priceRestriction.getValue());
+								p.sendMessage(MsgUtil.getMessage("restricted-prices",MsgUtil.getDisplayName(info.getItem()),String.valueOf(priceRestriction.getKey()),String.valueOf(priceRestriction.getValue())));
 							}
 						}
 
@@ -378,7 +389,7 @@ public class ShopManager {
 						/* The shop has hereforth been successfully created */
 						createShop(shop);
 						Location loc = shop.getLocation();
-						plugin.log(p.getName() + " created a " +  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()) + " shop at (" + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
+						plugin.log(p.getName() + " created a " +  MsgUtil.getDisplayName(shop.getItem()) + " shop at (" + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
 						if (!plugin.getConfig().getBoolean("shop.lock")) {
 							// Warn them if they haven't been warned since
 							// reboot
@@ -448,7 +459,6 @@ public class ShopManager {
 				
 				/* Purchase Handling */
 				else if (info.getAction() == ShopAction.BUY) {
-					if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Starting buy");}
 					int amount = 0;
 					try {
 						amount = Integer.parseInt(message);
@@ -470,7 +480,7 @@ public class ShopManager {
 					if (shop.isSelling()) {
 						int stock = shop.getRemainingStock();
 						if (stock < amount) {
-							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()), MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()), MsgUtil.getDisplayName(shop.getItem())));
 							return;
 						}
 						if (amount == 0) {
@@ -509,14 +519,15 @@ public class ShopManager {
 							}
 							
 							double total = amount * shop.getPrice();
-							if(QuickShop.debug) {plugin.getLogger().info("Economy debug: trade total: "+total);}
 							if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
 								p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon().getBalance(p.getUniqueId()))));
 								return;
 							}
 							if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
 								boolean depositresult = plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
-								if(QuickShop.debug) {plugin.getLogger().info("Economy debug:deposit in shop manager result:"+depositresult);}
+								if(!depositresult) {
+									QuickShop.instance.getLogger().info("Can't deposit the money! Economy plugin issues?");
+								}
 								if (tax != 0) {
 									try {
 										for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
@@ -532,12 +543,12 @@ public class ShopManager {
 							}
 							// Notify the shop owner
 							if (plugin.getConfig().getBoolean("show-tax")) {
-								String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()), Util.format((tax * total)));
+								String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem()), Util.format((tax * total)));
 								if (stock == amount)
-									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
+									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil.getDisplayName(shop.getItem()));
 								MsgUtil.send(shop.getOwner(), msg);
 							} else {
-								String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
+								String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem()));
 								if (stock == amount)
 									msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), shop.getDataName());
 								MsgUtil.send(shop.getOwner(), msg);
@@ -546,18 +557,17 @@ public class ShopManager {
 						// Transfers the item from A to B
 						shop.sell(p, amount);
 						MsgUtil.sendPurchaseSuccess(p, shop, amount);
-						if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Trade purchase success completed.");}
 						plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
 					} else if (shop.isBuying()) {
 						int space = shop.getRemainingSpace();
 						if (space < amount) {
-							p.sendMessage(MsgUtil.getMessage("shop-has-no-space", "" + space, MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("shop-has-no-space", "" + space, MsgUtil.getDisplayName(shop.getItem())));
 							return;
 						}
 						int count = Util.countItems(p.getInventory(), shop.getItem());
 						// Not enough items
 						if (amount > count) {
-							p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, MsgUtil.getDisplayName(shop.getItem(), shop.getDataName())));
+							p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, MsgUtil.getDisplayName(shop.getItem())));
 							return;
 						}
 						if (amount == 0) {
@@ -610,9 +620,11 @@ public class ShopManager {
 							}
 							// Give them the money after we know we succeeded
 							boolean depositresult = plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
-							if(QuickShop.debug) {plugin.getLogger().info("Economy debug:deposit2 in shopmanager result:"+depositresult);}
+							if(!depositresult) {
+								QuickShop.instance.getLogger().info("Can't deposit the money! Economy plugin issues?");
+							}
 							// Notify the owner of the purchase.
-							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem(), shop.getDataName()));
+							String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount,  MsgUtil.getDisplayName(shop.getItem()));
 							if (space == amount)
 								msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ());
 							MsgUtil.send(shop.getOwner(), msg);
@@ -624,7 +636,6 @@ public class ShopManager {
 						}
 						shop.buy(p, amount);
 						MsgUtil.sendSellSuccess(p, shop, amount);
-						if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Trade sell success completed");}
 						plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
 					}
 					shop.setSignText(); // Update the signs count

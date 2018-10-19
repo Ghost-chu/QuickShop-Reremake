@@ -37,7 +37,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
@@ -68,6 +67,7 @@ import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+
 
 
 
@@ -119,8 +119,6 @@ public class QuickShop extends JavaPlugin {
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
 	// private Metrics metrics;
-	/** Whether debug info should be shown in the console */
-	public static boolean debug = false;
 
 	MultiverseCore mPlugin = null;
 	
@@ -151,8 +149,6 @@ public class QuickShop extends JavaPlugin {
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
 						// others.
 		getConfig().options().copyDefaults(true); // Load defaults.
-		if (getConfig().contains("debug"))
-			debug = true;
 		if (loadEcon() == false)
 			return;
 
@@ -526,9 +522,9 @@ public class QuickShop extends JavaPlugin {
 		// Command handlers
 		QS commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);
-//		if (getConfig().getInt("shop.find-distance") > 100) {
-//			getLogger().severe("Shop.find-distance is too high! Pick a number under 100!");
-//		}
+		if (getConfig().getInt("shop.find-distance") > 100) {
+			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+		}
 
 		if (display && displayItemCheckTicks > 0) {
 			new BukkitRunnable() {
@@ -820,19 +816,6 @@ public class QuickShop extends JavaPlugin {
 	public Database getDB() {
 		return this.database;
 	}
-
-	/**
-	 * Prints debug information if QuickShop is configured to do so.
-	 * 
-	 * @param s
-	 *            The string to print.
-	 */
-	public void debug(String s) {
-		if (!debug)
-			return;
-		this.getLogger().info(ChatColor.YELLOW + "[Debug] " + s);
-	}
-
 	/**
 	 * Returns the ShopManager. This is used for fetching, adding and removing
 	 * shops.

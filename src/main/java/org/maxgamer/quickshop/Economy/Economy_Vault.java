@@ -33,14 +33,12 @@ public class Economy_Vault implements EconomyCore {
 	@Deprecated
 	public boolean deposit(String name, double amount) {
 		boolean result = this.vault.depositPlayer(name, amount).transactionSuccess();
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug: Vault return Deprecated deposit result:"+result);}
 		return result;
 	}
 
 	@Deprecated
 	public boolean withdraw(String name, double amount) {
 		boolean result = this.vault.withdrawPlayer(name, amount).transactionSuccess();
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug: Vault return Deprecated withdraw result:"+result);}
 		return result;
 	}
 
@@ -50,16 +48,12 @@ public class Economy_Vault implements EconomyCore {
 			if (this.vault.withdrawPlayer(from, amount).transactionSuccess()) {
 				if (!this.vault.depositPlayer(to, amount).transactionSuccess()) {
 					this.vault.depositPlayer(from, amount);
-					if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 					return false;
 				}
-				if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer success");}
 				return true;
 			}
-			if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 			return false;
 		}
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 		return false;
 	}
 
@@ -85,7 +79,6 @@ public class Economy_Vault implements EconomyCore {
 	public boolean deposit(UUID name, double amount) {
 		OfflinePlayer p = Bukkit.getOfflinePlayer(name);
 		boolean result = this.vault.depositPlayer(p, amount).transactionSuccess();
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Vault report deposit "+result);}
 		return result;
 	}
 
@@ -93,7 +86,6 @@ public class Economy_Vault implements EconomyCore {
 	public boolean withdraw(UUID name, double amount) {
 		OfflinePlayer p = Bukkit.getOfflinePlayer(name);
 		boolean result = this.vault.withdrawPlayer(p, amount).transactionSuccess();
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Vault report withdraw "+result);}
 		return result;
 	}
 
@@ -105,16 +97,12 @@ public class Economy_Vault implements EconomyCore {
 			if (this.vault.withdrawPlayer(pFrom, amount).transactionSuccess()) {
 				if (!this.vault.depositPlayer(pTo, amount).transactionSuccess()) {
 					this.vault.depositPlayer(pFrom, amount);
-					if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 					return false;
 				}
-				if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer success");}
 				return true;
 			}
-			if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 			return false;
 		}
-		if(QuickShop.debug) {plugin.getLogger().info("Economy debug:Deprecated transfer failed");}
 		return false;
 	}
 
