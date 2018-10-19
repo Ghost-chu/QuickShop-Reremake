@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maxgamer</groupId>
 	<artifactId>QuickShop</artifactId>
-	<version>Reremake 1.2.5.2</version>
+	<version>Reremake 1.2.6</version>
 	<!-- Fuck version -->
 	<licenses>
 		<license>
@@ -93,6 +93,13 @@
 			<version>v1_13_R1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.13-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_13_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.13.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.onarandombox.MultiverseCore</groupId>

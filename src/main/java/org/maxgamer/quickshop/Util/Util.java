@@ -30,11 +30,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+
 
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -265,35 +266,6 @@ public class Util {
 		return false;
 	}
 
-	/**
-	 * Converts a string into an item from the database.
-	 * 
-	 * @param itemString
-	 *            The database string. Is the result of makeString(ItemStack
-	 *            item).
-	 * @return A new itemstack, with the properties given in the string
-	 */
-	public static ItemStack makeItem(String itemString) {
-		String[] itemInfo = itemString.split(":");
-		ItemStack item = new ItemStack(Material.getMaterial(itemInfo[0]));
-		MaterialData data = new MaterialData(Material.matchMaterial(itemInfo[1]));
-		item.setData(data);
-		item.setDurability(Short.parseShort(itemInfo[2]));
-		item.setAmount(Integer.parseInt(itemInfo[3]));
-		for (int i = 4; i < itemInfo.length; i = i + 2) {
-			int level = Integer.parseInt(itemInfo[i + 1]);
-			Enchantment ench = Enchantment.getByName(itemInfo[i]);
-			if (ench == null)
-				continue; // Invalid
-			if (ench.canEnchantItem(item)) {
-				if (level <= 0)
-					continue;
-				level = Math.min(ench.getMaxLevel(), level);
-				item.addEnchantment(ench, level);
-			}
-		}
-		return item;
-	}
 
 	public static String serialize(ItemStack iStack) {
 		YamlConfiguration cfg = new YamlConfiguration();
@@ -627,8 +599,26 @@ public class Util {
 			}
 		}
 	}
-
+	//Use NMS
 	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
+		ItemNMS nms = new ItemNMS();
+		String json = nms.getItemJSON(itemStack);
+		if(json == null) {
+			sendItemholochatAsNormaly(itemStack, player, normalText);
+			return;
+		}
+		try {
+		TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
+		ComponentBuilder cBuilder = new ComponentBuilder(json);
+		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create());
+		normalmessage.setHoverEvent(he);
+		player.spigot().sendMessage(normalmessage);
+		}catch (Exception e) {
+			sendItemholochatAsNormaly(itemStack, player, normalText);
+		}
+	}
+
+	public static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
 		try {
 		String Itemname = null;
 		List<String> Itemlore = new ArrayList<>();
@@ -659,7 +649,7 @@ public class Util {
 				}
 			}
 		} else {
-			Itemname = MsgUtil.getDisplayName(itemStack,MsgUtil.getItemi18n(itemStack.getType().name()));
+			Itemname = MsgUtil.getDisplayName(itemStack);
 			Itemlore = null;
 			Itemenchs = null;
 		}
@@ -695,6 +685,7 @@ public class Util {
 		player.spigot().sendMessage(normalmessage);
 		}catch (Exception e) {
 			player.sendMessage(normalText);
+			QuickShop.instance.getLogger().severe("QuickShop cannot send Advanced chat message, Are you using CraftBukkit? Please use Spigot or SpigotFork.");
 		}
 	}
 	private static String formatEnchLevel(Integer level) {
