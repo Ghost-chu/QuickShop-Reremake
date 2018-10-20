@@ -1,17 +1,15 @@
 package org.maxgamer.quickshop;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,10 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import java.util.UUID;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -62,29 +57,25 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 //import org.maxgamer.quickshop.Util.NMS;
 import org.maxgamer.quickshop.Util.Permissions;
-import org.maxgamer.quickshop.Util.Updater;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
+import org.maxgamer.quickshop.Watcher.OngoineFeeWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
-
-
-
-@SuppressWarnings("deprecation")
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
 	public static QuickShop instance;
+	OngoineFeeWatcher ongoineFeeWatcher = new OngoineFeeWatcher();
 	/** The economy we hook into for transactions */
 	private Economy economy;
 	/** The Shop Manager used to store shops */
 	private ShopManager shopManager;
 	/**
-	 * A set of players who have been warned
-	 * ("Your shop isn't automatically locked")
+	 * A set of players who have been warned ("Your shop isn't automatically
+	 * locked")
 	 */
 	public HashSet<String> warnings = new HashSet<String>();
 	/** The database for storing all our data for persistence */
@@ -108,23 +99,23 @@ public class QuickShop extends JavaPlugin {
 	/** Whether we should use display items or not */
 	public boolean display = true;
 	/**
-	 * Whether we players are charged a fee to change the price on their shop
-	 * (To help deter endless undercutting
+	 * Whether we players are charged a fee to change the price on their shop (To
+	 * help deter endless undercutting
 	 */
 	public boolean priceChangeRequiresFee = false;
 	/** Whether or not to limit players shop amounts */
 	public boolean limit = false;
-	
+
 	/** The plugin OpenInv (null if not present) */
 	public Plugin openInvPlugin;
-	
+
 	private HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
 	// private Metrics metrics;
 
 	MultiverseCore mPlugin = null;
-	
+
 	private int displayItemCheckTicks;
 
 	/** The plugin metrics from Hidendra */
@@ -345,6 +336,8 @@ public class QuickShop extends JavaPlugin {
 					} catch (IllegalArgumentException e) {
 						// This could be old data to be converted... check if it's a player
 						step = "Update owner to UUID";
+						// Because need update database, so use crossed method, Set ignore.
+						@SuppressWarnings("deprecation")
 						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
 						if (player.hasPlayedBefore()) {
 							ownerUUID = player.getUniqueId();
@@ -358,6 +351,10 @@ public class QuickShop extends JavaPlugin {
 									.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = "
 											+ z + " AND world = \"" + worldName + "\""
 											+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+							getDB().getConnection().createStatement()
+							.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = "
+									+ z + " AND world = \"" + worldName + "\""
+									+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 							continue;
 						}
 					}
@@ -375,6 +372,10 @@ public class QuickShop extends JavaPlugin {
 								.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
 										+ " AND world = \"" + worldName + "\""
 										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+						getDB().getConnection().createStatement()
+						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+								+ " AND world = \"" + worldName + "\""
+								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 						continue;
 					}
 					step = "Loading shop type";
@@ -387,6 +388,33 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
+					
+					if(getConfig().getBoolean("ongoingfee.reset-on-startup")) {
+						step = "Reset schedule data";
+						getDB().getConnection().createStatement()
+						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+								+ " AND world = \"" + worldName + "\""
+								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+					}
+					
+					step = "Checking shop schedule data";
+					//Check shop is or not exist in schedule table
+					Statement st = getDB().getConnection().createStatement();
+					String checkq = "SELECT * FROM schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
+					checkq.replace("{x}", String.valueOf(loc.getBlockX()));
+					checkq.replace("{y}", String.valueOf(loc.getBlockY()));
+					checkq.replace("{z}", String.valueOf(loc.getBlockZ()));
+					checkq.replace("{world}", String.valueOf(loc.getWorld().getName()));
+					checkq.replace("{owner}", shop.getOwner().toString());
+					ResultSet resultSet = st.executeQuery(checkq);
+					if(!resultSet.next()) {
+						//Not exist, write in
+						step = "Writeing shop schedule data";
+						String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+						getDB().execute(scheduleq , shop.getOwner().toString(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
+						getLogger().info("Adding shop at world:"+loc.getWorld().getName()+" x:"+loc.getBlockX()+" y:"+loc.getBlockY()+" z:"+loc.getBlockZ()+" into schedule table");
+					}	
+					
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
@@ -426,7 +454,12 @@ public class QuickShop extends JavaPlugin {
 
 					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
 					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
-					getLogger().severe("Client Info:" + getDB().getConnection().getClientInfo().toString());
+				
+					if(getDB().getConnection().getClientInfo()!=null) {
+						getLogger().severe("Client Info: " + getDB().getConnection().getClientInfo().toString());
+					}else {
+						getLogger().severe("Client Info: null");
+					}
 					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
 
 					getLogger().severe("#Debuging >>");
@@ -447,7 +480,6 @@ public class QuickShop extends JavaPlugin {
 						try {
 							bksqlfile.createNewFile();
 						} catch (IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 							getLogger().severe("Failed to backup! (Create)");
 						}
@@ -482,6 +514,14 @@ public class QuickShop extends JavaPlugin {
 						delps.setInt(3, z);
 						delps.setString(4, worldName);
 						delps.execute();
+						
+						PreparedStatement scdelps = getDB().getConnection()
+								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
+						scdelps.setInt(1, x);
+						scdelps.setInt(2, y);
+						scdelps.setInt(3, z);
+						scdelps.setString(4, worldName);
+						scdelps.execute();
 						getLogger().info("Trying keep loading...");
 					} else {
 						getLogger().severe(
@@ -494,6 +534,14 @@ public class QuickShop extends JavaPlugin {
 						delps.setInt(3, z);
 						delps.setString(4, worldName);
 						delps.execute();
+						
+						PreparedStatement scdelps = getDB().getConnection()
+								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
+						scdelps.setInt(1, x);
+						scdelps.setInt(2, y);
+						scdelps.setInt(3, z);
+						scdelps.setString(4, worldName);
+						scdelps.execute();
 						e.printStackTrace();
 					}
 				}
@@ -625,19 +673,19 @@ public class QuickShop extends JavaPlugin {
 			} else {
 				use_protect_hopper = "Disabled";
 			}
-			
+
 			String shop_find_distance = getConfig().getString("shop.find-distance");
-			
+
 			String float_filter_enable = boolean2String(getConfig().getBoolean("float.enable"));
 			String float_filter_item_enable = boolean2String(getConfig().getBoolean("float.item.enable"));
 			String float_filter_lore_enable = boolean2String(getConfig().getBoolean("float.lore.enable"));
 			String float_filter_displayname_enable = boolean2String(getConfig().getBoolean("float.displayname.enable"));
-			
+
 			String float_filter_item_blacklist = boolean2String(getConfig().getBoolean("float.item.blacklist"));
 			String float_filter_lore_blacklist = boolean2String(getConfig().getBoolean("float.lore.blacklist"));
-			String float_filter_displayname_blacklist = boolean2String(getConfig().getBoolean("float.displayname.blacklist"));
-			
-			
+			String float_filter_displayname_blacklist = boolean2String(
+					getConfig().getBoolean("float.displayname.blacklist"));
+
 			// Version
 			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
 			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -652,40 +700,45 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode", () -> use_protect_explode));
 			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () -> use_protect_hopper));
 			metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
-			//Exp for stats, maybe i need improve this, so i add this.
+			// Exp for stats, maybe i need improve this, so i add this.
 			metrics.addCustomChart(new Metrics.SimplePie("float_filter_enable", () -> float_filter_enable));
-			
+
 			metrics.addCustomChart(new Metrics.SimplePie("float_filter_item_enable", () -> float_filter_item_enable));
 			metrics.addCustomChart(new Metrics.SimplePie("float_filter_lore_enable", () -> float_filter_lore_enable));
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_enable", () -> float_filter_displayname_enable));
-			
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_item_blacklist", () -> float_filter_item_blacklist));
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_lore_blacklist", () -> float_filter_lore_blacklist));
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_blacklist", () -> float_filter_displayname_blacklist));
-			
+			metrics.addCustomChart(
+					new Metrics.SimplePie("float_filter_displayname_enable", () -> float_filter_displayname_enable));
+
+			metrics.addCustomChart(
+					new Metrics.SimplePie("float_filter_item_blacklist", () -> float_filter_item_blacklist));
+			metrics.addCustomChart(
+					new Metrics.SimplePie("float_filter_lore_blacklist", () -> float_filter_lore_blacklist));
+			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_blacklist",
+					() -> float_filter_displayname_blacklist));
+
 			metrics.submitData(); // Submit now!
 			getLogger().info("Mertics submited.");
 		} else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
-		
 		UpdateWatcher.init();
-		
+		ongoineFeeWatcher.init();
 	}
+
 	public String boolean2String(boolean bool) {
-		if(bool) {
+		if (bool) {
 			return "Enabled";
-		}else {
+		} else {
 			return "Disabled";
 		}
 	}
+
 	public boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
 		updateConfig(oldConfigVersion);
-		
-		getLogger().info("Complete config update!.");
+
+		getLogger().info("Complete config update!");
 		return true;
 	}
-	
+
 	public void updateConfig(int selectedVersion) {
 		getLogger().info("Auto updateing config.yml ...");
 		if (selectedVersion == 1) {
@@ -693,7 +746,7 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("config-version", 2);
 			selectedVersion = 2;
 		}
-		if (selectedVersion == 2) { 
+		if (selectedVersion == 2) {
 			getConfig().set("protect.minecart", true);
 			getConfig().set("protect.entity", true);
 			getConfig().set("protect.redstone", true);
@@ -708,7 +761,7 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("config-version", 4);
 			selectedVersion = 4;
 		}
-		if(selectedVersion == 4) {
+		if (selectedVersion == 4) {
 			getConfig().set("updater", true);
 			getConfig().set("config-version", 5);
 			selectedVersion = 5;
@@ -733,25 +786,25 @@ public class QuickShop extends JavaPlugin {
 	 * Tries to load the economy and its core. If this fails, it will try to use
 	 * vault. If that fails, it will return false.
 	 * 
-	 * @return true if successful, false if the core is invalid or is not found,
-	 *         and vault cannot be used.
+	 * @return true if successful, false if the core is invalid or is not found, and
+	 *         vault cannot be used.
 	 */
 	public boolean loadEcon() {
 		try {
-		EconomyCore core = new Economy_Vault();
-		if (core == null || !core.isValid()) {
-			// getLogger().severe("Economy is not valid!");
-			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
-			getLogger().severe("QuickShop CANNOT start!");
-			this.getPluginLoader().disablePlugin(this);
-			// if(econ.equals("Vault"))
-			// getLogger().severe("(Does Vault have an Economy to hook into?!)");
-			return false;
-		} else {
-			this.economy = new Economy(core);
-			return true;
-		}
-		}catch (Exception e) {
+			EconomyCore core = new Economy_Vault();
+			if (core == null || !core.isValid()) {
+				// getLogger().severe("Economy is not valid!");
+				getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
+				getLogger().severe("QuickShop CANNOT start!");
+				this.getPluginLoader().disablePlugin(this);
+				// if(econ.equals("Vault"))
+				// getLogger().severe("(Does Vault have an Economy to hook into?!)");
+				return false;
+			} else {
+				this.economy = new Economy(core);
+				return true;
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 			getLogger().severe("QuickShop CANNOT start!");
@@ -767,11 +820,13 @@ public class QuickShop extends JavaPlugin {
 			logWatcher.task.cancel();
 			logWatcher.close(); // Closes the file
 		}
+		/* Unload UpdateWatcher */
 		UpdateWatcher.uninit();
 		/* Remove all display items, and any dupes we can find */
 		shopManager.clear();
 		/* Empty the buffer */
 		database.close();
+		/* Close Database */
 		try {
 			this.database.getConnection().close();
 		} catch (SQLException e) {
@@ -779,6 +834,7 @@ public class QuickShop extends JavaPlugin {
 		}
 		this.warnings.clear();
 		this.reloadConfig();
+		ongoineFeeWatcher.uninit();
 	}
 
 	/**
@@ -793,8 +849,7 @@ public class QuickShop extends JavaPlugin {
 	/**
 	 * Logs the given string to qs.log, if QuickShop is configured to do so.
 	 * 
-	 * @param s
-	 *            The string to log. It will be prefixed with the date and time.
+	 * @param s The string to log. It will be prefixed with the date and time.
 	 */
 	public void log(String s) {
 		if (this.logWatcher == null)
@@ -810,6 +865,7 @@ public class QuickShop extends JavaPlugin {
 	public Database getDB() {
 		return this.database;
 	}
+
 	/**
 	 * Returns the ShopManager. This is used for fetching, adding and removing
 	 * shops.
@@ -819,5 +875,5 @@ public class QuickShop extends JavaPlugin {
 	public ShopManager getShopManager() {
 		return this.shopManager;
 	}
-    
+
 }

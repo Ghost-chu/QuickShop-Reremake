@@ -47,7 +47,12 @@ public class MsgUtil {
 		messages = YamlConfiguration.loadConfiguration(messageFile);
 		messages.options().copyDefaults(true);
 		// Load default messages
-		YamlConfiguration defMessages = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
+		YamlConfiguration defMessages = null;
+		try {
+			defMessages = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
+		}catch (Exception e) {
+		}
+		
 		messages.setDefaults(defMessages);
 		// Parse colour codes
 		Util.parseColours(messages);
