@@ -12,7 +12,23 @@ public class DatabaseHelper {
 		if (!db.hasTable("messages")) {
 			createMessagesTable(db);
 		}
+		if (!db.hasTable("schedule")) {
+			createScheduleTable(db);
+		}
 		checkColumns(db);
+	}
+	
+	/**
+	 * Creates the database table 'schedule'.
+	 * 
+	 * @throws SQLException
+	 *             If the connection is invalid.
+	 */
+	public static void createScheduleTable(Database db) throws SQLException {
+		Statement st = db.getConnection().createStatement();
+		//String createTable = "CREATE TABLE shops (" + "owner  TEXT(32) NOT NULL, " + "price  double(32, 2) NOT NULL, " + "itemConfig TEXT CHARSET utf8 NOT NULL, " + "x  INTEGER(32) NOT NULL, " + "y  INTEGER(32) NOT NULL, " + "z  INTEGER(32) NOT NULL, " + "world VARCHAR(32) NOT NULL, " + "unlimited  boolean, " + "type  boolean, " + "PRIMARY KEY (x, y, z, world) " + ");";
+		String createTable ="CREATE TABLE schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+		st.execute(createTable);
 	}
 
 	/**
@@ -59,4 +75,5 @@ public class DatabaseHelper {
 		String createTable = "CREATE TABLE messages (" + "owner  TEXT(32) NOT NULL, " + "message  TEXT(200) NOT NULL, " + "time  BIGINT(32) NOT NULL " + ");";
 		st.execute(createTable);
 	}
+	
 }

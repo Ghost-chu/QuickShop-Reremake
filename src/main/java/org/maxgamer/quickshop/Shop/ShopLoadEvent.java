@@ -8,18 +8,22 @@ public class ShopLoadEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled;
 	private Shop shop;
-	/**Getting loading shops**/
-	
+
+	/** Getting loading shops **/
+
 	public ShopLoadEvent(Shop shop) {
 		this.shop = shop;
 	}
+
 	public Shop getShop() {
 		return shop;
 	}
+
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
 	}
+
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}

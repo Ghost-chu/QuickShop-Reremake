@@ -41,6 +41,10 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+/**
+ * @author MACHENIKE
+ *
+ */
 @SuppressWarnings("deprecation")
 public class Util {
 	private static HashSet<Material> tools = new HashSet<Material>();
@@ -594,7 +598,7 @@ public class Util {
 	
 	public static void sendMessageToOps(String message) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (player.isOp()) {
+			if (player.isOp() || player.hasPermission("quickshop.alert")) {
 				player.sendMessage(message);
 			}
 		}
@@ -618,6 +622,7 @@ public class Util {
 		}
 	}
 
+	// Without NMS
 	public static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
 		try {
 		String Itemname = null;
@@ -705,6 +710,10 @@ public class Util {
 
 	}
 	}
+	/**
+	 * @param iStack
+	 * @return
+	 */
 	public static String getPotiondata(ItemStack iStack) {
 		if((iStack.getType() != Material.POTION)==true && (iStack.getType() !=Material.LINGERING_POTION)==true && (iStack.getType() !=Material.SPLASH_POTION)==true){
 			return null;
@@ -733,7 +742,10 @@ public class Util {
 			return result;
 		}else {
 		return null;
-		}
+		} 
+	}
+	public static void sendDeprecatedMethodWarn() {
+		QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
 	}
 		
 }
