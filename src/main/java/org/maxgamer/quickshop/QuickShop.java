@@ -711,6 +711,7 @@ public class QuickShop extends JavaPlugin {
 		if(selectedVersion == 4) {
 			getConfig().set("updater", true);
 			getConfig().set("config-version", 5);
+			selectedVersion = 5;
 		}
 	}
 
