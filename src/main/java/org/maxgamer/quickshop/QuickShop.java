@@ -62,11 +62,14 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 //import org.maxgamer.quickshop.Util.NMS;
 import org.maxgamer.quickshop.Util.Permissions;
+import org.maxgamer.quickshop.Util.Updater;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
+import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.sun.deploy.uitoolkit.impl.fx.Utils;
 
 
 
@@ -202,7 +205,7 @@ public class QuickShop extends JavaPlugin {
 			LockListener ll = new LockListener(this);
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
-
+		getServer().getPluginManager().registerEvents(new UpdateWatcher(), this);
 //		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
 //		if (cPotionSection!=null) {
 //			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
@@ -665,14 +668,9 @@ public class QuickShop extends JavaPlugin {
 		} else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
-		getLogger().info("Async checking for updates...");
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				checkUpdate("59134");
-			}
-		}.runTaskTimerAsynchronously(this, 1, 1000 * 60 * 30);
+		
+		UpdateWatcher.init();
+		
 	}
 	public String boolean2String(boolean bool) {
 		if(bool) {
@@ -682,28 +680,20 @@ public class QuickShop extends JavaPlugin {
 		}
 	}
 	public boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
-		// TODO Auto-generated method stub
-		while (currentConfigVersion-oldConfigVersion!=0 && oldConfigVersion<currentConfigVersion) {
-			oldConfigVersion = updateConfig(oldConfigVersion+1);
-			if(oldConfigVersion==-1) {
-				getLogger().info("Failed to config update!.");
-				return false;
-			}
-		}
+		updateConfig(oldConfigVersion);
 		
 		getLogger().info("Complete config update!.");
 		return true;
 	}
 	
-	public int updateConfig(int selectedVersion) {
+	public void updateConfig(int selectedVersion) {
+		getLogger().info("Auto updateing config.yml ...");
 		if (selectedVersion == 1) {
-			// Run 0-1 update
 			getConfig().set("disabled-metrics", false);
 			getConfig().set("config-version", 2);
-			return selectedVersion + 1;
+			selectedVersion = 2;
 		}
-		if (selectedVersion == 2) {
-			// Run 1-2 update
+		if (selectedVersion == 2) { 
 			getConfig().set("protect.minecart", true);
 			getConfig().set("protect.entity", true);
 			getConfig().set("protect.redstone", true);
@@ -711,15 +701,17 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("protect.explode", true);
 			getConfig().set("protect.hopper", true);
 			getConfig().set("config-version", 3);
-			return selectedVersion + 1;
+			selectedVersion = 3;
 		}
 		if (selectedVersion == 3) {
 			getConfig().set("shop.alternate-currency-symbol", '$');
 			getConfig().set("config-version", 4);
-			return selectedVersion + 1;
+			selectedVersion = 4;
 		}
-
-		return -1;
+		if(selectedVersion == 4) {
+			getConfig().set("updater", true);
+			getConfig().set("config-version", 5);
+		}
 	}
 
 	/** Reloads QuickShops config */
@@ -774,6 +766,7 @@ public class QuickShop extends JavaPlugin {
 			logWatcher.task.cancel();
 			logWatcher.close(); // Closes the file
 		}
+		UpdateWatcher.uninit();
 		/* Remove all display items, and any dupes we can find */
 		shopManager.clear();
 		/* Empty the buffer */
@@ -825,21 +818,5 @@ public class QuickShop extends JavaPlugin {
 	public ShopManager getShopManager() {
 		return this.shopManager;
 	}
-    public void checkUpdate(String resourceID) {
-        try {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceID).openConnection();
-            int timed_out = 300000;
-            connection.setConnectTimeout(timed_out);
-            connection.setReadTimeout(timed_out);
-            String localPluginVersion = this.getDescription().getVersion();
-            String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-            if (!spigotPluginVersion.equals(localPluginVersion) && spigotPluginVersion != null) {
-                getLogger().info("New QuickShop release now updated on SpigotMC.org! ");
-                getLogger().info("Update plugin in there:https://www.spigotmc.org/resources/59134/");
-            }
-            connection.disconnect();
-        } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to check for an update on SpigotMC.org!");
-        }
-    }
+    
 }
