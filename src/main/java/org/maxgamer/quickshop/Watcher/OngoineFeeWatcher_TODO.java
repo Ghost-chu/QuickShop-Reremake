@@ -22,7 +22,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-public class OngoineFeeWatcher {
+public class OngoineFeeWatcher_TODO {
 	BukkitTask task = null;
 	int shops_price;
 	boolean pass_offline_players;
