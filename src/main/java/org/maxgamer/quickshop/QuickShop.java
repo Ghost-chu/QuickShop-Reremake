@@ -60,7 +60,6 @@ import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
-import org.maxgamer.quickshop.Watcher.OngoineFeeWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -68,7 +67,6 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
 	public static QuickShop instance;
-	OngoineFeeWatcher ongoineFeeWatcher = new OngoineFeeWatcher();
 	/** The economy we hook into for transactions */
 	private Economy economy;
 	/** The Shop Manager used to store shops */
@@ -721,7 +719,6 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
 		UpdateWatcher.init();
-		ongoineFeeWatcher.init();
 	}
 
 	public String boolean2String(boolean bool) {
@@ -834,7 +831,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		this.warnings.clear();
 		this.reloadConfig();
-		ongoineFeeWatcher.uninit();
 	}
 
 	/**
