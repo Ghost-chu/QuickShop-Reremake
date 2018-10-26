@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Shop.ContainerShop;
@@ -88,22 +88,20 @@ public class OngoineFeeWatcher_TODO {
 				}
 			}
 			if(!online) {
-				QuickShop.instance.getDB().getConnection().createStatement()
-				.executeUpdate("DELETE FROM schedule WHERE x = " + X + " AND y = " + Y + " AND z = " + Z
-						+ " AND world = \"" + World + "\""
-						+ (QuickShop.instance.getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-				String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-				QuickShop.instance.getDB().execute(scheduleq , argUUID, World, X, Y, Z, System.currentTimeMillis());
+//				QuickShop.instance.getDB().getConnection().createStatement()
+//				.executeUpdate("DELETE FROM schedule WHERE x = " + X + " AND y = " + Y + " AND z = " + Z
+//						+ " AND world = \"" + World + "\""
+//						+ (QuickShop.instance.getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+				DatabaseHelper.removeShop(QuickShop.instance.getDB(), X, Y, Z, World);
+				DatabaseHelper.insertSchedule(argUUID, World, X, Y, Z, System.currentTimeMillis());
 				return;
 				//Not online and turn on it from config, Return
 			}
 			double moneyRemining = eco.getBalance(uuid);
 			if(moneyRemining<shops_price) {
 				MsgUtil.send(uuid, MsgUtil.getMessage("no-enough-money-to-keep-shops"));
-				//Start scanning player's all shops in database
-				java.sql.Connection con = QuickShop.instance.getDB().getConnection();
-				PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
-				ResultSet rs = ps.executeQuery();
+				//Start scanning player's all shops in database	
+				ResultSet rs = DatabaseHelper.selectAllShops(QuickShop.instance.getDB());
 				while (rs.next()) {
 					int x = 0;
 					int y = 0;

@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.maxgamer.quickshop.QuickShop;
+
 public class DatabaseHelper {
 	public static void setup(Database db) throws SQLException {
 		if (!db.hasTable("shops")) {
@@ -91,6 +93,18 @@ public class DatabaseHelper {
 		.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
 				+ " AND world = \"" + worldName + "\""
 				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+	}
+	public static void insertSchedule(String argUUID, String world, int x, int y, int z, long l) {
+		String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+		QuickShop.instance.getDB().execute(scheduleq , argUUID, world, x, y, z, System.currentTimeMillis());
+	}
+
+	public static void updateOwner2UUID(String ownerUUID, int x, int y, int z, String worldName) throws SQLException {
+		QuickShop.instance.getDB().getConnection().createStatement()
+		.executeUpdate("UPDATE shops SET owner = \"" + ownerUUID.toString()
+		+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
+		+ " AND world = \"" + worldName + "\" LIMIT 1");
+		
 	}
 	
 }
