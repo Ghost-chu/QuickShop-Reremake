@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -577,8 +579,12 @@ public class ContainerShop implements Shop {
 		int y = this.getLocation().getBlockY();
 		int z = this.getLocation().getBlockZ();
 		String world = this.getLocation().getWorld().getName();
-		plugin.getDB().execute("DELETE FROM shops WHERE x = '" + x + "' AND y = '" + y + "' AND z = '" + z + "' AND world = '" + world + "'");
-		plugin.getDB().execute("DELETE FROM schedule WHERE x = '" + x + "' AND y = '" + y + "' AND z = '" + z + "' AND world = '" + world + "'");
+		try {
+			DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Refund if necessary
 		if (plugin.getConfig().getBoolean("shop.refund")) {
 			plugin.getEcon().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));

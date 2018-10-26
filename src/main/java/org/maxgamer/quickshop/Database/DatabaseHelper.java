@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Database;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -60,7 +61,7 @@ public class DatabaseHelper {
 	 */
 	public static void createShopsTable(Database db) throws SQLException {
 		Statement st = db.getConnection().createStatement();
-		String createTable = "CREATE TABLE shops (" + "owner  TEXT(32) NOT NULL, " + "price  double(32, 2) NOT NULL, " + "itemConfig TEXT CHARSET utf8 NOT NULL, " + "x  INTEGER(32) NOT NULL, " + "y  INTEGER(32) NOT NULL, " + "z  INTEGER(32) NOT NULL, " + "world VARCHAR(32) NOT NULL, " + "unlimited  boolean, " + "type  boolean, " + "PRIMARY KEY (x, y, z, world) " + ");";
+		String createTable = "CREATE TABLE shops (owner  TEXT(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
 		st.execute(createTable);
 	}
 
@@ -72,8 +73,24 @@ public class DatabaseHelper {
 	 */
 	public static void createMessagesTable(Database db) throws SQLException {
 		Statement st = db.getConnection().createStatement();
-		String createTable = "CREATE TABLE messages (" + "owner  TEXT(32) NOT NULL, " + "message  TEXT(200) NOT NULL, " + "time  BIGINT(32) NOT NULL " + ");";
+		String createTable = "CREATE TABLE messages (owner  TEXT(32) NOT NULL, message  TEXT(200) NOT NULL, time  BIGINT(32) NOT NULL );";
 		st.execute(createTable);
+	}
+	
+	public static ResultSet selectAllShops(Database db) throws SQLException {
+		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM shops");
+		return ps.executeQuery();
+		
+	}
+	public static void removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
+		db.getConnection().createStatement()
+		.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
+				+ " AND world = \"" + worldName + "\""
+				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+		db.getConnection().createStatement()
+		.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+				+ " AND world = \"" + worldName + "\""
+				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 	}
 	
 }
