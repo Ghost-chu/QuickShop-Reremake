@@ -94,12 +94,19 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.13-SNAPSHOT.jar</systemPath>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
 			<artifactId>spigot</artifactId>
 			<version>v1_13_R2</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.13.1-SNAPSHOT.jar</systemPath>
+		</dependency> -->
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_13_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.13.2-R0.1-SNAPSHOT-b1967.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.onarandombox.MultiverseCore</groupId>
