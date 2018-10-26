@@ -807,6 +807,7 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 			getLogger().severe("QuickShop CANNOT start!");
+			this.getPluginLoader().disablePlugin(this);
 			return false;
 		}
 	}
