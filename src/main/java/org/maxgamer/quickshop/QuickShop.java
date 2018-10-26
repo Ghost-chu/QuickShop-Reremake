@@ -336,10 +336,7 @@ public class QuickShop extends JavaPlugin {
 						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
 						if (player.hasPlayedBefore()) {
 							ownerUUID = player.getUniqueId();
-							getDB().getConnection().createStatement()
-									.executeUpdate("UPDATE shops SET owner = \"" + ownerUUID.toString()
-											+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
-											+ " AND world = \"" + worldName + "\" LIMIT 1");
+							DatabaseHelper.updateOwner2UUID(ownerUUID.toString(), x, y, z, worldName);
 						} else {
 							// Invalid shop owner
 //							getDB().getConnection().createStatement()
