@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -283,7 +281,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		/* Load shops from database to memory */
 		int count = 0; // Shops count
-		Connection con;
 		try {
 			getLogger().info("Loading shops from database...");
 			/*
@@ -292,9 +289,9 @@ public class QuickShop extends JavaPlugin {
 			 * return; } if (res > 0) { plugin.getLogger().log(Level.WARNING,
 			 * "Conversion success. Continuing..."); }
 			 */
-			con = database.getConnection();
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
-			ResultSet rs = ps.executeQuery();
+//			con = database.getConnection();
+//			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
+			ResultSet rs = DatabaseHelper.selectAllShops(database);
 			int errors = 0;
 			// ========================
 			MsgUtil.loadItemi18n();
@@ -312,7 +309,7 @@ public class QuickShop extends JavaPlugin {
 				ItemStack item = null;
 				String owner = null;
 				UUID ownerUUID = null;
-				String step = "Crycle";
+				String step = "while init";
 				// ==========================================================================================
 				try {
 					x = rs.getInt("x");
@@ -345,14 +342,15 @@ public class QuickShop extends JavaPlugin {
 											+ " AND world = \"" + worldName + "\" LIMIT 1");
 						} else {
 							// Invalid shop owner
-							getDB().getConnection().createStatement()
-									.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = "
-											+ z + " AND world = \"" + worldName + "\""
-											+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-							getDB().getConnection().createStatement()
-							.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = "
-									+ z + " AND world = \"" + worldName + "\""
-									+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+//							getDB().getConnection().createStatement()
+//									.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = "
+//											+ z + " AND world = \"" + worldName + "\""
+//											+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+//							getDB().getConnection().createStatement()
+//							.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = "
+//									+ z + " AND world = \"" + worldName + "\""
+//									+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+							DatabaseHelper.removeShop(database, x, y, z, worldName);
 							continue;
 						}
 					}
@@ -366,14 +364,15 @@ public class QuickShop extends JavaPlugin {
 						step = "Removeing shop in world: Because it not a correct InventoryHolder";
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
-						getDB().getConnection().createStatement()
-								.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
-										+ " AND world = \"" + worldName + "\""
-										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-						getDB().getConnection().createStatement()
-						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
-								+ " AND world = \"" + worldName + "\""
-								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+//						getDB().getConnection().createStatement()
+//								.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
+//										+ " AND world = \"" + worldName + "\""
+//										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+//						getDB().getConnection().createStatement()
+//						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+//								+ " AND world = \"" + worldName + "\""
+//								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+						DatabaseHelper.removeShop(database, x, y, z, worldName);
 						continue;
 					}
 					step = "Loading shop type";
@@ -505,41 +504,44 @@ public class QuickShop extends JavaPlugin {
 					if (errors < 3) {
 						getLogger().info("Removeing shop from database...");
 						// return;
-						PreparedStatement delps = getDB().getConnection()
-								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-						delps.setInt(1, x);
-						delps.setInt(2, y);
-						delps.setInt(3, z);
-						delps.setString(4, worldName);
-						delps.execute();
+//						PreparedStatement delps = getDB().getConnection()
+//								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
+//						delps.setInt(1, x);
+//						delps.setInt(2, y);
+//						delps.setInt(3, z);
+//						delps.setString(4, worldName);
+//						delps.execute();
 						
-						PreparedStatement scdelps = getDB().getConnection()
-								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
-						scdelps.setInt(1, x);
-						scdelps.setInt(2, y);
-						scdelps.setInt(3, z);
-						scdelps.setString(4, worldName);
-						scdelps.execute();
+						DatabaseHelper.removeShop(database, x, y, z, worldName);
+//						
+//						PreparedStatement scdelps = getDB().getConnection()
+//								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
+//						scdelps.setInt(1, x);
+//						scdelps.setInt(2, y);
+//						scdelps.setInt(3, z);
+//						scdelps.setString(4, worldName);
+//						scdelps.execute();
 						getLogger().info("Trying keep loading...");
 					} else {
 						getLogger().severe(
 								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
 						getLogger().info("Removeing shop from database...");
-						PreparedStatement delps = getDB().getConnection()
-								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-						delps.setInt(1, x);
-						delps.setInt(2, y);
-						delps.setInt(3, z);
-						delps.setString(4, worldName);
-						delps.execute();
-						
-						PreparedStatement scdelps = getDB().getConnection()
-								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
-						scdelps.setInt(1, x);
-						scdelps.setInt(2, y);
-						scdelps.setInt(3, z);
-						scdelps.setString(4, worldName);
-						scdelps.execute();
+//						PreparedStatement delps = getDB().getConnection()
+//								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
+//						delps.setInt(1, x);
+//						delps.setInt(2, y);
+//						delps.setInt(3, z);
+//						delps.setString(4, worldName);
+//						delps.execute();
+//						
+//						PreparedStatement scdelps = getDB().getConnection()
+//								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
+//						scdelps.setInt(1, x);
+//						scdelps.setInt(2, y);
+//						scdelps.setInt(3, z);
+//						scdelps.setString(4, worldName);
+//						scdelps.execute();
+						DatabaseHelper.removeShop(database, x, y, z, worldName);
 						e.printStackTrace();
 					}
 				}

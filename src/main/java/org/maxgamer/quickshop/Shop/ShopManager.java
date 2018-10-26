@@ -384,7 +384,7 @@ public class ShopManager {
 									}
 								}
 							} catch (Exception e2) {
-								e2.getMessage();
+								e2.printStackTrace();
 								plugin.getLogger().log(Level.WARNING,"QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
 							}						
 						}
