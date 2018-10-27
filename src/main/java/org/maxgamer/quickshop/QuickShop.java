@@ -128,6 +128,7 @@ public class QuickShop extends JavaPlugin {
 
 	@SuppressWarnings("resource")
 	public void onEnable() {
+		instance = this;
 		if(Util.isDevEdition()) {
 			getLogger().severe("WARNING: You are running QSRR unstable test version");
 			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
@@ -158,7 +159,6 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
 		// NMS.init();
-		instance = this;
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
