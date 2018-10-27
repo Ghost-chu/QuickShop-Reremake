@@ -3,6 +3,9 @@
 #Do not touch if you not clear know about this
 config-version: 5
 
+#Do not touch if you not know what is this
+dev-mode: false
+
 #Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
 tax: 0.05
 

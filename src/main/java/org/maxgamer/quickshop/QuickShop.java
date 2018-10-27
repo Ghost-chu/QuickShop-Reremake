@@ -133,24 +133,10 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("WARNING: You are running QSRR unstable test version");
 			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
 			getLogger().severe("WARNING: Test version may destory anything!");
-			getLogger().severe("WARNING: QSRR will start after you confirm, nothing will changes before this alert");
-			getLogger().severe("WARNING: Input `qs continue` and press enter to continue load server.");
-			while(true) {
-				Scanner s = new Scanner(System.in);
-				String input = s.nextLine();
-				switch (input) {
-				case "qs continue":
-					getLogger().severe("Continue...");
-					break;
-				case "qs shutdown":
-					//Force stop server
-					getLogger().severe("Force shutting down...");
-					System.exit(0);
-					break;
-				default:
-					getLogger().severe("Use `qs continue` to continue load or use `qs shutdown` to force shutdown without changes.");
-					break;
-				}
+			getLogger().severe("WARNING: QSRR won't start after you confirm, nothing will changes before you turn on dev allowed.");
+			if(!getConfig().getBoolean("dev-mode")){
+				getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
+				System.exit(0);
 			}
 		}
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
