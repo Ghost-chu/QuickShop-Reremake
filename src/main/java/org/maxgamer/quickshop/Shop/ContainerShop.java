@@ -199,9 +199,10 @@ public class ContainerShop implements Shop {
 		int z = this.getLocation().getBlockZ();
 		String world = this.getLocation().getWorld().getName();
 		int unlimited = this.isUnlimited() ? 1 : 0;
-		String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
+		//String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
 		try {
-			plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
+			//plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
+			DatabaseHelper.updateShop(plugin.getDB(), this.getOwner().toString(), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
 		} catch (Exception e) {
 			e.printStackTrace();
 			plugin.getLogger().log(Level.WARNING, "Could not update shop in database! Changes will revert after a reboot!");
