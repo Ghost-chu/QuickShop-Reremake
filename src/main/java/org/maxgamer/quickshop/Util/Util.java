@@ -747,5 +747,13 @@ public class Util {
 	public static void sendDeprecatedMethodWarn() {
 		QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
 	}
+
+	public static boolean isDevEdition() {
+		if(QuickShop.instance.getDescription().getVersion().contains("dev")||QuickShop.instance.getDescription().getVersion().contains("alpha")||QuickShop.instance.getDescription().getVersion().contains("beta")||QuickShop.instance.getDescription().getVersion().contains("snapshot")) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 		
 }

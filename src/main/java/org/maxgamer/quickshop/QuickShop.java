@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -127,6 +128,30 @@ public class QuickShop extends JavaPlugin {
 
 	@SuppressWarnings("resource")
 	public void onEnable() {
+		if(Util.isDevEdition()) {
+			getLogger().severe("WARNING: You are running QSRR unstable test version");
+			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
+			getLogger().severe("WARNING: Test version may destory anything!");
+			getLogger().severe("WARNING: QSRR will start after you confirm, nothing will changes before this alert");
+			getLogger().severe("WARNING: Input `qs continue` and press enter to continue load server.");
+			while(true) {
+				Scanner s = new Scanner(System.in);
+				String input = s.nextLine();
+				switch (input) {
+				case "qs continue":
+					getLogger().severe("Continue...");
+					break;
+				case "qs shutdown":
+					//Force stop server
+					getLogger().severe("Force shutting down...");
+					System.exit(0);
+					break;
+				default:
+					getLogger().severe("Use `qs continue` to continue load or use `qs shutdown` to force shutdown without changes.");
+					break;
+				}
+			}
+		}
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
 		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
