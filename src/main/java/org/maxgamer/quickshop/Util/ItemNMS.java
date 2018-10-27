@@ -21,11 +21,9 @@ public class ItemNMS {
 		Object obj;
 		try {
 			obj = nmsClass.newInstance();
-		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
+		} catch (InstantiationException e1) { //NMS Class not found, Use old preview
 			return null;
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 		try {

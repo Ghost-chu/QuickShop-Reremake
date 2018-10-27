@@ -4,8 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class DatabaseHelper {
 	public static void setup(Database db) throws SQLException {
@@ -105,6 +106,12 @@ public class DatabaseHelper {
 		+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
 		+ " AND world = \"" + worldName + "\" LIMIT 1");
 		
+	}
+
+	public static void updateShop(Database db, String owner, ItemStack itemConfig, int unlimited, int shopType,
+			double price, int x, int y, int z, String world) {
+		String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
+		db.execute(q, owner, Util.serialize(itemConfig), unlimited, shopType, price, x, y, z, world);
 	}
 	
 }
