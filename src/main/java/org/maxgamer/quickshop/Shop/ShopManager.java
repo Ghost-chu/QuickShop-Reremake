@@ -26,6 +26,7 @@ import org.bukkit.material.Sign;
 import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
@@ -55,15 +56,14 @@ public class ShopManager {
 	public void createShop(Shop shop) {
 		ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
 		Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
+		if(ssShopCreateEvent.isCancelled()) {
+			return;
+		}
 		Location loc = shop.getLocation();
 		ItemStack item = shop.getItem();
 		try {
 			// Write it to the database
-			String q = "INSERT INTO shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			plugin.getDB().execute(q, shop.getOwner().toString(), shop.getPrice(), Util.serialize(item), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID());
-			// Reremake write in schedule data
-			String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-			plugin.getDB().execute(scheduleq , shop.getOwner().toString(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
+			DatabaseHelper.createShop(shop.getOwner().toString(), shop.getPrice(), item,  (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 			// Add it to the world
 			addShop(loc.getWorld().getName(), shop);
 		} catch (Exception error) {

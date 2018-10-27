@@ -108,10 +108,18 @@ public class DatabaseHelper {
 		
 	}
 
-	public static void updateShop(Database db, String owner, ItemStack itemConfig, int unlimited, int shopType,
+	public static void updateShop(Database db, String owner, ItemStack item, int unlimited, int shopType,
 			double price, int x, int y, int z, String world) {
 		String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
-		db.execute(q, owner, Util.serialize(itemConfig), unlimited, shopType, price, x, y, z, world);
+		db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
+	}
+	
+	public static void createShop(String owner, double price, ItemStack item, int unlimited, int shopType, String world, int x, int y, int z) {
+		String q = "INSERT INTO shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
+		// Reremake write in schedule data
+		String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+		QuickShop.instance.getDB().execute(scheduleq , owner, world,x,y,z, System.currentTimeMillis());
 	}
 	
 }
