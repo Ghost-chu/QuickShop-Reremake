@@ -871,5 +871,16 @@ public class QuickShop extends JavaPlugin {
 	public ShopManager getShopManager() {
 		return this.shopManager;
 	}
+	
+	/**
+	 * Returns QS version, this method only exist on QSRR forks
+	 * If running other QSRR forks,, result may not is "Reremake x.x.x"
+	 * If running QS offical, Will throw exception.
+	 * 
+	 * @return Plugin Version
+	 */
+	public static String getVersion() {
+		return "Reremake "+QuickShop.instance.getDescription().getVersion();
+	}
 
 }
