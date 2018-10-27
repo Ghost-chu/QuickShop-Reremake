@@ -622,6 +622,7 @@ public class QuickShop extends JavaPlugin {
 			String bukkitVer = Bukkit.getBukkitVersion();
 			String serverName = Bukkit.getServerName();
 			Metrics metrics = new Metrics(this);
+			//Use internal Metric class not Maven for solve plugin name issues
 			String display_Items;
 			if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
 																// number items need disabled?
