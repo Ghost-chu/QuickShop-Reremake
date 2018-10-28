@@ -56,7 +56,7 @@ public class LockListener implements Listener {
 	/**
 	 * Handles hopper placement
 	 */
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlace(BlockPlaceEvent e) {
 		Block b = e.getBlock();
 		try {

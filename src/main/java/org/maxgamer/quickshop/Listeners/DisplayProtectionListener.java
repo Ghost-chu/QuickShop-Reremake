@@ -21,7 +21,7 @@ public class DisplayProtectionListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		for (int i = 0; i<event.getInventory().getContents().length; i++) {
 			try {
@@ -37,7 +37,7 @@ public class DisplayProtectionListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
 		try {
 			if (itemStackCheck(event.getCurrentItem()) || itemStackCheck(event.getCursor())) {
@@ -54,8 +54,8 @@ public class DisplayProtectionListener implements Listener {
 		} catch (Exception e) {}		
 	}
 
-	@EventHandler
-	void onInventoryPickupItem(InventoryPickupItemEvent event) {
+	@EventHandler(ignoreCancelled = true)
+	public void onInventoryPickupItem(InventoryPickupItemEvent event) {
 		try {
 			ItemStack is = event.getItem().getItemStack();
 			if (itemStackCheck(is)) {
