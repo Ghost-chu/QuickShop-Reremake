@@ -47,7 +47,6 @@ import net.md_5.bungee.api.chat.TextComponent;
  */
 @SuppressWarnings("deprecation")
 public class Util {
-	private static HashSet<Material> tools = new HashSet<Material>();
 	private static HashSet<Material> blacklist = new HashSet<Material>();
 	private static HashSet<Material> shoppables = new HashSet<Material>();
 	private static Map<Material, Entry<Double,Double>> restrictedPrices = new HashMap<Material, Entry<Double,Double>>();
@@ -55,7 +54,6 @@ public class Util {
 	private static Method storageContents;
 
 	public static void initialize() {
-		tools.clear();
 		blacklist.clear();
 		shoppables.clear();
 		restrictedPrices.clear();
@@ -75,55 +73,6 @@ public class Util {
 				shoppables.add(mat);
 			}
 		}
-		tools.add(Material.BOW);
-		tools.add(Material.SHEARS);
-		tools.add(Material.FISHING_ROD);
-		tools.add(Material.FLINT_AND_STEEL);
-		tools.add(Material.CHAINMAIL_BOOTS);
-		tools.add(Material.CHAINMAIL_CHESTPLATE);
-		tools.add(Material.CHAINMAIL_HELMET);
-		tools.add(Material.CHAINMAIL_LEGGINGS);
-		tools.add(Material.WOODEN_AXE);
-		tools.add(Material.WOODEN_HOE);
-		tools.add(Material.WOODEN_PICKAXE);
-		tools.add(Material.WOODEN_SHOVEL);
-		tools.add(Material.WOODEN_SWORD);
-		tools.add(Material.LEATHER_BOOTS);
-		tools.add(Material.LEATHER_CHESTPLATE);
-		tools.add(Material.LEATHER_HELMET);
-		tools.add(Material.LEATHER_LEGGINGS);
-		tools.add(Material.DIAMOND_AXE);
-		tools.add(Material.DIAMOND_HOE);
-		tools.add(Material.DIAMOND_PICKAXE);
-		tools.add(Material.DIAMOND_SHOVEL);
-		tools.add(Material.DIAMOND_SWORD);
-		tools.add(Material.DIAMOND_BOOTS);
-		tools.add(Material.DIAMOND_CHESTPLATE);
-		tools.add(Material.DIAMOND_HELMET);
-		tools.add(Material.DIAMOND_LEGGINGS);
-		tools.add(Material.STONE_AXE);
-		tools.add(Material.STONE_HOE);
-		tools.add(Material.STONE_PICKAXE);
-		tools.add(Material.STONE_SHOVEL);
-		tools.add(Material.STONE_SWORD);
-		tools.add(Material.GOLDEN_AXE);
-		tools.add(Material.GOLDEN_HOE);
-		tools.add(Material.GOLDEN_PICKAXE);
-		tools.add(Material.GOLDEN_SHOVEL);
-		tools.add(Material.GOLDEN_SWORD);
-		tools.add(Material.GOLDEN_BOOTS);
-		tools.add(Material.GOLDEN_CHESTPLATE);
-		tools.add(Material.GOLDEN_HELMET);
-		tools.add(Material.GOLDEN_LEGGINGS);
-		tools.add(Material.IRON_AXE);
-		tools.add(Material.IRON_HOE);
-		tools.add(Material.IRON_PICKAXE);
-		tools.add(Material.IRON_SHOVEL);
-		tools.add(Material.IRON_SWORD);
-		tools.add(Material.IRON_BOOTS);
-		tools.add(Material.IRON_CHESTPLATE);
-		tools.add(Material.IRON_HELMET);
-		tools.add(Material.IRON_LEGGINGS);
 		List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
 		for (String s : configBlacklist) {
 			Material mat = Material.getMaterial(s.toUpperCase());
@@ -403,7 +352,11 @@ public class Util {
 	 *         it doesn't.
 	 */
 	public static boolean isTool(Material mat) {
-		return tools.contains(mat);
+		if(mat.getMaxDurability()==0){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	/**
