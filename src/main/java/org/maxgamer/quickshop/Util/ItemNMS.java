@@ -1,43 +1,42 @@
 package org.maxgamer.quickshop.Util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 
-public class ItemNMS {	
-	public String getItemJSON(ItemStack iStack) {
-		ItemStack itemStack = iStack.clone();
-		String name = Bukkit.getServer().getClass().getPackage().getName();
-		String version = name.substring(name.lastIndexOf('.') + 1);
-		Class<?> nmsClass;
-		try {
-			nmsClass = Class.forName("org.maxgamer.quickshop.Nms." + version);
-		} catch (ClassNotFoundException e2) {
-			return null;
-		}
-		Object obj;
-		try {
-			obj = nmsClass.newInstance();
-		} catch (InstantiationException e1) { //NMS Class not found, Use old preview
-			return null;
-		} catch (IllegalAccessException e1) {
-			return null;
-		}
-		try {
-			Method method = nmsClass.getMethod("getNBTJson", ItemStack.class);
-			String itemJSON = (String) method.invoke(obj, new Object[] { itemStack });
-			return itemJSON;
-		} catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException
-				| IllegalAccessException e) {
-			// do somethings
-			QuickShop.instance.getLogger().info("A error happend:");
-			e.printStackTrace();
-			return null;
-		}
-	}
+public abstract class ItemNMS {
+    private static final String nmsVersion;
+    
+    private static Method craftItemStack_asNMSCopyMethod;
+    private static Class<?> nbtTagCompoundClass;
+    private static Method itemStack_saveMethod;
+    
+    static {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+        
+        try {
+            craftItemStack_asNMSCopyMethod = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
+                    .getDeclaredMethod("asNMSCopy", ItemStack.class);
+            
+            nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+            
+            itemStack_saveMethod = Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
+                    .getDeclaredMethod("save", nbtTagCompoundClass);
+            
+        } catch (Throwable t) {
+            QuickShop.instance.getLogger().info("A error happend:");
+            t.printStackTrace();
+        }
+    }
 	
-
+	public static String saveJsonfromNMS(ItemStack bStack) throws Throwable {
+        Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
+        Object nbtTagCompound = nbtTagCompoundClass.newInstance();
+        
+        itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
+        return nbtTagCompound.toString();
+	}
 }
