@@ -1,10 +1,10 @@
 package org.maxgamer.quickshop.Util;
 
-import java.lang.reflect.Method;
-
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.lang.reflect.Method;
 
 public abstract class ItemNMS {
     private static final String nmsVersion;
@@ -29,6 +29,7 @@ public abstract class ItemNMS {
         } catch (Throwable t) {
             QuickShop.instance.getLogger().info("A error happend:");
             t.printStackTrace();
+            QuickShop.instance.getLogger().info("Try update QSRR. And feedback this bug on issue tracker.");
         }
     }
 	
