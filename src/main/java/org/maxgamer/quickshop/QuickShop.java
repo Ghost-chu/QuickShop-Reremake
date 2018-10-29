@@ -128,16 +128,6 @@ public class QuickShop extends JavaPlugin {
 	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
-		if(Util.isDevEdition()) {
-			getLogger().severe("WARNING: You are running QSRR unstable test version");
-			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
-			getLogger().severe("WARNING: Test version may destory anything!");
-			getLogger().severe("WARNING: QSRR won't start after you confirm, nothing will changes before you turn on dev allowed.");
-			if(!getConfig().getBoolean("dev-mode")){
-				getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
-				System.exit(0);
-			}
-		}
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
 		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
@@ -149,6 +139,16 @@ public class QuickShop extends JavaPlugin {
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
 						// others.
 		getConfig().options().copyDefaults(true); // Load defaults.
+		if(Util.isDevEdition()) {
+			getLogger().severe("WARNING: You are running QSRR on dev-mode");
+			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
+			getLogger().severe("WARNING: Test version may destory anything!");
+			getLogger().severe("WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
+			if(!getConfig().getBoolean("dev-mode")){
+				getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
+				System.exit(0);
+			}
+		}
 		if (loadEcon() == false)
 			return;
 
