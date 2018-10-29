@@ -561,6 +561,8 @@ public class Util {
 	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
 	    try {
 	        String json = ItemNMS.saveJsonfromNMS(itemStack);
+	        if (json == null)
+	            return;
 	        TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
 	        ComponentBuilder cBuilder = new ComponentBuilder(json);
 	        HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create());
