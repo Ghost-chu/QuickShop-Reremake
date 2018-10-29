@@ -150,10 +150,19 @@ public class MsgUtil {
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
 		for (Enchantment ench : enchsi18n) {
+			try{
 			String enchname = enchi18n.getString("enchi18n."+ench.getKey().getKey().toString().trim());
 			if(enchname==null || enchname.equals("")) {
 				plugin.getLogger().info("Found new ench ["+ench.getKey().getKey().toString()+"] ,add it in config...");
 				enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
+			}
+			//for old  minecraft version
+			}catch(Exception e){
+				String enchname = enchi18n.getString("enchi18n."+ench.getName().trim());
+				if(enchname==null || enchname.equals("")) {
+					plugin.getLogger().info("Found new ench ["+ench.getName()+"] ,add it in config...");
+					enchi18n.set("enchi18n."+ench.getName().trim(),ench.getName().trim());
+				}
 			}
 		}
 		try {
