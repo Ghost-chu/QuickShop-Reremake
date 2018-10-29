@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -560,21 +559,16 @@ public class Util {
 	}
 	//Use NMS
 	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
-		ItemNMS nms = new ItemNMS();
-		String json = nms.getItemJSON(itemStack);
-		if(json == null) {
-			sendItemholochatAsNormaly(itemStack, player, normalText);
-			return;
-		}
-		try {
-		TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
-		ComponentBuilder cBuilder = new ComponentBuilder(json);
-		HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create());
-		normalmessage.setHoverEvent(he);
-		player.spigot().sendMessage(normalmessage);
-		}catch (Exception e) {
-			sendItemholochatAsNormaly(itemStack, player, normalText);
-		}
+	    try {
+	        String json = ItemNMS.saveJsonfromNMS(itemStack);
+	        TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
+	        ComponentBuilder cBuilder = new ComponentBuilder(json);
+	        HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create());
+	        normalmessage.setHoverEvent(he);
+	        player.spigot().sendMessage(normalmessage);
+	    } catch (Throwable t) {
+	        sendItemholochatAsNormaly(itemStack, player, normalText);
+	    }
 	}
 
 	// Without NMS
