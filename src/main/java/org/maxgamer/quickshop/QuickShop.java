@@ -113,6 +113,7 @@ public class QuickShop extends JavaPlugin {
 	MultiverseCore mPlugin = null;
 
 	private int displayItemCheckTicks;
+	private boolean noopDisable;
 
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
@@ -146,7 +147,9 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
 			if(!getConfig().getBoolean("dev-mode")){
 				getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
-				System.exit(0);
+				noopDisable = true;
+				Bukkit.getPluginManager().disablePlugin(this);
+				return;
 			}
 		}
 		if (loadEcon() == false)
@@ -821,6 +824,8 @@ public class QuickShop extends JavaPlugin {
 	}
 
 	public void onDisable() {
+	    if (noopDisable)
+	        return;
 		if (itemWatcherTask != null) {
 			itemWatcherTask.cancel();
 		}
