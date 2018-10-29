@@ -1,8 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,11 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
@@ -29,6 +22,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerListener implements Listener {
 	private QuickShop plugin;
@@ -199,7 +195,18 @@ public class PlayerListener implements Listener {
 		} catch (NullPointerException ex) {
 		} // if meta/displayname/stack is null. We don't really care in that case.
 	}
-	
+	//to support old minecraft version
+	@EventHandler
+	public void onPlayerPickup_Old(PlayerPickupItemEvent e) {
+		ItemStack stack = e.getItem().getItemStack();
+		try {
+			if (stack.getItemMeta().getDisplayName().equals("QuickShop")) {
+				e.setCancelled(true);
+				// You shouldn't be able to pick up that...
+			}
+		} catch (NullPointerException ex) {
+		} // if meta/displayname/stack is null. We don't really care in that case.
+	}
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
 		try {
