@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,9 +49,9 @@ import net.md_5.bungee.api.chat.TextComponent;
  */
 @SuppressWarnings("deprecation")
 public class Util {
-	private static HashSet<Material> blacklist = new HashSet<Material>();
-	private static HashSet<Material> shoppables = new HashSet<Material>();
-	private static Map<Material, Entry<Double,Double>> restrictedPrices = new HashMap<Material, Entry<Double,Double>>();
+	private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
+	private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
+	private static final EnumMap<Material, Entry<Double,Double>> restrictedPrices = new EnumMap<Material, Entry<Double,Double>>(Material.class);
 	private static QuickShop plugin;
 	private static Method storageContents;
 

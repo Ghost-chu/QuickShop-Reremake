@@ -32,7 +32,7 @@ public class ChunkListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onChunkUnload(ChunkUnloadEvent e) {
 		Chunk c = e.getChunk();
 		HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
