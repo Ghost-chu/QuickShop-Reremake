@@ -109,6 +109,34 @@
 			<systemPath>${basedir}/lib/spigot-1.13.2-R0.1-SNAPSHOT-b1967.jar</systemPath>
 		</dependency>
 		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_12_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_12_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.12.2-R0.1-SNAPSHOT-b1648.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_11_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_11_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.11.2-R0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_10_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_10_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.10.2-R0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.bukkit.craftbukkit.v1_9_R2</groupId>
+			<artifactId>spigot</artifactId>
+			<version>v1_9_R2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/spigot-1.9.4-R0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>com.onarandombox.MultiverseCore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
 			<version>2.6.0-b738</version>
