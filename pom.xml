@@ -94,13 +94,13 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.13-SNAPSHOT.jar</systemPath>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
-			<artifactId>spigot</artifactId>
-			<version>v1_13_R2</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/spigot-1.13.1-SNAPSHOT.jar</systemPath>
-		</dependency> -->
+		<!--&lt;!&ndash; <dependency>-->
+			<!--<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>-->
+			<!--<artifactId>spigot</artifactId>-->
+			<!--<version>v1_13_R2</version>-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${basedir}/lib/spigot-1.13.1-SNAPSHOT.jar</systemPath>-->
+		<!--</dependency> &ndash;&gt;-->
 		<dependency>
 			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
 			<artifactId>spigot</artifactId>
@@ -123,9 +123,9 @@
 			<systemPath>${basedir}/lib/spigot-1.11.2-R0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_10_R2</groupId>
+			<groupId>org.bukkit.craftbukkit.v1_10_R1</groupId>
 			<artifactId>spigot</artifactId>
-			<version>v1_10_R2</version>
+			<version>v1_10_R1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/spigot-1.10.2-R0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
