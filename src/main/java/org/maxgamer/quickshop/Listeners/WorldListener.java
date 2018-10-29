@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
@@ -62,8 +63,11 @@ public class WorldListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onWorldUnload(WorldUnloadEvent e) {
+	    if(e.isCancelled()){
+	        return;
+        }
 		// This is a workaround, because I don't get parsed chunk events when a
 		// world unloads, I think...
 		// So manually tell all of these shops they're unloaded.
