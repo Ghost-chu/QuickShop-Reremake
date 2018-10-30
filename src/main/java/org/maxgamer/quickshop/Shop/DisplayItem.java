@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -51,6 +49,7 @@ public class DisplayItem {
 	/**
 	 * Spawns the dummy item on top of the shop.
 	 */
+	@SuppressWarnings("unused")
 	public void spawn() {
 		if (shop.getLocation().getWorld() == null)
 			return;
@@ -165,7 +164,7 @@ public class DisplayItem {
 			return;
 		}
 		//Call Event for QSAPI
-		if(plugin.getConfig().getBoolean("shop.use-fake-item")){
+		if(false){
 			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, true);
 			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
 			if (shopDisplayItemSpawnEvent_v2.isCancelled()) {
