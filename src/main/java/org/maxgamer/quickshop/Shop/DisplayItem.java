@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -163,20 +165,34 @@ public class DisplayItem {
 			return;
 		}
 		//Call Event for QSAPI
-		ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
-		Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-		if(shopDisplayItemSpawnEvent.isCancelled()) {
-			return;
-		}
-		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-		this.item.setVelocity(new Vector(0, 0.1, 0));
-		try {
-			this.safeGuard(this.item);
-			// NMS.safeGuard
-		} catch (Exception e) {
-			e.printStackTrace();
-			plugin.getLogger().log(Level.WARNING,
-					"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+		if(plugin.getConfig().getBoolean("shop.use-fake-item")){
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, true);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
+			if (shopDisplayItemSpawnEvent_v2.isCancelled()) {
+				return;
+			}
+			//this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+			//this.item.setVelocity(new Vector(0, 0.1, 0));
+
+
+		}else {
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, false);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
+			if (shopDisplayItemSpawnEvent.isCancelled()) {
+				return;
+			}
+			this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+			this.item.setVelocity(new Vector(0, 0.1, 0));
+			try {
+				this.safeGuard(this.item);
+				// NMS.safeGuard
+			} catch (Exception e) {
+				e.printStackTrace();
+				plugin.getLogger().log(Level.WARNING,
+						"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+			}
 		}
 	}
 
