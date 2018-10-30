@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.Event.Result;

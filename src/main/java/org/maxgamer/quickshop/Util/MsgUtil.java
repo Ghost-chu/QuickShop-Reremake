@@ -135,6 +135,7 @@ public class MsgUtil {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public static void loadEnchi18n() {
 		plugin.getLogger().info("Starting loading Enchantment i18n...");
 		File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -174,6 +175,7 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load enchname i18n.");
 	}
+	@SuppressWarnings("deprecation")
 	public static String getEnchi18n(Enchantment key) {
 		if(key==null) {
 			return "ERROR";
