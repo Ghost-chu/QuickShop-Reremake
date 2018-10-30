@@ -157,7 +157,7 @@ public class MsgUtil {
 				enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
 			}
 			//for old  minecraft version
-			}catch(Exception e){
+			}catch(Throwable e){
 				String enchname = enchi18n.getString("enchi18n."+ench.getName().trim());
 				if(enchname==null || enchname.equals("")) {
 					plugin.getLogger().info("Found new ench ["+ench.getName()+"] ,add it in config...");
@@ -178,7 +178,13 @@ public class MsgUtil {
 		if(key==null) {
 			return "ERROR";
 		}
-		String EnchString = key.getKey().getKey().toString().trim();
+		String EnchString = null;
+		//support for legacy
+		try {
+			EnchString = key.getKey().getKey().toString().trim();
+		}catch(Throwable e){
+			EnchString = key.getName().trim();
+		}
 		String Ench_i18n = null;
 		try {
 			Ench_i18n = enchi18n.getString("enchi18n."+EnchString);
