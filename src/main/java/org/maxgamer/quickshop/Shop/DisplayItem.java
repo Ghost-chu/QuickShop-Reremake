@@ -1,8 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,6 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 //import org.maxgamer.quickshop.Util.NMS;
 
 
@@ -195,6 +196,23 @@ public class DisplayItem {
 	    lore.add("QuickShop DisplayItem");
 		iMeta.setLore(lore);
 		item.getItemStack().setItemMeta(iMeta);
+	}
+	public static boolean checkShopItem(ItemStack itemStack){
+		if(!itemStack.hasItemMeta()){
+			return false;
+		}
+		if(itemStack.getItemMeta().hasDisplayName() && itemStack.getItemMeta().getDisplayName().contains("QuickShop")){
+			return true;
+		}
+		if(itemStack.getItemMeta().hasLore()) {
+			List<String> lores = itemStack.getItemMeta().getLore();
+			for (String singleLore : lores) {
+				if (singleLore.equals("QuickShop DisplayItem")) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	/**
 	 * Removes all items floating ontop of the chest that aren't the display

@@ -1,9 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,11 +9,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
@@ -165,6 +165,7 @@ public class PlayerListener implements Listener {
 	public void onTeleport(PlayerTeleportEvent e) {
 		PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
 		onMove(me);
+		Util.inventoryCheck(e.getPlayer().getInventory());
 	}
 
 	@EventHandler
@@ -174,6 +175,7 @@ public class PlayerListener implements Listener {
 			@Override
 			public void run() {
 				MsgUtil.flush(e.getPlayer());
+				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 		}, 60);
 	}
@@ -182,14 +184,33 @@ public class PlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		// Remove them from the menu
 		plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
+		Util.inventoryCheck(e.getPlayer().getInventory()); //Check it!
 	}
 
 	@EventHandler
 	public void onPlayerPickup(EntityPickupItemEvent e) {
 		ItemStack stack = e.getItem().getItemStack();
 		try {
-			if (stack.getItemMeta().getDisplayName().equals("QuickShop")) {
+			if (DisplayItem.checkShopItem(stack)) {
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getEntity().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getEntity().getName()+"'s inventory"+" Deleteing...");
 				e.setCancelled(true);
+				// You shouldn't be able to pick up that...
+			}
+		} catch (NullPointerException ex) {
+		} // if meta/displayname/stack is null. We don't really care in that case.
+	}
+	@EventHandler
+	public void onPlayerClick(PlayerInteractEvent e) {
+		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+
+		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		try {
+			if (DisplayItem.checkShopItem(stack) || DisplayItem.checkShopItem(stackOffHand)) {
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				e.setCancelled(true);
+				Util.inventoryCheck(e.getPlayer().getInventory());
 				// You shouldn't be able to pick up that...
 			}
 		} catch (NullPointerException ex) {
@@ -200,8 +221,11 @@ public class PlayerListener implements Listener {
 	public void onPlayerPickup_Old(PlayerPickupItemEvent e) {
 		ItemStack stack = e.getItem().getItemStack();
 		try {
-			if (stack.getItemMeta().getDisplayName().equals("QuickShop")) {
+			if (DisplayItem.checkShopItem(stack)) {
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
 				e.setCancelled(true);
+				Util.inventoryCheck(e.getPlayer().getInventory());
 				// You shouldn't be able to pick up that...
 			}
 		} catch (NullPointerException ex) {
@@ -224,10 +248,107 @@ public class PlayerListener implements Listener {
 			if (shop == null) {
 				return;
 			}
-			
 			shop.setSignText();
 		} catch (Throwable t) {
 			
 		}
 	}
+	@EventHandler
+	public void heldItem (PlayerItemHeldEvent e){
+		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		try {
+			if (DisplayItem.checkShopItem(stack)) {
+				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+			if (DisplayItem.checkShopItem(stackOffHand)) {
+				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+		} catch (NullPointerException ex) {
+
+		}
+	}
+	@EventHandler
+	public void mendItem (PlayerItemMendEvent e){
+		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		try {
+			if (DisplayItem.checkShopItem(stack)) {
+				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+			if (DisplayItem.checkShopItem(stackOffHand)) {
+				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+		} catch (NullPointerException ex) {
+		}
+	}
+	@EventHandler
+	public void changeHand (PlayerChangedMainHandEvent e){
+		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		try {
+			if (DisplayItem.checkShopItem(stack)) {
+				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+			if (DisplayItem.checkShopItem(stackOffHand)) {
+				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+		} catch (NullPointerException ex) {
+		}
+
+	}
+	@EventHandler
+	public void moveing (PlayerMoveEvent e){
+		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		try {
+			if (DisplayItem.checkShopItem(stack)) {
+				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+			if (DisplayItem.checkShopItem(stackOffHand)) {
+				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
+				// You shouldn't be able to pick up that...
+				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				Util.inventoryCheck(e.getPlayer().getInventory());
+			}
+		} catch (NullPointerException ex) {
+
+		}
+		 // if meta/displayname/stack is null. We don't really care in that case.
+	}
+	@EventHandler
+	public void invEvent(InventoryEvent e){
+		Util.inventoryCheck(e.getInventory());
+
+	}
+
 }
