@@ -13,7 +13,6 @@ import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -217,6 +216,7 @@ public class PlayerListener implements Listener {
 		} // if meta/displayname/stack is null. We don't really care in that case.
 	}
 	//to support old minecraft version
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerPickup_Old(PlayerPickupItemEvent e) {
 		ItemStack stack = e.getItem().getItemStack();
