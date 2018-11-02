@@ -140,7 +140,7 @@ public class QuickShop extends JavaPlugin {
 		if (loadEcon() == false)
 			return;
 		// ProtocolLib Support
-		protocolManager = ProtocolLibrary.getProtocolManager();
+		//protocolManager = ProtocolLibrary.getProtocolManager();
 
 		if (Permissions.init()) {
 			getLogger().info("Found permission provider.");
