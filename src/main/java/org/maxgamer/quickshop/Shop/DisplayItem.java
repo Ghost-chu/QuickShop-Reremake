@@ -204,9 +204,13 @@ public class DisplayItem {
 	}
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
-		item.setCustomName("QuickShop");
 		ItemMeta iMeta = item.getItemStack().getItemMeta();
-		iMeta.setDisplayName("QuickShop");
+		
+		if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+			item.setCustomName("QuickShop");
+			iMeta.setDisplayName("QuickShop");
+		}
+		
 		java.util.List<String> lore = new ArrayList<String>();
 	    lore.add("QuickShop DisplayItem");
 		iMeta.setLore(lore);
