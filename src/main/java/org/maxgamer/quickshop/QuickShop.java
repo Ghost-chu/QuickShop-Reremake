@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -94,7 +92,6 @@ public class QuickShop extends JavaPlugin {
 	// private Metrics metrics;
 
 	MultiverseCore mPlugin = null;
-	ProtocolManager protocolManager = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	/** The plugin metrics from Hidendra */
@@ -106,9 +103,6 @@ public class QuickShop extends JavaPlugin {
 				max = entry.getValue();
 		}
 		return max;
-	}
-	public ProtocolManager getProtocolManager(){
-		return this.protocolManager;
 	}
 
 	@SuppressWarnings("resource")
@@ -154,7 +148,7 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 
-		int CurrentConfigVersion = 4;
+		int CurrentConfigVersion = 6;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
 			if (!updateConfig(getConfig().getInt("config-version"), CurrentConfigVersion)) {
@@ -762,6 +756,11 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("updater", true);
 			getConfig().set("config-version", 5);
 			selectedVersion = 5;
+		}
+		if (selectedVersion == 5) {
+			getConfig().set("shop.display-item-use-name", true);
+			getConfig().set("config-version", 6);
+			selectedVersion = 6;
 		}
 	}
 
