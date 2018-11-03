@@ -1,18 +1,8 @@
 package org.maxgamer.quickshop.Util;
 
-import java.lang.reflect.Method;
-import java.text.DecimalFormat;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import java.util.Set;
-
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,13 +24,14 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 
-
-
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * @author MACHENIKE
@@ -705,6 +696,19 @@ public class Util {
 		}else {
 			return false;
 		}
+	}
+	public static void inventoryCheck(Inventory inv){
+				try{
+					for (int i =0; i < inv.getSize(); i++)
+						if (DisplayItem.checkShopItem(inv.getItem(i))) {
+							// Found Item and remove it.
+							inv.setItem(i, new ItemStack(Material.AIR, 0));
+							plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
+							Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
+						}
+				}catch (Throwable t){
+				}
+
 	}
 		
 }

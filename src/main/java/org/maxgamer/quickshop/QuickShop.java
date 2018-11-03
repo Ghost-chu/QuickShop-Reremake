@@ -1,27 +1,7 @@
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
@@ -31,36 +11,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
-import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Database.DatabaseCore;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
-import org.maxgamer.quickshop.Listeners.BlockListener;
-import org.maxgamer.quickshop.Listeners.ChatListener;
-import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
-import org.maxgamer.quickshop.Listeners.LockListener;
-import org.maxgamer.quickshop.Listeners.PlayerListener;
-import org.maxgamer.quickshop.Listeners.WorldListener;
+import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
-//import org.maxgamer.quickshop.Util.CustomPotionsName;
 import org.maxgamer.quickshop.Util.MsgUtil;
-//import org.maxgamer.quickshop.Util.NMS;
 import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.Map.Entry;
+
+//import org.maxgamer.quickshop.Util.CustomPotionsName;
+//import org.maxgamer.quickshop.Util.NMS;
 
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
@@ -111,10 +92,8 @@ public class QuickShop extends JavaPlugin {
 	// private Metrics metrics;
 
 	MultiverseCore mPlugin = null;
-
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
-
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
@@ -154,6 +133,8 @@ public class QuickShop extends JavaPlugin {
 		}
 		if (loadEcon() == false)
 			return;
+		// ProtocolLib Support
+		//protocolManager = ProtocolLibrary.getProtocolManager();
 
 		if (Permissions.init()) {
 			getLogger().info("Found permission provider.");
@@ -167,7 +148,7 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 
-		int CurrentConfigVersion = 4;
+		int CurrentConfigVersion = 6;
 
 		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
 			if (!updateConfig(getConfig().getInt("config-version"), CurrentConfigVersion)) {
@@ -775,6 +756,11 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("updater", true);
 			getConfig().set("config-version", 5);
 			selectedVersion = 5;
+		}
+		if (selectedVersion == 5) {
+			getConfig().set("shop.display-item-use-name", true);
+			getConfig().set("config-version", 6);
+			selectedVersion = 6;
 		}
 	}
 
