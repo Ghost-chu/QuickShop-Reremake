@@ -1,8 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,6 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 //import org.maxgamer.quickshop.Util.NMS;
 
 
@@ -48,6 +49,7 @@ public class DisplayItem {
 	/**
 	 * Spawns the dummy item on top of the shop.
 	 */
+	@SuppressWarnings("unused")
 	public void spawn() {
 		if (shop.getLocation().getWorld() == null)
 			return;
@@ -162,20 +164,34 @@ public class DisplayItem {
 			return;
 		}
 		//Call Event for QSAPI
-		ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
-		Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-		if(shopDisplayItemSpawnEvent.isCancelled()) {
-			return;
-		}
-		this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-		this.item.setVelocity(new Vector(0, 0.1, 0));
-		try {
-			this.safeGuard(this.item);
-			// NMS.safeGuard
-		} catch (Exception e) {
-			e.printStackTrace();
-			plugin.getLogger().log(Level.WARNING,
-					"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+		if(false){
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, true);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
+			if (shopDisplayItemSpawnEvent_v2.isCancelled()) {
+				return;
+			}
+			//this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+			//this.item.setVelocity(new Vector(0, 0.1, 0));
+
+
+		}else {
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, false);
+			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
+			if (shopDisplayItemSpawnEvent.isCancelled()) {
+				return;
+			}
+			this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+			this.item.setVelocity(new Vector(0, 0.1, 0));
+			try {
+				this.safeGuard(this.item);
+				// NMS.safeGuard
+			} catch (Exception e) {
+				e.printStackTrace();
+				plugin.getLogger().log(Level.WARNING,
+						"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+			}
 		}
 	}
 
@@ -188,13 +204,34 @@ public class DisplayItem {
 	}
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
-		item.setCustomName("QuickShop");
 		ItemMeta iMeta = item.getItemStack().getItemMeta();
-		iMeta.setDisplayName("QuickShop");
+		
+		if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+			item.setCustomName("QuickShop");
+			iMeta.setDisplayName("QuickShop");
+		}
+		
 		java.util.List<String> lore = new ArrayList<String>();
 	    lore.add("QuickShop DisplayItem");
 		iMeta.setLore(lore);
 		item.getItemStack().setItemMeta(iMeta);
+	}
+	public static boolean checkShopItem(ItemStack itemStack){
+		if(!itemStack.hasItemMeta()){
+			return false;
+		}
+		if(itemStack.getItemMeta().hasDisplayName() && itemStack.getItemMeta().getDisplayName().contains("QuickShop")){
+			return true;
+		}
+		if(itemStack.getItemMeta().hasLore()) {
+			List<String> lores = itemStack.getItemMeta().getLore();
+			for (String singleLore : lores) {
+				if (singleLore.equals("QuickShop DisplayItem")) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	/**
 	 * Removes all items floating ontop of the chest that aren't the display

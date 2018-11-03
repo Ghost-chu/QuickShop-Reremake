@@ -260,7 +260,6 @@ public class ContainerShop implements Shop {
 	 *            The amount to remove from the shop.
 	 */
 	public void remove(ItemStack item, int amount) {
-		Bukkit.getServer().broadcastMessage("����remove");
 		if (this.unlimited)
 			return;
 		Inventory inv = this.getInventory();
