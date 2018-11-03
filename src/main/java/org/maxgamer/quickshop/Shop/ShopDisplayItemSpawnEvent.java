@@ -10,6 +10,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable{
 		private boolean cancelled;
 		private Shop shop;
 		private ItemStack iStack;
+		private boolean fakeItem;
 		/**
 		 * This event is called before the shop display item created
 		 */
@@ -18,13 +19,18 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable{
 			this.shop = shop;
 			this.iStack = iStack;
 		}
-		
+		public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack, boolean fakeItem) {
+			this.shop = shop;
+			this.iStack = iStack;
+			this.fakeItem = fakeItem;
+		}
 		public Shop getShop() {
 			return shop;
 		}
 	    public ItemStack getItemStack() {
 			return iStack;
 		}
+		public boolean getFakeItem() {return fakeItem;}
 
 		@Override
 		public HandlerList getHandlers() {
