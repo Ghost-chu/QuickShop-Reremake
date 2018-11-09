@@ -142,7 +142,7 @@ public class PlayerListener implements Listener {
 				p.sendMessage(
 						MsgUtil.getMessage("how-much-to-trade-for", MsgUtil.getItemi18n(Util.getName(info.getItem()))));
 			}
-		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)&&e.getClickedBlock().getType()==Material.WALL_SIGN) {
 			/** @TODO: ControlPanel **/
 			Block block;
 			if(e.getClickedBlock().getType()==Material.WALL_SIGN) {
