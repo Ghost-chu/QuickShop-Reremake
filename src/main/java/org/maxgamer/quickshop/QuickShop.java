@@ -406,6 +406,7 @@ public class QuickShop extends JavaPlugin {
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
+						shop.setSignText();
 					} else {
 						step = "Loading shop to memory >> Chunk not loaded, Skipping";
 					}
