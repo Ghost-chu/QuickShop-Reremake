@@ -19,6 +19,7 @@ import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
+import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -90,6 +91,7 @@ public class PlayerListener implements Listener {
 			shop.onClick();
 			// Text menu
 			MsgUtil.sendShopInfo(p, shop);
+			shop.setSignText();
 			if (shop.isSelling()) {
 				p.sendMessage(MsgUtil.getMessage("how-many-buy"));
 			} else {
@@ -349,6 +351,15 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void invEvent(InventoryEvent e){
 		Util.inventoryCheck(e.getInventory());
+
+	}
+	@EventHandler
+	public void invCloseEvent(InventoryCloseEvent e){
+		Location loc = e.getInventory().getLocation();
+		Shop shop = new ShopManager(QuickShop.instance).getShop(loc);
+		if(shop!=null) {
+			shop.setSignText();
+		}
 
 	}
 
