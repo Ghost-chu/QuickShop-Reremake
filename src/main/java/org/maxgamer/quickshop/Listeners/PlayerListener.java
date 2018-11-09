@@ -144,20 +144,14 @@ public class PlayerListener implements Listener {
 			}
 		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			/** @TODO: ControlPanel **/
-			ShopManager manager = new ShopManager(plugin);
-			Shop shop = null;
-			if (manager.getShop(e.getClickedBlock().getLocation()) != null) {
-				shop = manager.getShop(e.getClickedBlock().getLocation());
-			} else {
-				Block block = Util.getAttached(e.getClickedBlock());
-				if (manager.getShop(block.getLocation()) != null) {
-					shop = manager.getShop(block.getLocation());
-				} else {
-					shop = null;
-				}
+			Block block;
+			if(e.getClickedBlock().getType()==Material.WALL_SIGN) {
+				block = Util.getAttached(e.getClickedBlock());
+			}else {
+				block = e.getClickedBlock();
 			}
-			if (shop != null) {
-				MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(), shop);
+			if (plugin.getShopManager().getShop(block.getLocation()) != null) {
+				MsgUtil.sendControlPanelInfo((CommandSender)e.getPlayer(), plugin.getShopManager().getShop(block.getLocation()));
 			}
 		}
 
