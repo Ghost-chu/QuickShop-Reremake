@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -25,6 +26,11 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class MsgUtil {
 	static QuickShop plugin = QuickShop.instance;
@@ -56,6 +62,134 @@ public class MsgUtil {
 		messages.setDefaults(defMessages);
 		// Parse colour codes
 		Util.parseColours(messages);
+	
+		
+		if(messages.getInt("language-version")==0) {
+			messages.set("language-version", 1 );
+		}
+		updateMessages(messages.getInt("language-version"));
+	}
+
+	public static void updateMessages(int selectedVersion) {
+		plugin.getLogger().info("Auto updateing messages.yml ...");
+		if (selectedVersion == 1) {
+			messages.set("shop-not-exist", "&cThere had no shop.");
+			messages.set("controlpanel.infomation", "&aShop Control Panel:");
+			messages.set("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
+			messages.set("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
+			messages.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&rSwitch&e]");
+			messages.set("controlpanel.unlimited-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messages.set("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
+			messages.set("controlpanel.mode-selling-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messages.set("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
+			messages.set("controlpanel.mode-buying-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messages.set("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
+			messages.set("controlpanel.price-hover", "&eLooking you want changing shop and click to set new price.");
+			messages.set("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
+			messages.set("controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
+			messages.set("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
+			messages.set("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
+			messages.set("controlpanel.remove", "&c&l[Remove Shop]");
+			messages.set("controlpanel.remove-hover", "&eClick to remove this shop.");
+			messages.set("config-version", 2);
+			selectedVersion = 2;
+		}
+	}
+	
+	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
+		if (!sender.hasPermission("quickshop.use")) {
+			return;
+		}
+
+		if (plugin.getConfig().getBoolean("sneak-to-control"))
+			if (sender instanceof Player)
+				if (!((Player) sender).isSneaking())
+					return;
+		sender.sendMessage("");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
+		sender.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("controlpanel.infomation"));
+		// Owner
+		if (!sender.hasPermission("quickshop.setowner")) {
+			sender.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
+		} else {
+			String Text = MsgUtil.getMessage("controlpanel.setowner");
+			String hoverText = MsgUtil.getMessage("controlpanel.setowner-hover");
+			String clickCommand = "/qs setowner [Player]";
+			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + "| " + Text);
+			message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
+			message.setHoverEvent(
+					new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+			sender.spigot().sendMessage(message);
+		}
+		// Unlimited
+		if (sender.hasPermission("quickshop.unlimited")) {
+			String Text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
+			String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
+			String clickCommand = "/qs unlimited";
+			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+		}
+		// Buying/Selling Mode
+		if (sender.hasPermission("quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
+			if (shop.isSelling()) {
+				String Text = MsgUtil.getMessage("controlpanel.mode-selling");
+				String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
+				String clickCommand = "/qs buy";
+				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+			} else if (shop.isBuying()) {
+				String Text = MsgUtil.getMessage("controlpanel.mode-buying");
+				String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
+				String clickCommand = "/qs sell";
+				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+			}
+		}
+		// Set Price
+		if (sender.hasPermission("quickshop.other.price")) {
+			String Text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
+			String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
+			String clickCommand = "/qs price [New Price]";
+			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + "| " + Text);
+			message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
+			message.setHoverEvent(
+					new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+			sender.spigot().sendMessage(message);
+		}
+		// Refill
+		if (sender.hasPermission("quickshop.refill")) {
+			String Text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
+			String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
+			String clickCommand = "/qs refill";
+			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+		}
+		// Refill
+		if (sender.hasPermission("quickshop.empty")) {
+			String Text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
+			String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
+			String clickCommand = "/qs empty";
+			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+		}
+		// Remove
+		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
+			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
+			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
+			String clickCommand = "/qs remove "+shop.getLocation().getBlockX()+" "+shop.getLocation().getBlockY()+" "+shop.getLocation().getBlockZ();
+			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+		}
+
+		sender.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
+	}
+	public static void sendPanelMessage(CommandSender sender, String Text,String hoverText, String clickCommand) {
+		TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + "| " + Text);
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
+        message.setHoverEvent(new HoverEvent (HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+        sender.spigot().sendMessage(message);
+	}
+	public static String bool2String(boolean bool) {
+		if(bool) {
+			return ChatColor.GREEN + "✔";
+		}else {
+			return ChatColor.RED + "✘";
+		}
 	}
 
 	/**
@@ -133,8 +267,7 @@ public class MsgUtil {
 			return Itemname_i18n;
 		}
 	}
-	
-	
+
 	@SuppressWarnings("deprecation")
 	public static void loadEnchi18n() {
 		plugin.getLogger().info("Starting loading Enchantment i18n...");
