@@ -65,7 +65,7 @@ public class MsgUtil {
 	
 		
 		if(messages.getInt("language-version")==0) {
-			messages.set("language-version", 1 );
+			messages.set("language-version", 1);
 		}
 		updateMessages(messages.getInt("language-version"));
 	}
@@ -77,7 +77,7 @@ public class MsgUtil {
 			messages.set("controlpanel.infomation", "&aShop Control Panel:");
 			messages.set("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
 			messages.set("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
-			messages.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&rSwitch&e]");
+			messages.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
 			messages.set("controlpanel.unlimited-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
 			messages.set("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
 			messages.set("controlpanel.mode-selling-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
@@ -92,6 +92,7 @@ public class MsgUtil {
 			messages.set("controlpanel.remove", "&c&l[Remove Shop]");
 			messages.set("controlpanel.remove-hover", "&eClick to remove this shop.");
 			messages.set("config-version", 2);
+			Util.parseColours(messages);
 			selectedVersion = 2;
 		}
 	}
@@ -113,7 +114,7 @@ public class MsgUtil {
 		if (!sender.hasPermission("quickshop.setowner")) {
 			sender.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
 		} else {
-			String Text = MsgUtil.getMessage("controlpanel.setowner");
+			String Text = MsgUtil.getMessage("controlpanel.setowner",shop.ownerName());
 			String hoverText = MsgUtil.getMessage("controlpanel.setowner-hover");
 			String clickCommand = "/qs setowner [Player]";
 			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + "| " + Text);
@@ -158,8 +159,12 @@ public class MsgUtil {
 		if (sender.hasPermission("quickshop.refill")) {
 			String Text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
-			String clickCommand = "/qs refill";
-			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
+			String clickCommand = "/qs refill [Amount]";
+			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + "| " + Text);
+			message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
+			message.setHoverEvent(
+					new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+			sender.spigot().sendMessage(message);
 		}
 		// Refill
 		if (sender.hasPermission("quickshop.empty")) {
