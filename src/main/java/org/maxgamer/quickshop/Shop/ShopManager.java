@@ -402,6 +402,8 @@ public class ShopManager {
 						}
 						// Figures out which way we should put the sign on and
 						// sets its text.
+						
+						/**@TODO Some user feedback have issues in lastet build.**/
 						if (info.getSignBlock() != null && info.getSignBlock().getType() == Material.AIR && plugin.getConfig().getBoolean("shop.auto-sign")) {
 				             final BlockState bs = info.getSignBlock().getState();
 				                final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
@@ -411,6 +413,7 @@ public class ShopManager {
 				                bs.setData(sign);
 				                bs.update(true);
 							shop.setSignText();
+							
 							/*
 							 * Block b = shop.getLocation().getBlock();
 							 * ItemFrame iFrame = (ItemFrame)
