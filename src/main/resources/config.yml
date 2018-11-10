@@ -80,6 +80,7 @@ shop:
     #Should we require players be sneaking to create and use shops?
     sneak-to-create: false
     sneak-to-trade: false
+    sneak-to-control: false
     
     #Should we automatically create the sign for the chest?
     auto-sign: true
@@ -111,15 +112,6 @@ shop:
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
 - Bedrock
-    
-#List of items with restricted prices. Format: <ItemID>;<MinPrice>;<MaxPrice>
-price-restriction:
-- Bedrock;100;200
-
-#Custom name for items. Format: <ItemID[*DataValue]>;<CustomSignName>;<CustomFullName>
-# Vanilla Material list (ItemIDs): https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
-custom-items-name:
-- NETHER_WART;Nether Wart;Nether Wart
 
 # custom-potions-name:
   # sign:
