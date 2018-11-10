@@ -147,24 +147,7 @@ public class QuickShop extends JavaPlugin {
 		if (mPlugin != null) {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
-
-		int CurrentConfigVersion = 6;
-
-		if (getConfig().getInt("config-version") != CurrentConfigVersion) {
-			if (!updateConfig(getConfig().getInt("config-version"), CurrentConfigVersion)) {
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, And Failed to auto update, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning(
-						"WARNING! You not have lastet version config.yml, And Failed to auto update, Please follow SpigotMC updatelog to update your config.yml!");
-				getLogger().warning("WARNING! Server will continue boot in 5 seconds...");
-			}
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		updateConfig(getConfig().getInt("config-version"));
 
 		// Initialize Util
 		Util.initialize();
@@ -406,6 +389,7 @@ public class QuickShop extends JavaPlugin {
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
+						shop.setSignText();
 					} else {
 						step = "Loading shop to memory >> Chunk not loaded, Skipping";
 					}
@@ -723,15 +707,8 @@ public class QuickShop extends JavaPlugin {
 		}
 	}
 
-	public boolean updateConfig(int oldConfigVersion, int currentConfigVersion) {
-		updateConfig(oldConfigVersion);
-
-		getLogger().info("Complete config update!");
-		return true;
-	}
 
 	public void updateConfig(int selectedVersion) {
-		getLogger().info("Auto updateing config.yml ...");
 		if (selectedVersion == 1) {
 			getConfig().set("disabled-metrics", false);
 			getConfig().set("config-version", 2);
@@ -761,6 +738,11 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.display-item-use-name", true);
 			getConfig().set("config-version", 6);
 			selectedVersion = 6;
+		}
+		if (selectedVersion == 7) {
+			getConfig().set("shop.sneak-to-control", false);
+			getConfig().set("config-version", 7);
+			selectedVersion = 7;
 		}
 	}
 

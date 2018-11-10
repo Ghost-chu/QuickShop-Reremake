@@ -482,13 +482,13 @@ public class ContainerShop implements Shop {
 	 *            The array of lines to change. Index is line number.
 	 */
 	public void setSignText(String[] lines) {
-		if (Util.isLoaded(this.getLocation()) == false)
+		if (!Util.isLoaded(this.getLocation()))
 			return;
 		for (Sign sign : this.getSigns()) {
 			for (int i = 0; i < lines.length; i++) {
 				sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
 			}
-			sign.update();
+			sign.update(true);
 		}
 	}
 
