@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Command;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Shop.ContainerShop;
@@ -31,6 +33,7 @@ import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Shop.ShopChunk;
+import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -584,6 +587,9 @@ public class QS implements CommandExecutor {
 			} else if (subArg.equals("about")) {
 				about(sender);
 				return true;
+			} else if (subArg.equals("remove")) {
+				remover(sender,args);
+				return true;
 			} else if (subArg.equals("info")) {
 				if (sender.hasPermission("quickshop.info")) {
 					int buying, selling, doubles, chunks, worlds;
@@ -624,6 +630,26 @@ public class QS implements CommandExecutor {
 		// No args given
 		sendHelp(sender);
 		return true;
+	}
+	// X Y Z WORLD
+	private void remover(CommandSender sender, String[] args) {
+		if(args.length<5) {
+			return;
+		}
+		ShopManager manager = new ShopManager(plugin);
+		try {
+			Shop shop = manager.getShop(new Location(Bukkit.getWorld(args[4]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+			if(shop==null) {
+				sender.sendMessage(MsgUtil.getMessage("shop-not-exist"));
+				return;
+			}
+			DatabaseHelper.removeShop(plugin.getDB(),Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]),  args[4]);
+			shop.onUnload();
+			sender.sendMessage(MsgUtil.getMessage("success-removed-shop"));
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

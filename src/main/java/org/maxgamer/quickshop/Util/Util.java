@@ -462,6 +462,7 @@ public class Util {
 				items += iStack.getAmount();
 			}
 		}
+		Util.debugLog("Items: "+items);
 		return items;
 	}
 
@@ -490,6 +491,7 @@ public class Util {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		Util.debugLog("Space:"+space);
 		return space;
 	}
 
@@ -710,5 +712,10 @@ public class Util {
 				}
 
 	}
+	public static void debugLog(String logs)	{
+		if(plugin.getConfig().getBoolean("dev-mode")) {
+			plugin.getLogger().info("[DEBUG]"+logs);
+		}
 		
+	}
 }

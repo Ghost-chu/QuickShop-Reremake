@@ -29,6 +29,7 @@ public class ChunkListener implements Listener {
 			return;
 		for (Shop shop : inChunk.values()) {
 			shop.onLoad();
+			shop.setSignText();
 		}
 	}
 
