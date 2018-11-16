@@ -95,6 +95,7 @@ public class QuickShop extends JavaPlugin {
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
+	public String dbPrefix;
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
@@ -338,7 +339,7 @@ public class QuickShop extends JavaPlugin {
 					if(getConfig().getBoolean("ongoingfee.reset-on-startup")) {
 						step = "Reset schedule data";
 						getDB().getConnection().createStatement()
-						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+						.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
 								+ " AND world = \"" + worldName + "\""
 								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 					}
@@ -346,7 +347,7 @@ public class QuickShop extends JavaPlugin {
 					step = "Checking shop schedule data";
 					//Check shop is or not exist in schedule table
 					Statement st = getDB().getConnection().createStatement();
-					String checkq = "SELECT * FROM schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
+					String checkq = "SELECT * FROM "+QuickShop.instance.dbPrefix+"schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
 					checkq.replace("{x}", String.valueOf(loc.getBlockX()));
 					checkq.replace("{y}", String.valueOf(loc.getBlockY()));
 					checkq.replace("{z}", String.valueOf(loc.getBlockZ()));
@@ -356,9 +357,8 @@ public class QuickShop extends JavaPlugin {
 					if(!resultSet.next()) {
 						//Not exist, write in
 						step = "Writeing shop schedule data";
-						String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+						String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 						getDB().execute(scheduleq , shop.getOwner().toString(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
-						getLogger().info("Adding shop at world:"+loc.getWorld().getName()+" x:"+loc.getBlockX()+" y:"+loc.getBlockY()+" z:"+loc.getBlockZ()+" into schedule table");
 					}	
 					
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
@@ -686,6 +686,9 @@ public class QuickShop extends JavaPlugin {
 				String port = dbCfg.getString("port");
 				String database = dbCfg.getString("database");
 				dbCore = new MySQLCore(host, user, pass, database, port);
+				dbPrefix = dbCfg.getString("prefix");
+				if (dbPrefix.equals("none"))
+					dbPrefix = "";
 			} else {
 				// SQLite database - Doing this handles file creation
 				dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
@@ -695,20 +698,20 @@ public class QuickShop extends JavaPlugin {
 			DatabaseHelper.setup(getDB());
 		} catch (ConnectionException e) {
 			e.printStackTrace();
-			if(setupDBonEnableding) {
+			if (setupDBonEnableding) {
 				getLogger().severe("Error connecting to database. Aborting plugin load.");
 				getServer().getPluginManager().disablePlugin(this);
-			}else {
+			} else {
 				getLogger().severe("Error connecting to database.");
 			}
 			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
-			if(setupDBonEnableding) {
+			if (setupDBonEnableding) {
 				getLogger().severe("Error setting up database. Aborting plugin load.");
 				getServer().getPluginManager().disablePlugin(this);
-			}else {
+			} else {
 				getLogger().severe("Error setting up database.");
 			}
 			return false;

@@ -33,7 +33,12 @@ public class DatabaseHelper {
 		connectCheck();
 		Statement st = db.getConnection().createStatement();
 		//String createTable = "CREATE TABLE shops (" + "owner  TEXT(32) NOT NULL, " + "price  double(32, 2) NOT NULL, " + "itemConfig TEXT CHARSET utf8 NOT NULL, " + "x  INTEGER(32) NOT NULL, " + "y  INTEGER(32) NOT NULL, " + "z  INTEGER(32) NOT NULL, " + "world VARCHAR(32) NOT NULL, " + "unlimited  boolean, " + "type  boolean, " + "PRIMARY KEY (x, y, z, world) " + ");";
-		String createTable ="CREATE TABLE schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+		String createTable = null;
+		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
+			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+		}else {
+			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner VARCHAR(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+		}
 		st.execute(createTable);
 	}
 
@@ -45,14 +50,14 @@ public class DatabaseHelper {
 		PreparedStatement ps = null;
 		try {
 			// V3.4.2
-			ps = db.getConnection().prepareStatement("ALTER TABLE shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
+			ps = db.getConnection().prepareStatement("ALTER TABLE "+QuickShop.instance.dbPrefix+"shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {
 		}
 		try {
 			// V3.4.3
-			ps = db.getConnection().prepareStatement("ALTER TABLE messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message");
+			ps = db.getConnection().prepareStatement("ALTER TABLE "+QuickShop.instance.dbPrefix+"messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message");
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {
@@ -68,7 +73,12 @@ public class DatabaseHelper {
 	public static void createShopsTable(Database db) throws SQLException {
 		connectCheck();
 		Statement st = db.getConnection().createStatement();
-		String createTable = "CREATE TABLE shops (owner  VARCHAR(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+		String createTable = null;
+		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  VARCHAR(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+		}else {
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  TEXT(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+		}
 		st.execute(createTable);
 	}
 
@@ -81,37 +91,43 @@ public class DatabaseHelper {
 	public static void createMessagesTable(Database db) throws SQLException {
 		connectCheck();
 		Statement st = db.getConnection().createStatement();
-		String createTable = "CREATE TABLE messages (owner  VARCHAR(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+		String createTable = null;
+		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  VARCHAR(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+		}else {
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  TEXT(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+		}
+		
 		st.execute(createTable);
 	}
 	
 	public static ResultSet selectAllShops(Database db) throws SQLException {
 		connectCheck();
-		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM shops");
+		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM "+QuickShop.instance.dbPrefix+"shops");
 		return ps.executeQuery();
 		
 	}
 	public static void removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
 		connectCheck();
 		db.getConnection().createStatement()
-		.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
+		.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
 				+ " AND world = \"" + worldName + "\""
 				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 		db.getConnection().createStatement()
-		.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
+		.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
 				+ " AND world = \"" + worldName + "\""
 				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 	}
 	public static void insertSchedule(String argUUID, String world, int x, int y, int z, long l) {
 		connectCheck();
-		String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+		String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 		QuickShop.instance.getDB().execute(scheduleq , argUUID, world, x, y, z, System.currentTimeMillis());
 	}
 
 	public static void updateOwner2UUID(String ownerUUID, int x, int y, int z, String worldName) throws SQLException {
 		connectCheck();
 		QuickShop.instance.getDB().getConnection().createStatement()
-		.executeUpdate("UPDATE shops SET owner = \"" + ownerUUID.toString()
+		.executeUpdate("UPDATE "+QuickShop.instance.dbPrefix+"shops SET owner = \"" + ownerUUID.toString()
 		+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
 		+ " AND world = \"" + worldName + "\" LIMIT 1");
 		
@@ -120,16 +136,16 @@ public class DatabaseHelper {
 	public static void updateShop(Database db, String owner, ItemStack item, int unlimited, int shopType,
 			double price, int x, int y, int z, String world) {
 		connectCheck();
-		String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
+		String q = "UPDATE "+QuickShop.instance.dbPrefix+"shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
 		db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
 	}
 	
 	public static void createShop(String owner, double price, ItemStack item, int unlimited, int shopType, String world, int x, int y, int z) {
 		connectCheck();
-		String q = "INSERT INTO shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String q = "INSERT INTO "+QuickShop.instance.dbPrefix+"shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
 		// Reremake write in schedule data
-		String scheduleq = "INSERT INTO schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+		String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 		QuickShop.instance.getDB().execute(scheduleq , owner, world,x,y,z, System.currentTimeMillis());
 	}
 	
@@ -145,7 +161,7 @@ public class DatabaseHelper {
 		}
 		try {
 			if(QuickShop.instance.getDB().getConnection().isReadOnly()) {
-			QuickShop.instance.getLogger().severe("Database is read-only, QSRR can't write in data!");
+			QuickShop.instance.getLogger().severe("Database is read-only, QuickShop can't write in data!");
 			return;
 			}
 		} catch (SQLException e1) {
