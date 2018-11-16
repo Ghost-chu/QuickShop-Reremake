@@ -11,13 +11,13 @@ import org.maxgamer.quickshop.Util.Util;
 public class DatabaseHelper {
 	public static void setup(Database db) throws SQLException {
 		connectCheck();
-		if (!db.hasTable("shops")) {
+		if (!db.hasTable(QuickShop.instance.dbPrefix+"shops")) {
 			createShopsTable(db);
 		}
-		if (!db.hasTable("messages")) {
+		if (!db.hasTable(QuickShop.instance.dbPrefix+"messages")) {
 			createMessagesTable(db);
 		}
-		if (!db.hasTable("schedule")) {
+		if (!db.hasTable(QuickShop.instance.dbPrefix+"schedule")) {
 			createScheduleTable(db);
 		}
 		checkColumns(db);

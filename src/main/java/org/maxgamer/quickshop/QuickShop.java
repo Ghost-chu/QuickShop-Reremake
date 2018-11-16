@@ -693,14 +693,14 @@ public class QuickShop extends JavaPlugin {
 			DatabaseCore dbCore;
 			if (dbCfg.getBoolean("mysql")) {
 				// MySQL database - Required database be created first.
+				dbPrefix = dbCfg.getString("prefix");
+				if (dbPrefix==null || dbPrefix.equals("none"))
+					dbPrefix = "";
 				String user = dbCfg.getString("user");
 				String pass = dbCfg.getString("password");
 				String host = dbCfg.getString("host");
 				String port = dbCfg.getString("port");
 				String database = dbCfg.getString("database");
-				dbPrefix = dbCfg.getString("prefix");
-				if (dbPrefix==null||dbPrefix.equals("none"))
-					dbPrefix = "";
 				dbCore = new MySQLCore(host, user, pass, database, port);
 			} else {
 				// SQLite database - Doing this handles file creation
