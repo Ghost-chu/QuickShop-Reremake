@@ -692,6 +692,15 @@ public class QS implements CommandExecutor {
 		loc.setPitch(pitch * 180f / (float) Math.PI);
 		return loc;
 	}
+	public void sendDebugInfomation(CommandSender s) {
+		s.sendMessage("Running "+plugin.getDescription().getVersion()+" on server "+plugin.getServer().getVersion()+" for Bukkit "+ plugin.getServer().getBukkitVersion());
+		try {
+			s.sendMessage("Database: "+plugin.getDB().getConnection().getMetaData().getDatabaseProductName()+" @ "+plugin.getDB().getConnection().getMetaData().getDatabaseProductVersion());
+		} catch (SQLException e) {
+			s.sendMessage("Database: A error happed when getting data.");
+			e.printStackTrace();
+		}
+	}
 
 	public void sendHelp(CommandSender s) {
 		s.sendMessage(MsgUtil.getMessage("command.description.title"));
