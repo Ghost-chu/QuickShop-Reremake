@@ -713,6 +713,8 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("disabled-metrics", false);
 			getConfig().set("config-version", 2);
 			selectedVersion = 2;
+			saveConfig();
+			reloadConfig();
 		}
 		if (selectedVersion == 2) {
 			getConfig().set("protect.minecart", true);
@@ -723,27 +725,38 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("protect.hopper", true);
 			getConfig().set("config-version", 3);
 			selectedVersion = 3;
+			saveConfig();
+			reloadConfig();
 		}
 		if (selectedVersion == 3) {
 			getConfig().set("shop.alternate-currency-symbol", '$');
 			getConfig().set("config-version", 4);
 			selectedVersion = 4;
+			saveConfig();
+			reloadConfig();
 		}
 		if (selectedVersion == 4) {
 			getConfig().set("updater", true);
 			getConfig().set("config-version", 5);
 			selectedVersion = 5;
+			saveConfig();
+			reloadConfig();
 		}
 		if (selectedVersion == 5) {
 			getConfig().set("shop.display-item-use-name", true);
 			getConfig().set("config-version", 6);
 			selectedVersion = 6;
+			saveConfig();
+			reloadConfig();
 		}
 		if (selectedVersion == 7) {
 			getConfig().set("shop.sneak-to-control", false);
 			getConfig().set("config-version", 7);
 			selectedVersion = 7;
+			saveConfig();
+			reloadConfig();
 		}
+		
 	}
 
 	/** Reloads QuickShops config */
