@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
+
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
@@ -153,6 +155,14 @@ public class DatabaseHelper {
 		// Reremake write in schedule data
 		String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
 		QuickShop.instance.getDB().execute(scheduleq , owner, world,x,y,z, System.currentTimeMillis());
+	}
+	public static void sendMessage(UUID player,String message,long time) {
+		String q = "INSERT INTO "+QuickShop.instance.dbPrefix+"messages (owner, message, time) VALUES (?, ?, ?)";
+		QuickShop.instance.getDB().execute(q, player.toString(), message, System.currentTimeMillis());
+	}
+	
+	public static void cleanMessage(long weekAgo) {
+		QuickShop.instance.getDB().execute("DELETE FROM messages WHERE time < ?", weekAgo);
 	}
 	
 	public static void connectCheck(){

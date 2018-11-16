@@ -438,8 +438,7 @@ public class MsgUtil {
 				player_messages.put(player, msgs);
 			}
 			msgs.add(message);
-			String q = "INSERT INTO messages (owner, message, time) VALUES (?, ?, ?)";
-			plugin.getDB().execute(q, player.toString(), message, System.currentTimeMillis());
+			DatabaseHelper.sendMessage(player, message, System.currentTimeMillis());
 		} else {
 			p.getPlayer().sendMessage(message);
 		}
@@ -453,7 +452,7 @@ public class MsgUtil {
 		plugin.getLogger().log(Level.WARNING, "Cleaning purchase messages from database that are over a week old...");
 		// 604800,000 msec = 1 week.
 		long weekAgo = System.currentTimeMillis() - 604800000;
-		plugin.getDB().execute("DELETE FROM messages WHERE time < ?", weekAgo);
+		DatabaseHelper.cleanMessage(weekAgo);
 	}
 
 	/**
