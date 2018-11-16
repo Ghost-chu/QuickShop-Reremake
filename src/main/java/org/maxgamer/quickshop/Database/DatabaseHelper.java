@@ -107,6 +107,12 @@ public class DatabaseHelper {
 		return ps.executeQuery();
 		
 	}
+	public static ResultSet selectAllMessages(Database db) throws SQLException {
+		connectCheck();
+		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM "+QuickShop.instance.dbPrefix+"messages");
+		return ps.executeQuery();
+		
+	}
 	public static void removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
 		connectCheck();
 		db.getConnection().createStatement()
