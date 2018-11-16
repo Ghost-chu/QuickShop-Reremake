@@ -35,9 +35,9 @@ public class DatabaseHelper {
 		//String createTable = "CREATE TABLE shops (" + "owner  TEXT(32) NOT NULL, " + "price  double(32, 2) NOT NULL, " + "itemConfig TEXT CHARSET utf8 NOT NULL, " + "x  INTEGER(32) NOT NULL, " + "y  INTEGER(32) NOT NULL, " + "z  INTEGER(32) NOT NULL, " + "world VARCHAR(32) NOT NULL, " + "unlimited  boolean, " + "type  boolean, " + "PRIMARY KEY (x, y, z, world) " + ");";
 		String createTable = null;
 		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
-			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner VARCHAR(255) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
 		}else {
-			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner VARCHAR(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
+			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
 		}
 		st.execute(createTable);
 	}
@@ -75,7 +75,7 @@ public class DatabaseHelper {
 		Statement st = db.getConnection().createStatement();
 		String createTable = null;
 		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  VARCHAR(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
 		}else {
 			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  TEXT(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
 		}
@@ -93,7 +93,7 @@ public class DatabaseHelper {
 		Statement st = db.getConnection().createStatement();
 		String createTable = null;
 		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  VARCHAR(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
 		}else {
 			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  TEXT(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
 		}
