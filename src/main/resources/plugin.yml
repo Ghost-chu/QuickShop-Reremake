@@ -64,3 +64,6 @@ permissions:
     quickshop.about:
         description: Show QuickShop about message
         default: true
+    quickshop.debug:
+        description: Print debug infomation
+        default: op
