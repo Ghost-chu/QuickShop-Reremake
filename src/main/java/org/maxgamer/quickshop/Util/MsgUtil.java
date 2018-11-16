@@ -44,7 +44,7 @@ public class MsgUtil {
 	/**
 	 * Loads all the messages from messages.yml
 	 */
-	public static void loadCfgMessages() {
+	public static void loadCfgMessages(Boolean... reload) {
 		// Load messages.yml
 		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
@@ -69,7 +69,8 @@ public class MsgUtil {
 		if(messages.getInt("language-version")==0) {
 			messages.set("language-version", 1);
 		}
-		updateMessages(messages.getInt("language-version"));
+		if(reload.length==0)
+			updateMessages(messages.getInt("language-version"));
 		
 		//Print language copyright infomation
 		if(!Inited) {
@@ -122,6 +123,7 @@ public class MsgUtil {
 			messages.save(new File(plugin.getDataFolder(), "messages.yml"));
 		} catch (IOException e) {
 		}
+		loadCfgMessages(true);
 	}
 	
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
