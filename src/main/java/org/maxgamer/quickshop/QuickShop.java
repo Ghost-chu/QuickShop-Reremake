@@ -95,7 +95,7 @@ public class QuickShop extends JavaPlugin {
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
-	public String dbPrefix;
+	public String dbPrefix="";
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
@@ -696,10 +696,10 @@ public class QuickShop extends JavaPlugin {
 				String host = dbCfg.getString("host");
 				String port = dbCfg.getString("port");
 				String database = dbCfg.getString("database");
-				dbCore = new MySQLCore(host, user, pass, database, port);
 				dbPrefix = dbCfg.getString("prefix");
-				if (dbPrefix.equals("none"))
+				if (dbPrefix==null||dbPrefix.equals("none"))
 					dbPrefix = "";
+				dbCore = new MySQLCore(host, user, pass, database, port);
 			} else {
 				// SQLite database - Doing this handles file creation
 				dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
