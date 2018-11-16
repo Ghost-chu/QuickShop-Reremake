@@ -12,6 +12,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public class Database {
 	private DatabaseCore core;
+	// Fix null pointer...
 	private QuickShop plugin = QuickShop.instance;
 
 	/**
