@@ -37,8 +37,13 @@ database:
     database: quickshop
     user: root
     password: passwd
+    # Set prefix to "none" to remove prefix
+    prefix: none
     # Beta! Use your own risk! Auto-Reconnect
     reconnect: false
+    # Beta! Use VARCHAR for database to solve exception: "com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: BLOB/TEXT column 'owner' used in key specification without a key length"
+    # If you are using SQLite or all right, Please do not turn on this.
+    use-varchar: false
     
 #Limits the number of shops a person can create and own at a single time.
 limits:
