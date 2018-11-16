@@ -94,6 +94,7 @@ public class QuickShop extends JavaPlugin {
 	MultiverseCore mPlugin = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
+	private boolean setupDBonEnableding = false;
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
@@ -227,35 +228,9 @@ public class QuickShop extends JavaPlugin {
 			}
 			getLogger().info(limits.toString());
 		}
-		try {
-			ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-			DatabaseCore dbCore;
-			if (dbCfg.getBoolean("mysql")) {
-				// MySQL database - Required database be created first.
-				String user = dbCfg.getString("user");
-				String pass = dbCfg.getString("password");
-				String host = dbCfg.getString("host");
-				String port = dbCfg.getString("port");
-				String database = dbCfg.getString("database");
-				dbCore = new MySQLCore(host, user, pass, database, port);
-			} else {
-				// SQLite database - Doing this handles file creation
-				dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
-			}
-			this.database = new Database(dbCore);
-			// Make the database up to date
-			DatabaseHelper.setup(getDB());
-		} catch (ConnectionException e) {
-			e.printStackTrace();
-			getLogger().severe("Error connecting to database. Aborting plugin load.");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			getLogger().severe("Error setting up database. Aborting plugin load.");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
+		setupDBonEnableding = true;
+		setupDatabase();
+		setupDBonEnableding = false;
 		/* Load shops from database to memory */
 		int count = 0; // Shops count
 		try {
@@ -697,6 +672,48 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
 		UpdateWatcher.init();
+	}
+
+	public boolean setupDatabase() {
+		try {
+			ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+			DatabaseCore dbCore;
+			if (dbCfg.getBoolean("mysql")) {
+				// MySQL database - Required database be created first.
+				String user = dbCfg.getString("user");
+				String pass = dbCfg.getString("password");
+				String host = dbCfg.getString("host");
+				String port = dbCfg.getString("port");
+				String database = dbCfg.getString("database");
+				dbCore = new MySQLCore(host, user, pass, database, port);
+			} else {
+				// SQLite database - Doing this handles file creation
+				dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
+			}
+			this.database = new Database(dbCore);
+			// Make the database up to date
+			DatabaseHelper.setup(getDB());
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+			if(setupDBonEnableding) {
+				getLogger().severe("Error connecting to database. Aborting plugin load.");
+				getServer().getPluginManager().disablePlugin(this);
+			}else {
+				getLogger().severe("Error connecting to database.");
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			getServer().getPluginManager().disablePlugin(this);
+			if(setupDBonEnableding) {
+				getLogger().severe("Error setting up database. Aborting plugin load.");
+				getServer().getPluginManager().disablePlugin(this);
+			}else {
+				getLogger().severe("Error setting up database.");
+			}
+			return false;
+		}
+		return true;
 	}
 
 	public String boolean2String(boolean bool) {

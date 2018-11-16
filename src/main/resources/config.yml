@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 5
+config-version: 6
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -37,6 +37,8 @@ database:
     database: quickshop
     user: root
     password: passwd
+    # Beta! Use your own risk! Auto-Reconnect
+    reconnect: false
     
 #Limits the number of shops a person can create and own at a single time.
 limits:
