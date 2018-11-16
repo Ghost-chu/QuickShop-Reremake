@@ -262,7 +262,7 @@ public class ShopManager {
 				int max = plugin.getShopLimit(p);
 				if (owned + 1 > max) {
 					//p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
-					MsgUtil.getMessage("reached-maximum-can-create", String.valueOf(owned),String.valueOf(max));
+					p.sendMessage(MsgUtil.getMessage("reached-maximum-can-create", String.valueOf(owned),String.valueOf(max)));
 					return false;
 				}
 			}
@@ -403,7 +403,7 @@ public class ShopManager {
 						// Figures out which way we should put the sign on and
 						// sets its text.
 						
-						/**@TODO Some user feedback have issues in lastet build.**/
+						/*NOTICE: When player use /qs create command to create shop, sign will placed to wrong facing.*/
 						if (info.getSignBlock() != null && info.getSignBlock().getType() == Material.AIR && plugin.getConfig().getBoolean("shop.auto-sign")) {
 				             final BlockState bs = info.getSignBlock().getState();
 				                final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());

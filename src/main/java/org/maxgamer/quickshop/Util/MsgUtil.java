@@ -71,7 +71,6 @@ public class MsgUtil {
 	}
 
 	public static void updateMessages(int selectedVersion) {
-		plugin.getLogger().info("Auto updateing messages.yml ...");
 		if (selectedVersion == 1) {
 			messages.set("shop-not-exist", "&cThere had no shop.");
 			messages.set("controlpanel.infomation", "&aShop Control Panel:");
@@ -91,9 +90,19 @@ public class MsgUtil {
 			messages.set("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
 			messages.set("controlpanel.remove", "&c&l[Remove Shop]");
 			messages.set("controlpanel.remove-hover", "&eClick to remove this shop.");
-			messages.set("config-version", 2);
+			messages.set("language-version", 2);
+			saveMessages();
 			Util.parseColours(messages);
 			selectedVersion = 2;
+		}
+		if (selectedVersion == 2) {
+			messages.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
+			messages.set("command.description.debug", "&ePrint debug infomation");
+			messages.set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
+			messages.set("language-version", 3);
+			saveMessages();
+			Util.parseColours(messages);
+			selectedVersion = 3;
 		}
 		
 	}
