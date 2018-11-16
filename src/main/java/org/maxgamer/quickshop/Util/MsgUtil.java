@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Shop.Shop;
 
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -68,6 +69,12 @@ public class MsgUtil {
 			messages.set("language-version", 1);
 		}
 		updateMessages(messages.getInt("language-version"));
+		
+		//Print language copyright infomation
+		plugin.getLogger().info(messages.getString("language-author"));
+		plugin.getLogger().info(messages.getString("language-contributors"));
+		plugin.getLogger().info(messages.getString("language-country"));
+		plugin.getLogger().info(messages.getString("language-version"));
 	}
 
 	public static void updateMessages(int selectedVersion) {
@@ -219,7 +226,7 @@ public class MsgUtil {
 	public static void loadTransactionMessages() {
 		player_messages.clear(); // Delete old messages
 		try {
-			ResultSet rs = plugin.getDB().getConnection().prepareStatement("SELECT * FROM messages").executeQuery();
+			ResultSet rs = DatabaseHelper.selectAllMessages(plugin.getDB());
 			while (rs.next()) {
 				UUID owner = UUID.fromString(rs.getString("owner"));
 				String message = rs.getString("message");
