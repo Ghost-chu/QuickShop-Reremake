@@ -73,7 +73,7 @@ public class QS implements CommandExecutor {
 			return;
 		}
 		if (!sender.hasPermission("quickshop.delete")) {
-			sender.sendMessage(ChatColor.RED + "You do not have permission to use that command. Try break the shop instead?");
+			sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission-remove-shop"));
 			return;
 		}
 		Player p = (Player) sender;

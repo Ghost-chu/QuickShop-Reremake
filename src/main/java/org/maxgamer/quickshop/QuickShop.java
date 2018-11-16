@@ -116,18 +116,28 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
 		// NMS.init();
+		try {
+			getServer().spigot();
+		} catch (Exception e) {
+			getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
 						// others.
 		getConfig().options().copyDefaults(true); // Load defaults.
-		if(Util.isDevEdition()) {
+		if (Util.isDevEdition()) {
 			getLogger().severe("WARNING: You are running QSRR on dev-mode");
 			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
 			getLogger().severe("WARNING: Test version may destory anything!");
-			getLogger().severe("WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
-			if(!getConfig().getBoolean("dev-mode")){
-				getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
+			getLogger().severe(
+					"WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
+			if (!getConfig().getBoolean("dev-mode")) {
+				getLogger().severe(
+						"WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
 				noopDisable = true;
 				Bukkit.getPluginManager().disablePlugin(this);
 				return;
@@ -136,7 +146,7 @@ public class QuickShop extends JavaPlugin {
 		if (loadEcon() == false)
 			return;
 		// ProtocolLib Support
-		//protocolManager = ProtocolLibrary.getProtocolManager();
+		// protocolManager = ProtocolLibrary.getProtocolManager();
 
 		if (Permissions.init()) {
 			getLogger().info("Found permission provider.");
@@ -234,6 +244,9 @@ public class QuickShop extends JavaPlugin {
 		setupDBonEnableding = false;
 		/* Load shops from database to memory */
 		int count = 0; // Shops count
+		MsgUtil.loadItemi18n();
+		MsgUtil.loadEnchi18n();
+		MsgUtil.loadPotioni18n();
 		try {
 			getLogger().info("Loading shops from database...");
 			/*
@@ -246,11 +259,6 @@ public class QuickShop extends JavaPlugin {
 //			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = DatabaseHelper.selectAllShops(database);
 			int errors = 0;
-			// ========================
-			MsgUtil.loadItemi18n();
-			MsgUtil.loadEnchi18n();
-			MsgUtil.loadPotioni18n();
-			// ========================
 
 			boolean isBackuped = false;
 
@@ -335,32 +343,35 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
-					
-					if(getConfig().getBoolean("ongoingfee.reset-on-startup")) {
+
+					if (getConfig().getBoolean("ongoingfee.reset-on-startup")) {
 						step = "Reset schedule data";
 						getDB().getConnection().createStatement()
-						.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
-								+ " AND world = \"" + worldName + "\""
-								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+								.executeUpdate("DELETE FROM " + QuickShop.instance.dbPrefix + "schedule WHERE x = " + x
+										+ " AND y = " + y + " AND z = " + z + " AND world = \"" + worldName + "\""
+										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 					}
-					
+
 					step = "Checking shop schedule data";
-					//Check shop is or not exist in schedule table
+					// Check shop is or not exist in schedule table
 					Statement st = getDB().getConnection().createStatement();
-					String checkq = "SELECT * FROM "+QuickShop.instance.dbPrefix+"schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
+					String checkq = "SELECT * FROM " + QuickShop.instance.dbPrefix
+							+ "schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
 					checkq.replace("{x}", String.valueOf(loc.getBlockX()));
 					checkq.replace("{y}", String.valueOf(loc.getBlockY()));
 					checkq.replace("{z}", String.valueOf(loc.getBlockZ()));
 					checkq.replace("{world}", String.valueOf(loc.getWorld().getName()));
 					checkq.replace("{owner}", shop.getOwner().toString());
 					ResultSet resultSet = st.executeQuery(checkq);
-					if(!resultSet.next()) {
-						//Not exist, write in
+					if (!resultSet.next()) {
+						// Not exist, write in
 						step = "Writeing shop schedule data";
-						String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-						getDB().execute(scheduleq , shop.getOwner().toString(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
-					}	
-					
+						String scheduleq = "INSERT INTO " + QuickShop.instance.dbPrefix
+								+ "schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
+						getDB().execute(scheduleq, shop.getOwner().toString(), loc.getWorld().getName(),
+								loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
+					}
+
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
@@ -401,10 +412,10 @@ public class QuickShop extends JavaPlugin {
 
 					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
 					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
-				
-					if(getDB().getConnection().getClientInfo()!=null) {
+
+					if (getDB().getConnection().getClientInfo() != null) {
 						getLogger().severe("Client Info: " + getDB().getConnection().getClientInfo().toString());
-					}else {
+					} else {
 						getLogger().severe("Client Info: null");
 					}
 					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
@@ -461,7 +472,7 @@ public class QuickShop extends JavaPlugin {
 //						delps.setInt(3, z);
 //						delps.setString(4, worldName);
 //						delps.execute();
-						
+
 						DatabaseHelper.removeShop(database, x, y, z, worldName);
 //						
 //						PreparedStatement scdelps = getDB().getConnection()
@@ -565,7 +576,7 @@ public class QuickShop extends JavaPlugin {
 			String bukkitVer = Bukkit.getBukkitVersion();
 			String serverName = Bukkit.getServerName();
 			Metrics metrics = new Metrics(this);
-			//Use internal Metric class not Maven for solve plugin name issues
+			// Use internal Metric class not Maven for solve plugin name issues
 			String display_Items;
 			if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
 																// number items need disabled?
@@ -769,10 +780,19 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
-		if (selectedVersion == 7) {
+		if (selectedVersion == 6) {
 			getConfig().set("shop.sneak-to-control", false);
 			getConfig().set("config-version", 7);
 			selectedVersion = 7;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 7) {
+			getConfig().set("database.prefix", "none");
+			getConfig().set("database.reconnect", false);
+			getConfig().set("database.use-varchar", false);
+			getConfig().set("config-version", 8);
+			selectedVersion = 8;
 			saveConfig();
 			reloadConfig();
 		}
