@@ -159,6 +159,8 @@ public class QuickShop extends JavaPlugin {
 		if (mPlugin != null) {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
+		if(getConfig().getInt("config-version")==0)
+			getConfig().set("config-version", 1);
 		updateConfig(getConfig().getInt("config-version"));
 
 		// Initialize Util
