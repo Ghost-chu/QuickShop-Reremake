@@ -95,6 +95,13 @@ public class MsgUtil {
 			Util.parseColours(messages);
 			selectedVersion = 2;
 		}
+		
+	}
+	public static void saveMessages() {
+		try {
+			messages.save(new File(plugin.getDataFolder(), "messages.yml"));
+		} catch (IOException e) {
+		}
 	}
 	
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
