@@ -40,6 +40,7 @@ public class MsgUtil {
 	private static YamlConfiguration enchi18n;
 	private static YamlConfiguration potioni18n;
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
+	private static boolean Inited;
 	/**
 	 * Loads all the messages from messages.yml
 	 */
@@ -71,10 +72,13 @@ public class MsgUtil {
 		updateMessages(messages.getInt("language-version"));
 		
 		//Print language copyright infomation
-		plugin.getLogger().info(messages.getString("language-author"));
-		plugin.getLogger().info(messages.getString("language-contributors"));
-		plugin.getLogger().info(messages.getString("language-country"));
-		plugin.getLogger().info(messages.getString("language-version"));
+		if(!Inited) {
+			plugin.getLogger().info(messages.getString("language-author"));
+			plugin.getLogger().info(messages.getString("language-contributors"));
+			plugin.getLogger().info(messages.getString("language-country"));
+			plugin.getLogger().info(messages.getString("language-version"));
+			Inited=true;
+		}
 	}
 
 	public static void updateMessages(int selectedVersion) {
