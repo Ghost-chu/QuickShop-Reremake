@@ -8,8 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
-
 public class DatabaseHelper {
 	public static void setup(Database db) throws SQLException {
 		connectCheck();
