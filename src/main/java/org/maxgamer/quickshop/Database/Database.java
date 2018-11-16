@@ -12,7 +12,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public class Database {
 	private DatabaseCore core;
-	private QuickShop plugin;
+	private QuickShop plugin = QuickShop.instance;
 
 	/**
 	 * Creates a new database and validates its connection.
