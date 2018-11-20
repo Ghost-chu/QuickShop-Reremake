@@ -629,9 +629,7 @@ public class MsgUtil {
 	public static String getMessage(String loc, String... args) {
 		String raw = messages.getString(loc);
 		if (raw == null) {
-			return "Invalid message: " + loc+" Please update your messages.yml";
-			
-			
+			return "Invalid message: " + loc+" Please update your messages.yml";	
 		}
 		if (raw.isEmpty()) {
 			return "";
