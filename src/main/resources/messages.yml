@@ -123,6 +123,7 @@ signs:
     buying: "Buying {0}"
     item: "{0}"
     price: "{0} each"
+    unlimited: "Unlimited"
 controlpanel:
     infomation: "&aShop Control Panel:"
     setowner: "&aOwner: &b{0} &e[&d&lChange&e]"

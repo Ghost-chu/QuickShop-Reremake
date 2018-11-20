@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack;
 public abstract interface Shop {
 	public abstract Shop clone();
 
-	public abstract int getRemainingStock();
+	public abstract String getRemainingStock();
 
-	public abstract int getRemainingSpace();
+	public abstract String getRemainingSpace();
 
 	public abstract boolean matches(ItemStack paramItemStack);
 

@@ -88,10 +88,10 @@ public class ContainerShop implements Shop {
 	 * 
 	 * @return The number of items available for purchase.
 	 */
-	public int getRemainingStock() {
+	public String getRemainingStock() {
 		if (this.unlimited)
-			return 10000;
-		return Util.countItems(this.getInventory(), this.getItem());
+			return MsgUtil.getMessage("shop.unlimited");
+		return String.valueOf(Util.countItems(this.getInventory(), this.getItem()));
 	}
 
 	/**
@@ -100,10 +100,10 @@ public class ContainerShop implements Shop {
 	 * @param stackSize
 	 * @return
 	 */
-	public int getRemainingSpace() {
+	public String getRemainingSpace() {
 		if (this.unlimited)
-			return 10000;
-		return Util.countSpace(this.getInventory(), item);
+			return MsgUtil.getMessage("shop.unlimited");
+		return String.valueOf(Util.countSpace(this.getInventory(), this.getItem()));
 	}
 
 	/**
