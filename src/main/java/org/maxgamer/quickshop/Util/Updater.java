@@ -17,7 +17,7 @@ public class Updater {
 			return false;
 		}
         try {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=59134").openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=62575").openConnection();
             int timed_out = 300000;
             connection.setConnectTimeout(timed_out);
             connection.setReadTimeout(timed_out);
