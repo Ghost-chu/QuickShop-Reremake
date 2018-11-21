@@ -50,30 +50,24 @@ public class QS implements CommandExecutor {
 	}
 
 	public void signGUIApi(ArrayList<Object> data, String arg) {
-		new BukkitRunnable() {
-			
-			@Override
-			public void run() {
-				Shop shop = (Shop) data.get(0);
-				String type = (String) data.get(1);
-				Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
-				Util.debugLog(String.valueOf(data.size()));
-				switch (type) {
-				case "owner":
-					uiOwner(shop, arg, player);
-					break;
-				case "refill":
-					uiRefill(shop, arg, player);
-					break;
-				case "price":
-					uiPrice(shop, arg, player);
-				default:
-					break;
-				}
-				
-			}
-		};
-		
+
+		Shop shop = (Shop) data.get(0);
+		String type = (String) data.get(1);
+		Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
+		Util.debugLog(String.valueOf(data.size()));
+		switch (type) {
+		case "owner":
+			uiOwner(shop, arg, player);
+			break;
+		case "refill":
+			uiRefill(shop, arg, player);
+			break;
+		case "price":
+			uiPrice(shop, arg, player);
+		default:
+			break;
+		}
+
 	}
 
 	private void uiPrice(Shop shop, String arg, Player sender) {
