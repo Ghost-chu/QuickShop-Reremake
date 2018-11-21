@@ -49,6 +49,9 @@ permissions:
     quickshop.empty:
         description: Allows a Staff Member to empty the shop theyre looking at of all items.
         default: op
+    quickshop.create.changeprice:
+        description: Allows a player to change the shop price theyre looking at.
+        default: op
     quickshop.debug:
         description: Enables debug info to console
         default: op
