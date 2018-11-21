@@ -176,12 +176,19 @@ public class QuickShop extends JavaPlugin {
 		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (protocolLibPlugin != null) {
 			getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
-		        @Override
+
+				@Override
 		        public void onPacketReceiving(PacketEvent event) {
 		            WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
 		            //BlockPosition blockPos = wrapper.getLocation();
 		            ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
-		            QuickShop.instance.commandExecutor.signGUIApi(data,wrapper.getLines()[0]);
+		            new BukkitRunnable() {
+						@Override
+						public void run() {
+							QuickShop.instance.commandExecutor.signGUIApi(data,wrapper.getLines()[0]);
+						}
+					}.runTask(QuickShop.instance);
+		            
 		        }
 		    });
 			getLogger().info("Successfully loaded ProtocolLib support!");
