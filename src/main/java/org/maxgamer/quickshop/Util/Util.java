@@ -185,7 +185,7 @@ public class Util {
 		return null;
 	}
 
-	public static void sendSignEditForGUI(Player player, String[] lines) {
+	public static void sendSignEditForGUI(Player player, String[] lines) throws InvocationTargetException {
 		debugLog("SignEdit");
 		ProtocolManager manager = plugin.getProtocolLib();
 		BlockPosition position = new BlockPosition(player.getLocation().getBlockX(), 255,
@@ -200,14 +200,9 @@ public class Util {
 		PacketContainer open = manager.createPacket(PacketType.Play.Server.OPEN_SIGN_ENTITY);
 		open.getBlockPositionModifier().write(0, position);
 
-		try {
 			manager.sendServerPacket(player, blockChange);
 			manager.sendServerPacket(player, updateSign);
 			manager.sendServerPacket(player, open);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	
