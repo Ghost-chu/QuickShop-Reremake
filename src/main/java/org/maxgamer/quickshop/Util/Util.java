@@ -31,8 +31,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
-import com.comphenix.protocol.wrappers.nbt.NbtCompound;
-
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -186,31 +185,30 @@ public class Util {
 		return null;
 	}
 
-	public static void sendSignEditForGUI(Player player, String[] texts) throws InvocationTargetException {
+	public static void sendSignEditForGUI(Player player, String[] lines) {
+		debugLog("SignEdit");
 		ProtocolManager manager = plugin.getProtocolLib();
 		BlockPosition position = new BlockPosition(player.getLocation().getBlockX(), 255,
 				player.getLocation().getBlockZ());
 
-		PacketContainer blockPacket = manager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-		blockPacket.getBlockPositionModifier().write(0, position);
-		blockPacket.getBlockData().write(0, WrappedBlockData.createData(Material.WALL_SIGN));
+		PacketContainer blockChange = manager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
+		blockChange.getBlockPositionModifier().write(0, position);
+		blockChange.getBlockData().write(0, WrappedBlockData.createData(Material.WALL_SIGN));
+		PacketContainer updateSign = manager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
+		updateSign.getBlockPositionModifier().write(0, position);
+		updateSign.getChatComponentArrays().write(0, new WrappedChatComponent[]{WrappedChatComponent.fromText(lines[0]), WrappedChatComponent.fromText(lines[1]), WrappedChatComponent.fromText(lines[2]), WrappedChatComponent.fromText(lines[3])});
+		PacketContainer open = manager.createPacket(PacketType.Play.Server.OPEN_SIGN_ENTITY);
+		open.getBlockPositionModifier().write(0, position);
 
-		PacketContainer dataPacket = manager.createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
-		dataPacket.getBlockPositionModifier().write(0, position);
-		dataPacket.getIntegers().write(0, 9);
-
-		NbtCompound compound = (NbtCompound) dataPacket.getNbtModifier().read(0);
-		for (int index = 0; index < 4; index++) {
-			compound.put("Text" + (index + 1), "{\"extra\":[{\"text\":\"" + MsgUtil.getMessage(texts[index]) + "\"}],\"text\":\"\"}");
+		try {
+			manager.sendServerPacket(player, blockChange);
+			manager.sendServerPacket(player, updateSign);
+			manager.sendServerPacket(player, open);
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		dataPacket.getNbtModifier().write(0, compound);
-
-		PacketContainer editorPacket = manager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-		editorPacket.getBlockPositionModifier().write(0, position);
-
-		manager.sendServerPacket(player, blockPacket);
-		manager.sendServerPacket(player, dataPacket);
-		manager.sendServerPacket(player, editorPacket);
+		
 	}
 	
 	/**
