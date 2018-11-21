@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.UUID;
 
-import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

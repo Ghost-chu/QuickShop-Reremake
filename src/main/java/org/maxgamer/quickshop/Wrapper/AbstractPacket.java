@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.wrapper;
+package org.maxgamer.quickshop.Wrapper;
 
 import java.lang.reflect.InvocationTargetException;
 
