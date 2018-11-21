@@ -90,7 +90,7 @@ public class ContainerShop implements Shop {
 	 */
 	public String getRemainingStock() {
 		if (this.unlimited)
-			return MsgUtil.getMessage("shop.unlimited");
+			return MsgUtil.getMessage("signs.unlimited");
 		return String.valueOf(Util.countItems(this.getInventory(), this.getItem()));
 	}
 
@@ -102,7 +102,7 @@ public class ContainerShop implements Shop {
 	 */
 	public String getRemainingSpace() {
 		if (this.unlimited)
-			return MsgUtil.getMessage("shop.unlimited");
+			return MsgUtil.getMessage("signs.unlimited");
 		return String.valueOf(Util.countSpace(this.getInventory(), this.getItem()));
 	}
 
