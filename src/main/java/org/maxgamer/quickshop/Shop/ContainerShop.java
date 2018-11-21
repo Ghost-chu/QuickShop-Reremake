@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -213,7 +214,7 @@ public class ContainerShop implements Shop {
 	 * @return The durability of the item
 	 */
 	public short getDurability() {
-		return this.item.getDurability();
+		return (short) ((Damageable)this.item.getItemMeta()).getDamage();
 	}
 
 	/**
