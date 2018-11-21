@@ -99,7 +99,7 @@ shop:
     pay-unlimited-shop-owners: false
     
     #Should unlimited shops owner pay player money?
-    pay-player-from-unlimited-shop-owners: false
+    pay-player-from-unlimited-shop-owner: false
     
     #Ignore check if player is shop's owner
     bypass-owner-check: false
