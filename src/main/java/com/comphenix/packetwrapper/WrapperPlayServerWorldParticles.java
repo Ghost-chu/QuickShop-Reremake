@@ -40,7 +40,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	 * 
 	 * @return The current particle
 	 */
-	public WrappedParticle getParticle() {
+	public WrappedParticle<?> getParticle() {
 		return handle.getNewParticles().read(0);
 	}
 
@@ -49,7 +49,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	 * 
 	 * @param value - new value.
 	 */
-	public void setParticleType(WrappedParticle value) {
+	public void setParticleType(WrappedParticle<?> value) {
 		handle.getNewParticles().write(0, value);
 	}
 
