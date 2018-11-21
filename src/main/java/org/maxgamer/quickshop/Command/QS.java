@@ -48,7 +48,9 @@ public class QS implements CommandExecutor {
 		this.plugin = plugin;
 	}
 	public void signGUIApi(ArrayList<Object> data, String arg) {
-		
+		Shop shop = (Shop) data.get(0);
+		String type = (String) data.get(1);
+		Player player = Bukkit.getPlayer((String) data.get(3));
 	}
 	private void setUnlimited(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.unlimited")) {
@@ -92,6 +94,7 @@ public class QS implements CommandExecutor {
 			ArrayList<Object> data = new ArrayList<>();
 			data.add(shop);
 			data.add(type);
+			data.add(((Player)sender).getUniqueId());
 			signPlayerCache.put(((Player)sender).getUniqueId(),data);
 			Util.sendSignEditForGUI((Player)sender, texts);
 		} catch (InvocationTargetException e) {
