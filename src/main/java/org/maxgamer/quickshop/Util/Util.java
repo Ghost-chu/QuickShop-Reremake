@@ -26,7 +26,14 @@ import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.BlockPosition;
+import com.comphenix.protocol.wrappers.WrappedBlockData;
+import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
@@ -177,6 +184,33 @@ public class Util {
 			}
 		}
 		return null;
+	}
+
+	public static void sendSignEditForGUI(Player player, String[] texts) throws InvocationTargetException {
+		ProtocolManager manager = plugin.getProtocolLib();
+		BlockPosition position = new BlockPosition(player.getLocation().getBlockX(), 255,
+				player.getLocation().getBlockZ());
+
+		PacketContainer blockPacket = manager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
+		blockPacket.getBlockPositionModifier().write(0, position);
+		blockPacket.getBlockData().write(0, WrappedBlockData.createData(Material.WALL_SIGN));
+
+		PacketContainer dataPacket = manager.createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
+		dataPacket.getBlockPositionModifier().write(0, position);
+		dataPacket.getIntegers().write(0, 9);
+
+		NbtCompound compound = (NbtCompound) dataPacket.getNbtModifier().read(0);
+		for (int index = 0; index < 4; index++) {
+			compound.put("Text" + (index + 1), "{\"extra\":[{\"text\":\"" + texts[index] + "\"}],\"text\":\"\"}");
+		}
+		dataPacket.getNbtModifier().write(0, compound);
+
+		PacketContainer editorPacket = manager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
+		editorPacket.getBlockPositionModifier().write(0, position);
+
+		manager.sendServerPacket(player, blockPacket);
+		manager.sendServerPacket(player, dataPacket);
+		manager.sendServerPacket(player, editorPacket);
 	}
 	
 	/**

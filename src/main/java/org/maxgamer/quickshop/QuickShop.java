@@ -1,8 +1,11 @@
 package org.maxgamer.quickshop;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLib;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,6 +33,7 @@ import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
+import org.maxgamer.quickshop.wrapper.WrapperPlayClientUpdateSign;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,7 +97,7 @@ public class QuickShop extends JavaPlugin {
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
 	// private Metrics metrics;
-
+	QS commandExecutor =null;
 	MultiverseCore mPlugin = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
@@ -165,6 +169,15 @@ public class QuickShop extends JavaPlugin {
 		}
 		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (protocolLibPlugin != null) {
+			getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
+		        @Override
+		        public void onPacketReceiving(PacketEvent event) {
+		            WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
+		            //BlockPosition blockPos = wrapper.getLocation();
+		            ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
+		            QuickShop.instance.commandExecutor.signGUIApi(data,wrapper.getLines()[0]);
+		        }
+		    });
 			getLogger().info("Successfully loaded ProtocolLib support!");
 		}
 		if(getConfig().getInt("config-version")==0)
@@ -542,7 +555,7 @@ public class QuickShop extends JavaPlugin {
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
 		// Command handlers
-		QS commandExecutor = new QS(this);
+		commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);
 		if (getConfig().getInt("shop.find-distance") > 100) {
 			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
