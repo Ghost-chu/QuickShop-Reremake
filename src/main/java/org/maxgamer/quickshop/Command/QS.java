@@ -208,7 +208,25 @@ public class QS implements CommandExecutor {
 			return;
 		}
 	}
-
+	private void silentUnlimited(CommandSender sender, String[]args) {
+		if (sender.hasPermission("quickshop.unlimited")) {
+			
+				Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]),
+						Integer.valueOf(args[3]), Integer.valueOf(args[4])));
+				if (shop != null) {
+					shop.setUnlimited(!shop.isUnlimited());
+					shop.setSignText();
+					shop.update();
+					sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
+							(shop.isUnlimited() ? "unlimited" : "limited")));
+					return;
+				}
+			
+		} else {
+			sender.sendMessage(MsgUtil.getMessage("no-permission"));
+			return;
+		}
+	}
 	private void sign(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player))
 			return;
@@ -811,6 +829,9 @@ public class QS implements CommandExecutor {
 			String subArg = args[0].toLowerCase();
 			if (subArg.equals("unlimited")) {
 				setUnlimited(sender);
+				return true;
+			} else if (subArg.startsWith("unlimited")) {
+				silentUnlimited(sender, args);
 				return true;
 			} else if (subArg.equals("setowner")) {
 				setOwner(sender, args);
