@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
@@ -49,22 +50,30 @@ public class QS implements CommandExecutor {
 	}
 
 	public void signGUIApi(ArrayList<Object> data, String arg) {
-		Shop shop = (Shop) data.get(0);
-		String type = (String) data.get(1);
-		Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
-		Util.debugLog(String.valueOf(data.size()));
-		switch (type) {
-		case "owner":
-			uiOwner(shop, arg, player);
-			break;
-		case "refill":
-			uiRefill(shop, arg, player);
-			break;
-		case "price":
-			uiPrice(shop, arg, player);
-		default:
-			break;
-		}
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				Shop shop = (Shop) data.get(0);
+				String type = (String) data.get(1);
+				Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
+				Util.debugLog(String.valueOf(data.size()));
+				switch (type) {
+				case "owner":
+					uiOwner(shop, arg, player);
+					break;
+				case "refill":
+					uiRefill(shop, arg, player);
+					break;
+				case "price":
+					uiPrice(shop, arg, player);
+				default:
+					break;
+				}
+				
+			}
+		};
+		
 	}
 
 	private void uiPrice(Shop shop, String arg, Player sender) {
@@ -250,7 +259,10 @@ public class QS implements CommandExecutor {
 			data.add(type);
 			data.add(((Player) sender).getUniqueId());
 			signPlayerCache.put(((Player) sender).getUniqueId(), data);
+			try {
 			Util.sendSignEditForGUI((Player) sender, texts);
+			}catch (Exception e) {
+			}
 	}
 
 	private void remove(CommandSender sender, String[] args) {
