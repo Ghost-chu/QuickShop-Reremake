@@ -155,7 +155,13 @@ public class QuickShop extends JavaPlugin {
 			return;
 		// ProtocolLib Support
 		// protocolManager = ProtocolLibrary.getProtocolManager();
-
+		try {
+			getServer().spigot();
+		}catch(Throwable e) {
+			getLogger().severe("You must use support Spigot or Spigot forks(eg.Paper) server not CraftBukkit");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		if (Permissions.init()) {
 			getLogger().info("Found permission provider.");
 		} else {
