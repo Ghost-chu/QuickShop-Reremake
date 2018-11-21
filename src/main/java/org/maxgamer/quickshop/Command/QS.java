@@ -524,7 +524,7 @@ public class QS implements CommandExecutor {
 			sender.sendMessage("[QuickShop] Original author is KaiNoMood. This is QS unofficial version.");
 			sender.sendMessage("[QuickShop] Have more feature, and design for 1.13.");
 			sender.sendMessage("[QuickShop] You can see our SpigotMC page to read more:");
-			sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/quickshop-reremake-for-1-13.59134/");
+			sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/quickshop-reremake-for-1-13.62575/");
 			sender.sendMessage("[QuickShop] Thanks for use QuickShop-Reremake.");
 	}
 

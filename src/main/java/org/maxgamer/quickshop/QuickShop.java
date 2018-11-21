@@ -162,7 +162,6 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
-
 		if (protocolLibPlugin != null) {
 			getLogger().info("Successfully loaded ProtocolLib support!");
 		}
