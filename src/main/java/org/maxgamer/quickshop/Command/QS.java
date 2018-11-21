@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Command;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +51,8 @@ public class QS implements CommandExecutor {
 	public void signGUIApi(ArrayList<Object> data, String arg) {
 		Shop shop = (Shop) data.get(0);
 		String type = (String) data.get(1);
-		Player player = Bukkit.getPlayer((String) data.get(3));
+		Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
+		Util.debugLog(String.valueOf(data.size()));
 		switch (type) {
 		case "owner":
 			uiOwner(shop, arg, player);
@@ -228,34 +228,29 @@ public class QS implements CommandExecutor {
 		}
 	}
 	private void sign(CommandSender sender, String[] args) {
-		if (!(sender instanceof Player))
-			return;
-		if (args.length < 10) // sign world x y z type line1 line2 line3 line4
-			return;
-		ShopManager manager = new ShopManager(plugin);
+		Util.debugLog("sign");
+		ShopManager manager = plugin.getShopManager();
 		Shop shop = manager.getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]),
 				Integer.valueOf(args[3]), Integer.valueOf(args[4])));
-		if (shop == null)
+		if (shop == null) {
+			Util.debugLog("shop null!");
 			return;
-		String[] texts = new String[3];
-		String type = args[5];
-		for (int i = 0; i < args.length; i++) {
-			String string = args[i];
-			if (i < 6)
-				return;
-			texts[i - 6] = string;
 		}
-		try {
+		Util.debugLog("remakeing data...");
+		String[] texts = new String[4];
+		String type = args[5];
+		texts[0] = args[6];
+		texts[1] = args[7];
+		texts[2] = args[8];
+		texts[3] = args[9];
+			Util.debugLog("done");
+			Util.debugLog("submiting data");
 			ArrayList<Object> data = new ArrayList<>();
 			data.add(shop);
 			data.add(type);
 			data.add(((Player) sender).getUniqueId());
 			signPlayerCache.put(((Player) sender).getUniqueId(), data);
 			Util.sendSignEditForGUI((Player) sender, texts);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void remove(CommandSender sender, String[] args) {
@@ -830,7 +825,7 @@ public class QS implements CommandExecutor {
 			if (subArg.equals("unlimited")) {
 				setUnlimited(sender);
 				return true;
-			} else if (subArg.startsWith("unlimited")) {
+			} else if (subArg.startsWith("silentunlimited")) {
 				silentUnlimited(sender, args);
 				return true;
 			} else if (subArg.equals("setowner")) {
@@ -942,7 +937,7 @@ public class QS implements CommandExecutor {
 		if (args.length < 5) {
 			return;
 		}
-		ShopManager manager = new ShopManager(plugin);
+		ShopManager manager = plugin.getShopManager();
 		try {
 			Shop shop = manager.getShop(new Location(Bukkit.getWorld(args[4]), Integer.parseInt(args[1]),
 					Integer.parseInt(args[2]), Integer.parseInt(args[3])));
