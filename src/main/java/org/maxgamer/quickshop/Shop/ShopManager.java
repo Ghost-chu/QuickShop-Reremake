@@ -149,7 +149,6 @@ public class ShopManager {
 		// the world in loc is the same as world in inChunk.get(loc)
 		return inChunk.get(loc);
 	}
-
 	/**
 	 * Adds a shop to the world. Does NOT require the chunk or world to be loaded
 	 * 
