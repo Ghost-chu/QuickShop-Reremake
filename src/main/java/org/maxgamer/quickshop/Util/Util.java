@@ -201,7 +201,7 @@ public class Util {
 
 		NbtCompound compound = (NbtCompound) dataPacket.getNbtModifier().read(0);
 		for (int index = 0; index < 4; index++) {
-			compound.put("Text" + (index + 1), "{\"extra\":[{\"text\":\"" + texts[index] + "\"}],\"text\":\"\"}");
+			compound.put("Text" + (index + 1), "{\"extra\":[{\"text\":\"" + MsgUtil.getMessage(texts[index]) + "\"}],\"text\":\"\"}");
 		}
 		dataPacket.getNbtModifier().write(0, compound);
 
