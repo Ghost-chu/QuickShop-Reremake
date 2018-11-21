@@ -141,16 +141,18 @@ public class PlayerListener implements Listener {
 				p.sendMessage(
 						MsgUtil.getMessage("how-much-to-trade-for", MsgUtil.getItemi18n(Util.getName(info.getItem()))));
 			}
-		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)&&e.getClickedBlock().getType()==Material.WALL_SIGN) {
+		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+				&& e.getClickedBlock().getType() == Material.WALL_SIGN) {
 			/** @TODO: ControlPanel **/
 			Block block;
-			if(e.getClickedBlock().getType()==Material.WALL_SIGN) {
+			if (e.getClickedBlock().getType() == Material.WALL_SIGN) {
 				block = Util.getAttached(e.getClickedBlock());
-			}else {
+			} else {
 				block = e.getClickedBlock();
 			}
 			if (plugin.getShopManager().getShop(block.getLocation()) != null) {
-				MsgUtil.sendControlPanelInfo((CommandSender)e.getPlayer(), plugin.getShopManager().getShop(block.getLocation()));
+				MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
+						plugin.getShopManager().getShop(block.getLocation()));
 			}
 		}
 
