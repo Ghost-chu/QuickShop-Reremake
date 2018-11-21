@@ -33,7 +33,7 @@ import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
-import org.maxgamer.quickshop.wrapper.WrapperPlayClientUpdateSign;
+import org.maxgamer.quickshop.Wrapper.WrapperPlayClientUpdateSign;
 
 import java.io.File;
 import java.io.FileInputStream;

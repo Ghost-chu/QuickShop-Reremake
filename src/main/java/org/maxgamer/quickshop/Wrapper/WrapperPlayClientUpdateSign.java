@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.wrapper;
+package org.maxgamer.quickshop.Wrapper;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;

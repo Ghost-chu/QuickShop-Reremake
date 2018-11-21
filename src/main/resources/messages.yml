@@ -142,3 +142,22 @@ controlpanel:
     empty-hover: "&eLooking you want changing shop and click to clear."
     remove: "&c&l[Remove Shop]"
     remove-hover: "&eClick to remove this shop."
+    sign:
+      owner: 
+        #Highly recommand keep line1 blank
+        line1: ""
+        line2: "Enter"
+        line3: "new owner name"
+        line4: "at first line"
+      price: 
+        #Highly recommand keep line1 blank
+        line1: ""
+        line2: "Enter"
+        line3: "new shop price"
+        line4: "at first line"
+      refill: 
+        #Highly recommand keep line1 blank
+        line1: ""
+        line2: "Enter amount"
+        line3: "you want fill"
+        line4: "at first line"
