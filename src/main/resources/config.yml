@@ -53,6 +53,9 @@ limits:
     #The default number of shops players can make
     default: 10
     
+    #Use old algorithm to calc unlimited shops into limits.
+    old-algorithm: false
+    
     #Players with these permissions can create these amounts of shops.
     ranks:
         #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
@@ -194,7 +197,7 @@ float:
     list:
     - Super Sword(Can't float)
     #add keywords in there, plugin will check it contain or not on items.
-# Ongoing Fee
+# Ongoing Fee TODO
 ongoingfee:
     enable: false
     # CheckTime unit is tick (1 seconds = 20 ticks) Do not set low than 600!
