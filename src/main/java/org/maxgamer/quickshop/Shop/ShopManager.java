@@ -36,6 +36,7 @@ public class ShopManager {
 	private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
 	private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>();
 	final private static ItemStack AIR = new ItemStack(Material.AIR);
+	
 
 	public ShopManager(QuickShop plugin) {
 		this.plugin = plugin;

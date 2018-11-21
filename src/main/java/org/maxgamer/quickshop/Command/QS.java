@@ -1,9 +1,12 @@
 package org.maxgamer.quickshop.Command;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -40,11 +43,13 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class QS implements CommandExecutor {
 	QuickShop plugin;
-
+	public static HashMap<UUID,ArrayList<Object>> signPlayerCache = new HashMap<>();
 	public QS(QuickShop plugin) {
 		this.plugin = plugin;
 	}
-
+	public void signGUIApi(ArrayList<Object> data, String arg) {
+		
+	}
 	private void setUnlimited(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.unlimited")) {
 			BlockIterator bIt = new BlockIterator((Player) sender, 10);
@@ -66,7 +71,34 @@ public class QS implements CommandExecutor {
 			return;
 		}
 	}
-
+	private void sign(CommandSender sender, String[] args) {
+		if(!(sender instanceof Player))
+			return;
+		if(args.length<10) //sign world x y z type line1 line2 line3 line4
+			return;
+		ShopManager manager = new ShopManager(plugin);
+		Shop shop = manager.getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])));
+		if(shop==null)
+			return;
+		String[] texts = new String[3];
+		String type = args[5];
+		for (int i = 0; i < args.length; i++) {
+			String string = args[i];
+			if(i<6)
+				return;
+			texts[i-6]=string;
+		}
+		try {
+			ArrayList<Object> data = new ArrayList<>();
+			data.add(shop);
+			data.add(type);
+			signPlayerCache.put(((Player)sender).getUniqueId(),data);
+			Util.sendSignEditForGUI((Player)sender, texts);
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void remove(CommandSender sender, String[] args) {
 		if (sender instanceof Player == false) {
 			sender.sendMessage(ChatColor.RED + "Only players may use that command.");
@@ -557,6 +589,9 @@ public class QS implements CommandExecutor {
 				return true;
 			} else if (subArg.startsWith("amount")) {
 				amount(sender, args);
+				return true;
+			} else if (subArg.startsWith("sign")) {
+				sign(sender, args);
 				return true;
 			} else if (subArg.startsWith("buy")) {
 				setBuy(sender);
