@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop;
 
 import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -905,6 +907,11 @@ public class QuickShop extends JavaPlugin {
 	 */
 	public Database getDB() {
 		return this.database;
+	}
+	public ProtocolManager getProtocolLib() {
+		if(this.protocolLibPlugin==null)
+			return null;
+		return ProtocolLibrary.getProtocolManager();
 	}
 
 	/**
