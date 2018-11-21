@@ -251,23 +251,28 @@ public class ShopManager {
 				}
 			}
 			
+			
 			if (plugin.limit) {
 				int owned = 0;
-				for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
-					for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
-						for (Shop shop : shopLocs.values()) {
-							if (shop.getOwner().equals(p.getUniqueId())&&shop.isUnlimited()) {
-								owned++;
+				if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
+					for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
+						for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
+							for (Shop shop : shopLocs.values()) {
+								if (shop.getOwner().equals(p.getUniqueId())&&shop.isUnlimited()) {
+									owned++;
+								}
 							}
 						}
 					}
+				}else {
+					Iterator<Shop> it = getShopIterator();
+					while (it.hasNext()) {
+						if (it.next().getOwner().equals(p.getUniqueId())) {
+							owned++;
+						}
+					}	
 				}
-//				Iterator<Shop> it = getShopIterator();
-//				while (it.hasNext()) {
-//					if (it.next().getOwner().equals(p.getUniqueId())) {
-//						owned++;
-//					}
-//				}
+				
 				int max = plugin.getShopLimit(p);
 				if (owned + 1 > max) {
 					//p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
