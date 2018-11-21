@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+import com.comphenix.protocol.ProtocolLib;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -96,6 +97,7 @@ public class QuickShop extends JavaPlugin {
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
+	public ProtocolLib protocolLibPlugin;
 	/** The plugin metrics from Hidendra */
 	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
@@ -158,6 +160,11 @@ public class QuickShop extends JavaPlugin {
 
 		if (mPlugin != null) {
 			getLogger().info("Successfully loaded MultiverseCore support!");
+		}
+		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
+
+		if (protocolLibPlugin != null) {
+			getLogger().info("Successfully loaded ProtocolLib support!");
 		}
 		if(getConfig().getInt("config-version")==0)
 			getConfig().set("config-version", 1);
