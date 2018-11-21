@@ -95,11 +95,13 @@ shop:
     #Should we automatically create the sign for the chest?
     auto-sign: true
     
-    #If a player owns an unlimited shop, should they receive the cash from it or not?
-    #If you buy from YOUR unlimited shop, you will NEVER be charged $$, regardless of this setting
+    #Should pay money from unlimited shops owner to player?
     pay-unlimited-shop-owners: false
     
-    #Still discounts money when shop's owner tradeing with himself shop...
+    #Should unlimited shops owner pay player money?
+    pay-player-from-unlimited-shop-owners: false
+    
+    #Ignore check if player is shop's owner
     bypass-owner-check: false
     
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
