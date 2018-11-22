@@ -155,7 +155,7 @@ public class QuickShop extends JavaPlugin {
 		// protocolManager = ProtocolLibrary.getProtocolManager();
 		try {
 			getServer().spigot();
-		}catch(Throwable e) {
+		} catch (Throwable e) {
 			getLogger().severe("You must use support Spigot or Spigot forks(eg.Paper) server not CraftBukkit");
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
@@ -165,37 +165,39 @@ public class QuickShop extends JavaPlugin {
 		} else {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
 		}
-
-		mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-
-		if (mPlugin != null) {
-			getLogger().info("Successfully loaded MultiverseCore support!");
+		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
+			mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+			if (mPlugin != null) {
+				getLogger().info("Successfully loaded MultiverseCore support!");
+			}
 		}
-		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
-		signMenuFactory = new SignMenuFactory(this);
-		if (protocolLibPlugin != null) {
-			getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
+		if (getConfig().getBoolean("plugin.ProtocolLib")) {
+			protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
+			signMenuFactory = new SignMenuFactory(this);
+			if (protocolLibPlugin != null) {
+				getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
+					@Override
+					public void onPacketReceiving(PacketEvent event) {
+						WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
+						// BlockPosition blockPos = wrapper.getLocation();
+						Util.debugLog("line:" + wrapper.getLines()[0]);
+						if (wrapper.getLines()[0] == null || wrapper.getLines()[0] == "")
+							return;
+						ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								QuickShop.instance.commandExecutor.signGUIApi(data, wrapper.getLines()[0]);
+							}
+						}.runTask(QuickShop.instance);
 
-				@Override
-		        public void onPacketReceiving(PacketEvent event) {
-		            WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
-		            //BlockPosition blockPos = wrapper.getLocation();
-		            Util.debugLog("line:"+wrapper.getLines()[0]);
-		            if(wrapper.getLines()[0]==null||wrapper.getLines()[0]=="")
-		            	return;
-		            ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
-		            new BukkitRunnable() {
-						@Override
-						public void run() {
-							QuickShop.instance.commandExecutor.signGUIApi(data,wrapper.getLines()[0]);
-						}
-					}.runTask(QuickShop.instance);
-		            
-		        }
-		    });
-			getLogger().info("Successfully loaded ProtocolLib support!");
+					}
+				});
+				getLogger().info("Successfully loaded ProtocolLib support!");
+			}
 		}
-		if(getConfig().getInt("config-version")==0)
+
+		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
 		updateConfig(getConfig().getInt("config-version"));
 
