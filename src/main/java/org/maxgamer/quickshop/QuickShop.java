@@ -815,6 +815,7 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.pay-player-from-unlimited-shop-owner", false);
 			getConfig().set("plugin.ProtocolLib", false);
 			getConfig().set("plugin.Multiverse-Core", true);
+			getConfig().set("shop.ignore-unlimited",false);
 			getConfig().set("config-version", 9);
 			selectedVersion = 9;
 			saveConfig();

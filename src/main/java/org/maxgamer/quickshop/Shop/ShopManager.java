@@ -441,7 +441,7 @@ public class ShopManager {
 						msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(),
 								"" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(),
 								MsgUtil.getDisplayName(shop.getItem()));
-					MsgUtil.send(shop.getOwner(), msg);
+					MsgUtil.send(shop.getOwner(), msg,shop.isUnlimited());
 				} else {
 					String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount,
 							MsgUtil.getDisplayName(shop.getItem()));
@@ -449,7 +449,7 @@ public class ShopManager {
 						msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(),
 								"" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(),
 								shop.getDataName());
-					MsgUtil.send(shop.getOwner(), msg);
+					MsgUtil.send(shop.getOwner(), msg,shop.isUnlimited());
 				}
 			}
 			// Transfers the item from A to B
@@ -541,7 +541,7 @@ public class ShopManager {
 				if (space == amount)
 					msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(),
 							"" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ());
-				MsgUtil.send(shop.getOwner(), msg);
+				MsgUtil.send(shop.getOwner(), msg,shop.isUnlimited());
 			} else {
 				if (p.getUniqueId().equals(shop.getOwner())
 						&& !plugin.getConfig().getBoolean("shop.bypass-owner-check")) {
