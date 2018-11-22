@@ -808,6 +808,17 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 8) {
+			getConfig().set("database.use-varchar", true);
+			getConfig().set("limits.old-algorithm", false);
+			getConfig().set("shop.pay-player-from-unlimited-shop-owner", false);
+			getConfig().set("plugin.ProtocolLib", true);
+			getConfig().set("plugin.Multiverse-Core", true);
+			getConfig().set("config-version", 9);
+			selectedVersion = 9;
+			saveConfig();
+			reloadConfig();
+		}
 		
 	}
 
