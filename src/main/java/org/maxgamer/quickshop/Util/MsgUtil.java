@@ -197,7 +197,12 @@ public class MsgUtil {
 		if (sender.hasPermission("quickshop.unlimited")) {
 			String Text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
 			String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
-			String clickCommand = "/qs unlimited";
+			String type = "unlimited";
+			String clickCommand = "/qs silentunlimited " + shop.getLocation().getWorld().getName() + " "
+					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+					+ shop.getLocation().getBlockZ() + " " + "controlpanel.sign." + type + ".line1" + " "
+					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
+					+ "controlpanel.sign." + type + ".line4";
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Buying/Selling Mode
@@ -205,12 +210,22 @@ public class MsgUtil {
 			if (shop.isSelling()) {
 				String Text = MsgUtil.getMessage("controlpanel.mode-selling");
 				String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
-				String clickCommand = "/qs buy";
+				String type = "buy";
+				String clickCommand = "/qs silentbuy " + shop.getLocation().getWorld().getName() + " "
+						+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+						+ shop.getLocation().getBlockZ() + " " +  "controlpanel.sign." + type + ".line1"
+						+ " " + "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3"
+						+ " " + "controlpanel.sign." + type + ".line4";
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 			} else if (shop.isBuying()) {
 				String Text = MsgUtil.getMessage("controlpanel.mode-buying");
 				String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
-				String clickCommand = "/qs sell";
+				String type = "sell";
+				String clickCommand = "/qs silentsell " + shop.getLocation().getWorld().getName() + " "
+						+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+						+ shop.getLocation().getBlockZ() + " " +"controlpanel.sign." + type + ".line1"
+						+ " " + "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3"
+						+ " " + "controlpanel.sign." + type + ".line4";
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 			}
 		}
@@ -240,14 +255,24 @@ public class MsgUtil {
 		if (sender.hasPermission("quickshop.empty")) {
 			String Text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
-			String clickCommand = "/qs empty";
+			String type = "empty";
+			String clickCommand = "/qs silentempty " + shop.getLocation().getWorld().getName() + " "
+					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+					+ shop.getLocation().getBlockZ() + " " +"controlpanel.sign." + type + ".line1" + " "
+					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
+					+ "controlpanel.sign." + type + ".line4";
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Remove
 		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
-			String clickCommand = "/qs remove "+shop.getLocation().getBlockX()+" "+shop.getLocation().getBlockY()+" "+shop.getLocation().getBlockZ();
+			String type = "remove";
+			String clickCommand = "/qs silentremove " + shop.getLocation().getWorld().getName() + " "
+					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+					+ shop.getLocation().getBlockZ() + " " + "controlpanel.sign." + type + ".line1" + " "
+					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
+					+ "controlpanel.sign." + type + ".line4";
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 
@@ -344,7 +369,7 @@ public class MsgUtil {
 					+ "controlpanel.sign." + type + ".line4";
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
-		// Refill
+		// Empty
 		if (sender.hasPermission("quickshop.empty")) {
 			String Text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
