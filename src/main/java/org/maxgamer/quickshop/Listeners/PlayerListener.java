@@ -229,7 +229,6 @@ public class PlayerListener implements Listener {
 			Util.debugLog("Shop: "+shop.toString());
 			Util.debugLog("Updateing shops..");
 			shop.setSignText();
-			shop.update();
 		} catch (Throwable t) {
 			
 		}
