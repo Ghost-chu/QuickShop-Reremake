@@ -222,7 +222,7 @@ public class MsgUtil {
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Remove
-		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())||sender.hasPermission("quickshop.delete")) {
+		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
 			String clickCommand = "/qs remove "+shop.getLocation().getBlockX()+" "+shop.getLocation().getBlockY()+" "+shop.getLocation().getBlockZ();
@@ -335,8 +335,7 @@ public class MsgUtil {
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Remove
-		if (sender.hasPermission("quickshop.other.destroy")
-				|| shop.getOwner().equals(((Player) sender).getUniqueId())) {
+		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
 			String type = "remove";
