@@ -23,7 +23,7 @@ public class UpdateWatcher implements Listener {
 					return;
 				}
 				QuickShop.instance.getLogger().info("New QuickShop release now updated on SpigotMC.org!");
-				QuickShop.instance.getLogger().info("Update plugin in there: https://www.spigotmc.org/resources/59134/");
+				QuickShop.instance.getLogger().info("Update plugin in there: https://www.spigotmc.org/resources/62575/");
 				hasNewUpdate = true;
 			}
 		}.runTaskTimerAsynchronously(QuickShop.instance, 1, 20 * 60 * 10);
@@ -45,7 +45,7 @@ public class UpdateWatcher implements Listener {
 				if (e.getPlayer().hasPermission("quickshop.alert") && hasNewUpdate) {
 					e.getPlayer().sendMessage(ChatColor.GREEN + "New QuickShop release now updated on SpigotMC.org!");
 					e.getPlayer().sendMessage(
-							ChatColor.GREEN + "Update plugin in there: https://www.spigotmc.org/resources/59134/");
+							ChatColor.GREEN + "Update plugin in there: https://www.spigotmc.org/resources/62575/");
 				}
 
 			}
