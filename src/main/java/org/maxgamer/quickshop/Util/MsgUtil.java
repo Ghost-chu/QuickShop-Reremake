@@ -613,7 +613,9 @@ public class MsgUtil {
 	 *            they're online. Else, if they're not online, queues it for
 	 *            them in the database.
 	 */
-	public static void send(UUID player, String message) {	//TODO Converted to UUID
+	public static void send(UUID player, String message,boolean isUnlimited) {	//TODO Converted to UUID
+		if(plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")&&isUnlimited)
+			return; //Ignore unlimited shops messages.
 		OfflinePlayer p = Bukkit.getOfflinePlayer(player);
 		if (p == null || !p.isOnline()) {
 			LinkedList<String> msgs = player_messages.get(player);

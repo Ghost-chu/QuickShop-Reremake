@@ -120,6 +120,9 @@ shop:
     
     #If vault not return coins symbol, QuickShop will use this symbol to replace it.
     alternate-currency-symbol: '$'
+    
+    #Ignore trade messages if shop is unlimited
+    ignore-unlimited-shop-messages: false
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
