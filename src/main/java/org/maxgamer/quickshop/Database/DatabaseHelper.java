@@ -128,7 +128,7 @@ public class DatabaseHelper {
 	}
 	
 	public static void cleanMessage(long weekAgo) {
-		QuickShop.instance.getDB().execute("DELETE FROM messages WHERE time < ?", weekAgo);
+		QuickShop.instance.getDB().execute("DELETE FROM "+QuickShop.instance.dbPrefix+"messages WHERE time < ?", weekAgo);
 	}
 	
 	public static void connectCheck(){
