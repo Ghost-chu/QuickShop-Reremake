@@ -40,6 +40,8 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import com.google.common.collect.Lists;
+
 public class QS implements CommandExecutor {
 	QuickShop plugin;
 	public static HashMap<UUID, ArrayList<Object>> signPlayerCache = new HashMap<>();
@@ -52,6 +54,7 @@ public class QS implements CommandExecutor {
 
 		Shop shop = (Shop) data.get(0);
 		String type = (String) data.get(1);
+		Util.debugLog("GUI API");
 		Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
 		Util.debugLog(String.valueOf(data.size()));
 		switch (type) {
@@ -229,6 +232,7 @@ public class QS implements CommandExecutor {
 			return;
 		}
 	}
+
 	private void sign(CommandSender sender, String[] args) {
 		Util.debugLog("sign");
 		ShopManager manager = plugin.getShopManager();
@@ -245,17 +249,21 @@ public class QS implements CommandExecutor {
 		texts[1] = args[7];
 		texts[2] = args[8];
 		texts[3] = args[9];
-			Util.debugLog("done");
-			Util.debugLog("submiting data");
-			ArrayList<Object> data = new ArrayList<>();
-			data.add(shop);
-			data.add(type);
-			data.add(((Player) sender).getUniqueId());
-			signPlayerCache.put(((Player) sender).getUniqueId(), data);
-			try {
+		Util.debugLog("done");
+		Util.debugLog("submiting data");
+		ArrayList<Object> data = new ArrayList<>();
+		data.add(shop);
+		data.add(type);
+		data.add(((Player) sender).getUniqueId());
+		signPlayerCache.put(((Player) sender).getUniqueId(), data);
+		try {
 			Util.sendSignEditForGUI((Player) sender, texts);
-			}catch (Exception e) {
-			}
+			QuickShop.signMenuFactory.newMenu((Player) sender, Lists.newArrayList(MsgUtil.getMessage(texts[0]), MsgUtil.getMessage(texts[1]), MsgUtil.getMessage(texts[2]), MsgUtil.getMessage(texts[3])),
+					(player, input) -> {
+						//signGUIApi(data, input[0]);
+					});
+		} catch (Exception e) {
+		}
 	}
 
 	private void remove(CommandSender sender, String[] args) {
