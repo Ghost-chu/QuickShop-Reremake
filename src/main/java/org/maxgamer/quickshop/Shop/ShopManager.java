@@ -258,7 +258,7 @@ public class ShopManager {
 					for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
 						for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
 							for (Shop shop : shopLocs.values()) {
-								if (shop.getOwner().equals(p.getUniqueId())&&shop.isUnlimited()) {
+								if (shop.getOwner().equals(p.getUniqueId())&&!shop.isUnlimited()) {
 									owned++;
 								}
 							}
