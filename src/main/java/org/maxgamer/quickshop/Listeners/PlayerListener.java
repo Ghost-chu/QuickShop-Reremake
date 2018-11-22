@@ -208,20 +208,27 @@ public class PlayerListener implements Listener {
 	}
 
 	public void onInventoryClose(InventoryCloseEvent e) {
+		Util.debugLog("Inventory closed.");
 		try {
 			Inventory inventory = e.getInventory();
 			if (inventory == null) {
+				Util.debugLog("Inventory: null");
 				return;
 			}
+			Util.debugLog("Inventory: "+inventory.toString());
 			Location location = inventory.getLocation();
 			if (location == null) {
+				Util.debugLog("Location: null");
 				return;
 			}
-			
+			Util.debugLog("Location: "+location.toString());
 			Shop shop = plugin.getShopManager().getShop(location);
 			if (shop == null) {
+				Util.debugLog("Shop: null");
 				return;
 			}
+			Util.debugLog("Shop: "+shop.toString());
+			Util.debugLog("Updateing shops..");
 			shop.setSignText();
 			shop.update();
 		} catch (Throwable t) {
