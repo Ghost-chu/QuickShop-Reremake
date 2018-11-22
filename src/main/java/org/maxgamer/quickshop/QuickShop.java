@@ -532,17 +532,18 @@ public class QuickShop extends JavaPlugin {
 		playerListener = new PlayerListener(this);
 		worldListener = new WorldListener(this);
 		chatListener = new ChatListener(this);
-
+		chunkListener = new ChunkListener(this);
+		inventoryListener = new DisplayProtectionListener(this);
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
-		if (this.display) {
-			inventoryListener = new DisplayProtectionListener(this);
-			chunkListener = new ChunkListener(this);
-			Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
-			Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
-		}
+		Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
+		Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
+		if(getConfig().getBoolean("shop.lock")) {
+			LockListener lockListener = new LockListener(this);
+			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
+		}
 		// Command handlers
 		commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);
