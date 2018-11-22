@@ -19,29 +19,7 @@ public class DatabaseHelper {
 		if (!db.hasTable(QuickShop.instance.dbPrefix+"messages")) {
 			createMessagesTable(db);
 		}
-		if (!db.hasTable(QuickShop.instance.dbPrefix+"schedule")) {
-			createScheduleTable(db);
-		}
 		checkColumns(db);
-	}
-	
-	/**
-	 * Creates the database table 'schedule'.
-	 * 
-	 * @throws SQLException
-	 *             If the connection is invalid.
-	 */
-	public static void createScheduleTable(Database db) throws SQLException {
-		connectCheck();
-		Statement st = db.getConnection().createStatement();
-		//String createTable = "CREATE TABLE shops (" + "owner  TEXT(32) NOT NULL, " + "price  double(32, 2) NOT NULL, " + "itemConfig TEXT CHARSET utf8 NOT NULL, " + "x  INTEGER(32) NOT NULL, " + "y  INTEGER(32) NOT NULL, " + "z  INTEGER(32) NOT NULL, " + "world VARCHAR(32) NOT NULL, " + "unlimited  boolean, " + "type  boolean, " + "PRIMARY KEY (x, y, z, world) " + ");";
-		String createTable = null;
-		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
-			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner VARCHAR(255) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
-		}else {
-			createTable ="CREATE TABLE "+QuickShop.instance.dbPrefix+"schedule (owner TEXT(32) NOT NULL, world VARCHAR(32) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, timestamp INT NOT NULL, PRIMARY KEY (owner, world, x, y, z, timestamp) );";
-		}
-		st.execute(createTable);
 	}
 
 	/**
@@ -121,15 +99,6 @@ public class DatabaseHelper {
 		.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
 				+ " AND world = \"" + worldName + "\""
 				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-		db.getConnection().createStatement()
-		.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
-				+ " AND world = \"" + worldName + "\""
-				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-	}
-	public static void insertSchedule(String argUUID, String world, int x, int y, int z, long l) {
-		connectCheck();
-		String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-		QuickShop.instance.getDB().execute(scheduleq , argUUID, world, x, y, z, System.currentTimeMillis());
 	}
 
 	public static void updateOwner2UUID(String ownerUUID, int x, int y, int z, String worldName) throws SQLException {
@@ -152,9 +121,6 @@ public class DatabaseHelper {
 		connectCheck();
 		String q = "INSERT INTO "+QuickShop.instance.dbPrefix+"shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
-		// Reremake write in schedule data
-		String scheduleq = "INSERT INTO "+QuickShop.instance.dbPrefix+"schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-		QuickShop.instance.getDB().execute(scheduleq , owner, world,x,y,z, System.currentTimeMillis());
 	}
 	public static void sendMessage(UUID player,String message,long time) {
 		String q = "INSERT INTO "+QuickShop.instance.dbPrefix+"messages (owner, message, time) VALUES (?, ?, ?)";
