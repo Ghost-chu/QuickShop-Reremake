@@ -7,6 +7,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerChangedMainHandEvent;
@@ -206,6 +207,19 @@ public class DisplayProtectionListener implements Listener {
 				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getInventory().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 				event.getItem().remove();
 				event.getInventory().clear();
+			}
+		} catch (Exception e) {}
+	}
+	
+	@EventHandler(ignoreCancelled = true)
+	public void onInventoryMoveItem(InventoryMoveItemEvent event) {
+		try {
+			ItemStack is = event.getItem();
+			if (itemStackCheck(is)) {
+				event.setCancelled(true);
+				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getDestination().getTitle()+" move display item "+is);
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getDestination().getTitle()+" move display item "+is);
+				event.setItem(new ItemStack(Material.AIR));
 			}
 		} catch (Exception e) {}
 	}

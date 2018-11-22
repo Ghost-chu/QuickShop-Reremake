@@ -142,7 +142,6 @@ public class PlayerListener implements Listener {
 			}
 		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& e.getClickedBlock().getType() == Material.WALL_SIGN) {
-			/** @TODO: ControlPanel **/
 			Block block;
 			if (e.getClickedBlock().getType() == Material.WALL_SIGN) {
 				block = Util.getAttached(e.getClickedBlock());
@@ -152,6 +151,7 @@ public class PlayerListener implements Listener {
 			if (plugin.getShopManager().getShop(block.getLocation()) != null) {
 				MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
 						plugin.getShopManager().getShop(block.getLocation()));
+				plugin.getShopManager().getShop(block.getLocation()).setSignText();
 			}
 		}
 
@@ -209,17 +209,17 @@ public class PlayerListener implements Listener {
 
 	public void onInventoryClose(InventoryCloseEvent e) {
 		try {
-			final Inventory inventory = e.getInventory();
+			Inventory inventory = e.getInventory();
 			if (inventory == null) {
 				return;
 			}
 			
-			final Location location = inventory.getLocation();
+			Location location = inventory.getLocation();
 			if (location == null) {
 				return;
 			}
 			
-			final Shop shop = plugin.getShopManager().getShop(location);
+			Shop shop = plugin.getShopManager().getShop(location);
 			if (shop == null) {
 				return;
 			}
