@@ -20,8 +20,6 @@ package com.comphenix.packetwrapper;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.BlockPosition;
-import com.mojang.brigadier.suggestion.Suggestions;
 
 public class WrapperPlayClientTabComplete extends AbstractPacket {
 	public static final PacketType TYPE = PacketType.Play.Client.TAB_COMPLETE;
