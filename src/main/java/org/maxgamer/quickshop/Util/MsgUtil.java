@@ -299,7 +299,7 @@ public class MsgUtil {
 			}
 		}
 		// Set Price
-		if (sender.hasPermission("quickshop.other.price")) {
+		if (sender.hasPermission("quickshop.other.price")||shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
 			String type = "price";
