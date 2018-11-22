@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import org.maxgamer.quickshop.Util.Util;
+
 public class BufferStatement {
 	private Object[] values;
 	private String query;
@@ -23,6 +25,7 @@ public class BufferStatement {
 	 */
 	public BufferStatement(String query, Object... values) {
 		this.query = query;
+		Util.debugLog(query);
 		this.values = values;
 		this.stacktrace = new Exception(); // For error handling
 		this.stacktrace.fillInStackTrace(); // We can declare where this
@@ -43,6 +46,7 @@ public class BufferStatement {
 	 */
 	public PreparedStatement prepareStatement(Connection con) throws SQLException {
 		PreparedStatement ps;
+		Util.debugLog(query);
 		ps = con.prepareStatement(query);
 		for (int i = 1; i <= values.length; i++) {
 			ps.setObject(i, values[i - 1]);

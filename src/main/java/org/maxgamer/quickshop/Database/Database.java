@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class Database {
 	private DatabaseCore core;
@@ -68,6 +69,7 @@ public class Database {
 	 *            The string values for each ? in the given query.
 	 */
 	public void execute(String query, Object... objs) {
+		Util.debugLog(query);
 		BufferStatement bs = new BufferStatement(query, objs);
 		core.queue(bs);
 	}
@@ -113,6 +115,7 @@ public class Database {
 		if (!hasTable(table))
 			return false;
 		String query = "SELECT * FROM " + table + " LIMIT 0,1";
+		Util.debugLog(query);
 		try {
 			PreparedStatement ps = this.getConnection().prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
