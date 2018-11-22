@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
@@ -384,34 +383,6 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
-
-					if (getConfig().getBoolean("ongoingfee.reset-on-startup")) {
-						step = "Reset schedule data";
-						getDB().getConnection().createStatement()
-								.executeUpdate("DELETE FROM " + QuickShop.instance.dbPrefix + "schedule WHERE x = " + x
-										+ " AND y = " + y + " AND z = " + z + " AND world = \"" + worldName + "\""
-										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-					}
-
-					step = "Checking shop schedule data";
-					// Check shop is or not exist in schedule table
-					Statement st = getDB().getConnection().createStatement();
-					String checkq = "SELECT * FROM " + QuickShop.instance.dbPrefix
-							+ "schedule WHERE owner ='{owner}' and world ='{world}' and x ='{x}' and y ='{y}' and z='{z}' and timestamp ='%'";
-					checkq.replace("{x}", String.valueOf(loc.getBlockX()));
-					checkq.replace("{y}", String.valueOf(loc.getBlockY()));
-					checkq.replace("{z}", String.valueOf(loc.getBlockZ()));
-					checkq.replace("{world}", String.valueOf(loc.getWorld().getName()));
-					checkq.replace("{owner}", shop.getOwner().toString());
-					ResultSet resultSet = st.executeQuery(checkq);
-					if (!resultSet.next()) {
-						// Not exist, write in
-						step = "Writeing shop schedule data";
-						String scheduleq = "INSERT INTO " + QuickShop.instance.dbPrefix
-								+ "schedule (owner, world, x, y, z, timestamp) VALUES (?, ?, ?, ?, ?, ?)";
-						getDB().execute(scheduleq, shop.getOwner().toString(), loc.getWorld().getName(),
-								loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), System.currentTimeMillis());
-					}
 
 					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
