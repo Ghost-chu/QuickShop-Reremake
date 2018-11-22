@@ -236,7 +236,7 @@ public class MsgUtil {
 		if (!sender.hasPermission("quickshop.use")) {
 			return;
 		}
-		if (plugin.protocolLibPlugin == null) {
+		if (plugin.protocolLibPlugin == null||!plugin.getConfig().getBoolean("plugin.ProtocolLib")) {
 			sendNormalControlPanelInfo(sender, shop);
 			return;
 		}
