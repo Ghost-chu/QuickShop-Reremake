@@ -166,6 +166,8 @@ public class Database {
 		// For each table
 		String prefix = plugin.getConfig().getString("database.prefix");
 		for (String table : tables) {
+			if(table.contains("schedule"))
+				return; // go way!
 			String finalTable = null;
 			if(table.startsWith(prefix)) {
 				finalTable = table;

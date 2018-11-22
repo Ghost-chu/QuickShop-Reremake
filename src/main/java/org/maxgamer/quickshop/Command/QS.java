@@ -318,6 +318,7 @@ public class QS implements CommandExecutor {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void export(CommandSender sender, String[] args) {
 		if (args.length < 2) {
 			sender.sendMessage(ChatColor.RED + "Usage: /qs export mysql|sqlite");
@@ -892,7 +893,7 @@ public class QS implements CommandExecutor {
 				reload(sender);
 				return true;
 			} else if (subArg.equals("export")) {
-				export(sender, args);
+				//export(sender, args);
 				return true;
 			} else if (subArg.equals("about")) {
 				about(sender);
