@@ -193,7 +193,7 @@ public class MsgUtil {
 			}
 		}
 		// Set Price
-		if (sender.hasPermission("quickshop.other.price")) {
+		if (sender.hasPermission("quickshop.other.price")||shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
 			String clickCommand = "/qs price [New Price]";
@@ -222,7 +222,7 @@ public class MsgUtil {
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Remove
-		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
+		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())||sender.hasPermission("quickshop.delete")) {
 			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
 			String clickCommand = "/qs remove "+shop.getLocation().getBlockX()+" "+shop.getLocation().getBlockY()+" "+shop.getLocation().getBlockZ();

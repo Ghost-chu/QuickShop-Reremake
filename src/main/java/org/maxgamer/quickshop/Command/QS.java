@@ -278,7 +278,7 @@ public class QS implements CommandExecutor {
 			return;
 		}
 		if (!sender.hasPermission("quickshop.delete")) {
-			sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission-remove-shop"));
+			sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 			return;
 		}
 		Player p = (Player) sender;
@@ -287,11 +287,10 @@ public class QS implements CommandExecutor {
 			Block b = bIt.next();
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop != null) {
-				if (shop.getOwner().equals(p.getUniqueId())) {
+				if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
 					shop.delete();
-					sender.sendMessage(ChatColor.GREEN + "Success. Deleted shop.");
 				} else {
-					p.sendMessage(ChatColor.RED + "That's not your shop!");
+					sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 				}
 				return;
 			}
