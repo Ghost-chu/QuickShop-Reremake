@@ -116,6 +116,7 @@ command:
        refill: "&eAdds a given number of items to a shop"
        empty: "&eRemoves all stock from a shop"
        create: "&eCreates a new shop at the target chest"
+       debug: "&ePrint debug message"
        
 signs:
     header: "&c{0}"
