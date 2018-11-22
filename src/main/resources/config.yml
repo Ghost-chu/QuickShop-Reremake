@@ -198,24 +198,6 @@ float:
     list:
     - Super Sword(Can't float)
     #add keywords in there, plugin will check it contain or not on items.
-# Ongoing Fee TODO
-# ongoingfee:
-    # enable: false
-    # # CheckTime unit is tick (1 seconds = 20 ticks) Do not set low than 600!
-    # # If you are a large server, set this kind of large.
-    # # Per {checkTime} to check database and withdraw once money.
-    # # Default: 864000    864000ticks to withdraw all players once money
-    # # Server reboot/reload or qs reload can stop and reset all shops timer.
-    # checkTime: 864000
-    # # Reset all shops exist time when server booting
-    # # If set false, Server offline time will calc in total time and withdraw money.
-    # # And this can cleanup schedule table old datas.
-    # reset-on-startup: true
-    # # If target player offline, QuickShop will not calc time him shops money.
-    # pass-offline-player: false
-    # # Only calc-shops set true, this option can work.
-    # # How many money per shop withdraw each unit time.
-    # shops-price: 1
     
 # Enable or disable plugin support.
 plugin:
