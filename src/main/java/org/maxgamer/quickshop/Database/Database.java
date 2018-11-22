@@ -176,11 +176,11 @@ public class Database {
 				
 			if (table.toLowerCase().startsWith("sqlite_autoindex_"))
 				continue;
-			plugin.getLogger().log(Level.WARNING, "Copying " + finalTable);
+			plugin.getLogger().log(Level.WARNING, "Copying " + table + " to "+finalTable);
 			// Wipe the old records
 			db.getConnection().prepareStatement("DELETE FROM " + finalTable).execute();
 			// Fetch all the data from the existing database
-			rs = getConnection().prepareStatement("SELECT * FROM " + finalTable).executeQuery();
+			rs = getConnection().prepareStatement("SELECT * FROM " + table).executeQuery();
 			int n = 0;
 			// Build the query
 			String query = "INSERT INTO " + finalTable + " VALUES (";
