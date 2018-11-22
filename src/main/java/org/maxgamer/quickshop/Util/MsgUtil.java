@@ -35,116 +35,138 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class MsgUtil {
 	static QuickShop plugin = QuickShop.instance;
-	private static YamlConfiguration messages;
+//	private static YamlConfiguration messages;
 	private static YamlConfiguration itemi18n;
 	private static YamlConfiguration enchi18n;
 	private static YamlConfiguration potioni18n;
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
 	private static boolean Inited;
+	private static YamlConfiguration messagei18n;
 	/**
 	 * Loads all the messages from messages.yml
 	 */
-	public static void loadCfgMessages(Boolean... reload) {
-		// Load messages.yml
+//	public static void loadCfgMessages(Boolean... reload) {
+//		// Load messages.yml
+//		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
+//		if (!messageFile.exists()) {
+//			plugin.getLogger().info("Creating messages.yml");
+//			plugin.saveResource("messages.yml", true);
+//		}
+//		// Store it
+//		messages = YamlConfiguration.loadConfiguration(messageFile);
+//		messages.options().copyDefaults(true);
+//		// Load default messages
+//		YamlConfiguration defMessages = null;
+//		try {
+//			defMessages = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
+//		}catch (Exception e) {
+//		}
+//		
+//		messagei18n.setDefaults(defMessages);
+//		// Parse colour codes
+//		Util.parseColours(messages);
+//	
+//		
+//		if(messages.getInt("language-version")==0) {
+//			messagei18n.set("language-version", 1);
+//		}
+//		if(reload.length==0)
+//			updateMessages(messages.getInt("language-version"));
+//		
+//		//Print language copyright infomation
+//		if(!Inited) {
+//			plugin.getLogger().info(messages.getString("language-author"));
+//			plugin.getLogger().info(messages.getString("language-contributors"));
+//			plugin.getLogger().info(messages.getString("language-country"));
+//			plugin.getLogger().info(messages.getString("language-version"));
+//			Inited=true;
+//		}
+//	}
+	public static void loadCfgMessages(String...reload ) {
 		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
 			plugin.getLogger().info("Creating messages.yml");
 			plugin.saveResource("messages.yml", true);
 		}
 		// Store it
-		messages = YamlConfiguration.loadConfiguration(messageFile);
-		messages.options().copyDefaults(true);
-		// Load default messages
-		YamlConfiguration defMessages = null;
-		try {
-			defMessages = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
-		}catch (Exception e) {
-		}
+		messagei18n = YamlConfiguration.loadConfiguration(messageFile);
+		messagei18n.options().copyDefaults(true);
+		YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
+		messagei18n.setDefaults(messagei18nYAML);
 		
-		messages.setDefaults(defMessages);
-		// Parse colour codes
-		Util.parseColours(messages);
-	
-		
-		if(messages.getInt("language-version")==0) {
-			messages.set("language-version", 1);
+		if(messagei18n.getInt("language-version")==0) {
+			messagei18n.set("language-version", 1);
 		}
 		if(reload.length==0)
-			updateMessages(messages.getInt("language-version"));
+			updateMessages(messagei18n.getInt("language-version"));
 		
 		//Print language copyright infomation
+		
 		if(!Inited) {
-			plugin.getLogger().info(messages.getString("language-author"));
-			plugin.getLogger().info(messages.getString("language-contributors"));
-			plugin.getLogger().info(messages.getString("language-country"));
-			plugin.getLogger().info(messages.getString("language-version"));
+			plugin.getLogger().info(messagei18n.getString("language-author"));
+			plugin.getLogger().info(messagei18n.getString("language-contributors"));
+			plugin.getLogger().info(messagei18n.getString("language-country"));
+			plugin.getLogger().info(messagei18n.getString("language-version"));
 			Inited=true;
 		}
+		try {
+			messagei18n.save(messageFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Could not load/save transaction from messages.yml. Skipping.");
+		}
+		Util.parseColours(messagei18n);
 	}
-
 	public static void updateMessages(int selectedVersion) {
 		if (selectedVersion == 1) {
-			messages.set("shop-not-exist", "&cThere had no shop.");
-			messages.set("controlpanel.infomation", "&aShop Control Panel:");
-			messages.set("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
-			messages.set("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
-			messages.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
-			messages.set("controlpanel.unlimited-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-			messages.set("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
-			messages.set("controlpanel.mode-selling-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-			messages.set("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
-			messages.set("controlpanel.mode-buying-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-			messages.set("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
-			messages.set("controlpanel.price-hover", "&eLooking you want changing shop and click to set new price.");
-			messages.set("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
-			messages.set("controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
-			messages.set("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
-			messages.set("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
-			messages.set("controlpanel.remove", "&c&l[Remove Shop]");
-			messages.set("controlpanel.remove-hover", "&eClick to remove this shop.");
-			messages.set("language-version", 2);
-			saveMessages();
-			Util.parseColours(messages);
+			messagei18n.set("shop-not-exist", "&cThere had no shop.");
+			messagei18n.set("controlpanel.infomation", "&aShop Control Panel:");
+			messagei18n.set("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
+			messagei18n.set("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
+			messagei18n.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
+			messagei18n.set("controlpanel.unlimited-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messagei18n.set("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
+			messagei18n.set("controlpanel.mode-selling-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messagei18n.set("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
+			messagei18n.set("controlpanel.mode-buying-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
+			messagei18n.set("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
+			messagei18n.set("controlpanel.price-hover", "&eLooking you want changing shop and click to set new price.");
+			messagei18n.set("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
+			messagei18n.set("controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
+			messagei18n.set("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
+			messagei18n.set("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
+			messagei18n.set("controlpanel.remove", "&c&l[Remove Shop]");
+			messagei18n.set("controlpanel.remove-hover", "&eClick to remove this shop.");
+			messagei18n.set("language-version", 2);
 			selectedVersion = 2;
 		}
 		if (selectedVersion == 2) {
-			messages.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
-			messages.set("command.description.debug", "&ePrint debug infomation");
-			messages.set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
-			messages.set("language-version", 3);
-			saveMessages();
-			Util.parseColours(messages);
+			messagei18n.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
+			messagei18n.set("command.description.debug", "&ePrint debug infomation");
+			messagei18n.set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
+			messagei18n.set("language-version", 3);
 			selectedVersion = 3;
 		}
 		if (selectedVersion == 3) {
-			messages.set("signs.unlimited", "Unlimited");
-			messages.set("controlpanel.sign.owner.line1", "");
-			messages.set("controlpanel.sign.owner.line2", "Enter");
-			messages.set("controlpanel.sign.owner.line3", "new owner name");
-			messages.set("controlpanel.sign.owner.line4", "at first line");
-			messages.set("controlpanel.sign.price.line1", "");
-			messages.set("controlpanel.sign.price.line2", "Enter");
-			messages.set("controlpanel.sign.price.line3", "new shop price");
-			messages.set("controlpanel.sign.price.line4", "at first line");
-			messages.set("controlpanel.sign.refill.line1", "");
-			messages.set("controlpanel.sign.refill.line2", "Enter amount");
-			messages.set("controlpanel.sign.refill.line3", "you want fill");
-			messages.set("controlpanel.sign.refill.line4", "at first line");
-			messages.set("language-version", 4);
-			saveMessages();
-			Util.parseColours(messages);
+			messagei18n.set("signs.unlimited", "Unlimited");
+			messagei18n.set("controlpanel.sign.owner.line1", "");
+			messagei18n.set("controlpanel.sign.owner.line2", "Enter");
+			messagei18n.set("controlpanel.sign.owner.line3", "new owner name");
+			messagei18n.set("controlpanel.sign.owner.line4", "at first line");
+			messagei18n.set("controlpanel.sign.price.line1", "");
+			messagei18n.set("controlpanel.sign.price.line2", "Enter");
+			messagei18n.set("controlpanel.sign.price.line3", "new shop price");
+			messagei18n.set("controlpanel.sign.price.line4", "at first line");
+			messagei18n.set("controlpanel.sign.refill.line1", "");
+			messagei18n.set("controlpanel.sign.refill.line2", "Enter amount");
+			messagei18n.set("controlpanel.sign.refill.line3", "you want fill");
+			messagei18n.set("controlpanel.sign.refill.line4", "at first line");
+			messagei18n.set("language-version", 4);
 			selectedVersion = 4;
 		
 		}
 	}
-	public static void saveMessages() {
-		try {
-			messages.save(new File(plugin.getDataFolder(), "messages.yml"));
-		} catch (IOException e) {
-		}
-		loadCfgMessages(true);
-	}
-	
 	public static void sendNormalControlPanelInfo(CommandSender sender, Shop shop) {
 		if (!sender.hasPermission("quickshop.use")) {
 			return;
@@ -764,7 +786,7 @@ public class MsgUtil {
 		
 	}
 	public static String getMessage(String loc, String... args) {
-		String raw = messages.getString(loc);
+		String raw = messagei18n.getString(loc);
 		if (raw == null) {
 			return "Invalid message: " + loc+" Please update your messages.yml";	
 		}
