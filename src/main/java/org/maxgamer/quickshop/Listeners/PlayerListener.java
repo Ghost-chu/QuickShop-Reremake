@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -206,7 +205,7 @@ public class PlayerListener implements Listener {
 		plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
 		QS.signPlayerCache.remove(e.getPlayer().getUniqueId());
 	}
-
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onInventoryClose(InventoryCloseEvent e) {
 		Util.debugLog("Inventory closed.");
 		try {
@@ -234,12 +233,6 @@ public class PlayerListener implements Listener {
 		} catch (Throwable t) {
 			
 		}
-	}
-
-	@EventHandler
-	public void invEvent(InventoryEvent e){
-		Util.inventoryCheck(e.getInventory());
-
 	}
 
 }
