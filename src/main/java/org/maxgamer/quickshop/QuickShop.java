@@ -188,6 +188,7 @@ public class QuickShop extends JavaPlugin {
 							@Override
 							public void run() {
 								QuickShop.instance.commandExecutor.signGUIApi(data, wrapper.getLines()[0]);
+								event.getPlayer().sendBlockChange(new Location(event.getPlayer().getWorld(),event.getPlayer().getLocation().getBlockX(), SignMenuFactory.POSITION_HEIGHT, event.getPlayer().getLocation().getBlockZ()), Material.AIR.createBlockData());
 							}
 						}.runTask(QuickShop.instance);
 
