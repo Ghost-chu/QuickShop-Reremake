@@ -116,7 +116,26 @@ public class MsgUtil {
 			Util.parseColours(messages);
 			selectedVersion = 3;
 		}
+		if (selectedVersion == 3) {
+			messages.set("signs.unlimited", "Unlimited");
+			messages.set("controlpanel.sign.owner.line1", "");
+			messages.set("controlpanel.sign.owner.line2", "Enter");
+			messages.set("controlpanel.sign.owner.line3", "new owner name");
+			messages.set("controlpanel.sign.owner.line4", "at first line");
+			messages.set("controlpanel.sign.price.line1", "");
+			messages.set("controlpanel.sign.price.line2", "Enter");
+			messages.set("controlpanel.sign.price.line3", "new shop price");
+			messages.set("controlpanel.sign.price.line4", "at first line");
+			messages.set("controlpanel.sign.refill.line1", "");
+			messages.set("controlpanel.sign.refill.line2", "Enter amount");
+			messages.set("controlpanel.sign.refill.line3", "you want fill");
+			messages.set("controlpanel.sign.refill.line4", "at first line");
+			messages.set("language-version", 4);
+			saveMessages();
+			Util.parseColours(messages);
+			selectedVersion = 4;
 		
+		}
 	}
 	public static void saveMessages() {
 		try {
