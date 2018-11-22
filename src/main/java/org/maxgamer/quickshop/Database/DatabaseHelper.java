@@ -93,14 +93,14 @@ public class DatabaseHelper {
 		return ps.executeQuery();
 		
 	}
+
 	public static void removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
 		connectCheck();
 		db.getConnection().createStatement()
-		.executeUpdate("DELETE FROM "+QuickShop.instance.dbPrefix+"shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
-				+ " AND world = \"" + worldName + "\""
-				+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+				.executeUpdate("DELETE FROM " + QuickShop.instance.dbPrefix + "shops WHERE x = " + x + " AND y = " + y
+						+ " AND z = " + z + " AND world = \"" + worldName + "\""
+						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 	}
-
 	public static void updateOwner2UUID(String ownerUUID, int x, int y, int z, String worldName) throws SQLException {
 		connectCheck();
 		QuickShop.instance.getDB().getConnection().createStatement()
