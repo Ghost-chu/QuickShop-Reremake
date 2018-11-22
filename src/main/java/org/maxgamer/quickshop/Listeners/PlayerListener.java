@@ -213,7 +213,6 @@ public class PlayerListener implements Listener {
 			if (inventory == null) {
 				return;
 			}
-			
 			Location location = inventory.getLocation();
 			if (location == null) {
 				return;
@@ -224,6 +223,7 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			shop.setSignText();
+			shop.update();
 		} catch (Throwable t) {
 			
 		}
