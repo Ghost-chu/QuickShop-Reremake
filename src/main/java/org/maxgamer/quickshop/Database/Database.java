@@ -161,17 +161,26 @@ public class Database {
 		rs.close();
 		core.flush();
 		// For each table
+		String prefix = plugin.getConfig().getString("database.prefix");
 		for (String table : tables) {
+			String finalTable = null;
+			if(table.startsWith(prefix)) {
+				finalTable = table;
+			}else {
+				finalTable = prefix+table;
+				plugin.getLogger().info("CovertHelper: Fixed table name from SQLite "+table+ " to MySQL "+finalTable);
+			}
+				
 			if (table.toLowerCase().startsWith("sqlite_autoindex_"))
 				continue;
-			plugin.getLogger().log(Level.WARNING, "Copying " + table);
+			plugin.getLogger().log(Level.WARNING, "Copying " + finalTable);
 			// Wipe the old records
-			db.getConnection().prepareStatement("DELETE FROM " + table).execute();
+			db.getConnection().prepareStatement("DELETE FROM " + finalTable).execute();
 			// Fetch all the data from the existing database
-			rs = getConnection().prepareStatement("SELECT * FROM " + table).executeQuery();
+			rs = getConnection().prepareStatement("SELECT * FROM " + finalTable).executeQuery();
 			int n = 0;
 			// Build the query
-			String query = "INSERT INTO " + table + " VALUES (";
+			String query = "INSERT INTO " + finalTable + " VALUES (";
 			// Append another placeholder for the value
 			query += "?";
 			for (int i = 2; i <= rs.getMetaData().getColumnCount(); i++) {
