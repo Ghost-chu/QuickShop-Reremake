@@ -39,11 +39,11 @@ public class WrapperPlayServerCommands extends AbstractPacket {
      * Mojang's brigadier library isn't versioned inside craftbukkit,
      * so it should be safe to use here.
      */
-    public RootCommandNode<?> getRoot() {
-        return (RootCommandNode<?>) handle.getModifier().read(0);
+    public RootCommandNode getRoot() {
+        return (RootCommandNode) handle.getModifier().read(0);
     }
 
-    public void setRoot(RootCommandNode<?> node) {
+    public void setRoot(RootCommandNode node) {
         handle.getModifier().write(0, node);
     }
 }

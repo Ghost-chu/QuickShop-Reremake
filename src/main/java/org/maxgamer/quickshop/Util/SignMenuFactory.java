@@ -21,7 +21,7 @@ import org.bukkit.plugin.Plugin;
 
 public final class SignMenuFactory {
 
-    private static final int POSITION_HEIGHT = 255;
+    public static final int POSITION_HEIGHT = 255;
     private static final int ACTION_INDEX = 9;
     private static final int SIGN_LINES = 4;
 
