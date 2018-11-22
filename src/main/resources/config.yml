@@ -216,3 +216,8 @@ float:
     # # Only calc-shops set true, this option can work.
     # # How many money per shop withdraw each unit time.
     # shops-price: 1
+    
+# Enable or disable plugin support.
+plugin:
+    ProtocolLib: true
+    Multiverse-Core: true
