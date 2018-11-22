@@ -127,6 +127,7 @@ public class QS implements CommandExecutor {
 				shop.setPrice(price);
 				shop.setSignText();
 				shop.update();
+				MsgUtil.sendControlPanelInfo(sender, shop);
 				sender.sendMessage(MsgUtil.getMessage("price-is-now", plugin.getEcon().format(shop.getPrice())));
 				// Chest shops can be double shops.
 				if (shop instanceof ContainerShop) {
@@ -164,6 +165,9 @@ public class QS implements CommandExecutor {
 			}
 			if (shop != null) {
 				shop.add(shop.getItem(), add);
+				shop.setSignText();
+				shop.update();
+				MsgUtil.sendControlPanelInfo(player, shop);
 				player.sendMessage(MsgUtil.getMessage("refill-success"));
 				return;
 			}
@@ -181,6 +185,7 @@ public class QS implements CommandExecutor {
 				OfflinePlayer p = this.plugin.getServer().getOfflinePlayer(owner);
 				shop.setOwner(p.getUniqueId());
 				shop.update();
+				MsgUtil.sendControlPanelInfo(player, shop);
 				player.sendMessage(MsgUtil.getMessage("command.new-owner",
 						this.plugin.getServer().getOfflinePlayer(shop.getOwner()).getName()));
 				return;
@@ -222,6 +227,7 @@ public class QS implements CommandExecutor {
 					shop.setUnlimited(!shop.isUnlimited());
 					shop.setSignText();
 					shop.update();
+					MsgUtil.sendControlPanelInfo(sender, shop);
 					sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
 							(shop.isUnlimited() ? "unlimited" : "limited")));
 					return;
@@ -444,6 +450,7 @@ public class QS implements CommandExecutor {
 				if (shop instanceof ContainerShop) {
 					ContainerShop cs = (ContainerShop) shop;
 					cs.getInventory().clear();
+					MsgUtil.sendControlPanelInfo(sender, shop);
 					sender.sendMessage(MsgUtil.getMessage("empty-success"));
 					return;
 				}
@@ -621,6 +628,7 @@ public class QS implements CommandExecutor {
 				shop.setShopType(ShopType.BUYING);
 				shop.setSignText();
 				shop.update();
+				MsgUtil.sendControlPanelInfo(sender, shop);
 				sender.sendMessage(MsgUtil.getMessage("command.now-buying", shop.getDataName()));
 				return;
 			}
@@ -658,6 +666,7 @@ public class QS implements CommandExecutor {
 					shop.setShopType(ShopType.SELLING);
 					shop.setSignText();
 					shop.update();
+					MsgUtil.sendControlPanelInfo(sender, shop);
 					sender.sendMessage(MsgUtil.getMessage("command.now-selling", shop.getDataName()));
 					return;
 				}
