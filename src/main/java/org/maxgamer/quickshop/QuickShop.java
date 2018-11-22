@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+import com.comphenix.packetwrapper.WrapperPlayClientUpdateSign;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLib;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -29,12 +30,11 @@ import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Permissions;
+import org.maxgamer.quickshop.Util.SignMenuFactory;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
-import org.maxgamer.quickshop.Wrapper.WrapperPlayClientUpdateSign;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -92,7 +92,7 @@ public class QuickShop extends JavaPlugin {
 
 	/** The plugin OpenInv (null if not present) */
 	public Plugin openInvPlugin;
-
+	public static SignMenuFactory signMenuFactory;
 	private HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
@@ -104,8 +104,6 @@ public class QuickShop extends JavaPlugin {
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
 	public ProtocolLib protocolLibPlugin;
-	/** The plugin metrics from Hidendra */
-	// public Metrics getMetrics(){ return metrics; }
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -174,6 +172,7 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Successfully loaded MultiverseCore support!");
 		}
 		protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
+		signMenuFactory = new SignMenuFactory(this);
 		if (protocolLibPlugin != null) {
 			getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
 
@@ -181,6 +180,9 @@ public class QuickShop extends JavaPlugin {
 		        public void onPacketReceiving(PacketEvent event) {
 		            WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
 		            //BlockPosition blockPos = wrapper.getLocation();
+		            Util.debugLog("line:"+wrapper.getLines()[0]);
+		            if(wrapper.getLines()[0]==null||wrapper.getLines()[0]=="")
+		            	return;
 		            ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
 		            new BukkitRunnable() {
 						@Override
