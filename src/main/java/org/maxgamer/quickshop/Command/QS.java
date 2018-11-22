@@ -277,10 +277,6 @@ public class QS implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "Only players may use that command.");
 			return;
 		}
-		if (!sender.hasPermission("quickshop.delete")) {
-			sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
-			return;
-		}
 		Player p = (Player) sender;
 		BlockIterator bIt = new BlockIterator(p, 10);
 		while (bIt.hasNext()) {
@@ -302,10 +298,6 @@ public class QS implements CommandExecutor {
 		// silentRemove world x y z
 		if (args.length < 4)
 			return;
-		if (!sender.hasPermission("quickshop.delete")) {
-			sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission-remove-shop"));
-			return;
-		}
 		Player p = (Player) sender;
 		Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]),
 				Integer.valueOf(args[3]), Integer.valueOf(args[4])));
@@ -313,11 +305,10 @@ public class QS implements CommandExecutor {
 			return;
 
 		if (shop != null) {
-			if (shop.getOwner().equals(p.getUniqueId())) {
+			if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
 				shop.delete();
-				sender.sendMessage(ChatColor.GREEN + "Success. Deleted shop.");
 			} else {
-				p.sendMessage(ChatColor.RED + "That's not your shop!");
+				sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 			}
 			return;
 		}
