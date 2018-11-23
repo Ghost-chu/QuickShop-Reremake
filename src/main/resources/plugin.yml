@@ -25,9 +25,6 @@ permissions:
     quickshop.create.double:
         description: Allows a player to create a double shop
         default: op
-    quickshop.create.enderchest:
-        description: Allows a player to create a enderchest shop
-        default: op
     quickshop.use:
         description: Allows a player to buy/sell using other players shops
         default: true

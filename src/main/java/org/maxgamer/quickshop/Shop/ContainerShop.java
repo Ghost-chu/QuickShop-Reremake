@@ -26,10 +26,6 @@ import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-import com.mojang.authlib.GameProfile;
-
-import net.minecraft.server.v1_13_R2.MinecraftServer;
-
 public class ContainerShop implements Shop {
 	private Location loc;
 	private double price;
