@@ -24,7 +24,6 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -74,7 +73,7 @@ public class BlockListener implements Listener {
 		}
 		Player p = e.getPlayer();
 		// If the shop was a chest
-		if (b.getState() instanceof InventoryHolder) {
+		if (Util.canBeShop(b)) {
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop == null)
 				return;

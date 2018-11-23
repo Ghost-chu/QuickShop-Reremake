@@ -558,9 +558,10 @@ public class ShopManager {
 	}
 
 	private void actionCreate(Player p, HashMap<UUID, Info> actions2, Info info, String message) {
-		// TODO Auto-generated method stub
+		Util.debugLog("actionCreate");
 		try {
 			// Checking the shop can be created
+			Util.debugLog("calling for protection check...");
 			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
 			Bukkit.getPluginManager().callEvent(be);
 			if (be.isCancelled()) {
@@ -579,6 +580,12 @@ public class ShopManager {
 			if (Util.canBeShop(info.getLocation().getBlock()) == false) {
 				p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 				return;
+			}
+			if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType()==Material.ENDER_CHEST) {
+				if(!plugin.getConfig().getBoolean("shop.enable-enderchest"))
+					return;
+				if(!p.hasPermission("quickshop.create.enderchest"))
+					return;
 			}
 			// Price per item
 			double price;
