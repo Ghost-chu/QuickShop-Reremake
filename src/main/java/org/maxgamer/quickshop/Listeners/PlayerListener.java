@@ -110,6 +110,7 @@ public class PlayerListener implements Listener {
 					// As of the new checking system, most plugins will tell the
 					// player why they can't create a shop there.
 					// So telling them a message would cause spam etc.
+					Util.debugLog("Can't be shop");
 					return;
 				}
 				if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
@@ -120,6 +121,17 @@ public class PlayerListener implements Listener {
 						&& !p.hasPermission("quickshop.bypass." + item.getType().name())) {
 					p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
 					return;
+				}
+				if (b.getType()==Material.ENDER_CHEST) {
+					if(!plugin.getConfig().getBoolean("shop.enable-enderchest")) {
+						Util.debugLog("Not enabled");
+						return;
+					}
+					if(!p.hasPermission("quickshop.create.enderchest")) {
+						Util.debugLog("No permission");
+						Util.debugLog(""+p.hasPermission("quickshop.create.enderchest"));
+						return;
+					}
 				}
 				// Finds out where the sign should be placed for the shop
 				Block last = null;
