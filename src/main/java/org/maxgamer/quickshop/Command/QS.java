@@ -788,7 +788,7 @@ public class QS implements CommandExecutor {
 				Shop shop = shIt.next();
 
 				try {
-					if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == "0"
+					if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0
 							&& shop instanceof ContainerShop) {
 						ContainerShop cs = (ContainerShop) shop;
 						if (cs.isDoubleShop())
@@ -918,7 +918,7 @@ public class QS implements CommandExecutor {
 								}
 								if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleShop()) {
 									doubles++;
-								} else if (shop.isSelling() && shop.getRemainingStock() == "0") {
+								} else if (shop.isSelling() && shop.getRemainingStock() == 0) {
 									nostock++;
 								}
 							}
