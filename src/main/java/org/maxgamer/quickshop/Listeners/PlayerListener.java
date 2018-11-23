@@ -46,8 +46,7 @@ public class PlayerListener implements Listener {
 	 * Handles players left clicking a chest. Left click a NORMAL chest with item :
 	 * Send creation menu Left click a SHOP chest : Send purchase menu
 	 */
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	// Ignore already cancelled event... Player shouldn't create shop in there...
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
@@ -105,7 +104,11 @@ public class PlayerListener implements Listener {
 			// Handles creating shops
 			else if (!e.isCancelled() && shop == null && item != null && item.getType() != Material.AIR
 					&& p.hasPermission("quickshop.create.sell") && Util.canBeShop(b)
-					&& p.getGameMode() != GameMode.CREATIVE && (plugin.sneakCreate == false || p.isSneaking())) {
+					&& p.getGameMode() != GameMode.CREATIVE) {
+				if(e.isCancelled())
+					return;
+				if(plugin.getConfig().getBoolean("shop.sneak-to-control")&&!p.isSneaking())
+					return;
 				if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
 					// As of the new checking system, most plugins will tell the
 					// player why they can't create a shop there.
@@ -159,7 +162,7 @@ public class PlayerListener implements Listener {
 			} else {
 				block = e.getClickedBlock();
 			}
-			if (plugin.getShopManager().getShop(block.getLocation()) != null) {
+			if (plugin.getShopManager().getShop(block.getLocation()) != null && plugin.getShopManager().getShop(block.getLocation()).getOwner().equals(e.getPlayer().getUniqueId())) {
 				MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
 						plugin.getShopManager().getShop(block.getLocation()));
 				plugin.getShopManager().getShop(block.getLocation()).setSignText();
