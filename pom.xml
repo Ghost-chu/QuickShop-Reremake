@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maxgamer</groupId>
-	<artifactId>QuickShop</artifactId>
-	<version>Reremake 1.3.1.2</version>
+	<artifactId>QuickShop-Reremake</artifactId>
+	<version>1.3.0.6-SNAPSHOT</version>
 	<!-- Fuck version -->
 	<licenses>
 		<license>
@@ -13,6 +13,11 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<properties>
+		<package>org.maxgamer.quickshop</package>
+		<developer>Ghost_chu</developer>
+	</properties>
 
 	<issueManagement>
 		<url>https://github.com/${developer}/${name}/issues</url>
@@ -30,7 +35,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -39,19 +44,28 @@
 		</plugins>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 	</build>
+
 	<repositories>
+		<repository>
+			<id>bukkit-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>mv-core</id>
+			<url>http://repo.onarandombox.com/content/repositories/multiverse/</url>
+		</repository>
 		<repository>
 			<id>fanciful-repo</id>
 			<url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
 		</repository>
 		<repository>
-			<id>bukkit-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+			<id>coreprotect-repo</id>
+			<url>http://maven.playpro.com/</url>
 		</repository>
 		<repository>
 			<id>sk89q-repo</id>
@@ -69,64 +83,69 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
+		<repository>
+			<id>minecraft-libraries</id>
+			<name>Minecraft Libraries</name>
+			<url>https://libraries.minecraft.net</url>
+		</repository>
 	</repositories>
+
+
 	<dependencies>
 		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldguard</artifactId>
-			<scope>system</scope>
-			<version>7.0.0</version>
-			<systemPath>${basedir}/lib/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar</systemPath>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.13.2-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard-legacy</artifactId>
+			<version>7.0.0-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.bstats</groupId>
-			<artifactId>bstats-bukkit</artifactId>
+			<artifactId>bstats-bukkit-lite</artifactId>
 			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>1.5</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Vault-1.6.10.jar</systemPath>
+			<version>1.6</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_13_R2</groupId>
-			<artifactId>spigot</artifactId>
-			<version>v1_13_R2</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/spigot-1.13.2-R0.1-SNAPSHOT-b1967.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit.craftbukkit.v1_12_R2</groupId>
-			<artifactId>spigot</artifactId>
-			<version>v1_12_R2</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/spigot-1.12.2-R0.1-SNAPSHOT-b1648.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.onarandombox.MultiverseCore</groupId>
+			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
-			<version>2.6.0-b738</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Multiverse-Core-2.6.0.jar</systemPath>
+			<version>2.5.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.coreprotect</groupId>
-			<artifactId>CoreProtect</artifactId>
-			<version>2.15.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/CoreProtect-2.15.1.jar</systemPath>
+			<artifactId>coreprotect</artifactId>
+			<version>2.14.2</version>
+			<scope>provided</scope>
 		</dependency>
-			<dependency>
-				<groupId>com.comphenix.protocol</groupId>
-				<artifactId>ProtocolLib</artifactId>
-				<version>4.4.0</version>
-			</dependency>
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib</artifactId>
+			<version>4.4.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.24.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mojang</groupId>
+			<artifactId>brigadier</artifactId>
+			<version>1.0.15</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
-	<properties>
-		<package>org.maxgamer.quickshop</package>
-		<developer>Ghost_chu</developer>
-	</properties>
 </project>
