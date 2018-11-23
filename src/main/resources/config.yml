@@ -124,8 +124,6 @@ shop:
     #Ignore trade messages if shop is unlimited
     ignore-unlimited-shop-messages: false
     
-    #Enable enderchest shop feature
-    enable-enderchest: true
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
