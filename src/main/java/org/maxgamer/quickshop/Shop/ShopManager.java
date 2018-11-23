@@ -359,13 +359,9 @@ public class ShopManager {
 			return;
 		}
 		if (shop.isSelling()) {
-			String stocks = shop.getRemainingStock();
-			int stock = 0;
-			if (stocks == MsgUtil.getMessage("shop.unlimited")) {
-				stock = 10000;
-			} else {
-				stock = Integer.valueOf(stocks);
-			}
+			int stock = shop.getRemainingStock();
+			if(stock==-1)
+				stock=10000;
 			if (stock < amount) {
 				p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", String.valueOf(shop.getRemainingStock()),
 						MsgUtil.getDisplayName(shop.getItem())));
@@ -458,13 +454,9 @@ public class ShopManager {
 			plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from "
 					+ shop.toString());
 		} else if (shop.isBuying()) {
-			String spaces = shop.getRemainingSpace();
-			int space = 0;
-			if (spaces == MsgUtil.getMessage("shop.unlimited")) {
-				space = 10000;
-			} else {
-				space = Integer.valueOf(spaces);
-			}
+			int space = shop.getRemainingSpace();;
+			if(space==-1)
+				space=10000;
 			if (space < amount) {
 				p.sendMessage(
 						MsgUtil.getMessage("shop-has-no-space", "" + space, MsgUtil.getDisplayName(shop.getItem())));
