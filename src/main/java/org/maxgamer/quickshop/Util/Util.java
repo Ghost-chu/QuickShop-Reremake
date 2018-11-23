@@ -142,8 +142,11 @@ public class Util {
 	 */
 	public static boolean canBeShop(Block b) {
 		BlockState bs = b.getState();
-		if (bs instanceof InventoryHolder == false)
+		if ((bs instanceof InventoryHolder == false)&&b.getType()!=Material.ENDER_CHEST)
 			return false;
+		if(!shoppables.contains(bs.getType()))
+			if(b.getType()==Material.ENDER_CHEST)
+				return true;
 		return shoppables.contains(bs.getType());
 	}
 
