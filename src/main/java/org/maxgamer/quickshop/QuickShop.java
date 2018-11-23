@@ -101,7 +101,7 @@ public class QuickShop extends JavaPlugin {
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
-	public ProtocolLib protocolLibPlugin;
+	public ProtocolLib protocolLibPlugin = null;
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -164,15 +164,16 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
 		}
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-			mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-			if (mPlugin != null) {
+			
+			if ( Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 				getLogger().info("Successfully loaded MultiverseCore support!");
 			}
 		}
-		if (getConfig().getBoolean("plugin.ProtocolLib")) {
-			protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
-			signMenuFactory = new SignMenuFactory(this);
-			if (protocolLibPlugin != null) {
+		if (getConfig().getBoolean("plugin.ProtocolLib")) {			
+			if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+				protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
+				signMenuFactory = new SignMenuFactory(this);
 				getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
 					@Override
 					public void onPacketReceiving(PacketEvent event) {
