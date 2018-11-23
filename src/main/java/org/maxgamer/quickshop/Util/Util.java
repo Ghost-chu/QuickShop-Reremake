@@ -144,9 +144,9 @@ public class Util {
 		BlockState bs = b.getState();
 		if ((bs instanceof InventoryHolder == false)&&b.getType()!=Material.ENDER_CHEST)
 			return false;
-		if(!shoppables.contains(bs.getType()))
-			if(b.getType()==Material.ENDER_CHEST)
-				return true;
+//		if(!shoppables.contains(bs.getType()))
+//			if(b.getType()==Material.ENDER_CHEST)
+//				return true;
 		return shoppables.contains(bs.getType());
 	}
 

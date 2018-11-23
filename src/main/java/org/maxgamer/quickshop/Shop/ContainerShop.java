@@ -26,6 +26,10 @@ import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import com.mojang.authlib.GameProfile;
+
+import net.minecraft.server.v1_13_R2.MinecraftServer;
+
 public class ContainerShop implements Shop {
 	private Location loc;
 	private double price;
@@ -89,10 +93,10 @@ public class ContainerShop implements Shop {
 	 * 
 	 * @return The number of items available for purchase.
 	 */
-	public String getRemainingStock() {
+	public int getRemainingStock() {
 		if (this.unlimited)
-			return MsgUtil.getMessage("signs.unlimited");
-		return String.valueOf(Util.countItems(this.getInventory(), this.getItem()));
+			return -1;
+		return Util.countItems(this.getInventory(), this.getItem());
 	}
 
 	/**
@@ -101,10 +105,10 @@ public class ContainerShop implements Shop {
 	 * @param stackSize
 	 * @return
 	 */
-	public String getRemainingSpace() {
+	public int getRemainingSpace() {
 		if (this.unlimited)
-			return MsgUtil.getMessage("signs.unlimited");
-		return String.valueOf(Util.countSpace(this.getInventory(), this.getItem()));
+			return -1;
+		return Util.countSpace(this.getInventory(), this.getItem());
 	}
 
 	/**
@@ -221,13 +225,16 @@ public class ContainerShop implements Shop {
 	 * @return The chest this shop is based on.
 	 */
 	public Inventory getInventory() throws IllegalStateException {
-		try {
-		if(loc.getBlock().getType()==Material.ENDER_CHEST) {
-			return Bukkit.getPlayer(owner).getEnderChest();
-		}
-		}catch(Exception e){
-			throw new IllegalStateException("Player enderchest inventory is null: "+this);
-		}
+//		try {
+//		if(loc.getBlock().getType()==Material.ENDER_CHEST) {
+//			 GameProfile profile = new GameProfile(this.owner, Bukkit.getPlayer(this.owner).getName());
+//			 profile.
+//			return Bukkit.getOfflinePlayer(owner).
+//		}
+//		}catch(Exception e){
+//			Util.debugLog(e.getMessage());
+//			return null;
+//		}
 		InventoryHolder container;
 		try {
 			container = (InventoryHolder) this.loc.getBlock().getState();
@@ -474,9 +481,20 @@ public class ContainerShop implements Shop {
 		String[] lines = new String[4];
 		lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
 		if (this.isSelling()) {
-			lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+			if(this.getRemainingStock()==-1) {
+				lines[1] = MsgUtil.getMessage("signs.selling", "" + MsgUtil.getMessage("signs.unlimited"));
+			}else {
+				lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+			}
+			
 		} else if (this.isBuying()) {
-			lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
+			if(this.getRemainingSpace()==-1) {
+				lines[1] = MsgUtil.getMessage("signs.buying", "" + MsgUtil.getMessage("signs.unlimited"));
+				
+			}else {
+				lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
+			}
+			
 		}
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
