@@ -221,6 +221,13 @@ public class ContainerShop implements Shop {
 	 * @return The chest this shop is based on.
 	 */
 	public Inventory getInventory() throws IllegalStateException {
+		try {
+		if(loc.getBlock().getType()==Material.ENDER_CHEST) {
+			return Bukkit.getPlayer(owner).getEnderChest();
+		}
+		}catch(Exception e){
+			throw new IllegalStateException("Player enderchest inventory is null: "+this);
+		}
 		InventoryHolder container;
 		try {
 			container = (InventoryHolder) this.loc.getBlock().getState();
