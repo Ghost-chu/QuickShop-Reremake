@@ -821,6 +821,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 9) {
+			getConfig().set("shop.enable-enderchest",true);
+			getConfig().set("config-version", 10);
+			selectedVersion = 10;
+			saveConfig();
+			reloadConfig();
+		}
 		
 	}
 
