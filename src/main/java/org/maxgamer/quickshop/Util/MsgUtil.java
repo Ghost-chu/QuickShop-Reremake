@@ -42,46 +42,7 @@ public class MsgUtil {
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
 	private static boolean Inited;
 	private static YamlConfiguration messagei18n;
-	/**
-	 * Loads all the messages from messages.yml
-	 */
-//	public static void loadCfgMessages(Boolean... reload) {
-//		// Load messages.yml
-//		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
-//		if (!messageFile.exists()) {
-//			plugin.getLogger().info("Creating messages.yml");
-//			plugin.saveResource("messages.yml", true);
-//		}
-//		// Store it
-//		messages = YamlConfiguration.loadConfiguration(messageFile);
-//		messages.options().copyDefaults(true);
-//		// Load default messages
-//		YamlConfiguration defMessages = null;
-//		try {
-//			defMessages = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
-//		}catch (Exception e) {
-//		}
-//		
-//		messagei18n.setDefaults(defMessages);
-//		// Parse colour codes
-//		Util.parseColours(messages);
-//	
-//		
-//		if(messages.getInt("language-version")==0) {
-//			messagei18n.set("language-version", 1);
-//		}
-//		if(reload.length==0)
-//			updateMessages(messages.getInt("language-version"));
-//		
-//		//Print language copyright infomation
-//		if(!Inited) {
-//			plugin.getLogger().info(messages.getString("language-author"));
-//			plugin.getLogger().info(messages.getString("language-contributors"));
-//			plugin.getLogger().info(messages.getString("language-country"));
-//			plugin.getLogger().info(messages.getString("language-version"));
-//			Inited=true;
-//		}
-//	}
+
 	public static void loadCfgMessages(String...reload ) {
 		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
