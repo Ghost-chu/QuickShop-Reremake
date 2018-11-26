@@ -828,6 +828,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 10) {
+			getConfig().set("shop.pay-player-from-unlimited-shop-owner",null);
+			getConfig().set("config-version", 11);
+			selectedVersion = 11;
+			saveConfig();
+			reloadConfig();
+		}
 		
 	}
 
