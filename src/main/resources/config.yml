@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 10
+config-version: 11
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -97,9 +97,6 @@ shop:
     
     #Should pay money from unlimited shops owner to player?
     pay-unlimited-shop-owners: false
-    
-    #Should unlimited shops owner pay player money?
-    pay-player-from-unlimited-shop-owner: false
     
     #Ignore check if player is shop's owner
     bypass-owner-check: false

@@ -482,7 +482,7 @@ public class ShopManager {
 			Bukkit.getPluginManager().callEvent(e);
 			if (e.isCancelled())
 				return; // Cancelled
-			// Money handling
+			// Money handlingpay-unlimited-shop-owners
 			if (!p.getUniqueId().equals(shop.getOwner()) || plugin.getConfig().getBoolean("shop.bypass-owner-check")) {
 				// Don't tax them if they're purchasing from
 				// themselves.
@@ -492,7 +492,7 @@ public class ShopManager {
 
 				double tax = plugin.getConfig().getDouble("tax");
 				double total = amount * shop.getPrice();
-				if (shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-player-from-unlimited-shop-owners")) {
+				if (shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
 					// Tries to check their balance nicely to see if
 					// they can afford it.
 					if (plugin.getEcon().getBalance(shop.getOwner()) < amount * shop.getPrice()) {
