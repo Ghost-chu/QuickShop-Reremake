@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.SignMenuFactory;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
@@ -158,11 +157,7 @@ public class QuickShop extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		if (Permissions.init()) {
-			getLogger().info("Found permission provider.");
-		} else {
-			getLogger().info("Couldn't find a Vault permission provider. Some feature may be limited.");
-		}
+		
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
 			
 			if ( Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {

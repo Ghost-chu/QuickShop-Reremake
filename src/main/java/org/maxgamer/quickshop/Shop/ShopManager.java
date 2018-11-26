@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Permissions;
 import org.maxgamer.quickshop.Util.Util;
 
 public class ShopManager {
@@ -399,8 +398,7 @@ public class ShopManager {
 				// themselves.
 				// Do charge an amount of tax though.
 				double tax = plugin.getConfig().getDouble("tax");
-				if (shop.getOwner().equals(p.getUniqueId()) || Permissions
-						.hasPermission(Bukkit.getOfflinePlayer(shop.getOwner()), "quickshop.taxexemption")) {
+				if (shop.getOwner().equals(p.getUniqueId())) {
 					tax = 0;
 				}
 

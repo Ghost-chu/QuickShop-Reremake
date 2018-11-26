@@ -55,9 +55,6 @@ permissions:
     quickshop.export:
         description: Allows exporting database to mysql or sqlite
         default: op
-    quickshop.taxexemption:
-        description: Tax exemption
-        default: false
     quickshop.alerts:
         description: Alert the player when someone tries to cheat with the display item
         default: op
