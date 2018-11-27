@@ -26,6 +26,8 @@ import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import com.lishid.openinv.OpenInv;
+
 public class ContainerShop implements Shop {
 	private Location loc;
 	private double price;
@@ -221,16 +223,16 @@ public class ContainerShop implements Shop {
 	 * @return The chest this shop is based on.
 	 */
 	public Inventory getInventory() throws IllegalStateException {
-//		try {
-//		if(loc.getBlock().getType()==Material.ENDER_CHEST) {
-//			 GameProfile profile = new GameProfile(this.owner, Bukkit.getPlayer(this.owner).getName());
-//			 profile.
-//			return Bukkit.getOfflinePlayer(owner).
-//		}
-//		}catch(Exception e){
-//			Util.debugLog(e.getMessage());
-//			return null;
-//		}
+		try {
+		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.openInvPlugin!=null) {
+			OpenInv openInv = ((OpenInv)plugin.openInvPlugin);
+			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.owner)), Bukkit.getOfflinePlayer(this.owner).isOnline()).getBukkitInventory();
+			
+		}
+		}catch(Exception e){
+			Util.debugLog(e.getMessage());
+			return null;
+		}
 		InventoryHolder container;
 		try {
 			container = (InventoryHolder) this.loc.getBlock().getState();
