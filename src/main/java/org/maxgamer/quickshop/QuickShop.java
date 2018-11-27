@@ -160,10 +160,18 @@ public class QuickShop extends JavaPlugin {
 		
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
 			
-			if ( Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
 				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 				getLogger().info("Successfully loaded MultiverseCore support!");
 			}
+		}
+		// added for compatibility reasons with OpenInv - see
+				// https://github.com/KaiKikuchi/QuickShop/issues/139
+		if(getConfig().getBoolean("plugin.OpenInv")) {
+			
+			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
+			if(this.openInvPlugin!=null)
+				getLogger().info("Successfully loaded OpenInv support!");
 		}
 		if (getConfig().getBoolean("plugin.ProtocolLib")) {			
 			if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
@@ -454,18 +462,14 @@ public class QuickShop extends JavaPlugin {
 							inputChannel = new FileInputStream(sqlfile).getChannel();
 							outputChannel = new FileOutputStream(bksqlfile).getChannel();
 							outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+							inputChannel.close();
+							outputChannel.close();
 						} catch (Exception e3) {
 							e3.printStackTrace();
 							getLogger().severe("Failed to backup! (Copy)");
-						}
-						try {
-							inputChannel.close();
-							outputChannel.close();
-						} catch (IOException e1) {
 							inputChannel = null;
 							outputChannel = null;
 						}
-
 					}
 					getLogger().severe("===========Error Reporting End===========");
 
@@ -572,9 +576,7 @@ public class QuickShop extends JavaPlugin {
 			}.runTaskTimer(this, 1L, displayItemCheckTicks);
 		}
 
-		// added for compatibility reasons with OpenInv - see
-		// https://github.com/KaiKikuchi/QuickShop/issues/139
-		this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
+		
 
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();

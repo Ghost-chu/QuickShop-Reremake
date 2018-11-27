@@ -48,10 +48,13 @@ public class PlayerListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
+		Util.debugLog("Clicked: "+e.getClickedBlock().toString());
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
-			if (!Util.canBeShop(b) && b.getType() != Material.WALL_SIGN)
+			if (!Util.canBeShop(b) && b.getType() != Material.WALL_SIGN) {
+				Util.debugLog("No shop block");
 				return;
+			}
 			Player p = e.getPlayer();
 			if (plugin.sneak && !p.isSneaking()) {
 				// Sneak only
@@ -126,10 +129,6 @@ public class PlayerListener implements Listener {
 					return;
 				}
 				if (b.getType()==Material.ENDER_CHEST) {
-					if(!plugin.getConfig().getBoolean("shop.enable-enderchest")) {
-						Util.debugLog("Not enabled");
-						return;
-					}
 					if(!p.hasPermission("quickshop.create.enderchest")) {
 						Util.debugLog("No permission");
 						Util.debugLog(""+p.hasPermission("quickshop.create.enderchest"));
