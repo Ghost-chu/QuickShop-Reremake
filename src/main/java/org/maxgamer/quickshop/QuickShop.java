@@ -835,6 +835,9 @@ public class QuickShop extends JavaPlugin {
 		if (selectedVersion == 11) {
 			getConfig().set("shop.enable-enderchest",null); //Removed
 			getConfig().set("plugin.OpenInv",true);
+			List<String> shoppable = getConfig().getStringList("shop-blocks");
+			shoppable.add("ENDER_CHEST");
+			getConfig().set("shop-blocks",shoppable);
 			getConfig().set("config-version", 12);
 			selectedVersion = 12;
 			saveConfig();
