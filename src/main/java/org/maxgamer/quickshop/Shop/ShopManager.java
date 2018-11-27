@@ -572,8 +572,6 @@ public class ShopManager {
 				return;
 			}
 			if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType()==Material.ENDER_CHEST) {
-				if(!plugin.getConfig().getBoolean("shop.enable-enderchest"))
-					return;
 				if(!p.hasPermission("quickshop.create.enderchest"))
 					return;
 			}
