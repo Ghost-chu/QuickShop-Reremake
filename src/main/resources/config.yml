@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 11
+config-version: 12
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -204,3 +204,4 @@ float:
 plugin:
     ProtocolLib: true
     Multiverse-Core: true
+    OpenInv: true
