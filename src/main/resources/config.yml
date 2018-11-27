@@ -72,7 +72,7 @@ limits:
 shop-blocks:
     - CHEST
     - TRAPPED_CHEST
-
+    - ENDER_CHEST
 shop:
     #Cost to make a stall
     cost: 10
