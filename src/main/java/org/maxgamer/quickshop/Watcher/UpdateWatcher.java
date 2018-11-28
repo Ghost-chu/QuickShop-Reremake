@@ -26,7 +26,7 @@ public class UpdateWatcher implements Listener {
 				QuickShop.instance.getLogger().info("Update plugin in there: https://www.spigotmc.org/resources/62575/");
 				hasNewUpdate = true;
 			}
-		}.runTaskTimerAsynchronously(QuickShop.instance, 1, 20 * 60 * 10);
+		}.runTaskTimerAsynchronously(QuickShop.instance, 1, 20 * 60 * 60);
 	}
 
 	public static void uninit() {
