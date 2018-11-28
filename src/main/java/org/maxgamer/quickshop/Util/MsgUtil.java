@@ -648,13 +648,13 @@ public class MsgUtil {
 		}
 		if (shop.isSelling()) {
 			if(shop.getRemainingStock()==-1) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.stock", "" +  MsgUtil.getMessage("signs.unimited")));
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.stock", "" +  MsgUtil.getMessage("signs.unlimited")));
 			}else {
 				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.stock", "" + shop.getRemainingStock()));
 			}
 		} else {
 			if(shop.getRemainingSpace()==-1) {
-				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + MsgUtil.getMessage("signs.unimited")));
+				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + MsgUtil.getMessage("signs.unlimited")));
 			}else {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.space", "" + shop.getRemainingSpace()));
 		}}
