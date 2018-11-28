@@ -48,7 +48,6 @@ public class PlayerListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
-		Util.debugLog("Clicked: "+e.getClickedBlock().toString());
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
 			if (!Util.canBeShop(b) && b.getType() != Material.WALL_SIGN) {
