@@ -227,7 +227,6 @@ public class ContainerShop implements Shop {
 		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.openInvPlugin!=null) {
 			OpenInv openInv = ((OpenInv)plugin.openInvPlugin);
 			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.owner)), Bukkit.getOfflinePlayer(this.owner).isOnline()).getBukkitInventory();
-			
 		}
 		}catch(Exception e){
 			Util.debugLog(e.getMessage());
