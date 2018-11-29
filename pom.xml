@@ -13,12 +13,10 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<properties>
 		<package>org.maxgamer.quickshop</package>
 		<developer>Ghost_chu</developer>
 	</properties>
-
 	<issueManagement>
 		<url>https://github.com/${developer}/${name}/issues</url>
 		<system>GitHub Issues</system>
@@ -75,6 +73,10 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
+		<repository>
+			<id>MG-Dev Jenkins CI Maven Repository</id>
+			<url>https://ci.mg-dev.eu/plugin/repository/everything</url>
+		</repository>
 	</repositories>
 
 
@@ -89,6 +91,12 @@
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.bergerkiller.bukkit</groupId>
+			<artifactId>BKCommonLib</artifactId>
+			<version>1.13.2-v1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
