@@ -17,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -571,8 +572,8 @@ public class ShopManager {
 				p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 				return;
 			}
-			if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType()==Material.ENDER_CHEST) {
-				if(!p.hasPermission("quickshop.create.enderchest"))
+			if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType() == Material.ENDER_CHEST) {
+				if (!p.hasPermission("quickshop.create.enderchest"))
 					return;
 			}
 			// Price per item
@@ -593,10 +594,8 @@ public class ShopManager {
 					// p.sendMessage(ChatColor.RED+"Restricted prices for
 					// "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max
 					// "+priceRestriction.getValue());
-					p.sendMessage(
-							MsgUtil.getMessage("restricted-prices", MsgUtil.getDisplayName(info.getItem()),
-									String.valueOf(priceRestriction.getKey()),
-									String.valueOf(priceRestriction.getValue())));
+					p.sendMessage(MsgUtil.getMessage("restricted-prices", MsgUtil.getDisplayName(info.getItem()),
+							String.valueOf(priceRestriction.getKey()), String.valueOf(priceRestriction.getValue())));
 				}
 			}
 
@@ -641,8 +640,7 @@ public class ShopManager {
 			createShop(shop);
 			Location loc = shop.getLocation();
 			plugin.log(p.getName() + " created a " + MsgUtil.getDisplayName(shop.getItem()) + " shop at ("
-					+ loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ()
-					+ ")");
+					+ loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
 			if (!plugin.getConfig().getBoolean("shop.lock")) {
 				// Warn them if they haven't been warned since
 				// reboot
@@ -658,11 +656,19 @@ public class ShopManager {
 			 * NOTICE: When player use /qs create command to create shop, sign will placed
 			 * to wrong facing.
 			 */
-			if (info.getSignBlock() != null && info.getSignBlock().getType() == Material.AIR
-					&& plugin.getConfig().getBoolean("shop.auto-sign")) {
+			if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+				if(info.getSignBlock().getType() != Material.AIR&&info.getSignBlock().getType() != Material.WATER)
+					return;
+				boolean isWaterLogged = false;
+				if(info.getSignBlock().getType()==Material.WATER)
+					isWaterLogged = true;
 				final BlockState bs = info.getSignBlock().getState();
 				final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
 				bs.setType(Material.WALL_SIGN);
+				if(isWaterLogged) {
+					Waterlogged waterable = (Waterlogged)bs.getBlockData();
+					waterable.setWaterlogged(true); //Looks like sign directly put in water
+				}
 				final Sign sign = (Sign) bs.getData();
 				sign.setFacingDirection(bf);
 				bs.setData(sign);

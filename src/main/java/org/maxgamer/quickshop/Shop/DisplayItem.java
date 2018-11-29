@@ -183,6 +183,7 @@ public class DisplayItem {
 				return;
 			}
 			this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+			DisplayItemStorage.addDisplayItemShop(item.getUniqueId(), shop);
 			this.item.setVelocity(new Vector(0, 0.1, 0));
 			try {
 				this.safeGuard(this.item);
@@ -210,7 +211,9 @@ public class DisplayItem {
 			item.setCustomName("QuickShop");
 			iMeta.setDisplayName("QuickShop");
 		}
-		
+		item.setPortalCooldown(Integer.MAX_VALUE);
+		item.setSilent(true);
+		item.setInvulnerable(true);
 		java.util.List<String> lore = new ArrayList<String>();
 	    lore.add("QuickShop DisplayItem");
 		iMeta.setLore(lore);
@@ -260,7 +263,9 @@ public class DisplayItem {
 				}
 			}
 		}
+		DisplayItemStorage.id2ShopMap.clear();
 		return removed;
+		
 	}
 
 	/**
@@ -270,6 +275,7 @@ public class DisplayItem {
 		if (this.item == null)
 			return;
 		this.item.remove();
+		DisplayItemStorage.removeDisplayItemByUUID(this.item.getUniqueId());
 		this.item = null;
 	}
 

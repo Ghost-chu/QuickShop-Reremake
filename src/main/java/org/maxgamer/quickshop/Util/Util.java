@@ -32,6 +32,8 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -50,6 +52,7 @@ public class Util {
 	private static final EnumMap<Material, Entry<Double,Double>> restrictedPrices = new EnumMap<Material, Entry<Double,Double>>(Material.class);
 	private static QuickShop plugin;
 	private static Method storageContents;
+	static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
 
 	public static void initialize() {
 		blacklist.clear();
@@ -753,10 +756,50 @@ public class Util {
 				}
 
 	}
+	private static Object serverInstance;
+    private static Field tpsField;
+	public static Double getTPS() {
+	    try {
+            serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
+            tpsField = serverInstance.getClass().getField("recentTps");
+        } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+	    try {
+            double[] tps = ((double[]) tpsField.get(serverInstance));
+            return tps[0];
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+	    
+	}
+    private static Class<?> getNMSClass(String className) {
+    	String name = Bukkit.getServer().getClass().getPackage().getName();
+	    String version = name.substring(name.lastIndexOf('.') + 1);
+        try {
+            return Class.forName("net.minecraft.server." + version + "." + className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	public static void debugLog(String logs)	{
 		if(plugin.getConfig().getBoolean("dev-mode")) {
 			plugin.getLogger().info("[DEBUG]"+logs);
 		}
 		
+	}
+	public static UUID setTimer() {
+		UUID random = UUID.randomUUID();
+		timerMap.put(random, System.currentTimeMillis());
+		return random;
+	}
+	public static long getTimer(UUID uuid) {
+		return timerMap.get(uuid);
+	}
+	public static long endTimer(UUID uuid) {
+		long time =System.currentTimeMillis()-timerMap.get(uuid);
+		timerMap.remove(uuid);
+		return time;
 	}
 }
