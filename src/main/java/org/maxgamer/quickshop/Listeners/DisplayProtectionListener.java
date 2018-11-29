@@ -28,7 +28,7 @@ public class DisplayProtectionListener implements Listener {
 	public DisplayProtectionListener(QuickShop plugin) {
 		this.plugin = plugin;
 	}
-
+	
 	@EventHandler(ignoreCancelled = true)
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		for (int i = 0; i<event.getInventory().getContents().length; i++) {
