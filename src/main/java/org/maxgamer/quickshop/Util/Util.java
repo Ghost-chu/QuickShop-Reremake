@@ -145,23 +145,19 @@ public class Util {
 	 */
 	public static boolean canBeShop(Block b) {
 		BlockState bs = b.getState();
-		Util.debugLog("CanBeShop: "+b.toString());
-		if ((bs instanceof InventoryHolder == false)&&b.getState().getType()!=Material.ENDER_CHEST) {
-			Util.debugLog("false");
+		if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
 			return false;
-			}
-		if(!shoppables.contains(bs.getType())) {
-			if(b.getState().getType()==Material.ENDER_CHEST)
-				if(plugin.openInvPlugin==null){
-					Util.debugLog("OpenInv not loaded");
-					return false;
-				}else {
-					Util.debugLog("true");
-					return true;
-				}
 		}
-		Util.debugLog("read from config");
+		if (b.getState().getType() == Material.ENDER_CHEST) {
+			if (plugin.openInvPlugin == null) {
+				Util.debugLog("OpenInv not loaded");
+				return false;
+			} else {
+				return shoppables.contains(bs.getType());
+			}
+		}
 		return shoppables.contains(bs.getType());
+
 	}
 
 	/**
