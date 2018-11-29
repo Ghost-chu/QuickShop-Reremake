@@ -101,6 +101,7 @@ public class QuickShop extends JavaPlugin {
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
 	public ProtocolLib protocolLibPlugin = null;
+	private Plugin BKCommonLibPlugin;
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -168,10 +169,17 @@ public class QuickShop extends JavaPlugin {
 		// added for compatibility reasons with OpenInv - see
 				// https://github.com/KaiKikuchi/QuickShop/issues/139
 		if(getConfig().getBoolean("plugin.OpenInv")) {
-			
 			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
 			if(this.openInvPlugin!=null)
 				getLogger().info("Successfully loaded OpenInv support!");
+		}
+		if(getConfig().getBoolean("plugin.BKCommonLib")) {
+			
+			this.BKCommonLibPlugin = Bukkit.getPluginManager().getPlugin("BKCommonLib");
+			if(this.BKCommonLibPlugin!=null && Bukkit.getPluginManager().getPlugin("BKCommonLib").isEnabled()) {
+			 new BKCommonLibListener();
+				getLogger().info("Successfully loaded BKCommonLib support!");
+			}
 		}
 		if (getConfig().getBoolean("plugin.ProtocolLib")) {			
 			if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {

@@ -202,6 +202,11 @@ float:
     
 # Enable or disable plugin support.
 plugin:
+    #If you have ProtocolLib, QSRR will enable Sign Input GUI not normal chat
     ProtocolLib: true
+    #If you have Multiverse-Core, QSRR will try load world when shop's world not exist and throw out exception auto repair the shop.
     Multiverse-Core: true
+    #If you have OpenInv, QSRR will enable EnderChest feature.
     OpenInv: true
+    #If you have BKCommonLib, QSRR will enable advanced display-item protection.
+    BKCommonLib: true
