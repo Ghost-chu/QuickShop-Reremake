@@ -371,6 +371,8 @@ public class ShopManager {
 	@SuppressWarnings("deprecation")
 	private void actionBuy(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop, int amount) {
 		int space = shop.getRemainingSpace();
+		if(space == -1)
+			space=10000;
 		if (space < amount) {
 			p.sendMessage(MsgUtil.getMessage("shop-has-no-space", "" + space, shop.getDataName()));
 			return;
@@ -434,15 +436,7 @@ public class ShopManager {
 		shop.setSignText(); // Update the signs count
 	}
 	@SuppressWarnings("deprecation")
-	private void actionSell(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop2, int amount2) {
-		int amount = 0;
-		try {
-			amount = Integer.parseInt(message);
-		} catch (NumberFormatException e) {
-			p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
-			return;
-		}
-		// Get the shop they interacted with
+	private void actionSell(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop2, int amount) {
 		Shop shop = plugin.getShopManager().getShop(info.getLocation());
 		// It's not valid anymore
 		if (shop == null || Util.canBeShop(info.getLocation().getBlock()) == false) {
@@ -454,6 +448,8 @@ public class ShopManager {
 			return;
 		}
 			int stock = shop.getRemainingStock();
+			if(stock==-1)
+				stock=10000;
 			if (stock < amount) {
 				p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", "" + shop.getRemainingStock(), shop.getDataName()));
 				return;
