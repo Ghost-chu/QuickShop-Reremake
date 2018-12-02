@@ -569,7 +569,7 @@ public class QS implements CommandExecutor {
 								// Send creation menu.
 								Info info = new Info(b.getLocation(), ShopAction.CREATE,
 										p.getInventory().getItemInMainHand(),
-										b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
+										b.getRelative(p.getFacing().getOppositeFace())));
 								plugin.getShopManager().getActions().put(p.getUniqueId(), info);
 								p.sendMessage(
 										MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
