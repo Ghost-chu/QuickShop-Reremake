@@ -805,6 +805,14 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 12) {
+			getConfig().set("plugin.ProtocolLib",null); //Removed
+			getConfig().set("plugin.BKCommonLib",null); //Removed
+			getConfig().set("config-version", 13);
+			selectedVersion = 13;
+			saveConfig();
+			reloadConfig();
+		}
 		
 	}
 
