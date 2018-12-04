@@ -124,7 +124,6 @@ public class QuickShop extends JavaPlugin {
 			try {
 				Thread.sleep(600000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				Bukkit.getPluginManager().disablePlugin(this);
 			}
@@ -159,7 +158,6 @@ public class QuickShop extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
 
 			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
@@ -177,10 +175,8 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
 		updateConfig(getConfig().getInt("config-version"));
-
 		// Initialize Util
 		Util.initialize();
-
 		// Create the shop manager.
 		this.shopManager = new ShopManager(this);
 		if (this.display) {
