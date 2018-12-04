@@ -49,7 +49,6 @@ public class DisplayItem {
 	/**
 	 * Spawns the dummy item on top of the shop.
 	 */
-	@SuppressWarnings("unused")
 	public void spawn() {
 		if (shop.getLocation().getWorld() == null)
 			return;
