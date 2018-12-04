@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maxgamer</groupId>
 	<artifactId>QuickShop</artifactId>
-	<version>Reremake 1.3.1.9</version>
+	<version>Reremake 1.3.1.9 SNAPSHOT</version>
 	<!-- Fuck version -->
 	<licenses>
 		<license>
@@ -94,21 +94,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.bergerkiller.bukkit</groupId>
-			<artifactId>BKCommonLib</artifactId>
-			<version>1.13.2-v1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.onarandombox.multiversecore</groupId>
 			<artifactId>Multiverse-Core</artifactId>
 			<version>2.5.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.comphenix.protocol</groupId>
-			<artifactId>ProtocolLib</artifactId>
-			<version>4.4.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
