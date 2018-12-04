@@ -96,14 +96,11 @@ shop:
     #Should pay money from unlimited shops owner to player?
     pay-unlimited-shop-owners: false
     
-    #Ignore check if player is shop's owner
-    bypass-owner-check: false
-    
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
     display-items: true
     
     #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
-    display-items-check-ticks: 0
+    display-items-check-ticks: 1200
     
     #Use name SafeGuard, Highly recommand turn on, If have trouble with other DropItem holo displauy, you can disabled it in there. BUT MAYBE CAUSE SOME ISSUES.
     display-item-use-name: true
