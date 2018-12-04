@@ -686,6 +686,8 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("database.use-varchar",null); //Removed
 			getConfig().set("database.reconnect",null); //Removed
 			getConfig().set("anonymous-metrics", false);
+			getConfig().set("display-items-check-ticks", 1200);
+			getConfig().set("shop.bypass-owner-check", null); //Removed
 			getConfig().set("config-version", 13);
 			selectedVersion = 13;
 			saveConfig();
