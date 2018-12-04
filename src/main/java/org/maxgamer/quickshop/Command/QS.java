@@ -40,8 +40,6 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-import com.google.common.collect.Lists;
-
 public class QS implements CommandExecutor {
 	QuickShop plugin;
 	public static HashMap<UUID, ArrayList<Object>> signPlayerCache = new HashMap<>();
@@ -50,151 +48,6 @@ public class QS implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	public void signGUIApi(ArrayList<Object> data, String arg) {
-
-		Shop shop = (Shop) data.get(0);
-		String type = (String) data.get(1);
-		Util.debugLog("GUI API");
-		Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(data.get(2))));
-		Util.debugLog(String.valueOf(data.size()));
-		switch (type) {
-		case "owner":
-			uiOwner(shop, arg, player);
-			break;
-		case "refill":
-			uiRefill(shop, arg, player);
-			break;
-		case "price":
-			uiPrice(shop, arg, player);
-		default:
-			break;
-		}
-
-	}
-
-	private void uiPrice(Shop shop, String arg, Player sender) {
-		if (sender.hasPermission("quickshop.create.changeprice")) {
-			Player p = (Player) sender;
-			double price;
-			try {
-				price = Double.parseDouble(arg);
-			} catch (NumberFormatException e) {
-				sender.sendMessage(MsgUtil.getMessage("thats-not-a-number"));
-				return;
-			}
-			if (price < 0.01) {
-				sender.sendMessage(MsgUtil.getMessage("price-too-cheap"));
-				return;
-			}
-			double fee = 0;
-			if (plugin.priceChangeRequiresFee) {
-				fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
-				if (fee > 0 && plugin.getEcon().getBalance(p.getUniqueId()) < fee) {
-					sender.sendMessage(
-							MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEcon().format(fee)));
-					return;
-				}
-			}
-			if (shop != null && (shop.getOwner().equals(((Player) sender).getUniqueId())
-					|| sender.hasPermission("quickshop.other.price"))) {
-				if (shop.getPrice() == price) {
-					// Stop here if there isn't a price change
-					sender.sendMessage(MsgUtil.getMessage("no-price-change"));
-					return;
-				}
-				if (fee > 0) {
-					if (!plugin.getEcon().withdraw(p.getUniqueId(), fee)) {
-						sender.sendMessage(
-								MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEcon().format(fee)));
-						return;
-					}
-					sender.sendMessage(
-							MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
-					try {
-						for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-							if (player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-								plugin.getEcon().deposit(player.getUniqueId(), fee);
-							}
-						}
-					} catch (Exception e) {
-						e.getMessage();
-						plugin.getLogger().log(Level.WARNING,
-								"QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
-					}
-
-				}
-				// Update the shop
-				shop.setPrice(price);
-				shop.setSignText();
-				shop.update();
-				MsgUtil.sendControlPanelInfo(sender, shop);
-				sender.sendMessage(MsgUtil.getMessage("price-is-now", plugin.getEcon().format(shop.getPrice())));
-				// Chest shops can be double shops.
-				if (shop instanceof ContainerShop) {
-					ContainerShop cs = (ContainerShop) shop;
-					if (cs.isDoubleShop()) {
-						Shop nextTo = cs.getAttachedShop();
-						if (cs.isSelling()) {
-							if (cs.getPrice() < nextTo.getPrice()) {
-								sender.sendMessage(MsgUtil.getMessage("buying-more-than-selling"));
-							}
-						} else {
-							// Buying
-							if (cs.getPrice() > nextTo.getPrice()) {
-								sender.sendMessage(MsgUtil.getMessage("buying-more-than-selling"));
-							}
-						}
-					}
-				}
-				return;
-			}
-		} else {
-			sender.sendMessage(MsgUtil.getMessage("no-permission"));
-			return;
-		}
-	}
-
-	private void uiRefill(Shop shop, String arg, Player player) {
-		if (player.hasPermission("quickshop.refill")) {
-			int add;
-			try {
-				add = Integer.parseInt(arg);
-			} catch (NumberFormatException e) {
-				player.sendMessage(MsgUtil.getMessage("thats-not-a-number"));
-				return;
-			}
-			if (shop != null) {
-				shop.add(shop.getItem(), add);
-				shop.setSignText();
-				shop.update();
-				MsgUtil.sendControlPanelInfo(player, shop);
-				player.sendMessage(MsgUtil.getMessage("refill-success"));
-				return;
-			}
-		} else {
-			player.sendMessage(MsgUtil.getMessage("no-permission"));
-			return;
-		}
-
-	}
-
-	private void uiOwner(Shop shop, String owner, Player player) {
-		if (player.hasPermission("quickshop.setowner")) {
-			if (shop != null) {
-				@SuppressWarnings("deprecation")
-				OfflinePlayer p = this.plugin.getServer().getOfflinePlayer(owner);
-				shop.setOwner(p.getUniqueId());
-				shop.update();
-				MsgUtil.sendControlPanelInfo(player, shop);
-				player.sendMessage(MsgUtil.getMessage("command.new-owner",
-						this.plugin.getServer().getOfflinePlayer(shop.getOwner()).getName()));
-				return;
-			}
-		} else {
-			player.sendMessage(MsgUtil.getMessage("no-permission"));
-			return;
-		}
-	}
 
 	private void setUnlimited(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.unlimited")) {
@@ -239,38 +92,6 @@ public class QS implements CommandExecutor {
 		}
 	}
 
-	private void sign(CommandSender sender, String[] args) {
-		Util.debugLog("sign");
-		ShopManager manager = plugin.getShopManager();
-		Shop shop = manager.getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]),
-				Integer.valueOf(args[3]), Integer.valueOf(args[4])));
-		if (shop == null) {
-			Util.debugLog("shop null!");
-			return;
-		}
-		Util.debugLog("remakeing data...");
-		String[] texts = new String[4];
-		String type = args[5];
-		texts[0] = args[6];
-		texts[1] = args[7];
-		texts[2] = args[8];
-		texts[3] = args[9];
-		Util.debugLog("done");
-		Util.debugLog("submiting data");
-		ArrayList<Object> data = new ArrayList<>();
-		data.add(shop);
-		data.add(type);
-		data.add(((Player) sender).getUniqueId());
-		signPlayerCache.put(((Player) sender).getUniqueId(), data);
-		try {
-			Util.sendSignEditForGUI((Player) sender, texts);
-			QuickShop.signMenuFactory.newMenu((Player) sender, Lists.newArrayList(MsgUtil.getMessage(texts[0]), MsgUtil.getMessage(texts[1]), MsgUtil.getMessage(texts[2]), MsgUtil.getMessage(texts[3])),
-					(player, input) -> {
-						//signGUIApi(data, input[0]);
-					});
-		} catch (Exception e) {
-		}
-	}
 
 	private void remove(CommandSender sender, String[] args) {
 		if (sender instanceof Player == false) {
@@ -853,9 +674,6 @@ public class QS implements CommandExecutor {
 			} else if (subArg.startsWith("amount")) {
 				amount(sender, args);
 				return true;
-			} else if (subArg.startsWith("sign")) {
-				sign(sender, args);
-				return true;
 			} else if (subArg.startsWith("buy")) {
 				setBuy(sender);
 				return true;
@@ -887,7 +705,6 @@ public class QS implements CommandExecutor {
 			} else if (subArg.equals("clean")) {
 				clean(sender);
 				return true;
-
 			} else if (subArg.equals("reload")) {
 				reload(sender);
 				return true;

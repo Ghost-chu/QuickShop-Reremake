@@ -1,12 +1,5 @@
 package org.maxgamer.quickshop;
 
-import com.comphenix.packetwrapper.WrapperPlayClientUpdateSign;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLib;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +21,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.SignMenuFactory;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
@@ -89,7 +81,6 @@ public class QuickShop extends JavaPlugin {
 
 	/** The plugin OpenInv (null if not present) */
 	public Plugin openInvPlugin;
-	public static SignMenuFactory signMenuFactory;
 	private HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	/** Use SpoutPlugin to get item / block names */
 	public boolean useSpout = false;
@@ -100,7 +91,6 @@ public class QuickShop extends JavaPlugin {
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
-	public ProtocolLib protocolLibPlugin = null;
 	private Plugin BKCommonLibPlugin;
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
@@ -181,33 +171,6 @@ public class QuickShop extends JavaPlugin {
 				getLogger().info("Successfully loaded BKCommonLib support!");
 			}
 		}
-		if (getConfig().getBoolean("plugin.ProtocolLib")) {			
-			if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-				protocolLibPlugin = (ProtocolLib) Bukkit.getPluginManager().getPlugin("ProtocolLib");
-				signMenuFactory = new SignMenuFactory(this);
-				getProtocolLib().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.UPDATE_SIGN) {
-					@Override
-					public void onPacketReceiving(PacketEvent event) {
-						WrapperPlayClientUpdateSign wrapper = new WrapperPlayClientUpdateSign(event.getPacket());
-						// BlockPosition blockPos = wrapper.getLocation();
-						Util.debugLog("line:" + wrapper.getLines()[0]);
-						if (wrapper.getLines()[0] == null || wrapper.getLines()[0] == "")
-							return;
-						ArrayList<Object> data = QS.signPlayerCache.get(event.getPlayer().getUniqueId());
-						new BukkitRunnable() {
-							@Override
-							public void run() {
-								QuickShop.instance.commandExecutor.signGUIApi(data, wrapper.getLines()[0]);
-								event.getPlayer().sendBlockChange(new Location(event.getPlayer().getWorld(),event.getPlayer().getLocation().getBlockX(), SignMenuFactory.POSITION_HEIGHT, event.getPlayer().getLocation().getBlockZ()), Material.AIR.createBlockData());
-							}
-						}.runTask(QuickShop.instance);
-
-					}
-				});
-				getLogger().info("Successfully loaded ProtocolLib support!");
-			}
-		}
-
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
 		updateConfig(getConfig().getInt("config-version"));
@@ -953,11 +916,6 @@ public class QuickShop extends JavaPlugin {
 	public Database getDB() {
 		return this.database;
 	}
-	public ProtocolManager getProtocolLib() {
-		if(this.protocolLibPlugin==null)
-			return null;
-		return ProtocolLibrary.getProtocolManager();
-	}
 
 	/**
 	 * Returns the ShopManager. This is used for fetching, adding and removing
@@ -977,7 +935,7 @@ public class QuickShop extends JavaPlugin {
 	 * @return Plugin Version
 	 */
 	public static String getVersion() {
-		return "Reremake "+QuickShop.instance.getDescription().getVersion();
+		return QuickShop.instance.getDescription().getVersion();
 	}
 
 }
