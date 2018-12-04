@@ -163,12 +163,9 @@ public class MsgUtil {
 		if (sender.hasPermission("quickshop.unlimited")) {
 			String Text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
 			String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
-			String type = "unlimited";
 			String clickCommand = "/qs silentunlimited " + shop.getLocation().getWorld().getName() + " "
 					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-					+ shop.getLocation().getBlockZ() + " " + "controlpanel.sign." + type + ".line1" + " "
-					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
-					+ "controlpanel.sign." + type + ".line4";
+					+ shop.getLocation().getBlockZ();
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Buying/Selling Mode
@@ -176,22 +173,16 @@ public class MsgUtil {
 			if (shop.isSelling()) {
 				String Text = MsgUtil.getMessage("controlpanel.mode-selling");
 				String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
-				String type = "buy";
 				String clickCommand = "/qs silentbuy " + shop.getLocation().getWorld().getName() + " "
 						+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-						+ shop.getLocation().getBlockZ() + " " +  "controlpanel.sign." + type + ".line1"
-						+ " " + "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3"
-						+ " " + "controlpanel.sign." + type + ".line4";
+						+ shop.getLocation().getBlockZ();
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 			} else if (shop.isBuying()) {
 				String Text = MsgUtil.getMessage("controlpanel.mode-buying");
 				String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
-				String type = "sell";
 				String clickCommand = "/qs silentsell " + shop.getLocation().getWorld().getName() + " "
 						+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-						+ shop.getLocation().getBlockZ() + " " +"controlpanel.sign." + type + ".line1"
-						+ " " + "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3"
-						+ " " + "controlpanel.sign." + type + ".line4";
+						+ shop.getLocation().getBlockZ() ;
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 			}
 		}
@@ -221,24 +212,18 @@ public class MsgUtil {
 		if (sender.hasPermission("quickshop.empty")) {
 			String Text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
-			String type = "empty";
 			String clickCommand = "/qs silentempty " + shop.getLocation().getWorld().getName() + " "
 					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-					+ shop.getLocation().getBlockZ() + " " +"controlpanel.sign." + type + ".line1" + " "
-					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
-					+ "controlpanel.sign." + type + ".line4";
+					+ shop.getLocation().getBlockZ();
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 		// Remove
 		if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
-			String type = "remove";
 			String clickCommand = "/qs silentremove " + shop.getLocation().getWorld().getName() + " "
 					+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-					+ shop.getLocation().getBlockZ() + " " + "controlpanel.sign." + type + ".line1" + " "
-					+ "controlpanel.sign." + type + ".line2" + " " + "controlpanel.sign." + type + ".line3" + " "
-					+ "controlpanel.sign." + type + ".line4";
+					+ shop.getLocation().getBlockZ();
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
 		}
 
@@ -294,10 +279,10 @@ public class MsgUtil {
 		Util.parseColours(itemi18n);
 		Material[] itemsi18n = Material.values();
 		for (Material material : itemsi18n) {
-			String itemname = itemi18n.getString("itemi18n."+material.name());
+			String itemname = itemi18n.getString("itemi18n."+Util.prettifyText(material.name()));
 			if(itemname==null || itemname.equals("")) {
-				plugin.getLogger().info("Found new items/blocks ["+material.name()+"] ,add it in config...");
-				itemi18n.set("itemi18n."+material.name(), material.name());
+				plugin.getLogger().info("Found new items/blocks ["+Util.prettifyText(material.name())+"] ,add it in config...");
+				itemi18n.set("itemi18n."+material.name(),Util.prettifyText(material.name()));
 			}
 		}
 		try {
