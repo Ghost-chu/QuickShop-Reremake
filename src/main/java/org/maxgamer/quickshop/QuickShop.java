@@ -36,9 +36,6 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
-//import org.maxgamer.quickshop.Util.CustomPotionsName;
-//import org.maxgamer.quickshop.Util.NMS;
-
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
 	public static QuickShop instance;
