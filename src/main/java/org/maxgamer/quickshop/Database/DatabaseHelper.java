@@ -58,14 +58,13 @@ public class DatabaseHelper {
 	/**
 	 * Creates the database table 'messages'
 	 * 
-	 * @throws SQLException
-	 *             If the connection is invalid
+	 * @throws SQLException If the connection is invalid
 	 */
 	public static void createMessagesTable(Database db) throws SQLException {
 		Statement st = db.getConnection().createStatement();
 		String createTable = null;
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-		
+		createTable = "CREATE TABLE " + QuickShop.instance.dbPrefix
+				+ "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
 		st.execute(createTable);
 	}
 	
@@ -73,12 +72,10 @@ public class DatabaseHelper {
 		PreparedStatement ps = db.getConnection()
 				.prepareStatement("SELECT * FROM " + QuickShop.instance.dbPrefix + "shops");
 		return ps.executeQuery();
-
 	}
 	public static ResultSet selectAllMessages(Database db) throws SQLException {
 		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM "+QuickShop.instance.dbPrefix+"messages");
 		return ps.executeQuery();
-		
 	}
 
 	public static void removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
@@ -92,7 +89,6 @@ public class DatabaseHelper {
 		.executeUpdate("UPDATE "+QuickShop.instance.dbPrefix+"shops SET owner = \"" + ownerUUID.toString()
 		+ "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
 		+ " AND world = \"" + worldName + "\" LIMIT 1");
-		
 	}
 
 	public static void updateShop(Database db, String owner, ItemStack item, int unlimited, int shopType,
