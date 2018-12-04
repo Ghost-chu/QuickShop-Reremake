@@ -703,6 +703,9 @@ public class QuickShop extends JavaPlugin {
 		if (selectedVersion == 12) {
 			getConfig().set("plugin.ProtocolLib",null); //Removed
 			getConfig().set("plugin.BKCommonLib",null); //Removed
+			getConfig().set("plugin.BKCommonLib",null); //Removed
+			getConfig().set("database.use-varchar",null); //Removed
+			getConfig().set("database.reconnect",null); //Removed
 			getConfig().set("config-version", 13);
 			selectedVersion = 13;
 			saveConfig();

@@ -51,11 +51,7 @@ public class DatabaseHelper {
 	public static void createShopsTable(Database db) throws SQLException {
 		Statement st = db.getConnection().createStatement();
 		String createTable = null;
-		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
-		}else {
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  TEXT(32) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
-		}
+		createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
 		st.execute(createTable);
 	}
 
@@ -68,19 +64,16 @@ public class DatabaseHelper {
 	public static void createMessagesTable(Database db) throws SQLException {
 		Statement st = db.getConnection().createStatement();
 		String createTable = null;
-		if(QuickShop.instance.getConfig().getBoolean("database.use-varchar")) {
 			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-		}else {
-			createTable = "CREATE TABLE "+QuickShop.instance.dbPrefix+"messages (owner  TEXT(32) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-		}
 		
 		st.execute(createTable);
 	}
 	
 	public static ResultSet selectAllShops(Database db) throws SQLException {
-		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM "+QuickShop.instance.dbPrefix+"shops");
+		PreparedStatement ps = db.getConnection()
+				.prepareStatement("SELECT * FROM " + QuickShop.instance.dbPrefix + "shops");
 		return ps.executeQuery();
-		
+
 	}
 	public static ResultSet selectAllMessages(Database db) throws SQLException {
 		PreparedStatement ps =  db.getConnection().prepareStatement("SELECT * FROM "+QuickShop.instance.dbPrefix+"messages");
