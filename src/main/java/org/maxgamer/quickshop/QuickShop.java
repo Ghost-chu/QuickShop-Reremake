@@ -91,7 +91,6 @@ public class QuickShop extends JavaPlugin {
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
-	private Plugin BKCommonLibPlugin;
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -162,14 +161,6 @@ public class QuickShop extends JavaPlugin {
 			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
 			if(this.openInvPlugin!=null)
 				getLogger().info("Successfully loaded OpenInv support!");
-		}
-		if(getConfig().getBoolean("plugin.BKCommonLib")) {
-			
-			this.BKCommonLibPlugin = Bukkit.getPluginManager().getPlugin("BKCommonLib");
-			if(this.BKCommonLibPlugin!=null && Bukkit.getPluginManager().getPlugin("BKCommonLib").isEnabled()) {
-			 new BKCommonLibListener();
-				getLogger().info("Successfully loaded BKCommonLib support!");
-			}
 		}
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
