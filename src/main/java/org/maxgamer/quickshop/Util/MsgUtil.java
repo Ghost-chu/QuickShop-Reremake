@@ -125,7 +125,12 @@ public class MsgUtil {
 			messagei18n.set("controlpanel.sign.refill.line4", "at first line");
 			messagei18n.set("language-version", 4);
 			selectedVersion = 4;
-		
+		}
+		if (selectedVersion == 4) {
+			messagei18n.set("signs.unlimited", "Unlimited");
+			messagei18n.set("controlpanel.sign",null);
+			messagei18n.set("language-version", 5);
+			selectedVersion = 5;
 		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {

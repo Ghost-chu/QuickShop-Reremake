@@ -11,7 +11,7 @@ language-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 language-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 3
+language-version: 5
 
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
 no-anythings-in-your-hand: "&cNo anythings in your hand."
@@ -143,22 +143,3 @@ controlpanel:
     empty-hover: "&eLooking you want changing shop and click to clear."
     remove: "&c&l[Remove Shop]"
     remove-hover: "&eClick to remove this shop."
-    sign:
-      owner: 
-        #Highly recommand keep line1 blank
-        line1: ""
-        line2: "Enter"
-        line3: "new owner name"
-        line4: "at first line"
-      price: 
-        #Highly recommand keep line1 blank
-        line1: ""
-        line2: "Enter"
-        line3: "new shop price"
-        line4: "at first line"
-      refill: 
-        #Highly recommand keep line1 blank
-        line1: ""
-        line2: "Enter amount"
-        line3: "you want fill"
-        line4: "at first line"
