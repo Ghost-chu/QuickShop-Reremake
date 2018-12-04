@@ -520,16 +520,8 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.owner", shop.ownerName()));
-		//p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getItemi18n(shop.getDataName())));
 		//Enabled
 		Util.sendItemholochat(shop.getItem(),p,ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
-		
-//		if (NMS.isPotion(items.getType())) {
-//			String effects = CustomPotionsName.getEffects(items);
-//			if (!effects.isEmpty()) {
-//				p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.effects", effects));
-//			}
-//		}
 		if (Util.isTool(items.getType())) {
 			p.sendMessage(ChatColor.DARK_PURPLE + "| " + MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
 		}
@@ -558,8 +550,6 @@ public class MsgUtil {
 				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
-		try {
-			Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
 			if (items.getItemMeta() instanceof EnchantmentStorageMeta) {
 				EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
 				stor.getStoredEnchants();
@@ -571,10 +561,6 @@ public class MsgUtil {
 					}
 				}
 			}
-		} catch (ClassNotFoundException e) {
-			// They don't have an up to date enough build of CB to do this.
-			// TODO: Remove this when it becomes redundant
-		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
 
