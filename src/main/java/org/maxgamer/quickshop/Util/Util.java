@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -26,13 +27,6 @@ import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.BlockPosition;
-import com.comphenix.protocol.wrappers.WrappedBlockData;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,7 +39,6 @@ import java.util.Map.Entry;
  * @author MACHENIKE
  *
  */
-@SuppressWarnings("deprecation")
 public class Util {
 	private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 	private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
@@ -118,7 +111,7 @@ public class Util {
 	public static Entry<Double,Double> getPriceRestriction(Material material) {
 		return restrictedPrices.get(material);
 	}
-
+	@SuppressWarnings("deprecation")
 	public static boolean isTransparent(Material m) {
 		boolean trans = m.isTransparent();
 		return trans;
@@ -168,7 +161,7 @@ public class Util {
 	 * @return The percentage 'health' the tool has. (Opposite of total damage)
 	 */
 	public static String getToolPercentage(ItemStack item) {
-		double dura = item.getDurability();
+		double dura = ((Damageable)item.getItemMeta()).getDamage();;
 		double max = item.getType().getMaxDurability();
 		DecimalFormat formatter = new DecimalFormat("0");
 		return formatter.format((1 - dura / max) * 100.0);
@@ -196,27 +189,6 @@ public class Util {
 			}
 		}
 		return null;
-	}
-
-	public static void sendSignEditForGUI(Player player, String[] lines) throws InvocationTargetException {
-		debugLog("SignEdit");
-		ProtocolManager manager = plugin.getProtocolLib();
-		BlockPosition position = new BlockPosition(player.getLocation().getBlockX(), 255,
-				player.getLocation().getBlockZ());
-
-		PacketContainer blockChange = manager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-		blockChange.getBlockPositionModifier().write(0, position);
-		blockChange.getBlockData().write(0, WrappedBlockData.createData(Material.WALL_SIGN));
-		PacketContainer updateSign = manager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
-		updateSign.getBlockPositionModifier().write(0, position);
-		updateSign.getChatComponentArrays().write(0, new WrappedChatComponent[]{WrappedChatComponent.fromText(lines[0]), WrappedChatComponent.fromText(lines[1]), WrappedChatComponent.fromText(lines[2]), WrappedChatComponent.fromText(lines[3])});
-		PacketContainer open = manager.createPacket(PacketType.Play.Server.OPEN_SIGN_ENTITY);
-		open.getBlockPositionModifier().write(0, position);
-
-			manager.sendServerPacket(player, blockChange);
-			manager.sendServerPacket(player, updateSign);
-			manager.sendServerPacket(player, open);
-		
 	}
 	
 	/**
@@ -407,7 +379,7 @@ public class Util {
 			return false; // One of them is null (Can't be both, see above)
 		if (stack1.getType() != stack2.getType())
 			return false; // Not the same material
-		if (stack1.getDurability() != stack2.getDurability())
+		if (((Damageable)stack1.getItemMeta()).getDamage() != ((Damageable)stack2.getItemMeta()).getDamage())
 			return false; // Not the same durability
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
