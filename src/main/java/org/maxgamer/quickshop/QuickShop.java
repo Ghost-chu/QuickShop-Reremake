@@ -187,52 +187,6 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(ll, this);
 		}
 		getServer().getPluginManager().registerEvents(new UpdateWatcher(), this);
-//		ConfigurationSection cPotionSection = this.getConfig().getConfigurationSection("custom-potions-name");
-//		if (cPotionSection!=null) {
-//			CustomPotionsName.setSignFormat(new String[]{cPotionSection.getString("sign.format"), cPotionSection.getString("sign.variety.normal"), cPotionSection.getString("sign.variety.splash"), cPotionSection.getString("sign.variety.lingering")});
-//			CustomPotionsName.setShopInfoFormat(new String[]{cPotionSection.getString("shopinfo.format"), cPotionSection.getString("shopinfo.variety.normal"), cPotionSection.getString("shopinfo.variety.splash"), cPotionSection.getString("shopinfo.variety.lingering")});
-//
-//			Map<PotionType,CustomPotionsName.Names> potionTypes = new HashMap<PotionType,CustomPotionsName.Names>();
-//			for (String s : cPotionSection.getStringList("types")) {
-//				try {
-//					String[] a = s.split("[;]");
-//					if (a.length!=3) {
-//						throw new Exception("Invalid format (main args length must be 3)");
-//					}
-//					
-//					PotionType type = PotionType.valueOf(a[0].toUpperCase());
-//					if (type==null) {
-//						throw new Exception("Invalid PotionType "+a[0]);
-//					}
-//					
-//					potionTypes.put(type, new CustomPotionsName.Names(a[1], a[2]));
-//				} catch (Exception e) {
-//					Bukkit.getLogger().warning("Invalid potion item name definition {"+s+"} Error: "+e.getMessage());
-//				}
-//			}
-//			CustomPotionsName.setPotionTypes(potionTypes);
-//			
-//			Map<PotionEffectType,String> potionEffects = new HashMap<PotionEffectType,String>();
-//			for (String s : cPotionSection.getStringList("effects")) {
-//				try {
-//					String[] a = s.split("[;]");
-//					if (a.length!=2) {
-//						throw new Exception("Invalid format (main args length must be 2)");
-//					}
-//					
-//					PotionEffectType type = PotionEffectType.getByName(a[0]);
-//					if (type==null) {
-//						throw new Exception("Invalid PotionEffectType "+a[0]);
-//					}
-//					
-//					potionEffects.put(type, a[1]);
-//				} catch (Exception e) {
-//					Bukkit.getLogger().warning("Invalid potion effect type name definition {"+s+"} Error: "+e.getMessage());
-//				}
-//			}
-//			CustomPotionsName.setPotionEffects(potionEffects);
-//		}
-//	
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
 		if (limitCfg != null) {
 			getLogger().info("Limit cfg found...");
@@ -254,14 +208,6 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadPotioni18n();
 		try {
 			getLogger().info("Loading shops from database...");
-			/*
-			 * int res = Converter.convert(); if (res < 0) {
-			 * plugin.getLogger().log(Level.WARNING, "Could not convert shops. Exitting.");
-			 * return; } if (res > 0) { plugin.getLogger().log(Level.WARNING,
-			 * "Conversion success. Continuing..."); }
-			 */
-//			con = database.getConnection();
-//			PreparedStatement ps = con.prepareStatement("SELECT * FROM shops");
 			ResultSet rs = DatabaseHelper.selectAllShops(database);
 			int errors = 0;
 
@@ -305,14 +251,6 @@ public class QuickShop extends JavaPlugin {
 							DatabaseHelper.updateOwner2UUID(ownerUUID.toString(), x, y, z, worldName);
 						} else {
 							// Invalid shop owner
-//							getDB().getConnection().createStatement()
-//									.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = "
-//											+ z + " AND world = \"" + worldName + "\""
-//											+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-//							getDB().getConnection().createStatement()
-//							.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = "
-//									+ z + " AND world = \"" + worldName + "\""
-//									+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 							DatabaseHelper.removeShop(database, x, y, z, worldName);
 							continue;
 						}
@@ -327,14 +265,6 @@ public class QuickShop extends JavaPlugin {
 						step = "Removeing shop in world: Because it not a correct InventoryHolder";
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
-//						getDB().getConnection().createStatement()
-//								.executeUpdate("DELETE FROM shops WHERE x = " + x + " AND y = " + y + " AND z = " + z
-//										+ " AND world = \"" + worldName + "\""
-//										+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-//						getDB().getConnection().createStatement()
-//						.executeUpdate("DELETE FROM schedule WHERE x = " + x + " AND y = " + y + " AND z = " + z
-//								+ " AND world = \"" + worldName + "\""
-//								+ (getDB().getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
 						DatabaseHelper.removeShop(database, x, y, z, worldName);
 						continue;
 					}
@@ -437,44 +367,12 @@ public class QuickShop extends JavaPlugin {
 
 					if (errors < 3) {
 						getLogger().info("Removeing shop from database...");
-						// return;
-//						PreparedStatement delps = getDB().getConnection()
-//								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-//						delps.setInt(1, x);
-//						delps.setInt(2, y);
-//						delps.setInt(3, z);
-//						delps.setString(4, worldName);
-//						delps.execute();
-
 						DatabaseHelper.removeShop(database, x, y, z, worldName);
-//						
-//						PreparedStatement scdelps = getDB().getConnection()
-//								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
-//						scdelps.setInt(1, x);
-//						scdelps.setInt(2, y);
-//						scdelps.setInt(3, z);
-//						scdelps.setString(4, worldName);
-//						scdelps.execute();
 						getLogger().info("Trying keep loading...");
 					} else {
 						getLogger().severe(
 								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
 						getLogger().info("Removeing shop from database...");
-//						PreparedStatement delps = getDB().getConnection()
-//								.prepareStatement("DELETE FROM shops WHERE x = ? AND y = ? and z = ? and world = ?");
-//						delps.setInt(1, x);
-//						delps.setInt(2, y);
-//						delps.setInt(3, z);
-//						delps.setString(4, worldName);
-//						delps.execute();
-//						
-//						PreparedStatement scdelps = getDB().getConnection()
-//								.prepareStatement("DELETE FROM schedule WHERE x = ? AND y = ? and z = ? and world = ?");
-//						scdelps.setInt(1, x);
-//						scdelps.setInt(2, y);
-//						scdelps.setInt(3, z);
-//						scdelps.setString(4, worldName);
-//						scdelps.execute();
 						DatabaseHelper.removeShop(database, x, y, z, worldName);
 						e.printStackTrace();
 					}
