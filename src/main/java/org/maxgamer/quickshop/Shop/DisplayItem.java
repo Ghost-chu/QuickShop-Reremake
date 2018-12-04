@@ -58,7 +58,6 @@ public class DisplayItem {
 		boolean showFloatItem = true;
 		if (plugin.getConfig().getBoolean("float.enable")) {
 			// Enabled! Check start!
-
 			// Item
 			boolean found_item = false;
 			boolean found_lore = false;
@@ -164,17 +163,7 @@ public class DisplayItem {
 			return;
 		}
 		//Call Event for QSAPI
-		if(false){
-			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, true);
-			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
-			if (shopDisplayItemSpawnEvent_v2.isCancelled()) {
-				return;
-			}
-			//this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-			//this.item.setVelocity(new Vector(0, 0.1, 0));
-
-
-		}else {
+		
 			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
 			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
 			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, false);
@@ -183,7 +172,6 @@ public class DisplayItem {
 				return;
 			}
 			this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-			DisplayItemStorage.addDisplayItemShop(item.getUniqueId(), shop);
 			this.item.setVelocity(new Vector(0, 0.1, 0));
 			try {
 				this.safeGuard(this.item);
@@ -193,7 +181,6 @@ public class DisplayItem {
 				plugin.getLogger().log(Level.WARNING,
 						"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
 			}
-		}
 	}
 
 	/**
@@ -243,8 +230,6 @@ public class DisplayItem {
 	public boolean removeDupe() {
 		if (shop.getLocation().getWorld() == null)
 			return false;
-		// QuickShop qs = (QuickShop)
-		// Bukkit.getPluginManager().getPlugin("QuickShop");
 		Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
 		boolean removed = false;
 		Chunk c = displayLoc.getChunk();
@@ -263,7 +248,6 @@ public class DisplayItem {
 				}
 			}
 		}
-		DisplayItemStorage.id2ShopMap.clear();
 		return removed;
 		
 	}
@@ -275,7 +259,6 @@ public class DisplayItem {
 		if (this.item == null)
 			return;
 		this.item.remove();
-		DisplayItemStorage.removeDisplayItemByUUID(this.item.getUniqueId());
 		this.item = null;
 	}
 
