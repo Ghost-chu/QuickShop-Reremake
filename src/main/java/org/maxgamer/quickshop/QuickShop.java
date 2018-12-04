@@ -144,19 +144,19 @@ public class QuickShop extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 			return;
 		}
-		
+
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-			
+
 			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
 				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 				getLogger().info("Successfully loaded MultiverseCore support!");
 			}
 		}
 		// added for compatibility reasons with OpenInv - see
-				// https://github.com/KaiKikuchi/QuickShop/issues/139
-		if(getConfig().getBoolean("plugin.OpenInv")) {
+		// https://github.com/KaiKikuchi/QuickShop/issues/139
+		if (getConfig().getBoolean("plugin.OpenInv")) {
 			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-			if(this.openInvPlugin!=null)
+			if (this.openInvPlugin != null)
 				getLogger().info("Successfully loaded OpenInv support!");
 		}
 		if (getConfig().getInt("config-version") == 0)
@@ -379,9 +379,7 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getLogger().severe("Could not load shops Because SQLException.");
 		}
-
 		getLogger().info("Loaded " + count + " shops.");
-
 		// Register events
 		getLogger().info("Registering Listeners");
 		blockListener = new BlockListener(this);
@@ -396,7 +394,7 @@ public class QuickShop extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
-		if(getConfig().getBoolean("shop.lock")) {
+		if (getConfig().getBoolean("shop.lock")) {
 			LockListener lockListener = new LockListener(this);
 			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
 		}
@@ -432,12 +430,10 @@ public class QuickShop extends JavaPlugin {
 				}
 			}.runTaskTimer(this, 1L, displayItemCheckTicks);
 		}
-
-		
-
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
+
 		if (getConfig().getBoolean("disabled-metrics") != true) {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
@@ -451,21 +447,18 @@ public class QuickShop extends JavaPlugin {
 			} else {
 				display_Items = "Disabled";
 			}
-
 			String locks;
 			if (getConfig().getBoolean("shop.lock")) {
 				locks = "Enabled";
 			} else {
 				locks = "Disabled";
 			}
-
 			String sneak_action;
 			if (getConfig().getBoolean("shop.sneak-to-create") || getConfig().getBoolean("shop.sneak-to-trade")) {
 				sneak_action = "Enabled";
 			} else {
 				sneak_action = "Disabled";
 			}
-
 			String use_protect_minecart;
 			if (getConfig().getBoolean("protect.minecart")) {
 				use_protect_minecart = "Enabled";
@@ -502,19 +495,7 @@ public class QuickShop extends JavaPlugin {
 			} else {
 				use_protect_hopper = "Disabled";
 			}
-
 			String shop_find_distance = getConfig().getString("shop.find-distance");
-
-			String float_filter_enable = boolean2String(getConfig().getBoolean("float.enable"));
-			String float_filter_item_enable = boolean2String(getConfig().getBoolean("float.item.enable"));
-			String float_filter_lore_enable = boolean2String(getConfig().getBoolean("float.lore.enable"));
-			String float_filter_displayname_enable = boolean2String(getConfig().getBoolean("float.displayname.enable"));
-
-			String float_filter_item_blacklist = boolean2String(getConfig().getBoolean("float.item.blacklist"));
-			String float_filter_lore_blacklist = boolean2String(getConfig().getBoolean("float.lore.blacklist"));
-			String float_filter_displayname_blacklist = boolean2String(
-					getConfig().getBoolean("float.displayname.blacklist"));
-
 			// Version
 			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
 			metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -530,25 +511,12 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () -> use_protect_hopper));
 			metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
 			// Exp for stats, maybe i need improve this, so i add this.
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_enable", () -> float_filter_enable));
-
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_item_enable", () -> float_filter_item_enable));
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_lore_enable", () -> float_filter_lore_enable));
-			metrics.addCustomChart(
-					new Metrics.SimplePie("float_filter_displayname_enable", () -> float_filter_displayname_enable));
-
-			metrics.addCustomChart(
-					new Metrics.SimplePie("float_filter_item_blacklist", () -> float_filter_item_blacklist));
-			metrics.addCustomChart(
-					new Metrics.SimplePie("float_filter_lore_blacklist", () -> float_filter_lore_blacklist));
-			metrics.addCustomChart(new Metrics.SimplePie("float_filter_displayname_blacklist",
-					() -> float_filter_displayname_blacklist));
-
 			metrics.submitData(); // Submit now!
 			getLogger().info("Mertics submited.");
 		} else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
+
 		UpdateWatcher.init();
 	}
 
@@ -706,6 +674,7 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("plugin.BKCommonLib",null); //Removed
 			getConfig().set("database.use-varchar",null); //Removed
 			getConfig().set("database.reconnect",null); //Removed
+			getConfig().set("anonymous-metrics", false);
 			getConfig().set("config-version", 13);
 			selectedVersion = 13;
 			saveConfig();
