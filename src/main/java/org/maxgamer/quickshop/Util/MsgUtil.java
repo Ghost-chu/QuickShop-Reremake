@@ -282,7 +282,7 @@ public class MsgUtil {
 			String itemname = itemi18n.getString("itemi18n."+Util.prettifyText(material.name()).trim());
 			if(itemname==null || itemname.equals("")) {
 				plugin.getLogger().info("Found new items/blocks ["+Util.prettifyText(material.name()).trim()+"] ,add it in config...");
-				itemi18n.set("itemi18n."+material.name(),Util.prettifyText(material.name().trim()));
+				itemi18n.set("itemi18n."+material.name(),Util.prettifyText(material.name()).trim());
 			}
 		}
 		try {
