@@ -753,7 +753,7 @@ public class Util {
     }
 	public static void debugLog(String logs)	{
 		if(plugin.getConfig().getBoolean("dev-mode")) {
-			plugin.getLogger().info("[DEBUG]"+logs);
+			plugin.getLogger().info("[DEBUG] "+logs);
 		}
 		
 	}
