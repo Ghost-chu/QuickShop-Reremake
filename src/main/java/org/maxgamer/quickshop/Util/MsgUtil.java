@@ -318,8 +318,6 @@ public class MsgUtil {
 			return Itemname_i18n;
 		}
 	}
-
-	@SuppressWarnings("deprecation")
 	public static void loadEnchi18n() {
 		plugin.getLogger().info("Starting loading Enchantment i18n...");
 		File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -335,19 +333,10 @@ public class MsgUtil {
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
 		for (Enchantment ench : enchsi18n) {
-			try{
 			String enchname = enchi18n.getString("enchi18n."+ench.getKey().getKey().toString().trim());
 			if(enchname==null || enchname.equals("")) {
 				plugin.getLogger().info("Found new ench ["+ench.getKey().getKey().toString()+"] ,add it in config...");
 				enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
-			}
-			//for old  minecraft version
-			}catch(Throwable e){
-				String enchname = enchi18n.getString("enchi18n."+ench.getName().trim());
-				if(enchname==null || enchname.equals("")) {
-					plugin.getLogger().info("Found new ench ["+ench.getName()+"] ,add it in config...");
-					enchi18n.set("enchi18n."+ench.getName().trim(),ench.getName().trim());
-				}
 			}
 		}
 		try {
@@ -359,18 +348,13 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load enchname i18n.");
 	}
-	@SuppressWarnings("deprecation")
 	public static String getEnchi18n(Enchantment key) {
 		if(key==null) {
 			return "ERROR";
 		}
 		String EnchString = null;
 		//support for legacy
-		try {
-			EnchString = key.getKey().getKey().toString().trim();
-		}catch(Throwable e){
-			EnchString = key.getName().trim();
-		}
+		EnchString = key.getKey().getKey().toString().trim();
 		String Ench_i18n = null;
 		try {
 			Ench_i18n = enchi18n.getString("enchi18n."+EnchString);
