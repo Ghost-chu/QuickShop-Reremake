@@ -279,7 +279,7 @@ public class MsgUtil {
 		Util.parseColours(itemi18n);
 		Material[] itemsi18n = Material.values();
 		for (Material material : itemsi18n) {
-			String itemname = itemi18n.getString("itemi18n."+Util.prettifyText(material.name()).trim());
+			String itemname = itemi18n.getString("itemi18n."+material.name());
 			if(itemname==null || itemname.equals("")) {
 				plugin.getLogger().info("Found new items/blocks ["+Util.prettifyText(material.name()).trim()+"] ,add it in config...");
 				itemi18n.set("itemi18n."+material.name(),Util.prettifyText(material.name()).trim());
