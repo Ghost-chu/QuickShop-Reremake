@@ -22,7 +22,7 @@ public class WorldListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onWorldLoad(WorldLoadEvent e) {
 		/* *************************************
 		 * This listener fixes any broken world references. Such as hashmap
@@ -63,7 +63,7 @@ public class WorldListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR,ignoreCancelled=true)
 	public void onWorldUnload(WorldUnloadEvent e) {
 	    if(e.isCancelled()){
 	        return;
