@@ -17,8 +17,7 @@ public class ChatListener implements Listener {
 	public ChatListener(QuickShop plugin) {
 		this.plugin = plugin;
 	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled=true)
 	public void onChat(AsyncPlayerChatEvent e) {
 		if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
 			plugin.log(plugin.getShopManager().getActions().toString());
