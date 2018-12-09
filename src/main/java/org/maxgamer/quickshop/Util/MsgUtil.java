@@ -294,6 +294,11 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load Itemname i18n.");
 	}
+	/**
+	 * Get item's i18n name
+	 * @param String ItemBukkitName(e.g. Material.STONE.name())
+	 * @return String Item's i18n name.
+	 */
 	public static String getItemi18n(String ItemBukkitName) {
 		ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
 		String Itemname_i18n = null;
@@ -348,6 +353,11 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load enchname i18n.");
 	}
+	/**
+	 * Get Enchantment's i18n name.
+	 * @param Enchantment key
+	 * @return String Enchantment's i18n name.
+	 */
 	public static String getEnchi18n(Enchantment key) {
 		if(key==null) {
 			return "ERROR";
@@ -402,6 +412,11 @@ public class MsgUtil {
 		}
 		plugin.getLogger().info("Complete to load potionname i18n.");
 	}
+	/**
+	 * Get potion effect's i18n name.
+	 * @param PotionEffectType potionType
+	 * @return String Potion's i18n name.
+	 */
 	public static String getPotioni18n(PotionEffectType potion) {
 		if(potion==null) {
 			return "ERROR";
@@ -612,6 +627,11 @@ public class MsgUtil {
 		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
+	/**
+	 * Get item's displayname.
+	 * @param ItemStack iStack
+	 * @return String itemDisplayName
+	 */
 	public static String getDisplayName(ItemStack iStack){
 		ItemStack is = iStack.clone();
 		
@@ -622,6 +642,11 @@ public class MsgUtil {
 		}
 		
 	}
+	/**
+	 * getMessage in messages.yml
+	 * @param String loc, String... args
+	 * @return String message
+	 */
 	public static String getMessage(String loc, String... args) {
 		String raw = messagei18n.getString(loc);
 		if (raw == null) {
