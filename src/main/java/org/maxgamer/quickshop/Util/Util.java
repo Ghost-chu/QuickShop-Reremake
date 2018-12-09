@@ -223,13 +223,21 @@ public class Util {
 		return false;
 	}
 
-
+	/**
+	 * Covert ItemStack to YAML string.
+	 * @param ItemStack iStack
+	 * @return String serialized itemStack
+	 */
 	public static String serialize(ItemStack iStack) {
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.set("item", iStack);
 		return cfg.saveToString();
 	}
-
+	/**
+	 * Covert YAML string to ItemStack.
+	 * @param String serialized itemStack
+	 * @return ItemStack iStack
+	 */
 	public static ItemStack deserialize(String config) throws InvalidConfigurationException {
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.loadFromString(config);
@@ -275,7 +283,11 @@ public class Util {
 
 		return sb.toString();
 	}
-
+	/**
+	 * Get item's sign name for display on the sign.
+	 * @param ItemStack itemStack
+	 * @return String ItemOnSignName
+	 */
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
 //		if (NMS.isPotion(itemStack.getType())) {
@@ -532,7 +544,11 @@ public class Util {
 			return false;
 		}
 	}
-
+	/**
+	 * Use yaw to calc the BlockFace
+	 * @param float yaw
+	 * @return BlockFace blockFace
+	 */
 	public static BlockFace getYawFace(float yaw) {
 		if (yaw > 315 && yaw <= 45) {
 			return BlockFace.NORTH;
@@ -545,7 +561,11 @@ public class Util {
 		}
 	}
 	
-	
+	/**
+	 * Get this class available or not
+	 * @param String qualifiedName
+	 * @return boolean Available
+	 */
 	public static boolean isClassAvailable(String qualifiedName) {
 		try {
 			Class.forName(qualifiedName);
@@ -554,7 +574,11 @@ public class Util {
 			return false;
 		}
 	}
-	
+	/**
+	 * Send a message for all online Ops.
+	 * @param String message
+	 * @return
+	 */
 	public static void sendMessageToOps(String message) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player.isOp() || player.hasPermission("quickshop.alert")) {
@@ -700,10 +724,17 @@ public class Util {
 		return null;
 		} 
 	}
+	/**
+	 * Send warning message when some plugin calling deprecated method... 
+	 * @return
+	 */
 	public static void sendDeprecatedMethodWarn() {
 		QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
 	}
-
+	/**
+	 * Check QuickShop is running on dev mode or not.
+	 * @return
+	 */
 	public static boolean isDevEdition() {
 		if(QuickShop.instance.getDescription().getVersion().contains("dev")||QuickShop.instance.getDescription().getVersion().contains("alpha")||QuickShop.instance.getDescription().getVersion().contains("beta")||QuickShop.instance.getDescription().getVersion().contains("snapshot")) {
 			return true;
@@ -711,6 +742,10 @@ public class Util {
 			return false;
 		}
 	}
+	/**
+	 * Call this to check items in inventory and remove it.
+	 * @return
+	 */
 	public static void inventoryCheck(Inventory inv){
 				try{
 					for (int i =0; i < inv.getSize(); i++)
@@ -726,6 +761,10 @@ public class Util {
 	}
 	private static Object serverInstance;
     private static Field tpsField;
+    /**
+	 * Get MinecraftServer's TPS
+	 * @return double TPS (e.g 19.92)
+	 */
 	public static Double getTPS() {
 	    try {
             serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
@@ -751,20 +790,39 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
+    /**
+	 * Print debug log when plugin running on dev mode.
+	 * @param String logs
+	 * @return
+	 */
 	public static void debugLog(String logs)	{
 		if(plugin.getConfig().getBoolean("dev-mode")) {
 			plugin.getLogger().info("[DEBUG] "+logs);
 		}
 		
 	}
+	/**
+	 * Create a Timer and return this timer's UUID
+	 * @return
+	 */
 	public static UUID setTimer() {
 		UUID random = UUID.randomUUID();
 		timerMap.put(random, System.currentTimeMillis());
 		return random;
 	}
+	/**
+	 * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
+	 * @param UUID timer's uuid
+	 * @return long time
+	 */
 	public static long getTimer(UUID uuid) {
-		return timerMap.get(uuid);
+		return System.currentTimeMillis()-timerMap.get(uuid);
 	}
+	/**
+	 * Return how long time running when timer set and destory the timer.
+	 * @param String logs
+	 * @return long time
+	 */
 	public static long endTimer(UUID uuid) {
 		long time =System.currentTimeMillis()-timerMap.get(uuid);
 		timerMap.remove(uuid);
