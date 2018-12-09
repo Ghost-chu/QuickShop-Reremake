@@ -131,7 +131,7 @@ public class LockListener implements Listener {
 	/**
 	 * Handles shops breaking through explosions
 	 */
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOW,ignoreCancelled=true)
 	public void onExplode(EntityExplodeEvent e) {
 		if (e.isCancelled())
 			return;
