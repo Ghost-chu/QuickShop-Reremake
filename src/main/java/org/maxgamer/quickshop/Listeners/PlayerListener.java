@@ -46,7 +46,7 @@ public class PlayerListener implements Listener {
 	 * Handles players left clicking a chest. Left click a NORMAL chest with item :
 	 * Send creation menu Left click a SHOP chest : Send purchase menu
 	 */
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR,ignoreCancelled=true)
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
@@ -169,7 +169,7 @@ public class PlayerListener implements Listener {
 
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGH,ignoreCancelled=true)
 	/**
 	 * Waits for a player to move too far from a shop, then cancels the menu.
 	 */
@@ -193,14 +193,14 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onTeleport(PlayerTeleportEvent e) {
 		PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
 		onMove(me);
 		Util.inventoryCheck(e.getPlayer().getInventory());
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onJoin(PlayerJoinEvent e) {
 		// Notify the player any messages they were sent
 		Bukkit.getScheduler().runTaskLater(QuickShop.instance, new Runnable() {
@@ -212,13 +212,13 @@ public class PlayerListener implements Listener {
 		}, 60);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		// Remove them from the menu
 		plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
 		QS.signPlayerCache.remove(e.getPlayer().getUniqueId());
 	}
-	@EventHandler(priority=EventPriority.MONITOR)
+	@EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
 	public void onInventoryClose(InventoryCloseEvent e) {
 		Util.debugLog("Inventory closed.");
 		try {
