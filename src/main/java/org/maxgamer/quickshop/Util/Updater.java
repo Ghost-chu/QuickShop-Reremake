@@ -13,6 +13,12 @@ import org.maxgamer.quickshop.QuickShop;
 
 
 public class Updater {
+	/**
+	 * Check new update
+	 * 
+	 * @param 
+	 * @return True=Have a new update; False=No new update or check update failed.
+	 */
 	public static boolean checkUpdate() {
 		if(!QuickShop.instance.getConfig().getBoolean("updater")) {
 			return false;
