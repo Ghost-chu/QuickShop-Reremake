@@ -14,7 +14,6 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable{
 		/**
 		 * This event is called before the shop display item created
 		 */
-
 		public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
 			this.shop = shop;
 			this.iStack = iStack;
