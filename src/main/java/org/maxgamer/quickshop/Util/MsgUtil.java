@@ -467,7 +467,7 @@ public class MsgUtil {
 	 * on space.
 	 */
 	public static void clean() {
-		plugin.getLogger().log(Level.WARNING, "Cleaning purchase messages from database that are over a week old...");
+		plugin.getLogger().info("Cleaning purchase messages from database that are over a week old...");
 		// 604800,000 msec = 1 week.
 		long weekAgo = System.currentTimeMillis() - 604800000;
 		DatabaseHelper.cleanMessage(weekAgo);

@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import me.wiefferink.areashop.AreaShop;
+
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -75,6 +77,8 @@ public class QuickShop extends JavaPlugin {
 	public boolean priceChangeRequiresFee = false;
 	/** Whether or not to limit players shop amounts */
 	public boolean limit = false;
+	/** Only allow create shop in special region */
+	public boolean special_region_only=false;
 
 	/** The plugin OpenInv (null if not present) */
 	public Plugin openInvPlugin;
@@ -83,7 +87,8 @@ public class QuickShop extends JavaPlugin {
 	public boolean useSpout = false;
 	// private Metrics metrics;
 	QS commandExecutor =null;
-	MultiverseCore mPlugin = null;
+	public MultiverseCore mPlugin = null;
+	public AreaShop areaShopPlugin = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
@@ -96,7 +101,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		return max;
 	}
-
 	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
@@ -113,8 +117,8 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		if(getServer().getName().toLowerCase().contains("catserver")) {
-			//Send FATAL ERROR TO CatServer's users.
+		if (getServer().getName().toLowerCase().contains("catserver")) {
+			// Send FATAL ERROR TO CatServer's users.
 			getLogger().info("NOTICE: QSRR nolonger support CatServer ALERT!");
 			getLogger().info("NOTICE: From 1.3.1.9, QSRR already nolonger support CatServer");
 			getLogger().info("NOTICE: Cause this server have important license issues,");
@@ -159,10 +163,17 @@ public class QuickShop extends JavaPlugin {
 			return;
 		}
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-
 			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
 				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
 				getLogger().info("Successfully loaded MultiverseCore support!");
+			}
+		}
+		if (getConfig().getBoolean("plugin.AreaShop")) {
+			if (Bukkit.getPluginManager().getPlugin("AreaShop") != null) {
+				areaShopPlugin = (AreaShop) Bukkit.getPluginManager().getPlugin("AreaShop");
+				AreaShopListener areaShopListener = new AreaShopListener();
+				Bukkit.getPluginManager().registerEvents(areaShopListener, this);
+				getLogger().info("Successfully loaded AreaShop support!");
 			}
 		}
 		// added for compatibility reasons with OpenInv - see
@@ -193,6 +204,22 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getBoolean("shop.lock")) {
 			LockListener ll = new LockListener(this);
 			getServer().getPluginManager().registerEvents(ll, this);
+		}
+		// Impossible create shop check.
+		this.special_region_only = getConfig().getBoolean("shop.special-region-only");
+		if (special_region_only) {
+			if (areaShopPlugin == null) {
+				special_region_only=false;
+				getLogger().warning(
+						"WARNING: You enabled Special Region Only but not install AreaShop, we already auto disabled it this time.");
+				getLogger().warning("WARNING: Server will continue load in 15 secs.");
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		getServer().getPluginManager().registerEvents(new UpdateWatcher(), this);
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
@@ -269,7 +296,7 @@ public class QuickShop extends JavaPlugin {
 					Location loc = new Location(world, x, y, z);
 					/* Skip invalid shops, if we know of any */
 					step = "Checking InventoryHolder";
-					if (world != null && Util.canBeShop(loc.getBlock()) == false) {
+					if (world != null && Util.canBeShop(loc.getBlock(),null,true) == false) {
 						step = "Removeing shop in world: Because it not a correct InventoryHolder";
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
@@ -690,6 +717,14 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.bypass-owner-check", null); //Removed
 			getConfig().set("config-version", 13);
 			selectedVersion = 13;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 13) {
+			getConfig().set("plugin.AreaShop",false);
+			getConfig().set("shop.special-region-only", false);
+			getConfig().set("config-version", 14);
+			selectedVersion = 14;
 			saveConfig();
 			reloadConfig();
 		}

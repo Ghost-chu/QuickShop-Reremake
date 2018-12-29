@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 13
+config-version: 14
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -116,35 +116,14 @@ shop:
     #Ignore trade messages if shop is unlimited
     ignore-unlimited-shop-messages: false
     
+    #Enable this if you only want player create the shop in special region
+    #When you enable this, you only can create shop in AreaShop's area or have "allow-qs-shop" flags WorldGuard region. 
+    special-region-only: false
+    
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
 - Bedrock
-
-# custom-potions-name:
-  # sign:
-    # format: "%variety%type"
-    # variety:
-      # normal: ""
-      # splash: "Splash"
-      # lingering: "Ling"
-  # shopinfo:
-    # format: "%variety %type"
-    # variety:
-      # normal: ""
-      # splash: "Splash"
-      # lingering: "Lingering"
-
-  # #Custom names for potions types. Format: <PotionType>;<CustomSignName>;<CustomFullName>
-  # # PotionType: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionType.html
-  # types:
-  # - INVISIBILITY;Invis;Invisibility
-
-  # #Custom names for potion effect type. Format: <PotionEffectType>;<CustomName>
-  # # PotionEffect: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
-  # effects:
-  # - FIRE_RESISTANCE;Fire resistance
-  # - INVISIBILITY;Invisibility
 
 protect:
   #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
@@ -201,3 +180,6 @@ plugin:
     Multiverse-Core: true
     #If you have OpenInv, QSRR will enable EnderChest feature.
     OpenInv: true
+    #Enable AreaShop support
+    #Allow QuickShop detect AS unrented event and remove shop from region.
+    AreaShop: false
