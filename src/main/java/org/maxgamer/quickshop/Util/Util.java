@@ -27,6 +27,9 @@ import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import me.wiefferink.areashop.regions.RentRegion;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -132,11 +135,23 @@ public class Util {
 	/**
 	 * Returns true if the given block could be used to make a shop out of.
 	 * 
-	 * @param b
-	 *            The block to check. Possibly a chest, dispenser, etc.
+	 * @param b The block to check, Possibly a chest, dispenser, etc. player The player, can be null if onlyCheck=true, onlyCheck The option to disable check AreaShop use player.
 	 * @return True if it can be made into a shop, otherwise false.
 	 */
-	public static boolean canBeShop(Block b) {
+	public static boolean canBeShop(Block b,Player player, boolean onlyCheck) {
+		if (plugin.special_region_only&&onlyCheck==false) {
+			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
+			boolean passTheRegionCheck = false;
+			for (RentRegion rentRegion : regions) {
+				if(rentRegion.getOwner()!=player.getUniqueId()) {
+					passTheRegionCheck=true;
+					break; //If there passed, will continue to check BlockState
+				}
+			}
+			if(passTheRegionCheck==false) {
+				return false;
+			}
+		}
 		BlockState bs = b.getState();
 		if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
 			return false;

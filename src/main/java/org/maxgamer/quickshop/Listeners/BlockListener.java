@@ -73,7 +73,7 @@ public class BlockListener implements Listener {
 		}
 		Player p = e.getPlayer();
 		// If the shop was a chest
-		if (Util.canBeShop(b)) {
+		if (Util.canBeShop(b,null,true)) {
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop == null)
 				return;
@@ -261,7 +261,7 @@ public class BlockListener implements Listener {
 		
 		for (Block oBlock : event.getBlocks()) {
 			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-			if (Util.canBeShop(otherBlock)) {
+			if (Util.canBeShop(otherBlock,null,true)) {
 				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
 				if (shop!=null) {
 					event.setCancelled(true);
