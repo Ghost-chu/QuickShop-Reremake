@@ -113,7 +113,7 @@
 			<artifactId>AreaShop</artifactId>
 			<version>3.3.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/AreaShop-javadoc.jar</systemPath>
+			<systemPath>${basedir}/lib/AreaShop.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>
