@@ -138,18 +138,18 @@ public class Util {
 	 * @param b The block to check, Possibly a chest, dispenser, etc. player The player, can be null if onlyCheck=true, onlyCheck The option to disable check AreaShop use player.
 	 * @return True if it can be made into a shop, otherwise false.
 	 */
-	public static boolean canBeShop(Block b,Player player, boolean onlyCheck) {
-		if (plugin.special_region_only&&onlyCheck==false) {
+	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
+		if (plugin.special_region_only&&!onlyCheck) {
 			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
 			boolean passTheRegionCheck = false;
 			for (RentRegion rentRegion : regions) {
-				if(rentRegion.getRenter()==player.getUniqueId()) {
+				if((rentRegion.getRenter()==player)||(rentRegion.getOwner()==player)||(rentRegion.getLandlord()==player)) {
 					passTheRegionCheck=true;
 					break; //If there passed, will continue to check BlockState
 				}
 			}
 			if(!passTheRegionCheck) {
-				Util.debugLog("Not passed check for player "+player.getName()+" createing request.");
+				Util.debugLog("Not passed check for player "+player.toString()+" createing request.");
 				return false;
 			}
 		}
