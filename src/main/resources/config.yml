@@ -176,7 +176,7 @@ float:
     #false = use whitelist mode, in whitelist item will allow spawn float item
     list:
     - STONE
-    - GRASS
+    - GRASS_BLOCK
     #add item's BUKKIT NAME in there
   lore:
     enable: false
