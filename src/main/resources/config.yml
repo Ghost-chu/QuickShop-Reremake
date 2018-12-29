@@ -117,7 +117,7 @@ shop:
     ignore-unlimited-shop-messages: false
     
     #Enable this if you only want player create the shop in special region
-    #When you enable this, you only can create shop in AreaShop's area or have "allow-qs-shop" flags WorldGuard region. 
+    #When you enable this, you only can create shop in AreaShop's area
     special-region-only: false
     
 
