@@ -50,7 +50,7 @@ public class PlayerListener implements Listener {
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
-			if (!Util.canBeShop(b,null,true) && b.getType() != Material.WALL_SIGN) {
+			if (!Util.canBeShop(b,e.getPlayer(),false) && b.getType() != Material.WALL_SIGN) {
 				Util.debugLog("No shop block");
 				return;
 			}
