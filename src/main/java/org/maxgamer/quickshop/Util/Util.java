@@ -145,13 +145,20 @@ public class Util {
 			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
 			boolean passTheRegionCheck = false;
 			for (RentRegion rentRegion : regions) {
-				Util.debugLog("Region: "+rentRegion.getName());
-				Util.debugLog("Owner: "+rentRegion.getOwner().toString());
-				Util.debugLog("Renter: "+rentRegion.getRenter().toString());
-				Util.debugLog("LandLore: "+rentRegion.getLandlord().toString());
-				if((rentRegion.getRenter()==player)||(rentRegion.getOwner()==player)||(rentRegion.getLandlord()==player)) {
+				if(rentRegion.getRenter()!=null&&rentRegion.getRenter()==player) {
 					passTheRegionCheck=true;
-					break; //If there passed, will continue to check BlockState
+					Util.debugLog("Passed check: Same renter.");
+					break;
+				}
+				if(rentRegion.getOwner()!=null&&rentRegion.getOwner()==player) {
+					passTheRegionCheck=true;
+					Util.debugLog("Passed check: Same owner.");
+					break;
+				}
+				if(rentRegion.getLandlord()!=null&&rentRegion.getLandlord()==player) {
+					passTheRegionCheck=true;
+					Util.debugLog("Passed check: Same landlord.");
+					break;
 				}
 			}
 			if(!passTheRegionCheck) {
