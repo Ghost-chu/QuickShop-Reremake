@@ -140,22 +140,20 @@ public class Util {
 	 */
 	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
 		if (plugin.special_region_only&&!onlyCheck) {
-			Util.debugLog("Target UUID: "+player.toString());
-			
 			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
 			boolean passTheRegionCheck = false;
 			for (RentRegion rentRegion : regions) {
-				if(rentRegion.getRenter()!=null&&rentRegion.getRenter()==player) {
+				if(rentRegion.getRenter()!=null&&rentRegion.getRenter().toString().equals(player.toString())) {
 					passTheRegionCheck=true;
 					Util.debugLog("Passed check: Same renter.");
 					break;
 				}
-				if(rentRegion.getOwner()!=null&&rentRegion.getOwner()==player) {
+				if(rentRegion.getOwner()!=null&&rentRegion.getOwner().toString().equals(player.toString())) {
 					passTheRegionCheck=true;
 					Util.debugLog("Passed check: Same owner.");
 					break;
 				}
-				if(rentRegion.getLandlord()!=null&&rentRegion.getLandlord()==player) {
+				if(rentRegion.getLandlord()!=null&&rentRegion.getLandlord().toString().equals(player.toString())) {
 					passTheRegionCheck=true;
 					Util.debugLog("Passed check: Same landlord.");
 					break;
