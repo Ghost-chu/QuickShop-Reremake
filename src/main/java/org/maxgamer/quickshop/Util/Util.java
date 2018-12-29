@@ -140,9 +140,15 @@ public class Util {
 	 */
 	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
 		if (plugin.special_region_only&&!onlyCheck) {
+			Util.debugLog("Target UUID: "+player.toString());
+			
 			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
 			boolean passTheRegionCheck = false;
 			for (RentRegion rentRegion : regions) {
+				Util.debugLog("Region: "+rentRegion.getName());
+				Util.debugLog("Owner: "+rentRegion.getOwner().toString());
+				Util.debugLog("Renter: "+rentRegion.getRenter().toString());
+				Util.debugLog("LandLore: "+rentRegion.getLandlord().toString());
 				if((rentRegion.getRenter()==player)||(rentRegion.getOwner()==player)||(rentRegion.getLandlord()==player)) {
 					passTheRegionCheck=true;
 					break; //If there passed, will continue to check BlockState
