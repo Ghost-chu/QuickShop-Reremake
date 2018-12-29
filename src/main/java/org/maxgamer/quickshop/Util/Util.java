@@ -148,7 +148,7 @@ public class Util {
 					break; //If there passed, will continue to check BlockState
 				}
 			}
-			if(passTheRegionCheck==false) {
+			if(!passTheRegionCheck) {
 				Util.debugLog("Not passed check for player "+player.getName()+" createing request.");
 				return false;
 			}
