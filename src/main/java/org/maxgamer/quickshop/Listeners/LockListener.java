@@ -30,7 +30,7 @@ public class LockListener implements Listener {
 		Player p = e.getPlayer();
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return; // Didn't right click it, we dont care.
-		if (!Util.canBeShop(b))
+		if (!Util.canBeShop(b,null,true))
 			return; // Interacted with air
 		Shop shop = plugin.getShopManager().getShop(b.getLocation());
 		// Make sure they're not using the non-shop half of a double chest.
@@ -93,7 +93,7 @@ public class LockListener implements Listener {
 		}
 		Player p = e.getPlayer();
 		// If the chest was a chest
-		if (Util.canBeShop(b)) {
+		if (Util.canBeShop(b,null,true)) {
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop == null)
 				return; // Wasn't a shop
