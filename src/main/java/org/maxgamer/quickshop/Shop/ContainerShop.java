@@ -605,7 +605,6 @@ public class ContainerShop implements Shop {
 		try {
 			DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Refund if necessary
@@ -620,7 +619,7 @@ public class ContainerShop implements Shop {
 
 	public boolean isValid() {
 		checkDisplay();
-		return Util.canBeShop(this.getLocation().getBlock());
+		return Util.canBeShop(this.getLocation().getBlock(),null,true);
 	}
 
 	private void checkDisplay() {
