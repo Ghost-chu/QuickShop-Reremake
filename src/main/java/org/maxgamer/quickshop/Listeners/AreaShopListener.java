@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.maxgamer.quickshop.Util.*;
 
@@ -26,6 +27,7 @@ public class AreaShopListener implements Listener {
 		Iterator<Shop> shops = plugin.getShopManager().getShopIterator();
 		while (shops.hasNext()) {
 			Shop shop = shops.next();
+			java.util.List<Shop> waitingRemove = new ArrayList<Shop>();
 			if(shop.getLocation().getWorld().getName()==e.getRegion().getWorld().getName()) {
 				int bX = shop.getLocation().getBlockX();
 				int bY = shop.getLocation().getBlockY();
@@ -34,11 +36,14 @@ public class AreaShopListener implements Listener {
 					if(bY>=minY && bY<=maxY) {
 						if(bZ>=minZ && bZ<=maxZ) {
 							//In region, we need remove that shop.
-							Util.debugLog("Removed shop at:["+shop.getLocation().toString()+"] cause AreaShop region unrented!");
-							shop.delete();
+							waitingRemove.add(shop);
 						}
 					}
 				}
+			}
+			for (Shop removeShop : waitingRemove) {
+				Util.debugLog("Removed shop at:["+shop.getLocation().toString()+"] cause AreaShop region unrented!");
+				removeShop.delete();
 			}
 				
 			
