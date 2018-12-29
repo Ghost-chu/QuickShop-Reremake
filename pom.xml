@@ -56,16 +56,16 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
+			<id>sk89q-repo</id>
+			<url>http://maven.sk89q.com/repo/</url>
+		</repository>
+		<repository>
 			<id>mv-core</id>
 			<url>http://repo.onarandombox.com/content/repositories/multiverse/</url>
 		</repository>
 		<repository>
 			<id>fanciful-repo</id>
 			<url>https://github.com/mkremins/fanciful/tree/mvn-repo</url>
-		</repository>
-		<repository>
-			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
 		</repository>
 		<repository>
 			<id>vault-repo</id>
