@@ -143,12 +143,13 @@ public class Util {
 			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
 			boolean passTheRegionCheck = false;
 			for (RentRegion rentRegion : regions) {
-				if(rentRegion.getOwner()!=player.getUniqueId()) {
+				if(rentRegion.getOwner()==player.getUniqueId()) {
 					passTheRegionCheck=true;
 					break; //If there passed, will continue to check BlockState
 				}
 			}
 			if(passTheRegionCheck==false) {
+				Util.debugLog("Not passed check for player "+player.getName()+" createing request.");
 				return false;
 			}
 		}
