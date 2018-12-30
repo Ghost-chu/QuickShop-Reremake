@@ -159,7 +159,7 @@ public class Util {
 					break;
 				}
 			}
-			if(!passTheRegionCheck) {
+			if(!passTheRegionCheck && !Bukkit.getPlayer(player).hasPermission("quickship.areashop.bypass")) {
 				Util.debugLog("Not passed check for player "+player.toString()+" createing request.");
 				return false;
 			}
