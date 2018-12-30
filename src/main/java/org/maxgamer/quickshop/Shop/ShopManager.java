@@ -54,7 +54,7 @@ public class ShopManager {
 		return this.actions;
 	}
 
-	public void createShop(Shop shop) {
+	public void createShop(Shop shop,Info info) {
 		ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
 		Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
 		if(ssShopCreateEvent.isCancelled()) {
@@ -70,6 +70,49 @@ public class ShopManager {
 		} catch (Exception error) {
 			error.printStackTrace();
 			plugin.getLogger().log(Level.WARNING, "Could not create shop! Changes will revert after a reboot!");
+		}
+		//Create sign
+		if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+			Material signType = info.getSignBlock().getType();
+			if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
+				return;
+			}
+			boolean isWaterLogged = false;
+			if (info.getSignBlock().getType() == Material.WATER)
+				isWaterLogged = true;
+			final BlockState bs = info.getSignBlock().getState();
+			final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+			bs.setType(Material.WALL_SIGN);
+			if (isWaterLogged) {
+				Waterlogged waterable = (Waterlogged) bs.getBlockData();
+				waterable.setWaterlogged(true); // Looks like sign directly put in water
+			}
+			Sign sign = (Sign) bs.getData();
+			sign.setFacingDirection(bf);
+			bs.setData(sign);
+			bs.update(true);
+			shop.setSignText();
+
+			/*
+			 * Block b = shop.getLocation().getBlock(); ItemFrame iFrame = (ItemFrame)
+			 * b.getWorld().spawnEntity(b.getLocation(), EntityType.ITEM_FRAME);
+			 * 
+			 * BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.EAST,
+			 * BlockFace.SOUTH, BlockFace.WEST}; for(BlockFace face : faces){ if(face == bf)
+			 * continue; //This is the sign's location iFrame.setFacingDirection(bf, true);
+			 * //iFrame.setItem(shop.getItem()); ItemStack iStack = shop.getItem().clone();
+			 * iStack.setAmount(0); iFrame.setItem(iStack); /* Field handleField =
+			 * iFrame.getClass().getField("entity"); handleField.setAccessible(true); Object
+			 * handle = handleField.get(iFrame);
+			 * 
+			 * ItemStack bukkitStack = shop.getItem();
+			 * 
+			 * Field itemStackHandle =
+			 * 
+			 * Method setItemStack = handle.getClass().getMethod("a", Object.class);
+			 * setItemStack.
+			 */
+			// }
 		}
 	}
 
@@ -304,6 +347,7 @@ public class ShopManager {
 				PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
 			}
 		}
+		
 		return true;
 	}
 
@@ -612,7 +656,7 @@ public class ShopManager {
 				}
 			}
 			/* The shop has hereforth been successfully created */
-			createShop(shop);
+			createShop(shop,info);
 			Location loc = shop.getLocation();
 			plugin.log(p.getName() + " created a " + MsgUtil.getDisplayName(shop.getItem()) + " shop at ("
 					+ loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
@@ -627,50 +671,6 @@ public class ShopManager {
 			// Figures out which way we should put the sign on and
 			// sets its text.
 
-			/*
-			 * NOTICE: When player use /qs create command to create shop, sign will placed
-			 * to wrong facing.
-			 */
-			if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-				if (info.getSignBlock().getType() != Material.AIR && info.getSignBlock().getType() != Material.WATER)
-					return;
-				boolean isWaterLogged = false;
-				if (info.getSignBlock().getType() == Material.WATER)
-					isWaterLogged = true;
-				final BlockState bs = info.getSignBlock().getState();
-				final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-				bs.setType(Material.WALL_SIGN);
-				if (isWaterLogged) {
-					Waterlogged waterable = (Waterlogged) bs.getBlockData();
-					waterable.setWaterlogged(true); // Looks like sign directly put in water
-				}
-				final Sign sign = (Sign) bs.getData();
-				sign.setFacingDirection(bf);
-				bs.setData(sign);
-				bs.update(true);
-				shop.setSignText();
-
-				/*
-				 * Block b = shop.getLocation().getBlock(); ItemFrame iFrame = (ItemFrame)
-				 * b.getWorld().spawnEntity(b.getLocation(), EntityType.ITEM_FRAME);
-				 * 
-				 * BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.EAST,
-				 * BlockFace.SOUTH, BlockFace.WEST}; for(BlockFace face : faces){ if(face == bf)
-				 * continue; //This is the sign's location iFrame.setFacingDirection(bf, true);
-				 * //iFrame.setItem(shop.getItem()); ItemStack iStack = shop.getItem().clone();
-				 * iStack.setAmount(0); iFrame.setItem(iStack); /* Field handleField =
-				 * iFrame.getClass().getField("entity"); handleField.setAccessible(true); Object
-				 * handle = handleField.get(iFrame);
-				 * 
-				 * ItemStack bukkitStack = shop.getItem();
-				 * 
-				 * Field itemStackHandle =
-				 * 
-				 * Method setItemStack = handle.getClass().getMethod("a", Object.class);
-				 * setItemStack.
-				 */
-				// }
-			}
 			if (shop instanceof ContainerShop) {
 				ContainerShop cs = (ContainerShop) shop;
 				if (cs.isDoubleShop()) {
