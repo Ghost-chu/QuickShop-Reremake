@@ -50,7 +50,7 @@ public class PlayerListener implements Listener {
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
-			if (!Util.canBeShop(b,e.getPlayer().getUniqueId(),false) && b.getType() != Material.WALL_SIGN) {
+			if (!Util.canBeShop(b,null,true) && b.getType() != Material.WALL_SIGN) {
 				Util.debugLog("No shop block");
 				return;
 			}
@@ -133,6 +133,10 @@ public class PlayerListener implements Listener {
 						Util.debugLog(""+p.hasPermission("quickshop.create.enderchest"));
 						return;
 					}
+				}
+				if (!Util.canBeShop(b,e.getPlayer().getUniqueId(),false) && b.getType() != Material.WALL_SIGN) {
+					Util.debugLog("Can't create shop there");
+					return;
 				}
 				// Finds out where the sign should be placed for the shop
 				Block last = null;
