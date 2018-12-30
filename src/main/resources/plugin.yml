@@ -40,6 +40,8 @@ permissions:
         description: Allows a Staff Member to change the price of someone elses shop
     quickshop.setowner:
         description: Allows a Staff Member to change the owner of any shop
+    quickshio.areashop.bypass:
+        description: If you enable special zone only and have this permission, the special zone only will ignore you limit.
     quickshop.find:
         description: Allows a player to locate the nearest shop of a specific item type. Works in a 3 chunk radius.
         default: true
