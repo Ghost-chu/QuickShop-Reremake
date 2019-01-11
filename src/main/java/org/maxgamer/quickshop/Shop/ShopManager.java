@@ -28,7 +28,6 @@ import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Events.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 

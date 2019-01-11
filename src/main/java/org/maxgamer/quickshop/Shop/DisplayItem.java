@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Events.ShopDisplayItemSpawnEvent;
 
 import java.util.ArrayList;
 import java.util.List;
