@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.Events;
+package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

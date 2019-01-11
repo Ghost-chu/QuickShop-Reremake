@@ -203,7 +203,6 @@ public class QuickShop extends JavaPlugin {
 			for (String key : limitCfg.getKeys(true)) {
 				limits.put(key, limitCfg.getInt(key));
 			}
-			getLogger().info(limits.toString());
 		}
 		setupDBonEnableding = true;
 		setupDatabase();
@@ -352,8 +351,7 @@ public class QuickShop extends JavaPlugin {
 						try {
 							bksqlfile.createNewFile();
 						} catch (IOException e1) {
-							e1.printStackTrace();
-							getLogger().severe("Failed to backup! (Create)");
+
 						}
 						FileChannel inputChannel = null;
 						FileChannel outputChannel = null;
@@ -364,8 +362,7 @@ public class QuickShop extends JavaPlugin {
 							inputChannel.close();
 							outputChannel.close();
 						} catch (Exception e3) {
-							e3.printStackTrace();
-							getLogger().severe("Failed to backup! (Copy)");
+
 							inputChannel = null;
 							outputChannel = null;
 						}

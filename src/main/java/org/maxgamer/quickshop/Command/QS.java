@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Database.SQLiteCore;
-import org.maxgamer.quickshop.Events.QSCommandEvent;
+import org.maxgamer.quickshop.PluginEvents.QSCommandEvent;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
