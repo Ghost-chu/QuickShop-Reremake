@@ -43,8 +43,6 @@ public class BlockListener implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void onPlace(BlockPlaceEvent e) {
-		if (e.isCancelled())
-			return;
 		BlockState bs = e.getBlock().getState();
 		if (bs instanceof DoubleChest == false)
 			return;
@@ -207,9 +205,6 @@ public class BlockListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onExplode(EntityExplodeEvent e) {
-		if (e.isCancelled()) {
-			return;
-		}
 		for (int i = 0; i < e.blockList().size(); i++) {
 			Block b = e.blockList().get(i);
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -226,9 +221,6 @@ public class BlockListener implements Listener {
 	}
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockExplode(BlockExplodeEvent e) {
-		if (e.isCancelled()) {
-			return;
-		}
 		for (int i = 0; i < e.blockList().size(); i++) {
 			Block b = e.blockList().get(i);
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -249,7 +241,6 @@ public class BlockListener implements Listener {
 		if (!plugin.display) {
 			return;
 		}
-		
 		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
 		Shop shop = plugin.getShopManager().getShop(block.getLocation());
 		if (shop != null) {
