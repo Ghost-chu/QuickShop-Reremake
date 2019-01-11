@@ -30,7 +30,6 @@ import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Database.SQLiteCore;
-import org.maxgamer.quickshop.PluginEvents.QSCommandEvent;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -655,8 +654,6 @@ public class QS implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		QSCommandEvent commandEvent = new QSCommandEvent(sender, cmd, commandLabel, args);
-		if(commandEvent.isCancelled())return true;
 		if (args.length > 0) {
 			String subArg = args[0].toLowerCase();
 			if (subArg.equals("unlimited")) {
