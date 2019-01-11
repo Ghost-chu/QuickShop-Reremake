@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import me.wiefferink.areashop.AreaShop;
 
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -77,8 +76,6 @@ public class QuickShop extends JavaPlugin {
 	public boolean priceChangeRequiresFee = false;
 	/** Whether or not to limit players shop amounts */
 	public boolean limit = false;
-	/** Only allow create shop in special region */
-	public boolean special_region_only=false;
 
 	/** The plugin OpenInv (null if not present) */
 	public Plugin openInvPlugin;
@@ -88,7 +85,6 @@ public class QuickShop extends JavaPlugin {
 	// private Metrics metrics;
 	QS commandExecutor =null;
 	public MultiverseCore mPlugin = null;
-	public AreaShop areaShopPlugin = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
@@ -168,14 +164,6 @@ public class QuickShop extends JavaPlugin {
 				getLogger().info("Successfully loaded MultiverseCore support!");
 			}
 		}
-		if (getConfig().getBoolean("plugin.AreaShop")) {
-			if (Bukkit.getPluginManager().getPlugin("AreaShop") != null) {
-				areaShopPlugin = (AreaShop) Bukkit.getPluginManager().getPlugin("AreaShop");
-				AreaShopListener areaShopListener = new AreaShopListener();
-				Bukkit.getPluginManager().registerEvents(areaShopListener, this);
-				getLogger().info("Successfully loaded AreaShop support!");
-			}
-		}
 		// added for compatibility reasons with OpenInv - see
 		// https://github.com/KaiKikuchi/QuickShop/issues/139
 		if (getConfig().getBoolean("plugin.OpenInv")) {
@@ -204,22 +192,6 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getBoolean("shop.lock")) {
 			LockListener ll = new LockListener(this);
 			getServer().getPluginManager().registerEvents(ll, this);
-		}
-		// Impossible create shop check.
-		this.special_region_only = getConfig().getBoolean("shop.special-region-only");
-		if (special_region_only) {
-			if (areaShopPlugin == null) {
-				special_region_only=false;
-				getLogger().warning(
-						"WARNING: You enabled Special Region Only but not install AreaShop, we already auto disabled it this time.");
-				getLogger().warning("WARNING: Server will continue load in 15 secs.");
-				try {
-					Thread.sleep(15000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
 		getServer().getPluginManager().registerEvents(new UpdateWatcher(), this);
 		ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
@@ -728,7 +700,14 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
-		
+		if (selectedVersion == 14) {
+			getConfig().set("plugin.AreaShop",null);
+			getConfig().set("shop.special-region-only", null);
+			getConfig().set("config-version", 15);
+			selectedVersion = 15;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
