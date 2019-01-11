@@ -1,34 +1,29 @@
-package org.maxgamer.quickshop.Shop;
+package org.maxgamer.quickshop.Events;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.maxgamer.quickshop.Shop.Shop;
 
-/**
- * This event is called before the shop creation request is sent. E.g. A player
- * clicks a chest, this event is thrown, if successful, the player is asked how
- * much they wish to trade for.
- */
-public class ShopPreCreateEvent extends Event implements Cancellable {
+public class ShopCreateEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
+	private Shop shop;
 	private boolean cancelled;
 	private Player p;
-	private Location loc;
 
-	public ShopPreCreateEvent(Player p, Location loc) {
-		this.loc = loc;
+	public ShopCreateEvent(Shop shop, Player p) {
+		this.shop = shop;
 		this.p = p;
 	}
 
 	/**
-	 * The location of the shop that will be created.
+	 * The shop to be created
 	 * 
-	 * @return The location of the shop that will be created.
+	 * @return The shop to be created
 	 */
-	public Location getLocation() {
-		return loc;
+	public Shop getShop() {
+		return this.shop;
 	}
 
 	/**
