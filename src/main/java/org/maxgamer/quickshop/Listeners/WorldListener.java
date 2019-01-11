@@ -27,7 +27,8 @@ public class WorldListener implements Listener {
 		/* *************************************
 		 * This listener fixes any broken world references. Such as hashmap
 		 * lookups will fail, because the World reference is different, but the
-		 * world value is the same. ************************************
+		 * world value is the same.
+		 *  ************************************
 		 */
 		World world = e.getWorld();
 		// New world data
