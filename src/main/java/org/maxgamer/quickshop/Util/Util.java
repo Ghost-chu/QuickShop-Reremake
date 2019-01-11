@@ -28,8 +28,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import me.wiefferink.areashop.regions.RentRegion;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -139,31 +137,6 @@ public class Util {
 	 * @return True if it can be made into a shop, otherwise false.
 	 */
 	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
-		if (plugin.special_region_only&&!onlyCheck) {
-			List<RentRegion> regions = me.wiefferink.areashop.tools.Utils.getImportantRentRegions(b.getLocation());
-			boolean passTheRegionCheck = false;
-			for (RentRegion rentRegion : regions) {
-				if(rentRegion.getRenter()!=null&&rentRegion.getRenter().toString().equals(player.toString())) {
-					passTheRegionCheck=true;
-					Util.debugLog("Passed check: Same renter.");
-					break;
-				}
-				if(rentRegion.getOwner()!=null&&rentRegion.getOwner().toString().equals(player.toString())) {
-					passTheRegionCheck=true;
-					Util.debugLog("Passed check: Same owner.");
-					break;
-				}
-				if(rentRegion.getLandlord()!=null&&rentRegion.getLandlord().toString().equals(player.toString())) {
-					passTheRegionCheck=true;
-					Util.debugLog("Passed check: Same landlord.");
-					break;
-				}
-			}
-			if(!passTheRegionCheck && !Bukkit.getPlayer(player).hasPermission("quickship.areashop.bypass")) {
-				Util.debugLog("Not passed check for player "+player.toString()+" createing request.");
-				return false;
-			}
-		}
 		BlockState bs = b.getState();
 		if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
 			return false;
