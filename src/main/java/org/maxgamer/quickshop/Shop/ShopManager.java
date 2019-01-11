@@ -331,13 +331,6 @@ public class ShopManager {
 			if (pie.isCancelled()) {
 				return false;
 			}
-			if(!plugin.special_region_only) {
-			BlockBreakEvent be = new BlockBreakEvent(b, p);
-			Bukkit.getPluginManager().callEvent(be);
-			if (be.isCancelled()) {
-				return false;
-			}
-			}
 			ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
 			Bukkit.getPluginManager().callEvent(spce);
 			if (spce.isCancelled()) {
@@ -571,13 +564,11 @@ public class ShopManager {
 		try {
 			// Checking the shop can be created
 			Util.debugLog("calling for protection check...");
-			if(!plugin.special_region_only) {
 			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
 			Bukkit.getPluginManager().callEvent(be);
 			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
-			}
 			}
 			if (plugin.getShopManager().getShop(info.getLocation()) != null) {
 				p.sendMessage(MsgUtil.getMessage("shop-already-owned"));
