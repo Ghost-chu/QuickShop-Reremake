@@ -42,9 +42,9 @@ public class MsgUtil {
 	private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
 	private static boolean Inited;
 	private static YamlConfiguration messagei18n;
-
+	static File messageFile;
 	public static void loadCfgMessages(String...reload ) {
-		File messageFile = new File(plugin.getDataFolder(), "messages.yml");
+		messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
 			plugin.getLogger().info("Creating messages.yml");
 			plugin.saveResource("messages.yml", true);
@@ -59,7 +59,11 @@ public class MsgUtil {
 			messagei18n.set("language-version", 1);
 		}
 		if(reload.length==0)
-			updateMessages(messagei18n.getInt("language-version"));
+			try {
+				updateMessages(messagei18n.getInt("language-version"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		
 		//Print language copyright infomation
 		
@@ -79,7 +83,7 @@ public class MsgUtil {
 		}
 		Util.parseColours(messagei18n);
 	}
-	public static void updateMessages(int selectedVersion) {
+	public static void updateMessages(int selectedVersion) throws IOException {
 		if (selectedVersion == 1) {
 			messagei18n.set("shop-not-exist", "&cThere had no shop.");
 			messagei18n.set("controlpanel.infomation", "&aShop Control Panel:");
@@ -101,6 +105,7 @@ public class MsgUtil {
 			messagei18n.set("controlpanel.remove-hover", "&eClick to remove this shop.");
 			messagei18n.set("language-version", 2);
 			selectedVersion = 2;
+			messagei18n.save(messageFile);
 		}
 		if (selectedVersion == 2) {
 			messagei18n.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
@@ -108,6 +113,7 @@ public class MsgUtil {
 			messagei18n.set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
 			messagei18n.set("language-version", 3);
 			selectedVersion = 3;
+			messagei18n.save(messageFile);
 		}
 		if (selectedVersion == 3) {
 			messagei18n.set("signs.unlimited", "Unlimited");
@@ -125,12 +131,20 @@ public class MsgUtil {
 			messagei18n.set("controlpanel.sign.refill.line4", "at first line");
 			messagei18n.set("language-version", 4);
 			selectedVersion = 4;
+			messagei18n.save(messageFile);
 		}
 		if (selectedVersion == 4) {
 			messagei18n.set("signs.unlimited", "Unlimited");
 			messagei18n.set("controlpanel.sign",null);
 			messagei18n.set("language-version", 5);
 			selectedVersion = 5;
+			messagei18n.save(messageFile);
+		}
+		if (selectedVersion == 5) {
+			messagei18n.set("command.description.fetchmessage", "&eFetch unread shop message");
+			messagei18n.set("language-version", 6);
+			selectedVersion = 6;
+			messagei18n.save(messageFile);
 		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
