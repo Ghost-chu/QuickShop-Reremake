@@ -142,6 +142,7 @@ public class MsgUtil {
 		}
 		if (selectedVersion == 5) {
 			messagei18n.set("command.description.fetchmessage", "&eFetch unread shop message");
+			messagei18n.set("nothing-to-flush", "&aYou had no new shop message.");
 			messagei18n.set("language-version", 6);
 			selectedVersion = 6;
 			messagei18n.save(messageFile);
@@ -504,6 +505,8 @@ public class MsgUtil {
 				}
 				plugin.getDB().execute("DELETE FROM messages WHERE owner = ?", pName.toString());
 				msgs.clear();
+			}else {
+				p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
 			}
 			return true;
 		}
