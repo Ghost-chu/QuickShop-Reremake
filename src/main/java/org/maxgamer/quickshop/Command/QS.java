@@ -748,7 +748,8 @@ public class QS implements CommandExecutor{
 							+ " chunks spread over " + worlds + " worlds.");
 					sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ");
 					sender.sendMessage(ChatColor.GREEN + "" + nostock
-							+ " selling shops (excluding doubles) which will be removed by /qs clean.");
+							+ " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
+					sender.sendMessage(ChatColor.GREEN + "QuickShop "+QuickShop.getVersion());
 					return true;
 				}
 				sender.sendMessage(MsgUtil.getMessage("no-permission"));
@@ -840,6 +841,7 @@ public class QS implements CommandExecutor{
 		}
 	}
 	public void sendHelp(CommandSender s) {
+
 		s.sendMessage(MsgUtil.getMessage("command.description.title"));
 		if (s.hasPermission("quickshop.unlimited"))
 			s.sendMessage(ChatColor.GREEN + "/qs unlimited" + ChatColor.YELLOW + " - "
@@ -878,4 +880,5 @@ public class QS implements CommandExecutor{
 //			s.sendMessage(ChatColor.GREEN + "/qs export mysql|sqlite" + ChatColor.YELLOW + " - "
 //					+ MsgUtil.getMessage("command.description.export"));
 	}
+	
 }

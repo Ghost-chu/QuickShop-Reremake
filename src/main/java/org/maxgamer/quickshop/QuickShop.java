@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
+import org.maxgamer.quickshop.Command.Tab;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.Economy;
@@ -91,6 +92,7 @@ public class QuickShop extends JavaPlugin {
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
 	public String dbPrefix="";
+	private Tab commandTabCompleter;
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -398,6 +400,8 @@ public class QuickShop extends JavaPlugin {
 		// Command handlers
 		commandExecutor = new QS(this);
 		getCommand("qs").setExecutor(commandExecutor);
+		commandTabCompleter = new Tab(this);
+		getCommand("qs").setTabCompleter(commandTabCompleter);
 		if (getConfig().getInt("shop.find-distance") > 100) {
 			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
 		}
@@ -530,7 +534,32 @@ public class QuickShop extends JavaPlugin {
 
 		UpdateWatcher.init();
 	}
-
+	@Override	
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		    getLogger().info("YAY Tab!");
+	        List<String> commands = new ArrayList<>();
+	        commands.add("unlimited");
+			commands.add("buy");
+			commands.add("sell");
+			commands.add("create");
+			commands.add("price");
+			commands.add("clean");
+			commands.add("range");
+			commands.add("refill");
+			commands.add("empty");
+			commands.add("setowner");
+			commands.add("fetchmessage");
+	        if (args != null && args.length == 1) {
+	            List<String> list = new ArrayList<>();
+	            for (String s : commands) {
+	                if (s.startsWith(args[0])) {
+	                    list.add(s);
+	                }
+	            }
+	            return list;
+	        }
+	        return null;
+	    }
 	public boolean setupDatabase() {
 		try {
 			ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
@@ -710,8 +739,10 @@ public class QuickShop extends JavaPlugin {
 			reloadConfig();
 		}
 		if (selectedVersion == 15) {
+			getConfig().set("ongoingfee",null);
 			getConfig().set("shop.display-item-use-name",null);
 			getConfig().set("shop.display-item-show-name",false);
+			getConfig().set("shop.auto-fetch-shop-messages",true);
 			getConfig().set("config-version", 16);
 			selectedVersion = 16;
 			saveConfig();
@@ -840,36 +871,4 @@ public class QuickShop extends JavaPlugin {
 		return QuickShop.instance.getDescription().getVersion();
 	}
 	
-	
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			args[i] = args[i].toLowerCase();
-			//Make all is low case
-		}
-		
-		if(args!=null&&args.length==1) {
-			ArrayList<String> tabList = new ArrayList<>();
-				tabList.add("unlimited");
-				tabList.add("buy");
-				tabList.add("sell");
-				tabList.add("create");
-				tabList.add("price");
-				tabList.add("clean");
-				tabList.add("range");
-				tabList.add("refill");
-				tabList.add("empty");
-				tabList.add("setowner");
-				tabList.add("fetchmessage");
-			ArrayList<String> finalTabList = new ArrayList<>();
-			for (String s : tabList) {
-				if (s.startsWith(args[0])) {
-                    finalTabList.add(s);
-                }
-			}
-			return finalTabList;	
-		}else {
-			return null;
-		}
-	}
 }

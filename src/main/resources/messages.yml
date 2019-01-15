@@ -59,6 +59,7 @@ owner-bypass-check: "&eBypass all check,Trade successful! (You are shop owner)"
 reached-maximum-can-create: "&cYou have already created a maximum of {0}/{1} shops!"
 restricted-prices: "&cRestricted prices for {0}: min {1} , max {2}"
 no-enough-money-to-keep-shops: "&cYou had no money to keep your shops! All shops removed..."
+nothing-to-flush: "&aYou had no new shop message."
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
     successfully-sold: "&aSuccessfully Sold:"
