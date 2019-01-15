@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 14
+config-version: 15
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -102,8 +102,8 @@ shop:
     #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
     display-items-check-ticks: 1200
     
-    #Use name SafeGuard, Highly recommand turn on, If have trouble with other DropItem holo displauy, you can disabled it in there. BUT MAYBE CAUSE SOME ISSUES.
-    display-item-use-name: true
+    #Like hologram, show item's name on item.
+    display-item-show-name: true
     
     #When someone uses /qs find <item>, how far should we search in blocks?
     #This command lets users shop quickly without wasting time searching

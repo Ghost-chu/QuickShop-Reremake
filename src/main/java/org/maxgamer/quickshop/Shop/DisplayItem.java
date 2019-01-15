@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.MsgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,9 +194,20 @@ public class DisplayItem {
 		item.setPickupDelay(Integer.MAX_VALUE);
 		ItemMeta iMeta = item.getItemStack().getItemMeta();
 		
-		if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-			item.setCustomName("QuickShop");
-			iMeta.setDisplayName("QuickShop");
+//		if(plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+//			item.setCustomName("QuickShop");
+//			iMeta.setDisplayName("QuickShop");
+//		}
+//      Removed cause new features
+		if(plugin.getConfig().getBoolean("display-item-show-name")) {
+			if(iStack.getItemMeta().hasDisplayName()) {
+				item.setCustomName(item.getItemStack().getItemMeta().getDisplayName());
+				iMeta.setDisplayName(item.getItemStack().getItemMeta().getDisplayName());
+			}else {
+				item.setCustomName(MsgUtil.getDisplayName(item.getItemStack()));
+				iMeta.setDisplayName(MsgUtil.getDisplayName(item.getItemStack()));
+			}
+			item.setCustomNameVisible(true);
 		}
 		item.setPortalCooldown(Integer.MAX_VALUE);
 		item.setSilent(true);
