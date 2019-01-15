@@ -63,3 +63,6 @@ permissions:
     quickshop.about:
         description: Show QuickShop about message
         default: true
+    quickshop.fetchmessage:
+        description: Use command /qs fetchmessage to manual fetch shop message from database. Not effect auto fetch if you turn on auto fetch...
+        default: true    
