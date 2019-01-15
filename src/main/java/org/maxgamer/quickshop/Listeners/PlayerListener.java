@@ -14,7 +14,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
@@ -207,40 +206,39 @@ public class PlayerListener implements Listener {
 	@EventHandler(ignoreCancelled=true)
 	public void onJoin(PlayerJoinEvent e) {
 		// Notify the player any messages they were sent
-		Bukkit.getScheduler().runTaskLater(QuickShop.instance, new Runnable() {
-			@Override
-			public void run() {
-				MsgUtil.flush(e.getPlayer());
-				Util.inventoryCheck(e.getPlayer().getInventory());
-			}
-		}, 60);
+		if(plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
+			Bukkit.getScheduler().runTaskLater(QuickShop.instance, new Runnable() {
+				@Override
+				public void run() {
+					MsgUtil.flush(e.getPlayer());
+					Util.inventoryCheck(e.getPlayer().getInventory());
+				}
+			}, 60);
+		}
+		
 	}
 
 	@EventHandler(ignoreCancelled=true)
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		// Remove them from the menu
 		plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
-		QS.signPlayerCache.remove(e.getPlayer().getUniqueId());
 	}
 	@EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
 	public void onInventoryClose(InventoryCloseEvent e) {
-		Util.debugLog("Inventory closed.");
 		try {
 			Inventory inventory = e.getInventory();
 			if (inventory == null) {
 				Util.debugLog("Inventory: null");
 				return;
 			}
-			Util.debugLog("Inventory: "+inventory.toString());
 			Location location = inventory.getLocation();
 			if (location == null) {
 				Util.debugLog("Location: null");
 				return;
 			}
-			Util.debugLog("Location: "+location.toString());
 			Shop shop = plugin.getShopManager().getShop(location);
 			if (shop == null) {
-				Util.debugLog("Shop: null");
+				Util.debugLog("Shop: No shop at there.");
 				return;
 			}
 			Util.debugLog("Shop: "+shop.toString());
