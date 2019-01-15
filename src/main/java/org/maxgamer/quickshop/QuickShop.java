@@ -444,7 +444,7 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getBoolean("disabled-metrics") != true) {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
-			String serverName = Bukkit.getServerName();
+			String serverName = Bukkit.getServer().getName();
 			Metrics metrics = new Metrics(this);
 			// Use internal Metric class not Maven for solve plugin name issues
 			String display_Items;
@@ -702,6 +702,14 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.special-region-only", null);
 			getConfig().set("config-version", 15);
 			selectedVersion = 15;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 15) {
+			getConfig().set("shop.display-item-use-name",null);
+			getConfig().set("shop.display-item-show-name",false);
+			getConfig().set("config-version", 16);
+			selectedVersion = 16;
 			saveConfig();
 			reloadConfig();
 		}

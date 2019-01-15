@@ -752,8 +752,7 @@ public class Util {
 						if (DisplayItem.checkShopItem(inv.getItem(i))) {
 							// Found Item and remove it.
 							inv.setItem(i, new ItemStack(Material.AIR, 0));
-							plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
-							Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
+							Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+inv.getLocation().toString()+")");
 						}
 				}catch (Throwable t){
 				}
