@@ -19,7 +19,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
@@ -39,7 +38,7 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-public class QS implements CommandExecutor,Listener{
+public class QS implements CommandExecutor{
 	QuickShop plugin;
 
 	public QS(QuickShop plugin) {

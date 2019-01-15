@@ -389,8 +389,20 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("Could not load shops Because SQLException.");
 		}
 		getLogger().info("Loaded " + count + " shops.");
-		// Register events
+		
+		
+		if (getConfig().getBoolean("shop.lock")) {
+			LockListener lockListener = new LockListener(this);
+			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
+		}
+		// Command handlers
+		commandExecutor = new QS(this);
+		getCommand("qs").setExecutor(commandExecutor);
+		if (getConfig().getInt("shop.find-distance") > 100) {
+			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+		}
 		getLogger().info("Registering Listeners");
+		// Register events
 		blockListener = new BlockListener(this);
 		playerListener = new PlayerListener(this);
 		worldListener = new WorldListener(this);
@@ -403,17 +415,7 @@ public class QuickShop extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
-		if (getConfig().getBoolean("shop.lock")) {
-			LockListener lockListener = new LockListener(this);
-			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
-		}
-		// Command handlers
-		commandExecutor = new QS(this);
-		getCommand("qs").setExecutor(commandExecutor);
-		if (getConfig().getInt("shop.find-distance") > 100) {
-			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
-		}
-
+		
 		if (display && displayItemCheckTicks > 0) {
 			new BukkitRunnable() {
 				@Override
@@ -837,52 +839,35 @@ public class QuickShop extends JavaPlugin {
 	public static String getVersion() {
 		return QuickShop.instance.getDescription().getVersion();
 	}
+	
+	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			args[i] = args[i].toLowerCase();
 			//Make all is low case
 		}
-		LinkedList<String> tabList = new LinkedList<>();
-		if(args.length==1) {
-			if (sender.hasPermission("quickshop.unlimited"))
+		
+		if(args!=null&&args.length==1) {
+			ArrayList<String> tabList = new ArrayList<>();
 				tabList.add("unlimited");
-			if (sender.hasPermission("quickshop.setowner"))
-				tabList.add("setowner");
-			if (sender.hasPermission("quickshop.create.buy"))
 				tabList.add("buy");
-			if (sender.hasPermission("quickshop.create.sell")) {
 				tabList.add("sell");
 				tabList.add("create");
-			}
-			if (sender.hasPermission("quickshop.create.changeprice"))
 				tabList.add("price");
-			if (sender.hasPermission("quickshop.clean"))
 				tabList.add("clean");
-			if (sender.hasPermission("quickshop.find"))
 				tabList.add("range");
-			if (sender.hasPermission("quickshop.refill"))
 				tabList.add("refill");
-			if (sender.hasPermission("quickshop.empty"))
 				tabList.add("empty");
-			if (sender.hasPermission("quickshop.fetchmessage"))
+				tabList.add("setowner");
 				tabList.add("fetchmessage");
-			return tabList;
-		}else if(args.length==2) {
-			if (args[1].equals("create")&&sender.hasPermission("quickshop.create.sell")) {
-				tabList.add("[price]");
+			ArrayList<String> finalTabList = new ArrayList<>();
+			for (String s : tabList) {
+				if (s.startsWith(args[0])) {
+                    finalTabList.add(s);
+                }
 			}
-			if (args[1].equals("price")&&sender.hasPermission("quickshop.create.changeprice")) {
-				tabList.add("[price]");
-			}
-			if (args[1].equals("find")&&sender.hasPermission("quickshop.find")) {
-				tabList.add("[range]");
-			}
-			if (args[1].equals("refill")&&sender.hasPermission("quickshop.refill")) {
-				tabList.add("[amount]");
-			}
-			return tabList;
-			
+			return finalTabList;	
 		}else {
 			return null;
 		}
