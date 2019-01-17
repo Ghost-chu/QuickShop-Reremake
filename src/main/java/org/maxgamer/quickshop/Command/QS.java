@@ -739,10 +739,12 @@ public class QS implements CommandExecutor{
 		boolean debug = plugin.getConfig().getBoolean("dev-mode");
 		if(debug) {
 			plugin.getConfig().set("dev-mode", false);
+			plugin.saveConfig();
 			sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging"));
 			reload(sender);
 		}else {
 			plugin.getConfig().set("dev-mode", true);
+			plugin.saveConfig();
 			sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
 			reload(sender);
 		}
@@ -779,8 +781,9 @@ public class QS implements CommandExecutor{
 			sender.sendMessage(ChatColor.GREEN + "" + nostock
 					+ " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
 			sender.sendMessage(ChatColor.GREEN + "QuickShop "+QuickShop.getVersion());
-		}
-		sender.sendMessage(MsgUtil.getMessage("no-permission"));
+		}else {
+			sender.sendMessage(MsgUtil.getMessage("no-permission"));
+		}	
 	}
 
 
