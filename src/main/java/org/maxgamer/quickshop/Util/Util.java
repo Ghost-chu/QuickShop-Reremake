@@ -698,7 +698,6 @@ public class Util {
 	}
 	/**
 	 * @param iStack
-	 * @return
 	 */
 	public static String getPotiondata(ItemStack iStack) {
 		if((iStack.getType() != Material.POTION)==true && (iStack.getType() !=Material.LINGERING_POTION)==true && (iStack.getType() !=Material.SPLASH_POTION)==true){
@@ -750,7 +749,6 @@ public class Util {
 	}
 	/**
 	 * Call this to check items in inventory and remove it.
-	 * @return
 	 */
 	public static void inventoryCheck(Inventory inv){
 				try{
@@ -798,7 +796,6 @@ public class Util {
     /**
 	 * Print debug log when plugin running on dev mode.
 	 * @param String logs
-	 * @return
 	 */
 	public static void debugLog(String logs)	{
 		if(plugin.getConfig().getBoolean("dev-mode")) {
