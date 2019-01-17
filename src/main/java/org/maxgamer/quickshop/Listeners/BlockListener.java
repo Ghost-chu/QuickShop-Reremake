@@ -103,8 +103,13 @@ public class BlockListener implements Listener {
 			// If they're in creative and not the owner, don't let them
 			// (accidents happen)
 			if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+				//Check SuperTool
+				if(p.getInventory().getItemInMainHand().getType()==Material.GOLDEN_AXE) {
+					p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool"));
+					return;
+				}
 				e.setCancelled(true);
-				p.sendMessage(MsgUtil.getMessage("no-creative-break"));
+				p.sendMessage(MsgUtil.getMessage("no-creative-break",MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
 				return;
 			}
 			if (e.isCancelled()) {
