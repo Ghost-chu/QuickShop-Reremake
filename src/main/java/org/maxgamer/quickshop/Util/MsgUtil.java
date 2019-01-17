@@ -151,8 +151,8 @@ public class MsgUtil {
 			messagei18n.set("command.description.debug", "&eSwitch to developer mode");
 			messagei18n.set("break-shop-use-supertool", "&eYou break the shop by use SuperTool.");
 			messagei18n.set("no-creative-break", "&cYou cannot break other players shops in creative mode.  Use survival instead or use SuperTool ({0}).");
-			messagei18n.set("command.now-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
-			messagei18n.set("command.now-nolonger-debuging", "&aSuccessfully switch to developer mode, Reloading QuickShop...");
+			messagei18n.set("command.now-debuging", "&aSuccessfully switch to developer mode, Reloading QuickShop...");
+			messagei18n.set("command.now-nolonger-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
 			messagei18n.set("language-version", 7);
 			selectedVersion = 7;
 			messagei18n.save(messageFile);
