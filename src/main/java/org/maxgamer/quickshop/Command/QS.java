@@ -138,10 +138,8 @@ public class QS implements CommandExecutor{
 				try {
 					DatabaseHelper.removeShop(plugin.getDB(), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Bukkit.getWorld(args[1]).getName());
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
@@ -810,7 +808,6 @@ public class QS implements CommandExecutor{
 			shop.onUnload();
 			sender.sendMessage(MsgUtil.getMessage("success-removed-shop"));
 		} catch (NumberFormatException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
