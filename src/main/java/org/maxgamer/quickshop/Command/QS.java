@@ -690,8 +690,10 @@ public class QS implements CommandExecutor{
 				return true;
 			} else if (subArg.equals("remove")) {
 				remove(sender, args);
+				return true;
 			} else if (subArg.startsWith("silentremove")) {
 				silentRemove(sender, args);
+				return true;
 			} else if (subArg.equals("refill")) {
 				refill(sender, args);
 				return true;
@@ -716,43 +718,14 @@ public class QS implements CommandExecutor{
 			} else if (subArg.equals("remove")) {
 				remover(sender, args);
 				return true;
+			} else if (subArg.equals("debug")) {
+				debug(sender, args);
+				return true;
 			} else if (subArg.equals("fetchmessage")) {
 				fetchMessage(sender, args);
 				return true;
 			} else if (subArg.equals("info")) {
-				if (sender.hasPermission("quickshop.info")) {
-					int buying, selling, doubles, chunks, worlds;
-					buying = selling = doubles = chunks = worlds = 0;
-					int nostock = 0;
-					for (HashMap<ShopChunk, HashMap<Location, Shop>> inWorld : plugin.getShopManager().getShops()
-							.values()) {
-						worlds++;
-						for (HashMap<Location, Shop> inChunk : inWorld.values()) {
-							chunks++;
-							for (Shop shop : inChunk.values()) {
-								if (shop.isBuying()) {
-									buying++;
-								} else if (shop.isSelling()) {
-									selling++;
-								}
-								if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleShop()) {
-									doubles++;
-								} else if (shop.isSelling() && shop.getRemainingStock() == 0) {
-									nostock++;
-								}
-							}
-						}
-					}
-					sender.sendMessage(ChatColor.RED + "QuickShop Statistics...");
-					sender.sendMessage(ChatColor.GREEN + "" + (buying + selling) + " shops in " + chunks
-							+ " chunks spread over " + worlds + " worlds.");
-					sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ");
-					sender.sendMessage(ChatColor.GREEN + "" + nostock
-							+ " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
-					sender.sendMessage(ChatColor.GREEN + "QuickShop "+QuickShop.getVersion());
-					return true;
-				}
-				sender.sendMessage(MsgUtil.getMessage("no-permission"));
+				info(sender,args);
 				return true;
 			}
 		} else {
@@ -764,6 +737,55 @@ public class QS implements CommandExecutor{
 		sendHelp(sender);
 		return true;
 	}
+	private void debug(CommandSender sender, String[] args) {
+		boolean debug = plugin.getConfig().getBoolean("dev-mode");
+		if(debug) {
+			plugin.getConfig().set("dev-mode", false);
+			sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging"));
+			reload(sender);
+		}else {
+			plugin.getConfig().set("dev-mode", true);
+			sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
+			reload(sender);
+		}
+	}
+
+	private void info(CommandSender sender, String[] args) {
+		if (sender.hasPermission("quickshop.info")) {
+			int buying, selling, doubles, chunks, worlds;
+			buying = selling = doubles = chunks = worlds = 0;
+			int nostock = 0;
+			for (HashMap<ShopChunk, HashMap<Location, Shop>> inWorld : plugin.getShopManager().getShops()
+					.values()) {
+				worlds++;
+				for (HashMap<Location, Shop> inChunk : inWorld.values()) {
+					chunks++;
+					for (Shop shop : inChunk.values()) {
+						if (shop.isBuying()) {
+							buying++;
+						} else if (shop.isSelling()) {
+							selling++;
+						}
+						if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleShop()) {
+							doubles++;
+						} else if (shop.isSelling() && shop.getRemainingStock() == 0) {
+							nostock++;
+						}
+					}
+				}
+			}
+			sender.sendMessage(ChatColor.RED + "QuickShop Statistics...");
+			sender.sendMessage(ChatColor.GREEN + "" + (buying + selling) + " shops in " + chunks
+					+ " chunks spread over " + worlds + " worlds.");
+			sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ");
+			sender.sendMessage(ChatColor.GREEN + "" + nostock
+					+ " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
+			sender.sendMessage(ChatColor.GREEN + "QuickShop "+QuickShop.getVersion());
+		}
+		sender.sendMessage(MsgUtil.getMessage("no-permission"));
+	}
+
+
 	private void remover(CommandSender sender, String[] args) {
 		if (args.length < 5) {
 			return;
@@ -876,6 +898,12 @@ public class QS implements CommandExecutor{
 		if (s.hasPermission("quickshop.fetchmessage"))
 			s.sendMessage(ChatColor.GREEN + "/qs fetchmessage" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.fetchmessage"));
+		if (s.hasPermission("quickshop.info"))
+			s.sendMessage(ChatColor.GREEN + "/qs info" + ChatColor.YELLOW + " - "
+					+ MsgUtil.getMessage("command.description.info"));
+		if (s.hasPermission("quickshop.debug"))
+			s.sendMessage(ChatColor.GREEN + "/qs debug" + ChatColor.YELLOW + " - "
+					+ MsgUtil.getMessage("command.description.debug"));
 //		if (s.hasPermission("quickshop.export"))
 //			s.sendMessage(ChatColor.GREEN + "/qs export mysql|sqlite" + ChatColor.YELLOW + " - "
 //					+ MsgUtil.getMessage("command.description.export"));

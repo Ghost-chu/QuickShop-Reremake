@@ -52,7 +52,7 @@ permissions:
         description: Allows a Staff Member to empty the shop theyre looking at of all items.
         default: op
     quickshop.debug:
-        description: Enables debug info to console
+        description: Switch debug or non-debug mode
         default: op
     quickshop.export:
         description: Allows exporting database to mysql or sqlite
@@ -63,6 +63,9 @@ permissions:
     quickshop.about:
         description: Show QuickShop about message
         default: true
+    quickshop.info:
+        description: Show QuickShop Statistics.
+        default: op
     quickshop.fetchmessage:
         description: Use command /qs fetchmessage to manual fetch shop message from database. Not effect auto fetch if you turn on auto fetch...
         default: true    

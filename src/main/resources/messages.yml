@@ -11,7 +11,7 @@ language-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 language-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 6
+language-version: 7
 
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
 no-anythings-in-your-hand: "&cNo anythings in your hand."
@@ -104,6 +104,8 @@ command:
    cleaned: "&aCleaned &e{0}&a shops"
    no-type-given: "&cUsage: /qs find <item>"
    no-amount-given: "cNo amount given. Use &a/qs refill <amount>&c"
+   now-debuging: "&aSuccessfully switch to production mode, Reloading QuickShop..."
+   now-nolonger-debuging: "&aSuccessfully switch to developer mode, Reloading QuickShop..."
    description:
        title: "&aQuickShop Help"
        unlimited: "&eMakes a shop unlimited"
@@ -117,9 +119,9 @@ command:
        refill: "&eAdds a given number of items to a shop"
        empty: "&eRemoves all stock from a shop"
        create: "&eCreates a new shop at the target chest"
-       debug: "&ePrint debug message"
+       debug: "&eSwitch to developer mode"
        fetchmessage: "&eFetch unread shop message"
-       
+       info: "&eShow QuickShop Statistics"
 signs:
     header: "&c{0}"
     selling: "Selling {0}"
