@@ -91,8 +91,14 @@ public class QuickShop extends JavaPlugin {
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
-	public String dbPrefix="";
+	private String dbPrefix="";
 	private Tab commandTabCompleter;
+	private Metrics metrics;
+	/** 
+	 * Get the Player's Shop limit.
+	 * @return int Player's shop limit
+	 * @param Player p
+	 * */
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
 		for (Entry<String, Integer> entry : limits.entrySet()) {
@@ -453,7 +459,7 @@ public class QuickShop extends JavaPlugin {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
 			String serverName = Bukkit.getServer().getName();
-			Metrics metrics = new Metrics(this);
+			metrics = new Metrics(this);
 			// Use internal Metric class not Maven for solve plugin name issues
 			String display_Items;
 			if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
@@ -536,7 +542,6 @@ public class QuickShop extends JavaPlugin {
 	}
 	@Override	
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		    getLogger().info("YAY Tab!");
 	        List<String> commands = new ArrayList<>();
 	        commands.add("unlimited");
 			commands.add("buy");
@@ -560,7 +565,7 @@ public class QuickShop extends JavaPlugin {
 	        }
 	        return null;
 	    }
-	public boolean setupDatabase() {
+	private boolean setupDatabase() {
 		try {
 			ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
 			DatabaseCore dbCore;
@@ -604,15 +609,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		return true;
 	}
-
-	public String boolean2String(boolean bool) {
-		if (bool) {
-			return "Enabled";
-		} else {
-			return "Disabled";
-		}
-	}
-
 
 	public void updateConfig(int selectedVersion) {
 		if (selectedVersion == 1) {
@@ -871,4 +867,40 @@ public class QuickShop extends JavaPlugin {
 		return QuickShop.instance.getDescription().getVersion();
 	}
 	
+	public BlockListener getBlockListener() {
+		return blockListener;
+	}
+	public ChatListener getChatListener() {
+		return chatListener;
+	}
+	public ChunkListener getChunkListener() {
+		return chunkListener;
+	}
+	public DisplayProtectionListener getInventoryListener() {
+		return inventoryListener;
+	}
+	public PlayerListener getPlayerListener() {
+		return playerListener;
+	}
+	public WorldListener getWorldListener() {
+		return worldListener;
+	}
+	public MultiverseCore getMVPlugin() {
+		return mPlugin;
+	}
+	public Plugin getOpenInvPlugin() {
+		return openInvPlugin;
+	}
+	public String getDbPrefix() {
+		return dbPrefix;
+	}
+	public Tab getCommandTabCompleter() {
+		return commandTabCompleter;
+	}
+	public QS getCommandExecutor() {
+		return commandExecutor;
+	}
+    public Metrics getMetrics() {
+		return metrics;
+	}
 }

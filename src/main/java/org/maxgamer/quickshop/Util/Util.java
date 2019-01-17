@@ -47,7 +47,13 @@ public class Util {
 	private static QuickShop plugin;
 	private static Method storageContents;
 	static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
-
+	public String boolean2String(boolean bool) {
+		if (bool) {
+			return "Enabled";
+		} else {
+			return "Disabled";
+		}
+	}
 	public static void initialize() {
 		blacklist.clear();
 		shoppables.clear();

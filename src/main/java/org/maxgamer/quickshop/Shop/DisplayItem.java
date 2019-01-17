@@ -164,8 +164,6 @@ public class DisplayItem {
 		
 			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
 			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, false);
-			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
 			if (shopDisplayItemSpawnEvent.isCancelled()) {
 				return;
 			}
