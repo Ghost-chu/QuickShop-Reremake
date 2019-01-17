@@ -45,6 +45,10 @@ public class Tab implements TabCompleter {
 				tabList.add("empty");
 			if (sender.hasPermission("quickshop.fetchmessage"))
 				tabList.add("fetchmessage");
+			if (sender.hasPermission("quickshop.info"))
+				tabList.add("info");
+			if (sender.hasPermission("quickshop.debug"))
+				tabList.add("debug");
 			return tabList;
 		}else if(args.length==2) {
 			if (args[1].equals("create")&&sender.hasPermission("quickshop.create.sell")) {

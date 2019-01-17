@@ -147,6 +147,16 @@ public class MsgUtil {
 			selectedVersion = 6;
 			messagei18n.save(messageFile);
 		}
+		if (selectedVersion == 6) {
+			messagei18n.set("command.description.info", "&eShow QuickShop Statistics");
+			messagei18n.set("command.description.debug", "&eSwitch to developer mode");
+			messagei18n.set("command.description.debug", "&eSwitch to developer mode");
+			messagei18n.set("command.now-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
+			messagei18n.set("command.now-nolonger-debuging", "&aSuccessfully switch to developer mode, Reloading QuickShop...");
+			messagei18n.set("language-version", 7);
+			selectedVersion = 7;
+			messagei18n.save(messageFile);
+		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
 		if (!sender.hasPermission("quickshop.use")) {
