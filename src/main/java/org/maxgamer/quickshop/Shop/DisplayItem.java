@@ -186,6 +186,10 @@ public class DisplayItem {
 		remove();
 		spawn();
 	}
+	/**
+	 * Set item is QuickShop's DisplayItem and prevent them.
+	 * @param item
+	 */
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
 		ItemMeta iMeta = item.getItemStack().getItemMeta();
