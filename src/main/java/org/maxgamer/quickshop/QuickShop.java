@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+//import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 import org.bukkit.*;
@@ -94,6 +95,7 @@ public class QuickShop extends JavaPlugin {
 	private String dbPrefix="";
 	private Tab commandTabCompleter;
 	private Metrics metrics;
+	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
 	 * @return int Player's shop limit
