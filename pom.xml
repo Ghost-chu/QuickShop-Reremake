@@ -108,5 +108,13 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/OpenInv.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>com.griefcraft</groupId>
+			<artifactId>Mondern-LWC</artifactId>
+			<version>2.1.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Modern-LWC-2.1.2.jar</systemPath>
+		</dependency>
+		
 	</dependencies>
 </project>

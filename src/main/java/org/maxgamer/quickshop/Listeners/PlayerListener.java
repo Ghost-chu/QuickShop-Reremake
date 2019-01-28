@@ -20,6 +20,9 @@ import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+//import com.griefcraft.lwc.LWC;
+//import com.griefcraft.lwc.LWCPlugin;
+
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -45,7 +48,7 @@ public class PlayerListener implements Listener {
 	 * Handles players left clicking a chest. Left click a NORMAL chest with item :
 	 * Send creation menu Left click a SHOP chest : Send purchase menu
 	 */
-	@EventHandler(priority = EventPriority.MONITOR,ignoreCancelled=true)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
