@@ -1,7 +1,7 @@
 #Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 16
+config-version: 17
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -119,6 +119,8 @@ shop:
     
     #Allow auto fetch player shop, if you disable it ,Player need use /qs fetchmessage to fetch history shop messages. (Disable it may cause database size lost control.)
     auto-fetch-shop-messages: true
+    #Ignore cancel chat event, maybe can improve compatibility with other chat plugin.
+    ignore-cancel-chat-event: false
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
