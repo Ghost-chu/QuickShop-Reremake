@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,8 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerChangedMainHandEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerItemMendEvent;
@@ -207,8 +210,31 @@ public class DisplayProtectionListener implements Listener {
 			}
 		} catch (Exception e) {}
 	}
+	@EventHandler(ignoreCancelled = true)
+	public void onFishingItem(PlayerFishEvent event) {
+			if(event.getState()!=State.CAUGHT_ENTITY) {
+				return;
+			}
+			if(event.getCaught().getType()!=EntityType.DROPPED_ITEM)
+				return;
+			try {
+			Item item = (Item)event.getCaught();
+			ItemStack is = item.getItemStack();
+			if (itemStackCheck(is)) {
+				//item.remove();
+				event.getHook().remove();
+				//event.getCaught().remove();
+				event.setCancelled(true);
+				Util.debugLog("A player trying use fishrod hook the displayitem, already cancelled.");
+				Util.inventoryCheck(event.getPlayer().getInventory());
+			}
+			}catch (Exception e) {
+				return;
+			}
+			
 
-	boolean itemStackCheck(ItemStack is) {
+	}
+	public boolean itemStackCheck(ItemStack is) {
 		return DisplayItem.checkShopItem(is);
 	}
 }
