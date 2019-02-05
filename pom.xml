@@ -108,6 +108,5 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/OpenInv.jar</systemPath>
 		</dependency>
-		
 	</dependencies>
 </project>
