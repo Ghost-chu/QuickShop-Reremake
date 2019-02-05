@@ -747,8 +747,16 @@ public class QuickShop extends JavaPlugin {
 			reloadConfig();
 		}
 		if (selectedVersion == 16) {
-			getConfig().set("config-version", 16);
+			getConfig().set("ignore-cancel-chat-event", false);
+			getConfig().set("config-version", 17);
 			selectedVersion = 17;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 17) {
+			getConfig().set("ignore-cancel-chat-event", false);
+			getConfig().set("config-version", 18);
+			selectedVersion = 18;
 			saveConfig();
 			reloadConfig();
 		}
