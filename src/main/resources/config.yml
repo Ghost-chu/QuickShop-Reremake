@@ -1,7 +1,7 @@
-#Default config: https://github.com/KaiKikuchi/QuickShop/blob/master/src/main/resources/config.yml
+#Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 17
+config-version: 18
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -141,12 +141,10 @@ protect:
   #Protect shop block can or cannot pull out by Hopper
   hopper: true
 lockette:
+#Fix Quickshop not cancel break lock sign event(Impossible break locked chest)
   private: "[Private]"
   more_users: "[More Users]"
-  #Make Quickshop not cancel break lock sign event(Inpossible break locked chest)
-#Float items advanced filter manager
-#These all in testing and have many bugs, Use your own risk!
-float:
+  
   enable: false
   #If this is disabled, all options after this will not working.
   item:
