@@ -57,10 +57,6 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			Player p = e.getPlayer();
-			if (plugin.sneak && !p.isSneaking()) {
-				// Sneak only
-				return;
-			}
 			Location loc = b.getLocation();
 			ItemStack item = e.getItem();
 			// Get the shop
@@ -88,7 +84,9 @@ public class PlayerListener implements Listener {
 				}
 			}
 			// Purchase handling
-			if (shop != null && p.hasPermission("quickshop.use") && (plugin.sneakTrade == false || p.isSneaking())) {
+			if (shop != null && p.hasPermission("quickshop.use")) {
+				if(plugin.getConfig().getBoolean("shop.sneak-to-trade")&&!p.isSneaking())
+					return;
 				shop.onClick();
 				// Text menu
 				MsgUtil.sendShopInfo(p, shop);
@@ -108,10 +106,10 @@ public class PlayerListener implements Listener {
 			// Handles creating shops
 			else if (!e.isCancelled() && shop == null && item != null && item.getType() != Material.AIR
 					&& p.hasPermission("quickshop.create.sell") && Util.canBeShop(b,null,true)
-					&& p.getGameMode() != GameMode.CREATIVE) {
+					&& p.getGameMode() != GameMode.CREATIVE)  {
 				if(e.isCancelled())
 					return;
-				if(plugin.getConfig().getBoolean("shop.sneak-to-control")&&!p.isSneaking())
+				if(plugin.getConfig().getBoolean("shop.sneak-to-create")&&!p.isSneaking())
 					return;
 				if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
 					// As of the new checking system, most plugins will tell the
@@ -167,6 +165,8 @@ public class PlayerListener implements Listener {
 				block = e.getClickedBlock();
 			}
 			if (plugin.getShopManager().getShop(block.getLocation()) != null && plugin.getShopManager().getShop(block.getLocation()).getOwner().equals(e.getPlayer().getUniqueId())) {
+				if(plugin.getConfig().getBoolean("shop.sneak-to-control")&&!e.getPlayer().isSneaking())
+					return;
 				MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
 						plugin.getShopManager().getShop(block.getLocation()));
 				plugin.getShopManager().getShop(block.getLocation()).setSignText();
