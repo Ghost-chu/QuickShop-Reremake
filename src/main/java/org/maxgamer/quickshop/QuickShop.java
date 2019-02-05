@@ -535,7 +535,7 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
 			// Exp for stats, maybe i need improve this, so i add this.
 			metrics.submitData(); // Submit now!
-			getLogger().info("Mertics submited.");
+			getLogger().info("Metrics submited.");
 		} else {
 			getLogger().info("You have disabled mertics, Skipping...");
 		}
