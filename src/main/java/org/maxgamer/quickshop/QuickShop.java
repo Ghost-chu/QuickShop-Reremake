@@ -65,12 +65,12 @@ public class QuickShop extends JavaPlugin {
 	private WorldListener worldListener;
 	private BukkitTask itemWatcherTask;
 	private LogWatcher logWatcher;
-	/** Whether players are required to sneak to create/buy from a shop */
-	public boolean sneak;
-	/** Whether players are required to sneak to create a shop */
-	public boolean sneakCreate;
-	/** Whether players are required to sneak to trade with a shop */
-	public boolean sneakTrade;
+//	/** Whether players are required to sneak to create/buy from a shop */
+//	public boolean sneak;
+//	/** Whether players are required to sneak to create a shop */
+//	public boolean sneakCreate;
+//	/** Whether players are required to sneak to trade with a shop */
+//	public boolean sneakTrade;
 	/** Whether we should use display items or not */
 	public boolean display = true;
 	/**
@@ -768,9 +768,9 @@ public class QuickShop extends JavaPlugin {
 		super.reloadConfig();
 		// Load quick variables
 		this.display = this.getConfig().getBoolean("shop.display-items");
-		this.sneak = this.getConfig().getBoolean("shop.sneak-only");
-		this.sneakCreate = this.getConfig().getBoolean("shop.sneak-to-create");
-		this.sneakTrade = this.getConfig().getBoolean("shop.sneak-to-trade");
+//		this.sneak = this.getConfig().getBoolean("shop.sneak-only");
+//		this.sneakCreate = this.getConfig().getBoolean("shop.sneak-to-create");
+//		this.sneakTrade = this.getConfig().getBoolean("shop.sneak-to-trade");
 		this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
 		this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
 		MsgUtil.loadCfgMessages();
