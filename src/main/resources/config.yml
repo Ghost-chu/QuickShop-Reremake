@@ -180,6 +180,3 @@ plugin:
     Multiverse-Core: true
     #If you have OpenInv, QSRR will enable EnderChest feature.
     OpenInv: true
-    #Enable AreaShop support
-    #Allow QuickShop detect AS unrented event and remove shop from region.
-    AreaShop: false
