@@ -11,16 +11,23 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -678,4 +685,43 @@ public class MsgUtil {
 		}
 		return raw;
 	}
+	public static void sendExploitAlert(Object objectDo, String action, Location location) {
+		if(objectDo instanceof Player) {
+			Player player = (Player)objectDo;
+			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][ExploitAlert] A displayItem exploit was found!");
+			Util.sendMessageToOps(ChatColor.RED+"Exploiter: "+"Player="+player.getName());
+			Util.sendMessageToOps(ChatColor.RED+"Action: "+action);
+			Util.sendMessageToOps(ChatColor.RED+"Location: "+"World="+location.getWorld().getName()+" X="+location.getBlockX()+" Y="+location.getBlockY()+" Z="+location.getBlockZ());
+		}	
+		if(objectDo instanceof Inventory) {
+			Inventory inventory = (Inventory)objectDo;
+			if(inventory.getHolder() instanceof LivingEntity) {
+				LivingEntity livingEntity = (LivingEntity) inventory;
+				if(livingEntity instanceof Tameable) {
+					Tameable tamedEntity = (Tameable)livingEntity;
+					AnimalTamer tamer = tamedEntity.getOwner();
+					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][ExploitAlert] A displayItem exploit was found!");
+					Util.sendMessageToOps(ChatColor.RED+"Exploiter: "+"LivingEntity=" + livingEntity.getType().name()+"; Tamer="+Bukkit.getOfflinePlayer(tamer.getUniqueId()));
+					Util.sendMessageToOps(ChatColor.RED+"Action: "+action);
+					Util.sendMessageToOps(ChatColor.RED+"Location: "+"World="+location.getWorld().getName()+" X="+location.getBlockX()+" Y="+location.getBlockY()+" Z="+location.getBlockZ());
+				}
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][ExploitAlert] A displayItem exploit was found!");
+				Util.sendMessageToOps(ChatColor.RED+"Exploiter: "+"LivingEntity="+livingEntity.getType().name());
+				Util.sendMessageToOps(ChatColor.RED+"Action: "+action);
+				Util.sendMessageToOps(ChatColor.RED+"Location: "+"World="+location.getWorld().getName()+" X="+location.getBlockX()+" Y="+location.getBlockY()+" Z="+location.getBlockZ());
+			}
+			if(inventory.getHolder() instanceof Block) {
+				Block block = (Block) inventory;
+				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][ExploitAlert] A displayItem exploit was found!");
+				Util.sendMessageToOps(ChatColor.RED+"Exploiter: "+"Block="+block.getType().name());
+				Util.sendMessageToOps(ChatColor.RED+"Action: "+action);
+				Util.sendMessageToOps(ChatColor.RED+"Location: "+"World="+location.getWorld().getName()+" X="+location.getBlockX()+" Y="+location.getBlockY()+" Z="+location.getBlockZ());
+			}
+			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][ExploitAlert] A displayItem exploit was found!");
+			Util.sendMessageToOps(ChatColor.RED+"Exploiter: Unknown Inventory");
+			Util.sendMessageToOps(ChatColor.RED+"Action: "+action);
+			Util.sendMessageToOps(ChatColor.RED+"Location: "+"World="+location.getWorld().getName()+" X="+location.getBlockX()+" Y="+location.getBlockY()+" Z="+location.getBlockZ());
+		}
+	}
+	
 }
