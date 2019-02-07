@@ -123,6 +123,16 @@ public class Util {
 		boolean trans = m.isTransparent();
 		return trans;
 	}
+	
+	public static boolean isShoppables(Material material) {
+		if(shoppables.contains(material)) {
+			return true;
+		}else {
+			return false;
+		}
+			
+		
+	}
 
 	public static void parseColours(YamlConfiguration config) {
 		Set<String> keys = config.getKeys(true);
