@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
+import java.util.Random;
+
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -168,6 +170,10 @@ public class DisplayProtectionListener implements Listener {
 		} catch (NullPointerException ex) {
 
 		}
+		Random random = new Random();
+		int result = random.nextInt(15);
+		if(result==0)
+			Util.inventoryCheck(e.getPlayer().getInventory());
 		 // if meta/displayname/stack is null. We don't really care in that case.
 	}
 	@EventHandler(ignoreCancelled = true)
