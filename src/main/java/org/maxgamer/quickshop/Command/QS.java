@@ -100,7 +100,13 @@ public class QS implements CommandExecutor{
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop != null) {
 				if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
+					shop.onUnload();
 					shop.delete();
+					try {
+						DatabaseHelper.removeShop(plugin.getDB(), shop.getLocation().getBlockX(),  shop.getLocation().getBlockY(),  shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName());
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				} else {
 					sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 				}
@@ -134,6 +140,7 @@ public class QS implements CommandExecutor{
 
 		if (shop != null) {
 			if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
+				shop.onUnload();
 				shop.delete();
 				try {
 					DatabaseHelper.removeShop(plugin.getDB(), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), Bukkit.getWorld(args[1]).getName());
