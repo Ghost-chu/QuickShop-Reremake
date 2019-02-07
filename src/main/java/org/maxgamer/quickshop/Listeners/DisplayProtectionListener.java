@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.Random;
-
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -19,7 +17,6 @@ import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerItemMendEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -147,35 +144,7 @@ public class DisplayProtectionListener implements Listener {
 		} catch (NullPointerException ex) {
 		} // if meta/displayname/stack is null. We don't really care in that case.
 	}
-	@EventHandler(ignoreCancelled = true)
-	public void moveing (PlayerMoveEvent e){
-		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-		if(stack.getType()==Material.AIR||stackOffHand.getType()==Material.AIR)
-			return;
-		try {
-			if (DisplayItem.checkShopItem(stack)) {
-				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
-				// You shouldn't be able to pick up that...
-				MsgUtil.sendExploitAlert(e.getPlayer(),"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.inventoryCheck(e.getPlayer().getInventory());
-			}
-			if (DisplayItem.checkShopItem(stackOffHand)) {
-				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
-				// You shouldn't be able to pick up that...
-				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
-				Util.inventoryCheck(e.getPlayer().getInventory());
-			}
-		} catch (NullPointerException ex) {
 
-		}
-		Random random = new Random();
-		int result = random.nextInt(15);
-		if(result==0)
-			Util.inventoryCheck(e.getPlayer().getInventory());
-		 // if meta/displayname/stack is null. We don't really care in that case.
-	}
 	@EventHandler(ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
 		try {
