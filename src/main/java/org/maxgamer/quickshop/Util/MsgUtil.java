@@ -593,8 +593,6 @@ public class MsgUtil {
 				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
 			}
 		}
-		try {
-			Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
 			if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
 				EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
 				stor.getStoredEnchants();
@@ -606,10 +604,6 @@ public class MsgUtil {
 					}
 				}
 			}
-		} catch (ClassNotFoundException e) {
-			// They don't have an up to date enough build of CB to do this.
-			// TODO: Remove this when it becomes redundant
-		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
 
@@ -635,8 +629,6 @@ public class MsgUtil {
 				p.sendMessage(ChatColor.DARK_PURPLE + "| " + ChatColor.YELLOW +MsgUtil.getEnchi18n(entries.getKey()));
 			}
 		}
-		try {
-			Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
 			if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
 				EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
 				stor.getStoredEnchants();
@@ -648,10 +640,6 @@ public class MsgUtil {
 					}
 				}
 			}
-		} catch (ClassNotFoundException e) {
-			// They don't have an up to date enough build of CB to do this.
-			// TODO: Remove this when it becomes redundant
-		}
 		p.sendMessage(ChatColor.DARK_PURPLE + "+---------------------------------------------------+");
 	}
 	/**
