@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -22,13 +21,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class DisplayProtectionListener implements Listener {
-	private QuickShop plugin;
-
 	public DisplayProtectionListener(QuickShop plugin) {
-		this.plugin = plugin;
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -54,12 +51,14 @@ public class DisplayProtectionListener implements Listener {
 			if (DisplayItem.checkShopItem(stack)) {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
@@ -75,12 +74,14 @@ public class DisplayProtectionListener implements Listener {
 			if (DisplayItem.checkShopItem(stack)) {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
@@ -95,12 +96,14 @@ public class DisplayProtectionListener implements Listener {
 			if (DisplayItem.checkShopItem(stack)) {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
@@ -118,6 +121,7 @@ public class DisplayProtectionListener implements Listener {
 				// You shouldn't be able to pick up that...
 				e.getItem().remove();
 				e.getEntity().setCanPickupItems(false);
+				MsgUtil.sendExploitAlert(e.getEntity(),"Player Inventory Scan", e.getEntity().getLocation());
 				if(e.getEntityType() != EntityType.PLAYER) {
 					Util.debugLog("A entity at "+e.getEntity().getLocation().toString()+" named "+e.getEntity().getCustomName()+"("+e.getEntityType().name()+" trying pickup item, already banned this entity item pickup power.");
 				}
@@ -133,6 +137,7 @@ public class DisplayProtectionListener implements Listener {
 		try {
 			if (DisplayItem.checkShopItem(stack) || DisplayItem.checkShopItem(stackOffHand)) {
 				e.setCancelled(true);
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Interact", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getInventory().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 				// You shouldn't be able to pick up that...
@@ -144,17 +149,19 @@ public class DisplayProtectionListener implements Listener {
 	public void moveing (PlayerMoveEvent e){
 		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
 		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		if(stack.getType()==Material.AIR||stackOffHand.getType()==Material.AIR)
+			return;
 		try {
 			if (DisplayItem.checkShopItem(stack)) {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
-				plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
-				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+e.getPlayer().getName()+"'s inventory"+" Deleteing...");
+				MsgUtil.sendExploitAlert(e.getPlayer(),"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
+				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
@@ -168,8 +175,7 @@ public class DisplayProtectionListener implements Listener {
 		try {
 			if (itemStackCheck(event.getCurrentItem()) || itemStackCheck(event.getCursor())) {
 				event.setCancelled(true);
-				plugin.getLogger().warning("[Exploit alert] "+event.getWhoClicked().getName()+" had a QuickShop display item on inventory: "+event.getInventory().getType()+":"+event.getView().getTitle());
-				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] "+event.getWhoClicked().getName()+" had a QuickShop display item on inventory: "+event.getInventory().getType()+":"+event.getView().getTitle());
+				MsgUtil.sendExploitAlert(event.getClickedInventory(),"Click the DisplayItem in Inventory",event.getViewers().get(0).getLocation());
 				event.getCursor().setAmount(0);
 				event.getCursor().setType(Material.AIR);
 				event.getCurrentItem().setAmount(0);
@@ -189,6 +195,7 @@ public class DisplayProtectionListener implements Listener {
 				event.setCancelled(true);
 //				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory().getName()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 //				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getView().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
+				MsgUtil.sendExploitAlert(event.getInventory(),"Pickup DisplayItem", event.getInventory().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
 				event.getItem().remove();
 				Util.inventoryCheck(event.getInventory());
@@ -203,6 +210,7 @@ public class DisplayProtectionListener implements Listener {
 			if (itemStackCheck(is)) {
 				event.setCancelled(true);
 				Util.debugLog("Some inventory trying move QuickShop displayItem to another container, already cancelled.");
+				MsgUtil.sendExploitAlert(event.getInitiator(),"Move DisplayItem", event.getInitiator().getLocation());
 				event.setItem(new ItemStack(Material.AIR));
 				Util.inventoryCheck(event.getDestination());
 				Util.inventoryCheck(event.getInitiator());
@@ -225,15 +233,15 @@ public class DisplayProtectionListener implements Listener {
 				event.getHook().remove();
 				//event.getCaught().remove();
 				event.setCancelled(true);
+				MsgUtil.sendExploitAlert(event.getPlayer(),"Fish DisplayItem", event.getPlayer().getLocation());
 				Util.debugLog("A player trying use fishrod hook the displayitem, already cancelled.");
 				Util.inventoryCheck(event.getPlayer().getInventory());
 			}
 			}catch (Exception e) {
 				return;
 			}
-			
-
 	}
+	
 	public boolean itemStackCheck(ItemStack is) {
 		return DisplayItem.checkShopItem(is);
 	}
