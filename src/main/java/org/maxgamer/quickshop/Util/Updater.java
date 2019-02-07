@@ -39,7 +39,7 @@ public class Updater {
             connection.disconnect();
             return false;
         } catch (IOException e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! Maybe internet issue or SpigotMC host down. If you want disable update checker, you can disable in config.yml, but we still high-recommand check update on SpigotMC.org.");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! Maybe internet issue or SpigotMC host down. If you want disable update checker, you can disable in config.yml, but we still high-recommend usually check update on SpigotMC.org.");
             return false;
         }
     }
