@@ -431,16 +431,24 @@ public class Util {
 	}
 
 	/**
-	 * Formats the given number according to how vault would like it. E.g. $50
-	 * or 5 dollars.
+	 * Formats the given number according to how vault would like it. E.g. $50 or 5
+	 * dollars.
 	 * 
 	 * @return The formatted string.
 	 */
 	public static String format(double n) {
 		try {
-			return plugin.getEcon().format(n);
+			String formated = plugin.getEcon().format(n);
+			if (formated == null || formated.isEmpty()) {
+				Util.debugLog("Use alternate-currency-symbol cause Economy Plugin returned null");
+				return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+			} else {
+				return formated;
+			}
 		} catch (NumberFormatException e) {
-			return "$" + n;
+			Util.debugLog("Use alternate-currency-symbol cause NumberFormatException");
+			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+			// return "$" + n;
 		}
 	}
 
