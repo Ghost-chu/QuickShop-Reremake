@@ -374,7 +374,6 @@ public class QuickShop extends JavaPlugin {
 							inputChannel.close();
 							outputChannel.close();
 						} catch (Exception e3) {
-
 							inputChannel = null;
 							outputChannel = null;
 						}
