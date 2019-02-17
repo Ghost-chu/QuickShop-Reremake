@@ -520,7 +520,7 @@ public class MsgUtil {
 				for (String msg : msgs) {
 					p.getPlayer().sendMessage(msg);
 				}
-				plugin.getDB().execute("DELETE FROM messages WHERE owner = ?", pName.toString());
+				plugin.getDB().execute("DELETE FROM "+QuickShop.instance.getDbPrefix()+"messages WHERE owner = ?", pName.toString());
 				msgs.clear();
 			}else {
 				p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
