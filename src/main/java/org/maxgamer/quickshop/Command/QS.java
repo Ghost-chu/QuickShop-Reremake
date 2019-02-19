@@ -564,11 +564,7 @@ public class QS implements CommandExecutor{
 						sender.sendMessage(
 								MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
 						try {
-							for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-								if (player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-									plugin.getEcon().deposit(player.getUniqueId(), fee);
-								}
-							}
+							plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), fee);
 						} catch (Exception e) {
 							e.getMessage();
 							plugin.getLogger().log(Level.WARNING,
