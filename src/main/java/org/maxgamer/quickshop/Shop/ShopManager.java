@@ -12,7 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -558,6 +557,7 @@ public class ShopManager {
 			plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
 		}
 		
+	@SuppressWarnings("deprecation")
 	private void actionCreate(Player p, HashMap<UUID, Info> actions2, Info info, String message) {
 		Util.debugLog("actionCreate");
 		try {

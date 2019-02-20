@@ -516,6 +516,7 @@ public class QS implements CommandExecutor{
 		sender.sendMessage(MsgUtil.getMessage("no-permission"));
 		return;
 	}
+	@SuppressWarnings("deprecation")
 	private void setPrice(CommandSender sender, String[] args) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.create.changeprice")) {
 			Player p = (Player) sender;
