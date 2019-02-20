@@ -635,11 +635,7 @@ public class ShopManager {
 					return;
 				}
 				try {
-					for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-						if (player.getName().equals(plugin.getConfig().getString("tax-account"))) {
-							plugin.getEcon().deposit(player.getUniqueId(), tax);
-						}
-					}
+					plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), tax);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					plugin.getLogger().log(Level.WARNING,
