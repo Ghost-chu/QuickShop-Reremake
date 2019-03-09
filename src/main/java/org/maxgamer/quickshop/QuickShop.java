@@ -760,6 +760,14 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 18) {
+			getConfig().set("shop.disable-vault-format", false);
+			getConfig().set("config-version", 19);
+			selectedVersion = 19;
+			saveConfig();
+			reloadConfig();
+		}
+		
 	}
 
 	/** Reloads QuickShops config */
