@@ -176,14 +176,15 @@ public class ContainerShop implements Shop {
 	}
 
 	/**
-	 * Sets the price of the shop. Does not update it in the database. Use
-	 * shop.update() for that.
+	 * Sets the price of the shop.
 	 * 
 	 * @param price
 	 *            The new price of the shop.
 	 */
 	public void setPrice(double price) {
 		this.price = price;
+		update();
+		Util.debugLog("New price is applyed to shop: "+String.valueOf(price));
 	}
 
 	/**
@@ -422,11 +423,11 @@ public class ContainerShop implements Shop {
 	 * Changes the owner of this shop to the given player.
 	 * 
 	 * @param owner
-	 *            The name of the owner. You must do shop.update() after to save
-	 *            it after a reboot.
 	 */
 	public void setOwner(UUID owner) {
 		this.owner = owner;
+		update();
+		Util.debugLog("New owner is applyed to shop: "+owner.toString());
 	}
 
 	/**
@@ -440,6 +441,8 @@ public class ContainerShop implements Shop {
 
 	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
+		update();
+		Util.debugLog("New unlimited mode is applyed to shop: "+String.valueOf(unlimited));
 	}
 
 	public boolean isUnlimited() {
@@ -467,6 +470,8 @@ public class ContainerShop implements Shop {
 	public void setShopType(ShopType shopType) {
 		this.shopType = shopType;
 		this.setSignText();
+		update();
+		Util.debugLog("New shopType is applyed to shop: "+shopType.toString());
 	}
 
 	/**
@@ -496,6 +501,8 @@ public class ContainerShop implements Shop {
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
+		Util.debugLog("New sign was setuped.");
+		Util.debugLog(lines.toString());
 	}
 
 	/**
