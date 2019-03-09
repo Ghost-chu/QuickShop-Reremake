@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 18
+config-version: 19
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -110,6 +110,10 @@ shop:
     #If vault not return coins symbol, QuickShop will use this symbol to replace it.
     alternate-currency-symbol: '$'
     
+    #It should can fix Vault or economy not correctly process the price and return "0" result problem.
+    #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
+    disable-vault-format: false
+    
     #Ignore trade messages if shop is unlimited
     ignore-unlimited-shop-messages: false
     
@@ -121,6 +125,7 @@ shop:
     auto-fetch-shop-messages: true
     #Ignore cancel chat event, maybe can improve compatibility with other chat plugin.
     ignore-cancel-chat-event: false
+
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
