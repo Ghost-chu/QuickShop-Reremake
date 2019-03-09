@@ -539,13 +539,14 @@ public class ContainerShop implements Shop {
 		blocks[2] = loc.getBlock().getRelative(0, 0, 1);
 		blocks[3] = loc.getBlock().getRelative(0, 0, -1);
 		final String signHeader = MsgUtil.getMessage("signs.header", "");
+		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
 		for (Block b : blocks) {
 			if (b.getType() != Material.WALL_SIGN)
 				continue;
 			if (!isAttached(b))
 				continue;
 			Sign sign = (Sign) b.getState();
-			if (sign.getLine(0).contains(signHeader)) {
+			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
 				signs.add(sign);
 			} else {
 				boolean text = false;
