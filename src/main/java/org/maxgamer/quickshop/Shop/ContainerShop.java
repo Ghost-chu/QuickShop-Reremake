@@ -609,11 +609,6 @@ public class ContainerShop implements Shop {
 		int y = this.getLocation().getBlockY();
 		int z = this.getLocation().getBlockZ();
 		String world = this.getLocation().getWorld().getName();
-		try {
-			DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		// Refund if necessary
 		if (plugin.getConfig().getBoolean("shop.refund")) {
 			plugin.getEcon().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
@@ -621,6 +616,12 @@ public class ContainerShop implements Shop {
 		if (fromMemory) {
 			// Delete it from memory
 			plugin.getShopManager().removeShop(this);
+		}else {
+			try {
+				DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
