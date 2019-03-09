@@ -447,6 +447,9 @@ public class Util {
 	 * @return The formatted string.
 	 */
 	public static String format(double n) {
+		if(plugin.getConfig().getBoolean("shop.disable-vault-format")) {
+			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+		}
 		try {
 			String formated = plugin.getEcon().format(n);
 			if (formated == null || formated.isEmpty()) {
