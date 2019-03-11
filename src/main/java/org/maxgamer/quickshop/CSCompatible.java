@@ -49,6 +49,7 @@ public class CSCompatible {
 		if(!plugin.getConfig().getBoolean("compatible.SlashBlade")) {
 			plugin.getConfig().set("shop.display-items", false);
 			plugin.getConfig().set("compatible.SlashBlade", true);
+			plugin.saveConfig();
 			sendWarning(modContainer, "DisplayItem will be SlashBlade's weapon and can pickup", "DisplayItem disabled.");
 		}
 		

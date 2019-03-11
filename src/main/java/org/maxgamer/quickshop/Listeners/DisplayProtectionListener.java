@@ -133,13 +133,22 @@ public class DisplayProtectionListener implements Listener {
 	public void onPlayerClick(PlayerInteractEvent e) {
 		ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
 		ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+		boolean found = false;
 		try {
-			if (DisplayItem.checkShopItem(stack) || DisplayItem.checkShopItem(stackOffHand)) {
+			if (DisplayItem.checkShopItem(stack)) {
+				stack.setType(Material.AIR);
+				found=true;
+			}
+			if(DisplayItem.checkShopItem(stackOffHand)) {
+				stack.setType(Material.AIR);
+				found=true;
+				// You shouldn't be able to pick up that...
+			}
+			if(found) {
 				e.setCancelled(true);
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Interact", e.getPlayer().getLocation());
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getInventory().getLocation().toString()+")");
 				Util.inventoryCheck(e.getPlayer().getInventory());
-				// You shouldn't be able to pick up that...
 			}
 		} catch (NullPointerException ex) {
 		} // if meta/displayname/stack is null. We don't really care in that case.

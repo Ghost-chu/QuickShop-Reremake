@@ -127,11 +127,9 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		
-		//Check is running under CatServer?
-		String serverCoreName = getServer().getName().toLowerCase();
-		if (serverCoreName.contains("catserver")) {
-			if(serverCoreName.contains("community")) {
+		getLogger().info("This server is running under: "+getServer().getName()+"-"+Bukkit.getVersion());
+		if(getServer().getName().toLowerCase().contains("catserver")) {
+			if(Bukkit.getVersion().toLowerCase().contains("community")) {
 				getLogger().info("Loading CatServer Community cSCompatible module, please wait...");
 				cSCompatible = new CSCompatible();
 				if(cSCompatible.getFailedLoading()) {
@@ -145,7 +143,7 @@ public class QuickShop extends JavaPlugin {
 				return;
 			}
 		}
-		
+
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
@@ -832,18 +830,37 @@ public class QuickShop extends JavaPlugin {
 			logWatcher.close(); // Closes the file
 		}
 		/* Unload UpdateWatcher */
-		UpdateWatcher.uninit();
+		try {
+			UpdateWatcher.uninit();
+		} catch (Exception e) {
+			
+		}
+		
 		/* Remove all display items, and any dupes we can find */
-		shopManager.clear();
+		
+		try {
+			shopManager.clear();
+		} catch (Exception e) {
+			
+		}
 		/* Empty the buffer */
-		database.close();
+		
+		try {
+			database.close();
+		} catch (Exception e) {
+			
+		}
 		/* Close Database */
 		try {
 			this.database.getConnection().close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		this.warnings.clear();
+		try {
+			this.warnings.clear();
+		} catch (Exception e) {
+			
+		}
 		this.reloadConfig();
 	}
 

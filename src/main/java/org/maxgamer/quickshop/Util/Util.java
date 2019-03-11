@@ -407,6 +407,7 @@ public class Util {
 	 *            The second item stack
 	 * @return true if the itemstacks match. (Material, durability, enchants, name)
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean matches(ItemStack stack1, ItemStack stack2) {
 		if (stack1 == stack2)
 			return true; // Referring to the same thing, or both are null.
@@ -414,8 +415,15 @@ public class Util {
 			return false; // One of them is null (Can't be both, see above)
 		if (stack1.getType() != stack2.getType())
 			return false; // Not the same material
-		if (((Damageable)stack1.getItemMeta()).getDamage() != ((Damageable)stack2.getItemMeta()).getDamage())
-			return false; // Not the same durability
+		
+		try {
+			if (((Damageable)stack1.getItemMeta()).getDamage() != ((Damageable)stack2.getItemMeta()).getDamage())
+				return false; // Not the same durability
+		} catch (Throwable e) {
+			if (stack1.getDurability() != stack2.getDurability())
+				return false; // Not the same durability
+		}
+		
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
 		if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {
