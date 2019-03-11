@@ -107,5 +107,6 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/CatServer-git-97e64db-Community.jar</systemPath>
 		</dependency>
+		
 	</dependencies>
 </project>
