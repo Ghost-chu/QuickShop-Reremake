@@ -509,7 +509,6 @@ public class ContainerShop implements Shop {
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
 		Util.debugLog("New sign was setuped.");
-		Util.debugLog(lines.toString());
 	}
 
 	/**
