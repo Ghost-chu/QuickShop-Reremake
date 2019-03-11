@@ -216,8 +216,15 @@ public class ContainerShop implements Shop {
 	/**
 	 * @return The durability of the item
 	 */
+	@SuppressWarnings("deprecation")
 	public short getDurability() {
-		return (short) ((Damageable)this.item.getItemMeta()).getDamage();
+		/**CS and 1.12.2 Compatible**/
+		try {
+			return (short) ((Damageable)this.item.getItemMeta()).getDamage();
+		}catch (Throwable e) {
+			return this.item.getDurability();
+		}
+		
 	}
 
 	/**

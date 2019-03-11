@@ -95,6 +95,8 @@ public class QuickShop extends JavaPlugin {
 	private String dbPrefix="";
 	private Tab commandTabCompleter;
 	private Metrics metrics;
+	@SuppressWarnings("unused")
+	private CSCompatible cSCompatible;
 	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
@@ -125,21 +127,25 @@ public class QuickShop extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		if (getServer().getName().toLowerCase().contains("catserver")) {
-			// Send FATAL ERROR TO CatServer's users.
-			getLogger().info("NOTICE: QSRR nolonger support CatServer ALERT!");
-			getLogger().info("NOTICE: From 1.3.1.9, QSRR already nolonger support CatServer");
-			getLogger().info("NOTICE: Cause this server have important license issues,");
-			getLogger().info("NOTICE: And to support Modded Bukkit Server is very hard.");
-			getLogger().info("NOTICE: So, QSRR will drop support for 1.12.2 Modded server.");
-			getLogger().info("NOTICE: SERVER WILL CONTINUE LOAD IN 60 SECONDS.");
-			try {
-				Thread.sleep(600000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		
+		//Check is running under CatServer?
+		String serverCoreName = getServer().getName().toLowerCase();
+		if (serverCoreName.contains("catserver")) {
+			if(serverCoreName.contains("community")) {
+				getLogger().info("Loading CatServer Community cSCompatible module, please wait...");
+				cSCompatible = new CSCompatible();
+				if(cSCompatible.getFailedLoading()) {
+					getLogger().severe("Failed to load CatServer CSCompatible Module, quitting...");
+					Bukkit.getPluginManager().disablePlugin(this);
+					return;
+				}
+			}else {
+				getLogger().severe("QuickShop-Reremake can't running under CatServer Pro Edition or legacy version, Please use CatServer Community Edition! We won't give Pro edition support now and future, Please don't ask us again!");
 				Bukkit.getPluginManager().disablePlugin(this);
+				return;
 			}
 		}
+		
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and

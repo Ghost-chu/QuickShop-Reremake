@@ -176,8 +176,15 @@ public class Util {
 	 *            The ItemStack of tools to check
 	 * @return The percentage 'health' the tool has. (Opposite of total damage)
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getToolPercentage(ItemStack item) {
-		double dura = ((Damageable)item.getItemMeta()).getDamage();;
+		/**CS and 1.12.2 Compatible**/
+		double dura;
+		try {
+			dura = ((Damageable)item.getItemMeta()).getDamage();
+		} catch (Throwable e) {
+			dura = item.getDurability();
+		}
 		double max = item.getType().getMaxDurability();
 		DecimalFormat formatter = new DecimalFormat("0");
 		return formatter.format((1 - dura / max) * 100.0);

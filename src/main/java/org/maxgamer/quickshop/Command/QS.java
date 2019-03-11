@@ -356,6 +356,7 @@ public class QS implements CommandExecutor{
 			return;
 		}
 	}
+	@SuppressWarnings("deprecation")
 	private void create(CommandSender sender, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
@@ -392,12 +393,19 @@ public class QS implements CommandExecutor{
 								p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
 								return;
 							}
-
+							
 							if (args.length < 2) {
 								// Send creation menu.
-								Info info = new Info(b.getLocation(), ShopAction.CREATE,
+								Info info;
+								try {
+									info = new Info(b.getLocation(), ShopAction.CREATE,
 										p.getInventory().getItemInMainHand(),
 										b.getRelative(p.getFacing().getOppositeFace()));
+								}catch (Throwable e) {
+									
+									/**CS and 1.12.2 Compatible**/
+									info = new Info(b.getLocation(), ShopAction.CREATE, p.getItemInHand(), b.getRelative(Util.getYawFace(p.getLocation().getYaw())));
+								}
 								plugin.getShopManager().getActions().put(p.getUniqueId(), info);
 								p.sendMessage(
 										MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));

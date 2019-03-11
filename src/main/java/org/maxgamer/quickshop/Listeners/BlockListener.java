@@ -104,12 +104,19 @@ public class BlockListener implements Listener {
 			// (accidents happen)
 			if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
 				//Check SuperTool
-				if(p.getInventory().getItemInMainHand().getType()==Material.GOLDEN_AXE) {
+				/**CS and 1.12.2 Compatible**/
+				String goldenAxeName = p.getInventory().getItemInMainHand().getType().name().trim().toLowerCase();
+				if(goldenAxeName=="golden_axe"||goldenAxeName=="gold_axe") {
 					p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool"));
 					return;
 				}
 				e.setCancelled(true);
-				p.sendMessage(MsgUtil.getMessage("no-creative-break",MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+				/**CS and 1.12.2 Compatible**/
+				try {
+					p.sendMessage(MsgUtil.getMessage("no-creative-break",MsgUtil.getItemi18n(p.getInventory().getItemInMainHand().getType().name())));
+				} catch (Throwable e4) {
+					p.sendMessage(MsgUtil.getMessage("no-creative-break",MsgUtil.getItemi18n(p.getInventory().getItemInMainHand().getType().name())));
+				}
 				return;
 			}
 			if (e.isCancelled()) {

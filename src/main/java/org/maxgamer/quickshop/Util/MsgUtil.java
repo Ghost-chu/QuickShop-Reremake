@@ -355,6 +355,7 @@ public class MsgUtil {
 			return Itemname_i18n;
 		}
 	}
+	@SuppressWarnings("deprecation")
 	public static void loadEnchi18n() {
 		plugin.getLogger().info("Starting loading Enchantment i18n...");
 		File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -369,12 +370,22 @@ public class MsgUtil {
 		enchi18n.setDefaults(enchi18nYAML);
 		Util.parseColours(enchi18n);
 		Enchantment[] enchsi18n = Enchantment.values();
+		/**CS and 1.12.2 Compatible**/
 		for (Enchantment ench : enchsi18n) {
-			String enchname = enchi18n.getString("enchi18n."+ench.getKey().getKey().toString().trim());
-			if(enchname==null || enchname.equals("")) {
-				plugin.getLogger().info("Found new ench ["+ench.getKey().getKey().toString()+"] ,add it in config...");
-				enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
+			try {
+				String enchname = enchi18n.getString("enchi18n."+ench.getKey().getKey().toString().trim());
+				if(enchname==null || enchname.equals("")) {
+					plugin.getLogger().info("Found new ench ["+ench.getKey().getKey().toString()+"] ,add it in config...");
+					enchi18n.set("enchi18n."+ench.getKey().getKey().toString().trim(),ench.getKey().getKey().toString().trim());
+				}
+			}catch (Throwable e) {
+				String enchname = enchi18n.getString("enchi18n."+ench.getName());
+				if(enchname==null || enchname.equals("")) {
+					plugin.getLogger().info("Found new ench ["+ench.getName()+"] ,add it in config...");
+					enchi18n.set("enchi18n."+ench.getName().trim(),ench.getName().trim());
+				}
 			}
+			
 		}
 		try {
 			enchi18n.save(enchi18nFile);
@@ -390,13 +401,24 @@ public class MsgUtil {
 	 * @param Enchantment key
 	 * @return String Enchantment's i18n name.
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getEnchi18n(Enchantment key) {
 		if(key==null) {
 			return "ERROR";
 		}
 		String EnchString = null;
 		//support for legacy
-		EnchString = key.getKey().getKey().toString().trim();
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		/**CS and 1.12.2 Compatible**/
+		try {
+			EnchString = key.getKey().getKey().toString().trim();
+		} catch (Exception e) {
+			EnchString = key.getName();
+		}
 		String Ench_i18n = null;
 		try {
 			Ench_i18n = enchi18n.getString("enchi18n."+EnchString);

@@ -73,18 +73,35 @@ public class ShopManager {
 		//Create sign
 		if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
 			Material signType = info.getSignBlock().getType();
-			if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
-				return;
+			/**CS and 1.12.2 Compatible**/
+			try {
+				if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
+					return;
+				}
+			} catch (Throwable e) {
+				if (signType != Material.AIR) {
+					return;
+				}
 			}
 			boolean isWaterLogged = false;
-			if (info.getSignBlock().getType() == Material.WATER)
-				isWaterLogged = true;
+			try {
+				if (info.getSignBlock().getType() == Material.WATER)
+					isWaterLogged = true;
+			} catch (Throwable e) {
+				//Ignore
+			}
+			
+			
 			final BlockState bs = info.getSignBlock().getState();
 			final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
 			bs.setType(Material.WALL_SIGN);
-			if (isWaterLogged) {
-				Waterlogged waterable = (Waterlogged) bs.getBlockData();
-				waterable.setWaterlogged(true); // Looks like sign directly put in water
+			try {
+				if (isWaterLogged) {
+					Waterlogged waterable = (Waterlogged) bs.getBlockData();
+					waterable.setWaterlogged(true); // Looks like sign directly put in water
+				}
+			} catch (Throwable e) {
+				//Ignore
 			}
 			Sign sign = (Sign) bs.getData();
 			sign.setFacingDirection(bf);
