@@ -157,13 +157,20 @@ public class DisplayProtectionListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
 		try {
-			if (itemStackCheck(event.getCurrentItem()) || itemStackCheck(event.getCursor())) {
+			if (itemStackCheck(event.getCurrentItem()) ) {
+				event.setCancelled(true);
+				MsgUtil.sendExploitAlert(event.getClickedInventory(),"Click the DisplayItem in Inventory",event.getViewers().get(0).getLocation());
+				event.getCurrentItem().setAmount(0);
+				event.getCurrentItem().setType(Material.AIR);
+				event.setResult(Result.DENY);
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
+				Util.inventoryCheck(event.getInventory());
+			}
+			if(itemStackCheck(event.getCursor())) {
 				event.setCancelled(true);
 				MsgUtil.sendExploitAlert(event.getClickedInventory(),"Click the DisplayItem in Inventory",event.getViewers().get(0).getLocation());
 				event.getCursor().setAmount(0);
 				event.getCursor().setType(Material.AIR);
-				event.getCurrentItem().setAmount(0);
-				event.getCurrentItem().setType(Material.AIR);
 				event.setResult(Result.DENY);
 				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
 				Util.inventoryCheck(event.getInventory());
