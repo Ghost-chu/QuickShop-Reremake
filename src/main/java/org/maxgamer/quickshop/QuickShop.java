@@ -127,17 +127,15 @@ public class QuickShop extends JavaPlugin {
 		}
 		if (getServer().getName().toLowerCase().contains("catserver")) {
 			// Send FATAL ERROR TO CatServer's users.
-			getLogger().info("NOTICE: QSRR nolonger support CatServer ALERT!");
-			getLogger().info("NOTICE: From 1.3.1.9, QSRR already nolonger support CatServer");
-			getLogger().info("NOTICE: Cause this server have important license issues,");
-			getLogger().info("NOTICE: And to support Modded Bukkit Server is very hard.");
-			getLogger().info("NOTICE: So, QSRR will drop support for 1.12.2 Modded server.");
-			getLogger().info("NOTICE: SERVER WILL CONTINUE LOAD IN 60 SECONDS.");
+			getLogger().info("NOTICE: QSRR nolonger support CatServer!");
+			getLogger().info("NOTICE: The reason of detail very complex,QSRR some version support CatServer, but cuz CatServer Developing Team's attitude too bad, I decide remove all support for CatServer, Sorry user!");
+			getLogger().info("NOTICE: QSRR will auto-unload in 60 secs.");
 			try {
 				Thread.sleep(600000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				Bukkit.getPluginManager().disablePlugin(this);
+				return;
 			}
 		}
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
