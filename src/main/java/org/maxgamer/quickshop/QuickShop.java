@@ -132,6 +132,8 @@ public class QuickShop extends JavaPlugin {
 			getLogger().info("NOTICE: QSRR will auto-unload in 60 secs.");
 			try {
 				Thread.sleep(600000);
+				Bukkit.getPluginManager().disablePlugin(this);
+				return;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				Bukkit.getPluginManager().disablePlugin(this);
