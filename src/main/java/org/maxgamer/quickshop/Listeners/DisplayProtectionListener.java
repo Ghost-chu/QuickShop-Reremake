@@ -1,9 +1,14 @@
 package org.maxgamer.quickshop.Listeners;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Event.Result;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerChangedMainHandEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
@@ -20,11 +26,14 @@ import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class DisplayProtectionListener implements Listener {
+	QuickShop plugin = null;
 	public DisplayProtectionListener(QuickShop plugin) {
+		this.plugin=plugin;
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -233,7 +242,70 @@ public class DisplayProtectionListener implements Listener {
 				return;
 			}
 	}
+	@EventHandler(ignoreCancelled = true)
+	public void onLiuqidFlowing(BlockFromToEvent event) {
+			Block targetBlock = event.getToBlock();
+			Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
+			Shop shop = plugin.getShopManager().getShop(shopBlock.getLocation());
+			if (shop == null) {
+				return;
+			}
+			event.setCancelled(true);
+			MsgUtil.sendExploitAlert("Liuqid: "+event.getBlock().getType().name(),"Liquid transport DisplayItem", event.getBlock().getLocation());
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onPistonExtend(BlockPistonExtendEvent event) {
+		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+		Shop shop = plugin.getShopManager().getShop(block.getLocation());
+		if (shop != null) {
+			event.setCancelled(true);
+			MsgUtil.sendExploitAlert("Block: "+event.getBlock().getType().name(), "Piston Extend to push DisplayItem", event.getBlock().getLocation());
+			return;
+		}
+		for (Block oBlock : event.getBlocks()) {
+			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+			if (Util.canBeShop(otherBlock, null, true)) {
+				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
+				if (shop != null) {
+					event.setCancelled(true);
+					MsgUtil.sendExploitAlert("Block: "+event.getBlock().getType().name(), "Piston Extend to push DisplayItem", event.getBlock().getLocation());
+					return;
+				}
+			}
+		}
+	}
 	
+	@EventHandler(ignoreCancelled = true)
+	public void onPistonRetract(BlockPistonRetractEvent event) {
+		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+		Shop shop = plugin.getShopManager().getShop(block.getLocation());
+		if (shop != null) {
+			event.setCancelled(true);
+			MsgUtil.sendExploitAlert("Block: "+event.getBlock().getType().name(), "Piston Retract to push DisplayItem", event.getBlock().getLocation());
+			return;
+		}
+		for (Block oBlock : event.getBlocks()) {
+			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+			if (Util.canBeShop(otherBlock, null, true)) {
+				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
+				if (shop != null) {
+					event.setCancelled(true);
+					MsgUtil.sendExploitAlert("Block: "+event.getBlock().getType().name(), "Piston Retract to push DisplayItem", event.getBlock().getLocation());
+					return;
+				}
+			}
+		}
+	}
+	@EventHandler(ignoreCancelled = true)
+	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+		Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
+		Shop shop = plugin.getShopManager().getShop(waterBlock.getRelative(BlockFace.DOWN).getLocation());
+		if(shop == null) 
+			return;
+		event.setCancelled(true);
+		MsgUtil.sendExploitAlert(event.getPlayer(), "Place water and use water to push DisplayItem", waterBlock.getLocation());
+	}
 	public boolean itemStackCheck(ItemStack is) {
 		return DisplayItem.checkShopItem(is);
 	}
