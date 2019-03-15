@@ -17,9 +17,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -241,34 +241,15 @@ public class BlockListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
-	public void onPistonExtend(BlockPistonExtendEvent event) {
-		if (!plugin.display) {
-			return;
-		}
-		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-		Shop shop = plugin.getShopManager().getShop(block.getLocation());
-		if (shop != null) {
-			event.setCancelled(true);
-			plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
-			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
-			return;
-		}
-		
-		for (Block oBlock : event.getBlocks()) {
-			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-			if (Util.canBeShop(otherBlock,null,true)) {
-				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
-				if (shop!=null) {
-					event.setCancelled(true);
-					plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
-					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
-					return;
-				}
-			}
-		}
-	}
-
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockSpread(BlockSpreadEvent e) {
+        Block newBlock = e.getNewState().getBlock();
+        Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
+        Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
+        if(thisBlockShop == null && underBlockShop == null)
+        	return;
+        e.setCancelled(true);
+    }
 	/**
 	 * Gets the shop a sign is attached to
 	 * 
