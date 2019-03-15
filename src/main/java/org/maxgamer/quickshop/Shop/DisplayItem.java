@@ -58,6 +58,8 @@ public class DisplayItem {
 			this.item.setVelocity(new Vector(0, 0.1, 0));
 			try {
 				this.safeGuard(this.item);
+				ShopDisplayItemSpawnedEvent shopDisplayItemSpawnedEvent = new ShopDisplayItemSpawnedEvent(shop, this.item);
+				Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnedEvent);
 				// NMS.safeGuard
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -89,7 +91,9 @@ public class DisplayItem {
 		item.setSilent(true);
 		item.setInvulnerable(true);
 		java.util.List<String> lore = new ArrayList<String>();
-	    lore.add("QuickShop DisplayItem");
+	    for (int i = 0; i < 21; i++) {
+	    	lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+		}
 		iMeta.setLore(lore);
 		item.getItemStack().setItemMeta(iMeta);
 	}
