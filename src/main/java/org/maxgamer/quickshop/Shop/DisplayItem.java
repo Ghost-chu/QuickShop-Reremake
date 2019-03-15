@@ -103,7 +103,7 @@ public class DisplayItem {
 		if(itemStack.getItemMeta().hasLore()) {
 			List<String> lores = itemStack.getItemMeta().getLore();
 			for (String singleLore : lores) {
-				if (singleLore.equals("QuickShop DisplayItem")) {
+				if (singleLore.equals("QuickShop DisplayItem")||singleLore.contains("QuickShop DisplayItem")) {
 					return true;
 				}
 			}
