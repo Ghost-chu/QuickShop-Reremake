@@ -3,8 +3,10 @@ jdk:
   - oraclejdk8
 install: true
 script:
+  - mvn clean
   - mvn install
 after_success:
+  - rm -rf push
   - mkdir push
   - cp ./target/*.jar ./push/
 deploy:
