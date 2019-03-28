@@ -145,7 +145,10 @@ public class Util {
 			config.set(key, filtered);
 		}
 	}
-
+	public static String parseColours(String text) {
+		text = ChatColor.translateAlternateColorCodes('&', text);
+		return text;
+	}
 	/**
 	 * Returns true if the given block could be used to make a shop out of.
 	 * 
