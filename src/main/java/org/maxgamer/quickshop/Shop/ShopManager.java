@@ -627,10 +627,10 @@ public class ShopManager {
 			}
 			
 			// allow-shop-without-space-for-sign check
-			if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign") && plugin.getConfig().getBoolean("no-space-to-put-sign")) {
+			if (plugin.getConfig().getBoolean("shop.auto-sign") && plugin.getConfig().getBoolean("no-space-to-put-sign")) {
 				Material signType = info.getSignBlock().getType();
-				if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
-					p.sendMessage(MsgUtil.getMessage("failed-to-put-sign"));
+				if (info.getSignBlock() == null && signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
+					p.sendMessage(MsgUtil.getMessage("no-space-to-put-sign"));
 					return;
 				}
 			}
