@@ -578,13 +578,23 @@ public class ShopManager {
 				p.sendMessage(MsgUtil.getMessage("no-double-chests"));
 				return;
 			}
-			if (Util.canBeShop(info.getLocation().getBlock(),null,true) == false) {
+			if (Util.canBeShop(info.getLocation().getBlock(), null, true) == false) {
 				p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 				return;
 			}
 			if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType() == Material.ENDER_CHEST) {
 				if (!p.hasPermission("quickshop.create.enderchest"))
 					return;
+			}
+			// allow-shop-without-space-for-sign check
+			if (plugin.getConfig().getBoolean("shop.auto-sign")
+					&& plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
+				Material signType = info.getSignBlock().getType();
+				if (info.getSignBlock() == null && signType != Material.AIR && signType != Material.CAVE_AIR
+						&& signType != Material.VOID_AIR && signType != Material.WATER) {
+					p.sendMessage(MsgUtil.getMessage("failed-to-put-sign"));
+					return;
+				}
 			}
 			// Price per item
 			double price;
@@ -625,16 +635,7 @@ public class ShopManager {
 				shop.onUnload();
 				return;
 			}
-			
-			// allow-shop-without-space-for-sign check
-			if (plugin.getConfig().getBoolean("shop.auto-sign") && plugin.getConfig().getBoolean("no-space-to-put-sign")) {
-				Material signType = info.getSignBlock().getType();
-				if (info.getSignBlock() == null && signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
-					p.sendMessage(MsgUtil.getMessage("no-space-to-put-sign"));
-					return;
-				}
-			}
-			
+
 			// This must be called after the event has been called.
 			// Else, if the event is cancelled, they won't get their
 			// money back.
@@ -645,17 +646,17 @@ public class ShopManager {
 					return;
 				}
 				try {
-					plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), tax);
+					plugin.getEcon().deposit(
+							Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), tax);
 				} catch (Exception e2) {
 					e2.printStackTrace();
 					plugin.getLogger().log(Level.WARNING,
 							"QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
 				}
 			}
-			
-			
+
 			/* The shop has hereforth been successfully created */
-			createShop(shop,info);
+			createShop(shop, info);
 			Location loc = shop.getLocation();
 			plugin.log(p.getName() + " created a " + MsgUtil.getDisplayName(shop.getItem()) + " shop at ("
 					+ loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
