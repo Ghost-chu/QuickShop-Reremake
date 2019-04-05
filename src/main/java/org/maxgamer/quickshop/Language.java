@@ -19,8 +19,10 @@ public class Language {
 		return languages;
 	}
 	public InputStream getFile(String language, String type) {
-		if(language==null || !languages.contains(language))
+		if((language==null) || !languages.contains(language) || (language==""))
 			language="en_US";
+		if(type == null || type == "")
+			throw new IllegalArgumentException("Type cannot be null or empty");
 		return plugin.getResource(type+"-"+language+".yml");
 		//File name should call    type-language.yml    ---> config-zh_CN.yml
 	}
