@@ -625,6 +625,16 @@ public class ShopManager {
 				shop.onUnload();
 				return;
 			}
+			
+			// allow-shop-without-space-for-sign check
+			if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign") && plugin.getConfig().getBoolean("no-space-to-put-sign")) {
+				Material signType = info.getSignBlock().getType();
+				if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
+					p.sendMessage(MsgUtil.getMessage("failed-to-put-sign"));
+					return;
+				}
+			}
+			
 			// This must be called after the event has been called.
 			// Else, if the event is cancelled, they won't get their
 			// money back.
@@ -642,6 +652,8 @@ public class ShopManager {
 							"QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
 				}
 			}
+			
+			
 			/* The shop has hereforth been successfully created */
 			createShop(shop,info);
 			Location loc = shop.getLocation();

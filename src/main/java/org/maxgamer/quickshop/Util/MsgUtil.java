@@ -164,6 +164,12 @@ public class MsgUtil {
 			selectedVersion = 7;
 			messagei18n.save(messageFile);
 		}
+		if (selectedVersion == 7) {
+			messagei18n.set("failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
+			messagei18n.set("language-version", 8);
+			selectedVersion = 8;
+			messagei18n.save(messageFile);
+		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
 		if (!sender.hasPermission("quickshop.use")) {
