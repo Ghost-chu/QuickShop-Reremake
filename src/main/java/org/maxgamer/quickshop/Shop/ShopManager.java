@@ -588,7 +588,7 @@ public class ShopManager {
 			}
 			// allow-shop-without-space-for-sign check
 			if (plugin.getConfig().getBoolean("shop.auto-sign")
-					&& plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
+					&& !plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
 				Material signType = info.getSignBlock().getType();
 				if (info.getSignBlock() == null && signType != Material.AIR && signType != Material.CAVE_AIR
 						&& signType != Material.VOID_AIR && signType != Material.WATER) {
