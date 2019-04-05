@@ -767,6 +767,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 19) {
+			getConfig().set("allow-shop-without-space-for-sign", false);
+			getConfig().set("config-version", 20);
+			selectedVersion = 20;
+			saveConfig();
+			reloadConfig();
+		}
 		
 	}
 
