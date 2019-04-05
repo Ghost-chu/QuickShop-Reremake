@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 19
+config-version: 20
 
 #Do not touch if you not know what is this
 dev-mode: false
@@ -123,8 +123,12 @@ shop:
     
     #Allow auto fetch player shop, if you disable it ,Player need use /qs fetchmessage to fetch history shop messages. (Disable it may cause database size lost control.)
     auto-fetch-shop-messages: true
+    
     #Ignore cancel chat event, maybe can improve compatibility with other chat plugin.
     ignore-cancel-chat-event: false
+    
+    #Allow create shop in the sign cannot placed environment (e.g Player no permission put sign on that location / No enough space)
+    allow-shop-without-space-for-sign: false
 
     
 
