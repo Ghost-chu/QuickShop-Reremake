@@ -194,6 +194,7 @@ public class Util {
 	 *            The chest to check.
 	 * @return the block which is also a chest and connected to b.
 	 */
+	/** @TODO 1.13+ compatibility */
 	public static Block getSecondHalf(Block b) {
 		if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
 			return null;
