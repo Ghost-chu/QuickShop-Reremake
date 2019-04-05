@@ -95,6 +95,7 @@ public class QuickShop extends JavaPlugin {
 	private String dbPrefix="";
 	private Tab commandTabCompleter;
 	private Metrics metrics;
+	private Language language;
 	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
@@ -112,6 +113,7 @@ public class QuickShop extends JavaPlugin {
 	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
+		language = new Language(this);
 		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
 		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
@@ -934,4 +936,7 @@ public class QuickShop extends JavaPlugin {
     public Metrics getMetrics() {
 		return metrics;
 	}
+    public Language getLanguage() {
+		return language;
+    }
 }
