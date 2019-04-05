@@ -19,7 +19,7 @@ public class Language {
 		return languages;
 	}
 	public InputStream getFile(String language, String type) {
-		if((language==null) || !languages.contains(language) || (language==""))
+		if((language==null) || !languages.contains(language))
 			language="en_US";
 		if(type == null || type == "")
 			throw new IllegalArgumentException("Type cannot be null or empty");
