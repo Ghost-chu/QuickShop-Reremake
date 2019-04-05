@@ -31,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
+import org.maxgamer.quickshop.Language;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -59,7 +60,8 @@ public class MsgUtil {
 		// Store it
 		messagei18n = YamlConfiguration.loadConfiguration(messageFile);
 		messagei18n.options().copyDefaults(true);
-		YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
+		Language language = new Language(plugin);
+		YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(language.getFile(language.getComputerLanguage(), "messages")));
 		messagei18n.setDefaults(messagei18nYAML);
 		
 		if(messagei18n.getInt("language-version")==0) {
