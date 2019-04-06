@@ -54,7 +54,7 @@ public class MsgUtil {
 		messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
 			plugin.getLogger().info("Creating messages.yml");
-			plugin.saveResource("messages.yml", true);
+			plugin.getLanguage().saveFile(plugin.getLanguage().getComputerLanguage(),"messages","messages.yml");
 		}
 		// Store it
 		messagei18n = YamlConfiguration.loadConfiguration(messageFile);
