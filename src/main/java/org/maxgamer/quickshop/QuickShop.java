@@ -118,6 +118,7 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
+		getLogger().info("Language Zone:"+Locale.getDefault().toString());
 		getLogger().info("Let's us start load plugin");
 		// NMS.init();
 		try {

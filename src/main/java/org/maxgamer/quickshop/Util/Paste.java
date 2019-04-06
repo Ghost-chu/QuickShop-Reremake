@@ -68,13 +68,13 @@ public class Paste {
         BASE64Encoder encoder = new BASE64Encoder();
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
-        finalReport.append("*********************************\n");
-        finalReport.append("config.yml:\n");
-        finalReport.append("\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
-        finalReport.append("*********************************\n");
-        finalReport.append("messages.yml:\n");
-        finalReport.append("\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
-        finalReport.append("*********************************\n");
+        finalReport.append("\t*********************************\n");
+        finalReport.append("\tconfig.yml:\n");
+        finalReport.append("\t\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
+        finalReport.append("\t*********************************\n");
+        finalReport.append("\tmessages.yml:\n");
+        finalReport.append("\t\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
+        finalReport.append("\t*********************************\n");
         finalReport.append("================================================\n");
         return finalReport.toString();
     }
