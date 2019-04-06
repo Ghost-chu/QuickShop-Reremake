@@ -76,10 +76,10 @@ public class MsgUtil {
 		//Print language copyright infomation
 		
 		if(!Inited) {
-			plugin.getLogger().info(messagei18n.getString("language-author"));
-			plugin.getLogger().info(messagei18n.getString("language-contributors"));
-			plugin.getLogger().info(messagei18n.getString("language-country"));
-			plugin.getLogger().info(messagei18n.getString("language-version"));
+			plugin.getLogger().info(getMessage("translation-author"));
+			plugin.getLogger().info(getMessage("translation-contributors"));
+			plugin.getLogger().info(getMessage("translation-country"));
+			plugin.getLogger().info(getMessage("translation-version"));
 			Inited=true;
 		}
 		try {
@@ -169,6 +169,14 @@ public class MsgUtil {
 			messagei18n.set("failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
 			messagei18n.set("language-version", 8);
 			selectedVersion = 8;
+			messagei18n.save(messageFile);
+		}
+		if (selectedVersion == 8) {
+			messagei18n.set("failed-to-paste", "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)");
+			messagei18n.set("warn-to-paste", "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer.");
+			messagei18n.set("command.description.paste", "&eAuto upload server data to Pastebin");
+			messagei18n.set("language-version", 9);
+			selectedVersion = 9;
 			messagei18n.save(messageFile);
 		}
 	}
