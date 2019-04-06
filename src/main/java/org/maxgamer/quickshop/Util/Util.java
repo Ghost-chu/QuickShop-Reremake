@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -854,5 +855,37 @@ public class Util {
 		long time =System.currentTimeMillis()-timerMap.get(uuid);
 		timerMap.remove(uuid);
 		return time;
+	}
+	public static int getShopsInWorld(String worldName) {
+		int cost = 0;
+		Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
+		while (iterator.hasNext()) {
+			Shop shop = iterator.next();
+			if (shop.getLocation().getWorld().getName().equals(worldName)) {
+				cost++;
+			}
+		}
+		return cost;
+	}
+	public static String readToString(String fileName) {
+		String encoding = "UTF-8";
+		File file = new File(fileName);
+		Long filelength = file.length();
+		byte[] filecontent = new byte[filelength.intValue()];
+		try {
+			FileInputStream in = new FileInputStream(file);
+			in.read(filecontent);
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			return new String(filecontent, encoding);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return ("The OS does not support " + encoding);
+		}
 	}
 }

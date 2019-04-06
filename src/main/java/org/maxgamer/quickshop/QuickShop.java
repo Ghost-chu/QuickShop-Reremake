@@ -823,7 +823,6 @@ public class QuickShop extends JavaPlugin {
 			return false;
 		}
 	}
-
 	public void onDisable() {
 	    if (noopDisable)
 	        return;
@@ -939,4 +938,5 @@ public class QuickShop extends JavaPlugin {
     public Language getLanguage() {
 		return language;
     }
+    public String getFork() { return "Reremake"; }
 }
