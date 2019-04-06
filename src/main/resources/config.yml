@@ -1,7 +1,10 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 20
+config-version: 21
+
+#Select language you want use, (e.g de).
+language: en_US
 
 #Do not touch if you not know what is this
 dev-mode: false
