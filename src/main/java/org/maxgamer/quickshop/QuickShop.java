@@ -114,11 +114,9 @@ public class QuickShop extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		language = new Language(this);
-		getLogger().info("Quickshop Reremake by Ghost_chu(Minecraft SunnySide Server Community)");
-		getLogger().info("THIS VERSION ONLY SUPPORT BUKKIT API 1.13-1.13.x VERSION!");
+		getLogger().info("Quickshop Reremake");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
-		getLogger().info("Language Zone:"+Locale.getDefault().toString());
 		getLogger().info("Let's us start load plugin");
 		// NMS.init();
 		try {

@@ -3,8 +3,10 @@
 #Do not touch if you not clear know about this
 config-version: 21
 
-#Select language you want use, (e.g de).
-language: en_US
+#Select language you want use, (e.g de), use `default` to let quickshop auto detect your computer language zone, or use other exist language to override it.
+#After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
+#If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
+language: default
 
 #Do not touch if you not know what is this
 dev-mode: false

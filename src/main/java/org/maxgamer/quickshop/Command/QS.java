@@ -916,6 +916,9 @@ public class QS implements CommandExecutor{
 		if (s.hasPermission("quickshop.debug"))
 			s.sendMessage(ChatColor.GREEN + "/qs debug" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.debug"));
+		if (s.hasPermission("quickshop.paste"))
+			s.sendMessage(ChatColor.GREEN + "/qs debug" + ChatColor.YELLOW + " - "
+					+ MsgUtil.getMessage("command.description.paste"));
 //		if (s.hasPermission("quickshop.export"))
 //			s.sendMessage(ChatColor.GREEN + "/qs export mysql|sqlite" + ChatColor.YELLOW + " - "
 //					+ MsgUtil.getMessage("command.description.export"));

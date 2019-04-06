@@ -1,12 +1,12 @@
 package org.maxgamer.quickshop.Command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tab implements TabCompleter {
 	QuickShop plugin;
@@ -49,6 +49,8 @@ public class Tab implements TabCompleter {
 				tabList.add("info");
 			if (sender.hasPermission("quickshop.debug"))
 				tabList.add("debug");
+			if (sender.hasPermission("quickshop.paste"))
+				tabList.add("paste");
 			return tabList;
 		}else if(args.length==2) {
 			if (args[1].equals("create")&&sender.hasPermission("quickshop.create.sell")) {

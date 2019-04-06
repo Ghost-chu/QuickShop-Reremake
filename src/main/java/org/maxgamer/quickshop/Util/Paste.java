@@ -91,7 +91,7 @@ public class Paste {
         builder.append("poster=");
         builder.append("QSIAS");
         builder.append("&syntax=text");
-        builder.append("&expiration=");
+        builder.append("&expiration=week");
         builder.append("&content=");
         builder.append(URLEncoder.encode(text,"UTF-8"));
         //poster=aaaaaaa&syntax=text&expiration=&content=%21%40
