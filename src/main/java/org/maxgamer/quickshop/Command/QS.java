@@ -1,17 +1,6 @@
 package org.maxgamer.quickshop.Command;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,21 +11,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.Database.SQLiteCore;
-import org.maxgamer.quickshop.Shop.ContainerShop;
-import org.maxgamer.quickshop.Shop.Info;
-import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopAction;
-import org.maxgamer.quickshop.Shop.ShopChunk;
-import org.maxgamer.quickshop.Shop.ShopManager;
-import org.maxgamer.quickshop.Shop.ShopType;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Paste;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.logging.Level;
 
 public class QS implements CommandExecutor{
 	QuickShop plugin;
@@ -82,14 +73,13 @@ public class QS implements CommandExecutor{
 							(shop.isUnlimited() ? "unlimited" : "limited")));
 					return;
 				}
-			
 		} else {
 			sender.sendMessage(MsgUtil.getMessage("no-permission"));
 			return;
 		}
 	}
 	private void remove(CommandSender sender, String[] args) {
-		if (sender instanceof Player == false) {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Only players may use that command.");
 			return;
 		}
@@ -116,7 +106,7 @@ public class QS implements CommandExecutor{
 		p.sendMessage(ChatColor.RED + "No shop found!");
 	}
 	private void fetchMessage(CommandSender sender, String[] args) {
-		if (sender instanceof Player == false) {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Only players may use that command.");
 			return;
 		}
@@ -646,6 +636,25 @@ public class QS implements CommandExecutor{
 		sender.sendMessage(MsgUtil.getMessage("no-permission"));
 		return;
 	}
+	public void paste(CommandSender sender) {
+		if (sender.hasPermission("quickshop.paste")) {
+			//do actions
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					try{
+						Paste paste = new Paste(plugin);
+						sender.sendMessage(paste.pasteTheText(paste.genNewPaste()));
+
+					}catch (Exception err){
+						sender.sendMessage("Paste failed");
+					}
+				}
+			}.runTaskAsynchronously(plugin);
+		}
+		sender.sendMessage(MsgUtil.getMessage("no-permission"));
+		return;
+	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if (args.length > 0) {
@@ -721,6 +730,9 @@ public class QS implements CommandExecutor{
 				return true;
 			} else if (subArg.equals("info")) {
 				info(sender,args);
+				return true;
+			} else if (subArg.equals("paste")) {
+				paste(sender);
 				return true;
 			}
 		} else {
