@@ -643,14 +643,17 @@ public class QS implements CommandExecutor{
 				@Override
 				public void run() {
 					try{
+					    /**@TODO i18n*/
+                        sender.sendMessage("Please wait...");
 						Paste paste = new Paste(plugin);
 						sender.sendMessage(paste.pasteTheText(paste.genNewPaste()));
 
 					}catch (Exception err){
-						sender.sendMessage("Paste failed");
+						sender.sendMessage("Paste failed, see console for details.");
 					}
 				}
 			}.runTaskAsynchronously(plugin);
+			return;
 		}
 		sender.sendMessage(MsgUtil.getMessage("no-permission"));
 		return;

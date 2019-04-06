@@ -75,4 +75,7 @@ permissions:
         default: op
     quickshop.fetchmessage:
         description: Use command /qs fetchmessage to manual fetch shop message from database. Not effect auto fetch if you turn on auto fetch...
-        default: true    
+        default: true
+    quickshop.paste:
+        description: Command for paste server infomation to Pastebin. !WARN, paste may leak your config.
+        default: false
