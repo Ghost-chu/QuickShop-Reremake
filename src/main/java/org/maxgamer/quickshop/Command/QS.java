@@ -878,49 +878,49 @@ public class QS implements CommandExecutor{
 
 		s.sendMessage(MsgUtil.getMessage("command.description.title"));
 		if (s.hasPermission("quickshop.unlimited"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" unlimited" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" unlimited" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.unlimited"));
 		if (s.hasPermission("quickshop.setowner"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" setowner <player>" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" setowner <player>" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.setowner"));
 		if (s.hasPermission("quickshop.create.buy"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" buy" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" buy" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.buy"));
 		if (s.hasPermission("quickshop.create.sell")) {
-			s.sendMessage(ChatColor.GREEN + commandLabel+" sell" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" sell" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.sell"));
-			s.sendMessage(ChatColor.GREEN + commandLabel+" create [price]" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" create [price]" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.create"));
 		}
 		if (s.hasPermission("quickshop.create.changeprice"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" price" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" price" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.price"));
 		if (s.hasPermission("quickshop.clean"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" clean" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" clean" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.clean"));
 		if (s.hasPermission("quickshop.find"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" find <item>" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" find <item>" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.find"));
 		if (s.hasPermission("quickshop.refill"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" refill <amount>" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" refill <amount>" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.refill"));
 		if (s.hasPermission("quickshop.empty"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" empty" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" empty" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.empty"));
 		if (s.hasPermission("quickshop.fetchmessage"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" fetchmessage" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" fetchmessage" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.fetchmessage"));
 		if (s.hasPermission("quickshop.info"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" info" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" info" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.info"));
 		if (s.hasPermission("quickshop.debug"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" debug" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" debug" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.debug"));
 		if (s.hasPermission("quickshop.paste"))
-			s.sendMessage(ChatColor.GREEN + commandLabel+" debug" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" debug" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.paste"));
 //		if (s.hasPermission("quickshop.export"))
-//			s.sendMessage(ChatColor.GREEN + commandLabel+" export mysql|sqlite" + ChatColor.YELLOW + " - "
+//			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" export mysql|sqlite" + ChatColor.YELLOW + " - "
 //					+ MsgUtil.getMessage("command.description.export"));
 	}
 	
