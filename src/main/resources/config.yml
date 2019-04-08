@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 21
+config-version: 22
 
 #Select language you want use, (e.g de), use `default` to let quickshop auto detect your computer language zone, or use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -135,6 +135,8 @@ shop:
     #Allow create shop in the sign cannot placed environment (e.g Player no permission put sign on that location / No enough space)
     allow-shop-without-space-for-sign: false
 
+    #The maximum price for shop, This not affect exists shops, set -1 to disable it.
+    maximum-price: -1
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
