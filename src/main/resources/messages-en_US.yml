@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 9
+language-version: 10
 
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
 no-anythings-in-your-hand: "&cNo anythings in your hand."
@@ -152,7 +152,23 @@ controlpanel:
     empty-hover: "&eLooking you want changing shop and click to clear."
     remove: "&c&l[Remove Shop]"
     remove-hover: "&eClick to remove this shop."
-    
+    commands:
+      setowner: "/qs owner [Player]"
+      unlimited: "/qs slientunlimited {0} {1} {2} {3}"
+      buy: "/qs silentbuy {0} {1} {2} {3}"
+      sell: "/qs silentsell {0} {1} {2} {3}"
+      price: "/qs price [New Price]"
+      refill: "/qs refill [Amount]"
+      empty: "/qs silentempty {0} {1} {2} {3}"
+      remove: "/qs silentremove {0} {1} {2} {3}"
+tableformat:
+    full_line: "+---------------------------------------------------+"
+    left_half_line: "+--------------------"
+    right_half_line: "--------------------+"
+    left_begin: "| "
+booleanformat:
+    success: "&a✔"
+    failed: "&c✘"
 tabcomplete:
 # /qs price [price] or /qs create [price]
     price: "[price]"

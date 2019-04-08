@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.MsgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +55,16 @@ public class Tab implements TabCompleter {
 			return tabList;
 		}else if(args.length==2) {
 			if (args[1].equals("create")&&sender.hasPermission("quickshop.create.sell")) {
-				tabList.add("[price]");
+				tabList.add(MsgUtil.getMessage("tabcomplete.price"));
 			}
 			if (args[1].equals("price")&&sender.hasPermission("quickshop.create.changeprice")) {
-				tabList.add("[price]");
+				tabList.add(MsgUtil.getMessage("tabcomplete.price"));
 			}
 			if (args[1].equals("find")&&sender.hasPermission("quickshop.find")) {
-				tabList.add("[range]");
+				tabList.add(MsgUtil.getMessage("tabcomplete.range"));
 			}
 			if (args[1].equals("refill")&&sender.hasPermission("quickshop.refill")) {
-				tabList.add("[amount]");
+				tabList.add(MsgUtil.getMessage("tabcomplete.amount"));
 			}
 			return tabList;
 		}else {
