@@ -235,6 +235,7 @@ public class MsgUtil {
 			//		+ shop.getLocation().getBlockZ();
 			String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",
 					String.valueOf(shop.getLocation().getWorld().getName()),
+					String.valueOf(shop.getLocation().getBlockX()),
 					String.valueOf(shop.getLocation().getBlockY()),
 					String.valueOf(shop.getLocation().getBlockZ()));
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
@@ -249,6 +250,7 @@ public class MsgUtil {
 				//		+ shop.getLocation().getBlockZ();
 				String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy",
 						String.valueOf(shop.getLocation().getWorld().getName()),
+						String.valueOf(shop.getLocation().getBlockX()),
 						String.valueOf(shop.getLocation().getBlockY()),
 						String.valueOf(shop.getLocation().getBlockZ()));
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
@@ -260,6 +262,7 @@ public class MsgUtil {
 				//		+ shop.getLocation().getBlockZ() ;
 				String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell",
 						String.valueOf(shop.getLocation().getWorld().getName()),
+						String.valueOf(shop.getLocation().getBlockX()),
 						String.valueOf(shop.getLocation().getBlockY()),
 						String.valueOf(shop.getLocation().getBlockZ()));
 				MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
@@ -298,6 +301,7 @@ public class MsgUtil {
 			//		+ shop.getLocation().getBlockZ();
 			String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",
 					String.valueOf(shop.getLocation().getWorld().getName()),
+					String.valueOf(shop.getLocation().getBlockX()),
 					String.valueOf(shop.getLocation().getBlockY()),
 					String.valueOf(shop.getLocation().getBlockZ()));
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
@@ -311,6 +315,7 @@ public class MsgUtil {
 			//		+ shop.getLocation().getBlockZ();
 			String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",
 					String.valueOf(shop.getLocation().getWorld().getName()),
+					String.valueOf(shop.getLocation().getBlockX()),
 					String.valueOf(shop.getLocation().getBlockY()),
 					String.valueOf(shop.getLocation().getBlockZ()));
 			MsgUtil.sendPanelMessage(sender, Text, hoverText, clickCommand);
