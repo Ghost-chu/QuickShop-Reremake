@@ -586,6 +586,7 @@ public class ShopManager {
 				if (!p.hasPermission("quickshop.create.enderchest"))
 					return;
 			}
+
 			// allow-shop-without-space-for-sign check
 			if (plugin.getConfig().getBoolean("shop.auto-sign")
 					&& !plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
@@ -610,6 +611,13 @@ public class ShopManager {
 			if (price < 0.01) {
 				p.sendMessage(MsgUtil.getMessage("price-too-cheap"));
 				return;
+			}
+			double price_limit = plugin.getConfig().getInt("shop.maximum-price");
+			if(price_limit!=-1){
+				if(price > price_limit){
+					p.sendMessage(MsgUtil.getMessage("price-too-high"));
+					return;
+				}
 			}
 			// Check price restriction
 			Entry<Double, Double> priceRestriction = Util.getPriceRestriction(info.getItem().getType());

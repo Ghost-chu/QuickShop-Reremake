@@ -518,6 +518,13 @@ public class QS implements CommandExecutor{
 				sender.sendMessage(MsgUtil.getMessage("price-too-cheap"));
 				return;
 			}
+			double price_limit = plugin.getConfig().getInt("shop.maximum-price");
+			if(price_limit!=-1){
+				if(price > price_limit){
+					p.sendMessage(MsgUtil.getMessage("price-too-high"));
+					return;
+				}
+			}
 			double fee = 0;
 			if (plugin.priceChangeRequiresFee) {
 				fee = plugin.getConfig().getDouble("shop.fee-for-price-change");

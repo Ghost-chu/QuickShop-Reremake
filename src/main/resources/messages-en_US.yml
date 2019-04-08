@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 10
+language-version: 11
 
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
 no-anythings-in-your-hand: "&cNo anythings in your hand."
@@ -64,6 +64,7 @@ break-shop-use-supertool: "&eYou break the shop by use SuperTool."
 failed-to-put-sign: "&cNo enough space around the shop to place infomation sign."
 failed-to-paste: "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)"
 warn-to-paste: "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer."
+price-too-high: "&cShop price too high! You can't create price higher than {0} shop."
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
     successfully-sold: "&aSuccessfully Sold:"
