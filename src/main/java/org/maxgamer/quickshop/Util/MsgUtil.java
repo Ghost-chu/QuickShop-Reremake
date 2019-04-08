@@ -198,6 +198,12 @@ public class MsgUtil {
 			selectedVersion = 10;
 			messagei18n.save(messageFile);
 		}
+		if (selectedVersion == 10) {
+			messagei18n.set("price-too-high", "&cShop price too high! You can't create price higher than {0} shop.");
+			messagei18n.set("language-version", 11);
+			selectedVersion = 11;
+			messagei18n.save(messageFile);
+		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
 		if (!sender.hasPermission("quickshop.use")) {
