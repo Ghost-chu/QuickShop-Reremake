@@ -775,7 +775,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
-		
+		if (selectedVersion == 20) {
+			getConfig().set("shop.maximum-price", -1);
+			getConfig().set("config-version", 21);
+			selectedVersion = 21;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
