@@ -15,7 +15,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 public class Paste {
-    QuickShop plugin;
+    private QuickShop plugin;
     public Paste(QuickShop plugin){
         this.plugin=plugin;
     }
