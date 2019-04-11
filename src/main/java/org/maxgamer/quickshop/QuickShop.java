@@ -143,8 +143,13 @@ public class QuickShop extends JavaPlugin {
 		}
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
+
+
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
 						// others.
+
+
+
 		getConfig().options().copyDefaults(true); // Load defaults.
 		if (Util.isDevEdition()) {
 			getLogger().severe("WARNING: You are running QSRR on dev-mode");
@@ -165,7 +170,7 @@ public class QuickShop extends JavaPlugin {
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
 		updateConfig(getConfig().getInt("config-version"));
-		language = new Language(this);
+
 
 
 		if (loadEcon() == false)
@@ -807,6 +812,7 @@ public class QuickShop extends JavaPlugin {
 //		this.sneakTrade = this.getConfig().getBoolean("shop.sneak-to-trade");
 		this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
 		this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
+		language = new Language(this); //Init locale
 		MsgUtil.loadCfgMessages();
 	}
 
