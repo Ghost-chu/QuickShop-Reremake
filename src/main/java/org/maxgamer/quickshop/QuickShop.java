@@ -225,6 +225,7 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadItemi18n();
 		MsgUtil.loadEnchi18n();
 		MsgUtil.loadPotioni18n();
+		int skipedShops = 0;
 		try {
 			getLogger().info("Loading shops from database...");
 			ResultSet rs = DatabaseHelper.selectAllShops(database);
@@ -252,6 +253,12 @@ public class QuickShop extends JavaPlugin {
 						// Maybe world not loaded? Try call MV to load world.
 						mPlugin.getCore().getMVWorldManager().loadWorld(worldName);
 						world = Bukkit.getWorld(worldName);
+						if(world==null){
+							// Still load failed? It removed or not got loaded now?
+							skipedShops++;
+							Util.debugLog("Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
+							continue;
+						}
 					}
 					item = Util.deserialize(rs.getString("itemConfig"));
 					owner = rs.getString("owner");
@@ -399,8 +406,8 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("Could not load shops Because SQLException.");
 		}
 		getLogger().info("Loaded " + count + " shops.");
-		
-		
+		getLogger().info("Other "+ skipedShops+" shops will load when world loaded.");
+
 		if (getConfig().getBoolean("shop.lock")) {
 			LockListener lockListener = new LockListener(this);
 			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
