@@ -113,7 +113,7 @@ public class QuickShop extends JavaPlugin {
 	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
-		language = new Language(this);
+
 		getLogger().info("Quickshop Reremake");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
@@ -160,6 +160,14 @@ public class QuickShop extends JavaPlugin {
 				return;
 			}
 		}
+
+
+		if (getConfig().getInt("config-version") == 0)
+			getConfig().set("config-version", 1);
+		updateConfig(getConfig().getInt("config-version"));
+		language = new Language(this);
+
+
 		if (loadEcon() == false)
 			return;
 		// ProtocolLib Support
@@ -184,9 +192,6 @@ public class QuickShop extends JavaPlugin {
 			if (this.openInvPlugin != null)
 				getLogger().info("Successfully loaded OpenInv support!");
 		}
-		if (getConfig().getInt("config-version") == 0)
-			getConfig().set("config-version", 1);
-		updateConfig(getConfig().getInt("config-version"));
 		// Initialize Util
 		Util.initialize();
 		// Create the shop manager.
