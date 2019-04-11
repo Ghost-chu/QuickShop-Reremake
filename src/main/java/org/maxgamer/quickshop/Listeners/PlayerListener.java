@@ -53,7 +53,6 @@ public class PlayerListener implements Listener {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
 			if (!Util.canBeShop(b,null,true) && b.getType() != Material.WALL_SIGN) {
-				Util.debugLog("No shop block");
 				return;
 			}
 			Player p = e.getPlayer();
@@ -241,7 +240,6 @@ public class PlayerListener implements Listener {
 			}
 			Shop shop = plugin.getShopManager().getShop(location);
 			if (shop == null) {
-				Util.debugLog("Shop: No shop at there.");
 				return;
 			}
 			Util.debugLog("Shop: "+shop.toString());
