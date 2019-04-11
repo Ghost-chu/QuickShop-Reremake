@@ -19,7 +19,7 @@ public class Language {
 		languages.add("en_US");
 	}
 	public String getComputerLanguage() {
-		if(plugin.getConfig().getString("language").equals("default"))//Allow user replace this
+		if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default"))//Allow user replace this
 			return Locale.getDefault().toString();
 		return plugin.getConfig().getString("language");
 	}
