@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -196,7 +194,7 @@ public class Util {
 	 * @return the block which is also a chest and connected to b.
 	 */
 	/** @TODO 1.13+ compatibility */
-	public static Block getSecondHalf(Block b) {
+	public static Block getSecondHalf_old(Block b) {
 		if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
 			return null;
 		Block[] blocks = new Block[4];
@@ -211,7 +209,60 @@ public class Util {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Returns the chest attached to the given chest. The given block must be a
+	 * chest.
+	 *
+	 * @param b
+	 *            The chest to check.
+	 * @return the block which is also a chest and connected to b.
+	 */
+	public static Block getSecondHalf(Block b) {
+		Util.debugLog("Getting Second Half of DoubleChest at "+b.getLocation().toString());
+		if(b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST){
+			Util.debugLog("No matched type: "+b.getType().name());
+			return null;
+		}
+		Chest oneSideOfChest = (Chest)b.getState();
+		InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
+		if(chestHolder instanceof DoubleChest){
+			DoubleChest doubleChest = (DoubleChest)chestHolder;
+			InventoryHolder left = doubleChest.getLeftSide();
+			InventoryHolder right = doubleChest.getRightSide();
+
+			Chest leftC = (Chest)left;
+			Chest rightC = (Chest)right;
+			Util.debugLog("Double chest match checker: ");
+			Util.debugLog("Find args: "+b.getLocation().toString());
+			Util.debugLog("Left: "+leftC.getLocation().toString());
+			Util.debugLog("Right: "+rightC.getLocation().toString());
+			if(location3DEqual(b.getLocation(),leftC.getLocation())) {
+				Util.debugLog("Clicked left chest");
+				return rightC.getBlock();
+			}
+			if(location3DEqual(b.getLocation(),rightC.getLocation())) {
+				Util.debugLog("Clicked right chest");
+				return leftC.getBlock();
+			}
+			Util.debugLog("No matched double chest check but pass the DoubleChest Inventory check");
+			return null;
+		}else{
+			Util.debugLog("No matched DoubleChest: "+b.toString());
+			return null;
+		}
+	}
+	public static boolean location3DEqual(Location loc1, Location loc2){
+		if(loc1.getWorld().getName() != loc2.getWorld().getName())
+			return false;
+		if(loc1.getBlockX() != loc2.getBlockX())
+			return false;
+		if(loc1.getBlockY() != loc2.getBlockY())
+			return false;
+		if(loc1.getBlockZ() != loc2.getBlockZ())
+			return false;
+		return true;
+	}
 	/**
 	 * Checks whether someone else's shop is within reach of a hopper being placed by a player.
 	 * 
