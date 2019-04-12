@@ -940,7 +940,7 @@ public class Util {
     public static void debugLog(Object log, Object... params)    {
         if(devMode) {
             for (int index = 0; index < params.length; index++)
-                log = StringUtils.replaceOnce(log.toString(), "{}", params[index++].toString());
+                log = StringUtils.replaceOnce(log.toString(), "{}", params[index].toString());
             
             plugin.getLogger().warning(log.toString());
         }
