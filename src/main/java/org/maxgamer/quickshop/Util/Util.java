@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -18,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -27,6 +26,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
@@ -37,14 +39,20 @@ import java.util.Map.Entry;
  * @author MACHENIKE
  *
  */
-@SuppressWarnings("deprecation")
 public class Util {
 	private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 	private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
 	private static final EnumMap<Material, Entry<Double,Double>> restrictedPrices = new EnumMap<Material, Entry<Double,Double>>(Material.class);
 	private static QuickShop plugin;
 	private static Method storageContents;
-
+	static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
+	public String boolean2String(boolean bool) {
+		if (bool) {
+			return "Enabled";
+		} else {
+			return "Disabled";
+		}
+	}
 	public static void initialize() {
 		blacklist.clear();
 		shoppables.clear();
@@ -52,7 +60,7 @@ public class Util {
 
 		plugin = QuickShop.instance;
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
-			Material mat = Material.getMaterial(s.toUpperCase());
+			Material mat = Material.matchMaterial(s.toUpperCase());
 			if (mat == null) {
 				try {
 					mat = Material.matchMaterial(s);
@@ -109,10 +117,20 @@ public class Util {
 	public static Entry<Double,Double> getPriceRestriction(Material material) {
 		return restrictedPrices.get(material);
 	}
-
+	@SuppressWarnings("deprecation")
 	public static boolean isTransparent(Material m) {
 		boolean trans = m.isTransparent();
 		return trans;
+	}
+	
+	public static boolean isShoppables(Material material) {
+		if(shoppables.contains(material)) {
+			return true;
+		}else {
+			return false;
+		}
+			
+		
 	}
 
 	public static void parseColours(YamlConfiguration config) {
@@ -126,19 +144,31 @@ public class Util {
 			config.set(key, filtered);
 		}
 	}
-
+	public static String parseColours(String text) {
+		text = ChatColor.translateAlternateColorCodes('&', text);
+		return text;
+	}
 	/**
 	 * Returns true if the given block could be used to make a shop out of.
 	 * 
-	 * @param b
-	 *            The block to check. Possibly a chest, dispenser, etc.
+	 * @param b The block to check, Possibly a chest, dispenser, etc. player The player, can be null if onlyCheck=true, onlyCheck The option to disable check AreaShop use player.
 	 * @return True if it can be made into a shop, otherwise false.
 	 */
-	public static boolean canBeShop(Block b) {
+	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
 		BlockState bs = b.getState();
-		if (bs instanceof InventoryHolder == false)
+		if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
 			return false;
+		}
+		if (b.getState().getType() == Material.ENDER_CHEST) {
+			if (plugin.openInvPlugin == null) {
+				Util.debugLog("OpenInv not loaded");
+				return false;
+			} else {
+				return shoppables.contains(bs.getType());
+			}
+		}
 		return shoppables.contains(bs.getType());
+
 	}
 
 	/**
@@ -149,7 +179,7 @@ public class Util {
 	 * @return The percentage 'health' the tool has. (Opposite of total damage)
 	 */
 	public static String getToolPercentage(ItemStack item) {
-		double dura = item.getDurability();
+		double dura = ((Damageable)item.getItemMeta()).getDamage();;
 		double max = item.getType().getMaxDurability();
 		DecimalFormat formatter = new DecimalFormat("0");
 		return formatter.format((1 - dura / max) * 100.0);
@@ -163,7 +193,8 @@ public class Util {
 	 *            The chest to check.
 	 * @return the block which is also a chest and connected to b.
 	 */
-	public static Block getSecondHalf(Block b) {
+	/** @TODO 1.13+ compatibility */
+	public static Block getSecondHalf_old(Block b) {
 		if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
 			return null;
 		Block[] blocks = new Block[4];
@@ -178,7 +209,60 @@ public class Util {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Returns the chest attached to the given chest. The given block must be a
+	 * chest.
+	 *
+	 * @param b
+	 *            The chest to check.
+	 * @return the block which is also a chest and connected to b.
+	 */
+	public static Block getSecondHalf(Block b) {
+		Util.debugLog("Getting Second Half of DoubleChest at "+b.getLocation().toString());
+		if(b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST){
+			Util.debugLog("No matched type: "+b.getType().name());
+			return null;
+		}
+		Chest oneSideOfChest = (Chest)b.getState();
+		InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
+		if(chestHolder instanceof DoubleChest){
+			DoubleChest doubleChest = (DoubleChest)chestHolder;
+			InventoryHolder left = doubleChest.getLeftSide();
+			InventoryHolder right = doubleChest.getRightSide();
+
+			Chest leftC = (Chest)left;
+			Chest rightC = (Chest)right;
+			Util.debugLog("Double chest match checker: ");
+			Util.debugLog("Find args: "+b.getLocation().toString());
+			Util.debugLog("Left: "+leftC.getLocation().toString());
+			Util.debugLog("Right: "+rightC.getLocation().toString());
+			if(location3DEqual(b.getLocation(),leftC.getLocation())) {
+				Util.debugLog("Clicked left chest");
+				return rightC.getBlock();
+			}
+			if(location3DEqual(b.getLocation(),rightC.getLocation())) {
+				Util.debugLog("Clicked right chest");
+				return leftC.getBlock();
+			}
+			Util.debugLog("No matched double chest check but pass the DoubleChest Inventory check");
+			return null;
+		}else{
+			Util.debugLog("No matched DoubleChest: "+b.toString());
+			return null;
+		}
+	}
+	public static boolean location3DEqual(Location loc1, Location loc2){
+		if(loc1.getWorld().getName() != loc2.getWorld().getName())
+			return false;
+		if(loc1.getBlockX() != loc2.getBlockX())
+			return false;
+		if(loc1.getBlockY() != loc2.getBlockY())
+			return false;
+		if(loc1.getBlockZ() != loc2.getBlockZ())
+			return false;
+		return true;
+	}
 	/**
 	 * Checks whether someone else's shop is within reach of a hopper being placed by a player.
 	 * 
@@ -211,13 +295,21 @@ public class Util {
 		return false;
 	}
 
-
+	/**
+	 * Covert ItemStack to YAML string.
+	 * @param ItemStack iStack
+	 * @return String serialized itemStack
+	 */
 	public static String serialize(ItemStack iStack) {
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.set("item", iStack);
 		return cfg.saveToString();
 	}
-
+	/**
+	 * Covert YAML string to ItemStack.
+	 * @param String serialized itemStack
+	 * @return ItemStack iStack
+	 */
 	public static ItemStack deserialize(String config) throws InvalidConfigurationException {
 		YamlConfiguration cfg = new YamlConfiguration();
 		cfg.loadFromString(config);
@@ -263,7 +355,11 @@ public class Util {
 
 		return sb.toString();
 	}
-
+	/**
+	 * Get item's sign name for display on the sign.
+	 * @param ItemStack itemStack
+	 * @return String ItemOnSignName
+	 */
 	// Let's make very long names shorter for our sign
 	public static String getNameForSign(ItemStack itemStack) {
 //		if (NMS.isPotion(itemStack.getType())) {
@@ -367,7 +463,7 @@ public class Util {
 			return false; // One of them is null (Can't be both, see above)
 		if (stack1.getType() != stack2.getType())
 			return false; // Not the same material
-		if (stack1.getDurability() != stack2.getDurability())
+		if (((Damageable)stack1.getItemMeta()).getDamage() != ((Damageable)stack2.getItemMeta()).getDamage())
 			return false; // Not the same durability
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
@@ -401,16 +497,27 @@ public class Util {
 	}
 
 	/**
-	 * Formats the given number according to how vault would like it. E.g. $50
-	 * or 5 dollars.
+	 * Formats the given number according to how vault would like it. E.g. $50 or 5
+	 * dollars.
 	 * 
 	 * @return The formatted string.
 	 */
 	public static String format(double n) {
+		if(plugin.getConfig().getBoolean("shop.disable-vault-format")) {
+			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+		}
 		try {
-			return plugin.getEcon().format(n);
+			String formated = plugin.getEcon().format(n);
+			if (formated == null || formated.isEmpty()) {
+				Util.debugLog("Use alternate-currency-symbol cause Economy Plugin returned null");
+				return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+			} else {
+				return formated;
+			}
 		} catch (NumberFormatException e) {
-			return "$" + n;
+			Util.debugLog("Use alternate-currency-symbol cause NumberFormatException");
+			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+			// return "$" + n;
 		}
 	}
 
@@ -520,7 +627,11 @@ public class Util {
 			return false;
 		}
 	}
-
+	/**
+	 * Use yaw to calc the BlockFace
+	 * @param float yaw
+	 * @return BlockFace blockFace
+	 */
 	public static BlockFace getYawFace(float yaw) {
 		if (yaw > 315 && yaw <= 45) {
 			return BlockFace.NORTH;
@@ -533,7 +644,11 @@ public class Util {
 		}
 	}
 	
-	
+	/**
+	 * Get this class available or not
+	 * @param String qualifiedName
+	 * @return boolean Available
+	 */
 	public static boolean isClassAvailable(String qualifiedName) {
 		try {
 			Class.forName(qualifiedName);
@@ -542,7 +657,11 @@ public class Util {
 			return false;
 		}
 	}
-	
+	/**
+	 * Send a message for all online Ops.
+	 * @param String message
+	 * @return
+	 */
 	public static void sendMessageToOps(String message) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (player.isOp() || player.hasPermission("quickshop.alert")) {
@@ -656,7 +775,6 @@ public class Util {
 	}
 	/**
 	 * @param iStack
-	 * @return
 	 */
 	public static String getPotiondata(ItemStack iStack) {
 		if((iStack.getType() != Material.POTION)==true && (iStack.getType() !=Material.LINGERING_POTION)==true && (iStack.getType() !=Material.SPLASH_POTION)==true){
@@ -688,10 +806,17 @@ public class Util {
 		return null;
 		} 
 	}
+	/**
+	 * Send warning message when some plugin calling deprecated method... 
+	 * @return
+	 */
 	public static void sendDeprecatedMethodWarn() {
 		QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
 	}
-
+	/**
+	 * Check QuickShop is running on dev mode or not.
+	 * @return
+	 */
 	public static boolean isDevEdition() {
 		if(QuickShop.instance.getDescription().getVersion().contains("dev")||QuickShop.instance.getDescription().getVersion().contains("alpha")||QuickShop.instance.getDescription().getVersion().contains("beta")||QuickShop.instance.getDescription().getVersion().contains("snapshot")) {
 			return true;
@@ -699,23 +824,119 @@ public class Util {
 			return false;
 		}
 	}
+	/**
+	 * Call this to check items in inventory and remove it.
+	 */
 	public static void inventoryCheck(Inventory inv){
 				try{
 					for (int i =0; i < inv.getSize(); i++)
 						if (DisplayItem.checkShopItem(inv.getItem(i))) {
 							// Found Item and remove it.
 							inv.setItem(i, new ItemStack(Material.AIR, 0));
-							plugin.getLogger().warning("[Exploit Alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
-							Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A QuickShop item found in "+inv.getHolder().toString()+" Deleteing...");
+							Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+inv.getLocation().toString()+")");
 						}
 				}catch (Throwable t){
 				}
 
 	}
+	private static Object serverInstance;
+    private static Field tpsField;
+    /**
+	 * Get MinecraftServer's TPS
+	 * @return double TPS (e.g 19.92)
+	 */
+	public static Double getTPS() {
+	    try {
+            serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
+            tpsField = serverInstance.getClass().getField("recentTps");
+        } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+	    try {
+            double[] tps = ((double[]) tpsField.get(serverInstance));
+            return tps[0];
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+	    
+	}
+    private static Class<?> getNMSClass(String className) {
+    	String name = Bukkit.getServer().getClass().getPackage().getName();
+	    String version = name.substring(name.lastIndexOf('.') + 1);
+        try {
+            return Class.forName("net.minecraft.server." + version + "." + className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+	 * Print debug log when plugin running on dev mode.
+	 * @param String logs
+	 */
 	public static void debugLog(String logs)	{
 		if(plugin.getConfig().getBoolean("dev-mode")) {
-			plugin.getLogger().info("[DEBUG]"+logs);
+			plugin.getLogger().info("[DEBUG] "+logs);
 		}
 		
+	}
+	/**
+	 * Create a Timer and return this timer's UUID
+	 * @return
+	 */
+	public static UUID setTimer() {
+		UUID random = UUID.randomUUID();
+		timerMap.put(random, System.currentTimeMillis());
+		return random;
+	}
+	/**
+	 * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
+	 * @param UUID timer's uuid
+	 * @return long time
+	 */
+	public static long getTimer(UUID uuid) {
+		return System.currentTimeMillis()-timerMap.get(uuid);
+	}
+	/**
+	 * Return how long time running when timer set and destory the timer.
+	 * @param String logs
+	 * @return long time
+	 */
+	public static long endTimer(UUID uuid) {
+		long time =System.currentTimeMillis()-timerMap.get(uuid);
+		timerMap.remove(uuid);
+		return time;
+	}
+	public static int getShopsInWorld(String worldName) {
+		int cost = 0;
+		Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
+		while (iterator.hasNext()) {
+			Shop shop = iterator.next();
+			if (shop.getLocation().getWorld().getName().equals(worldName)) {
+				cost++;
+			}
+		}
+		return cost;
+	}
+	public static String readToString(String fileName) {
+		String encoding = "UTF-8";
+		File file = new File(fileName);
+		Long filelength = file.length();
+		byte[] filecontent = new byte[filelength.intValue()];
+		try {
+			FileInputStream in = new FileInputStream(file);
+			in.read(filecontent);
+			in.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			return new String(filecontent, encoding);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return ("The OS does not support " + encoding);
+		}
 	}
 }

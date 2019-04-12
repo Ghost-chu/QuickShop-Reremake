@@ -2,6 +2,8 @@ package org.maxgamer.quickshop.Economy;
 
 import java.util.UUID;
 
+import org.maxgamer.quickshop.Util.Util;
+
 public class Economy implements EconomyCore {
 	private EconomyCore core;
 
@@ -27,7 +29,8 @@ public class Economy implements EconomyCore {
 	 * @return The balance in human readable text.
 	 */
 	public String format(double balance) {
-		return core.format(balance);
+		return Util.parseColours(core.format(balance));
+		//Fix color issue from some stupid economy plugin....
 	}
 	
 	@Override
