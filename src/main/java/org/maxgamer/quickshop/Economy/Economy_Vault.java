@@ -40,6 +40,7 @@ public class Economy_Vault implements EconomyCore {
 
 	@Deprecated
 	public boolean withdraw(String name, double amount) {
+		Util.sendDeprecatedMethodWarn();
 		boolean result = this.vault.withdrawPlayer(name, amount).transactionSuccess();
 		return result;
 	}

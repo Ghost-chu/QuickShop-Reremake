@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class Database {
 	private DatabaseCore core;
-	private QuickShop plugin;
+	// Fix null pointer...
+	private QuickShop plugin = QuickShop.instance;
 
 	/**
 	 * Creates a new database and validates its connection.
@@ -67,6 +69,7 @@ public class Database {
 	 *            The string values for each ? in the given query.
 	 */
 	public void execute(String query, Object... objs) {
+		Util.debugLog(query);
 		BufferStatement bs = new BufferStatement(query, objs);
 		core.queue(bs);
 	}
@@ -112,6 +115,7 @@ public class Database {
 		if (!hasTable(table))
 			return false;
 		String query = "SELECT * FROM " + table + " LIMIT 0,1";
+		Util.debugLog(query);
 		try {
 			PreparedStatement ps = this.getConnection().prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
@@ -160,17 +164,28 @@ public class Database {
 		rs.close();
 		core.flush();
 		// For each table
+		String prefix = plugin.getConfig().getString("database.prefix");
 		for (String table : tables) {
+			if(table.contains("schedule"))
+				return; // go way!
+			String finalTable = null;
+			if(table.startsWith(prefix)) {
+				finalTable = table;
+			}else {
+				finalTable = prefix+table;
+				plugin.getLogger().info("CovertHelper: Fixed table name from SQLite "+table+ " to MySQL "+finalTable);
+			}
+				
 			if (table.toLowerCase().startsWith("sqlite_autoindex_"))
 				continue;
-			plugin.getLogger().log(Level.WARNING, "Copying " + table);
+			plugin.getLogger().log(Level.WARNING, "Copying " + table + " to "+finalTable);
 			// Wipe the old records
-			db.getConnection().prepareStatement("DELETE FROM " + table).execute();
+			db.getConnection().prepareStatement("DELETE FROM " + finalTable).execute();
 			// Fetch all the data from the existing database
 			rs = getConnection().prepareStatement("SELECT * FROM " + table).executeQuery();
 			int n = 0;
 			// Build the query
-			String query = "INSERT INTO " + table + " VALUES (";
+			String query = "INSERT INTO " + finalTable + " VALUES (";
 			// Append another placeholder for the value
 			query += "?";
 			for (int i = 2; i <= rs.getMetaData().getColumnCount(); i++) {
