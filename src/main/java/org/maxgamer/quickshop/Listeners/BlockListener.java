@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,15 +19,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
@@ -44,8 +46,6 @@ public class BlockListener implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void onPlace(BlockPlaceEvent e) {
-		if (e.isCancelled())
-			return;
 		BlockState bs = e.getBlock().getState();
 		if (bs instanceof DoubleChest == false)
 			return;
@@ -74,7 +74,7 @@ public class BlockListener implements Listener {
 		}
 		Player p = e.getPlayer();
 		// If the shop was a chest
-		if (b.getState() instanceof InventoryHolder) {
+		if (Util.canBeShop(b,null,true)) {
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop == null)
 				return;
@@ -90,6 +90,12 @@ public class BlockListener implements Listener {
 				action.setAction(ShopAction.CANCELLED);
 			}
 			shop.delete();
+			try {
+				DatabaseHelper.removeShop(plugin.getDB(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
 		} else if (b.getType() == Material.WALL_SIGN) {
 			if(b instanceof Sign) {
@@ -106,8 +112,13 @@ public class BlockListener implements Listener {
 			// If they're in creative and not the owner, don't let them
 			// (accidents happen)
 			if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+				//Check SuperTool
+				if(p.getInventory().getItemInMainHand().getType()==Material.GOLDEN_AXE) {
+					p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool"));
+					return;
+				}
 				e.setCancelled(true);
-				p.sendMessage(MsgUtil.getMessage("no-creative-break"));
+				p.sendMessage(MsgUtil.getMessage("no-creative-break",MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
 				return;
 			}
 			if (e.isCancelled()) {
@@ -208,9 +219,6 @@ public class BlockListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onExplode(EntityExplodeEvent e) {
-		if (e.isCancelled()) {
-			return;
-		}
 		for (int i = 0; i < e.blockList().size(); i++) {
 			Block b = e.blockList().get(i);
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -227,9 +235,6 @@ public class BlockListener implements Listener {
 	}
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockExplode(BlockExplodeEvent e) {
-		if (e.isCancelled()) {
-			return;
-		}
 		for (int i = 0; i < e.blockList().size(); i++) {
 			Block b = e.blockList().get(i);
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -245,35 +250,15 @@ public class BlockListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled=true)
-	public void onPistonExtend(BlockPistonExtendEvent event) {
-		if (!plugin.display) {
-			return;
-		}
-		
-		Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-		Shop shop = plugin.getShopManager().getShop(block.getLocation());
-		if (shop != null) {
-			event.setCancelled(true);
-			plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
-			Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
-			return;
-		}
-		
-		for (Block oBlock : event.getBlocks()) {
-			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-			if (Util.canBeShop(otherBlock)) {
-				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
-				if (shop!=null) {
-					event.setCancelled(true);
-					plugin.getLogger().warning("[Exploit Alert] a piston tried to move the item on top of "+shop);
-					Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] A piston tried to move the item on top of "+shop);
-					return;
-				}
-			}
-		}
-	}
-
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockSpread(BlockSpreadEvent e) {
+        Block newBlock = e.getNewState().getBlock();
+        Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
+        Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
+        if(thisBlockShop == null && underBlockShop == null)
+        	return;
+        e.setCancelled(true);
+    }
 	/**
 	 * Gets the shop a sign is attached to
 	 * 
