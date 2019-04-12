@@ -34,6 +34,8 @@ import java.util.zip.GZIPOutputStream;
  * bStats collects some data for plugin authors.
  *
  * Check out https://bStats.org/ to learn more about bStats!
+ * 
+ * Edit by QSRR, Don't removed
  */
 @SuppressWarnings("unchecked")
 public class Metrics {

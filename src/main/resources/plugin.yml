@@ -5,7 +5,7 @@ authors: [Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
-softdepend: [Vault, WorldGuard, Essentials, OpenInv, Multiverse-Core, ProtocolLib]
+softdepend: [Vault, WorldGuard, Essentials, OpenInv, Multiverse-Core, AreaShop]
 
 api-version: 1.13
 
@@ -13,7 +13,7 @@ commands:
     qs:
         description: QuickShop command
         usage: /qs
-        aliases: [shop]
+        aliases: [shop,qsshop,qshop,quickshop]
         
 permissions:
     quickshop.create.sell:
@@ -30,16 +30,25 @@ permissions:
         default: true
     quickshop.unlimited:
         description: Allows a Staff Member to use /qs unlimited and make a shop infinite
+        default: op
     quickshop.bypass.<itemID>:
         description: Allows a player to sell <itemID>, even if its blacklisted
+        default: op
     quickshop.other.destroy:
         description: Allows a Staff Member to destroy other players shops if they are locked in the config
+        default: op
     quickshop.other.open:
         description: Allows a Staff Member to open someone elses shop if they are locked in the config
+        default: op
     quickshop.other.price:
         description: Allows a Staff Member to change the price of someone elses shop
+        default: op
     quickshop.setowner:
         description: Allows a Staff Member to change the owner of any shop
+        default: op
+    quickshio.areashop.bypass:
+        description: If you enable special zone only and have this permission, the special zone only will ignore you limit.
+        default: op
     quickshop.find:
         description: Allows a player to locate the nearest shop of a specific item type. Works in a 3 chunk radius.
         default: true
@@ -50,17 +59,23 @@ permissions:
         description: Allows a Staff Member to empty the shop theyre looking at of all items.
         default: op
     quickshop.debug:
-        description: Enables debug info to console
+        description: Switch debug or non-debug mode
         default: op
     quickshop.export:
         description: Allows exporting database to mysql or sqlite
         default: op
-    quickshop.taxexemption:
-        description: Tax exemption
-        default: false
     quickshop.alerts:
         description: Alert the player when someone tries to cheat with the display item
         default: op
     quickshop.about:
         description: Show QuickShop about message
         default: true
+    quickshop.info:
+        description: Show QuickShop Statistics.
+        default: op
+    quickshop.fetchmessage:
+        description: Use command /qs fetchmessage to manual fetch shop message from database. Not effect auto fetch if you turn on auto fetch...
+        default: true
+    quickshop.paste:
+        description: Command for paste server infomation to Pastebin. !WARN, paste may leak your config.
+        default: false

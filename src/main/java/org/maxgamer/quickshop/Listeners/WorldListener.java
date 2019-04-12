@@ -22,12 +22,13 @@ public class WorldListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onWorldLoad(WorldLoadEvent e) {
 		/* *************************************
 		 * This listener fixes any broken world references. Such as hashmap
 		 * lookups will fail, because the World reference is different, but the
-		 * world value is the same. ************************************
+		 * world value is the same.
+		 *  ************************************
 		 */
 		World world = e.getWorld();
 		// New world data
@@ -63,7 +64,7 @@ public class WorldListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR,ignoreCancelled=true)
 	public void onWorldUnload(WorldUnloadEvent e) {
 	    if(e.isCancelled()){
 	        return;
