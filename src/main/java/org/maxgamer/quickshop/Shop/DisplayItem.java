@@ -3,14 +3,12 @@ package org.maxgamer.quickshop.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,10 +24,6 @@ public class DisplayItem {
 	private ItemStack iStack;
 	private Item item;
 	static QuickShop plugin = QuickShop.instance;
-	private java.util.List<?> itemlist;
-	private java.util.List<?> lorelist;
-	private java.util.List<?> displaynamelist;
-
 	// private Location displayLoc;
 	/**ZZ
 	 * Creates a new display item.
@@ -49,136 +43,14 @@ public class DisplayItem {
 	/**
 	 * Spawns the dummy item on top of the shop.
 	 */
-	@SuppressWarnings("unused")
 	public void spawn() {
 		if (shop.getLocation().getWorld() == null)
 			return;
 		Location dispLoc = this.getDisplayLocation();
-		// Check is or not in blacklist/whitelist
-		boolean showFloatItem = true;
-		if (plugin.getConfig().getBoolean("float.enable")) {
-			// Enabled! Check start!
-
-			// Item
-			boolean found_item = false;
-			boolean found_lore = false;
-			boolean found_displayname = false;
-			if (plugin.getConfig().getBoolean("float.item.enable")) {
-				boolean blacklist = plugin.getConfig().getBoolean("float.item.blacklist");
-				itemlist = plugin.getConfig().getList("float.item.list");
-				for (Object material : itemlist) {
-					String materialname = String.valueOf(material);
-//					String itemname = iStack.getType().name();
-					if (Material.getMaterial(materialname).equals(iStack.getType())) {
-						found_item = true;
-						break;
-					} else {
-						plugin.getLogger().info(materialname + " not a bukkit item.");
-					}
-				}
-				if (blacklist) {
-					if (found_item) {
-						return;
-					}
-				} else {
-					if (!found_item) {
-						return;
-					}
-				}
-			}
-			if (!showFloatItem) {
-				return;
-			}
-			// End Item check
-
-			// DisplayName
-			if (plugin.getConfig().getBoolean("float.displayname.enable")) {
-				boolean blacklist = plugin.getConfig().getBoolean("float.displayname.blacklist");
-				displaynamelist = plugin.getConfig().getList("float.displayname.list");
-				if (!iStack.hasItemMeta()) {
-					found_displayname = false;
-				} else {
-					String itemname = iStack.getItemMeta().getDisplayName();
-					for (Object name : displaynamelist) {
-						String listname = String.valueOf(name);
-						if (itemname.contains(listname)) {
-							found_displayname = true;
-							break;
-						}
-					}
-				}
-				if (blacklist) {
-					if (found_displayname) {
-						showFloatItem = false;
-					}
-				} else {
-					if (!found_displayname) {
-						showFloatItem = false;
-					}
-				}
-				if (!showFloatItem) {
-					return;
-				}
-				// End DisplayName check
-			}
-
-			// Lore
-			if (plugin.getConfig().getBoolean("float.lore.enable")) {
-				boolean blacklist = plugin.getConfig().getBoolean("float.lore.blacklist");
-				lorelist = plugin.getConfig().getList("float.lore.list");
-				if (!iStack.hasItemMeta()) {
-					found_lore = false;
-				} else {
-					java.util.List<String> itemlores = iStack.getItemMeta().getLore();
-					for (String loreinItem : itemlores) {
-						String loreinItem_String = loreinItem;
-						for (Object loreinList : lorelist) {
-							String loreinList_String = String.valueOf(loreinList);
-							if (loreinItem_String.contains(loreinList_String)) {
-								found_lore = true;
-								break;
-							}
-						}
-						if (found_lore) {
-							break;
-						}
-					}
-					if (blacklist) {
-						if (found_lore) {
-							showFloatItem = false;
-						}
-					} else {
-						if (!found_lore) {
-							showFloatItem = false;
-						}
-					}
-					if (!showFloatItem) {
-						return;
-					}
-
-				}
-			}
-		}
-		// Check end
-		if (!showFloatItem) {
-			return;
-		}
 		//Call Event for QSAPI
-		if(false){
-			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, true);
-			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
-			if (shopDisplayItemSpawnEvent_v2.isCancelled()) {
-				return;
-			}
-			//this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-			//this.item.setVelocity(new Vector(0, 0.1, 0));
-
-
-		}else {
+		
 			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
 			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-			ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent_v2 = new ShopDisplayItemSpawnEvent(shop, iStack, false);
-			Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent_v2);
 			if (shopDisplayItemSpawnEvent.isCancelled()) {
 				return;
 			}
@@ -186,13 +58,14 @@ public class DisplayItem {
 			this.item.setVelocity(new Vector(0, 0.1, 0));
 			try {
 				this.safeGuard(this.item);
+				ShopDisplayItemSpawnedEvent shopDisplayItemSpawnedEvent = new ShopDisplayItemSpawnedEvent(shop, this.item);
+				Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnedEvent);
 				// NMS.safeGuard
 			} catch (Exception e) {
 				e.printStackTrace();
 				plugin.getLogger().log(Level.WARNING,
 						"QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
 			}
-		}
 	}
 
 	/**
@@ -202,6 +75,10 @@ public class DisplayItem {
 		remove();
 		spawn();
 	}
+	/**
+	 * Set item is QuickShop's DisplayItem and prevent them.
+	 * @param item
+	 */
 	public void safeGuard(Item item) {
 		item.setPickupDelay(Integer.MAX_VALUE);
 		ItemMeta iMeta = item.getItemStack().getItemMeta();
@@ -210,9 +87,13 @@ public class DisplayItem {
 			item.setCustomName("QuickShop");
 			iMeta.setDisplayName("QuickShop");
 		}
-		
+		item.setPortalCooldown(Integer.MAX_VALUE);
+		item.setSilent(true);
+		item.setInvulnerable(true);
 		java.util.List<String> lore = new ArrayList<String>();
-	    lore.add("QuickShop DisplayItem");
+	    for (int i = 0; i < 21; i++) {
+	    	lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+		}
 		iMeta.setLore(lore);
 		item.getItemStack().setItemMeta(iMeta);
 	}
@@ -226,7 +107,7 @@ public class DisplayItem {
 		if(itemStack.getItemMeta().hasLore()) {
 			List<String> lores = itemStack.getItemMeta().getLore();
 			for (String singleLore : lores) {
-				if (singleLore.equals("QuickShop DisplayItem")) {
+				if (singleLore.equals("QuickShop DisplayItem")||singleLore.contains("QuickShop DisplayItem")) {
 					return true;
 				}
 			}
@@ -240,8 +121,6 @@ public class DisplayItem {
 	public boolean removeDupe() {
 		if (shop.getLocation().getWorld() == null)
 			return false;
-		// QuickShop qs = (QuickShop)
-		// Bukkit.getPluginManager().getPlugin("QuickShop");
 		Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
 		boolean removed = false;
 		Chunk c = displayLoc.getChunk();
@@ -261,6 +140,7 @@ public class DisplayItem {
 			}
 		}
 		return removed;
+		
 	}
 
 	/**

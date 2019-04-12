@@ -1,37 +1,37 @@
 package org.maxgamer.quickshop.Shop;
 
+import org.bukkit.entity.Item;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.Shop.Shop;
 
-public class ShopDisplayItemSpawnEvent extends Event implements Cancellable{
+public class ShopDisplayItemSpawnedEvent extends Event implements Cancellable{
 		private static final HandlerList handlers = new HandlerList();
 		private boolean cancelled;
 		private Shop shop;
-		private ItemStack iStack;
+		private Item item;
 		private boolean fakeItem;
 		/**
-		 * This event is called before the shop display item created
+		 * This event is called after the shop display item created
 		 */
-		public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
+		public ShopDisplayItemSpawnedEvent(Shop shop, Item item) {
 			this.shop = shop;
-			this.iStack = iStack;
+			this.item = item;
 		}
 		/**
-		 * This event is called before the shop display item created
+		 * This event is called after the shop display item created
 		 */
-		public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack, boolean fakeItem) {
+		public ShopDisplayItemSpawnedEvent(Shop shop, Item item, boolean fakeItem) {
 			this.shop = shop;
-			this.iStack = iStack;
+			this.item = item;
 			this.fakeItem = fakeItem;
 		}
 		public Shop getShop() {
 			return shop;
 		}
-	    public ItemStack getItemStack() {
-			return iStack;
+	    public Item getItem() {
+			return item;
 		}
 		public boolean getFakeItem() {return fakeItem;}
 

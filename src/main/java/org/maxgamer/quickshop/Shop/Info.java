@@ -29,7 +29,10 @@ public class Info {
 			this.shop = shop.clone();
 		}
 	}
-
+	/** 
+	 * Get shop is or not has changed.
+	 * @param Shop shop,  The need checked with this shop.
+	 * */
 	public boolean hasChanged(Shop shop) {
 		if (this.shop.isUnlimited() != shop.isUnlimited())
 			return true;
@@ -45,11 +48,15 @@ public class Info {
 			return true;
 		return false;
 	}
-
+	/**
+	 * @return ShopAction action, Get shop action.
+	 * */
 	public ShopAction getAction() {
 		return this.action;
 	}
-
+	/**
+	 * @return Location loc, Get shop's location,
+	 * */
 	public Location getLocation() {
 		return this.loc;
 	}
@@ -58,6 +65,9 @@ public class Info {
 	 * public Material getMaterial(){ return this.item.getType(); } public byte
 	 * getData(){ return this.getData(); }
 	 */
+	/**
+	 * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
+	 * */
 	public ItemStack getItem() {
 		return this.item;
 	}
@@ -65,7 +75,9 @@ public class Info {
 	public void setAction(ShopAction action) {
 		this.action = action;
 	}
-
+	/**
+	 * @return Block signBlock, Get block of shop's sign, may return the null.
+	 * */
 	public Block getSignBlock() {
 		return this.last;
 	}

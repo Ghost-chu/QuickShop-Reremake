@@ -20,10 +20,13 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import com.lishid.openinv.OpenInv;
 
 public class ContainerShop implements Shop {
 	private Location loc;
@@ -90,7 +93,7 @@ public class ContainerShop implements Shop {
 	 */
 	public int getRemainingStock() {
 		if (this.unlimited)
-			return 10000;
+			return -1;
 		return Util.countItems(this.getInventory(), this.getItem());
 	}
 
@@ -102,8 +105,8 @@ public class ContainerShop implements Shop {
 	 */
 	public int getRemainingSpace() {
 		if (this.unlimited)
-			return 10000;
-		return Util.countSpace(this.getInventory(), item);
+			return -1;
+		return Util.countSpace(this.getInventory(), this.getItem());
 	}
 
 	/**
@@ -173,14 +176,15 @@ public class ContainerShop implements Shop {
 	}
 
 	/**
-	 * Sets the price of the shop. Does not update it in the database. Use
-	 * shop.update() for that.
+	 * Sets the price of the shop.
 	 * 
 	 * @param price
 	 *            The new price of the shop.
 	 */
 	public void setPrice(double price) {
 		this.price = price;
+		update();
+		Util.debugLog("New price is applyed to shop: "+String.valueOf(price));
 	}
 
 	/**
@@ -213,13 +217,22 @@ public class ContainerShop implements Shop {
 	 * @return The durability of the item
 	 */
 	public short getDurability() {
-		return this.item.getDurability();
+		return (short) ((Damageable)this.item.getItemMeta()).getDamage();
 	}
 
 	/**
 	 * @return The chest this shop is based on.
 	 */
 	public Inventory getInventory() throws IllegalStateException {
+		try {
+		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.openInvPlugin!=null) {
+			OpenInv openInv = ((OpenInv)plugin.openInvPlugin);
+			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.owner)), Bukkit.getOfflinePlayer(this.owner).isOnline()).getBukkitInventory();
+		}
+		}catch(Exception e){
+			Util.debugLog(e.getMessage());
+			return null;
+		}
 		InventoryHolder container;
 		try {
 			container = (InventoryHolder) this.loc.getBlock().getState();
@@ -410,11 +423,11 @@ public class ContainerShop implements Shop {
 	 * Changes the owner of this shop to the given player.
 	 * 
 	 * @param owner
-	 *            The name of the owner. You must do shop.update() after to save
-	 *            it after a reboot.
 	 */
 	public void setOwner(UUID owner) {
 		this.owner = owner;
+		update();
+		Util.debugLog("New owner is applyed to shop: "+owner.toString());
 	}
 
 	/**
@@ -428,6 +441,8 @@ public class ContainerShop implements Shop {
 
 	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
+		update();
+		Util.debugLog("New unlimited mode is applyed to shop: "+String.valueOf(unlimited));
 	}
 
 	public boolean isUnlimited() {
@@ -455,6 +470,8 @@ public class ContainerShop implements Shop {
 	public void setShopType(ShopType shopType) {
 		this.shopType = shopType;
 		this.setSignText();
+		update();
+		Util.debugLog("New shopType is applyed to shop: "+shopType.toString());
 	}
 
 	/**
@@ -466,13 +483,26 @@ public class ContainerShop implements Shop {
 		String[] lines = new String[4];
 		lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
 		if (this.isSelling()) {
-			lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+			if(this.getRemainingStock()==-1) {
+				lines[1] = MsgUtil.getMessage("signs.selling", "" + MsgUtil.getMessage("signs.unlimited"));
+			}else {
+				lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+			}
+			
 		} else if (this.isBuying()) {
-			lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
+			if(this.getRemainingSpace()==-1) {
+				lines[1] = MsgUtil.getMessage("signs.buying", "" + MsgUtil.getMessage("signs.unlimited"));
+				
+			}else {
+				lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
+			}
+			
 		}
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
+		Util.debugLog("New sign was setuped.");
+		Util.debugLog(lines.toString());
 	}
 
 	/**
@@ -509,13 +539,14 @@ public class ContainerShop implements Shop {
 		blocks[2] = loc.getBlock().getRelative(0, 0, 1);
 		blocks[3] = loc.getBlock().getRelative(0, 0, -1);
 		final String signHeader = MsgUtil.getMessage("signs.header", "");
+		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
 		for (Block b : blocks) {
 			if (b.getType() != Material.WALL_SIGN)
 				continue;
 			if (!isAttached(b))
 				continue;
 			Sign sign = (Sign) b.getState();
-			if (sign.getLine(0).contains(signHeader)) {
+			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
 				signs.add(sign);
 			} else {
 				boolean text = false;
@@ -579,12 +610,6 @@ public class ContainerShop implements Shop {
 		int y = this.getLocation().getBlockY();
 		int z = this.getLocation().getBlockZ();
 		String world = this.getLocation().getWorld().getName();
-		try {
-			DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		// Refund if necessary
 		if (plugin.getConfig().getBoolean("shop.refund")) {
 			plugin.getEcon().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
@@ -592,12 +617,18 @@ public class ContainerShop implements Shop {
 		if (fromMemory) {
 			// Delete it from memory
 			plugin.getShopManager().removeShop(this);
+		}else {
+			try {
+				DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public boolean isValid() {
 		checkDisplay();
-		return Util.canBeShop(this.getLocation().getBlock());
+		return Util.canBeShop(this.getLocation().getBlock(),null,true);
 	}
 
 	private void checkDisplay() {
