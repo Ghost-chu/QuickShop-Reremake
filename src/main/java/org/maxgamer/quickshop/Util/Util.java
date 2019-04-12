@@ -46,6 +46,7 @@ public class Util {
 	private static QuickShop plugin;
 	private static Method storageContents;
 	static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
+	protected static boolean devMode;
 	public String boolean2String(boolean bool) {
 		if (bool) {
 			return "Enabled";
@@ -59,6 +60,7 @@ public class Util {
 		restrictedPrices.clear();
 
 		plugin = QuickShop.instance;
+		devMode = plugin.getConfig().getBoolean("dev-mode");
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
 			Material mat = Material.matchMaterial(s.toUpperCase());
 			if (mat == null) {
@@ -237,11 +239,11 @@ public class Util {
 			Util.debugLog("Find args: "+b.getLocation().toString());
 			Util.debugLog("Left: "+leftC.getLocation().toString());
 			Util.debugLog("Right: "+rightC.getLocation().toString());
-			if(location3DEqual(b.getLocation(),leftC.getLocation())) {
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
 				Util.debugLog("Clicked left chest");
 				return rightC.getBlock();
 			}
-			if(location3DEqual(b.getLocation(),rightC.getLocation())) {
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
 				Util.debugLog("Clicked right chest");
 				return leftC.getBlock();
 			}
@@ -252,6 +254,11 @@ public class Util {
 			return null;
 		}
 	}
+	
+	private static final boolean equalsBlockStateLocation(BlockState b1, BlockState b2) {
+	    return b1.getX() == b2.getX() && b1.getY() == b2.getY() && b1.getZ() == b2.getZ();
+	}
+	
 	public static boolean location3DEqual(Location loc1, Location loc2){
 		if(loc1.getWorld().getName() != loc2.getWorld().getName())
 			return false;
@@ -875,8 +882,8 @@ public class Util {
 	 * @param String logs
 	 */
 	public static void debugLog(String logs)	{
-		if(plugin.getConfig().getBoolean("dev-mode")) {
-			plugin.getLogger().info("[DEBUG] "+logs);
+		if(devMode) {
+			plugin.getLogger().warning("[DEBUG] "+logs);
 		}
 		
 	}
