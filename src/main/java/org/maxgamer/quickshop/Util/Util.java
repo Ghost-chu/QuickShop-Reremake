@@ -58,10 +58,9 @@ public class Util {
 		blacklist.clear();
 		shoppables.clear();
 		restrictedPrices.clear();
-		
-		devMode = plugin.getConfig().getBoolean("dev-mode");
 
 		plugin = QuickShop.instance;
+		devMode = plugin.getConfig().getBoolean("dev-mode");
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
 			Material mat = Material.matchMaterial(s.toUpperCase());
 			if (mat == null) {
