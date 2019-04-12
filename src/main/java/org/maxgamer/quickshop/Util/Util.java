@@ -24,6 +24,7 @@ import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 
 import java.io.*;
@@ -172,6 +173,43 @@ public class Util {
 		return shoppables.contains(bs.getType());
 
 	}
+	
+	/**
+	 * Tests whether the coordinate changed, which means an actual moving for players
+	 * @param loc1 first location
+	 * @param loc2 second location
+	 * @return True if coordinate changed
+	 */
+    public static final boolean isCoordinateChanged(Location loc1, Location loc2) {
+        return loc1.getX() != loc2.getX() || loc1.getY() != loc2.getY() || loc1.getZ() != loc2.getZ();
+    }
+	
+    /**
+     * Cancels the shop creation or purchase action for the player
+     * @param player the player whois action to cancel
+     * @param info the shop info player currently hold
+     */
+    public static void cancelInvaildActionAndNotifyFor(Player player) {
+        UUID uuid = player.getUniqueId();
+        Info info = QuickShop.instance.getShopManager().getActions().get(uuid);
+        
+        Location shopLoc = info.getLocation();
+        if (shopLoc.getWorld() == player.getWorld() && shopLoc.distanceSquared(player.getLocation()) <= 25)
+            return;
+        
+        switch (info.getAction()) {
+            case CREATE:
+                player.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                break;
+            case BUY:
+                player.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+                break;
+            default:
+                break;
+        }
+        
+        QuickShop.instance.getShopManager().getActions().remove(uuid);
+    }
 
 	/**
 	 * Gets the percentage (Without trailing %) damage on a tool.
@@ -221,7 +259,7 @@ public class Util {
 	 * @return the block which is also a chest and connected to b.
 	 */
 	public static Block getSecondHalf(Block b) {
-		Util.debugLog("Getting Second Half of DoubleChest at "+b.getLocation().toString());
+		Util.debugLog("Getting Second Half of DoubleChest at {}", b.getLocation());
 		if(b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST){
 			Util.debugLog("No matched type: "+b.getType().name());
 			return null;
@@ -255,6 +293,12 @@ public class Util {
 		}
 	}
 	
+	/**
+	 * Tests whether two blockstates is in the same location
+	 * @param b1 first blockstate
+	 * @param b2 second blockstate
+	 * @return True if they have same location
+	 */
 	private static final boolean equalsBlockStateLocation(BlockState b1, BlockState b2) {
 	    return b1.getX() == b2.getX() && b1.getY() == b2.getY() && b1.getZ() == b2.getZ();
 	}
@@ -576,7 +620,7 @@ public class Util {
 				items += iStack.getAmount();
 			}
 		}
-		Util.debugLog("Items: "+items);
+		Util.debugLog("Items: {}", items);
 		return items;
 	}
 
@@ -605,7 +649,7 @@ public class Util {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		Util.debugLog("Space:"+space);
+		Util.debugLog("Space: {}", space);
 		return space;
 	}
 
@@ -840,7 +884,7 @@ public class Util {
 						if (DisplayItem.checkShopItem(inv.getItem(i))) {
 							// Found Item and remove it.
 							inv.setItem(i, new ItemStack(Material.AIR, 0));
-							Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+inv.getLocation().toString()+")");
+							Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", inv.getLocation());
 						}
 				}catch (Throwable t){
 				}
@@ -881,13 +925,27 @@ public class Util {
 	 * Print debug log when plugin running on dev mode.
 	 * @param String logs
 	 */
-	public static void debugLog(String logs)	{
+	public static void debugLog(Object logs)	{
 		if(devMode) {
-			plugin.getLogger().warning("[DEBUG] "+logs);
+			plugin.getLogger().warning("[DEBUG] "+logs.toString());
 		}
 		
 	}
+	
+    /**
+     * Print debug log when plugin running on dev mode.
+     * @param String logs
+     * @param params params
+     */
+    public static void debugLog(Object log, Object... params)    {
+        if(devMode) {
+            int index = 0;
+            plugin.getLogger().warning("[DEBUG] " + StringUtils.replace(log.toString(), "{}", params[index++].toString()));
+        }
+    }
+    
 	/**
+	 * 
 	 * Create a Timer and return this timer's UUID
 	 * @return
 	 */

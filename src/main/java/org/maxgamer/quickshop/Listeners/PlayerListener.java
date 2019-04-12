@@ -179,30 +179,19 @@ public class PlayerListener implements Listener {
 	 * Waits for a player to move too far from a shop, then cancels the menu.
 	 */
 	public void onMove(PlayerMoveEvent e) {
-		if (e.isCancelled())
-			return;
-		Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
-		if (info != null) {
-			Player p = e.getPlayer();
-			Location loc1 = info.getLocation();
-			Location loc2 = p.getLocation();
-			if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
-				if (info.getAction() == ShopAction.CREATE) {
-					p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-				} else if (info.getAction() == ShopAction.BUY) {
-					p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
-				}
-				plugin.getShopManager().getActions().remove(p.getUniqueId());
-				return;
-			}
-		}
+	    // Only check when meeting `actual` move
+	    if (Util.isCoordinateChanged(e.getFrom(), e.getTo()))
+	        Util.cancelInvaildActionAndNotifyFor(e.getPlayer());
 	}
 
 	@EventHandler(ignoreCancelled=true)
 	public void onTeleport(PlayerTeleportEvent e) {
-		PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
-		onMove(me);
-		Util.inventoryCheck(e.getPlayer().getInventory());
+	    Player player = e.getPlayer();
+	    // Only check when meeting coord-changing teleport
+        if (Util.isCoordinateChanged(e.getFrom(), e.getTo()))
+            Util.cancelInvaildActionAndNotifyFor(player);
+        
+		Util.inventoryCheck(player.getInventory());
 	}
 
 	@EventHandler(ignoreCancelled=true)

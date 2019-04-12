@@ -266,7 +266,7 @@ public class QuickShop extends JavaPlugin {
 						if(world==null){
 							// Still load failed? It removed or not got loaded now?
 							skipedShops++;
-							Util.debugLog("Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
+							Util.debugLog("Found a shop can't match shop's world: {}, it got removed or just not loaded? Ignore it...", worldName);
 							continue;
 						}
 					}

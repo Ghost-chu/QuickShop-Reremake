@@ -45,7 +45,7 @@ public class DisplayProtectionListener implements Listener {
 					is.setAmount(0);
 					is.setType(Material.AIR);
 					event.getPlayer().closeInventory();
-					Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getPlayer().getLocation().toString()+")");
+					Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", event.getPlayer().getLocation());
 					Util.inventoryCheck(event.getInventory());
 				}
 			} catch (Exception e) {}
@@ -60,14 +60,14 @@ public class DisplayProtectionListener implements Listener {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 		} catch (NullPointerException ex) {
@@ -83,14 +83,14 @@ public class DisplayProtectionListener implements Listener {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 		} catch (NullPointerException ex) {
@@ -105,14 +105,14 @@ public class DisplayProtectionListener implements Listener {
 				e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 			if (DisplayItem.checkShopItem(stackOffHand)) {
 				e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR,0));
 				// You shouldn't be able to pick up that...
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Inventory Scan", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 		} catch (NullPointerException ex) {
@@ -125,7 +125,7 @@ public class DisplayProtectionListener implements Listener {
 		try {
 			if (DisplayItem.checkShopItem(stack)) {
 				e.setCancelled(true);
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getEntity().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getEntity().getLocation());
 				// You shouldn't be able to pick up that...
 				e.getItem().remove();
 				e.getEntity().setCanPickupItems(false);
@@ -156,7 +156,7 @@ public class DisplayProtectionListener implements Listener {
 			if(found) {
 				e.setCancelled(true);
 				MsgUtil.sendExploitAlert(e.getPlayer() ,"Player Interact", e.getPlayer().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+e.getPlayer().getInventory().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", e.getPlayer().getInventory().getLocation());
 				Util.inventoryCheck(e.getPlayer().getInventory());
 			}
 		} catch (NullPointerException ex) {
@@ -172,7 +172,7 @@ public class DisplayProtectionListener implements Listener {
 				event.getCurrentItem().setAmount(0);
 				event.getCurrentItem().setType(Material.AIR);
 				event.setResult(Result.DENY);
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", event.getInventory().getLocation());
 				Util.inventoryCheck(event.getInventory());
 			}
 			if(itemStackCheck(event.getCursor())) {
@@ -181,7 +181,7 @@ public class DisplayProtectionListener implements Listener {
 				event.getCursor().setAmount(0);
 				event.getCursor().setType(Material.AIR);
 				event.setResult(Result.DENY);
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", event.getInventory().getLocation());
 				Util.inventoryCheck(event.getInventory());
 			}
 			
@@ -197,7 +197,7 @@ public class DisplayProtectionListener implements Listener {
 //				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory().getName()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 //				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getView().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 				MsgUtil.sendExploitAlert(event.getInventory(),"Pickup DisplayItem", event.getInventory().getLocation());
-				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+event.getInventory().getLocation().toString()+")");
+				Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ({})", event.getInventory().getLocation());
 				event.getItem().remove();
 				Util.inventoryCheck(event.getInventory());
 			}

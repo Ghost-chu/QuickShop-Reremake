@@ -86,7 +86,7 @@ public class SQLiteCore implements DatabaseCore {
 					ps.close();
 				} catch (SQLException e) {
 					Util.debugLog("WARN: A SQL exception happed! Print debug logs...");
-					Util.debugLog("SQL BufferStatement: "+bs.toString());
+					Util.debugLog("SQL BufferStatement: {}", bs);
 					e.printStackTrace();
 
 				}

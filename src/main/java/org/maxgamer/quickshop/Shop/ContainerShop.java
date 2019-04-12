@@ -184,7 +184,7 @@ public class ContainerShop implements Shop {
 	public void setPrice(double price) {
 		this.price = price;
 		update();
-		Util.debugLog("New price is applyed to shop: "+String.valueOf(price));
+		Util.debugLog("New price is applyed to shop: {}", price);
 	}
 
 	/**
@@ -427,7 +427,7 @@ public class ContainerShop implements Shop {
 	public void setOwner(UUID owner) {
 		this.owner = owner;
 		update();
-		Util.debugLog("New owner is applyed to shop: "+owner.toString());
+		Util.debugLog("New owner is applyed to shop: {}", owner);
 	}
 
 	/**
@@ -442,7 +442,7 @@ public class ContainerShop implements Shop {
 	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
 		update();
-		Util.debugLog("New unlimited mode is applyed to shop: "+String.valueOf(unlimited));
+		Util.debugLog("New unlimited mode is applyed to shop: {}", unlimited);
 	}
 
 	public boolean isUnlimited() {
@@ -471,7 +471,7 @@ public class ContainerShop implements Shop {
 		this.shopType = shopType;
 		this.setSignText();
 		update();
-		Util.debugLog("New shopType is applyed to shop: "+shopType.toString());
+		Util.debugLog("New shopType is applyed to shop: {}", shopType);
 	}
 
 	/**
@@ -502,7 +502,7 @@ public class ContainerShop implements Shop {
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
 		Util.debugLog("New sign was setuped.");
-		Util.debugLog(lines.toString());
+		Util.debugLog(lines);
 	}
 
 	/**
