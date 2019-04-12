@@ -12,7 +12,7 @@ import org.maxgamer.quickshop.Util.Updater;
 
 public class UpdateWatcher implements Listener {
 	static BukkitTask cronTask = null;
-	static boolean hasNewUpdate = false;
+	static volatile boolean hasNewUpdate = false;
 	static boolean isBeta = false;
 	static UpdateInfomation info = null;
 
@@ -28,13 +28,13 @@ public class UpdateWatcher implements Listener {
 				}
 				
 				if(!info.getIsBeta()) {
-					QuickShop.instance.getLogger().info("New QuickShop released, now updated on SpigotMC.org!");
+					QuickShop.instance.getLogger().info("A new version of QuickShop has been released!");
 					QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 					hasNewUpdate = true;
 				}else {
-					QuickShop.instance.getLogger().info("New QuickShop BETA released, you can updated on SpigotMC.org!");
+					QuickShop.instance.getLogger().info("A new BETA version of QuickShop is available!");
 					QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
-					QuickShop.instance.getLogger().info("This is a BETA version, that mean you shouldn't use it in Production Environment");
+					QuickShop.instance.getLogger().info("This is a BETA version, which means you should use with caution.");
 					hasNewUpdate = true;
 				}
 				
@@ -57,19 +57,19 @@ public class UpdateWatcher implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if (e.getPlayer().hasPermission("quickshop.alert") && hasNewUpdate) {
+				if (hasNewUpdate && e.getPlayer().hasPermission("quickshop.alert")) {
 					if(!info.getIsBeta()) {
-						e.getPlayer().sendMessage(ChatColor.GREEN+"New QuickShop released, now updated on SpigotMC.org!");
+						e.getPlayer().sendMessage(ChatColor.GREEN+"A new version of QuickShop has been released!");
 						e.getPlayer().sendMessage(ChatColor.GREEN+"Update here: https://www.spigotmc.org/resources/62575/");
 					}else {
-						e.getPlayer().sendMessage(ChatColor.GRAY+"New QuickShop BETA released, you can updated on SpigotMC.org!");
+						e.getPlayer().sendMessage(ChatColor.GRAY+"A new BETA version of QuickShop has been released!");
 						e.getPlayer().sendMessage(ChatColor.GRAY+"Update here: https://www.spigotmc.org/resources/62575/");
-						e.getPlayer().sendMessage(ChatColor.GRAY+"This is a BETA version, that mean you shouldn't use it in Production Environment");
+						e.getPlayer().sendMessage(ChatColor.GRAY+"This is a BETA version, which means you should use with caution.");
 					}
 				}
 
 			}
-		}.runTaskLaterAsynchronously(QuickShop.instance, 80);
+		}.runTaskLater(QuickShop.instance, 80);
 	}
 
 }
