@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 import sun.misc.BASE64Encoder;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
