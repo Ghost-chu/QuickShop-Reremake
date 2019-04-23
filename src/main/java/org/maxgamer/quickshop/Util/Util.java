@@ -610,6 +610,7 @@ public class Util {
 	}
 	@SuppressWarnings("deprecation")
 	public static boolean isWallSign(Material material) {
+		try {
 		if(material==Material.ACACIA_WALL_SIGN)
 			return true;
 		if(material==Material.BIRCH_WALL_SIGN)
@@ -622,8 +623,12 @@ public class Util {
 			return true;
 		if(material==Material.SPRUCE_WALL_SIGN)
 			return true;
-		if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
-			return true;
+		}catch (Exception e) {
+			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
+				return true;
+			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
+				return true;
+		}
 		return false;
 	}
 
