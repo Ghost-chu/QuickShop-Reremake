@@ -16,11 +16,12 @@ public class Language {
 	public Language(QuickShop plugin) {
 		this.plugin = plugin;
 		languages.clear();
-		languages.add("en_US");
+		languages.add("en");
 	}
 	public String getComputerLanguage() {
-		if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default"))//Allow user replace this
-			return Locale.getDefault().toString();
+		if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default")) {//Allow user replace this
+			return Locale.getDefault().getLanguage().toString();
+		}
 		return plugin.getConfig().getString("language");
 	}
 	public List<String> getSupportsLanguageList() {
@@ -28,11 +29,11 @@ public class Language {
 	}
 	public InputStream getFile(String language, String type) {
 		if((language==null) || !languages.contains(language))
-			language="en_US";
+			language="en";
 		if(type == null || type == "")
 			throw new IllegalArgumentException("Type cannot be null or empty");
 		return plugin.getResource(type+"-"+language+".yml");
-		//File name should call    type-language.yml    ---> config-zh_CN.yml
+		//File name should call    type-language.yml    ---> config-zh.yml
 	}
 	//Write file under plugin folder
 	public void saveFile(String language, String type, String fileName) {
@@ -57,6 +58,6 @@ public class Language {
 		}catch (Exception err){
 			err.printStackTrace();
 		}
-		//File name should call    type-language.yml    ---> config-zh_CN.yml
+		//File name should call    type-language.yml    ---> config-zh.yml
 	}
 }
