@@ -541,7 +541,7 @@ public class ContainerShop implements Shop {
 		final String signHeader = MsgUtil.getMessage("signs.header", "");
 		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
 		for (Block b : blocks) {
-			if (b.getType() != Material.WALL_SIGN)
+			if (Util.isWallSign(b.getType()))
 				continue;
 			if (!isAttached(b))
 				continue;
@@ -565,7 +565,7 @@ public class ContainerShop implements Shop {
 	}
 
 	public boolean isAttached(Block b) {
-		if (b.getType() != Material.WALL_SIGN)
+		if (Util.isWallSign(b.getType()))
 			new IllegalArgumentException(b + " Is not a sign!").printStackTrace();
 		return this.getLocation().getBlock().equals(Util.getAttached(b));
 	}

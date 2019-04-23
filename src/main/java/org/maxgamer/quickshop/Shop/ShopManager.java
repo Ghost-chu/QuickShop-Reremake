@@ -81,7 +81,7 @@ public class ShopManager {
 				isWaterLogged = true;
 			final BlockState bs = info.getSignBlock().getState();
 			final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-			bs.setType(Material.WALL_SIGN);
+			bs.setType(Material.OAK_WALL_SIGN);
 			if (isWaterLogged) {
 				Waterlogged waterable = (Waterlogged) bs.getBlockData();
 				waterable.setWaterlogged(true); // Looks like sign directly put in water
