@@ -608,6 +608,24 @@ public class Util {
 		Util.debugLog("Space:"+space);
 		return space;
 	}
+	@SuppressWarnings("deprecation")
+	public static boolean isWallSign(Material material) {
+		if(material==Material.ACACIA_WALL_SIGN)
+			return true;
+		if(material==Material.BIRCH_WALL_SIGN)
+			return true;
+		if(material==Material.DARK_OAK_WALL_SIGN)
+			return true;
+		if(material==Material.JUNGLE_WALL_SIGN)
+			return true;
+		if(material==Material.OAK_WALL_SIGN)
+			return true;
+		if(material==Material.SPRUCE_WALL_SIGN)
+			return true;
+		if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
+			return true;
+		return false;
+	}
 
 	/**
 	 * Returns true if the given location is loaded or not.
