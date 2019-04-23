@@ -102,7 +102,7 @@ public class LockListener implements Listener {
 				p.sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
 			}
-		} else if (b.getType() == Material.WALL_SIGN) {
+		} else if (Util.isWallSign(b.getType())) {
 			if(b instanceof Sign) {
 				Sign sign = (Sign)b;
 				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
