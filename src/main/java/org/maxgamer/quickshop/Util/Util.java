@@ -623,7 +623,7 @@ public class Util {
 			return true;
 		if(material==Material.SPRUCE_WALL_SIGN)
 			return true;
-		}catch (Exception e) {
+		}catch (Throwable e) {
 			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
 				return true;
 			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
