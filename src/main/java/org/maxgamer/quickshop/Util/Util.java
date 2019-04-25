@@ -553,6 +553,8 @@ public class Util {
 				return null;
 			return b.getRelative(attached);
 		} catch (NullPointerException|ClassCastException e) {
+			debugLog("Known bug got trigged:");
+			debugLog(e.getMessage());
 			return null; // /Not sure what causes this.
 		}
 	}
