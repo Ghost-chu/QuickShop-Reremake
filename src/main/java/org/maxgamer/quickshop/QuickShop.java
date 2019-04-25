@@ -108,7 +108,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		return max;
 	}
-	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
 
