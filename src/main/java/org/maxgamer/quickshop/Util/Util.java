@@ -552,7 +552,7 @@ public class Util {
 			if (attached == null)
 				return null;
 			return b.getRelative(attached);
-		} catch (NullPointerException e) {
+		} catch (NullPointerException|ClassCastException e) {
 			return null; // /Not sure what causes this.
 		}
 	}
