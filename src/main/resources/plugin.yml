@@ -78,4 +78,4 @@ permissions:
         default: true
     quickshop.paste:
         description: Command for paste server infomation to Pastebin. !WARN, paste may leak your config.
-        default: false
+        default: op
