@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.sql.SQLException;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,7 +25,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
@@ -90,12 +87,6 @@ public class BlockListener implements Listener {
 				action.setAction(ShopAction.CANCELLED);
 			}
 			shop.delete();
-			try {
-				DatabaseHelper.removeShop(plugin.getDB(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName());
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
 		} else if (Util.isWallSign(b.getType())) {
 			if(b instanceof Sign) {
