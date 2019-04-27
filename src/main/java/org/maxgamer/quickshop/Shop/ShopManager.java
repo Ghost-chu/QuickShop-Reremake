@@ -22,7 +22,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Sign;
 import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
@@ -79,16 +78,16 @@ public class ShopManager {
 			boolean isWaterLogged = false;
 			if (info.getSignBlock().getType() == Material.WATER)
 				isWaterLogged = true;
-			final BlockState bs = info.getSignBlock().getState();
 			final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-			bs.setType(Material.OAK_WALL_SIGN);
+			info.getSignBlock().setType(Util.getSignMaterial());
+			BlockState bs = info.getSignBlock().getState();
 			if (isWaterLogged) {
 				Waterlogged waterable = (Waterlogged) bs.getBlockData();
 				waterable.setWaterlogged(true); // Looks like sign directly put in water
 			}
-			Sign sign = (Sign) bs.getData();
-			sign.setFacingDirection(bf);
-			bs.setData(sign);
+			org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
+			signBlockDataType.setFacing(bf);
+			bs.setBlockData(signBlockDataType);
 			bs.update(true);
 			shop.setSignText();
 
@@ -766,16 +765,6 @@ public class ShopManager {
 				return this.next(); // Skip to the next one (Empty iterator?)
 			current = shops.next();
 			return current;
-		}
-
-		/**
-		 * Removes the current shop. This method will delete the shop from
-		 * memory and the database.
-		 */
-		@Override
-		public void remove() {
-			current.delete(false);
-			shops.remove();
 		}
 	}
 }

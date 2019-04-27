@@ -92,11 +92,6 @@ public class QS implements CommandExecutor{
 				if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
 					shop.onUnload();
 					shop.delete();
-					try {
-						DatabaseHelper.removeShop(plugin.getDB(), shop.getLocation().getBlockX(),  shop.getLocation().getBlockY(),  shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName());
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
 				} else {
 					sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 				}

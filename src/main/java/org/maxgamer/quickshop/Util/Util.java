@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.*;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -545,13 +545,15 @@ public class Util {
 	 * @return The block the sign is attached to
 	 */
 	public static Block getAttached(Block b) {
-		try {
-			Sign sign = (Sign) b.getState().getData(); // Throws a NPE
-			// sometimes??
-			BlockFace attached = sign.getAttachedFace();
-			if (attached == null)
+		try {	
+			if(b.getBlockData() instanceof Directional) {
+				Directional directional = (Directional) b.getBlockData();
+				return b.getRelative(directional.getFacing().getOppositeFace());
+			}else {
+				debugLog("No Directionalable");
 				return null;
-			return b.getRelative(attached);
+			}
+			// sometimes??
 		} catch (NullPointerException|ClassCastException e) {
 			debugLog("Known bug got trigged:");
 			debugLog(e.getMessage());
@@ -625,10 +627,14 @@ public class Util {
 			return true;
 		if(material==Material.SPRUCE_WALL_SIGN)
 			return true;
+		if(material.name().endsWith("WALL_SIGN"))
+			return true;
 		}catch (Throwable e) {
 			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
 				return true;
 			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
+				return true;
+			if(material.name().endsWith("WALL_SIGN"))
 				return true;
 		}
 		return false;
@@ -970,5 +976,23 @@ public class Util {
 			e.printStackTrace();
 			return ("The OS does not support " + encoding);
 		}
+	}
+	public static Material getSignMaterial() {
+		
+		Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material"));
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		signMaterial = Material.matchMaterial("OAK_WALL_SIGN"); //Fallback default sign in 1.14
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		signMaterial = Material.matchMaterial("WALL_SIGN"); //Fallback default sign in 1.13
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		//What the fuck!?
+		plugin.getLogger().warning("QuickShop can't found any useable sign material, report to author!");
+		return null;
 	}
 }

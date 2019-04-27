@@ -832,6 +832,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 21) {
+			getConfig().set("shop.sign-material", "OAK_WALL_SIGN");
+			getConfig().set("config-version", 22);
+			selectedVersion = 22;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
