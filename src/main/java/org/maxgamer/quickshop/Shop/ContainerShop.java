@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
@@ -516,6 +517,7 @@ public class ContainerShop implements Shop {
 			return;
 		for (Sign sign : this.getSigns()) {
 			for (int i = 0; i < lines.length; i++) {
+				Util.debugLog("Setting sign at "+sign.getLocation().toString());
 				sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
 			}
 			sign.update(true);
@@ -530,24 +532,30 @@ public class ContainerShop implements Shop {
 	 *         blank signs only)
 	 */
 	public List<Sign> getSigns() {
-		ArrayList<Sign> signs = new ArrayList<Sign>(1);
+		List<Sign> signs = new ArrayList<Sign>(1);
 		if (this.getLocation().getWorld() == null)
 			return signs;
 		Block[] blocks = new Block[4];
-		blocks[0] = loc.getBlock().getRelative(1, 0, 0);
-		blocks[1] = loc.getBlock().getRelative(-1, 0, 0);
-		blocks[2] = loc.getBlock().getRelative(0, 0, 1);
-		blocks[3] = loc.getBlock().getRelative(0, 0, -1);
+		blocks[0] = loc.getBlock().getRelative(BlockFace.EAST);
+		blocks[1] = loc.getBlock().getRelative(BlockFace.NORTH);
+		blocks[2] = loc.getBlock().getRelative(BlockFace.SOUTH);
+		blocks[3] = loc.getBlock().getRelative(BlockFace.WEST);
 		final String signHeader = MsgUtil.getMessage("signs.header", "");
 		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
+		
 		for (Block b : blocks) {
-			if (b.getType() != Material.WALL_SIGN)
+			if (!Util.isWallSign(b.getType())) {
+				Util.debugLog(b.toString()+" not a wall sign");
 				continue;
-			if (!isAttached(b))
+			}
+			if (!isAttached(b)) {
+				Util.debugLog(b.toString()+" not attached");
 				continue;
-			Sign sign = (Sign) b.getState();
+			}
+		 org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
 			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
 				signs.add(sign);
+				Util.debugLog(sign.toString()+" added in sign list");
 			} else {
 				boolean text = false;
 				for (String s : sign.getLines()) {
@@ -558,6 +566,7 @@ public class ContainerShop implements Shop {
 				}
 				if (!text) {
 					signs.add(sign);
+					Util.debugLog(sign.toString()+" added in sign list");
 				}
 			}
 		}
@@ -565,8 +574,9 @@ public class ContainerShop implements Shop {
 	}
 
 	public boolean isAttached(Block b) {
-		if (b.getType() != Material.WALL_SIGN)
+		if (!Util.isWallSign(b.getType()))
 			new IllegalArgumentException(b + " Is not a sign!").printStackTrace();
+		Util.debugLog("CHECK ATTACHEDING : "+this.getLocation().getBlock().toString()+ " WITH "+Util.getAttached(b));
 		return this.getLocation().getBlock().equals(Util.getAttached(b));
 	}
 
@@ -582,10 +592,9 @@ public class ContainerShop implements Shop {
 
 	/**
 	 * Deletes the shop from the list of shops and queues it for database
-	 * deletion *DOES* delete it from memory
 	 */
 	public void delete() {
-		delete(true);
+		delete(false);
 	}
 
 	/**
