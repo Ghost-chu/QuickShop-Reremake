@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -614,19 +615,17 @@ public class Util {
 	}
 	public static boolean isWallSign(Material material) {
 		try {
-	  	  switch (material) {
-          	  	case ACACIA_WALL_SIGN:
-           	  	case BIRCH_WALL_SIGN:
-            	  	case DARK_OAK_WALL_SIGN:
-            	  	case JUNGLE_WALL_SIGN:
-           	  	case OAK_WALL_SIGN:
-           	  	case SPRUCE_WALL_SIGN:
-             	   		return true;
-          	  	default:
-                		return material.name().endsWith("WALL_SIGN");
-		  	}
-        	} catch (Throwable t) {
-			return material.name().endsWith("WALL_SIGN");
+		if(Tag.WALL_SIGNS.isTagged(material))
+			return true;
+		if(material.name().endsWith("WALL_SIGN"))
+			return true;
+		}catch (Throwable e) {
+			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
+				return true;
+			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
+				return true;
+			if(material.name().endsWith("WALL_SIGN"))
+				return true;
 		}
 	}
 
@@ -968,7 +967,7 @@ public class Util {
 		}
 	}
 	public static Material getSignMaterial() {
-		
+
 		Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material"));
 		if(signMaterial!=null) {
 			return signMaterial;
