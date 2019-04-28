@@ -613,7 +613,6 @@ public class Util {
 		Util.debugLog("Space:"+space);
 		return space;
 	}
-	@SuppressWarnings("deprecation")
 	public static boolean isWallSign(Material material) {
 		try {
 		if(Tag.WALL_SIGNS.isTagged(material))
@@ -628,7 +627,6 @@ public class Util {
 			if(material.name().endsWith("WALL_SIGN"))
 				return true;
 		}
-		return false;
 	}
 
 	/**
