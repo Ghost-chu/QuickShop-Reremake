@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 22
+config-version: 23
 
 #Select language you want use, (e.g de), use `default` to let quickshop auto detect your computer language zone, or use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -137,6 +137,18 @@ shop:
 
     #The maximum price for shop, This not affect exists shops, set -1 to disable it.
     maximum-price: -1
+    
+    #The wall sign material.
+    #In 1.13 and legacy version, only WALL_SIGN is avaliable.
+    #
+    #For 1.14, you can use these:
+    #ACACIA_WALL_SIGN
+    #BIRCH_WALL_SIGN
+    #DARK_OAK_WALL_SIGN
+    #JUNGLE_WALL_SIGN
+    #OAK_WALL_SIGN
+    #SPRUCE_WALL_SIGN
+    sign-material: OAK_WALL_SIGN
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    

@@ -52,7 +52,7 @@ public class PlayerListener implements Listener {
 	public void onClick(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
-			if (!Util.canBeShop(b,null,true) && b.getType() != Material.WALL_SIGN) {
+			if (!Util.canBeShop(b,null,true) && !Util.isWallSign(b.getType())) {
 				return;
 			}
 			Player p = e.getPlayer();
@@ -64,7 +64,7 @@ public class PlayerListener implements Listener {
 			if (shop == null) {
 				Block attached = null;
 
-				if (b.getType() == Material.WALL_SIGN) {
+				if (Util.isWallSign(b.getType())) {
 					attached = Util.getAttached(b);
 					if (attached != null) {
 						shop = plugin.getShopManager().getShop(attached.getLocation());
@@ -133,7 +133,7 @@ public class PlayerListener implements Listener {
 						return;
 					}
 				}
-				if (!Util.canBeShop(b,e.getPlayer().getUniqueId(),false) && b.getType() != Material.WALL_SIGN) {
+				if (!Util.canBeShop(b,e.getPlayer().getUniqueId(),false) && Util.isWallSign(b.getType())) {
 					Util.debugLog("Can't create shop there");
 					return;
 				}
@@ -156,9 +156,9 @@ public class PlayerListener implements Listener {
 						MsgUtil.getMessage("how-much-to-trade-for", MsgUtil.getItemi18n(Util.getName(info.getItem()))));
 			}
 		} else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& e.getClickedBlock().getType() == Material.WALL_SIGN) {
+				&& Util.isWallSign(e.getClickedBlock().getType())) {
 			Block block;
-			if (e.getClickedBlock().getType() == Material.WALL_SIGN) {
+			if (Util.isWallSign(e.getClickedBlock().getType())) {
 				block = Util.getAttached(e.getClickedBlock());
 			} else {
 				block = e.getClickedBlock();
