@@ -614,7 +614,7 @@ public class QS implements CommandExecutor{
 			}
 			
 			for (Shop shop : pendingRemoval)
-				plugin.getShopManager().removeShop(shop);
+				shop.remove();
 			
 			MsgUtil.clean();
 			sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
