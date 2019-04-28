@@ -552,7 +552,7 @@ public class ContainerShop implements Shop {
 				Util.debugLog(b.toString()+" not attached");
 				continue;
 			}
-		 org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
+		 	org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
 			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
 				signs.add(sign);
 				Util.debugLog(sign.toString()+" added in sign list");
@@ -574,8 +574,6 @@ public class ContainerShop implements Shop {
 	}
 
 	public boolean isAttached(Block b) {
-		if (!Util.isWallSign(b.getType()))
-			new IllegalArgumentException(b + " Is not a sign!").printStackTrace();
 		Util.debugLog("CHECK ATTACHEDING : "+this.getLocation().getBlock().toString()+ " WITH "+Util.getAttached(b));
 		return this.getLocation().getBlock().equals(Util.getAttached(b));
 	}
