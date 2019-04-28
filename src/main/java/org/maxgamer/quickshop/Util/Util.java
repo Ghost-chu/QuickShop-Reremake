@@ -627,6 +627,7 @@ public class Util {
 			if(material.name().endsWith("WALL_SIGN"))
 				return true;
 		}
+		return false;
 	}
 
 	/**
