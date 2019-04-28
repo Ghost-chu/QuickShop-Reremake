@@ -5,14 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Queue;
 
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
+import com.google.common.collect.Lists;
+
 public class LogWatcher implements Runnable {
 	private PrintStream ps;
-	private ArrayList<String> logs = new ArrayList<String>(5);
+	private Queue<String> logs = Lists.newLinkedList();
 	public BukkitTask task;
 
 	public LogWatcher(QuickShop plugin, File log) {
@@ -34,10 +37,11 @@ public class LogWatcher implements Runnable {
 	@Override
 	public void run() {
 		synchronized (logs) {
-			for (String s : logs) {
-				ps.println(s);
+			Iterator<String> iterator = logs.iterator();
+			while (iterator.hasNext()) {
+			    ps.print(iterator.next());
+			    iterator.remove();
 			}
-			logs.clear();
 		}
 	}
 
