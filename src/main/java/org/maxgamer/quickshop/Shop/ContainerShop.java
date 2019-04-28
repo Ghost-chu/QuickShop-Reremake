@@ -540,8 +540,7 @@ public class ContainerShop implements Shop {
 		blocks[1] = loc.getBlock().getRelative(BlockFace.NORTH);
 		blocks[2] = loc.getBlock().getRelative(BlockFace.SOUTH);
 		blocks[3] = loc.getBlock().getRelative(BlockFace.WEST);
-		final String signHeader = MsgUtil.getMessage("signs.header", "");
-		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
+		final String signHeader = MsgUtil.getMessage("sign.header", this.ownerName());
 		
 		for (Block b : blocks) {
 			if (!Util.isWallSign(b.getType())) {
@@ -552,30 +551,16 @@ public class ContainerShop implements Shop {
 				Util.debugLog(b.toString()+" not attached");
 				continue;
 			}
-		 org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
-			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
+			org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
+			if (sign.getLine(0).contains(signHeader)) {
 				signs.add(sign);
 				Util.debugLog(sign.toString()+" added in sign list");
-			} else {
-				boolean text = false;
-				for (String s : sign.getLines()) {
-					if (!s.isEmpty()) {
-						text = true;
-						break;
-					}
-				}
-				if (!text) {
-					signs.add(sign);
-					Util.debugLog(sign.toString()+" added in sign list");
-				}
 			}
 		}
 		return signs;
 	}
 
 	public boolean isAttached(Block b) {
-		if (!Util.isWallSign(b.getType()))
-			new IllegalArgumentException(b + " Is not a sign!").printStackTrace();
 		Util.debugLog("CHECK ATTACHEDING : "+this.getLocation().getBlock().toString()+ " WITH "+Util.getAttached(b));
 		return this.getLocation().getBlock().equals(Util.getAttached(b));
 	}

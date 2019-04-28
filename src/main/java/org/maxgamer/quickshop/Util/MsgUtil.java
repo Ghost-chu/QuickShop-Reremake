@@ -14,6 +14,7 @@ import java.util.logging.Level;
 
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -749,7 +750,7 @@ public class MsgUtil {
 			return raw;
 		}
 		for (int i = 0; i < args.length; i++) {
-			raw = raw.replace("{" + i + "}", args[i]==null ? "null" : args[i]);
+			raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
 		}
 		return raw;
 	}
