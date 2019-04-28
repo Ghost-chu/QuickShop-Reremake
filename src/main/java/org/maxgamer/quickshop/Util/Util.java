@@ -613,17 +613,12 @@ public class Util {
 		Util.debugLog("Space:"+space);
 		return space;
 	}
+
 	public static boolean isWallSign(Material material) {
 		try {
 		if(Tag.WALL_SIGNS.isTagged(material))
 			return true;
-		if(material.name().endsWith("WALL_SIGN"))
-			return true;
 		}catch (Throwable e) {
-			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
-				return true;
-			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
-				return true;
 			if(material.name().endsWith("WALL_SIGN"))
 				return true;
 		}
