@@ -333,8 +333,9 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
-
-					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
+						
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
 						shop.setSignText();
