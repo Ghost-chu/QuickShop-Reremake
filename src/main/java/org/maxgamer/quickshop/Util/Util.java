@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.*;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.Sign;
 import org.bukkit.potion.PotionEffect;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -46,6 +46,7 @@ public class Util {
 	private static QuickShop plugin;
 	private static Method storageContents;
 	static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
+	protected static boolean devMode;
 	public String boolean2String(boolean bool) {
 		if (bool) {
 			return "Enabled";
@@ -59,6 +60,7 @@ public class Util {
 		restrictedPrices.clear();
 
 		plugin = QuickShop.instance;
+		devMode = plugin.getConfig().getBoolean("dev-mode");
 		for (String s : plugin.getConfig().getStringList("shop-blocks")) {
 			Material mat = Material.matchMaterial(s.toUpperCase());
 			if (mat == null) {
@@ -237,11 +239,11 @@ public class Util {
 			Util.debugLog("Find args: "+b.getLocation().toString());
 			Util.debugLog("Left: "+leftC.getLocation().toString());
 			Util.debugLog("Right: "+rightC.getLocation().toString());
-			if(location3DEqual(b.getLocation(),leftC.getLocation())) {
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
 				Util.debugLog("Clicked left chest");
 				return rightC.getBlock();
 			}
-			if(location3DEqual(b.getLocation(),rightC.getLocation())) {
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
 				Util.debugLog("Clicked right chest");
 				return leftC.getBlock();
 			}
@@ -252,6 +254,11 @@ public class Util {
 			return null;
 		}
 	}
+	
+	private static final boolean equalsBlockStateLocation(BlockState b1, BlockState b2) {
+	    return b1.getX() == b2.getX() && b1.getY() == b2.getY() && b1.getZ() == b2.getZ();
+	}
+	
 	public static boolean location3DEqual(Location loc1, Location loc2){
 		if(loc1.getWorld().getName() != loc2.getWorld().getName())
 			return false;
@@ -538,14 +545,18 @@ public class Util {
 	 * @return The block the sign is attached to
 	 */
 	public static Block getAttached(Block b) {
-		try {
-			Sign sign = (Sign) b.getState().getData(); // Throws a NPE
-			// sometimes??
-			BlockFace attached = sign.getAttachedFace();
-			if (attached == null)
+		try {	
+			if(b.getBlockData() instanceof Directional) {
+				Directional directional = (Directional) b.getBlockData();
+				return b.getRelative(directional.getFacing().getOppositeFace());
+			}else {
+				debugLog("No Directionalable");
 				return null;
-			return b.getRelative(attached);
-		} catch (NullPointerException e) {
+			}
+			// sometimes??
+		} catch (NullPointerException|ClassCastException e) {
+			debugLog("Known bug got trigged:");
+			debugLog(e.getMessage());
 			return null; // /Not sure what causes this.
 		}
 	}
@@ -600,6 +611,33 @@ public class Util {
 		}
 		Util.debugLog("Space:"+space);
 		return space;
+	}
+	@SuppressWarnings("deprecation")
+	public static boolean isWallSign(Material material) {
+		try {
+		if(material==Material.ACACIA_WALL_SIGN)
+			return true;
+		if(material==Material.BIRCH_WALL_SIGN)
+			return true;
+		if(material==Material.DARK_OAK_WALL_SIGN)
+			return true;
+		if(material==Material.JUNGLE_WALL_SIGN)
+			return true;
+		if(material==Material.OAK_WALL_SIGN)
+			return true;
+		if(material==Material.SPRUCE_WALL_SIGN)
+			return true;
+		if(material.name().endsWith("WALL_SIGN"))
+			return true;
+		}catch (Throwable e) {
+			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
+				return true;
+			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
+				return true;
+			if(material.name().endsWith("WALL_SIGN"))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -875,8 +913,8 @@ public class Util {
 	 * @param String logs
 	 */
 	public static void debugLog(String logs)	{
-		if(plugin.getConfig().getBoolean("dev-mode")) {
-			plugin.getLogger().info("[DEBUG] "+logs);
+		if(devMode) {
+			plugin.getLogger().warning("[DEBUG] "+logs);
 		}
 		
 	}
@@ -938,5 +976,23 @@ public class Util {
 			e.printStackTrace();
 			return ("The OS does not support " + encoding);
 		}
+	}
+	public static Material getSignMaterial() {
+		
+		Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material"));
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		signMaterial = Material.matchMaterial("OAK_WALL_SIGN"); //Fallback default sign in 1.14
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		signMaterial = Material.matchMaterial("WALL_SIGN"); //Fallback default sign in 1.13
+		if(signMaterial!=null) {
+			return signMaterial;
+		}
+		//What the fuck!?
+		plugin.getLogger().warning("QuickShop can't found any useable sign material, report to author!");
+		return null;
 	}
 }

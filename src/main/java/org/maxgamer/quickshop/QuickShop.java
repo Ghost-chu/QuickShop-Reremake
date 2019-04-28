@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+import com.google.common.io.Files;
 //import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -31,10 +32,7 @@ import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -110,7 +108,6 @@ public class QuickShop extends JavaPlugin {
 		}
 		return max;
 	}
-	@SuppressWarnings("resource")
 	public void onEnable() {
 		instance = this;
 
@@ -287,7 +284,18 @@ public class QuickShop extends JavaPlugin {
 							DatabaseHelper.updateOwner2UUID(ownerUUID.toString(), x, y, z, worldName);
 						} else {
 							// Invalid shop owner
-							DatabaseHelper.removeShop(database, x, y, z, worldName);
+							getLogger().info("Create backup for database..");
+							if (!isBackuped) {
+								//Backup
+								if(backupDatabase())
+									isBackuped=true;
+							}
+							getLogger().info("Removeing shop from database...");
+							if(isBackuped) {
+								DatabaseHelper.removeShop(database, x, y, z, worldName);
+							}else {
+								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+							}
 							continue;
 						}
 					}
@@ -301,7 +309,18 @@ public class QuickShop extends JavaPlugin {
 						step = "Removeing shop in world: Because it not a correct InventoryHolder";
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
-						DatabaseHelper.removeShop(database, x, y, z, worldName);
+							getLogger().info("Create backup for database..");
+							if (!isBackuped) {
+								//Backup
+								if(backupDatabase())
+									isBackuped=true;
+							}
+							getLogger().info("Removeing shop from database...");
+							if(isBackuped) {
+								DatabaseHelper.removeShop(database, x, y, z, worldName);
+							}else {
+								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+							}
 						continue;
 					}
 					step = "Loading shop type";
@@ -314,8 +333,9 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					step = "Loading shop to memory";
 					shopManager.loadShop(rs.getString("world"), shop);
-
-					if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
+						
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
 						shop.setSignText();
@@ -369,44 +389,39 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("#Tips >>");
 					getLogger().severe("Please report this issues to author, And you database will auto backup!");
 
-					if (!isBackuped) {
-						File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-								.getAbsolutePath().toString() + "/shop.db");
-						if (!sqlfile.exists()) {
-							getLogger().severe("Failed to backup! (File not found)");
-						}
-						String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-						File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-								.getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
-						try {
-							bksqlfile.createNewFile();
-						} catch (IOException e1) {
-
-						}
-						FileChannel inputChannel = null;
-						FileChannel outputChannel = null;
-						try {
-							inputChannel = new FileInputStream(sqlfile).getChannel();
-							outputChannel = new FileOutputStream(bksqlfile).getChannel();
-							outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-							inputChannel.close();
-							outputChannel.close();
-						} catch (Exception e3) {
-							inputChannel = null;
-							outputChannel = null;
-						}
-					}
 					getLogger().severe("===========Error Reporting End===========");
 
 					if (errors < 3) {
+						getLogger().info("Create backup for database..");
+						if (!isBackuped) {
+							//Backup
+							if(backupDatabase())
+								isBackuped=true;
+						}
 						getLogger().info("Removeing shop from database...");
-						DatabaseHelper.removeShop(database, x, y, z, worldName);
+						if(isBackuped) {
+							DatabaseHelper.removeShop(database, x, y, z, worldName);
+						}else {
+							getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+						}
+						
 						getLogger().info("Trying keep loading...");
 					} else {
 						getLogger().severe(
 								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
 						getLogger().info("Removeing shop from database...");
-						DatabaseHelper.removeShop(database, x, y, z, worldName);
+							getLogger().info("Create backup for database..");
+							if (!isBackuped) {
+								//Backup
+								if(backupDatabase())
+									isBackuped=true;
+							}
+							getLogger().info("Removeing shop from database...");
+							if(isBackuped) {
+								DatabaseHelper.removeShop(database, x, y, z, worldName);
+							}else {
+								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+							}
 						e.printStackTrace();
 					}
 				}
@@ -558,6 +573,25 @@ public class QuickShop extends JavaPlugin {
 		}
 
 		UpdateWatcher.init();
+	}
+	private boolean backupDatabase() {
+		File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+				.getAbsolutePath().toString() + "/shop.db");
+		if (!sqlfile.exists()) {
+			getLogger().warning("Failed to backup! (File not found)");
+			return false;
+		}
+		String uuid = UUID.randomUUID().toString().replaceAll("_", "");
+		File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+				.getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
+		try {
+			Files.copy(sqlfile,bksqlfile);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			getLogger().warning("Failed to backup database.");
+			return false;
+		}
+		return true;
 	}
 	@Override	
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -796,6 +830,13 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.maximum-price", -1);
 			getConfig().set("config-version", 21);
 			selectedVersion = 21;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 21) {
+			getConfig().set("shop.sign-material", "OAK_WALL_SIGN");
+			getConfig().set("config-version", 22);
+			selectedVersion = 22;
 			saveConfig();
 			reloadConfig();
 		}

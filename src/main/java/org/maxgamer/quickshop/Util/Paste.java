@@ -5,13 +5,13 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
-import sun.misc.BASE64Encoder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Base64;
 
 public class Paste {
     private QuickShop plugin;
@@ -27,7 +27,7 @@ public class Paste {
         finalReport.append("\n");
         finalReport.append("================================================\n");
         finalReport.append("QuickShop:\n");
-        finalReport.append("\tVersion: "+plugin.getVersion()+"\n");
+        finalReport.append("\tVersion: "+QuickShop.getVersion()+"\n");
         finalReport.append("\tFork: "+plugin.getFork()+"\n");
         finalReport.append("\tOpenInv Hook: "+(plugin.getOpenInvPlugin()==null ? "Disabled":"Enabled")+"\n");
         finalReport.append("\tMV Hook: "+(plugin.getMVPlugin()==null ? "Disabled":"Enabled")+"\n");
@@ -64,15 +64,14 @@ public class Paste {
         for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()){
             finalReport.append("\t"+bplugin.getName()+"@"+(bplugin.isEnabled() ? "Enabled":"Disabled")+"\n");
         }
-        BASE64Encoder encoder = new BASE64Encoder();
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tconfig.yml:\n");
-        finalReport.append("\t\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
+        finalReport.append(Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tmessages.yml:\n");
-        finalReport.append("\t\t"+encoder.encode(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
+        finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("================================================\n");
         return finalReport.toString();
@@ -103,6 +102,6 @@ public class Paste {
             in.close();
         if(out!=null)
             out.close();
-        return conn.getURL().toString();
+        return link;
     }
 }
