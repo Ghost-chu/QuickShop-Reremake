@@ -613,17 +613,21 @@ public class Util {
 		return space;
 	}
 	public static boolean isWallSign(Material material) {
-	    switch (material) {
-            case ACACIA_WALL_SIGN:
-            case BIRCH_WALL_SIGN:
-            case DARK_OAK_WALL_SIGN:
-            case JUNGLE_WALL_SIGN:
-            case OAK_WALL_SIGN:
-            case SPRUCE_WALL_SIGN:
-                return true;
-            default:
-                return material.name().endsWith("WALL_SIGN");
-        }
+		try {
+	  	  switch (material) {
+          	  	case ACACIA_WALL_SIGN:
+           	  	case BIRCH_WALL_SIGN:
+            	  	case DARK_OAK_WALL_SIGN:
+            	  	case JUNGLE_WALL_SIGN:
+           	  	case OAK_WALL_SIGN:
+           	  	case SPRUCE_WALL_SIGN:
+             	   		return true;
+          	  	default:
+                		return material.name().endsWith("WALL_SIGN");
+		  	}
+        	} catch (Throwable t) {
+			return material.name().endsWith("WALL_SIGN");
+		}
 	}
 
 	/**
