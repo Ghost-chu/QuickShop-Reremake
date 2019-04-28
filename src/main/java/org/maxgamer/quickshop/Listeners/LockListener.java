@@ -12,7 +12,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -31,8 +30,6 @@ public class LockListener implements Listener {
 		Player p = e.getPlayer();
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return; // Didn't right click it, we dont care.
-		if(e.getHand() != EquipmentSlot.HAND)
-			return; //Forget the OFF_HAND
 		if (!Util.canBeShop(b,null,true))
 			return; // Interacted with air
 		Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -105,7 +102,7 @@ public class LockListener implements Listener {
 				p.sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
 			}
-		} else if (b.getType() == Material.WALL_SIGN) {
+		} else if (Util.isWallSign(b.getType())) {
 			if(b instanceof Sign) {
 				Sign sign = (Sign)b;
 				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){

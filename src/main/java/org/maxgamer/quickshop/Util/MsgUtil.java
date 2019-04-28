@@ -277,7 +277,7 @@ public class MsgUtil {
 		// Set Price
 		if (sender.hasPermission("quickshop.other.price")||shop.getOwner().equals(((Player)sender).getUniqueId())) {
 			String Text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
-			String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
+			String hoverText = MsgUtil.getMessage("controlpanel.price-hover");
 			//String clickCommand = "/qs price [New Price]";
 			String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
 			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + Text);
@@ -291,7 +291,7 @@ public class MsgUtil {
 			String Text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
 			String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
 			//String clickCommand = "/qs refill [Amount]";
-			String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
+			String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill");
 			TextComponent message = new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + Text);
 			message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
 			message.setHoverEvent(

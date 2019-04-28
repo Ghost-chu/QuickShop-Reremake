@@ -92,11 +92,6 @@ public class QS implements CommandExecutor{
 				if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
 					shop.onUnload();
 					shop.delete();
-					try {
-						DatabaseHelper.removeShop(plugin.getDB(), shop.getLocation().getBlockX(),  shop.getLocation().getBlockY(),  shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName());
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
 				} else {
 					sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
 				}
@@ -599,6 +594,7 @@ public class QS implements CommandExecutor{
 			sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
 			Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
 			int i = 0;
+			java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
 			while (shIt.hasNext()) {
 				Shop shop = shIt.next();
 
@@ -608,14 +604,18 @@ public class QS implements CommandExecutor{
 						ContainerShop cs = (ContainerShop) shop;
 						if (cs.isDoubleShop())
 							continue;
-						shIt.remove(); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
+						pendingRemoval.add(shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
 										// Can be deleted safely.
 						i++;
 					}
 				} catch (IllegalStateException e) {
-					shIt.remove(); // The shop is not there anymore, remove it
+					pendingRemoval.add(shop); // The shop is not there anymore, remove it
 				}
 			}
+			
+			for (Shop shop : pendingRemoval)
+				shop.delete();
+			
 			MsgUtil.clean();
 			sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
 			return;
