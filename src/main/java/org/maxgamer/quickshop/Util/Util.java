@@ -612,32 +612,18 @@ public class Util {
 		Util.debugLog("Space:"+space);
 		return space;
 	}
-	@SuppressWarnings("deprecation")
 	public static boolean isWallSign(Material material) {
-		try {
-		if(material==Material.ACACIA_WALL_SIGN)
-			return true;
-		if(material==Material.BIRCH_WALL_SIGN)
-			return true;
-		if(material==Material.DARK_OAK_WALL_SIGN)
-			return true;
-		if(material==Material.JUNGLE_WALL_SIGN)
-			return true;
-		if(material==Material.OAK_WALL_SIGN)
-			return true;
-		if(material==Material.SPRUCE_WALL_SIGN)
-			return true;
-		if(material.name().endsWith("WALL_SIGN"))
-			return true;
-		}catch (Throwable e) {
-			if(material==Material.LEGACY_WALL_SIGN) //1.13 compatiable
-				return true;
-			if(material.name().equals("WALL_SIGN")) //1.13 compatiable
-				return true;
-			if(material.name().endsWith("WALL_SIGN"))
-				return true;
-		}
-		return false;
+	    switch (material) {
+            case ACACIA_WALL_SIGN:
+            case BIRCH_WALL_SIGN:
+            case DARK_OAK_WALL_SIGN:
+            case JUNGLE_WALL_SIGN:
+            case OAK_WALL_SIGN:
+            case SPRUCE_WALL_SIGN:
+                return true;
+            default:
+                return material.name().endsWith("WALL_SIGN");
+        }
 	}
 
 	/**
