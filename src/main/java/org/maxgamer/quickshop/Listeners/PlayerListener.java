@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -103,10 +104,11 @@ public class PlayerListener implements Listener {
 				return;
 			}
 			// Handles creating shops
-			else if (!e.isCancelled() && shop == null && item != null && item.getType() != Material.AIR
+			
+			else if (e.useInteractedBlock()==Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
 					&& p.hasPermission("quickshop.create.sell") && Util.canBeShop(b,null,true)
 					&& p.getGameMode() != GameMode.CREATIVE)  {
-				if(e.isCancelled())
+				if(e.useInteractedBlock()==Result.DENY)
 					return;
 				if(plugin.getConfig().getBoolean("shop.sneak-to-create")&&!p.isSneaking())
 					return;
