@@ -46,6 +46,9 @@ permissions:
     quickshop.setowner:
         description: Allows a Staff Member to change the owner of any shop
         default: op
+    quickshop.staff:
+        description: Allow shops owner set staffs for shop
+        default: op
     quickshio.areashop.bypass:
         description: If you enable special zone only and have this permission, the special zone only will ignore you limit.
         default: op

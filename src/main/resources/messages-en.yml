@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 11
+language-version: 12
 
 not-looking-at-shop: "&cNo QuickShop found. You must be looking at one."
 no-anythings-in-your-hand: "&cNo anythings in your hand."
@@ -65,6 +65,11 @@ failed-to-put-sign: "&cNo enough space around the shop to place infomation sign.
 failed-to-paste: "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)"
 warn-to-paste: "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer."
 price-too-high: "&cShop price too high! You can't create price higher than {0} shop."
+
+unknown-player: "&cTarget player not exist, please check username your typed."
+shop-staff-cleared: "&aSuccessfully remove all staff for your shop."
+shop-staff-added: "&aSuccessfully add {0} to your shop staffs."
+shop-staff-deleted: "&aSuccessfully remove {0} to your shop staffs."
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
     successfully-sold: "&aSuccessfully Sold:"
@@ -111,6 +116,7 @@ command:
    no-amount-given: "&cNo amount given. Use &a/qs refill <amount>&c"
    now-debuging: "&aSuccessfully switch to production mode, Reloading QuickShop..."
    now-nolonger-debuging: "&aSuccessfully switch to developer mode, Reloading QuickShop..."
+   wrong-args: "&cParameter not matched, use /qs help to check help"
    description:
        title: "&aQuickShop Help"
        unlimited: "&eMakes a shop unlimited"
@@ -128,6 +134,7 @@ command:
        fetchmessage: "&eFetch unread shop message"
        info: "&eShow QuickShop Statistics"
        paste: "&eAuto upload server data to Pastebin"
+       staff: "&eManage your shop staffs"
 signs:
     header: "&c{0}"
     selling: "Selling {0}"

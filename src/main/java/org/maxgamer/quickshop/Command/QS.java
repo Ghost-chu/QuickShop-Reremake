@@ -25,6 +25,7 @@ import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -89,7 +90,7 @@ public class QS implements CommandExecutor{
 			Block b = bIt.next();
 			Shop shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop != null) {
-				if (shop.getOwner().equals(p.getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
+				if (shop.getModerator().isModerator(((Player) sender).getUniqueId())||sender.hasPermission("quickshop.other.destroy")) {
 					shop.onUnload();
 					shop.delete();
 				} else {
@@ -425,7 +426,7 @@ public class QS implements CommandExecutor{
 		if (sender.hasPermission("quickshop.create.buy")) {
 			Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(args[1]), Integer.valueOf(args[2]),
 					Integer.valueOf(args[3]), Integer.valueOf(args[4])));
-			if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
+			if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
 				shop.setShopType(ShopType.BUYING);
 				shop.setSignText();
 				shop.update();
@@ -443,7 +444,7 @@ public class QS implements CommandExecutor{
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
-				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
+				if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
 					shop.setShopType(ShopType.BUYING);
 					shop.setSignText();
 					shop.update();
@@ -461,7 +462,7 @@ public class QS implements CommandExecutor{
 		if (sender.hasPermission("quickshop.create.sell")) {
 				Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(args[1]),
 						Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])));
-				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
+				if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
 					shop.setShopType(ShopType.SELLING);
 					shop.setSignText();
 					shop.update();
@@ -480,7 +481,7 @@ public class QS implements CommandExecutor{
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
-				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
+				if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
 					shop.setShopType(ShopType.SELLING);
 					shop.setSignText();
 					shop.update();
@@ -534,8 +535,7 @@ public class QS implements CommandExecutor{
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
-				if (shop != null && (shop.getOwner().equals(((Player) sender).getUniqueId())
-						|| sender.hasPermission("quickshop.other.price"))) {
+				if (shop != null && (shop.getModerator().isModerator(((Player) sender).getUniqueId())|| sender.hasPermission("quickshop.other.price"))) {
 					if (shop.getPrice() == price) {
 						// Stop here if there isn't a price change
 						sender.sendMessage(MsgUtil.getMessage("no-price-change"));
@@ -623,6 +623,72 @@ public class QS implements CommandExecutor{
 		sender.sendMessage(MsgUtil.getMessage("no-permission"));
 		return;
 	}
+	
+	private void staff(CommandSender sender, String[] args) {
+		ArrayList<Shop> pendingShops = new ArrayList<>();
+		if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
+			BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+			while (bIt.hasNext()) {
+				Block b = bIt.next();
+				Shop shop = plugin.getShopManager().getShop(b.getLocation());
+				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
+					pendingShops.add(shop);
+				}
+			}
+			if(pendingShops.size()==0) {
+				sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+			}
+		}else {
+			sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+			return;
+		}
+		
+		if(args.length==1) { //qs staff
+			//Send
+			sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+			return;
+		}
+		if(args.length==2) { //qs staff [add|del|clear|others]
+			if(!args[1].equals("add")&&!args[1].equals("del")&&!args[1].equals("clear")) {
+				sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+				return;
+			}
+			if(args[1].equals("clear")) {
+				for (Shop shop : pendingShops)
+					shop.getModerator().clearStaffs();
+				sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+			}
+			sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+			return;
+		}
+		if(args.length==3) { //qs staff [add|del] [player]
+			if(!args[1].equals("add")&&!args[1].equals("del")) {
+				sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+				return;
+			}
+			@SuppressWarnings("deprecation")
+			OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
+			if(player==null) {
+				sender.sendMessage(MsgUtil.getMessage("unknown-player"));
+				return;
+			}
+			
+			if(args[1].equals("add")) {
+				for (Shop shop : pendingShops)
+					shop.getModerator().addStaff(player.getUniqueId());
+				sender.sendMessage(MsgUtil.getMessage("shop-staff-added",args[2]));
+				return;
+			}
+			if(args[1].equals("del")) {
+				for (Shop shop : pendingShops)
+					shop.getModerator().delStaff(player.getUniqueId());
+				sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted",args[2]));
+				return;
+			}
+		}
+	}
+	
+	
 	private void about(CommandSender sender) {
 		sender.sendMessage("[QuickShop] About QuickShop");
 		sender.sendMessage("[QuickShop] Hello, I'm Ghost_chu Author of QS reremake.");
@@ -744,7 +810,11 @@ public class QS implements CommandExecutor{
 			} else if (subArg.equals("paste")) {
 				paste(sender);
 				return true;
+			} else if (subArg.equals("staff")) {
+				staff(sender, args);
+				return true;
 			}
+			
 		} else {
 			// Invalid arg given
 			sendHelp(sender,commandLabel);
@@ -820,7 +890,7 @@ public class QS implements CommandExecutor{
 			}
 			if(sender instanceof Player) {
 				Player player = (Player)sender;
-				if(!(shop.getOwner()!=player.getUniqueId())&&!(player.hasPermission("quickshop.other.destroy"))) {
+				if(!(shop.getModerator().isModerator(((Player) sender).getUniqueId()))&&!(player.hasPermission("quickshop.other.destroy"))) {
 					sender.sendMessage(MsgUtil.getMessage("no-permission"));
 					return;
 				}
@@ -914,6 +984,9 @@ public class QS implements CommandExecutor{
 		if (s.hasPermission("quickshop.empty"))
 			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" empty" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.empty"));
+		if (s.hasPermission("quickshop.staff"))
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" staff" + ChatColor.YELLOW + " - "
+					+ MsgUtil.getMessage("command.description.staff"));
 		if (s.hasPermission("quickshop.fetchmessage"))
 			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" fetchmessage" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.fetchmessage"));
