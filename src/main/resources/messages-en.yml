@@ -116,7 +116,7 @@ command:
    no-amount-given: "&cNo amount given. Use &a/qs refill <amount>&c"
    now-debuging: "&aSuccessfully switch to production mode, Reloading QuickShop..."
    now-nolonger-debuging: "&aSuccessfully switch to developer mode, Reloading QuickShop..."
-   wrong-args: "&cParameter not matched, use /qs help to check help"
+   wrong-args: "&cParameters not matched, use /qs help to check help"
    description:
        title: "&aQuickShop Help"
        unlimited: "&eMakes a shop unlimited"
