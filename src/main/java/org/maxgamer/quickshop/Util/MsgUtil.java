@@ -211,7 +211,7 @@ public class MsgUtil {
 			messagei18n.set("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
 			messagei18n.set("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
 			messagei18n.set("command.wrong-args", "&cParameters not matched, use /qs help to check help");
-			messagei18n.set("command.description.staff", "&cManage your shop staffs.");
+			messagei18n.set("command.description.staff", "&eManage your shop staffs.");
 			messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
 			messagei18n.set("language-version", 12);
 			selectedVersion = 12;
