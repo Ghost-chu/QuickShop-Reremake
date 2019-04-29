@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop;
 
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 //import com.griefcraft.lwc.LWCPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
@@ -25,6 +26,7 @@ import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
+import org.maxgamer.quickshop.Shop.ShopModerator;
 import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -246,7 +248,7 @@ public class QuickShop extends JavaPlugin {
 				int z = 0;
 				String worldName = null;
 				ItemStack item = null;
-				String owner = null;
+				String moderators = null;
 				UUID ownerUUID = null;
 				String step = "while init";
 				// ==========================================================================================
@@ -260,44 +262,28 @@ public class QuickShop extends JavaPlugin {
 						// Maybe world not loaded? Try call MV to load world.
 						mPlugin.getCore().getMVWorldManager().loadWorld(worldName);
 						world = Bukkit.getWorld(worldName);
+						// Still load failed? It removed or not got loaded now?
 						if(world==null){
-							// Still load failed? It removed or not got loaded now?
 							skipedShops++;
 							Util.debugLog("Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
 							continue;
 						}
 					}
 					item = Util.deserialize(rs.getString("itemConfig"));
-					owner = rs.getString("owner");
+					moderators = rs.getString("owner"); //Get origin data
 					ownerUUID = null;
-					step = "Covert owner to UUID";
+					step = "Load moderator infomation";
+					Gson gson = new Gson();
+					ShopModerator shopModerator = null;
 					try {
-						ownerUUID = UUID.fromString(owner);
-					} catch (IllegalArgumentException e) {
-						// This could be old data to be converted... check if it's a player
-						step = "Update owner to UUID";
-						// Because need update database, so use crossed method, Set ignore.
-						@SuppressWarnings("deprecation")
-						OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
-						if (player.hasPlayedBefore()) {
-							ownerUUID = player.getUniqueId();
-							DatabaseHelper.updateOwner2UUID(ownerUUID.toString(), x, y, z, worldName);
-						} else {
-							// Invalid shop owner
-							getLogger().info("Create backup for database..");
-							if (!isBackuped) {
-								//Backup
-								if(backupDatabase())
-									isBackuped=true;
-							}
-							getLogger().info("Removeing shop from database...");
-							if(isBackuped) {
-								DatabaseHelper.removeShop(database, x, y, z, worldName);
-							}else {
-								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-							}
-							continue;
-						}
+						UUID.fromString(moderators);
+						step = "Covert UUID to Moderator JSON";
+						Util.debugLog("Updating old shop data...");
+						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
+						moderators = ShopModerator.serialize(shopModerator); //Serialize
+					}catch (IllegalArgumentException ex) {
+						//This expcetion is normal, cause i need check that is or not a UUID.
+						shopModerator = gson.fromJson(moderators, ShopModerator.class);
 					}
 					step = "Loading shop price";
 					double price = rs.getDouble("price");
@@ -326,7 +312,7 @@ public class QuickShop extends JavaPlugin {
 					step = "Loading shop type";
 					int type = rs.getInt("type");
 					step = "Loading shop in world";
-					Shop shop = new ContainerShop(loc, price, item, ownerUUID);
+					Shop shop = new ContainerShop(loc, price, item, new ShopModerator(ownerUUID));
 					step = "Setting shop unlitmited status";
 					shop.setUnlimited(rs.getBoolean("unlimited"));
 					step = "Setting shop type";
@@ -335,7 +321,6 @@ public class QuickShop extends JavaPlugin {
 					shopManager.loadShop(rs.getString("world"), shop);
 					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
 					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
-						
 						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
 						shop.onLoad();
 						shop.setSignText();
@@ -358,7 +343,7 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
 					getLogger().severe(
 							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
-					getLogger().severe("Owner: " + owner + "(" + ownerUUID.toString() + ")");
+					getLogger().severe("Moderators: " + moderators);
 					try {
 						getLogger().severe(
 								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
@@ -837,6 +822,13 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("shop.sign-material", "OAK_WALL_SIGN");
 			getConfig().set("config-version", 22);
 			selectedVersion = 22;
+			saveConfig();
+			reloadConfig();
+		}
+		if (selectedVersion == 22) {
+			getConfig().set("include-offlineplayer-list", "false");
+			getConfig().set("config-version", 23);
+			selectedVersion = 23;
 			saveConfig();
 			reloadConfig();
 		}
