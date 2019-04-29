@@ -273,7 +273,6 @@ public class QuickShop extends JavaPlugin {
 					moderators = rs.getString("owner"); //Get origin data
 					ownerUUID = null;
 					step = "Load moderator infomation";
-					Gson gson = new Gson();
 					ShopModerator shopModerator = null;
 					try {
 						UUID.fromString(moderators);
@@ -283,7 +282,7 @@ public class QuickShop extends JavaPlugin {
 						moderators = ShopModerator.serialize(shopModerator); //Serialize
 					}catch (IllegalArgumentException ex) {
 						//This expcetion is normal, cause i need check that is or not a UUID.
-						shopModerator = gson.fromJson(moderators, ShopModerator.class);
+						shopModerator = ShopModerator.deserialize(moderators);
 					}
 					step = "Loading shop price";
 					double price = rs.getDouble("price");
@@ -312,7 +311,7 @@ public class QuickShop extends JavaPlugin {
 					step = "Loading shop type";
 					int type = rs.getInt("type");
 					step = "Loading shop in world";
-					Shop shop = new ContainerShop(loc, price, item, new ShopModerator(ownerUUID));
+					Shop shop = new ContainerShop(loc, price, item, shopModerator);
 					step = "Setting shop unlitmited status";
 					shop.setUnlimited(rs.getBoolean("unlimited"));
 					step = "Setting shop type";
