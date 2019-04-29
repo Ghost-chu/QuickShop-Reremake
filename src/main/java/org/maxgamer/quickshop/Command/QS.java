@@ -637,6 +637,7 @@ public class QS implements CommandExecutor{
 			}
 			if(pendingShops.size()==0) {
 				sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+				return;
 			}
 		}else {
 			sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
