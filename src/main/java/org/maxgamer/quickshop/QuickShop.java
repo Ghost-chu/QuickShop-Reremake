@@ -1,11 +1,24 @@
 package org.maxgamer.quickshop;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-//import com.griefcraft.lwc.LWCPlugin;
-import com.onarandombox.MultiverseCore.MultiverseCore;
+import java.io.File;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,12 +30,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
-import org.maxgamer.quickshop.Database.*;
+import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
+import org.maxgamer.quickshop.Database.DatabaseCore;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
+import org.maxgamer.quickshop.Database.MySQLCore;
+import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
-import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.Listeners.BlockListener;
+import org.maxgamer.quickshop.Listeners.ChatListener;
+import org.maxgamer.quickshop.Listeners.ChunkListener;
+import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
+import org.maxgamer.quickshop.Listeners.LockListener;
+import org.maxgamer.quickshop.Listeners.PlayerListener;
+import org.maxgamer.quickshop.Listeners.WorldListener;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -33,13 +56,10 @@ import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
-import java.io.File;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.*;
-import java.util.Map.Entry;
+
+import com.google.common.io.Files;
+//import com.griefcraft.lwc.LWCPlugin;
+import com.onarandombox.MultiverseCore.MultiverseCore;
 
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
@@ -249,7 +269,6 @@ public class QuickShop extends JavaPlugin {
 				String worldName = null;
 				ItemStack item = null;
 				String moderators = null;
-				UUID ownerUUID = null;
 				String step = "while init";
 				// ==========================================================================================
 				try {
@@ -271,7 +290,6 @@ public class QuickShop extends JavaPlugin {
 					}
 					item = Util.deserialize(rs.getString("itemConfig"));
 					moderators = rs.getString("owner"); //Get origin data
-					ownerUUID = null;
 					step = "Load moderator infomation";
 					ShopModerator shopModerator = null;
 					try {
