@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -63,7 +64,7 @@ public class ShopManager {
 		ItemStack item = shop.getItem();
 		try {
 			// Write it to the database
-			DatabaseHelper.createShop(shop.getOwner().toString(), shop.getPrice(), item,  (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+			DatabaseHelper.createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), item,  (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 			// Add it to the world
 			addShop(loc.getWorld().getName(), shop);
 		} catch (Exception error) {
@@ -639,7 +640,7 @@ public class ShopManager {
 				return;
 			}
 			// Create the sample shop.
-			Shop shop = new ContainerShop(info.getLocation(), price, info.getItem(), p.getUniqueId());
+			Shop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()));
 			shop.onLoad();
 			ShopCreateEvent e = new ShopCreateEvent(shop, p);
 			Bukkit.getPluginManager().callEvent(e);
