@@ -32,7 +32,7 @@ import com.lishid.openinv.OpenInv;
 public class ContainerShop implements Shop {
 	private Location loc;
 	private double price;
-	private UUID owner;
+	private ShopModerator moderator;
 	private ItemStack item;
 	private DisplayItem displayItem;
 	private boolean unlimited;
@@ -57,7 +57,7 @@ public class ContainerShop implements Shop {
 		this.loc = s.loc;
 		this.plugin = s.plugin;
 		this.unlimited = s.unlimited;
-		this.owner = s.owner;
+		this.moderator = s.moderator;
 		this.price = s.price;
 	}
 
@@ -74,10 +74,10 @@ public class ContainerShop implements Shop {
 	 * @param owner
 	 *            The player who owns this shop.
 	 */
-	public ContainerShop(Location loc, double price, ItemStack item, UUID owner) {
+	public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator) {
 		this.loc = loc;
 		this.price = price;
-		this.owner = owner;
+		this.moderator = moderator;
 		this.item = item.clone();
 		this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
 		this.item.setAmount(1);
@@ -207,7 +207,7 @@ public class ContainerShop implements Shop {
 		//String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
 		try {
 			//plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
-			DatabaseHelper.updateShop(plugin.getDB(), this.getOwner().toString(), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
+			DatabaseHelper.updateShop(plugin.getDB(), ShopModerator.serialize(getModerator()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
 		} catch (Exception e) {
 			e.printStackTrace();
 			plugin.getLogger().log(Level.WARNING, "Could not update shop in database! Changes will revert after a reboot!");
@@ -228,7 +228,8 @@ public class ContainerShop implements Shop {
 		try {
 		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.openInvPlugin!=null) {
 			OpenInv openInv = ((OpenInv)plugin.openInvPlugin);
-			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.owner)), Bukkit.getOfflinePlayer(this.owner).isOnline()).getBukkitInventory();
+			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
+					 )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
 		}
 		}catch(Exception e){
 			Util.debugLog(e.getMessage());
@@ -247,7 +248,24 @@ public class ContainerShop implements Shop {
 	 * @return The name of the player who owns the shop.
 	 */
 	public UUID getOwner() {
-		return this.owner;
+		return this.moderator.getOwner();
+	}
+	
+	/**
+	 * @return The list of players who can manage the shop.
+	 */
+	public ArrayList<UUID> getStaffs() {
+		return this.moderator.getStaffs();
+	}
+	
+	public boolean addStaff(UUID player) {
+		return this.moderator.addStaff(player);
+	}
+	public boolean delStaff(UUID player) {
+		return this.moderator.delStaff(player);
+	}
+	public void clearStaffs() {
+		this.moderator.clearStaffs();
 	}
 
 	/**
@@ -426,7 +444,7 @@ public class ContainerShop implements Shop {
 	 * @param owner
 	 */
 	public void setOwner(UUID owner) {
-		this.owner = owner;
+		this.moderator.setOwner(owner);
 		update();
 		Util.debugLog("New owner is applyed to shop: "+owner.toString());
 	}
@@ -755,5 +773,10 @@ public class ContainerShop implements Shop {
 		sb.append(" Price: " + getPrice());
 		sb.append(" Item: " + getItem().toString());
 		return sb.toString();
+	}
+
+	@Override
+	public ShopModerator getModerator() {
+		return this.moderator;
 	}
 }

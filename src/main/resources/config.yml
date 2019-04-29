@@ -38,6 +38,11 @@ anonymous-metrics: false
 #Should allow QS to check update on SpigotMC.org?
 updater: true
 
+#Should QS use OfflinePlayer list for TabComplete?
+#This might can give player better experience, but may cause lagg.
+#false = Only use OnlinePlayer list, true = All players joined your server before list.
+include-offlineplayer-list: false
+
 database:
     mysql: false
     host: localhost
