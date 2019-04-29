@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -44,6 +46,8 @@ public class Tab implements TabCompleter {
 				tabList.add("refill");
 			if (sender.hasPermission("quickshop.empty"))
 				tabList.add("empty");
+			if (sender.hasPermission("quickshop.staff"))
+				tabList.add("staff");
 			if (sender.hasPermission("quickshop.fetchmessage"))
 				tabList.add("fetchmessage");
 			if (sender.hasPermission("quickshop.info"))
@@ -66,9 +70,32 @@ public class Tab implements TabCompleter {
 			if (args[1].equals("refill")&&sender.hasPermission("quickshop.refill")) {
 				tabList.add(MsgUtil.getMessage("tabcomplete.amount"));
 			}
+			if (args[1].equals("staff")&&sender.hasPermission("quickshop.staff")) {
+				tabList.add("add");
+				tabList.add("del");
+				tabList.add("clear");
+			}
 			return tabList;
-		}else {
-			return null;
+		}else if(args.length==3){
+			if (args[1].equals("staff")&&sender.hasPermission("quickshop.staff")) {
+				if(args[2].equals("add")||args.equals("del")) {
+					if(plugin.getConfig().getBoolean("include-offlineplayer-list")) {
+						//Include
+						for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+							tabList.add(offlinePlayer.getName());
+							return tabList;
+						}
+					}else {
+						//Not Include
+						for(OfflinePlayer offlinePlayer : Bukkit.getOnlinePlayers()) {
+							tabList.add(offlinePlayer.getName());
+							return tabList;
+						}
+					}
+				}
+				
+			}
 		}
+		return null;
 	}
 }

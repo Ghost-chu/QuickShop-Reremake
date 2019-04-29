@@ -77,4 +77,6 @@ public abstract interface Shop {
 	public abstract void onClick();
 	
 	public abstract String ownerName();
+	
+	public abstract ShopModerator getModerator();
 }

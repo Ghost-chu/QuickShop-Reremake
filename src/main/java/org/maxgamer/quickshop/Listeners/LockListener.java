@@ -42,7 +42,7 @@ public class LockListener implements Listener {
 			if (shop == null)
 				return;
 		}
-		if (!shop.getOwner().equals(p.getUniqueId())) {
+		if (!shop.getModerator().isModerator(p.getUniqueId())) {
 			if (p.hasPermission("quickshop.other.open")) {
 				p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
 				return;
