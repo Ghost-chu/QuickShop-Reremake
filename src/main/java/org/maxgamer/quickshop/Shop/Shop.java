@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,4 +80,16 @@ public abstract interface Shop {
 	public abstract String ownerName();
 	
 	public abstract ShopModerator getModerator();
+	
+	public abstract void setModerator(ShopModerator shopModerator);
+	
+	public abstract boolean addStaff(UUID player);
+	
+	public abstract boolean delStaff(UUID player);
+	
+	public abstract void clearStaffs();
+
+	public abstract ArrayList<UUID> getStaffs();
+
+	
 }

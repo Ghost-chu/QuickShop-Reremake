@@ -625,69 +625,64 @@ public class QS implements CommandExecutor{
 	}
 	
 	private void staff(CommandSender sender, String[] args) {
-		ArrayList<Shop> pendingShops = new ArrayList<>();
-		if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
+		if (sender instanceof Player && sender.hasPermission("quickshop.create.sell")) {
 			BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
-				Util.debugLog(shop.getOwner().toString());
-				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
-					pendingShops.add(shop);
+				if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+					if (args.length == 1) { // qs staff
+						// Send
+						sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+						return;
+					}
+					if (args.length == 2) { // qs staff [add|del|clear|others]
+						if (!args[1].equals("add") && !args[1].equals("del") && !args[1].equals("clear")) {
+							sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+							return;
+						}
+						if (args[1].equals("clear")) {
+
+							shop.clearStaffs();
+							sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+						}
+						sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+						return;
+					}
+					if (args.length == 3) { // qs staff [add|del] [player]
+						if (!args[1].equals("add") && !args[1].equals("del")) {
+							sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+							return;
+						}
+						@SuppressWarnings("deprecation")
+						OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
+						if (player == null) {
+							sender.sendMessage(MsgUtil.getMessage("unknown-player"));
+							return;
+						}
+
+						if (args[1].equals("add")) {
+							
+							shop.addStaff(player.getUniqueId());
+							sender.sendMessage(MsgUtil.getMessage("shop-staff-added", args[2]));
+							return;
+						}
+						if (args[1].equals("del")) {
+
+							shop.delStaff(player.getUniqueId());
+							sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", args[2]));
+							return;
+						}
+					}
+					return;
 				}
 			}
-			if(pendingShops.size()==0) {
-				sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-				return;
-			}
-		}else {
 			sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
 			return;
 		}
-		
-		if(args.length==1) { //qs staff
-			//Send
-			sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-			return;
-		}
-		if(args.length==2) { //qs staff [add|del|clear|others]
-			if(!args[1].equals("add")&&!args[1].equals("del")&&!args[1].equals("clear")) {
-				sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-				return;
-			}
-			if(args[1].equals("clear")) {
-				for (Shop shop : pendingShops)
-					shop.getModerator().clearStaffs();
-				sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
-			}
-			sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-			return;
-		}
-		if(args.length==3) { //qs staff [add|del] [player]
-			if(!args[1].equals("add")&&!args[1].equals("del")) {
-				sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-				return;
-			}
-			@SuppressWarnings("deprecation")
-			OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
-			if(player==null) {
-				sender.sendMessage(MsgUtil.getMessage("unknown-player"));
-				return;
-			}
-			
-			if(args[1].equals("add")) {
-				for (Shop shop : pendingShops)
-					shop.getModerator().addStaff(player.getUniqueId());
-				sender.sendMessage(MsgUtil.getMessage("shop-staff-added",args[2]));
-				return;
-			}
-			if(args[1].equals("del")) {
-				for (Shop shop : pendingShops)
-					shop.getModerator().delStaff(player.getUniqueId());
-				sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted",args[2]));
-				return;
-			}
-		}
+		sender.sendMessage(MsgUtil.getMessage("no-permission"));
+		return;
+
 	}
 	
 	

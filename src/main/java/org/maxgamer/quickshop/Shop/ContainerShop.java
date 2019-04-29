@@ -255,18 +255,26 @@ public class ContainerShop implements Shop {
 	/**
 	 * @return The list of players who can manage the shop.
 	 */
+	@Override
 	public ArrayList<UUID> getStaffs() {
 		return this.moderator.getStaffs();
 	}
-	
+	@Override
 	public boolean addStaff(UUID player) {
-		return this.moderator.addStaff(player);
+		boolean result = this.moderator.addStaff(player);
+		update();
+		return result;
 	}
+	@Override
 	public boolean delStaff(UUID player) {
-		return this.moderator.delStaff(player);
+		boolean result = this.moderator.delStaff(player);
+		update();
+		return result;
 	}
+	@Override
 	public void clearStaffs() {
 		this.moderator.clearStaffs();
+		update();
 	}
 
 	/**
@@ -778,6 +786,11 @@ public class ContainerShop implements Shop {
 
 	@Override
 	public ShopModerator getModerator() {
-		return this.moderator;
+		return this.moderator.clone();
 	}
+	@Override
+	public void setModerator(ShopModerator shopModerator) {
+		this.moderator=shopModerator.clone();
+	}
+	
 }
