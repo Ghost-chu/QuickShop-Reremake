@@ -18,6 +18,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -325,7 +326,7 @@ public class ShopManager {
 			Bukkit.getPluginManager().callEvent(pie);
 			pie.getPlayer().closeInventory(); // If the player has chat open, this
 			// will close their chat.
-			if (pie.isCancelled()) {
+			if (pie.useInteractedBlock()==Result.DENY) {
 				return false;
 			}
 			ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
