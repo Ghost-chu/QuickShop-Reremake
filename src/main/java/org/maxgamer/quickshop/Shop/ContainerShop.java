@@ -207,7 +207,8 @@ public class ContainerShop implements Shop {
 		//String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
 		try {
 			//plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
-			DatabaseHelper.updateShop(plugin.getDB(), ShopModerator.serialize(getModerator()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
+			Util.debugLog("Update: "+ShopModerator.serialize(this.moderator.clone()));
+			DatabaseHelper.updateShop(plugin.getDB(), ShopModerator.serialize(this.moderator.clone()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
 		} catch (Exception e) {
 			e.printStackTrace();
 			plugin.getLogger().log(Level.WARNING, "Could not update shop in database! Changes will revert after a reboot!");

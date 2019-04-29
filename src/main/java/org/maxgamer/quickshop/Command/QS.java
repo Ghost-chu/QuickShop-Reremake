@@ -631,6 +631,7 @@ public class QS implements CommandExecutor{
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
 				Shop shop = plugin.getShopManager().getShop(b.getLocation());
+				Util.debugLog(shop.getOwner().toString());
 				if (shop != null && shop.getOwner().equals(((Player) sender).getUniqueId())) {
 					pendingShops.add(shop);
 				}
