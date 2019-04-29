@@ -78,7 +78,7 @@ public class Tab implements TabCompleter {
 			return tabList;
 		}else if(args.length==3){
 			if (args[1].equals("staff")&&sender.hasPermission("quickshop.staff")) {
-				if(args[2].equals("add")||args.equals("del")) {
+				if(args[2].equals("add")||args[2].equals("del")) {
 					if(plugin.getConfig().getBoolean("include-offlineplayer-list")) {
 						//Include
 						for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
