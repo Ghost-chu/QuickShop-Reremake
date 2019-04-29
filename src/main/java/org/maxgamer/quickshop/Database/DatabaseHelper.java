@@ -83,9 +83,16 @@ public class DatabaseHelper {
 //				.executeUpdate("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
 //						+ " AND z = " + z + " AND world = \"" + worldName + "\""
 //						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-		PreparedStatement ps = db.getConnection().prepareStatement("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
-						+ " AND z = " + z + " AND world = \"" + worldName + "\""
-						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+		
+		String sqlString = "DELETE FROM "+QuickShop.instance.getDbPrefix()+"shops WHERE x = '"+x+"' AND y = '"+y+"' AND z ='"+z+"' AND world = '"+worldName+"'"+(db.getCore() instanceof MySQLCore ? " LIMIT 1" : "");
+		PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
+		//		PreparedStatement ps = db.getConnection().prepareStatement()
+//						
+//						
+//						
+//						//
+//						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
+		//"DELETE FROM shops WHERE x = '" + x + "' AND y = '" + y + "' AND z = '" + z + "' AND world = '" + world + "'"
 		return ps.executeQuery();
 	}
 	public static void updateOwner2UUID(String ownerUUID, int x, int y, int z, String worldName) throws SQLException {
