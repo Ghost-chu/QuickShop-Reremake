@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.maxgamer</groupId>
 	<artifactId>QuickShop</artifactId>
-	<version>Reremake 1.4.3</version>
-	<!-- Fuck version -->
+	<version>Reremake 1.4.3-SNAPSHOT</version>
+
 	<licenses>
 		<license>
 			<name>GPL v3 License</name>
