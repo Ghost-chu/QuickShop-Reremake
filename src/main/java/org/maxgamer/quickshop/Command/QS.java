@@ -27,6 +27,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class QS implements CommandExecutor{
@@ -624,7 +625,7 @@ public class QS implements CommandExecutor{
 	}
 	
 	private void staff(CommandSender sender, String[] args) {
-		if (sender instanceof Player && sender.hasPermission("quickshop.create.sell")) {
+		if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
 			BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
 			while (bIt.hasNext()) {
 				Block b = bIt.next();
@@ -642,6 +643,13 @@ public class QS implements CommandExecutor{
 						}
 						if (args[1].equals("clear")) {
 
+							shop.clearStaffs();
+							sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+						}
+						if (args[1].equals("list")) {
+							for (UUID uuid : shop.getStaffs()) {
+								sender.sendMessage(ChatColor.GREEN+MsgUtil.getMessage("tableformat.left_begin")+Bukkit.getPlayer(uuid).getName());
+							}
 							shop.clearStaffs();
 							sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
 						}
@@ -993,7 +1001,7 @@ public class QS implements CommandExecutor{
 			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" debug" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.debug"));
 		if (s.hasPermission("quickshop.paste"))
-			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" debug" + ChatColor.YELLOW + " - "
+			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" paste" + ChatColor.YELLOW + " - "
 					+ MsgUtil.getMessage("command.description.paste"));
 //		if (s.hasPermission("quickshop.export"))
 //			s.sendMessage(ChatColor.GREEN + "/" + commandLabel+" export mysql|sqlite" + ChatColor.YELLOW + " - "
