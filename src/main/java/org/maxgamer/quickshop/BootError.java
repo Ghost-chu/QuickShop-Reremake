@@ -17,7 +17,7 @@ public class BootError {
 	
 	public void printErrors(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED+"#########################################################");
-		sender.sendMessage(ChatColor.RED+"QuickShop is disabled, please fix problem and try again");
+		sender.sendMessage(ChatColor.RED+"   QuickShop is disabled, Please fix errors and reboot");
 		sender.sendMessage(errors);
 		sender.sendMessage(ChatColor.RED+"#########################################################");
 		
