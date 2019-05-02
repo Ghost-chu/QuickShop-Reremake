@@ -653,6 +653,7 @@ public class ContainerShop implements Shop {
 			plugin.getShopManager().removeShop(this);
 		}else {
 			try {
+				plugin.getShopManager().removeShop(this);
 				DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
 			} catch (SQLException e) {
 				e.printStackTrace();
