@@ -458,10 +458,8 @@ public class Util {
 	/**
 	 * Compares two items to each other. Returns true if they match.
 	 * 
-	 * @param stack1
-	 *            The first item stack
-	 * @param stack2
-	 *            The second item stack
+	 * @param stack1 The first item stack
+	 * @param stack2 The second item stack
 	 * @return true if the itemstacks match. (Material, durability, enchants, name)
 	 */
 	public static boolean matches(ItemStack stack1, ItemStack stack2) {
@@ -471,7 +469,7 @@ public class Util {
 			return false; // One of them is null (Can't be both, see above)
 		if (stack1.getType() != stack2.getType())
 			return false; // Not the same material
-		if (((Damageable)stack1.getItemMeta()).getDamage() != ((Damageable)stack2.getItemMeta()).getDamage())
+		if (((Damageable) stack1.getItemMeta()).getDamage() != ((Damageable) stack2.getItemMeta()).getDamage())
 			return false; // Not the same durability
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
@@ -484,22 +482,25 @@ public class Util {
 				return false; // one of the item stacks have a display name
 			}
 		}
-		try {
-			Class.forName("org.bukkit.inventory.meta.EnchantmentStorageMeta");
-			boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
-			boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
-			if (book1 != book2)
-				return false;// One has enchantment meta, the other does not.
-			if (book1 == true) { // They are the same here (both true or both
-				// false). So if one is true, the other is
-				// true.
-				Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
-				Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
-				if (!ench1.equals(ench2))
-					return false; // Enchants aren't the same.
-			}
-		} catch (ClassNotFoundException e) {
-			// Nothing. They dont have a build high enough to support this.
+		boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
+		boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
+		if (book1 != book2)
+			return false;// One has enchantment meta, the other does not.
+		if (book1 == true) { // They are the same here (both true or both
+			// false). So if one is true, the other is
+			// true.
+			Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
+			Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
+			if (!ench1.equals(ench2))
+				return false; // Enchants aren't the same.
+		}
+		boolean potion1 = stack1.getItemMeta() instanceof PotionMeta;
+		boolean potion2 = stack2.getItemMeta() instanceof PotionMeta;
+		if (potion1 != potion2)
+			return false;
+		if (potion1 == true) {
+			if (!((PotionMeta) stack1).equals(((PotionMeta) stack1)))
+				return false;
 		}
 		return true;
 	}
