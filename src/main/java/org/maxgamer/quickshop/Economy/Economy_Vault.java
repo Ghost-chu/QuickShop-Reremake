@@ -19,7 +19,13 @@ public class Economy_Vault implements EconomyCore {
 	}
 
 	private boolean setupEconomy() {
-		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+		RegisteredServiceProvider<Economy> economyProvider;
+		try {
+			economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+		}catch (Throwable e) {
+			return false;
+		}
+		
 		if (economyProvider != null) {
 			this.vault = ((Economy) economyProvider.getProvider());
 		}
