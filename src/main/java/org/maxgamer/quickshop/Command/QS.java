@@ -737,6 +737,12 @@ public class QS implements CommandExecutor{
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		
+		if(QuickShop.instance.bootError!=null) {
+			QuickShop.instance.bootError.printErrors(sender);
+			return true;
+		}
+		
 		if (args.length > 0) {
 			String subArg = args[0].toLowerCase();
 			if (subArg.equals("unlimited")) {
