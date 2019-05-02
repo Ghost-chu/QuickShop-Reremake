@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -298,6 +297,8 @@ public class QuickShop extends JavaPlugin {
 					try {
 						UUID.fromString(moderators);
 						step = "Covert UUID to Moderator JSON";
+						if(!isBackuped)
+							backupDatabase();
 						Util.debugLog("Updating old shop data...");
 						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
 						moderators = ShopModerator.serialize(shopModerator); //Serialize
@@ -584,7 +585,7 @@ public class QuickShop extends JavaPlugin {
 				.getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
 		try {
 			Files.copy(sqlfile,bksqlfile);
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 			getLogger().warning("Failed to backup database.");
 			return false;
