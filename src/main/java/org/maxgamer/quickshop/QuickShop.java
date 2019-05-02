@@ -116,6 +116,7 @@ public class QuickShop extends JavaPlugin {
 	private Tab commandTabCompleter;
 	private Metrics metrics;
 	private Language language;
+	public BootError bootError;
 	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
@@ -132,7 +133,9 @@ public class QuickShop extends JavaPlugin {
 	}
 	public void onEnable() {
 		instance = this;
-
+		bootError=null;
+		commandExecutor = new QS(this);
+		getCommand("qs").setExecutor(commandExecutor);
 		getLogger().info("Quickshop Reremake");
 		getLogger().info("Author:Ghost_chu");
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
@@ -140,9 +143,9 @@ public class QuickShop extends JavaPlugin {
 		// NMS.init();
 		try {
 			getServer().spigot();
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			bootError=new BootError("QuickShop cannot running under CraftBukkit","Use Spigot/Paper or Spigot's fork!"); 
 			getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
-			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		if (getServer().getName().toLowerCase().contains("catserver")) {
@@ -180,7 +183,7 @@ public class QuickShop extends JavaPlugin {
 				getLogger().severe(
 						"WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
 				noopDisable = true;
-				Bukkit.getPluginManager().disablePlugin(this);
+				bootError=new BootError("SnapShot cannot running under production environment","Turn on dev-mode to unlock safe protection."); 
 				return;
 			}
 		}
@@ -196,13 +199,6 @@ public class QuickShop extends JavaPlugin {
 			return;
 		// ProtocolLib Support
 		// protocolManager = ProtocolLibrary.getProtocolManager();
-		try {
-			getServer().spigot();
-		} catch (Throwable e) {
-			getLogger().severe("You must use support Spigot or Spigot forks(eg.Paper) server not CraftBukkit");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
 		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
 			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
 				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
@@ -254,6 +250,13 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.loadItemi18n();
 		MsgUtil.loadEnchi18n();
 		MsgUtil.loadPotioni18n();
+		// Command handlers
+				
+				commandTabCompleter = new Tab(this);
+				getCommand("qs").setTabCompleter(commandTabCompleter);
+				if (getConfig().getInt("shop.find-distance") > 100) {
+					getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+				}
 		int skipedShops = 0;
 		try {
 			getLogger().info("Loading shops from database...");
@@ -439,14 +442,7 @@ public class QuickShop extends JavaPlugin {
 			LockListener lockListener = new LockListener(this);
 			Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
 		}
-		// Command handlers
-		commandExecutor = new QS(this);
-		getCommand("qs").setExecutor(commandExecutor);
-		commandTabCompleter = new Tab(this);
-		getCommand("qs").setTabCompleter(commandTabCompleter);
-		if (getConfig().getInt("shop.find-distance") > 100) {
-			getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
-		}
+		
 		getLogger().info("Registering Listeners");
 		// Register events
 		blockListener = new BlockListener(this);
@@ -880,7 +876,7 @@ public class QuickShop extends JavaPlugin {
 				// getLogger().severe("Economy is not valid!");
 				getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 				getLogger().severe("QuickShop CANNOT start!");
-				this.getPluginLoader().disablePlugin(this);
+				bootError=new BootError("Can't hook an Economy plugin or not found Vault","Make sure you have Vault and economy plugin installed."); 
 				// if(econ.equals("Vault"))
 				// getLogger().severe("(Does Vault have an Economy to hook into?!)");
 				return false;
@@ -892,7 +888,7 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 			getLogger().severe("QuickShop CANNOT start!");
-			this.getPluginLoader().disablePlugin(this);
+			bootError=new BootError("Can't hook an Economy plugin or not found Vault","Make sure you have Vault and economy plugin installed."); 
 			return false;
 		}
 	}
