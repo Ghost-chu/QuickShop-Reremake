@@ -297,8 +297,10 @@ public class QuickShop extends JavaPlugin {
 					try {
 						UUID.fromString(moderators);
 						step = "Covert UUID to Moderator JSON";
-						if(!isBackuped)
+						if(!isBackuped) {
 							backupDatabase();
+							isBackuped=true;
+						}
 						Util.debugLog("Updating old shop data...");
 						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
 						moderators = ShopModerator.serialize(shopModerator); //Serialize
