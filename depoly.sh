@@ -13,7 +13,7 @@ fi
 # JAR为编译后jar文件名称
 read JAR < $filename
 xToken=$1
-curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, see update details on <a href="https://www.spigotmc.org/resources/quickshop-reremake-now-support-1-14.62575/">spigotmc.org</a>","gameVersions":[7330,7105],"releaseType":"release"}' -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
+curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, see update details on spigotmc.org","gameVersions":[7330,7105],"releaseType":"release"}' -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
 cat fileid.json
 echo "Finished upload to dev.bukkit.org."
 
