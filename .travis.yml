@@ -9,6 +9,7 @@ after_success:
   - rm -rf push
   - mkdir push
   - cp ./target/*.jar ./push/
+  - ls ./push -1 | grep ".jar$" > jarname.txt
 deploy:
   skip_cleanup: true
   provider: releases
@@ -19,3 +20,5 @@ deploy:
   file_glob: true
   on:
     tags: true
+after_deploy:
+  - sh deploy.sh $Curse_token
