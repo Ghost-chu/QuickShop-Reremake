@@ -1,45 +1,9 @@
 ---
-price-too-high: "&cAffärs priset är för högt! Du kan inte skapa pris högre än {0} affär."
-controlpanel:
-  commands:
-    setowner: "/qs owner [Spelare]"
-    unlimited: "/qs slientunlimited {0} {1} {2} {3}"
-    buy: "/qs silentbuy {0} {1} {2} {3}"
-    sell: "/qs silentsell {0} {1} {2} {3}"
-    price: "/qs price [Nytt Pris]"
-    refill: "/qs refill [Belopp]"
-    empty: "/qs silentempty {0} {1} {2} {3}"
-    remove: "/qs silentremove {0} {1} {2} {3}"
-  infomation: "&aButikens Kontrollpanel:"
-  setowner: "&aÄgare: &b{0} &e[&d&lÄndra&e]"
-  setowner-hover: "&eSer du vill byta butik och klicka för att byta ägare."
-  unlimited: "&aObegränsat: {0} &e[&d&lVäxla&e]"
-  unlimited-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
-  mode-selling: "&aButikläge: &bSäljer &e[&d&lVäxla&e]"
-  mode-selling-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
-  mode-buying: "&aButikläge: &bKöper &e[&d&lVäxla&e]"
-  mode-buying-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
-  price: "&aPris: &b{0} &e[&d&lSätt&e]"
-  price-hover: "&eOm du vill byta butik och klicka för att ställa in nytt pris."
-  refill: "&aPåfyllning: Påfyll butikens artiklar &e[&d&lOK&e]"
-  refill-hover: "&eSer du vill byta butik och klicka för att fylla på."
-  empty: "&aTom: Ta bort butikens alla artiklar &e[&d&lOK&e]"
-  empty-hover: "&eSer du vill byta butik och klicka för att rensa."
-  remove: "&c&l[Ta bort Butik]"
-  remove-hover: "&eKlicka för att ta bort denna butik."
-tableformat:
-  full_line: +---------------------------------------------------+
-  left_half_line: +--------------------
-  right_half_line: "--------------------+"
-  left_begin: "|"
-booleanformat:
-  success: "&a✔"
-  failed: "&c✘"
 translation-author: "&c&lÖversättare: &b&lH2O_Panda"
 translation-contributors: "&c&lMedverkande: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul"
 translation-version: "&c&lSupport version: &b&lReremake 1.2.5.2"
 translation-country: "&c&lSpråkzon: &b&lSvenska (sv-se)"
-language-version: 11
+language-version: 12
 not-looking-at-shop: "&cIngen QuickShop hittades. Du måste titta på en."
 no-anythings-in-your-hand: "Du håller inte något i din hand."
 no-permission: "&cDu har inte behörighet att göra det."
@@ -91,6 +55,11 @@ break-shop-use-supertool: "&eDu bryter butiken med hjälp av Super Verktyget."
 failed-to-put-sign: "&cInte tillräckligt med plats runt butiken för att plasera information skylt."
 failed-to-paste: "&cMisslyckades ladda upp data till pastebin. kontrollera internet och försök igen. (Se konsolen för mer detaljer)"
 warn-to-paste: "&eSamla in data och ladda upp till Pastebin, det kan ta ett tag. &c&lVarning&c, Uppgifterna är offentliga under en vecka, det kan läcka din serverkonfiguration, se till att du bara skickar den till din &lTrogna personal / utvecklare."
+price-too-high: "&cAffärs priset är för högt! Du kan inte skapa pris högre än {0} affär."
+unknown-player: "&cTarget player not exist, please check username your typed."
+shop-staff-cleared: "&aSuccessfully remove all staff for your shop."
+shop-staff-added: "&aSuccessfully add {0} to your shop staffs."
+shop-staff-deleted: "&aSuccessfully remove {0} to your shop staffs."
 menu:
   successful-purchase: "&aFramgångsrikt köpt:"
   successfully-sold: "&aSäljs framgångsrikt:"
@@ -131,6 +100,7 @@ command:
   no-amount-given: "&cInget belopp ges. Använd &a/qs refill <belopp>&c"
   now-debuging: "&aLyckades växla till produktionsläge, Laddar om QuickShop..."
   now-nolonger-debuging: "&aLyckades växla till utvecklarläge, Laddar om QuickShop..."
+  wrong-args: "&cParameters not matched, use /qs help to check help"
   description:
     title: "&aQuickShop Hjälp"
     unlimited: "&eGör en butik obegränsad"
@@ -148,6 +118,7 @@ command:
     fetchmessage: "&eHämta oläst butiksmeddelande"
     info: "&eVisa QuickShop Statistik"
     paste: "&eAuto överför serverdata till Pastebin"
+    staff: "&eManage your shop staffs"
 signs:
   header: "&c{0}"
   selling: "Säljer {0}"
@@ -155,6 +126,41 @@ signs:
   item: "{0}"
   price: "{0} varje"
   unlimited: Obegränsat
+controlpanel:
+  infomation: "&aButikens Kontrollpanel:"
+  setowner: "&aÄgare: &b{0} &e[&d&lÄndra&e]"
+  setowner-hover: "&eSer du vill byta butik och klicka för att byta ägare."
+  unlimited: "&aObegränsat: {0} &e[&d&lVäxla&e]"
+  unlimited-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
+  mode-selling: "&aButikläge: &bSäljer &e[&d&lVäxla&e]"
+  mode-selling-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
+  mode-buying: "&aButikläge: &bKöper &e[&d&lVäxla&e]"
+  mode-buying-hover: "&eSer du vill byta butik och klicka för att växla aktiverat eller inaktiverat."
+  price: "&aPris: &b{0} &e[&d&lSätt&e]"
+  price-hover: "&eOm du vill byta butik och klicka för att ställa in nytt pris."
+  refill: "&aPåfyllning: Påfyll butikens artiklar &e[&d&lOK&e]"
+  refill-hover: "&eSer du vill byta butik och klicka för att fylla på."
+  empty: "&aTom: Ta bort butikens alla artiklar &e[&d&lOK&e]"
+  empty-hover: "&eSer du vill byta butik och klicka för att rensa."
+  remove: "&c&l[Ta bort Butik]"
+  remove-hover: "&eKlicka för att ta bort denna butik."
+  commands:
+    setowner: "/qs owner [Spelare]"
+    unlimited: "/qs slientunlimited {0} {1} {2} {3}"
+    buy: "/qs silentbuy {0} {1} {2} {3}"
+    sell: "/qs silentsell {0} {1} {2} {3}"
+    price: "/qs price [Nytt Pris]"
+    refill: "/qs refill [Belopp]"
+    empty: "/qs silentempty {0} {1} {2} {3}"
+    remove: "/qs silentremove {0} {1} {2} {3}"
+tableformat:
+  full_line: +---------------------------------------------------+
+  left_half_line: +--------------------
+  right_half_line: "--------------------+"
+  left_begin: "|"
+booleanformat:
+  success: "&a✔"
+  failed: "&c✘"
 tabcomplete:
   price: "[pris]"
   range: "[räckvidd]"
