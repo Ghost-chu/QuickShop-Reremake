@@ -21,10 +21,8 @@ chmod +x "./jq"
 
 # JAR为编译后jar文件名称
 read JAR < $filename
-# 将变量count的值加1
 xToken=$1
-xUJson='{"changelog":"Auto upload by TravisCI, see update details on spigotmc.org","changelogType":text,"gameVersions":[7330,7132,7081],"releaseType":"release"}'
-curl -X POST -H "X-Api-Token: $xToken" -F "metadata=$xUJson" -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
+curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, see update details on spigotmc.org","changelogType":text,"gameVersions":[7330,7132,7081],"releaseType":"release"}' -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
 cat fileid.json
 jq '.id' > fileid.txt
 cat fileid.txt
