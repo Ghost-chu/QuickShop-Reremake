@@ -19,7 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -473,35 +472,38 @@ public class Util {
 			return false; // Not the same durability
 		if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
 			return false; // They have the same enchants
-		if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {
-			if (stack1.getItemMeta().hasDisplayName() && stack2.getItemMeta().hasDisplayName()) {
-				if (!stack1.getItemMeta().getDisplayName().equals(stack2.getItemMeta().getDisplayName())) {
-					return false; // items have different display name
-				}
-			} else {
-				return false; // one of the item stacks have a display name
-			}
-		}
-		boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
-		boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
-		if (book1 != book2)
-			return false;// One has enchantment meta, the other does not.
-		if (book1 == true) { // They are the same here (both true or both
-			// false). So if one is true, the other is
-			// true.
-			Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
-			Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
-			if (!ench1.equals(ench2))
-				return false; // Enchants aren't the same.
-		}
-		boolean potion1 = stack1.getItemMeta() instanceof PotionMeta;
-		boolean potion2 = stack2.getItemMeta() instanceof PotionMeta;
-		if (potion1 != potion2)
+		if(!stack1.getItemMeta().equals(stack2.getItemMeta()))
 			return false;
-		if (potion1 == true) {
-			if (!((PotionMeta) stack1).equals(((PotionMeta) stack1)))
-				return false;
-		}
+//		if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {
+//			if (stack1.getItemMeta().hasDisplayName() && stack2.getItemMeta().hasDisplayName()) {
+//				if (!stack1.getItemMeta().getDisplayName().equals(stack2.getItemMeta().getDisplayName())) {
+//					return false; // items have different display name
+//				}
+//			} else {
+//				return false; // one of the item stacks have a display name
+//			}
+//		}
+//		boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
+//		boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
+//		if (book1 != book2)
+//			return false;// One has enchantment meta, the other does not.
+//		if (book1 == true) { // They are the same here (both true or both
+//			// false). So if one is true, the other is
+//			// true.
+//			Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
+//			Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
+//			if (!ench1.equals(ench2))
+//				return false; // Enchants aren't the same.
+//		}
+//		boolean potion1 = stack1.getItemMeta() instanceof PotionMeta;
+//		boolean potion2 = stack2.getItemMeta() instanceof PotionMeta;
+//		if (potion1 != potion2)
+//			return false;
+//		if (potion1 == true) {
+//			if (!((PotionMeta) stack1).equals(((PotionMeta) stack1)))
+//				return false;
+//		}
+		
 		return true;
 	}
 

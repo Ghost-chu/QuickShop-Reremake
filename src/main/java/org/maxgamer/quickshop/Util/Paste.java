@@ -41,6 +41,7 @@ public class Paste {
         finalReport.append("\tCores: "+serverData.get("coreCount")+"\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
+        finalReport.append("\tBuild: "+Bukkit.getServer().getVersion()+"\n");
         finalReport.append("\tJava: "+serverData.get("javaVersion")+"\n");
         finalReport.append("\tPlayers: "+serverData.get("playerAmount")+"/"+ Bukkit.getOfflinePlayers().length+"\n");
         finalReport.append("\tOnlineMode: "+serverData.get("onlineMode")+"\n");
