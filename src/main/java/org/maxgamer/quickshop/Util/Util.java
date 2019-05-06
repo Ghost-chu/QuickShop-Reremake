@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -618,13 +617,15 @@ public class Util {
 	}
 
 	public static boolean isWallSign(Material material) {
-		try {
-		if(Tag.WALL_SIGNS.isTagged(material))
+//		try {
+//		if(Tag.WALL_SIGNS.isTagged(material))
+//			return true;
+//		}catch (Throwable e) {
+//			if(material.name().endsWith("WALL_SIGN"))
+//				return true;
+//		}
+		if(material.name().endsWith("WALL_SIGN"))
 			return true;
-		}catch (Throwable e) {
-			if(material.name().endsWith("WALL_SIGN"))
-				return true;
-		}
 		return false;
 	}
 
