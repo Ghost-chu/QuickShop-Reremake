@@ -19,8 +19,9 @@ public class ChunkListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onChunkLoad(ChunkLoadEvent e) {
+		e.getChunk().load();
 		Chunk c = e.getChunk();
 		if (plugin.getShopManager().getShops() == null)
 			return;
