@@ -1,17 +1,13 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Iterator;
-import java.util.Queue;
-
+import com.google.common.collect.Lists;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
-import com.google.common.collect.Lists;
+import java.io.*;
+import java.util.Iterator;
+import java.util.Queue;
 
 public class LogWatcher implements Runnable {
 	private PrintStream ps;
@@ -36,19 +32,26 @@ public class LogWatcher implements Runnable {
 
 	@Override
 	public void run() {
-		synchronized (logs) {
-			Iterator<String> iterator = logs.iterator();
-			while (iterator.hasNext()) {
-			    ps.print(iterator.next());
-			    iterator.remove();
+		new BukkitRunnable(){
+			public void run(){
+				Iterator<String> iterator = logs.iterator();
+				while (iterator.hasNext()) {
+					ps.print(iterator.next());
+					iterator.remove();
+				}
 			}
-		}
+		}.runTask(QuickShop.instance);
+		logs.clear();
+
 	}
 
 	public void add(String s) {
-		synchronized (logs) {
-			logs.add(s);
-		}
+		new BukkitRunnable(){
+			public void run(){
+				logs.add(s);
+			}
+		}.runTask(QuickShop.instance);
+
 	}
 
 	public void close() {
