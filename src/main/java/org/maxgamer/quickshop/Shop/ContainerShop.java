@@ -382,6 +382,7 @@ public class ContainerShop implements Shop {
 			}
 			// We now have to update the chests inventory manually.
 			this.getInventory().setContents(chestContents);
+			this.setSignText();
 		}
 		for (int i = 0; i < floor.size(); i++) {
 			p.getWorld().dropItem(p.getLocation(), floor.get(i));
@@ -416,6 +417,7 @@ public class ContainerShop implements Shop {
 			}
 			// Send the players new inventory to them
 			p.getInventory().setContents(contents);
+			this.setSignText();
 			// This should not happen.
 			if (amount > 0) {
 				plugin.getLogger().log(Level.WARNING, "Could not take all items from a players inventory on purchase! " + p.getName() + ", missing: " + amount + ", item: " + this.getDataName() + "!");
@@ -444,6 +446,7 @@ public class ContainerShop implements Shop {
 			}
 			// Now update the players inventory.
 			p.getInventory().setContents(playerContents);
+			this.setSignText();
 		}
 	}
 
