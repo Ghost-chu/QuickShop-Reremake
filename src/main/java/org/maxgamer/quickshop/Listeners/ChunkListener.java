@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -21,17 +22,23 @@ public class ChunkListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onChunkLoad(ChunkLoadEvent e) {
-		e.getChunk().load();
 		Chunk c = e.getChunk();
 		if (plugin.getShopManager().getShops() == null)
 			return;
 		HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
 		if (inChunk == null)
 			return;
-		for (Shop shop : inChunk.values()) {
-			shop.onLoad();
-			shop.setSignText();
-		}
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				for (Shop shop : inChunk.values()) {
+					shop.onLoad();
+					shop.setSignText();
+				}
+				
+			}
+		}.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
