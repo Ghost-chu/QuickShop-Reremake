@@ -571,7 +571,11 @@ public class ContainerShop implements Shop {
 		final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
 		
 		for (Block b : blocks) {
-			if (!Util.isWallSign(b.getType())) {
+			if(b==null){
+				plugin.getLogger().warning("Null signs in the queue");
+			}
+			Material mat = b.getType();
+			if (!Util.isWallSign(mat)) {
 				Util.debugLog(b.toString()+" not a wall sign");
 				continue;
 			}
