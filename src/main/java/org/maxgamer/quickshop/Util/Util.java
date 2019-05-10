@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -682,15 +683,16 @@ public class Util {
 		}
 	}
 	//Use NMS
-	public static void sendItemholochat(ItemStack itemStack, Player player, String normalText) {
+	public static void sendItemholochat(Shop shop,ItemStack itemStack, Player player, String normalText) {
 	    try {
 	        String json = ItemNMS.saveJsonfromNMS(itemStack);
 	        if (json == null)
 	            return;
 	        TextComponent normalmessage = new TextComponent(normalText+"   "+MsgUtil.getMessage("menu.preview"));
 	        ComponentBuilder cBuilder = new ComponentBuilder(json);
-	        HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create());
-	        normalmessage.setHoverEvent(he);
+	        if(player.hasPermission("quickshop.preview"))
+	        	normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(),String.valueOf(shop.getLocation().getBlockX()),String.valueOf(shop.getLocation().getBlockY()),String.valueOf(shop.getLocation().getBlockZ()))));
+	        normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
 	        player.spigot().sendMessage(normalmessage);
 	    } catch (Throwable t) {
 	        sendItemholochatAsNormaly(itemStack, player, normalText);

@@ -217,6 +217,18 @@ public class MsgUtil {
 			selectedVersion = 12;
 			messagei18n.save(messageFile);
 		}
+		if (selectedVersion == 12) {
+			messagei18n.set("menu.commands.preview", "/qs silentpreview {0} {1} {2} {3}");
+			messagei18n.set("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
+			messagei18n.set("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
+			messagei18n.set("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
+			messagei18n.set("command.wrong-args", "&cParameters not matched, use /qs help to check help");
+			messagei18n.set("command.description.staff", "&eManage your shop staffs.");
+			messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
+			messagei18n.set("language-version", 13);
+			selectedVersion = 13;
+			messagei18n.save(messageFile);
+		}
 	}
 	public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
 		if (!sender.hasPermission("quickshop.use")) {
@@ -620,7 +632,7 @@ public class MsgUtil {
 		p.sendMessage(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.shop-information"));
 		p.sendMessage(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.owner", shop.ownerName()));
 		//Enabled
-		Util.sendItemholochat(shop.getItem(),p,ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
+		Util.sendItemholochat(shop,shop.getItem(),p,ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
 		if (Util.isTool(items.getType())) {
 			p.sendMessage(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
 		}
