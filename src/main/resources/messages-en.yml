@@ -7,7 +7,7 @@
 # For Translator: These string can changed by your self.
 translation-author: "&c&lTranslator: &b&lGhost_chu"
 translation-contributors: "&c&lContributors: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul"
-translation-version: "&c&lSupport Version: &b&lReremake 1.2.5.2"
+translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
@@ -90,7 +90,8 @@ menu:
     this-shop-is-buying: "&aThis shop is &dBUYING&a items."
     this-shop-is-selling: "&aThis shop is &bSELLING&a items."
     effects: "&aEffects: &e{0}"
-    
+    commands:
+      preview: "/qs silentpreview {0} {1} {2} {3}"
     
 bypassing-lock: "&cBypassing a QuickShop lock!"
 that-is-locked: "&cThat shop is locked."
