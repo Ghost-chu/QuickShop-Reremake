@@ -63,6 +63,8 @@ public class InventoryPreview implements Listener {
 	}
 	
 	public static boolean isPreviewItem(ItemStack stack) {
+		if(!stack.hasItemMeta()||!stack.getItemMeta().hasLore())
+			return false;
 		List<String> lores = stack.getItemMeta().getLore();
 		for (String string : lores) {
 			if(string.equals("QuickShop GUI preview item")) {
