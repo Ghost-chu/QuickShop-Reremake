@@ -69,7 +69,7 @@ public class Database {
 	 *            The string values for each ? in the given query.
 	 */
 	public void execute(String query, Object... objs) {
-		Util.debugLog(query);
+		Util.debugLog(this,"execute",query);
 		BufferStatement bs = new BufferStatement(query, objs);
 		core.queue(bs);
 	}
@@ -115,7 +115,6 @@ public class Database {
 		if (!hasTable(table))
 			return false;
 		String query = "SELECT * FROM " + table + " LIMIT 0,1";
-		Util.debugLog(query);
 		try {
 			PreparedStatement ps = this.getConnection().prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
