@@ -184,7 +184,7 @@ public class QuickShop extends JavaPlugin {
 				getLogger().severe(
 						"WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
 				noopDisable = true;
-				bootError=new BootError("SnapShot cannot running under production environment","Turn on dev-mode to unlock safe protection."); 
+				bootError=new BootError("SnapShot cannot running under production environment","Turn on dev-mode to unlock protection."); 
 				return;
 			}
 		}
