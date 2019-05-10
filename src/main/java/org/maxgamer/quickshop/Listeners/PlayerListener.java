@@ -116,7 +116,6 @@ public class PlayerListener implements Listener {
 					// As of the new checking system, most plugins will tell the
 					// player why they can't create a shop there.
 					// So telling them a message would cause spam etc.
-					Util.debugLog("Can't be shop");
 					return;
 				}
 				if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
@@ -130,13 +129,10 @@ public class PlayerListener implements Listener {
 				}
 				if (b.getType()==Material.ENDER_CHEST) {
 					if(!p.hasPermission("quickshop.create.enderchest")) {
-						Util.debugLog("No permission");
-						Util.debugLog(""+p.hasPermission("quickshop.create.enderchest"));
 						return;
 					}
 				}
 				if (!Util.canBeShop(b,e.getPlayer().getUniqueId(),false) && Util.isWallSign(b.getType())) {
-					Util.debugLog("Can't create shop there");
 					return;
 				}
 				// Finds out where the sign should be placed for the shop
@@ -232,20 +228,16 @@ public class PlayerListener implements Listener {
 		try {
 			Inventory inventory = e.getInventory();
 			if (inventory == null) {
-				Util.debugLog("Inventory: null");
 				return;
 			}
 			Location location = inventory.getLocation();
 			if (location == null) {
-				Util.debugLog("Location: null");
 				return;
 			}
 			Shop shop = plugin.getShopManager().getShop(location);
 			if (shop == null) {
 				return;
 			}
-			Util.debugLog("Shop: "+shop.toString());
-			Util.debugLog("Updateing shops..");
 			shop.setSignText();
 		} catch (Throwable t) {
 			
