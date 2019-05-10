@@ -157,10 +157,12 @@ public class ShopManager {
 	 */
 	public HashMap<Location, Shop> getShops(Chunk c) {
 		// long start = System.nanoTime();
+		UUID timer = Util.setTimer();
 		HashMap<Location, Shop> shops = getShops(c.getWorld().getName(), c.getX(), c.getZ());
 		// long end = System.nanoTime();
 		// plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
 		// "ms.");
+		Util.debugLog(this, "getShops", "Chunk lookup in "+ Util.endTimer(timer)+ " ms");
 		return shops;
 	}
 
