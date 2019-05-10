@@ -37,7 +37,6 @@ public class QS implements CommandExecutor{
 		this.plugin = plugin;
 	}
 
-
 	private void setUnlimited(CommandSender sender) {
 		if (sender instanceof Player && sender.hasPermission("quickshop.unlimited")) {
 			BlockIterator bIt = new BlockIterator((Player) sender, 10);
@@ -793,6 +792,9 @@ public class QS implements CommandExecutor{
 			} else if (subArg.startsWith("silentempty")) {
 				silentEmpty(sender, args);
 				return true;
+			} else if (subArg.startsWith("silentpreview")) {
+				silentPreview(sender, args);
+				return true;
 			} else if (subArg.equals("clean")) {
 				clean(sender);
 				return true;
@@ -834,6 +836,29 @@ public class QS implements CommandExecutor{
 		sendHelp(sender,commandLabel);
 		return true;
 	}
+
+	private void silentPreview(CommandSender sender, String[] args) {
+		if (sender instanceof Player) {
+			if (sender.hasPermission("quickshop.preview")) {
+				Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(args[1]),
+						Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])));
+				if (shop != null) {
+					if (shop instanceof ContainerShop) {
+						ContainerShop cs = (ContainerShop) shop;
+						InventoryPreview inventoryPreview = new InventoryPreview(cs.getItem(), (Player) sender);
+						inventoryPreview.show();
+						return;
+					}
+				}
+
+			} else {
+				sender.sendMessage(MsgUtil.getMessage("no-permission"));
+				return;
+			}
+		}
+	}
+
+
 	private void debug(CommandSender sender, String[] args) {
 		boolean debug = plugin.getConfig().getBoolean("dev-mode");
 		if(debug) {
