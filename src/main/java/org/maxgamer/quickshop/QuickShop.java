@@ -286,7 +286,7 @@ public class QuickShop extends JavaPlugin {
 						// Still load failed? It removed or not got loaded now?
 						if(world==null){
 							skipedShops++;
-							Util.debugLog("Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
+							Util.debugLog(this,"onEnable - ShopLoader","Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
 							continue;
 						}
 					}
@@ -301,7 +301,7 @@ public class QuickShop extends JavaPlugin {
 							backupDatabase();
 							isBackuped=true;
 						}
-						Util.debugLog("Updating old shop data...");
+						Util.debugLog(this,"onEnable - ShopLoader","Updating old shop data...");
 						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
 						moderators = ShopModerator.serialize(shopModerator); //Serialize
 					}catch (IllegalArgumentException ex) {
@@ -576,8 +576,9 @@ public class QuickShop extends JavaPlugin {
 		UpdateWatcher.init();
 	}
 	private boolean backupDatabase() {
-		File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-				.getAbsolutePath().toString() + "/shop.db");
+		if(getDB().getCore() instanceof MySQLCore)
+			return true; //Backup and logs by MySQL
+		File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder(), "shop.db");
 		if (!sqlfile.exists()) {
 			getLogger().warning("Failed to backup! (File not found)");
 			return false;

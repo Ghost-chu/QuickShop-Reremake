@@ -162,7 +162,7 @@ public class Util {
 		}
 		if (b.getState().getType() == Material.ENDER_CHEST) {
 			if (plugin.openInvPlugin == null) {
-				Util.debugLog("OpenInv not loaded");
+				Util.debugLog(Util.class,"OpenInv not loaded");
 				return false;
 			} else {
 				return shoppables.contains(bs.getType());
@@ -220,9 +220,7 @@ public class Util {
 	 * @return the block which is also a chest and connected to b.
 	 */
 	public static Block getSecondHalf(Block b) {
-		Util.debugLog("Getting Second Half of DoubleChest at "+b.getLocation().toString());
 		if(b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST){
-			Util.debugLog("No matched type: "+b.getType().name());
 			return null;
 		}
 		Chest oneSideOfChest = (Chest)b.getState();
@@ -234,22 +232,12 @@ public class Util {
 
 			Chest leftC = (Chest)left;
 			Chest rightC = (Chest)right;
-			Util.debugLog("Double chest match checker: ");
-			Util.debugLog("Find args: "+b.getLocation().toString());
-			Util.debugLog("Left: "+leftC.getLocation().toString());
-			Util.debugLog("Right: "+rightC.getLocation().toString());
-			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
-				Util.debugLog("Clicked left chest");
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) 
 				return rightC.getBlock();
-			}
-			if(equalsBlockStateLocation(oneSideOfChest, leftC)) {
-				Util.debugLog("Clicked right chest");
+			if(equalsBlockStateLocation(oneSideOfChest, leftC)) 
 				return leftC.getBlock();
-			}
-			Util.debugLog("No matched double chest check but pass the DoubleChest Inventory check");
 			return null;
 		}else{
-			Util.debugLog("No matched DoubleChest: "+b.toString());
 			return null;
 		}
 	}
@@ -519,13 +507,14 @@ public class Util {
 		try {
 			String formated = plugin.getEcon().format(n);
 			if (formated == null || formated.isEmpty()) {
-				Util.debugLog("Use alternate-currency-symbol cause Economy Plugin returned null");
+				Util.debugLog(Util.class,"format","Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
 				return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
 			} else {
 				return formated;
 			}
 		} catch (NumberFormatException e) {
-			Util.debugLog("Use alternate-currency-symbol cause NumberFormatException");
+			Util.debugLog(Util.class,"format",e.getMessage());
+			Util.debugLog(Util.class,"format","Use alternate-currency-symbol to formatting, Cause NumberFormatException");
 			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
 			// return "$" + n;
 		}
@@ -553,13 +542,11 @@ public class Util {
 				Directional directional = (Directional) b.getBlockData();
 				return b.getRelative(directional.getFacing().getOppositeFace());
 			}else {
-				debugLog("No Directionalable");
 				return null;
 			}
 			// sometimes??
 		} catch (NullPointerException|ClassCastException e) {
-			debugLog("Known bug got trigged:");
-			debugLog(e.getMessage());
+			Util.debugLog(Util.class, "getAttached", "Exception caughted: "+e.getMessage());
 			return null; // /Not sure what causes this.
 		}
 	}
@@ -583,7 +570,6 @@ public class Util {
 				items += iStack.getAmount();
 			}
 		}
-		Util.debugLog("Items: "+items);
 		return items;
 	}
 
@@ -612,7 +598,6 @@ public class Util {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		Util.debugLog("Space:"+space);
 		return space;
 	}
 
@@ -860,7 +845,7 @@ public class Util {
 						if (DisplayItem.checkShopItem(inv.getItem(i))) {
 							// Found Item and remove it.
 							inv.setItem(i, new ItemStack(Material.AIR, 0));
-							Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. ("+inv.getLocation().toString()+")");
+							Util.debugLog(Util.class, "inventoryCheck", "Found displayitem in inventory, removed.");
 						}
 				}catch (Throwable t){
 				}
@@ -901,11 +886,17 @@ public class Util {
 	 * Print debug log when plugin running on dev mode.
 	 * @param String logs
 	 */
-	public static void debugLog(String logs)	{
-		if(devMode) {
-			plugin.getLogger().warning("[DEBUG] "+logs);
-		}
+	public static void debugLog(Object programObject,String type,String... logs)	{
+		if(!devMode) 
+			return;
+		String className = "Unknown";
 		
+		className = programObject.getClass().getCanonicalName();
+		if(className==null)
+			className = programObject.getClass().getName();
+		for (String log : logs) {
+			plugin.getLogger().info("[DEBUG] ["+className+"]"+" ["+type+"] "+log);
+		}
 	}
 	/**
 	 * Create a Timer and return this timer's UUID
