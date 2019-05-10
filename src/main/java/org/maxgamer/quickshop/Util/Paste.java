@@ -69,7 +69,7 @@ public class Paste {
         finalReport.append("Configurations:\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tconfig.yml:\n");
-        finalReport.append(Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
+        finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tmessages.yml:\n");
         finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
@@ -97,7 +97,7 @@ public class Paste {
         out.print(builder.toString());
         out.flush();//Drop
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        Util.debugLog("Request Completed: "+conn.getURL().toString());
+        Util.debugLog(this,"pasteTheText","Request Completed: "+conn.getURL().toString());
         String link = conn.getURL().toString();
         if(in!=null)
             in.close();
