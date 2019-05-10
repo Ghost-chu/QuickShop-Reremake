@@ -185,7 +185,6 @@ public class ContainerShop implements Shop {
 	public void setPrice(double price) {
 		this.price = price;
 		update();
-		Util.debugLog("New price is applyed to shop: "+String.valueOf(price));
 	}
 
 	/**
@@ -207,7 +206,6 @@ public class ContainerShop implements Shop {
 		//String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
 		try {
 			//plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
-			Util.debugLog("Update: "+ShopModerator.serialize(this.moderator.clone()));
 			DatabaseHelper.updateShop(plugin.getDB(), ShopModerator.serialize(this.moderator.clone()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,7 +231,7 @@ public class ContainerShop implements Shop {
 					 )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
 		}
 		}catch(Exception e){
-			Util.debugLog(e.getMessage());
+			Util.debugLog(this,"getInventory",e.getMessage());
 			return null;
 		}
 		InventoryHolder container;
@@ -458,7 +456,6 @@ public class ContainerShop implements Shop {
 	public void setOwner(UUID owner) {
 		this.moderator.setOwner(owner);
 		update();
-		Util.debugLog("New owner is applyed to shop: "+owner.toString());
 	}
 
 	/**
@@ -473,7 +470,6 @@ public class ContainerShop implements Shop {
 	public void setUnlimited(boolean unlimited) {
 		this.unlimited = unlimited;
 		update();
-		Util.debugLog("New unlimited mode is applyed to shop: "+String.valueOf(unlimited));
 	}
 
 	public boolean isUnlimited() {
@@ -502,7 +498,6 @@ public class ContainerShop implements Shop {
 		this.shopType = shopType;
 		this.setSignText();
 		update();
-		Util.debugLog("New shopType is applyed to shop: "+shopType.toString());
 	}
 
 	/**
@@ -532,8 +527,7 @@ public class ContainerShop implements Shop {
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
-		Util.debugLog("New sign was setuped.");
-		Util.debugLog(lines.toString());
+		Util.debugLog(this,"setSignText","New sign was setuped.",lines[0],lines[1],lines[2],lines[2]);
 	}
 
 	/**
@@ -547,7 +541,7 @@ public class ContainerShop implements Shop {
 			return;
 		for (Sign sign : this.getSigns()) {
 			for (int i = 0; i < lines.length; i++) {
-				Util.debugLog("Setting sign at "+sign.getLocation().toString());
+				Util.debugLog(this,"setSignText","Setting sign at "+sign.getLocation().toString());
 				sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
 			}
 			sign.update(true);
@@ -579,17 +573,14 @@ public class ContainerShop implements Shop {
 			}
 			Material mat = b.getType();
 			if (!Util.isWallSign(mat)) {
-				Util.debugLog(b.toString()+" not a wall sign");
 				continue;
 			}
 			if (!isAttached(b)) {
-				Util.debugLog(b.toString()+" not attached");
 				continue;
 			}
 		 	org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
 			if (sign.getLine(0).contains(signHeader)||sign.getLine(0).contains(signHeader2)) {
 				signs.add(sign);
-				Util.debugLog(sign.toString()+" added in sign list");
 			} else {
 				boolean text = false;
 				for (String s : sign.getLines()) {
@@ -600,7 +591,6 @@ public class ContainerShop implements Shop {
 				}
 				if (!text) {
 					signs.add(sign);
-					Util.debugLog(sign.toString()+" added in sign list");
 				}
 			}
 		}
@@ -608,7 +598,6 @@ public class ContainerShop implements Shop {
 	}
 
 	public boolean isAttached(Block b) {
-		Util.debugLog("CHECK ATTACHEDING : "+this.getLocation().getBlock().toString()+ " WITH "+Util.getAttached(b));
 		return this.getLocation().getBlock().equals(Util.getAttached(b));
 	}
 

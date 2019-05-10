@@ -1,13 +1,11 @@
 package org.maxgamer.quickshop.Shop;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -21,7 +19,6 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
@@ -560,13 +557,13 @@ public class ShopManager {
 		
 	@SuppressWarnings("deprecation")
 	private void actionCreate(Player p, HashMap<UUID, Info> actions2, Info info, String message) {
-		Util.debugLog("actionCreate");
+		Util.debugLog(this,"actionCreate","actionCreate");
 		try {
 			// Checking the shop can be created
-			Util.debugLog("calling for protection check...");
-			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
+			Util.debugLog(this,"actionCreate", "Calling for protection check...");
+			PlayerInteractEvent be = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR),info.getLocation().getBlock(),BlockFace.UP);
 			Bukkit.getPluginManager().callEvent(be);
-			if (be.isCancelled()) {
+			if (be.useInteractedBlock()==Result.DENY) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
 			}
