@@ -832,7 +832,8 @@ public class Util {
 	 * @return
 	 */
 	public static boolean isDevEdition() {
-		if(QuickShop.instance.getDescription().getVersion().contains("dev")||QuickShop.instance.getDescription().getVersion().contains("alpha")||QuickShop.instance.getDescription().getVersion().contains("beta")||QuickShop.instance.getDescription().getVersion().contains("snapshot")) {
+		String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
+		if(version.contains("dev")|version.contains("develop")|version.contains("alpha")|version.contains("beta")|version.contains("test")|version.contains("snapshot")|version.contains("preview")) {
 			return true;
 		}else {
 			return false;
