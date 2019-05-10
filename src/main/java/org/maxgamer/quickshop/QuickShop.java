@@ -903,6 +903,9 @@ public class QuickShop extends JavaPlugin {
 	public void onDisable() {
 	    if (noopDisable)
 	        return;
+	    for (Player player : Bukkit.getOnlinePlayers()) {
+			player.closeInventory();
+		}
 		if (itemWatcherTask != null) {
 			itemWatcherTask.cancel();
 		}
