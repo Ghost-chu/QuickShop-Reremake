@@ -192,9 +192,8 @@ public class QuickShop extends JavaPlugin {
 
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
+		
 		updateConfig(getConfig().getInt("config-version"));
-
-
 
 		if (loadEcon() == false)
 			return;
@@ -649,8 +648,8 @@ public class QuickShop extends JavaPlugin {
 		} catch (ConnectionException e) {
 			e.printStackTrace();
 			if (setupDBonEnableding) {
-				getLogger().severe("Error connecting to database. Aborting plugin load.");
-				getServer().getPluginManager().disablePlugin(this);
+				bootError=BuiltInSolution.databaseError();
+				return false;
 			} else {
 				getLogger().severe("Error connecting to database.");
 			}
@@ -659,8 +658,8 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
 			if (setupDBonEnableding) {
-				getLogger().severe("Error setting up database. Aborting plugin load.");
-				getServer().getPluginManager().disablePlugin(this);
+				bootError=BuiltInSolution.databaseError();
+				return false;
 			} else {
 				getLogger().severe("Error setting up database.");
 			}
@@ -884,7 +883,7 @@ public class QuickShop extends JavaPlugin {
 				// getLogger().severe("Economy is not valid!");
 				getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 				getLogger().severe("QuickShop CANNOT start!");
-				bootError=new BootError("Can't hook an Economy plugin or not found Vault","Make sure you have Vault and economy plugin installed."); 
+				bootError=BuiltInSolution.econError();
 				// if(econ.equals("Vault"))
 				// getLogger().severe("(Does Vault have an Economy to hook into?!)");
 				return false;
@@ -896,7 +895,7 @@ public class QuickShop extends JavaPlugin {
 			e.printStackTrace();
 			getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 			getLogger().severe("QuickShop CANNOT start!");
-			bootError=new BootError("Can't hook an Economy plugin or not found Vault","Make sure you have Vault and economy plugin installed."); 
+			bootError=BuiltInSolution.econError();
 			return false;
 		}
 	}
