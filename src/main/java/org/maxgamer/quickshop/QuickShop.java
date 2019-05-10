@@ -41,6 +41,7 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.BlockListener;
 import org.maxgamer.quickshop.Listeners.ChatListener;
 import org.maxgamer.quickshop.Listeners.ChunkListener;
+import org.maxgamer.quickshop.Listeners.CustomInventoryListener;
 import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
 import org.maxgamer.quickshop.Listeners.LockListener;
 import org.maxgamer.quickshop.Listeners.PlayerListener;
@@ -116,6 +117,7 @@ public class QuickShop extends JavaPlugin {
 	private Metrics metrics;
 	private Language language;
 	public BootError bootError;
+	private CustomInventoryListener customInventoryListener;
 	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
@@ -454,12 +456,14 @@ public class QuickShop extends JavaPlugin {
 		chatListener = new ChatListener(this);
 		chunkListener = new ChunkListener(this);
 		inventoryListener = new DisplayProtectionListener(this);
+		customInventoryListener = new CustomInventoryListener();
 		Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
 		Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
+		Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
 		
 		if (display && displayItemCheckTicks > 0) {
 			new BukkitRunnable() {
