@@ -659,7 +659,7 @@ public class ContainerShop implements Shop {
 
 	public boolean isValid() {
 		checkDisplay();
-		return Util.canBeShop(this.getLocation().getBlock(),null,true);
+		return Util.canBeShop(this.getLocation().getBlock(),null);
 	}
 
 	private void checkDisplay() {
