@@ -315,7 +315,7 @@ public class QuickShop extends JavaPlugin {
 					Location loc = new Location(world, x, y, z);
 					/* Skip invalid shops, if we know of any */
 					step = "Checking InventoryHolder";
-					if (world != null && Util.canBeShop(loc.getBlock(),null,true) == false) {
+					if (world != null && Util.canBeShop(loc.getBlock(),null) == false) {
 						step = "Removeing shop in world: Because it not a correct InventoryHolder";
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");

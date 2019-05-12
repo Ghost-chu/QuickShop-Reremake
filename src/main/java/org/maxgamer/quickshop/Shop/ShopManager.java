@@ -385,7 +385,7 @@ public class ShopManager {
 		// Get the shop they interacted with
 				Shop shop = plugin.getShopManager().getShop(info.getLocation());
 				// It's not valid anymore
-				if (shop == null || Util.canBeShop(info.getLocation().getBlock(),null,true) == false) {
+				if (shop == null || Util.canBeShop(info.getLocation().getBlock(),null) == false) {
 					p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 					return;
 				}
@@ -475,7 +475,7 @@ public class ShopManager {
 	private void actionSell(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop2, int amount) {
 		Shop shop = plugin.getShopManager().getShop(info.getLocation());
 		// It's not valid anymore
-		if (shop == null || Util.canBeShop(info.getLocation().getBlock(),null,true) == false) {
+		if (shop == null || !Util.canBeShop(info.getLocation().getBlock(),null)) {
 			p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 			return;
 		}
@@ -576,7 +576,7 @@ public class ShopManager {
 				p.sendMessage(MsgUtil.getMessage("no-double-chests"));
 				return;
 			}
-			if (Util.canBeShop(info.getLocation().getBlock(), null, true) == false) {
+			if (Util.canBeShop(info.getLocation().getBlock(), p.getUniqueId()) == false) {
 				p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
 				return;
 			}
