@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 23
+config-version: 24
 
 #Select language you want use, (e.g de), use `default` to let quickshop auto detect your computer language zone, or use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -154,6 +154,9 @@ shop:
     #OAK_WALL_SIGN
     #SPRUCE_WALL_SIGN
     sign-material: OAK_WALL_SIGN
+    
+    blacklist-world:
+      - disabled_world_name
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
