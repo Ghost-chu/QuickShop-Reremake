@@ -265,7 +265,7 @@ public class DisplayProtectionListener implements Listener {
 		}
 		for (Block oBlock : event.getBlocks()) {
 			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-			if (Util.canBeShop(otherBlock, null, true)) {
+			if (Util.canBeShop(otherBlock, null)) {
 				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
 				if (shop != null) {
 					event.setCancelled(true);
@@ -287,7 +287,7 @@ public class DisplayProtectionListener implements Listener {
 		}
 		for (Block oBlock : event.getBlocks()) {
 			Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-			if (Util.canBeShop(otherBlock, null, true)) {
+			if (Util.canBeShop(otherBlock, null)) {
 				shop = plugin.getShopManager().getShop(otherBlock.getLocation());
 				if (shop != null) {
 					event.setCancelled(true);
