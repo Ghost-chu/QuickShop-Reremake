@@ -174,39 +174,10 @@ protect:
   #Protect shop block can or cannot pull out by Hopper
   hopper: true
 lockette:
-#Fix Quickshop not cancel break lock sign event(Impossible break locked chest)
+#Fix Quickshop not cancel break lock sign event(Impossible break locked chest)\
+  enable: true
   private: "[Private]"
   more_users: "[More Users]"
-  
-  enable: false
-  #If this is disabled, all options after this will not working.
-  item:
-    #Item filter
-    enable: false
-    blacklist: true
-    #true = use blacklist mode, in blacklist item will disallow spawn float item
-    #false = use whitelist mode, in whitelist item will allow spawn float item
-    list:
-    - STONE
-    - GRASS_BLOCK
-    #add item's BUKKIT NAME in there
-  lore:
-    enable: false
-    blacklist: true
-    #true = use blacklist mode, in blacklist item will disallow spawn float item
-    #false = use whitelist mode, in whitelist item will allow spawn float item
-    list:
-      - NOT FLOAT LORE
-    #add keywords in there, plugin will check it contain or not on items.
-  displayname:
-    enable: false
-    blacklist: true
-    #true = use blacklist mode, in blacklist item will disallow spawn float item
-    #false = use whitelist mode, in whitelist item will allow spawn float item
-    list:
-    - Super Sword(Can't float)
-    #add keywords in there, plugin will check it contain or not on items.
-    
 # Enable or disable plugin support.
 plugin:
     #If you have Multiverse-Core, QSRR will try load world when shop's world not exist and throw out exception auto repair the shop.
