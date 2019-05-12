@@ -126,13 +126,7 @@ public class Util {
 	}
 	
 	public static boolean isShoppables(Material material) {
-		if(shoppables.contains(material)) {
-			return true;
-		}else {
-			return false;
-		}
-			
-		
+		return shoppables.contains(material);
 	}
 
 	public static void parseColours(YamlConfiguration config) {
@@ -153,10 +147,10 @@ public class Util {
 	/**
 	 * Returns true if the given block could be used to make a shop out of.
 	 * 
-	 * @param b The block to check, Possibly a chest, dispenser, etc. player The player, can be null if onlyCheck=true, onlyCheck The option to disable check AreaShop use player.
+	 * @param b The block to check, Possibly a chest, dispenser, etc.
 	 * @return True if it can be made into a shop, otherwise false.
 	 */
-	public static boolean canBeShop(Block b,UUID player, boolean onlyCheck) {
+	public static boolean canBeShop(Block b,UUID playerUUID) {
 		BlockState bs = b.getState();
 		if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
 			return false;
@@ -165,11 +159,13 @@ public class Util {
 			if (plugin.openInvPlugin == null) {
 				Util.debugLog(Util.class,"OpenInv not loaded");
 				return false;
-			} else {
-				return shoppables.contains(bs.getType());
 			}
 		}
-		return shoppables.contains(bs.getType());
+		if(playerUUID==null) {
+			return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation().getWorld().getName()));
+		}else {
+			return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation().getWorld().getName()));
+		}
 
 	}
 
