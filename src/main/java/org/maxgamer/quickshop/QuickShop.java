@@ -859,6 +859,9 @@ public class QuickShop extends JavaPlugin {
 			getConfig().set("lockette.displayname", null);
 			getConfig().set("float", null);
 			getConfig().set("lockette.enable", true);
+			ArrayList<String> blackListWorld = new ArrayList<>();
+			blackListWorld.add("disabled_world_name");
+			getConfig().set("shop.blacklist-world", blackListWorld);
 			getConfig().set("config-version", 24);
 			selectedVersion = 24;
 			saveConfig();
