@@ -63,10 +63,12 @@ public class BlockListener implements Listener {
 		Block b = e.getBlock();
 		if(b.getState() instanceof Sign) {
 			Sign sign = (Sign)b.getState();
-			if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
-				//Ignore break lockette sign
-				plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
-				return;
+			if(plugin.getConfig().getBoolean("lockette.enable")) {
+				if(sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))||sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))){
+					//Ignore break lockette sign
+					plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
+					return;
+				}
 			}
 		}
 		Player p = e.getPlayer();
