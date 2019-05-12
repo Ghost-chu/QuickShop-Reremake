@@ -852,6 +852,18 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if (selectedVersion == 23) {
+			getConfig().set("lockette.enable", null);
+			getConfig().set("lockette.item", null);
+			getConfig().set("lockette.lore", null);
+			getConfig().set("lockette.displayname", null);
+			getConfig().set("float", null);
+			getConfig().set("lockette.enable", true);
+			getConfig().set("config-version", 24);
+			selectedVersion = 24;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
