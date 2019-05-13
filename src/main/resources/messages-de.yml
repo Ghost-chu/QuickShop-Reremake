@@ -1,7 +1,7 @@
 ---
 translation-author: "&c&lÜbersetzer: &b&lSchneidertm"
 translation-contributors: "&c&lMitwirkende: &b&lkeine"
-translation-version: "&c&lUnterstütze Version: &b&lReremake 1.2.5.2"
+translation-version: "&c&lUnterstütze Version: &b&lReremake"
 translation-country: "&c&lSprache: &b&lDeutsch (de_DE)"
 language-version: 12
 not-looking-at-shop: "&cKein QuickShop gefunden. Bitte schaue auf einen QuickShop, um diese Aktion auszuführen."
@@ -80,6 +80,8 @@ menu:
   this-shop-is-buying: "&aDieser Shop &dKAUFT&a Gegenstände an."
   this-shop-is-selling: "&aDieser Shop &bVERKAUFT&a Gegenstände."
   effects: "&aEffekte: &e{0}"
+  commands:
+    preview: "/qs silentpreview {0} {1} {2} {3}"
 bypassing-lock: "&cDer Schutz von QuickShop wurde ignoriert!"
 that-is-locked: "&cDieser Shop ist geschützt vor Fremdzugriffen."
 how-many-buy: "&aSchreibe jetzt in den Chat, wie viele Gegenstände du &bKAUFEN&a möchtest."
