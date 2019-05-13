@@ -19,6 +19,7 @@ public class InventoryPreview implements Listener {
 	Player player;
 	
 	public InventoryPreview(ItemStack itemStack,Player player) {
+		
 		this.itemStack=itemStack.clone();
 		this.player=player;
 		if(this.itemStack.getItemMeta().hasLore()) {
@@ -63,6 +64,8 @@ public class InventoryPreview implements Listener {
 	}
 	
 	public static boolean isPreviewItem(ItemStack stack) {
+		if(stack==null)
+			return false;
 		if(!stack.hasItemMeta()||!stack.getItemMeta().hasLore())
 			return false;
 		List<String> lores = stack.getItemMeta().getLore();
