@@ -93,7 +93,7 @@ public class Paste {
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         StringBuilder builder = new StringBuilder();
         builder.append("poster=");
-        builder.append("QSIAS");
+        builder.append("QuickShop Paster");
         builder.append("&syntax=text");
         builder.append("&expiration=week");
         builder.append("&content=");
