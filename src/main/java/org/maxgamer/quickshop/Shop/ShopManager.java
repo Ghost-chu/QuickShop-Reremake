@@ -283,7 +283,7 @@ public class ShopManager {
 		try {
 			if (plugin.openInvPlugin != null) {
 				for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-					if (listener.getPlugin() == plugin.openInvPlugin) {
+					if (listener.getPlugin().getName().equals(plugin.openInvPlugin.getName())) {
 						openInvRegisteredListener = listener;
 						PlayerInteractEvent.getHandlerList().unregister(listener);
 						break;
