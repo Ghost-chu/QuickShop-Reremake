@@ -76,14 +76,22 @@ public class Economy_Vault implements EconomyCore {
 	@Override
 	public String format(double balance) {
 		try {
-			return this.vault.format(balance);
+			String formatedBalance = this.vault.format(balance);
+			if(formatedBalance == null)//Stupid Ecosystem
+				return formatInternal(balance);
+			return formatedBalance;
 		} catch (Exception e) {
+			return formatInternal(balance);
 		}
+		
+	}
+	
+	private String formatInternal(double balance) {
 		try {
-		return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
-		}catch(Exception e) {
-			return String.valueOf('$' + balance);
-		}
+			return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
+			}catch(Exception e) {
+				return String.valueOf('$' + balance);
+			}
 	}
 
 	@Override
