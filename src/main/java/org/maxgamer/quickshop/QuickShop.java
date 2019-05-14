@@ -258,11 +258,13 @@ public class QuickShop extends JavaPlugin {
 					getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
 				}
 		int skipedShops = 0;
+		int loadAfterChunkLoaded = 0;
 		try {
 			getLogger().info("Loading shops from database...");
+			UUID timerUUID = Util.setTimer();
 			ResultSet rs = DatabaseHelper.selectAllShops(database);
+			getLogger().info("Used " + Util.endTimer(timerUUID) + "ms to fetch all shops from database.");
 			int errors = 0;
-
 			boolean isBackuped = false;
 
 			while (rs.next()) {
@@ -350,6 +352,8 @@ public class QuickShop extends JavaPlugin {
 						shop.setSignText();
 					} else {
 						step = "Loading shop to memory >> Chunk not loaded, Skipping";
+						loadAfterChunkLoaded++;
+						continue;
 					}
 					step = "Finish";
 					count++;
@@ -440,7 +444,8 @@ public class QuickShop extends JavaPlugin {
 			getLogger().severe("Could not load shops Because SQLException.");
 		}
 		getLogger().info("Loaded " + count + " shops.");
-		getLogger().info("Other "+ skipedShops+" shops will load when world loaded.");
+		getLogger().info("Other "+ skipedShops+" shops will load when worlds loaded.");
+		getLogger().info("Have "+ loadAfterChunkLoaded+" shops will load when chunks loaded.");
 
 		if (getConfig().getBoolean("shop.lock")) {
 			LockListener lockListener = new LockListener(this);
