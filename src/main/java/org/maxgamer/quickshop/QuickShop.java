@@ -27,6 +27,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -512,9 +513,10 @@ public class QuickShop extends JavaPlugin {
 					getServer().getPluginManager().registerEvents(armListener, this);
 				}
 
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalPluginAccessException e) {
 				getLogger().info("Could not load AdvancedRegionMarket adapter! Is AdvancedRegionMarket and QuickShop up to date?");
 			}
+			getLogger().info("AdvancedRegionMarket Adapter loaded!");
 		}
 
 
