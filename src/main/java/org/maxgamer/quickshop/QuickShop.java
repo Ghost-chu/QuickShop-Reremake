@@ -513,7 +513,7 @@ public class QuickShop extends JavaPlugin {
 				}
 
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				getLogger().info("Could not load AdvancedRegionMarket Adapter! Is AdvancedRegionMarket and QuickShop up to date?");
+				getLogger().info("Could not load AdvancedRegionMarket adapter! Is AdvancedRegionMarket and QuickShop up to date?");
 			}
 		}
 
