@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 24
+config-version: 25
 
 #Select language you want use, (e.g de), use `default` to let quickshop auto detect your computer language zone, or use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -163,6 +163,9 @@ shop:
     
     blacklist-world:
       - disabled_world_name
+      
+    #Check itemstack more strict!
+    strict-matches-check: false
     
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
