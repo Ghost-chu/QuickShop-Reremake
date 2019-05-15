@@ -872,6 +872,13 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if(selectedVersion == 24) {
+			getConfig().set("shop.strict-matches-check", false);
+			getConfig().set("config-version", 25);
+			selectedVersion = 25;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
