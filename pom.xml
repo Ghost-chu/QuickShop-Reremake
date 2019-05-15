@@ -100,5 +100,12 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/OpenInv.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>net.alex9849</groupId>
+			<artifactId>advancedregionmarket</artifactId>
+			<version>latest</version>
+			<scope>provided</scope>
+			<systemPath>${basedir}/lib/advancedregionmarket.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>
