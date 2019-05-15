@@ -103,6 +103,7 @@
 		<dependency>
 			<groupId>net.alex9849</groupId>
 			<artifactId>advancedregionmarket</artifactId>
+			<version>latest</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/advancedregionmarket.jar</systemPath>
 		</dependency>
