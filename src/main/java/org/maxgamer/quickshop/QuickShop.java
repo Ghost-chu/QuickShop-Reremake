@@ -505,7 +505,7 @@ public class QuickShop extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("AdvancedRegionMarket") != null) {
 
 			try {
-				Class armRestoreListener = getClass().getClassLoader().loadClass("net.alex9849.armadapter.ARMRestoreRegionListener");
+				Class armRestoreListener = getClass().getClassLoader().loadClass("net.alex9849.armadapter.listener.ARMRestoreRegionListener");
 
 				if(Listener.class.isAssignableFrom(armRestoreListener)) {
 					Listener armListener = (Listener) armRestoreListener.newInstance();
