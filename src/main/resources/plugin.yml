@@ -5,7 +5,7 @@ authors: [Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
-softdepend: [Vault, WorldGuard, Essentials, OpenInv, Multiverse-Core, AreaShop]
+softdepend: [Vault, WorldGuard, Essentials, OpenInv, Multiverse-Core, AreaShop, AdvancedRegionMarket]
 
 api-version: 1.13
 
