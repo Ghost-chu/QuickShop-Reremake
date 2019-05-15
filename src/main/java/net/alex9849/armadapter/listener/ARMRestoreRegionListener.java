@@ -26,6 +26,11 @@ public class ARMRestoreRegionListener implements Listener {
 
         HashMap<ShopChunk, HashMap<Location, Shop>> worldShops = QuickShop.instance.getShopManager().getShops(event.getRegion().getRegionworld().getName());
 
+        //If no shops exist
+        if(worldShops == null) {
+            return;
+        }
+
         //For all shops that are in the world of my region...
         for(HashMap<Location, Shop> locationShopHashMap : worldShops.values()) {
 

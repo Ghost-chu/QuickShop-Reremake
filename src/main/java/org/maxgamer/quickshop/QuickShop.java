@@ -13,10 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.logging.Level;
 
-import net.alex9849.arm.events.ResetBlocksEvent;
-import net.alex9849.armadapter.listener.ARMRestoreRegionListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -516,7 +513,7 @@ public class QuickShop extends JavaPlugin {
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalPluginAccessException e) {
 				getLogger().info("Could not load AdvancedRegionMarket adapter! Is AdvancedRegionMarket and QuickShop up to date?");
 			}
-			getLogger().info("AdvancedRegionMarket Adapter loaded!");
+			getLogger().info("AdvancedRegionMarket adapter loaded!");
 		}
 
 
