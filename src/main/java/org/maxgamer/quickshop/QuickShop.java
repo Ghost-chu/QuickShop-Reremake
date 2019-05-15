@@ -13,7 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.logging.Level;
 
+import net.alex9849.arm.events.ResetBlocksEvent;
+import net.alex9849.armadapter.listener.ARMRestoreRegionListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,6 +25,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -122,7 +126,7 @@ public class QuickShop extends JavaPlugin {
 	/** 
 	 * Get the Player's Shop limit.
 	 * @return int Player's shop limit
-	 * @param Player p
+	 * @param p
 	 * */
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
@@ -496,6 +500,25 @@ public class QuickShop extends JavaPlugin {
 		}
 		MsgUtil.loadTransactionMessages();
 		MsgUtil.clean();
+
+		//Load AdvancedRegionMarket adapter
+		if(Bukkit.getPluginManager().getPlugin("AdvancedRegionMarket") != null) {
+
+			try {
+				Class armRestoreListener = getClass().getClassLoader().loadClass("net.alex9849.armadapter.ARMRestoreRegionListener");
+
+				if(Listener.class.isAssignableFrom(armRestoreListener)) {
+					Listener armListener = (Listener) armRestoreListener.newInstance();
+					getServer().getPluginManager().registerEvents(armListener, this);
+				}
+
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				getLogger().info("Could not load AdvancedRegionMarket Adapter! Is AdvancedRegionMarket and QuickShop up to date?");
+			}
+		}
+
+
+
 		getLogger().info("QuickShop loaded!");
 
 		if (getConfig().getBoolean("disabled-metrics") != true) {
