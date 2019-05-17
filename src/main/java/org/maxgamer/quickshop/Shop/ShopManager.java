@@ -561,8 +561,29 @@ public class ShopManager {
 		try {
 			// Checking the shop can be created
 			Util.debugLog(this,"actionCreate", "Calling for protection check...");
+			RegisteredListener openInvListener = null ;
+			if (QuickShop.instance.getOpenInvPlugin() != null) {
+				RegisteredListener[] lists = PlayerInteractEvent.getHandlerList().getRegisteredListeners();
+				for (RegisteredListener registeredListener : lists) {
+					if(registeredListener.getPlugin() != QuickShop.instance.getOpenInvPlugin())
+						continue;
+					if(registeredListener.getListener() instanceof PlayerInteractEvent) {
+						openInvListener = registeredListener;
+						break;
+					}
+				}
+			}
+			//Fix openInv compatiable issue
+			if(openInvListener!=null) {
+				PlayerInteractEvent.getHandlerList().unregister(openInvListener);
+			}
+			
 			PlayerInteractEvent be = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR),info.getLocation().getBlock(),BlockFace.UP);
 			Bukkit.getPluginManager().callEvent(be);
+			
+			if(openInvListener!=null) {
+				PlayerInteractEvent.getHandlerList().register(openInvListener);
+			}
 			if (be.useInteractedBlock()==Result.DENY) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
