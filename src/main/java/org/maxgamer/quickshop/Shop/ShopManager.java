@@ -19,6 +19,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
@@ -561,33 +562,28 @@ public class ShopManager {
 		try {
 			// Checking the shop can be created
 			Util.debugLog(this,"actionCreate", "Calling for protection check...");
-			RegisteredListener openInvListener = null ;
-			if (QuickShop.instance.getOpenInvPlugin() != null) {
-				RegisteredListener[] lists = PlayerInteractEvent.getHandlerList().getRegisteredListeners();
-				for (RegisteredListener registeredListener : lists) {
-					if(registeredListener.getPlugin() != QuickShop.instance.getOpenInvPlugin())
-						continue;
-					if(registeredListener.getListener() instanceof PlayerInteractEvent) {
-						openInvListener = registeredListener;
-						break;
+			//Fix openInv compatiable issue
+			RegisteredListener lwcRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
+				if (plugin.openInvPlugin != null) {
+					for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
+						if (listener.getPlugin().getName().equals("LWC")) {
+							lwcRegisteredListener = listener;
+							BlockBreakEvent.getHandlerList().unregister(listener);
+							break;
+						}
 					}
 				}
-			}
-			//Fix openInv compatiable issue
-			if(openInvListener!=null) {
-				PlayerInteractEvent.getHandlerList().unregister(openInvListener);
-			}
 			
-			PlayerInteractEvent be = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR),info.getLocation().getBlock(),BlockFace.UP);
+			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
 			Bukkit.getPluginManager().callEvent(be);
 			
-			if(openInvListener!=null) {
-				PlayerInteractEvent.getHandlerList().register(openInvListener);
-			}
-			if (be.useInteractedBlock()==Result.DENY) {
+			BlockBreakEvent.getHandlerList().register(lwcRegisteredListener);
+			
+			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
 				return;
 			}
+			
 			if (plugin.getShopManager().getShop(info.getLocation()) != null) {
 				p.sendMessage(MsgUtil.getMessage("shop-already-owned"));
 				return;
