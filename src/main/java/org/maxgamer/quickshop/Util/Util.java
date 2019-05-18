@@ -491,7 +491,7 @@ public class Util {
 		if (potion1 != potion2)
 			return false;
 		if (potion1 == true) {
-			if (!((PotionMeta) stack1).equals(((PotionMeta) stack1)))
+			if (!((PotionMeta) stack1.getItemMeta()).equals(((PotionMeta) stack1.getItemMeta())))
 				return false;
 		}
 		
