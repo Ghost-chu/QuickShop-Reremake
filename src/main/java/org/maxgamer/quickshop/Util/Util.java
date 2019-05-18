@@ -227,21 +227,26 @@ public class Util {
 			DoubleChest doubleChest = (DoubleChest)chestHolder;
 			InventoryHolder left = doubleChest.getLeftSide();
 			InventoryHolder right = doubleChest.getRightSide();
-
 			Chest leftC = (Chest)left;
 			Chest rightC = (Chest)right;
-			if(equalsBlockStateLocation(oneSideOfChest, leftC)) 
+			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
+				Util.debugLog(Util.class, "getSecondHalf", "Right founded");
 				return rightC.getBlock();
-			if(equalsBlockStateLocation(oneSideOfChest, leftC)) 
+				
+			}
+			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
+				Util.debugLog(Util.class, "getSecondHalf", "Left founded");
 				return leftC.getBlock();
+			}
+				
 			return null;
 		}else{
 			return null;
 		}
 	}
 	
-	private static final boolean equalsBlockStateLocation(BlockState b1, BlockState b2) {
-	    return b1.getX() == b2.getX() && b1.getY() == b2.getY() && b1.getZ() == b2.getZ();
+	private static final boolean equalsBlockStateLocation(Location b1, Location b2) {
+	    return b1.getBlockX() == b2.getBlockX() && b1.getBlockY() == b2.getBlockY() && b1.getBlockZ() == b2.getBlockZ();
 	}
 	
 	public static boolean location3DEqual(Location loc1, Location loc2){
