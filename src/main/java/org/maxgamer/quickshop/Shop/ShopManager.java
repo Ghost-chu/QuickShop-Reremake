@@ -578,7 +578,8 @@ public class ShopManager {
 			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
 			Bukkit.getPluginManager().callEvent(be);
 			
-			BlockBreakEvent.getHandlerList().register(lwcRegisteredListener);
+			if(lwcRegisteredListener != null)
+				BlockBreakEvent.getHandlerList().register(lwcRegisteredListener);
 			
 			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
