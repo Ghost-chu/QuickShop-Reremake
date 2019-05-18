@@ -70,14 +70,14 @@ public class Paste {
         finalReport.append("Configurations:\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tconfig.yml:\n");
-        finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes())+"\n");
+        finalReport.append("\t\t"+Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/config.yml").getBytes()+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tmessages.yml:\n");
-        finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes())+"\n");
+        finalReport.append("\t\t"+Util.readToString(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder().toString()+"/messages.yml").getBytes()+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tlatest.log:\n");
-        finalReport.append("\t\t"+Base64.getEncoder().encodeToString(Util.readToString(new File(new File(".","logs"),"latest.log").getPath()).getBytes())+"\n");
+        finalReport.append("\t\t"+Util.readToString(new File(new File(".","logs"),"latest.log").getPath()).getBytes()+"\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("================================================\n");
         return finalReport.toString();
