@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -581,6 +582,10 @@ public class ShopManager {
 			
 			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
+				Util.debugLog(this, "actionCreate", "Failed to create shop: Protection check failed:");
+				for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
+					Util.debugLog(this, "actionCreate", belisteners.getPlugin().getName());
+				}
 				return;
 			}
 			
