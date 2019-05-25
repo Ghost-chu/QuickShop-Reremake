@@ -14,12 +14,11 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 
 public class InventoryPreview implements Listener {
 	
-	ItemStack itemStack;
-	Inventory inventory;
-	Player player;
+	private ItemStack itemStack;
+	private Inventory inventory;
+	private Player player;
 	
 	public InventoryPreview(ItemStack itemStack,Player player) {
-		
 		this.itemStack=itemStack.clone();
 		this.player=player;
 		if(this.itemStack.getItemMeta().hasLore()) {
