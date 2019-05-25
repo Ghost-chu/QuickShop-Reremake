@@ -430,7 +430,7 @@ public class QS implements CommandExecutor{
 				shop.setSignText();
 				shop.update();
 				MsgUtil.sendControlPanelInfo(sender, shop);
-				sender.sendMessage(MsgUtil.getMessage("command.now-buying", shop.getDataName()));
+				sender.sendMessage(MsgUtil.getMessage("command.now-buying", MsgUtil.getItemi18n(shop.getItem().getType().name())));
 				return;
 			}
 		}
@@ -447,7 +447,7 @@ public class QS implements CommandExecutor{
 					shop.setShopType(ShopType.BUYING);
 					shop.setSignText();
 					shop.update();
-					sender.sendMessage(MsgUtil.getMessage("command.now-buying", shop.getDataName()));
+					sender.sendMessage(MsgUtil.getMessage("command.now-buying", MsgUtil.getItemi18n(shop.getItem().getType().name())));
 					return;
 				}
 			}
@@ -466,7 +466,7 @@ public class QS implements CommandExecutor{
 					shop.setSignText();
 					shop.update();
 					MsgUtil.sendControlPanelInfo(sender, shop);
-					sender.sendMessage(MsgUtil.getMessage("command.now-selling", shop.getDataName()));
+					sender.sendMessage(MsgUtil.getMessage("command.now-selling", MsgUtil.getItemi18n(shop.getItem().getType().name())));
 					return;
 				}
 			
@@ -484,7 +484,7 @@ public class QS implements CommandExecutor{
 					shop.setShopType(ShopType.SELLING);
 					shop.setSignText();
 					shop.update();
-					sender.sendMessage(MsgUtil.getMessage("command.now-selling", shop.getDataName()));
+					sender.sendMessage(MsgUtil.getMessage("command.now-selling", MsgUtil.getItemi18n(shop.getItem().getType().name())));
 					return;
 				}
 			}
