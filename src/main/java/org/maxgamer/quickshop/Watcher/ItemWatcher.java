@@ -17,14 +17,14 @@ import org.maxgamer.quickshop.Shop.ShopChunk;
  *         Also deletes invalid items.
  */
 public class ItemWatcher implements Runnable {
-	static QuickShop plugin = QuickShop.instance;
+	private QuickShop plugin;
 
 	public ItemWatcher(QuickShop plugin) {
-		ItemWatcher.plugin = plugin;
+		this.plugin = plugin;
 	}
 
 	public void run() {
-		List<Shop> toRemove = new ArrayList<Shop>(1);
+		List<Shop> toRemove = new ArrayList<>(1);
 		for (Entry<String, HashMap<ShopChunk, HashMap<Location, Shop>>> inWorld : plugin.getShopManager().getShops().entrySet()) {
 			// This world
 			World world = Bukkit.getWorld(inWorld.getKey());
@@ -39,7 +39,6 @@ public class ItemWatcher implements Runnable {
 					// Validate the shop.
 					if (!shop.isValid()) {
 						toRemove.add(shop);
-						continue;
 					}
 				}
 			}

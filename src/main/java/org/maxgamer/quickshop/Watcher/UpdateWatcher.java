@@ -61,7 +61,7 @@ public class UpdateWatcher implements Listener {
     }
     
     @EventHandler
-    public void PlayerJoin(PlayerJoinEvent e) {
+    public void playerJoin(PlayerJoinEvent e) {
         new BukkitRunnable() {
             @Override
             public void run() {
