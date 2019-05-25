@@ -1,10 +1,5 @@
 package org.maxgamer.quickshop.Util;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
-import org.json.simple.JSONObject;
-import org.maxgamer.quickshop.QuickShop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -12,6 +7,12 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
+import org.json.simple.JSONObject;
+import org.maxgamer.quickshop.QuickShop;
 
 public class Paste {
     private QuickShop plugin;
@@ -30,7 +31,7 @@ public class Paste {
         finalReport.append("\tVersion: "+QuickShop.getVersion()+"\n");
         finalReport.append("\tFork: "+plugin.getFork()+"\n");
         finalReport.append("\tOpenInv Hook: "+(plugin.getOpenInvPlugin()==null ? "Disabled":"Enabled")+"\n");
-        finalReport.append("\tMV Hook: "+(plugin.getMVPlugin()==null ? "Disabled":"Enabled")+"\n");
+        finalReport.append("\tMV Hook: "+(plugin.getMvPlugin()==null ? "Disabled":"Enabled")+"\n");
         //finalReport.append("Fork: "+plugin.+"\n");
         finalReport.append("================================================\n");
         finalReport.append("System:\n");

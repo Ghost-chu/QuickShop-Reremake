@@ -4,16 +4,12 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
+import com.google.common.io.Files;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,38 +25,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
-import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Database.DatabaseCore;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
-import org.maxgamer.quickshop.Listeners.BlockListener;
-import org.maxgamer.quickshop.Listeners.ChatListener;
-import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.CustomInventoryListener;
-import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
-import org.maxgamer.quickshop.Listeners.LockListener;
-import org.maxgamer.quickshop.Listeners.PlayerListener;
-import org.maxgamer.quickshop.Listeners.WorldListener;
-import org.maxgamer.quickshop.Shop.ContainerShop;
-import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopManager;
-import org.maxgamer.quickshop.Shop.ShopModerator;
-import org.maxgamer.quickshop.Shop.ShopType;
+import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.Shop.*;
+import org.maxgamer.quickshop.Util.Compatibility;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
-import com.google.common.io.Files;
 //import com.griefcraft.lwc.LWCPlugin;
-import com.onarandombox.MultiverseCore.MultiverseCore;
-
+@Getter
 public class QuickShop extends JavaPlugin {
 	/** The active instance of QuickShop */
 	public static QuickShop instance;
@@ -72,7 +52,7 @@ public class QuickShop extends JavaPlugin {
 	 * A set of players who have been warned ("Your shop isn't automatically
 	 * locked")
 	 */
-	public HashSet<String> warnings = new HashSet<String>();
+	private HashSet<String> warnings = new HashSet<>();
 	/** The database for storing all our data for persistence */
 	private Database database;
 	// Listeners - We decide which one to use at runtime
@@ -92,23 +72,23 @@ public class QuickShop extends JavaPlugin {
 //	/** Whether players are required to sneak to trade with a shop */
 //	public boolean sneakTrade;
 	/** Whether we should use display items or not */
-	public boolean display = true;
+	private boolean display = true;
 	/**
 	 * Whether we players are charged a fee to change the price on their shop (To
 	 * help deter endless undercutting
 	 */
-	public boolean priceChangeRequiresFee = false;
+	private boolean priceChangeRequiresFee = false;
 	/** Whether or not to limit players shop amounts */
-	public boolean limit = false;
+	private boolean limit = false;
 
 	/** The plugin OpenInv (null if not present) */
-	public Plugin openInvPlugin;
+	private Plugin openInvPlugin;
 	private HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	/** Use SpoutPlugin to get item / block names */
-	public boolean useSpout = false;
+	private boolean useSpout = false;
 	// private Metrics metrics;
-	QS commandExecutor =null;
-	public MultiverseCore mPlugin = null;
+	private QS commandExecutor =null;
+	private MultiverseCore mvPlugin = null;
 	private int displayItemCheckTicks;
 	private boolean noopDisable;
 	private boolean setupDBonEnableding = false;
@@ -116,13 +96,13 @@ public class QuickShop extends JavaPlugin {
 	private Tab commandTabCompleter;
 	private Metrics metrics;
 	private Language language;
-	public BootError bootError;
+	private BootError bootError;
 	private CustomInventoryListener customInventoryListener;
+	private Compatibility compatibilityTool = new Compatibility(this);
 	//private LWCPlugin lwcPlugin;
 	/** 
 	 * Get the Player's Shop limit.
 	 * @return int Player's shop limit
-	 * @param Player p
 	 * */
 	public int getShopLimit(Player p) {
 		int max = getConfig().getInt("limits.default");
@@ -131,6 +111,51 @@ public class QuickShop extends JavaPlugin {
 				max = entry.getValue();
 		}
 		return max;
+	}
+	private void runtimeCheck() throws RuntimeException{
+		try {
+			getServer().spigot();
+		} catch (Throwable e) {
+			getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
+			throw new RuntimeException("Server must is Spigot's fork.");
+		}
+
+		if (getServer().getName().toLowerCase().contains("catserver")) {
+			// Send FATAL ERROR TO CatServer's users.
+			getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
+		}
+
+		if (Util.isDevEdition()) {
+			getLogger().severe("WARNING: You are running QSRR on dev-mode");
+			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
+			getLogger().severe("WARNING: Test version may destory anything!");
+			getLogger().severe(
+					"WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
+			if (!getConfig().getBoolean("dev-mode")) {
+				getLogger().severe(
+						"WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
+				noopDisable = true;
+				throw new RuntimeException("Snapshot cannot running when dev-mode is false");
+			}
+		}
+
+	}
+	private void load3rdParty(){
+		// ProtocolLib Support
+		// protocolManager = ProtocolLibrary.getProtocolManager();
+		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
+			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+				mvPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+				getLogger().info("Successfully loaded MultiverseCore support!");
+			}
+		}
+		// added for compatibility reasons with OpenInv - see
+		// https://github.com/KaiKikuchi/QuickShop/issues/139
+		if (getConfig().getBoolean("plugin.OpenInv")) {
+			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
+			if (this.openInvPlugin != null)
+				getLogger().info("Successfully loaded OpenInv support!");
+		}
 	}
 	public void onEnable() {
 		instance = this;
@@ -142,78 +167,33 @@ public class QuickShop extends JavaPlugin {
 		getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
 		getLogger().info("Let's us start load plugin");
 		// NMS.init();
-		try {
-			getServer().spigot();
-		} catch (Throwable e) {
-			bootError=new BootError("QuickShop cannot running under CraftBukkit","Use Spigot/Paper or Spigot's fork!"); 
-			getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
-			return;
-		}
-		if (getServer().getName().toLowerCase().contains("catserver")) {
-			// Send FATAL ERROR TO CatServer's users.
-			getLogger().info("NOTICE: QSRR nolonger support CatServer!");
-			getLogger().info("NOTICE: The reason of detail very complex,QSRR some version support CatServer, but cuz CatServer Developing Team's attitude too bad, I decide remove all support for CatServer, Sorry user!");
-			getLogger().info("NOTICE: QSRR will auto-unload in 60 secs.");
-			try {
-				Thread.sleep(600000);
-				Bukkit.getPluginManager().disablePlugin(this);
-				return;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				Bukkit.getPluginManager().disablePlugin(this);
-				return;
-			}
+		try{
+			runtimeCheck();
+		}catch (RuntimeException e){
+			bootError = new BootError(e.getMessage());
 		}
 		saveDefaultConfig(); // Creates the config folder and copies config.yml
 								// (If one doesn't exist) as required.
-
-
 		reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
 						// others.
 
-
-
 		getConfig().options().copyDefaults(true); // Load defaults.
-		if (Util.isDevEdition()) {
-			getLogger().severe("WARNING: You are running QSRR on dev-mode");
-			getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
-			getLogger().severe("WARNING: Test version may destory anything!");
-			getLogger().severe(
-					"WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
-			if (!getConfig().getBoolean("dev-mode")) {
-				getLogger().severe(
-						"WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
-				noopDisable = true;
-				bootError=new BootError("SnapShot cannot running under production environment","Turn on dev-mode to unlock protection."); 
-				return;
-			}
-		}
-
 
 		if (getConfig().getInt("config-version") == 0)
 			getConfig().set("config-version", 1);
 		
 		updateConfig(getConfig().getInt("config-version"));
 
-		if (loadEcon() == false)
+		if (!loadEcon()){
+			bootError = new BootError("Failed load economy system.","Make sure you installed Vault and have a economy plugin.");
 			return;
-		// ProtocolLib Support
-		// protocolManager = ProtocolLibrary.getProtocolManager();
-		if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-			if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-				mPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-				getLogger().info("Successfully loaded MultiverseCore support!");
-			}
 		}
-		// added for compatibility reasons with OpenInv - see
-		// https://github.com/KaiKikuchi/QuickShop/issues/139
-		if (getConfig().getBoolean("plugin.OpenInv")) {
-			this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-			if (this.openInvPlugin != null)
-				getLogger().info("Successfully loaded OpenInv support!");
-		}
+
+		load3rdParty();
+
 		// Initialize Util
 		Util.initialize();
+
 		// Create the shop manager.
 		this.shopManager = new ShopManager(this);
 		if (this.display) {
@@ -245,207 +225,18 @@ public class QuickShop extends JavaPlugin {
 		setupDBonEnableding = true;
 		setupDatabase();
 		setupDBonEnableding = false;
-		/* Load shops from database to memory */
-		int count = 0; // Shops count
+
 		MsgUtil.loadItemi18n();
 		MsgUtil.loadEnchi18n();
 		MsgUtil.loadPotioni18n();
 		// Command handlers
-				
 				commandTabCompleter = new Tab(this);
 				getCommand("qs").setTabCompleter(commandTabCompleter);
 				if (getConfig().getInt("shop.find-distance") > 100) {
 					getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
 				}
-		int skipedShops = 0;
-		int loadAfterChunkLoaded = 0;
-		try {
-			getLogger().info("Loading shops from database...");
-			UUID timerUUID = Util.setTimer();
-			ResultSet rs = DatabaseHelper.selectAllShops(database);
-			getLogger().info("Used " + Util.endTimer(timerUUID) + "ms to fetch all shops from database.");
-			int errors = 0;
-			boolean isBackuped = false;
 
-			while (rs.next()) {
-				int x = 0;
-				int y = 0;
-				int z = 0;
-				String worldName = null;
-				ItemStack item = null;
-				String moderators = null;
-				String step = "while init";
-				// ==========================================================================================
-				try {
-					x = rs.getInt("x");
-					y = rs.getInt("y");
-					z = rs.getInt("z");
-					worldName = rs.getString("world");
-					World world = Bukkit.getWorld(worldName);
-					if (world == null && mPlugin != null) {
-						// Maybe world not loaded? Try call MV to load world.
-						mPlugin.getCore().getMVWorldManager().loadWorld(worldName);
-						world = Bukkit.getWorld(worldName);
-						// Still load failed? It removed or not got loaded now?
-						if(world==null){
-							skipedShops++;
-							Util.debugLog(this,"onEnable - ShopLoader","Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
-							continue;
-						}
-					}
-					item = Util.deserialize(rs.getString("itemConfig"));
-					moderators = rs.getString("owner"); //Get origin data
-					step = "Load moderator infomation";
-					ShopModerator shopModerator = null;
-					try {
-						UUID.fromString(moderators);
-						step = "Covert UUID to Moderator JSON";
-						if(!isBackuped) {
-							backupDatabase();
-							isBackuped=true;
-						}
-						Util.debugLog(this,"onEnable - ShopLoader","Updating old shop data...");
-						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
-						moderators = ShopModerator.serialize(shopModerator); //Serialize
-					}catch (IllegalArgumentException ex) {
-						//This expcetion is normal, cause i need check that is or not a UUID.
-						shopModerator = ShopModerator.deserialize(moderators);
-					}
-					step = "Loading shop price";
-					double price = rs.getDouble("price");
-					step = "Createing Location object";
-					Location loc = new Location(world, x, y, z);
-					/* Skip invalid shops, if we know of any */
-					step = "Checking InventoryHolder";
-					if (world != null && Util.canBeShop(loc.getBlock(),null) == false) {
-						step = "Removeing shop in world: Because it not a correct InventoryHolder";
-						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
-								+ ", " + y + ", " + z + ".  Deleting.");
-							getLogger().info("Create backup for database..");
-							if (!isBackuped) {
-								//Backup
-								if(backupDatabase())
-									isBackuped=true;
-							}
-							getLogger().info("Removeing shop from database...");
-							if(isBackuped) {
-								DatabaseHelper.removeShop(database, x, y, z, worldName);
-							}else {
-								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-							}
-						continue;
-					}
-					step = "Loading shop type";
-					int type = rs.getInt("type");
-					step = "Loading shop in world";
-					Shop shop = new ContainerShop(loc, price, item, shopModerator);
-					step = "Setting shop unlitmited status";
-					shop.setUnlimited(rs.getBoolean("unlimited"));
-					step = "Setting shop type";
-					shop.setShopType(ShopType.fromID(type));
-					step = "Loading shop to memory";
-					shopManager.loadShop(rs.getString("world"), shop);
-					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
-					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
-						step = "Loading shop to memory >> Chunk loaded, Loaded to memory";
-						shop.onLoad();
-						shop.setSignText();
-					} else {
-						step = "Loading shop to memory >> Chunk not loaded, Skipping";
-						loadAfterChunkLoaded++;
-						continue;
-					}
-					step = "Finish";
-					count++;
-				} catch (Exception e) {
-					errors++;
-					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
-							+ ", " + z + ")] Item: " + item.getType().name() + "...");
-					getLogger().severe("Are you deleted world included QuickShop shops? All shops will auto fixed.");
-
-					getLogger().severe("===========Error Reporting Start===========");
-					getLogger().severe("#Java throw >>");
-					getLogger().severe("StackTrace:");
-					e.printStackTrace();
-					getLogger().severe("#Shop data >>");
-					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
-					getLogger().severe(
-							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
-					getLogger().severe("Moderators: " + moderators);
-					try {
-						getLogger().severe(
-								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
-					} catch (Exception e2) {
-						getLogger().severe("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
-					}
-					try {
-						getLogger().severe(
-								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
-					} catch (Exception e2) {
-						getLogger().severe("Target Block: Can't get block!");
-					}
-					getLogger().severe("#Database info >>");
-
-					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
-					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
-
-					if (getDB().getConnection().getClientInfo() != null) {
-						getLogger().severe("Client Info: " + getDB().getConnection().getClientInfo().toString());
-					} else {
-						getLogger().severe("Client Info: null");
-					}
-					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
-
-					getLogger().severe("#Debuging >>");
-					getLogger().severe("Runnnig on step: " + step);
-
-					getLogger().severe("#Tips >>");
-					getLogger().severe("Please report this issues to author, And you database will auto backup!");
-
-					getLogger().severe("===========Error Reporting End===========");
-
-					if (errors < 3) {
-						getLogger().info("Create backup for database..");
-						if (!isBackuped) {
-							//Backup
-							if(backupDatabase())
-								isBackuped=true;
-						}
-						getLogger().info("Removeing shop from database...");
-						if(isBackuped) {
-							DatabaseHelper.removeShop(database, x, y, z, worldName);
-						}else {
-							getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-						}
-						
-						getLogger().info("Trying keep loading...");
-					} else {
-						getLogger().severe(
-								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
-						getLogger().info("Removeing shop from database...");
-							getLogger().info("Create backup for database..");
-							if (!isBackuped) {
-								//Backup
-								if(backupDatabase())
-									isBackuped=true;
-							}
-							getLogger().info("Removeing shop from database...");
-							if(isBackuped) {
-								DatabaseHelper.removeShop(database, x, y, z, worldName);
-							}else {
-								getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-							}
-						e.printStackTrace();
-					}
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			getLogger().severe("Could not load shops Because SQLException.");
-		}
-		getLogger().info("Loaded " + count + " shops.");
-		getLogger().info("Other "+ skipedShops+" shops will load when worlds loaded.");
-		getLogger().info("Have "+ loadAfterChunkLoaded+" shops will load when chunks loaded.");
+				loadShops();
 
 		if (getConfig().getBoolean("shop.lock")) {
 			LockListener lockListener = new LockListener(this);
@@ -498,7 +289,7 @@ public class QuickShop extends JavaPlugin {
 		MsgUtil.clean();
 		getLogger().info("QuickShop loaded!");
 
-		if (getConfig().getBoolean("disabled-metrics") != true) {
+		if (!getConfig().getBoolean("disabled-metrics")) {
 			String serverVer = Bukkit.getVersion();
 			String bukkitVer = Bukkit.getBukkitVersion();
 			String serverName = Bukkit.getServer().getName();
@@ -523,42 +314,6 @@ public class QuickShop extends JavaPlugin {
 			} else {
 				sneak_action = "Disabled";
 			}
-			String use_protect_minecart;
-			if (getConfig().getBoolean("protect.minecart")) {
-				use_protect_minecart = "Enabled";
-			} else {
-				use_protect_minecart = "Disabled";
-			}
-			String use_protect_entity;
-			if (getConfig().getBoolean("protect.entity")) {
-				use_protect_entity = "Enabled";
-			} else {
-				use_protect_entity = "Disabled";
-			}
-			String use_protect_redstone;
-			if (getConfig().getBoolean("protect.redstone")) {
-				use_protect_redstone = "Enabled";
-			} else {
-				use_protect_redstone = "Disabled";
-			}
-			String use_protect_structuregrow;
-			if (getConfig().getBoolean("protect.structuregrow")) {
-				use_protect_structuregrow = "Enabled";
-			} else {
-				use_protect_structuregrow = "Disabled";
-			}
-			String use_protect_explode;
-			if (getConfig().getBoolean("protect.explode")) {
-				use_protect_explode = "Enabled";
-			} else {
-				use_protect_explode = "Disabled";
-			}
-			String use_protect_hopper;
-			if (getConfig().getBoolean("protect.hopper")) {
-				use_protect_hopper = "Enabled";
-			} else {
-				use_protect_hopper = "Disabled";
-			}
 			String shop_find_distance = getConfig().getString("shop.find-distance");
 			// Version
 			metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
@@ -567,12 +322,6 @@ public class QuickShop extends JavaPlugin {
 			metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
 			metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
 			metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_minecart", () -> use_protect_minecart));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_entity", () -> use_protect_entity));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_redstone", () -> use_protect_redstone));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_structuregrow", () -> use_protect_structuregrow));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_explode", () -> use_protect_explode));
-			metrics.addCustomChart(new Metrics.SimplePie("use_protect_hopper", () -> use_protect_hopper));
 			metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
 			// Exp for stats, maybe i need improve this, so i add this.
 			metrics.submitData(); // Submit now!
@@ -583,6 +332,182 @@ public class QuickShop extends JavaPlugin {
 
 		UpdateWatcher.init();
 	}
+	private void loadShops(){
+		/* Load shops from database to memory */
+		int count = 0; // Shops count
+		int skipedShops = 0;
+		int loadAfterChunkLoaded = 0;
+		boolean isBackuped = false;
+		UUID totalTimer = Util.setTimer();
+		try {
+			getLogger().info("Loading shops from database...");
+			UUID fetchUUID = Util.setTimer();
+			ResultSet rs = DatabaseHelper.selectAllShops(database);
+			getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
+			int errors = 0;
+
+			while (rs.next()) {
+				int x = 0;
+				int y = 0;
+				int z = 0;
+				String worldName = null;
+				ItemStack item = null;
+				String moderators = null;
+
+				try {
+					x = rs.getInt("x");
+					y = rs.getInt("y");
+					z = rs.getInt("z");
+					worldName = rs.getString("world");
+					World world = Bukkit.getWorld(worldName);
+					if (world == null) {
+						//Maybe world not loaded yet?, skipping
+						skipedShops++;
+						Util.debugLog(this,"loadShops","Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
+						continue;
+					}
+					if(!Util.isLoaded(new Location(world,x ,y , z))){
+						skipedShops++;
+						Util.debugLog(this,"loadShops","Found a shop's chunk not loaded yet, it will load after chunk loaded in the game.");
+						continue;
+					}
+
+					item = Util.deserialize(rs.getString("itemConfig"));
+					moderators = rs.getString("owner"); //Get origin data
+					ShopModerator shopModerator = null;
+					try {
+						UUID.fromString(moderators);
+						if(!isBackuped) {
+							backupDatabase();
+							isBackuped=true;
+						}
+						Util.debugLog(this,"loadShops","Updating old shop data...");
+						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
+						moderators = ShopModerator.serialize(shopModerator); //Serialize
+					}catch (IllegalArgumentException ex) {
+						//This expcetion is normal, cause i need check that is or not a UUID.
+						shopModerator = ShopModerator.deserialize(moderators);
+					}
+					double price = rs.getDouble("price");
+					Location loc = new Location(world, x, y, z);
+					/* Skip invalid shops, if we know of any */
+					if (world != null && !Util.canBeShop(loc.getBlock(),null)) {
+						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
+								+ ", " + y + ", " + z + ".  Deleting.");
+						getLogger().info("Create backup for database..");
+						if (!isBackuped) {
+							//Backup
+							if(backupDatabase())
+								isBackuped=true;
+						}
+						getLogger().info("Removeing shop from database...");
+						if(isBackuped) {
+							DatabaseHelper.removeShop(database, x, y, z, worldName);
+						}else {
+							getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+						}
+						continue;
+					}
+					int type = rs.getInt("type");
+					Shop shop = new ContainerShop(loc, price, item, shopModerator);
+					shop.setUnlimited(rs.getBoolean("unlimited"));
+					shop.setShopType(ShopType.fromID(type));
+					shopManager.loadShop(rs.getString("world"), shop);
+					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
+						shop.onLoad();
+						shop.setSignText();
+					} else {
+						loadAfterChunkLoaded++;
+						continue;
+					}
+					count++;
+				} catch (Exception e) {
+					errors++;
+					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
+							+ ", " + z + ")] Item: " + item.getType().name() + "...");
+					getLogger().severe("Are you deleted world included QuickShop shops? All shops will auto fixed.");
+
+					getLogger().severe("===========Error Reporting Start===========");
+					getLogger().severe("#Java throw >>");
+					getLogger().severe("StackTrace:");
+					e.printStackTrace();
+					getLogger().severe("#Shop data >>");
+					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+					getLogger().severe(
+							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
+					getLogger().severe("Moderators: " + moderators);
+					try {
+						getLogger().severe(
+								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
+					} catch (Exception e2) {
+						getLogger().severe("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
+					}
+					try {
+						getLogger().severe(
+								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
+					} catch (Exception e2) {
+						getLogger().severe("Target Block: Can't get block!");
+					}
+					getLogger().severe("#Database info >>");
+
+					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
+					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
+
+					if (getDB().getConnection().getClientInfo() != null) {
+						getLogger().severe("Client Info: " + getDB().getConnection().getClientInfo().toString());
+					} else {
+						getLogger().severe("Client Info: null");
+					}
+					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
+					getLogger().severe("#Tips >>");
+					getLogger().severe("Please report this issues to author, And you database will auto backup!");
+
+					getLogger().severe("===========Error Reporting End===========");
+
+					if (errors < 3) {
+						getLogger().info("Create backup for database..");
+						if (!isBackuped) {
+							//Backup it
+							if(backupDatabase())
+								isBackuped=true;
+						}
+						getLogger().info("Removeing shop from database...");
+						if(isBackuped) {
+							DatabaseHelper.removeShop(database, x, y, z, worldName);
+						}else {
+							getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+						}
+						getLogger().info("Trying continue loading...");
+					} else {
+						getLogger().severe(
+								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
+						getLogger().info("Backuping database...");
+						if (!isBackuped) {
+							//Backup
+							if(backupDatabase())
+								isBackuped=true;
+						}
+						getLogger().info("Removeing shop from database...");
+						if(isBackuped) {
+							DatabaseHelper.removeShop(database, x, y, z, worldName);
+						}else {
+							getLogger().warning("Skipped shop deleteion: Failed to backup database.");
+						}
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			getLogger().severe("Could not load shops Because SQLException.");
+		}
+		getLogger().info("Loaded " + count + " shops ("+Util.endTimer(totalTimer)+"ms)");
+		getLogger().info("Other "+ skipedShops+" shops will load when worlds loaded.");
+		getLogger().info("Have "+ loadAfterChunkLoaded+" shops will load when chunks loaded.");
+
+	}
+
 	private boolean backupDatabase() {
 		if(getDB().getCore() instanceof MySQLCore)
 			return true; //Backup and logs by MySQL
@@ -1004,45 +929,5 @@ public class QuickShop extends JavaPlugin {
 	public static String getVersion() {
 		return QuickShop.instance.getDescription().getVersion();
 	}
-	
-	public BlockListener getBlockListener() {
-		return blockListener;
-	}
-	public ChatListener getChatListener() {
-		return chatListener;
-	}
-	public ChunkListener getChunkListener() {
-		return chunkListener;
-	}
-	public DisplayProtectionListener getInventoryListener() {
-		return inventoryListener;
-	}
-	public PlayerListener getPlayerListener() {
-		return playerListener;
-	}
-	public WorldListener getWorldListener() {
-		return worldListener;
-	}
-	public MultiverseCore getMVPlugin() {
-		return mPlugin;
-	}
-	public Plugin getOpenInvPlugin() {
-		return openInvPlugin;
-	}
-	public String getDbPrefix() {
-		return dbPrefix;
-	}
-	public Tab getCommandTabCompleter() {
-		return commandTabCompleter;
-	}
-	public QS getCommandExecutor() {
-		return commandExecutor;
-	}
-    public Metrics getMetrics() {
-		return metrics;
-	}
-    public Language getLanguage() {
-		return language;
-    }
     public String getFork() { return "Reremake"; }
 }
