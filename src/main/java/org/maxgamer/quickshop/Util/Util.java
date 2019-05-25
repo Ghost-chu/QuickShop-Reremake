@@ -981,4 +981,25 @@ public class Util {
 		plugin.getLogger().warning("QuickShop can't found any useable sign material, report to author!");
 		return null;
 	}
+	public static byte[] inputStream2ByteArray(String filePath) {
+	try {
+		InputStream in = new FileInputStream(filePath);
+		byte[] data = toByteArray(in);
+		in.close();
+		return data;
+	}catch (IOException e){
+		return null;
+	}
+
+	}
+	private static byte[] toByteArray(InputStream in) throws IOException {
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024 * 4];
+		int n = 0;
+		while ((n = in.read(buffer)) != -1) {
+			out.write(buffer, 0, n);
+		}
+		return out.toByteArray();
+	}
 }
