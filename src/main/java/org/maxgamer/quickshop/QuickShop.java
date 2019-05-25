@@ -366,11 +366,6 @@ public class QuickShop extends JavaPlugin {
 						Util.debugLog(this,"loadShops","Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
 						continue;
 					}
-					if(!Util.isLoaded(new Location(world,x ,y , z))){
-						skipedShops++;
-						Util.debugLog(this,"loadShops","Found a shop's chunk not loaded yet, it will load after chunk loaded in the game.");
-						continue;
-					}
 
 					item = Util.deserialize(rs.getString("itemConfig"));
 					moderators = rs.getString("owner"); //Get origin data
@@ -390,13 +385,13 @@ public class QuickShop extends JavaPlugin {
 					}
 					double price = rs.getDouble("price");
 					Location loc = new Location(world, x, y, z);
+
 					/* Skip invalid shops, if we know of any */
-					if (world != null && !Util.canBeShop(loc.getBlock(),null)) {
+					if (!Util.canBeShop(loc.getBlock(),null)) {
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
 						getLogger().info("Create backup for database..");
 						if (!isBackuped) {
-							//Backup
 							if(backupDatabase())
 								isBackuped=true;
 						}
@@ -414,7 +409,7 @@ public class QuickShop extends JavaPlugin {
 					shop.setShopType(ShopType.fromID(type));
 					shopManager.loadShop(rs.getString("world"), shop);
 					//if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
-					if (loc.getWorld() != null && (loc.getWorld().isChunkLoaded(loc.getBlockX()>>4, loc.getBlockZ()>>4))) {
+					if (Util.isLoaded(loc)) {
 						shop.onLoad();
 						shop.setSignText();
 					} else {
@@ -424,46 +419,44 @@ public class QuickShop extends JavaPlugin {
 					count++;
 				} catch (Exception e) {
 					errors++;
-					getLogger().severe("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
+					getLogger().warning("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
 							+ ", " + z + ")] Item: " + item.getType().name() + "...");
-					getLogger().severe("Are you deleted world included QuickShop shops? All shops will auto fixed.");
-
-					getLogger().severe("===========Error Reporting Start===========");
-					getLogger().severe("#Java throw >>");
-					getLogger().severe("StackTrace:");
+					getLogger().warning("===========Error Reporting Start===========");
+					getLogger().warning("#Java throw >>");
+					getLogger().warning("StackTrace:");
 					e.printStackTrace();
-					getLogger().severe("#Shop data >>");
-					getLogger().severe("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
-					getLogger().severe(
+					getLogger().warning("#Shop data >>");
+					getLogger().warning("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+					getLogger().warning(
 							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
-					getLogger().severe("Moderators: " + moderators);
+					getLogger().warning("Moderators: " + moderators);
 					try {
-						getLogger().severe(
+						getLogger().warning(
 								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
 					} catch (Exception e2) {
-						getLogger().severe("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
+						getLogger().warning("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
 					}
 					try {
-						getLogger().severe(
+						getLogger().warning(
 								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
 					} catch (Exception e2) {
-						getLogger().severe("Target Block: Can't get block!");
+						getLogger().warning("Target Block: Can't get block!");
 					}
-					getLogger().severe("#Database info >>");
+					getLogger().warning("#Database info >>");
 
-					getLogger().severe("Connected:" + !getDB().getConnection().isClosed());
-					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
+					getLogger().warning("Connected:" + !getDB().getConnection().isClosed());
+					getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
 
 					if (getDB().getConnection().getClientInfo() != null) {
-						getLogger().severe("Client Info: " + getDB().getConnection().getClientInfo().toString());
+						getLogger().warning("Client Info: " + getDB().getConnection().getClientInfo().toString());
 					} else {
-						getLogger().severe("Client Info: null");
+						getLogger().warning("Client Info: null");
 					}
-					getLogger().severe("Read Only:" + getDB().getConnection().isReadOnly());
-					getLogger().severe("#Tips >>");
-					getLogger().severe("Please report this issues to author, And you database will auto backup!");
+					getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
+					getLogger().warning("#Tips >>");
+					getLogger().warning("Please report this issues to author, And you database will auto backup!");
 
-					getLogger().severe("===========Error Reporting End===========");
+					getLogger().warning("===========Error Reporting End===========");
 
 					if (errors < 3) {
 						getLogger().info("Create backup for database..");
