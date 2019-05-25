@@ -233,12 +233,12 @@ public class Util {
 			Util.debugLog(Util.class, "getSecondHalf","Right should at "+ rightC.getLocation().toString());
 			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
 				Util.debugLog(Util.class, "getSecondHalf", "Right founded");
-				return rightC.getBlock();
+				return leftC.getBlock();
 				
 			}
 			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
 				Util.debugLog(Util.class, "getSecondHalf", "Left founded");
-				return leftC.getBlock();
+				return rightC.getBlock();
 			}
 				
 			return null;
