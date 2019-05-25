@@ -521,7 +521,7 @@ public class QS implements CommandExecutor{
 				}
 			}
 			double fee = 0;
-			if (plugin.priceChangeRequiresFee) {
+			if (plugin.isPriceChangeRequiresFee()) {
 				fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
 				if (fee > 0 && plugin.getEcon().getBalance(p.getUniqueId()) < fee) {
 					sender.sendMessage(
@@ -737,8 +737,8 @@ public class QS implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		
-		if(QuickShop.instance.bootError!=null) {
-			QuickShop.instance.bootError.printErrors(sender);
+		if(QuickShop.instance.getBootError()!=null) {
+			QuickShop.instance.getBootError().printErrors(sender);
 			return true;
 		}
 		
