@@ -31,7 +31,7 @@ public class Info {
 	}
 	/** 
 	 * Get shop is or not has changed.
-	 * @param Shop shop,  The need checked with this shop.
+	 * @param shop,  The need checked with this shop.
 	 * */
 	public boolean hasChanged(Shop shop) {
 		if (this.shop.isUnlimited() != shop.isUnlimited())
