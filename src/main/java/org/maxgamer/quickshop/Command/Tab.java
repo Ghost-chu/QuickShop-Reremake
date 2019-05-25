@@ -13,7 +13,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
 public class Tab implements TabCompleter {
-	QuickShop plugin;
+	private QuickShop plugin;
 
 	public Tab(QuickShop plugin) {
 		this.plugin = plugin;

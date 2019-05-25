@@ -55,13 +55,13 @@ public class MsgUtil {
 		messageFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messageFile.exists()) {
 			plugin.getLogger().info("Creating messages.yml");
-			plugin.getLanguage().saveFile(plugin.getLanguage().getComputerLanguage(),"messages","messages.yml");
+			plugin.getLanguage().saveFile("en","messages","messages.yml");
 		}
 		// Store it
 		messagei18n = YamlConfiguration.loadConfiguration(messageFile);
 		messagei18n.options().copyDefaults(true);
 		
-		YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage().getFile(plugin.getLanguage().getComputerLanguage(), "messages")));
+		YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage().getFile("en", "messages")));
 		messagei18n.setDefaults(messagei18nYAML);
 		
 		if(messagei18n.getInt("language-version")==0) {
