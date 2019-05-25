@@ -157,7 +157,7 @@ public class Util {
 			return false;
 		}
 		if (b.getState().getType() == Material.ENDER_CHEST) {
-			if (plugin.openInvPlugin == null) {
+			if (plugin.getOpenInvPlugin() == null) {
 				Util.debugLog(Util.class,"OpenInv not loaded");
 				return false;
 			}
