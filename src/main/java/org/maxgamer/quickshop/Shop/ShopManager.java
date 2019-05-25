@@ -567,22 +567,13 @@ public class ShopManager {
 			// Checking the shop can be created
 			Util.debugLog(this,"actionCreate", "Calling for protection check...");
 			//Fix openInv compatiable issue
-			RegisteredListener lwcRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
-				if (plugin.getOpenInvPlugin() != null) {
-					for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-						if (listener.getPlugin().getName().equals("LWC")) {
-							lwcRegisteredListener = listener;
-							BlockBreakEvent.getHandlerList().unregister(listener);
-							break;
-						}
-					}
-				}
-			
-			BlockBreakEvent be = new BlockBreakEvent(info.getLocation().getBlock(), p);
+
+			plugin.getCompatibilityTool().toggleInteractListeners(false);
+
+			PlayerInteractEvent be = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR), info.getLocation().getBlock(),BlockFace.SELF);
 			Bukkit.getPluginManager().callEvent(be);
-			
-			if(lwcRegisteredListener != null)
-				BlockBreakEvent.getHandlerList().register(lwcRegisteredListener);
+
+			plugin.getCompatibilityTool().toggleInteractListeners(true);
 			
 			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
