@@ -2,11 +2,11 @@ package org.maxgamer.quickshop.Util;
 
 
 public class UpdateInfomation {
-	String version = null;
-	boolean isNewUpdate = false;
-	boolean isBeta = false;
+	private String version = null;
+	private boolean isNewUpdate = false;
+	private boolean isBeta = false;
 	
-	public UpdateInfomation(String version, boolean isNewUpdate, boolean isBeta) {
+	UpdateInfomation(String version, boolean isNewUpdate, boolean isBeta) {
 		this.version=version;
 		this.isNewUpdate=isNewUpdate;
 		this.isBeta=isBeta;

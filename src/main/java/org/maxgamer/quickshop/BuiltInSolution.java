@@ -3,8 +3,8 @@ package org.maxgamer.quickshop;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class BuiltInSolution {
-	public static BootError econError() {
+class BuiltInSolution {
+	 static BootError econError() {
 		// Check Vault is installed
 		if(Bukkit.getPluginManager().getPlugin("Vault")==null) {
 			// Vault not installed
@@ -17,7 +17,7 @@ public class BuiltInSolution {
 		}
 		return new BootError("No Economy plugin loaded","Install one economy plugin to let Vault working.");
 	}
-	public static BootError databaseError() {
+	 static BootError databaseError() {
 		return new BootError("Error connecting to database","Make sure your database service is runnning.","Or check the configuration in config.yml");
 	}
 }
