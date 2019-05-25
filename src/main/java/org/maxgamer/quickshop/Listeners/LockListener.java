@@ -27,11 +27,11 @@ public class LockListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onClick(PlayerInteractEvent e) {
 		Block b = e.getClickedBlock();
+		if (!Util.canBeShop(b,null))
+			return;
 		Player p = e.getPlayer();
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return; // Didn't right click it, we dont care.
-		if (!Util.canBeShop(b,null))
-			return; // Interacted with air
 		Shop shop = plugin.getShopManager().getShop(b.getLocation());
 		// Make sure they're not using the non-shop half of a double chest.
 		if (shop == null) {
@@ -65,7 +65,7 @@ public class LockListener implements Listener {
 			return; // Your server doesn't have hoppers
 		}
 		Player p = e.getPlayer();
-		if (Util.isOtherShopWithinHopperReach(b, p) == false)
+		if (!Util.isOtherShopWithinHopperReach(b, p) )
 			return;
 
 		if (p.hasPermission("quickshop.other.open")) {
