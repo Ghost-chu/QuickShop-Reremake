@@ -7,7 +7,7 @@ public class BootError {
 	
 	private String[] errors;
 	
-	public BootError(String... errors) {
+	 BootError(String... errors) {
 		this.errors=errors;
 	}
 	
