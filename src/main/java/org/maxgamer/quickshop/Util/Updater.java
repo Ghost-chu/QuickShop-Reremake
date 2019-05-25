@@ -30,7 +30,7 @@ public class Updater {
             connection.setReadTimeout(timed_out);
             String localPluginVersion = QuickShop.instance.getDescription().getVersion();
             String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-            if (!spigotPluginVersion.equals(localPluginVersion) && spigotPluginVersion != null) {
+            if (spigotPluginVersion != null && !spigotPluginVersion.equals(localPluginVersion)) {
 //                QuickShgetLogger().info("New QuickShop release now updated on SpigotMC.org! ");
 //                getLogger().info("Update plugin in there:https://www.spigotmc.org/resources/59134/");
             	connection.disconnect();
