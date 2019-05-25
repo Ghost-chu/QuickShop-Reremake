@@ -1,15 +1,16 @@
 package org.maxgamer.quickshop.Command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Tab implements TabCompleter {
 	QuickShop plugin;
@@ -19,7 +20,7 @@ public class Tab implements TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @NotNull String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			args[i] = args[i].toLowerCase();
 			//Make all is low case
@@ -83,14 +84,14 @@ public class Tab implements TabCompleter {
 						//Include
 						for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
 							tabList.add(offlinePlayer.getName());
-							return tabList;
 						}
+						return tabList;
 					}else {
 						//Not Include
 						for(OfflinePlayer offlinePlayer : Bukkit.getOnlinePlayers()) {
 							tabList.add(offlinePlayer.getName());
-							return tabList;
 						}
+						return tabList;
 					}
 				}
 				
