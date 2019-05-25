@@ -796,6 +796,14 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if(selectedVersion == 25) {
+			if(getConfig().getString("language").equals("default"))
+				getConfig().set("language", "en");
+			getConfig().set("config-version", 26);
+			selectedVersion = 26;
+			saveConfig();
+			reloadConfig();
+		}
 	}
 
 	/** Reloads QuickShops config */
