@@ -23,6 +23,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
 import org.maxgamer.quickshop.Database.*;
@@ -390,12 +391,10 @@ public class QuickShop extends JavaPlugin {
 					if (!Util.canBeShop(loc.getBlock(),null)) {
 						getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
 								+ ", " + y + ", " + z + ".  Deleting.");
-						getLogger().info("Create backup for database..");
 						if (!isBackuped) {
 							if(backupDatabase())
 								isBackuped=true;
 						}
-						getLogger().info("Removeing shop from database...");
 						if(isBackuped) {
 							DatabaseHelper.removeShop(database, x, y, z, worldName);
 						}else {
@@ -419,77 +418,77 @@ public class QuickShop extends JavaPlugin {
 					count++;
 				} catch (Exception e) {
 					errors++;
-					getLogger().warning("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
-							+ ", " + z + ")] Item: " + item.getType().name() + "...");
-					getLogger().warning("===========Error Reporting Start===========");
-					getLogger().warning("#Java throw >>");
-					getLogger().warning("StackTrace:");
-					e.printStackTrace();
-					getLogger().warning("#Shop data >>");
-					getLogger().warning("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+				getLogger().warning("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
+						+ ", " + z + ")] Item: " + item.getType().name() + "...");
+				getLogger().warning("===========Error Reporting Start===========");
+				getLogger().warning("#Java throw >>");
+				getLogger().warning("StackTrace:");
+				e.printStackTrace();
+				getLogger().warning("#Shop data >>");
+				getLogger().warning("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+				getLogger().warning(
+						"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
+				getLogger().warning("Moderators: " + moderators);
+				try {
 					getLogger().warning(
-							"Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
-					getLogger().warning("Moderators: " + moderators);
-					try {
-						getLogger().warning(
-								"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
-					} catch (Exception e2) {
-						getLogger().warning("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
-					}
-					try {
-						getLogger().warning(
-								"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
-					} catch (Exception e2) {
-						getLogger().warning("Target Block: Can't get block!");
-					}
-					getLogger().warning("#Database info >>");
-
-					getLogger().warning("Connected:" + !getDB().getConnection().isClosed());
-					getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
-
-					if (getDB().getConnection().getClientInfo() != null) {
-						getLogger().warning("Client Info: " + getDB().getConnection().getClientInfo().toString());
-					} else {
-						getLogger().warning("Client Info: null");
-					}
-					getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
-					getLogger().warning("#Tips >>");
-					getLogger().warning("Please report this issues to author, And you database will auto backup!");
-
-					getLogger().warning("===========Error Reporting End===========");
-
-					if (errors < 3) {
-						getLogger().info("Create backup for database..");
-						if (!isBackuped) {
-							//Backup it
-							if(backupDatabase())
-								isBackuped=true;
-						}
-						getLogger().info("Removeing shop from database...");
-						if(isBackuped) {
-							DatabaseHelper.removeShop(database, x, y, z, worldName);
-						}else {
-							getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-						}
-						getLogger().info("Trying continue loading...");
-					} else {
-						getLogger().severe(
-								"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
-						getLogger().info("Backuping database...");
-						if (!isBackuped) {
-							//Backup
-							if(backupDatabase())
-								isBackuped=true;
-						}
-						getLogger().info("Removeing shop from database...");
-						if(isBackuped) {
-							DatabaseHelper.removeShop(database, x, y, z, worldName);
-						}else {
-							getLogger().warning("Skipped shop deleteion: Failed to backup database.");
-						}
-						e.printStackTrace();
-					}
+							"BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
+				} catch (Exception e2) {
+					getLogger().warning("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
 				}
+				try {
+					getLogger().warning(
+							"Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
+				} catch (Exception e2) {
+					getLogger().warning("Target Block: Can't get block!");
+				}
+				getLogger().warning("#Database info >>");
+
+				getLogger().warning("Connected:" + !getDB().getConnection().isClosed());
+				getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
+
+				if (getDB().getConnection().getClientInfo() != null) {
+					getLogger().warning("Client Info: " + getDB().getConnection().getClientInfo().toString());
+				} else {
+					getLogger().warning("Client Info: null");
+				}
+				getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
+				getLogger().warning("#Tips >>");
+				getLogger().warning("Please report this issues to author, And you database will auto backup!");
+
+				getLogger().warning("===========Error Reporting End===========");
+
+				if (errors < 3) {
+					getLogger().info("Create backup for database..");
+					if (!isBackuped) {
+						//Backup it
+						if(backupDatabase())
+							isBackuped=true;
+					}
+					getLogger().info("Removeing shop from database...");
+					if(isBackuped) {
+						DatabaseHelper.removeShop(database, x, y, z, worldName);
+					}else {
+						getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+					}
+					getLogger().info("Trying continue loading...");
+				} else {
+					getLogger().severe(
+							"Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
+					getLogger().info("Backuping database...");
+					if (!isBackuped) {
+						//Backup
+						if(backupDatabase())
+							isBackuped=true;
+					}
+					getLogger().info("Removeing shop from database...");
+					if(isBackuped) {
+						DatabaseHelper.removeShop(database, x, y, z, worldName);
+					}else {
+						getLogger().warning("Skipped shop deleteion: Failed to backup database.");
+					}
+					e.printStackTrace();
+				} /*Error reporting, this is too long so i folding it.*/
+			}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -522,7 +521,7 @@ public class QuickShop extends JavaPlugin {
 		return true;
 	}
 	@Override	
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {
 	        List<String> commands = new ArrayList<>();
 	        commands.add("unlimited");
 			commands.add("buy");
@@ -591,7 +590,7 @@ public class QuickShop extends JavaPlugin {
 		return true;
 	}
 
-	public void updateConfig(int selectedVersion) {
+	private void updateConfig(int selectedVersion) {
 		if (selectedVersion == 1) {
 			getConfig().set("disabled-metrics", false);
 			getConfig().set("config-version", 2);
@@ -821,10 +820,10 @@ public class QuickShop extends JavaPlugin {
 	 * @return true if successful, false if the core is invalid or is not found, and
 	 *         vault cannot be used.
 	 */
-	public boolean loadEcon() {
+	private boolean loadEcon() {
 		try {
 			EconomyCore core = new Economy_Vault();
-			if (core == null || !core.isValid()) {
+			if (!core.isValid()) {
 				// getLogger().severe("Economy is not valid!");
 				getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 				getLogger().severe("QuickShop CANNOT start!");
