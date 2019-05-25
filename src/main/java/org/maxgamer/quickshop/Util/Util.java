@@ -229,7 +229,7 @@ public class Util {
 			InventoryHolder right = doubleChest.getRightSide();
 			Chest leftC = (Chest)left;
 			Chest rightC = (Chest)right;
-			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
+			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
 				Util.debugLog(Util.class, "getSecondHalf", "Right founded");
 				return rightC.getBlock();
 				
