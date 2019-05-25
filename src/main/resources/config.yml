@@ -12,6 +12,9 @@ config-version: 26
 #sv - Swedish
 #fr - France
 #de - German
+#ko - Korean
+#ru - Russian
+#pl - Polish
 #zh_TW - Chinese Traditional
 language: en
 
