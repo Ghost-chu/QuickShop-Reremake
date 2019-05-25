@@ -27,6 +27,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
+import org.maxgamer.quickshop.Util.Compatibility;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -254,7 +255,7 @@ public class ShopManager {
 	 * the database. Call this on plugin disable ONLY.
 	 */
 	public void clear() {
-		if (plugin.display) {
+		if (plugin.isDisplay()) {
 			for (World world : Bukkit.getWorlds()) {
 				for (Chunk chunk : world.getLoadedChunks()) {
 					HashMap<Location, Shop> inChunk = this.getShops(chunk);
@@ -282,19 +283,20 @@ public class ShopManager {
 	 */
 	public boolean canBuildShop(Player p, Block b, BlockFace bf) {
 		RegisteredListener openInvRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
+		// try {
+		// 	if (plugin.openInvPlugin != null) {
+		// 		for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
+		// 			if (listener.getPlugin().getName().equals(plugin.openInvPlugin.getName())) {
+		// 				openInvRegisteredListener = listener;
+		// 				PlayerInteractEvent.getHandlerList().unregister(listener);
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
 		try {
-			if (plugin.openInvPlugin != null) {
-				for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-					if (listener.getPlugin().getName().equals(plugin.openInvPlugin.getName())) {
-						openInvRegisteredListener = listener;
-						PlayerInteractEvent.getHandlerList().unregister(listener);
-						break;
-					}
-				}
-			}
-			
-			
-			if (plugin.limit) {
+			plugin.getCompatibilityTool().toggleInteractListeners(false);
+
+			if (plugin.isLimit()) {
 				int owned = 0;
 				if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
 					for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
@@ -335,9 +337,10 @@ public class ShopManager {
 				return false;
 			} 
 		} finally {
-			if (plugin.openInvPlugin != null && openInvRegisteredListener != null) {
-				PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
-			}
+			// if (plugin.openInvPlugin != null && openInvRegisteredListener != null) {
+			// 	PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
+			// }
+		plugin.getCompatibilityTool().toggleInteractListeners(true);
 		}
 		
 		return true;
@@ -565,7 +568,7 @@ public class ShopManager {
 			Util.debugLog(this,"actionCreate", "Calling for protection check...");
 			//Fix openInv compatiable issue
 			RegisteredListener lwcRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
-				if (plugin.openInvPlugin != null) {
+				if (plugin.getOpenInvPlugin() != null) {
 					for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
 						if (listener.getPlugin().getName().equals("LWC")) {
 							lwcRegisteredListener = listener;
@@ -696,9 +699,9 @@ public class ShopManager {
 			if (!plugin.getConfig().getBoolean("shop.lock")) {
 				// Warn them if they haven't been warned since
 				// reboot
-				if (!plugin.warnings.contains(p.getName())) {
+				if (!plugin.getWarnings().contains(p.getName())) {
 					p.sendMessage(MsgUtil.getMessage("shops-arent-locked"));
-					plugin.warnings.add(p.getName());
+					plugin.getWarnings().add(p.getName());
 				}
 			}
 			// Figures out which way we should put the sign on and

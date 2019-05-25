@@ -81,7 +81,7 @@ public class ContainerShop implements Shop {
 		this.item = item.clone();
 		this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
 		this.item.setAmount(1);
-		if (plugin.display) {
+		if (plugin.isDisplay()) {
 			this.displayItem = new DisplayItem(this, this.item);
 		}
 		this.shopType = ShopType.SELLING;
@@ -225,8 +225,8 @@ public class ContainerShop implements Shop {
 	 */
 	public Inventory getInventory() throws IllegalStateException {
 		try {
-		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.openInvPlugin!=null) {
-			OpenInv openInv = ((OpenInv)plugin.openInvPlugin);
+		if(loc.getBlock().getState().getType()==Material.ENDER_CHEST && plugin.getOpenInvPlugin()!=null) {
+			OpenInv openInv = ((OpenInv)plugin.getOpenInvPlugin());
 			 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
 					 )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
 		}
@@ -663,7 +663,7 @@ public class ContainerShop implements Shop {
 	}
 
 	private void checkDisplay() {
-		if (plugin.display == false)
+		if (plugin.isDisplay() == false)
 			return;
 		if (getLocation().getWorld() == null)
 			return; // not loaded
