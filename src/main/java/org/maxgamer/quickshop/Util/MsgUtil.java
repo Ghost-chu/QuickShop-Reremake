@@ -425,17 +425,21 @@ public class MsgUtil {
 	 * @return String Item's i18n name.
 	 */
 	public static String getItemi18n(String ItemBukkitName) {
+		if(ItemBukkitName==null) {
+			return "";
+		}
+		if(ItemBukkitName.isEmpty()){
+			return "";
+		}
 		ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
+
 		String Itemname_i18n = null;
 		try {
 		Itemname_i18n = itemi18n.getString("itemi18n."+ItemBukkitName).trim();
 		}catch (Exception e) {
-			//e.printStackTrace();
 			Itemname_i18n = null;
 		}
-		if(ItemBukkitName==null) {
-			return "";
-		}
+
 		if(Itemname_i18n==null) {
 			String material = null;
 			try {
@@ -443,7 +447,7 @@ public class MsgUtil {
 			}catch (Exception e) {
 				material = "ERROR";
 			}
-			return material;
+			return Util.prettifyText(material);
 		}else {
 			return Itemname_i18n;
 		}
