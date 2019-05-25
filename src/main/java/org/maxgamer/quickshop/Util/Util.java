@@ -246,7 +246,7 @@ public class Util {
 	}
 	
 	private static final boolean equalsBlockStateLocation(Location b1, Location b2) {
-	    return b1.getBlockX() == b2.getBlockX() && b1.getBlockY() == b2.getBlockY() && b1.getBlockZ() == b2.getBlockZ();
+	    return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2.getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
 	}
 	
 	public static boolean location3DEqual(Location loc1, Location loc2){
