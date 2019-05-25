@@ -31,7 +31,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class QS implements CommandExecutor{
-	QuickShop plugin;
+	private QuickShop plugin;
 
 	public QS(QuickShop plugin) {
 		this.plugin = plugin;

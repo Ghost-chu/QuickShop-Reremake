@@ -1,29 +1,29 @@
 package org.maxgamer.quickshop;
 
-import org.bukkit.Bukkit;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import org.bukkit.Bukkit;
 
 public class Language {
-	QuickShop plugin;
-	List<String> languages = new ArrayList<>();
-	public Language(QuickShop plugin) {
+	private QuickShop plugin;
+	private List<String> languages = new ArrayList<>();
+
+	Language(QuickShop plugin) {
 		this.plugin = plugin;
 		languages.clear();
 		languages.add("en");
 	}
-	public String getComputerLanguage() {
-		if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default")) {//Allow user replace this
-			return Locale.getDefault().getLanguage().toString();
-		}
-		return plugin.getConfig().getString("language");
-	}
+	// public String getComputerLanguage() {
+	// 	if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default")) {//Allow user replace this
+	// 		return Locale.getDefault().getLanguage().toString();
+	// 	}
+	// 	return plugin.getConfig().getString("language");
+	// }
 	public List<String> getSupportsLanguageList() {
 		return languages;
 	}
