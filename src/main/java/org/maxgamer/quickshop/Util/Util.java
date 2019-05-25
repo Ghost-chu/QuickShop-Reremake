@@ -218,7 +218,7 @@ public class Util {
 	 * @return the block which is also a chest and connected to b.
 	 */
 	public static Block getSecondHalf(Block b) {
-		if(b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST){
+		if((b.getType() != Material.CHEST) && (b.getType() != Material.TRAPPED_CHEST)){
 			return null;
 		}
 		Chest oneSideOfChest = (Chest)b.getState();
@@ -229,6 +229,8 @@ public class Util {
 			InventoryHolder right = doubleChest.getRightSide();
 			Chest leftC = (Chest)left;
 			Chest rightC = (Chest)right;
+			Util.debugLog(Util.class, "getSecondHalf","Left should at "+ leftC.getLocation().toString());
+			Util.debugLog(Util.class, "getSecondHalf","Right should at "+ rightC.getLocation().toString());
 			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
 				Util.debugLog(Util.class, "getSecondHalf", "Right founded");
 				return rightC.getBlock();
