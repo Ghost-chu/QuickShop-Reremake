@@ -36,11 +36,15 @@ public class LockListener implements Listener {
 		// Make sure they're not using the non-shop half of a double chest.
 		if (shop == null) {
 			b = Util.getSecondHalf(b);
-			if (b == null)
+			if (b == null) {
+				Util.debugLog(this.getClass(), "onClick","Another side block is null");
 				return;
+			}
 			shop = plugin.getShopManager().getShop(b.getLocation());
-			if (shop == null)
+			if (shop == null) {
+				Util.debugLog(this.getClass(), "onClick","Another side block is non shop");
 				return;
+			}
 		}
 		if (!shop.getModerator().isModerator(p.getUniqueId())) {
 			if (p.hasPermission("quickshop.other.open")) {
