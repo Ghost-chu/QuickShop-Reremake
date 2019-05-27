@@ -559,7 +559,8 @@ public class QuickShop extends JavaPlugin {
 				String host = dbCfg.getString("host");
 				String port = dbCfg.getString("port");
 				String database = dbCfg.getString("database");
-				dbCore = new MySQLCore(host, user, pass, database, port);
+				boolean useSSL = dbCfg.getBoolean("usessl");
+				dbCore = new MySQLCore(host, user, pass, database, port,useSSL);
 			} else {
 				// SQLite database - Doing this handles file creation
 				dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
@@ -804,6 +805,14 @@ public class QuickShop extends JavaPlugin {
 			saveConfig();
 			reloadConfig();
 		}
+		if(selectedVersion == 26){
+			getConfig().set("database.usessl", false);
+			getConfig().set("config-version", 27);
+			selectedVersion = 27 ;
+			saveConfig();
+			reloadConfig();
+
+		}
 	}
 
 	/** Reloads QuickShops config */
@@ -835,7 +844,7 @@ public class QuickShop extends JavaPlugin {
 				// getLogger().severe("Economy is not valid!");
 				getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
 				getLogger().severe("QuickShop CANNOT start!");
-				bootError=BuiltInSolution.econError();
+				bootError = BuiltInSolution.econError();
 				// if(econ.equals("Vault"))
 				// getLogger().severe("(Does Vault have an Economy to hook into?!)");
 				return false;

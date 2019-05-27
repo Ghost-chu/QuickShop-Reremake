@@ -35,11 +35,14 @@ public class Language {
 		return languages;
 	}
 	public InputStream getFile(String language, String type) {
-		if((language==null) || !languages.contains(language))
+		if((language==null))
 			language="en";
-		if(type == null || type == "")
+		if(type == null || type.isEmpty())
 			throw new IllegalArgumentException("Type cannot be null or empty");
-		return plugin.getResource(type+"-"+language+".yml");
+		InputStream inputStream = plugin.getResource(type+"-"+language+".yml");
+		if(inputStream == null)
+            plugin.getResource(type+"-"+"en"+".yml");
+		return inputStream;
 		//File name should call    type-language.yml    ---> config-zh.yml
 	}
 	//Write file under plugin folder
