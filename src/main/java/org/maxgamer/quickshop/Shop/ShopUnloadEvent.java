@@ -2,23 +2,26 @@ package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.maxgamer.quickshop.Shop.Shop;
 
-public class ShopUnloadEvent extends Event{
-	/**Getting the unloading shop, Can't cancel.**/
-	public ShopUnloadEvent(Shop shop) {
-		this.shop = shop;
-	}
-	private static final HandlerList handlers = new HandlerList();
-	private Shop shop;
-	public Shop getShop() {
-		return shop;
-	}
-	@Override
-	public HandlerList getHandlers() {
-		return handlers;
-	}
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+public class ShopUnloadEvent extends Event {
+    /** Getting the unloading shop, Can't cancel. **/
+    public ShopUnloadEvent(Shop shop) {
+        this.shop = shop;
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+    private Shop shop;
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

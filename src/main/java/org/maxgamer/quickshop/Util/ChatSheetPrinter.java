@@ -11,36 +11,39 @@ public class ChatSheetPrinter {
     //StringBuffer buffer = new StringBuffer();
     CommandSender p;
     ChatColor chatColor = ChatColor.DARK_PURPLE;
-    public ChatSheetPrinter(CommandSender sender){
+
+    public ChatSheetPrinter(CommandSender sender) {
         this.p = sender;
     }
 
-    public void printHeader(){
+    public void printHeader() {
         p.sendMessage("");
         p.sendMessage("");
         p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line"));
     }
 
-    public void printLine(String text){
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_begin")+" "+text);
+    public void printLine(String text) {
+        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_begin") + " " + text);
     }
 
-    public void printCenterLine(String text){
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_half_line")+text+MsgUtil.getMessage("tableformat.right_half_line"));
+    public void printCenterLine(String text) {
+        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_half_line") + text + MsgUtil
+                .getMessage("tableformat.right_half_line"));
     }
 
-    public void printFooter(){
+    public void printFooter() {
         p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line"));
     }
 
-    public void printExecuteableCmdLine(String text, String hoverText, String executeCmd){
+    public void printExecuteableCmdLine(String text, String hoverText, String executeCmd) {
         TextComponent message = new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin") + text);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
         message.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
         p.spigot().sendMessage(message);
     }
-    public void printSuggestableCmdLine(String text, String hoverText, String suggestCmd){
+
+    public void printSuggestableCmdLine(String text, String hoverText, String suggestCmd) {
         TextComponent message = new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin") + text);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
         message.setHoverEvent(
