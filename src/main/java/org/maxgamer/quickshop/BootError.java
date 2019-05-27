@@ -16,10 +16,13 @@ public class BootError {
 	}
 	
 	public void printErrors(CommandSender sender) {
-		sender.sendMessage(ChatColor.RED+"######################################################");
+		sender.sendMessage(ChatColor.RED+"#####################################################");
 		sender.sendMessage(ChatColor.RED+" QuickShop is disabled, Please fix errors and restart");
-		sender.sendMessage(errors);
-		sender.sendMessage(ChatColor.RED+"######################################################");
+		for (String issue : errors){
+			sender.sendMessage(ChatColor.YELLOW+" "+issue);
+		}
+		//sender.sendMessage(ChatColor.YELLOW+" "+errors);
+		sender.sendMessage(ChatColor.RED+"#####################################################");
 		
 	}
 	
