@@ -14,7 +14,7 @@ commands:
         description: QuickShop command
         usage: /qs
         aliases: [shop,qsshop,qshop,quickshop]
-        
+
 permissions:
     quickshop.create.sell:
         description: Allows a player to sell from a shop

@@ -63,18 +63,18 @@ database:
     # Set prefix to "none" to remove prefix
     prefix: none
     usessl: false
-    
+
 #Limits the number of shops a person can create and own at a single time.
 limits:
     #Disable these if you're not using them! If this is false, the rest of this section is ignored
     use: false
-    
+
     #The default number of shops players can make
     default: 10
-    
+
     #Use old algorithm to calc unlimited shops into limits.
     old-algorithm: false
-    
+
     #Players with these permissions can create these amounts of shops.
     ranks:
         #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
@@ -89,9 +89,9 @@ limits:
 #allow players to put whatever item they want in all 3 slots and
 #dispenser shops aren't protected from redstone... Etc.
 shop-blocks:
-    - CHEST
-    - TRAPPED_CHEST
-    - ENDER_CHEST
+- CHEST
+- TRAPPED_CHEST
+- ENDER_CHEST
 shop:
     #Cost to make a stall
     cost: 10
@@ -105,55 +105,55 @@ shop:
 
     #Should we try and lock their shops from other players, so people can't steal from them?
     lock: true
-    
+
     #Should we require players be sneaking to create and use shops?
     sneak-to-create: false
     sneak-to-trade: false
     sneak-to-control: false
-    
+
     #Should we automatically create the sign for the chest?
     auto-sign: true
-    
+
     #Should pay money from unlimited shops owner to player?
     pay-unlimited-shop-owners: false
-    
+
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
     display-items: true
-    
+
     #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
     display-items-check-ticks: 1200
-    
+
     #When someone uses /qs find <item>, how far should we search in blocks?
     #This command lets users shop quickly without wasting time searching
     #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
     find-distance: 45
-    
+
     #If vault not return coins symbol, QuickShop will use this symbol to replace it.
     alternate-currency-symbol: '$'
-    
+
     #It should can fix Vault or economy not correctly process the price and return "0" result problem.
     #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
     disable-vault-format: false
-    
+
     #Ignore trade messages if shop is unlimited
     ignore-unlimited-shop-messages: false
-    
+
     #Enable this if you only want player create the shop in special region
     #When you enable this, you only can create shop in AreaShop's area
     special-region-only: false
-    
+
     #Allow auto fetch player shop, if you disable it ,Player need use /qs fetchmessage to fetch history shop messages. (Disable it may cause database size lost control.)
     auto-fetch-shop-messages: true
-    
+
     #Ignore cancel chat event, maybe can improve compatibility with other chat plugin.
     ignore-cancel-chat-event: false
-    
+
     #Allow create shop in the sign cannot placed environment (e.g Player no permission put sign on that location / No enough space)
     allow-shop-without-space-for-sign: false
 
     #The maximum price for shop, This not affect exists shops, set -1 to disable it.
     maximum-price: -1
-    
+
     #The wall sign material.
     #In 1.13 and legacy version, only WALL_SIGN is avaliable.
     #
@@ -165,36 +165,36 @@ shop:
     #OAK_WALL_SIGN
     #SPRUCE_WALL_SIGN
     sign-material: OAK_WALL_SIGN
-    
+
     blacklist-world:
-      - disabled_world_name
-      
+    - disabled_world_name
+
     #Check itemstack more strict!
     strict-matches-check: false
-    
+
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
 - Bedrock
 
 protect:
-  #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
-  minecart: true
-  #Protect shop block can or cannot pick up by entity (Will remove Entity
-  entity: true
-  #Protect shop block can or cannot active by Redstone
-  redstone: true
-  #Protect shop block can or cannot break by something growup
-  structuregrow: true
-  #Protect shop block can or cannot break by Entity and Block explode
-  explode: true
-  #Protect shop block can or cannot pull out by Hopper
-  hopper: true
+    #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
+    minecart: true
+    #Protect shop block can or cannot pick up by entity (Will remove Entity
+    entity: true
+    #Protect shop block can or cannot active by Redstone
+    redstone: true
+    #Protect shop block can or cannot break by something growup
+    structuregrow: true
+    #Protect shop block can or cannot break by Entity and Block explode
+    explode: true
+    #Protect shop block can or cannot pull out by Hopper
+    hopper: true
 lockette:
-#Fix Quickshop not cancel break lock sign event(Impossible break locked chest)\
-  enable: true
-  private: "[Private]"
-  more_users: "[More Users]"
+    #Fix Quickshop not cancel break lock sign event(Impossible break locked chest)\
+    enable: true
+    private: "[Private]"
+    more_users: "[More Users]"
 # Enable or disable plugin support.
 plugin:
     #If you have Multiverse-Core, QSRR will try load world when shop's world not exist and throw out exception auto repair the shop.
