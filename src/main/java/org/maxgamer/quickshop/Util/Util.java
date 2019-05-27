@@ -158,7 +158,7 @@ public class Util {
 		}
 		if (b.getState().getType() == Material.ENDER_CHEST) {
 			if (plugin.getOpenInvPlugin() == null) {
-				Util.debugLog(Util.class,"OpenInv not loaded");
+				Util.debugLog("OpenInv not loaded");
 				return false;
 			}
 		}
@@ -229,15 +229,15 @@ public class Util {
 			InventoryHolder right = doubleChest.getRightSide();
 			Chest leftC = (Chest)left;
 			Chest rightC = (Chest)right;
-			Util.debugLog(Util.class, "getSecondHalf","Left should at "+ leftC.getLocation().toString());
-			Util.debugLog(Util.class, "getSecondHalf","Right should at "+ rightC.getLocation().toString());
+			Util.debugLog("Left should at "+ leftC.getLocation().toString());
+			Util.debugLog("Right should at "+ rightC.getLocation().toString());
 			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
-				Util.debugLog(Util.class, "getSecondHalf", "Right founded");
+				Util.debugLog( "Right founded");
 				return leftC.getBlock();
 				
 			}
 			if(equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
-				Util.debugLog(Util.class, "getSecondHalf", "Left founded");
+				Util.debugLog("Left founded");
 				return rightC.getBlock();
 			}
 				
@@ -513,14 +513,14 @@ public class Util {
 		try {
 			String formated = plugin.getEcon().format(n);
 			if (formated == null || formated.isEmpty()) {
-				Util.debugLog(Util.class,"format","Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
+				Util.debugLog("Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
 				return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
 			} else {
 				return formated;
 			}
 		} catch (NumberFormatException e) {
-			Util.debugLog(Util.class,"format",e.getMessage());
-			Util.debugLog(Util.class,"format","Use alternate-currency-symbol to formatting, Cause NumberFormatException");
+			Util.debugLog("format",e.getMessage());
+			Util.debugLog("format","Use alternate-currency-symbol to formatting, Cause NumberFormatException");
 			return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
 			// return "$" + n;
 		}
@@ -552,7 +552,7 @@ public class Util {
 			}
 			// sometimes??
 		} catch (NullPointerException|ClassCastException e) {
-			Util.debugLog(Util.class, "getAttached", "Exception caughted: "+e.getMessage());
+			Util.debugLog("Exception caughted: "+e.getMessage());
 			return null; // /Not sure what causes this.
 		}
 	}
@@ -853,7 +853,7 @@ public class Util {
 						if (DisplayItem.checkShopItem(inv.getItem(i))) {
 							// Found Item and remove it.
 							inv.setItem(i, new ItemStack(Material.AIR, 0));
-							Util.debugLog(Util.class, "inventoryCheck", "Found displayitem in inventory, removed.");
+							Util.debugLog( "Found displayitem in inventory, removed.");
 						}
 				}catch (Throwable t){
 				}
@@ -894,16 +894,13 @@ public class Util {
 	 * Print debug log when plugin running on dev mode.
 	 * @param String logs
 	 */
-	public static void debugLog(Object programObject,String type,String... logs)	{
+	public static void debugLog(String... logs)	{
 		if(!devMode) 
 			return;
-		String className = "Unknown";
-		
-		className = programObject.getClass().getCanonicalName();
-		if(className==null)
-			className = programObject.getClass().getName();
+		String className = Thread.currentThread().getStackTrace()[2].getClassName();
+		String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
 		for (String log : logs) {
-			plugin.getLogger().info("[DEBUG] ["+className+"]"+" ["+type+"] "+log);
+			plugin.getLogger().info("[DEBUG] ["+className+"]"+" ["+methodName+"] "+log);
 		}
 	}
 	/**

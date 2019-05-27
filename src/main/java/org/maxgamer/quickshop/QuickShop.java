@@ -364,7 +364,7 @@ public class QuickShop extends JavaPlugin {
 					if (world == null) {
 						//Maybe world not loaded yet?, skipping
 						skipedShops++;
-						Util.debugLog(this,"loadShops","Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
+						Util.debugLog("Found a shop can't match shop's world: "+worldName+", it got removed or just not loaded? Ignore it...");
 						continue;
 					}
 
@@ -377,7 +377,7 @@ public class QuickShop extends JavaPlugin {
 							backupDatabase();
 							isBackuped=true;
 						}
-						Util.debugLog(this,"loadShops","Updating old shop data...");
+						Util.debugLog("Updating old shop data...");
 						shopModerator= new ShopModerator(UUID.fromString(moderators)); //New one
 						moderators = ShopModerator.serialize(shopModerator); //Serialize
 					}catch (IllegalArgumentException ex) {
