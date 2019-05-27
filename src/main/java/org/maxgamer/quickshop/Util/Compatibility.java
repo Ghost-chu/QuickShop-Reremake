@@ -28,7 +28,7 @@ public class Compatibility {
                     Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
                     if(plugin != null){
                         if(listener.getPlugin() == plugin) {
-                            Util.debugLog(this, "toggleInteractListeners","Disabled plugin "+pluginName+"'s listener "+listener.getListener().getClass().getName());
+                            Util.debugLog("Disabled plugin "+pluginName+"'s listener "+listener.getListener().getClass().getName());
                             PlayerInteractEvent.getHandlerList().unregister(plugin);
                             disabledListeners.add(listener);
                         }

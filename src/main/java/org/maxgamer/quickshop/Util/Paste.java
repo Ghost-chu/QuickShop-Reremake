@@ -108,7 +108,7 @@ public class Paste {
         out.print(builder.toString());
         out.flush();//Drop
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        Util.debugLog(this, "pasteTheText", "Request Completed: " + conn.getURL().toString());
+        Util.debugLog( "Request Completed: " + conn.getURL().toString());
         String link = conn.getURL().toString();
         if (in != null)
             in.close();
