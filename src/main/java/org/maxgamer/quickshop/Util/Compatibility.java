@@ -23,6 +23,7 @@ public class Compatibility {
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin listener,
      * set true to enable back all disabled plugin liseners.
+     * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      */
     public void toggleInteractListeners(boolean status) {
         if (status) {

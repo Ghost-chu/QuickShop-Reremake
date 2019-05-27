@@ -21,6 +21,10 @@ public class Paste {
         this.plugin = plugin;
     }
 
+    /**
+     * Create a server infomation paste
+     * @return The paste result content.
+     */
     public String genNewPaste() {
         StringBuffer finalReport = new StringBuffer();
         finalReport.append("###############################\n");
@@ -88,6 +92,12 @@ public class Paste {
         return finalReport.toString();
     }
 
+    /**
+     * Paste a text to paste.ubuntu.com
+     * @param text The text you want paste.
+     * @return Target paste URL.
+     * @throws Exception
+     */
     public String pasteTheText(String text) throws Exception {
         URL url = new URL("https://paste.ubuntu.com");
         URLConnection conn = url.openConnection();

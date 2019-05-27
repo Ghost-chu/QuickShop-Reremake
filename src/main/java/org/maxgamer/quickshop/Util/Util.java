@@ -14,10 +14,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -48,14 +45,9 @@ public class Util {
     static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
     protected static boolean devMode;
 
-    public String boolean2String(boolean bool) {
-        if (bool) {
-            return "Enabled";
-        } else {
-            return "Disabled";
-        }
-    }
-
+    /**
+     * Initialize the Util tools.
+     */
     public static void initialize() {
         blacklist.clear();
         shoppables.clear();
@@ -132,6 +124,10 @@ public class Util {
         return shoppables.contains(material);
     }
 
+    /**
+     * Parse colors for the YamlConfiguration.
+     * @param config
+     */
     public static void parseColours(YamlConfiguration config) {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
@@ -143,7 +139,10 @@ public class Util {
             config.set(key, filtered);
         }
     }
-
+    /**
+     * Parse colors for the Text.
+     * @param config
+     */
     public static String parseColours(String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
@@ -193,12 +192,12 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a
      * chest.
-     *
-     * @param b
-     *            The chest to check.
+     * @deprecated
+     * @param b he chest to check.
      * @return the block which is also a chest and connected to b.
+     *
      */
-    /** @TODO 1.13+ compatibility */
+    @Deprecated
     public static Block getSecondHalf_old(Block b) {
         if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
             return null;
@@ -252,11 +251,22 @@ public class Util {
         }
     }
 
+    /**
+     * Check two location is or not equals for the BlockPosition on 2D
+     * @param b1
+     * @param b2
+     * @return Equals or not.
+     */
     private static final boolean equalsBlockStateLocation(Location b1, Location b2) {
         return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2
                 .getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
     }
-
+    /**
+     * Check two location is or not equals for the BlockPosition on 2D
+     * @param b1
+     * @param b2
+     * @return Equals or not.
+     */
     public static boolean location3DEqual(Location loc1, Location loc2) {
         if (loc1.getWorld().getName() != loc2.getWorld().getName())
             return false;
@@ -402,6 +412,11 @@ public class Util {
         return StringUtils.join(nameParts);
     }
 
+    /**
+     * First uppercase for every words the first char for a text.
+     * @param string
+     * @return Processed text.
+     */
     public static String firstUppercase(String string) {
         if (string.length() > 1) {
             return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
@@ -606,16 +621,21 @@ public class Util {
         return space;
     }
 
+    /**
+     * Check a material is or not a WALL_SIGN
+     * @param material
+     * @return
+     */
     public static boolean isWallSign(Material material) {
-//		try {
-//		if(Tag.WALL_SIGNS.isTagged(material))
-//			return true;
-//		}catch (Throwable e) {
-//			if(material.name().endsWith("WALL_SIGN"))
-//				return true;
-//		}
-        if (material.name().endsWith("WALL_SIGN"))
-            return true;
+		try {
+		if(Tag.WALL_SIGNS.isTagged(material))
+			return true;
+		}catch (Throwable e) {
+			if(material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
+				return true;
+		}
+        //if (material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
+        //    return true;
         return false;
     }
 
@@ -692,6 +712,14 @@ public class Util {
     }
 
     //Use NMS
+
+    /**
+     * Send the ItemPreview chat msg by NMS.
+     * @param shop
+     * @param itemStack
+     * @param player
+     * @param normalText The text you will see
+     */
     public static void sendItemholochat(Shop shop, ItemStack itemStack, Player player, String normalText) {
         try {
             String json = ItemNMS.saveJsonfromNMS(itemStack);
@@ -710,7 +738,15 @@ public class Util {
             sendItemholochatAsNormaly(itemStack, player, normalText);
         }
     }
-
+    /**
+     * Send the ItemPreview chat msg by Bukkit API.
+     * More worst than NMS mode.
+     * *STILL WIP*
+     * @param shop
+     * @param itemStack
+     * @param player
+     * @param normalText The text you will see
+     */
     // Without NMS
     public static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
         try {
@@ -785,6 +821,11 @@ public class Util {
         }
     }
 
+    /**
+     * Format ench level.
+     * @param level
+     * @return
+     */
     private static String formatEnchLevel(Integer level) {
         switch (level) {
             case 1:
@@ -840,17 +881,20 @@ public class Util {
 
     /**
      * Send warning message when some plugin calling deprecated method...
-     *
-     * @return
+     * With the trace.
      */
     public static void sendDeprecatedMethodWarn() {
         QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
+        StackTraceElement[] stackTraceElements =  Thread.currentThread().getStackTrace();
+        for (StackTraceElement stackTraceElement : stackTraceElements){
+            QuickShop.instance.getLogger().warning("at "+stackTraceElement.getClassName()+"#"+stackTraceElement.getMethodName()+" ("+stackTraceElement.getFileName()+":"+stackTraceElement.getLineNumber()+")");
+        }
     }
 
     /**
      * Check QuickShop is running on dev mode or not.
      *
-     * @return
+     * @return DevMode status
      */
     public static boolean isDevEdition() {
         String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
@@ -884,7 +928,7 @@ public class Util {
     /**
      * Get MinecraftServer's TPS
      *
-     * @return double TPS (e.g 19.92)
+     * @return TPS (e.g 19.92)
      */
     public static Double getTPS() {
         try {
@@ -931,8 +975,9 @@ public class Util {
 
     /**
      * Create a Timer and return this timer's UUID
+     * Time Unit: ms
      *
-     * @return
+     * @return The timer UUID.
      */
     public static UUID setTimer() {
         UUID random = UUID.randomUUID();
@@ -962,6 +1007,11 @@ public class Util {
         return time;
     }
 
+    /**
+     * Get how many shop in the target world.
+     * @param worldName Target world.
+     * @return The shops.
+     */
     public static int getShopsInWorld(String worldName) {
         int cost = 0;
         Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
@@ -974,6 +1024,11 @@ public class Util {
         return cost;
     }
 
+    /**
+     * Read the file to the String
+     * @param fileName Target file.
+     * @return Target file's content.
+     */
     public static String readToString(String fileName) {
         String encoding = "UTF-8";
         File file = new File(fileName);
@@ -996,6 +1051,11 @@ public class Util {
         }
     }
 
+    /**
+     * Get the sign material using by plugin.
+     * With compatiabily process.
+     * @return The material now using.
+     */
     public static Material getSignMaterial() {
 
         Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material"));
@@ -1015,6 +1075,11 @@ public class Util {
         return null;
     }
 
+    /**
+     * Read the InputStream to the byte array.
+     * @param filePath Target file
+     * @return Byte array
+     */
     public static byte[] inputStream2ByteArray(String filePath) {
         try {
             InputStream in = new FileInputStream(filePath);

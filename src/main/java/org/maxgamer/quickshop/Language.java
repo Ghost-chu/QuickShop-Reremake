@@ -4,26 +4,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 
 public class Language {
     private QuickShop plugin;
-    private List<String> languages = new ArrayList<>();
+    //private List<String> languages = new ArrayList<>();
 
     Language(QuickShop plugin) {
         this.plugin = plugin;
-        languages.clear();
-        languages.add("en");
-        languages.add("fr");
-        languages.add("de");
-        languages.add("ko");
-        languages.add("pl");
-        languages.add("ru");
-        languages.add("sv");
-        languages.add("zh_TW");
+        // languages.clear();
+        // languages.add("en");
+        // languages.add("fr");
+        // languages.add("de");
+        // languages.add("ko");
+        // languages.add("pl");
+        // languages.add("ru");
+        // languages.add("sv");
+        // languages.add("zh_TW");
     }
 
     // public String getComputerLanguage() {
@@ -32,10 +30,16 @@ public class Language {
     // 	}
     // 	return plugin.getConfig().getString("language");
     // }
-    public List<String> getSupportsLanguageList() {
-        return languages;
-    }
+    //public List<String> getSupportsLanguageList() {
+    //    return languages;
+    //}
 
+    /**
+     * Get target language's type file.
+     * @param language The target language
+     * @param type The file type for you want get. e.g. messages
+     * @return The target file's InputStream.
+     */
     public InputStream getFile(String language, String type) {
         if ((language == null))
             language = "en";
@@ -49,6 +53,13 @@ public class Language {
     }
 
     //Write file under plugin folder
+
+    /**
+     * Save the target language's type file to the datafolder
+     * @param language Target language
+     * @param type Target type
+     * @param fileName The filename you want write to the plugin datafolder.
+     */
     public void saveFile(String language, String type, String fileName) {
         File targetFile = new File(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder()
                 .toPath() + "/" + fileName);
