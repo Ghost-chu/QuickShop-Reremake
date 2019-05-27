@@ -72,16 +72,16 @@ public class Paste {
         finalReport.append("Configurations:\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tconfig.yml:\n");
-        finalReport.append("\t\t" + new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin.getName())
+        finalReport.append("\t\t\n" + new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin.getName())
                 .getDataFolder().toString() + "/config.yml")) + "\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tmessages.yml:\n");
-        finalReport.append("\t\t" + new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin.getName())
+        finalReport.append("\t\t\n" + new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin.getName())
                 .getDataFolder().toString() + "/messages.yml")) + "\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("\tlatest.log:\n");
-        finalReport.append("\t\t" + new String(Util
+        finalReport.append("\t\t\n" + new String(Util
                 .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())) + "\n");
         finalReport.append("\t*********************************\n");
         finalReport.append("================================================\n");
