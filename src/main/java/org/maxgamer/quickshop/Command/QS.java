@@ -151,7 +151,8 @@ public class QS implements CommandExecutor{
 			String user = cfg.getString("user");
 			String pass = cfg.getString("password");
 			String name = cfg.getString("database");
-			MySQLCore core = new MySQLCore(host, user, pass, name, port);
+			boolean useSSL = cfg.getBoolean("usessl");
+			MySQLCore core = new MySQLCore(host, user, pass, name, port, useSSL);
 			Database target;
 			try {
 				target = new Database(core);
