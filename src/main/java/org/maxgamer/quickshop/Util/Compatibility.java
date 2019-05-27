@@ -11,37 +11,41 @@ import org.maxgamer.quickshop.QuickShop;
 public class Compatibility {
     private QuickShop plugin;
     private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
-    public Compatibility (QuickShop plugin){
+
+    public Compatibility(QuickShop plugin) {
         this.plugin = plugin;
         knownIncompatiablePlugin.add("OpenInv");
         knownIncompatiablePlugin.add("LWC");
     }
+
     private final ArrayList<RegisteredListener> disabledListeners = new ArrayList<>();
+
     /**
-    Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin listener,
-     set true to enable back all disabled plugin liseners.
+     * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin listener,
+     * set true to enable back all disabled plugin liseners.
      */
-    public void toggleInteractListeners(boolean status){
-        if(status){
+    public void toggleInteractListeners(boolean status) {
+        if (status) {
             for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-                for (String pluginName : knownIncompatiablePlugin){
+                for (String pluginName : knownIncompatiablePlugin) {
                     Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-                    if(plugin != null){
-                        if(listener.getPlugin() == plugin) {
-                            Util.debugLog("Disabled plugin "+pluginName+"'s listener "+listener.getListener().getClass().getName());
+                    if (plugin != null) {
+                        if (listener.getPlugin() == plugin) {
+                            Util.debugLog("Disabled plugin " + pluginName + "'s listener " + listener.getListener().getClass()
+                                    .getName());
                             PlayerInteractEvent.getHandlerList().unregister(plugin);
                             disabledListeners.add(listener);
                         }
                     }
                 }
             }
-            for (String pluginString : knownIncompatiablePlugin){
+            for (String pluginString : knownIncompatiablePlugin) {
                 Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginString);
-                if(plugin!=null){
+                if (plugin != null) {
                     PlayerInteractEvent.getHandlerList().getRegisteredListeners();
                 }
             }
-        }else{
+        } else {
             PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
         }
     }
