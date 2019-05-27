@@ -1,5 +1,14 @@
 package org.maxgamer.quickshop;
 
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
+import javax.net.ssl.HttpsURLConnection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,37 +18,16 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * bStats collects some data for plugin authors.
- *
+ * <p>
  * Check out https://bStats.org/ to learn more about bStats!
- * 
+ * <p>
  * Edit by QSRR, Don't removed
  */
 @SuppressWarnings("unchecked")
 public class Metrics {
-
 
     // The version of this bStats class
     public static final int B_STATS_VERSION = 1;
@@ -66,7 +54,7 @@ public class Metrics {
      */
     public Metrics(JavaPlugin plugin) {
         if (plugin == null) {
-        	
+
             throw new IllegalArgumentException("Plugin cannot be null!");
         }
         this.plugin = plugin;
@@ -153,7 +141,7 @@ public class Metrics {
                     }
                 });
             }
-        }, 1000*60*5, 1000*60*30);
+        }, 1000 * 60 * 5, 1000 * 60 * 30);
         // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
         // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
         // WARNING: Just don't do it!
@@ -165,7 +153,7 @@ public class Metrics {
      *
      * @return The plugin specific data.
      */
-	public JSONObject getPluginData() {
+    public JSONObject getPluginData() {
         JSONObject data = new JSONObject();
 
         String pluginName = "QuickShop-Reremake";
@@ -192,7 +180,7 @@ public class Metrics {
      *
      * @return The server specific data.
      */
-	public JSONObject getServerData() {
+    public JSONObject getServerData() {
         // Minecraft specific data
         int playerAmount;
         try {
@@ -237,8 +225,8 @@ public class Metrics {
      * Collects the data and sends it afterwards.
      */
 
-	public void submitData() {
-    	
+    public void submitData() {
+
         final JSONObject data = getServerData();
         plugin.getLogger().info("Posting stats data...");
         JSONArray pluginData = new JSONArray();
@@ -262,7 +250,7 @@ public class Metrics {
             public void run() {
                 try {
                     // Send the data
-                	plugin.getLogger().info("Sending stats data...");
+                    plugin.getLogger().info("Sending stats data...");
                     sendData(data);
                 } catch (Exception e) {
                     // Something went wrong! :(
@@ -281,8 +269,8 @@ public class Metrics {
      * @throws Exception If the request failed.
      */
     @SuppressWarnings("unused")
-	private void sendData(JSONObject data) throws Exception {
-    	if (data == null) {
+    private void sendData(JSONObject data) throws Exception {
+        if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
         if (Bukkit.isPrimaryThread()) {
@@ -383,7 +371,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimplePie(String chartId, Callable<String> callable) {
@@ -414,7 +402,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
@@ -458,7 +446,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
@@ -507,7 +495,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SingleLineChart(String chartId, Callable<Integer> callable) {
@@ -539,7 +527,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -584,7 +572,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -622,7 +610,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {
