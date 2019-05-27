@@ -16,10 +16,10 @@ public class UpdateWatcher implements Listener {
     static volatile boolean hasNewUpdate = false;
     static boolean isBeta = false;
     static UpdateInfomation info = null;
-    
+
     public static void init() {
         cronTask = new BukkitRunnable() {
-            
+
             @Override
             public void run() {
                 info = Updater.checkUpdate();
@@ -27,13 +27,13 @@ public class UpdateWatcher implements Listener {
                     hasNewUpdate = false;
                     return;
                 }
-                
+
                 hasNewUpdate = true;
-                
+
                 if (!info.getIsBeta()) {
                     QuickShop.instance.getLogger().warning("A new version of QuickShop has been released!");
                     QuickShop.instance.getLogger().warning("Update here: https://www.spigotmc.org/resources/62575/");
-                    
+
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         if (player.isOp()) {
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
@@ -42,16 +42,16 @@ public class UpdateWatcher implements Listener {
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
                     });
-                 } else {
+                } else {
                     QuickShop.instance.getLogger().warning("A new BETA version of QuickShop is available!");
                     QuickShop.instance.getLogger().warning("Update here: https://www.spigotmc.org/resources/62575/");
                     QuickShop.instance.getLogger().warning("This is a BETA version, which means you should use with caution.");
                 }
-                
+
             }
         }.runTaskTimerAsynchronously(QuickShop.instance, 1, 20 * 60 * 60);
     }
-    
+
     public static void uninit() {
         hasNewUpdate = false;
         if (cronTask == null) {
@@ -59,25 +59,26 @@ public class UpdateWatcher implements Listener {
         }
         cronTask.cancel();
     }
-    
+
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (hasNewUpdate && e.getPlayer().hasPermission("quickshop.alert")) {
-                    if(!info.getIsBeta()) {
-                        e.getPlayer().sendMessage(ChatColor.GREEN+"A new version of QuickShop has been released!");
-                        e.getPlayer().sendMessage(ChatColor.GREEN+"Update here: https://www.spigotmc.org/resources/62575/");
-                    }else {
-                        e.getPlayer().sendMessage(ChatColor.GRAY+"A new BETA version of QuickShop has been released!");
-                        e.getPlayer().sendMessage(ChatColor.GRAY+"Update here: https://www.spigotmc.org/resources/62575/");
-                        e.getPlayer().sendMessage(ChatColor.GRAY+"This is a BETA version, which means you should use with caution.");
+                    if (!info.getIsBeta()) {
+                        e.getPlayer().sendMessage(ChatColor.GREEN + "A new version of QuickShop has been released!");
+                        e.getPlayer().sendMessage(ChatColor.GREEN + "Update here: https://www.spigotmc.org/resources/62575/");
+                    } else {
+                        e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
+                        e.getPlayer().sendMessage(ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
+                        e.getPlayer()
+                                .sendMessage(ChatColor.GRAY + "This is a BETA version, which means you should use with caution.");
                     }
                 }
-                
+
             }
         }.runTaskLater(QuickShop.instance, 80);
     }
-    
+
 }
