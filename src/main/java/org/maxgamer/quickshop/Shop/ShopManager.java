@@ -562,10 +562,10 @@ public class ShopManager {
 		
 	@SuppressWarnings("deprecation")
 	private void actionCreate(Player p, HashMap<UUID, Info> actions2, Info info, String message) {
-		Util.debugLog(this,"actionCreate","actionCreate");
+		Util.debugLog("actionCreate");
 		try {
 			// Checking the shop can be created
-			Util.debugLog(this,"actionCreate", "Calling for protection check...");
+			Util.debugLog( "Calling for protection check...");
 			//Fix openInv compatiable issue
 
 			plugin.getCompatibilityTool().toggleInteractListeners(false);
@@ -577,9 +577,9 @@ public class ShopManager {
 			
 			if (be.isCancelled()) {
 				be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
-				Util.debugLog(this, "actionCreate", "Failed to create shop: Protection check failed:");
+				Util.debugLog( "Failed to create shop: Protection check failed:");
 				for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
-					Util.debugLog(this, "actionCreate", belisteners.getPlugin().getName());
+					Util.debugLog(belisteners.getPlugin().getName());
 				}
 				return;
 			}

@@ -69,7 +69,7 @@ public class Database {
 	 *            The string values for each ? in the given query.
 	 */
 	public void execute(String query, Object... objs) {
-		Util.debugLog(this,"execute",query);
+		Util.debugLog(query);
 		BufferStatement bs = new BufferStatement(query, objs);
 		core.queue(bs);
 	}
