@@ -116,6 +116,10 @@ public class QuickShop extends JavaPlugin {
         return max;
     }
 
+    /**
+     * Check the env plugin running.
+     * @throws RuntimeException The error message, use this to create a BootError.
+     */
     private void runtimeCheck() throws RuntimeException {
         try {
             getServer().spigot();
@@ -145,6 +149,9 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    /**
+     * Load 3rdParty plugin support module.
+     */
     private void load3rdParty() {
         // ProtocolLib Support
         // protocolManager = ProtocolLibrary.getProtocolManager();
@@ -162,7 +169,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded OpenInv support!");
         }
     }
-
+    @Override
     public void onEnable() {
         instance = this;
         bootError = null;
@@ -339,6 +346,9 @@ public class QuickShop extends JavaPlugin {
         UpdateWatcher.init();
     }
 
+    /**
+     * Load all shops from database to RAM
+     */
     private void loadShops() {
         /* Load shops from database to memory */
         int count = 0; // Shops count
@@ -506,6 +516,10 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    /**
+     * Backup shops.db
+     * @return The result for backup
+     */
     private boolean backupDatabase() {
         if (getDB().getCore() instanceof MySQLCore)
             return true; //Backup and logs by MySQL
@@ -553,6 +567,10 @@ public class QuickShop extends JavaPlugin {
         return null;
     }
 
+    /**
+     * Setup the database
+     * @return The setup result
+     */
     private boolean setupDatabase() {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
@@ -868,7 +886,7 @@ public class QuickShop extends JavaPlugin {
             return false;
         }
     }
-
+    @Override
     public void onDisable() {
         if (noopDisable)
             return;
@@ -948,5 +966,9 @@ public class QuickShop extends JavaPlugin {
         return QuickShop.instance.getDescription().getVersion();
     }
 
+    /**
+     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
+     * @return The fork name.
+     */
     public String getFork() { return "Reremake"; }
 }

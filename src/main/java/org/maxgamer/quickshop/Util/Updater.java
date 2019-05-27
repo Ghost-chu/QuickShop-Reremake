@@ -14,7 +14,6 @@ public class Updater {
     /**
      * Check new update
      *
-     * @param
      * @return True=Have a new update; False=No new update or check update failed.
      */
     public static UpdateInfomation checkUpdate() {
