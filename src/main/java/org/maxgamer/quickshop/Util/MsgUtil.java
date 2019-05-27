@@ -337,6 +337,11 @@ public class MsgUtil {
         chatSheetPrinter.printFooter();
     }
 
+    /**
+     * Translate boolean value to String, the symbon is changeable by language file.
+     * @param bool The boolean value
+     * @return The result of translate.
+     */
     public static String bool2String(boolean bool) {
         if (bool) {
             return MsgUtil.getMessage("booleanformat.success");
@@ -470,8 +475,8 @@ public class MsgUtil {
     /**
      * Get Enchantment's i18n name.
      *
-     * @param Enchantment key
-     * @return String Enchantment's i18n name.
+     * @param key The Enchantment.
+     * @return Enchantment's i18n name.
      */
     public static String getEnchi18n(Enchantment key) {
         if (key == null) {
@@ -531,8 +536,8 @@ public class MsgUtil {
     /**
      * Get potion effect's i18n name.
      *
-     * @param PotionEffectType potionType
-     * @return String Potion's i18n name.
+     * @param potion potionType
+     * @return Potion's i18n name.
      */
     public static String getPotioni18n(PotionEffectType potion) {
         if (potion == null) {
@@ -591,7 +596,7 @@ public class MsgUtil {
      * Empties the queue of messages a player has and sends them to the player.
      *
      * @param p The player to message
-     * @return true if success, false if the player is offline or null
+     * @return True if success, False if the player is offline or null
      */
     public static boolean flush(OfflinePlayer p) {    //TODO Changed to UUID
         if (p != null && p.isOnline()) {
@@ -612,6 +617,11 @@ public class MsgUtil {
         return false;
     }
 
+    /**
+     * Send a shop infomation to a player.
+     * @param p Target player
+     * @param shop The shop
+     */
     public static void sendShopInfo(Player p, Shop shop) {
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
@@ -668,6 +678,12 @@ public class MsgUtil {
         chatSheetPrinter.printFooter();
     }
 
+    /**
+     * Send a purchaseSuccess message for a player.
+     * @param p Target player
+     * @param shop Target shop
+     * @param amount Trading item amounts.
+     */
     public static void sendPurchaseSuccess(Player p, Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
@@ -702,7 +718,12 @@ public class MsgUtil {
         }
         chatSheetPrinter.printFooter();
     }
-
+    /**
+     * Send a sellSuccess message for a player.
+     * @param p Target player
+     * @param shop Target shop
+     * @param amount Trading item amounts.
+     */
     public static void sendSellSuccess(Player p, Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
@@ -782,6 +803,12 @@ public class MsgUtil {
         return raw;
     }
 
+    /**
+     * Send the display-item exploit alert for a location.
+     * @param objectDo It is possible be Player, Inventory.
+     * @param action What action trigger the exploit alert.
+     * @param location Event/Shop location.
+     */
     public static void sendExploitAlert(Object objectDo, String action, Location location) {
         Util.sendMessageToOps(ChatColor.RED + "[QuickShop][ExploitAlert] A displayItem exploit was found!");
         if (objectDo instanceof Player) {

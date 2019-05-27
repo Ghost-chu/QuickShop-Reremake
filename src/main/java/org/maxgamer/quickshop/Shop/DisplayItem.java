@@ -99,6 +99,11 @@ public class DisplayItem {
         iMeta.setLore(lore);
         item.getItemStack().setItemMeta(iMeta);
     }
+    /**
+     * Check the ItemStack is or not a DisplayItem
+     * @param itemStack The ItemStack you want to check.
+     * @return The check result.
+     */
 
     public static boolean checkShopItem(ItemStack itemStack) {
         if (!itemStack.hasItemMeta()) {

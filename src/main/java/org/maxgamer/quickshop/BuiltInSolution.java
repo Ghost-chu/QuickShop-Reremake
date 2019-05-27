@@ -4,6 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 class BuiltInSolution {
+    /**
+     * Call when failed load economy system, and use this to check the reason.
+     * @return The reason of error.
+     */
     static BootError econError() {
         // Check Vault is installed
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
@@ -17,7 +21,10 @@ class BuiltInSolution {
         }
         return new BootError("No Economy plugin loaded", "Install one economy plugin to let Vault working.");
     }
-
+    /**
+     * Call when failed load database, and use this to check the reason.
+     * @return The reason of error.
+     */
     static BootError databaseError() {
         return new BootError("Error connecting to database", "Make sure your database service is runnning.", "Or check the configuration in config.yml");
     }

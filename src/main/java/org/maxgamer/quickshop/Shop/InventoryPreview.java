@@ -18,6 +18,11 @@ public class InventoryPreview implements Listener {
     private Inventory inventory;
     private Player player;
 
+    /**
+     * Create a preview item GUI for a player.
+     * @param itemStack The item you want create.
+     * @param player Target player.
+     */
     public InventoryPreview(ItemStack itemStack, Player player) {
         this.itemStack = itemStack.clone();
         this.player = player;
@@ -36,6 +41,9 @@ public class InventoryPreview implements Listener {
         }
     }
 
+    /**
+     * Open the preview GUI for player.
+     */
     public void show() {
         if (inventory != null) // Not inited
             close();
