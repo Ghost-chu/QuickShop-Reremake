@@ -231,7 +231,7 @@ public class ContainerShop implements Shop {
 					 )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
 		}
 		}catch(Exception e){
-			Util.debugLog(this,"getInventory",e.getMessage());
+			Util.debugLog(e.getMessage());
 			return null;
 		}
 		InventoryHolder container;
@@ -527,7 +527,7 @@ public class ContainerShop implements Shop {
 		lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
 		lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
 		this.setSignText(lines);
-		Util.debugLog(this,"setSignText","New sign was setuped.",lines[0],lines[1],lines[2],lines[2]);
+		Util.debugLog("New sign was setuped.",lines[0],lines[1],lines[2],lines[2]);
 	}
 
 	/**
@@ -541,7 +541,7 @@ public class ContainerShop implements Shop {
 			return;
 		for (Sign sign : this.getSigns()) {
 			for (int i = 0; i < lines.length; i++) {
-				Util.debugLog(this,"setSignText","Setting sign at "+sign.getLocation().toString());
+				Util.debugLog("Setting sign at "+sign.getLocation().toString());
 				sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
 			}
 			sign.update(true);

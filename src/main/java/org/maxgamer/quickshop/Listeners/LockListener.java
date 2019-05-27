@@ -37,12 +37,12 @@ public class LockListener implements Listener {
 		if (shop == null) {
 			b = Util.getSecondHalf(b);
 			if (b == null) {
-				Util.debugLog(this.getClass(), "onClick","Another side block is null");
+				Util.debugLog("Another side block is null");
 				return;
 			}
 			shop = plugin.getShopManager().getShop(b.getLocation());
 			if (shop == null) {
-				Util.debugLog(this.getClass(), "onClick","Another side block is non shop");
+				Util.debugLog("Another side block is non shop");
 				return;
 			}
 		}
