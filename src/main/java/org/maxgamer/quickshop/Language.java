@@ -17,6 +17,13 @@ public class Language {
 		this.plugin = plugin;
 		languages.clear();
 		languages.add("en");
+		languages.add("fr");
+		languages.add("de");
+		languages.add("ko");
+		languages.add("pl");
+		languages.add("ru");
+		languages.add("sv");
+		languages.add("zh_TW");
 	}
 	// public String getComputerLanguage() {
 	// 	if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default")) {//Allow user replace this
