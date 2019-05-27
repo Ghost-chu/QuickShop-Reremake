@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 26
+config-version: 27
 
 #Select language you want use, (e.g de), use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -62,6 +62,7 @@ database:
     password: passwd
     # Set prefix to "none" to remove prefix
     prefix: none
+    usessl: false
     
 #Limits the number of shops a person can create and own at a single time.
 limits:
