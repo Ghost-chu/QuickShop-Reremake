@@ -2,9 +2,6 @@ package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -26,29 +23,29 @@ public class Compatibility {
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      */
     public void toggleInteractListeners(boolean status) {
-        if (status) {
-            disabledListeners.clear();
-            for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-                for (String pluginName : knownIncompatiablePlugin) {
-                    Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-                    if (plugin != null) {
-                        if (listener.getPlugin() == plugin) {
-                            Util.debugLog("Disabled plugin " + pluginName + "'s listener " + listener.getListener().getClass()
-                                    .getName());
-                            //PlayerInteractEvent.getHandlerList().unregister(plugin);
-                            PlayerInteractEvent.getHandlerList().unregister(listener);
-                            disabledListeners.add(listener);
-                        }
-                    }
-                }
-            }
-        } else {
-           try{
-               PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
-               disabledListeners.clear();
-           }catch (Throwable e){
-               //Ignore
-           }
-        }
+        // if (status) {
+        //     disabledListeners.clear();
+        //     for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
+        //         for (String pluginName : knownIncompatiablePlugin) {
+        //             Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        //             if (plugin != null) {
+        //                 if (listener.getPlugin() == plugin) {
+        //                     Util.debugLog("Disabled plugin " + pluginName + "'s listener " + listener.getListener().getClass()
+        //                             .getName());
+        //                     //PlayerInteractEvent.getHandlerList().unregister(plugin);
+        //                     PlayerInteractEvent.getHandlerList().unregister(listener);
+        //                     disabledListeners.add(listener);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // } else {
+        //    try{
+        //        PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
+        //        disabledListeners.clear();
+        //    }catch (Throwable e){
+        //        //Ignore
+        //    }
+        // }
     }
 }
