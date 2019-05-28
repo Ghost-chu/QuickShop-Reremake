@@ -27,6 +27,7 @@ public class Compatibility {
      */
     public void toggleInteractListeners(boolean status) {
         if (status) {
+            disabledListeners.clear();
             for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
                 for (String pluginName : knownIncompatiablePlugin) {
                     Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
@@ -34,20 +35,20 @@ public class Compatibility {
                         if (listener.getPlugin() == plugin) {
                             Util.debugLog("Disabled plugin " + pluginName + "'s listener " + listener.getListener().getClass()
                                     .getName());
-                            PlayerInteractEvent.getHandlerList().unregister(plugin);
+                            //PlayerInteractEvent.getHandlerList().unregister(plugin);
+                            PlayerInteractEvent.getHandlerList().unregister(listener);
                             disabledListeners.add(listener);
                         }
                     }
                 }
             }
-            for (String pluginString : knownIncompatiablePlugin) {
-                Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginString);
-                if (plugin != null) {
-                    PlayerInteractEvent.getHandlerList().getRegisteredListeners();
-                }
-            }
         } else {
-            PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
+           try{
+               PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
+               disabledListeners.clear();
+           }catch (Throwable e){
+               //Ignore
+           }
         }
     }
 }
