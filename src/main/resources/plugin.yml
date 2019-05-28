@@ -82,3 +82,6 @@ permissions:
     quickshop.paste:
         description: Command for paste server infomation to Pastebin. !WARN, paste may leak your config.
         default: op
+    quickshop.preview:
+        description: Permission for preview item use GUI
+        default: true
