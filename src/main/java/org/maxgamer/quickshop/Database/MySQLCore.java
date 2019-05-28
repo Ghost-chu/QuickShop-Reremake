@@ -63,14 +63,13 @@ public class MySQLCore implements DatabaseCore {
                 } catch (InterruptedException e) {
                 }
                 // Try again
-                this.getConnection();
+                con = this.getConnection();
             }
             PreparedStatement ps = bs.prepareStatement(con);
             ps.execute();
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            return;
         }
     }
 
