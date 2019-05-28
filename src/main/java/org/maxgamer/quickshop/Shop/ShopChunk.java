@@ -1,5 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
+import lombok.*;
+
+@Getter
 public class ShopChunk {
     private String world;
     private int x;
@@ -13,18 +16,6 @@ public class ShopChunk {
         this.hash = this.x * this.z;    // We don't need to use the world's hash,
         // as these are seperated by world in
         // memory
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getZ() {
-        return this.z;
-    }
-
-    public String getWorld() {
-        return this.world;
     }
 
     @Override
