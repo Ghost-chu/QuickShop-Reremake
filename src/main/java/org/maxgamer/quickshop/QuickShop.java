@@ -138,7 +138,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
             getLogger().severe("WARNING: Test version may destory anything!");
             getLogger().severe(
-                    "WARNING: QSRR won't start without you confirm, nothing will changes before you turn on dev allowed.");
+                    "WARNING: QSRR won't start without you confirm, nothing will change before you turn on dev allowed.");
             if (!getConfig().getBoolean("dev-mode")) {
                 getLogger().severe(
                         "WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
