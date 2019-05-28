@@ -16,12 +16,12 @@ public class MySQLCore implements DatabaseCore {
 
     public MySQLCore(String host, String user, String pass, String database, String port, boolean useSSL) {
         info = new Properties();
-        info.put("autoReconnect", "true");
-        info.put("user", user);
-        info.put("password", pass);
-        info.put("useUnicode", "true");
-        info.put("characterEncoding", "utf8");
-        info.put("useSSL", useSSL);
+        info.setProperty("autoReconnect", "true");
+        info.setProperty("user", user);
+        info.setProperty("password", pass);
+        info.setProperty("useUnicode", "true");
+        info.setProperty("characterEncoding", "utf8");
+        info.setProperty("useSSL", String.valueOf(useSSL));
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
         for (int i = 0; i < MAX_CONNECTIONS; i++)
             pool.add(null);
