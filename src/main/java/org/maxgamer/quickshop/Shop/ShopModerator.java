@@ -9,12 +9,16 @@ public class ShopModerator {
     private UUID owner;
     private ArrayList<UUID> staffs;
 
-    public ShopModerator(ShopModerator shopModerator) {
+    private ShopModerator(ShopModerator shopModerator) {
         this.owner = shopModerator.owner;
         this.staffs = shopModerator.staffs;
     }
 
     public ShopModerator(UUID owner) {
+        this.owner = owner;
+        this.staffs = new ArrayList<UUID>();
+    }
+    public ShopModerator(UUID owner, ArrayList<UUID> staffs) {
         this.owner = owner;
         this.staffs = new ArrayList<UUID>();
     }
