@@ -47,6 +47,11 @@ public class ShopManager {
         return this.actions;
     }
 
+    /**
+     * Create a shop use Shop and Info object.
+     * @param shop
+     * @param info
+     */
     public void createShop(Shop shop, Info info) {
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
         Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
