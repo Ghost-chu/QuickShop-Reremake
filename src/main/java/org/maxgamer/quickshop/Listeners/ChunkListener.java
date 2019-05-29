@@ -11,6 +11,8 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.QueueAction;
+import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -34,9 +36,8 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 for (Shop shop : inChunk.values()) {
-                    Util.debugLog("Loading shop at " + shop.getLocation().toString());
-                    shop.onLoad();
-                    shop.setSignText();
+                    Util.debugLog("Add shop at " + shop.getLocation().toString()+" to waiting load queue.");
+                    plugin.getQueuedShopManager().add( new QueueShopObject(shop, new QueueAction[]{QueueAction.LOAD,QueueAction.SETSIGNTEXT}));
                 }
 
             }
@@ -50,7 +51,7 @@ public class ChunkListener implements Listener {
         if (inChunk == null)
             return;
         for (Shop shop : inChunk.values()) {
-            shop.onUnload();
+            plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.UNLOAD}));
         }
     }
 }

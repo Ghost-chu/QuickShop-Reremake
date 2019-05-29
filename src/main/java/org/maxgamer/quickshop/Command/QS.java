@@ -45,8 +45,8 @@ public class QS implements CommandExecutor {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null) {
                     shop.setUnlimited(!shop.isUnlimited());
-                    shop.setSignText();
-                    shop.update();
+                   shop.setSignText();
+                   shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                             (shop.isUnlimited() ? "unlimited" : "limited")));
                     return;
@@ -130,8 +130,8 @@ public class QS implements CommandExecutor {
 
         if (shop != null) {
             if (shop.getOwner().equals(p.getUniqueId()) || sender.hasPermission("quickshop.other.destroy")) {
-                shop.onUnload();
-                shop.delete();
+               shop.onUnload();
+               shop.delete();
             } else {
                 sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
             }
@@ -212,6 +212,7 @@ public class QS implements CommandExecutor {
                     @SuppressWarnings("deprecation")
                     OfflinePlayer p = this.plugin.getServer().getOfflinePlayer(args[1]);
                     shop.setOwner(p.getUniqueId());
+                    shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.new-owner",
                             this.plugin.getServer().getOfflinePlayer(shop.getOwner()).getName()));
@@ -639,7 +640,7 @@ public class QS implements CommandExecutor {
             }
 
             for (Shop shop : pendingRemoval)
-                shop.delete();
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE}));
 
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
@@ -958,11 +959,12 @@ public class QS implements CommandExecutor {
                     return;
                 }
             }
-            DatabaseHelper.removeShop(plugin.getDB(), Integer.parseInt(args[1]), Integer.parseInt(args[2]),
-                    Integer.parseInt(args[3]), args[4]);
+            //DatabaseHelper.removeShop(plugin.getDB(), Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+            //        Integer.parseInt(args[3]), args[4]);
             shop.onUnload();
+            shop.delete();
             sender.sendMessage(MsgUtil.getMessage("success-removed-shop"));
-        } catch (NumberFormatException | SQLException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
