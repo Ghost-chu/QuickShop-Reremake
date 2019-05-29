@@ -100,6 +100,7 @@ public class QuickShop extends JavaPlugin {
     private BootError bootError;
     private CustomInventoryListener customInventoryListener;
     private Compatibility compatibilityTool = new Compatibility(this);
+    private QueuedShopManager queuedShopManager;
     //private LWCPlugin lwcPlugin;
 
     /**
@@ -209,6 +210,7 @@ public class QuickShop extends JavaPlugin {
 
         // Create the shop manager.
         this.shopManager = new ShopManager(this);
+        this.queuedShopManager = new QueuedShopManager(this);
         if (this.display) {
             // Display item handler thread
             getLogger().info("Starting item scheduler");
@@ -425,8 +427,7 @@ public class QuickShop extends JavaPlugin {
                     shopManager.loadShop(rs.getString("world"), shop);
                     //if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
                     if (Util.isLoaded(loc)) {
-                        shop.onLoad();
-                        shop.setSignText();
+                        this.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.LOAD,QueueAction.SETSIGNTEXT}));
                     } else {
                         loadAfterChunkLoaded++;
                         continue;
@@ -835,6 +836,15 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("database.usessl", false);
             getConfig().set("config-version", 27);
             selectedVersion = 27;
+            saveConfig();
+            reloadConfig();
+
+        }
+        if (selectedVersion == 27) {
+            getConfig().set("queue.enable", true);
+            getConfig().set("queue.shops-per-tick", 5);
+            getConfig().set("config-version", 28);
+            selectedVersion = 28;
             saveConfig();
             reloadConfig();
 

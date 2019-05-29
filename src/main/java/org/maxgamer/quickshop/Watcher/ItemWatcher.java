@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.QueueAction;
+import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
 
@@ -45,7 +47,7 @@ public class ItemWatcher implements Runnable {
         }
         // Now we can remove it.
         for (Shop shop : toRemove) {
-            shop.delete();
+            new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE});
         }
     }
 }

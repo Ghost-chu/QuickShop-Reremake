@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 public abstract interface Shop {
     public abstract Shop clone();
 
+    public abstract void checkDisplay();
+
     public abstract int getRemainingStock();
 
     public abstract int getRemainingSpace();
