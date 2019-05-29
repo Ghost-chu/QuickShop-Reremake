@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.QueueAction;
+import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
 
@@ -59,7 +61,7 @@ public class WorldListener implements Listener {
             if (inChunk == null)
                 continue;
             for (Shop shop : inChunk.values()) {
-                shop.onLoad();
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.LOAD}));
             }
         }
     }
@@ -77,7 +79,7 @@ public class WorldListener implements Listener {
             if (inChunk == null)
                 continue;
             for (Shop shop : inChunk.values()) {
-                shop.onUnload();
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.UNLOAD}));
             }
         }
     }
