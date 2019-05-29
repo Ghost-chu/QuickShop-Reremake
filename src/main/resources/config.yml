@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 27
+config-version: 28
 
 #Select language you want use, (e.g de), use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -172,6 +172,12 @@ shop:
     #Check itemstack more strict!
     strict-matches-check: false
 
+#ShopQueue can help low-performance server load shops one by one not all in same time.
+#This feature can help solve server laggy when load huge numbers shops or dead-lock threads.
+queue:
+    #Enable shop queue feature
+    enable: true
+    shops-per-tick: 5
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:

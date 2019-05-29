@@ -16,9 +16,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.Info;
-import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopAction;
+import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -81,6 +79,7 @@ public class BlockListener implements Listener {
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
+            shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
         } else if (Util.isWallSign(b.getType())) {
@@ -165,7 +164,7 @@ public class BlockListener implements Listener {
                 plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of " + shop);
                 Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
             } else {
-                shop.delete();
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE}));
             }
         }
     }
@@ -220,7 +219,7 @@ public class BlockListener implements Listener {
                     plugin.getLogger().warning("[Exploit Alert] a EntityExplode tried to break the shop of " + shop);
                     Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A EntityExplode tried to break the shop of " + shop);
                 } else {
-                    shop.delete();
+                    plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE}));
                 }
             }
         }
@@ -237,7 +236,7 @@ public class BlockListener implements Listener {
                     plugin.getLogger().warning("[Exploit Alert] a BlockExplode tried to break the shop of " + shop);
                     Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A BlockExplode tried to break the shop of " + shop);
                 } else {
-                    shop.delete();
+                    plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE}));
                 }
             }
         }

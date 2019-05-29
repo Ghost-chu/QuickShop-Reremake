@@ -648,7 +648,7 @@ public class ContainerShop implements Shop {
         return Util.canBeShop(this.getLocation().getBlock(), null);
     }
 
-    private void checkDisplay() {
+    public void checkDisplay() {
         if (plugin.isDisplay() == false)
             return;
         if (getLocation().getWorld() == null)
