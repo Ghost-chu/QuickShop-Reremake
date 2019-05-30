@@ -23,7 +23,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -223,7 +222,7 @@ public class ContainerShop implements Shop {
         //String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
         try {
             //plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
-            DatabaseHelper.updateShop(plugin.getDB(), ShopModerator.serialize(this.moderator.clone()), this
+            plugin.getDatabaseHelper().updateShop(plugin.getDatabase(), ShopModerator.serialize(this.moderator.clone()), this
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
             e.printStackTrace();
@@ -660,7 +659,7 @@ public class ContainerShop implements Shop {
         } else {
             try {
                 plugin.getShopManager().removeShop(this);
-                DatabaseHelper.removeShop(plugin.getDB(), x, y, z, world);
+                plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), x, y, z, world);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
