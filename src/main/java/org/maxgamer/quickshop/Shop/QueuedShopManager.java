@@ -33,7 +33,7 @@ public class QueuedShopManager {
                     if(loadedShopInTick >= maxShopLoadPerTick) //Max loads check
                         break; //Jump out, go next tick
                     QueueShopObject queueShopObject = shopQueue.peek(); //Load QueueShopObject
-                    if(shopQueue == null) //No more queue need to do
+                    if(queueShopObject == null) //No more queue need to do
                         break; //Jump out, go next tick
                     QueueAction[] actions = queueShopObject.getAction();
                     for (QueueAction action : actions){ //Run actions.
