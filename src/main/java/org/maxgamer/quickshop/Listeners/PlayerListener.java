@@ -57,7 +57,7 @@ public class PlayerListener implements Listener {
     public void onClick(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
-            if (!Util.canBeShop(b, null) && !Util.isWallSign(b.getType())) {
+            if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
                 return;
             }
             Player p = e.getPlayer();
@@ -110,7 +110,7 @@ public class PlayerListener implements Listener {
             // Handles creating shops
 
             else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && p.hasPermission("quickshop.create.sell") && Util.canBeShop(b, p.getUniqueId())
+                    && p.hasPermission("quickshop.create.sell") && Util.canBeShop(b)
                     && p.getGameMode() != GameMode.CREATIVE) {
                 if (e.useInteractedBlock() == Result.DENY)
                     return;
@@ -136,7 +136,7 @@ public class PlayerListener implements Listener {
                         return;
                     }
                 }
-                if (!Util.canBeShop(b, e.getPlayer().getUniqueId()) && Util.isWallSign(b.getType())) {
+                if (!Util.canBeShop(b) && Util.isWallSign(b.getType())) {
                     return;
                 }
                 // Finds out where the sign should be placed for the shop
