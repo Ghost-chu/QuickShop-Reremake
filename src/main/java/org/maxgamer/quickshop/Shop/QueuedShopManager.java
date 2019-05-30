@@ -17,27 +17,28 @@ public class QueuedShopManager {
     /**
      * QueuedShopManager can help you process shops by queue not in once
      * This can solve some performance issue
+     *
      * @param quickshop
      */
-    public QueuedShopManager(QuickShop quickshop){
+    public QueuedShopManager(QuickShop quickshop) {
         this.plugin = quickshop;
         this.useQueue = plugin.getConfig().getBoolean("queue.enable");
-        if(!useQueue)
+        if (!useQueue)
             return;
-        maxShopLoadPerTick =  plugin.getConfig().getInt("queue.shops-per-tick");
-        new BukkitRunnable(){
+        maxShopLoadPerTick = plugin.getConfig().getInt("queue.shops-per-tick");
+        new BukkitRunnable() {
             @Override
             public void run() {
                 int loadedShopInTick = 0;
-                while (true){
-                    if(loadedShopInTick >= maxShopLoadPerTick) //Max loads check
+                while (true) {
+                    if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
                         break; //Jump out, go next tick
                     QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
-                    if(queueShopObject == null) //No more queue need to do
+                    if (queueShopObject == null) //No more queue need to do
                         break; //Jump out, go next tick
                     QueueAction[] actions = queueShopObject.getAction();
-                    for (QueueAction action : actions){ //Run actions.
-                        switch (action){
+                    for (QueueAction action : actions) { //Run actions.
+                        switch (action) {
                             case LOAD:
                                 queueShopObject.getShop().onLoad();
                                 break;
@@ -69,11 +70,12 @@ public class QueuedShopManager {
 
     /**
      * Add QueueShopObjects to queue
+     *
      * @param queueShopObjects target object you want add
      */
-    public void add(QueueShopObject... queueShopObjects){
-        for (QueueShopObject queueShopObject : queueShopObjects){
-           this.shopQueue.offer(queueShopObject);
+    public void add(QueueShopObject... queueShopObjects) {
+        for (QueueShopObject queueShopObject : queueShopObjects) {
+            this.shopQueue.offer(queueShopObject);
         }
     }
     // /**

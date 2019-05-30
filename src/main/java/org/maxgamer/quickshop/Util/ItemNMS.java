@@ -34,6 +34,7 @@ public abstract class ItemNMS {
 
     /**
      * Save ItemStack to Json passthrough the NMS.
+     *
      * @param bStack
      * @return The json for ItemStack.
      * @throws Throwable

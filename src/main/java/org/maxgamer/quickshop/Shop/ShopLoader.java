@@ -39,7 +39,7 @@ public class ShopLoader {
             this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
             while (rs.next()) {
                 UUID singleShopLoadTimer = Util.setTimer();
-                Util.debugLog("New single timer was set: "+singleShopLoadTimer.toString());
+                Util.debugLog("New single timer was set: " + singleShopLoadTimer.toString());
 
                 Util.debugLog("Reading [Database data] to [Origin shop data]");
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
@@ -88,8 +88,10 @@ public class ShopLoader {
             }
             long totalUsedTime = Util.endTimer(totalLoadTimer);
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
-            this.plugin.getLogger().info("Successfully loaded "+totalLoaded+" shops! (Used "+totalUsedTime+"ms, Avg "+avgPerShop+"ms per shop)");
-            this.plugin.getLogger().info(this.loadAfterChunkLoaded+" shops will load after chunk loaded, "+this.loadAfterWorldLoaded+" shops will load after world loaded.");
+            this.plugin.getLogger()
+                    .info("Successfully loaded " + totalLoaded + " shops! (Used " + totalUsedTime + "ms, Avg " + avgPerShop + "ms per shop)");
+            this.plugin.getLogger()
+                    .info(this.loadAfterChunkLoaded + " shops will load after chunk loaded, " + this.loadAfterWorldLoaded + " shops will load after world loaded.");
             //     while (rs.next()) {
             //         int x = 0;
             //         int y = 0;
@@ -251,7 +253,7 @@ public class ShopLoader {
 
     private void singleShopLoaded(@NotNull UUID singleShopLoadTimer) {
         totalLoaded++;
-        Util.debugLog("New single timer was ended: "+singleShopLoadTimer.toString());
+        Util.debugLog("New single timer was ended: " + singleShopLoadTimer.toString());
         long singleShopLoadTime = Util.endTimer(singleShopLoadTimer);
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
@@ -299,25 +301,25 @@ public class ShopLoader {
         logger.warning("  >> Database Info");
         try {
             logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
-        } catch (SQLException|NullPointerException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.warning("Connected: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
-        } catch (SQLException|NullPointerException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.warning("Readonly: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
-        } catch (SQLException|NullPointerException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.warning("ClientInfo: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("Metadata: " + String.valueOf(plugin.getDatabase().getConnection().getMetaData().toString()));
-        } catch (SQLException|NullPointerException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.warning("Metadata: " + "FALSE - Failed reload status.");
         }
 
