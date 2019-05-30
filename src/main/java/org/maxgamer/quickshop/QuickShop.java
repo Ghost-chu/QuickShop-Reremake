@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import lombok.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -286,13 +285,14 @@ public class QuickShop extends JavaPlugin {
                             if (cShop.checkDisplayMoved()) {
                                 log("Display item for " + shop
                                         + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
-                                for (Player player : getServer().getOnlinePlayers()) {
-                                    if (player.hasPermission("quickshop.alerts")) {
-                                        player.sendMessage(ChatColor.RED + "[QuickShop] Display item for " + shop
-                                                + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
-                                    }
-                                }
-                                cShop.getDisplayItem().remove();
+                                // for (Player player : getServer().getOnlinePlayers()) {
+                                //     if (player.hasPermission("quickshop.alerts")) {
+                                //         player.sendMessage(ChatColor.RED + "[QuickShop] Display item for " + shop
+                                //                 + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                                //     }
+                                // }
+                                Util.sendMessageToOps("[QuickShop] Display item for " + shop + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                                getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.REMOVEDISPLAYITEM));
                             }
                         }
                     }

@@ -4,7 +4,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class QueueShopObject {
     /**
      * The shop you want to do actions
@@ -14,4 +13,10 @@ public class QueueShopObject {
      * The actions you want to do
      */
     private QueueAction[] action;
+
+    public QueueShopObject(Shop shop, QueueAction... action) {
+        this.shop = shop;
+        this.action = action;
+    }
+
 }
