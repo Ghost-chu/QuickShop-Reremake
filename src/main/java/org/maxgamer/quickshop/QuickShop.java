@@ -710,6 +710,10 @@ public class QuickShop extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
+        /* Stop queue processor */
+        this.getDatabaseManager().uninit();
+        this.getQueuedShopManager().uninit();
+
         if (itemWatcherTask != null) {
             itemWatcherTask.cancel();
         }
@@ -729,9 +733,6 @@ public class QuickShop extends JavaPlugin {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        /* Stop queue processor */
-        this.getDatabaseManager().uninit();
-        this.getQueuedShopManager().uninit();
 
         this.warnings.clear();
         this.reloadConfig();
