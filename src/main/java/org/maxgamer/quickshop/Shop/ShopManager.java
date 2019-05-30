@@ -19,8 +19,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
-import org.maxgamer.quickshop.Database.Database;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -33,10 +31,6 @@ public class ShopManager {
 
     public ShopManager(QuickShop plugin) {
         this.plugin = plugin;
-    }
-
-    public Database getDatabase() {
-        return plugin.getDB();
     }
 
     /**
@@ -63,7 +57,8 @@ public class ShopManager {
         ItemStack item = shop.getItem();
         try {
             // Write it to the database
-            DatabaseHelper.createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), item, (shop.isUnlimited() ?
+            plugin.getDatabaseHelper().createShop(plugin.getDatabase(), ShopModerator.serialize(shop.getModerator()), shop
+                    .getPrice(), item, (shop.isUnlimited() ?
                     1 :
                     0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             // Add it to the world
