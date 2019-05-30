@@ -42,6 +42,7 @@ public class DatabaseManager {
             if (statement == null)
                 break;
             try {
+                Util.debugLog("Executing the SQL task...");
                 statement.execute();
 
             } catch (SQLException sqle) {
