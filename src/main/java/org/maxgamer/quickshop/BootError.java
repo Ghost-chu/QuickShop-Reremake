@@ -18,10 +18,11 @@ public class BootError {
     /**
      * Print the errors.
      * #####################################################
-     *  QuickShop is disabled, Please fix errors and restart
-     *  ..........................
+     * QuickShop is disabled, Please fix errors and restart
+     * ..........................
      * ####################################################
      * This one.
+     *
      * @param sender
      */
     public void printErrors(CommandSender sender) {

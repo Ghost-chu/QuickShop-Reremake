@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Command;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,7 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -20,10 +18,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
-import org.maxgamer.quickshop.Database.Database;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -45,8 +39,8 @@ public class QS implements CommandExecutor {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null) {
                     shop.setUnlimited(!shop.isUnlimited());
-                   shop.setSignText();
-                   shop.update();
+                    shop.setSignText();
+                    shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                             (shop.isUnlimited() ? "unlimited" : "limited")));
                     return;
@@ -130,8 +124,8 @@ public class QS implements CommandExecutor {
 
         if (shop != null) {
             if (shop.getOwner().equals(p.getUniqueId()) || sender.hasPermission("quickshop.other.destroy")) {
-               shop.onUnload();
-               shop.delete();
+                shop.onUnload();
+                shop.delete();
             } else {
                 sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
             }
@@ -640,7 +634,7 @@ public class QS implements CommandExecutor {
             }
 
             for (Shop shop : pendingRemoval)
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.DELETE}));
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.DELETE }));
 
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));

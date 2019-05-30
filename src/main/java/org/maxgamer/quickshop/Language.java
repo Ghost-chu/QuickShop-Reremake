@@ -36,8 +36,9 @@ public class Language {
 
     /**
      * Get target language's type file.
+     *
      * @param language The target language
-     * @param type The file type for you want get. e.g. messages
+     * @param type     The file type for you want get. e.g. messages
      * @return The target file's InputStream.
      */
     public InputStream getFile(String language, String type) {
@@ -56,8 +57,9 @@ public class Language {
 
     /**
      * Save the target language's type file to the datafolder
+     *
      * @param language Target language
-     * @param type Target type
+     * @param type     Target type
      * @param fileName The filename you want write to the plugin datafolder.
      */
     public void saveFile(String language, String type, String fileName) {

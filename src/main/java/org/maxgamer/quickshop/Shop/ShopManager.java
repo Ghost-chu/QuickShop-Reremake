@@ -49,6 +49,7 @@ public class ShopManager {
 
     /**
      * Create a shop use Shop and Info object.
+     *
      * @param shop
      * @param info
      */
