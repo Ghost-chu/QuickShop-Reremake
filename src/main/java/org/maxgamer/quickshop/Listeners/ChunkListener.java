@@ -38,7 +38,7 @@ public class ChunkListener implements Listener {
                 for (Shop shop : inChunk.values()) {
                     Util.debugLog("Add shop at " + shop.getLocation().toString() + " to waiting load queue.");
                     plugin.getQueuedShopManager()
-                            .add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.LOAD, QueueAction.SETSIGNTEXT }));
+                            .add(new QueueShopObject(shop, QueueAction.LOAD, QueueAction.SETSIGNTEXT));
                 }
 
             }
@@ -52,7 +52,7 @@ public class ChunkListener implements Listener {
         if (inChunk == null)
             return;
         for (Shop shop : inChunk.values()) {
-            plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.UNLOAD }));
+            plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
         }
     }
 }

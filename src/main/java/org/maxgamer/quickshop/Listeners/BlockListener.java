@@ -164,7 +164,7 @@ public class BlockListener implements Listener {
                 plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of " + shop);
                 Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
             } else {
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.DELETE }));
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
             }
         }
     }
@@ -219,7 +219,7 @@ public class BlockListener implements Listener {
                     plugin.getLogger().warning("[Exploit Alert] a EntityExplode tried to break the shop of " + shop);
                     Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A EntityExplode tried to break the shop of " + shop);
                 } else {
-                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.DELETE }));
+                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
                 }
             }
         }
@@ -236,7 +236,7 @@ public class BlockListener implements Listener {
                     plugin.getLogger().warning("[Exploit Alert] a BlockExplode tried to break the shop of " + shop);
                     Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A BlockExplode tried to break the shop of " + shop);
                 } else {
-                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.DELETE }));
+                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
                 }
             }
         }
