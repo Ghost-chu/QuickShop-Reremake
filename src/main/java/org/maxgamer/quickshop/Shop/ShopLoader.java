@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
@@ -19,7 +20,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class ShopLoader {
     private QuickShop plugin;
     private int errors;
-    private ArrayList<Double> loadTimes;
+    private ArrayList<Long> loadTimes;
     private int totalLoaded = 0;
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
@@ -84,10 +85,9 @@ public class ShopLoader {
                 singleShopLoaded(singleShopLoadTimer);
             }
             long totalUsedTime = Util.endTimer(totalLoadTimer);
-            Double[] doubles = loadTimes.toArray(new Double[loadTimes.size()]);
-            long avgPerShop = new Double(mean(doubles)).longValue();
+            long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin.getLogger().info("Successfully loaded "+totalLoaded+" shops! (Used "+totalUsedTime+"ms, Avg "+avgPerShop+"ms per shop)");
-
+            this.plugin.getLogger().info(this.loadAfterChunkLoaded+" shops will load after chunk loaded, "+this.loadAfterWorldLoaded+" shops will load after world loaded.");
             //     while (rs.next()) {
             //         int x = 0;
             //         int y = 0;
@@ -239,18 +239,18 @@ public class ShopLoader {
         }
     }
 
-    private double mean(Double[] m) {
-        double sum = 0;
-        for (int i = 0; i < m.length; i++) {
-            sum += m[i];
+    private Long mean(Long[] m) {
+        long sum = 0;
+        for (Long aM : m) {
+            sum += aM;
         }
         return sum / m.length;
     }
 
-    private void singleShopLoaded(UUID singleShopLoadTimer) {
+    private void singleShopLoaded(@NotNull UUID singleShopLoadTimer) {
         totalLoaded++;
         long singleShopLoadTime = Util.endTimer(singleShopLoadTimer);
-        loadTimes.add(Long.valueOf(singleShopLoadTime).doubleValue());
+        loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
 
@@ -271,14 +271,14 @@ public class ShopLoader {
             Util.debugLog("Shop World is null");
             return true;
         }
-        if (shop.getLocation().getChunk() == null) {
-            Util.debugLog("Shop Chunk is null");
-            return true;
-        }
-        if (shop.getLocation().getBlock() == null) {
-            Util.debugLog("Shop Block is null");
-            return true;
-        }
+        // if (shop.getLocation().getChunk() == null) {
+        //     Util.debugLog("Shop Chunk is null");
+        //     return true;
+        // }
+        // if (shop.getLocation().getBlock() == null) {
+        //     Util.debugLog("Shop Block is null");
+        //     return true;
+        // }
         return false;
     }
 
@@ -410,7 +410,7 @@ public class ShopLoader {
             //     shopModerator = ShopModerator.deserialize(moderators);
             // }
             //
-            ShopModerator shopModerator = null;
+            ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data...");
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); //New one
