@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 //import org.maxgamer.quickshop.Util.NMS;
 
 /**
@@ -177,5 +178,23 @@ public class DisplayItem {
      */
     public Item getItem() {
         return this.item;
+    }
+
+    public static void checkDisplayMove(Shop shop) {
+        if (shop instanceof ContainerShop) {
+            ContainerShop cShop = (ContainerShop) shop;
+            if (cShop.checkDisplayMoved()) {
+                //log("Display item for " + shop
+                //        + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                // for (Player player : getServer().getOnlinePlayers()) {
+                //     if (player.hasPermission("quickshop.alerts")) {
+                //         player.sendMessage(ChatColor.RED + "[QuickShop] Display item for " + shop
+                //                 + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                //     }
+                // }
+                Util.sendMessageToOps("[QuickShop] Display item for " + shop + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.REMOVEDISPLAYITEM));
+            }
+        }
     }
 }
