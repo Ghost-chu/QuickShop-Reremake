@@ -23,6 +23,11 @@ public class UpdateWatcher implements Listener {
             @Override
             public void run() {
                 info = Updater.checkUpdate();
+
+                if (info.getVersion() == null) {
+                    hasNewUpdate = false;
+                    return;
+                }
                 if (!info.getIsNewUpdate()) {
                     hasNewUpdate = false;
                     return;
