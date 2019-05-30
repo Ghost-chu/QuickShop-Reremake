@@ -1,24 +1,19 @@
 package org.maxgamer.quickshop;
 
 import java.io.File;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
-import com.google.common.io.Files;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -101,6 +96,7 @@ public class QuickShop extends JavaPlugin {
     private CustomInventoryListener customInventoryListener;
     private Compatibility compatibilityTool = new Compatibility(this);
     private QueuedShopManager queuedShopManager;
+    private ShopLoader shopLoader;
     //private LWCPlugin lwcPlugin;
 
     /**
@@ -251,7 +247,8 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
 
-        loadShops();
+        shopLoader = new ShopLoader(this);
+        shopLoader.loadShops();
 
         if (getConfig().getBoolean("shop.lock")) {
             LockListener lockListener = new LockListener(this);
@@ -348,199 +345,176 @@ public class QuickShop extends JavaPlugin {
         UpdateWatcher.init();
     }
 
-    /**
-     * Load all shops from database to RAM
-     */
-    private void loadShops() {
-        /* Load shops from database to memory */
-        int count = 0; // Shops count
-        int skipedShops = 0;
-        int loadAfterChunkLoaded = 0;
-        boolean isBackuped = false;
-        UUID totalTimer = Util.setTimer();
-        try {
-            getLogger().info("Loading shops from database...");
-            UUID fetchUUID = Util.setTimer();
-            ResultSet rs = DatabaseHelper.selectAllShops(database);
-            getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
-            int errors = 0;
+    // /**
+    //  * Load all shops from database to RAM
+    //  */
+    // private void loadShops() {
+    //     /* Load shops from database to memory */
+    //     int count = 0; // Shops count
+    //     int skipedShops = 0;
+    //     int loadAfterChunkLoaded = 0;
+    //     boolean isBackuped = false;
+    //     UUID totalTimer = Util.setTimer();
+    //     try {
+    //         getLogger().info("Loading shops from database...");
+    //         UUID fetchUUID = Util.setTimer();
+    //         ResultSet rs = DatabaseHelper.selectAllShops(database);
+    //         getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
+    //         int errors = 0;
+    //
+    //         while (rs.next()) {
+    //             int x = 0;
+    //             int y = 0;
+    //             int z = 0;
+    //             String worldName = null;
+    //             ItemStack item = null;
+    //             String moderators = null;
+    //
+    //             try {
+    //                 x = rs.getInt("x");
+    //                 y = rs.getInt("y");
+    //                 z = rs.getInt("z");
+    //                 worldName = rs.getString("world");
+    //                 World world = Bukkit.getWorld(worldName);
+    //                 if (world == null) {
+    //                     //Maybe world not loaded yet?, skipping
+    //                     skipedShops++;
+    //                     Util.debugLog("Found a shop can't match shop's world: " + worldName + ", it got removed or just not loaded? Ignore it...");
+    //                     continue;
+    //                 }
+    //
+    //                 item = Util.deserialize(rs.getString("itemConfig"));
+    //                 moderators = rs.getString("owner"); //Get origin data
+    //                 ShopModerator shopModerator = null;
+    //                 try {
+    //                     UUID.fromString(moderators);
+    //                     if (!isBackuped) {
+    //                         backupDatabase();
+    //                         isBackuped = true;
+    //                     }
+    //                     Util.debugLog("Updating old shop data...");
+    //                     shopModerator = new ShopModerator(UUID.fromString(moderators)); //New one
+    //                     moderators = ShopModerator.serialize(shopModerator); //Serialize
+    //                 } catch (IllegalArgumentException ex) {
+    //                     //This expcetion is normal, cause i need check that is or not a UUID.
+    //                     shopModerator = ShopModerator.deserialize(moderators);
+    //                 }
+    //                 double price = rs.getDouble("price");
+    //                 Location loc = new Location(world, x, y, z);
+    //
+    //                 /* Skip invalid shops, if we know of any */
+    //                 if (!Util.canBeShop(loc.getBlock(), null)) {
+    //                     getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
+    //                             + ", " + y + ", " + z + ".  Deleting.");
+    //                     if (!isBackuped) {
+    //                         if (backupDatabase())
+    //                             isBackuped = true;
+    //                     }
+    //                     if (isBackuped) {
+    //                         DatabaseHelper.removeShop(database, x, y, z, worldName);
+    //                     } else {
+    //                         getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+    //                     }
+    //                     continue;
+    //                 }
+    //                 int type = rs.getInt("type");
+    //                 Shop shop = new ContainerShop(loc, price, item, shopModerator);
+    //                 shop.setUnlimited(rs.getBoolean("unlimited"));
+    //                 shop.setShopType(ShopType.fromID(type));
+    //                 shopManager.loadShop(rs.getString("world"), shop);
+    //                 //if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
+    //                 if (Util.isLoaded(loc)) {
+    //                     this.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.LOAD,QueueAction.SETSIGNTEXT}));
+    //                 } else {
+    //                     loadAfterChunkLoaded++;
+    //                     continue;
+    //                 }
+    //                 count++;
+    //             } catch (Exception e) {
+    //                 errors++;
+    //                 getLogger().warning("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
+    //                         + ", " + z + ")] Item: " + item.getType().name() + "...");
+    //                 getLogger().warning("===========Error Reporting Start===========");
+    //                 getLogger().warning("#Java throw >>");
+    //                 getLogger().warning("StackTrace:");
+    //                 e.printStackTrace();
+    //                 getLogger().warning("#Shop data >>");
+    //                 getLogger().warning("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
+    //                 getLogger().warning(
+    //                         "Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
+    //                 getLogger().warning("Moderators: " + moderators);
+    //                 try {
+    //                     getLogger().warning(
+    //                             "BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
+    //                 } catch (Exception e2) {
+    //                     getLogger().warning("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
+    //                 }
+    //                 try {
+    //                     getLogger().warning(
+    //                             "Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
+    //                 } catch (Exception e2) {
+    //                     getLogger().warning("Target Block: Can't get block!");
+    //                 }
+    //                 getLogger().warning("#Database info >>");
+    //
+    //                 getLogger().warning("Connected:" + !getDB().getConnection().isClosed());
+    //                 getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
+    //
+    //                 if (getDB().getConnection().getClientInfo() != null) {
+    //                     getLogger().warning("Client Info: " + getDB().getConnection().getClientInfo().toString());
+    //                 } else {
+    //                     getLogger().warning("Client Info: null");
+    //                 }
+    //                 getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
+    //                 getLogger().warning("#Tips >>");
+    //                 getLogger().warning("Please report this issues to author, And you database will auto backup!");
+    //
+    //                 getLogger().warning("===========Error Reporting End===========");
+    //
+    //                 if (errors < 3) {
+    //                     getLogger().info("Create backup for database..");
+    //                     if (!isBackuped) {
+    //                         //Backup it
+    //                         if (backupDatabase())
+    //                             isBackuped = true;
+    //                     }
+    //                     getLogger().info("Removeing shop from database...");
+    //                     if (isBackuped) {
+    //                         DatabaseHelper.removeShop(database, x, y, z, worldName);
+    //                     } else {
+    //                         getLogger().warning("Skipped shop deleteion: Failed to backup database,");
+    //                     }
+    //                     getLogger().info("Trying continue loading...");
+    //                 } else {
+    //                     getLogger().severe(
+    //                             "Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
+    //                     getLogger().info("Backuping database...");
+    //                     if (!isBackuped) {
+    //                         //Backup
+    //                         if (backupDatabase())
+    //                             isBackuped = true;
+    //                     }
+    //                     getLogger().info("Removeing shop from database...");
+    //                     if (isBackuped) {
+    //                         DatabaseHelper.removeShop(database, x, y, z, worldName);
+    //                     } else {
+    //                         getLogger().warning("Skipped shop deleteion: Failed to backup database.");
+    //                     }
+    //                     e.printStackTrace();
+    //                 } /*Error reporting, this is too long so i folding it.*/
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //         getLogger().severe("Could not load shops Because SQLException.");
+    //     }
+    //     getLogger().info("Loaded " + count + " shops (" + Util.endTimer(totalTimer) + "ms)");
+    //     getLogger().info("Other " + skipedShops + " shops will load when worlds loaded.");
+    //     getLogger().info("Have " + loadAfterChunkLoaded + " shops will load when chunks loaded.");
+    //
+    // }
 
-            while (rs.next()) {
-                int x = 0;
-                int y = 0;
-                int z = 0;
-                String worldName = null;
-                ItemStack item = null;
-                String moderators = null;
 
-                try {
-                    x = rs.getInt("x");
-                    y = rs.getInt("y");
-                    z = rs.getInt("z");
-                    worldName = rs.getString("world");
-                    World world = Bukkit.getWorld(worldName);
-                    if (world == null) {
-                        //Maybe world not loaded yet?, skipping
-                        skipedShops++;
-                        Util.debugLog("Found a shop can't match shop's world: " + worldName + ", it got removed or just not loaded? Ignore it...");
-                        continue;
-                    }
-
-                    item = Util.deserialize(rs.getString("itemConfig"));
-                    moderators = rs.getString("owner"); //Get origin data
-                    ShopModerator shopModerator = null;
-                    try {
-                        UUID.fromString(moderators);
-                        if (!isBackuped) {
-                            backupDatabase();
-                            isBackuped = true;
-                        }
-                        Util.debugLog("Updating old shop data...");
-                        shopModerator = new ShopModerator(UUID.fromString(moderators)); //New one
-                        moderators = ShopModerator.serialize(shopModerator); //Serialize
-                    } catch (IllegalArgumentException ex) {
-                        //This expcetion is normal, cause i need check that is or not a UUID.
-                        shopModerator = ShopModerator.deserialize(moderators);
-                    }
-                    double price = rs.getDouble("price");
-                    Location loc = new Location(world, x, y, z);
-
-                    /* Skip invalid shops, if we know of any */
-                    if (!Util.canBeShop(loc.getBlock(), null)) {
-                        getLogger().info("Shop is not an InventoryHolder in " + rs.getString("world") + " at: " + x
-                                + ", " + y + ", " + z + ".  Deleting.");
-                        if (!isBackuped) {
-                            if (backupDatabase())
-                                isBackuped = true;
-                        }
-                        if (isBackuped) {
-                            DatabaseHelper.removeShop(database, x, y, z, worldName);
-                        } else {
-                            getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-                        }
-                        continue;
-                    }
-                    int type = rs.getInt("type");
-                    Shop shop = new ContainerShop(loc, price, item, shopModerator);
-                    shop.setUnlimited(rs.getBoolean("unlimited"));
-                    shop.setShopType(ShopType.fromID(type));
-                    shopManager.loadShop(rs.getString("world"), shop);
-                    //if (loc.getWorld() != null && loc.getChunk().isLoaded()) {
-                    if (Util.isLoaded(loc)) {
-                        this.getQueuedShopManager().add(new QueueShopObject(shop,new QueueAction[]{QueueAction.LOAD,QueueAction.SETSIGNTEXT}));
-                    } else {
-                        loadAfterChunkLoaded++;
-                        continue;
-                    }
-                    count++;
-                } catch (Exception e) {
-                    errors++;
-                    getLogger().warning("Error loading a shop! Coords: Location[" + worldName + " (" + x + ", " + y
-                            + ", " + z + ")] Item: " + item.getType().name() + "...");
-                    getLogger().warning("===========Error Reporting Start===========");
-                    getLogger().warning("#Java throw >>");
-                    getLogger().warning("StackTrace:");
-                    e.printStackTrace();
-                    getLogger().warning("#Shop data >>");
-                    getLogger().warning("Location: " + worldName + ";(X:" + x + ", Y:" + y + ", Z:" + z + ")");
-                    getLogger().warning(
-                            "Item: " + item.getType().name() + " MetaData: " + item.getItemMeta().spigot().toString());
-                    getLogger().warning("Moderators: " + moderators);
-                    try {
-                        getLogger().warning(
-                                "BukkitWorld: " + Bukkit.getWorld(worldName).getName() + " [" + worldName + "]");
-                    } catch (Exception e2) {
-                        getLogger().warning("BukkitWorld: WARNING:World not exist! [" + worldName + "]");
-                    }
-                    try {
-                        getLogger().warning(
-                                "Target Block: " + Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name());
-                    } catch (Exception e2) {
-                        getLogger().warning("Target Block: Can't get block!");
-                    }
-                    getLogger().warning("#Database info >>");
-
-                    getLogger().warning("Connected:" + !getDB().getConnection().isClosed());
-                    getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
-
-                    if (getDB().getConnection().getClientInfo() != null) {
-                        getLogger().warning("Client Info: " + getDB().getConnection().getClientInfo().toString());
-                    } else {
-                        getLogger().warning("Client Info: null");
-                    }
-                    getLogger().warning("Read Only:" + getDB().getConnection().isReadOnly());
-                    getLogger().warning("#Tips >>");
-                    getLogger().warning("Please report this issues to author, And you database will auto backup!");
-
-                    getLogger().warning("===========Error Reporting End===========");
-
-                    if (errors < 3) {
-                        getLogger().info("Create backup for database..");
-                        if (!isBackuped) {
-                            //Backup it
-                            if (backupDatabase())
-                                isBackuped = true;
-                        }
-                        getLogger().info("Removeing shop from database...");
-                        if (isBackuped) {
-                            DatabaseHelper.removeShop(database, x, y, z, worldName);
-                        } else {
-                            getLogger().warning("Skipped shop deleteion: Failed to backup database,");
-                        }
-                        getLogger().info("Trying continue loading...");
-                    } else {
-                        getLogger().severe(
-                                "Multiple errors in shops - Something seems to be wrong with your shops database! Please check it out immediately!");
-                        getLogger().info("Backuping database...");
-                        if (!isBackuped) {
-                            //Backup
-                            if (backupDatabase())
-                                isBackuped = true;
-                        }
-                        getLogger().info("Removeing shop from database...");
-                        if (isBackuped) {
-                            DatabaseHelper.removeShop(database, x, y, z, worldName);
-                        } else {
-                            getLogger().warning("Skipped shop deleteion: Failed to backup database.");
-                        }
-                        e.printStackTrace();
-                    } /*Error reporting, this is too long so i folding it.*/
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            getLogger().severe("Could not load shops Because SQLException.");
-        }
-        getLogger().info("Loaded " + count + " shops (" + Util.endTimer(totalTimer) + "ms)");
-        getLogger().info("Other " + skipedShops + " shops will load when worlds loaded.");
-        getLogger().info("Have " + loadAfterChunkLoaded + " shops will load when chunks loaded.");
-
-    }
-
-    /**
-     * Backup shops.db
-     * @return The result for backup
-     */
-    private boolean backupDatabase() {
-        if (getDB().getCore() instanceof MySQLCore)
-            return true; //Backup and logs by MySQL
-        File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder(), "shop.db");
-        if (!sqlfile.exists()) {
-            getLogger().warning("Failed to backup! (File not found)");
-            return false;
-        }
-        String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-        File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
-                .getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
-        try {
-            Files.copy(sqlfile, bksqlfile);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            getLogger().warning("Failed to backup database.");
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {

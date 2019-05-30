@@ -81,6 +81,29 @@ public class ContainerShop implements Shop {
         }
         this.shopType = ShopType.SELLING;
     }
+    /**
+     * Adds a new shop.
+     *
+     * @param loc   The location of the chest block
+     * @param price The cost per item
+     * @param item  The itemstack with the properties we want. This is .cloned, no
+     *              need to worry about references
+     * @param owner The player who owns this shop.
+     */
+    public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator, boolean unlimited, ShopType type) {
+        this.loc = loc;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
+        this.item.setAmount(1);
+        if (plugin.isDisplay()) {
+            this.displayItem = new DisplayItem(this, this.item);
+        }
+        this.shopType = type;
+        this.unlimited = unlimited;
+
+    }
 
     /**
      * Returns the number of items this shop has in stock.
@@ -645,7 +668,7 @@ public class ContainerShop implements Shop {
 
     public boolean isValid() {
         checkDisplay();
-        return Util.canBeShop(this.getLocation().getBlock(), null);
+        return Util.canBeShop(this.getLocation().getBlock());
     }
 
     public void checkDisplay() {
