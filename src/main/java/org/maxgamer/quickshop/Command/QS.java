@@ -365,7 +365,7 @@ public class QS implements CommandExecutor {
 
                     while (bIt.hasNext()) {
                         Block b = bIt.next();
-                        if (Util.canBeShop(b, p.getUniqueId())) {
+                        if (Util.canBeShop(b)) {
                             if (p != null && b != null && p.isOnline()) {
                                 BlockBreakEvent be = new BlockBreakEvent(b, p);
                                 Bukkit.getPluginManager().callEvent(be);

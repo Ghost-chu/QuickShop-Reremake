@@ -27,7 +27,7 @@ public class LockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
         Block b = e.getClickedBlock();
-        if (!Util.canBeShop(b, null))
+        if (!Util.canBeShop(b))
             return;
         Player p = e.getPlayer();
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
@@ -98,7 +98,7 @@ public class LockListener implements Listener {
         }
         Player p = e.getPlayer();
         // If the chest was a chest
-        if (Util.canBeShop(b, null)) {
+        if (Util.canBeShop(b)) {
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop == null)
                 return; // Wasn't a shop
