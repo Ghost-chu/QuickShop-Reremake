@@ -1005,8 +1005,8 @@ public class QS implements CommandExecutor {
         s.sendMessage("Running " + plugin.getDescription().getVersion() + " on server "
                 + plugin.getServer().getVersion() + " for Bukkit " + plugin.getServer().getBukkitVersion());
         try {
-            s.sendMessage("Database: " + plugin.getDB().getConnection().getMetaData().getDatabaseProductName() + " @ "
-                    + plugin.getDB().getConnection().getMetaData().getDatabaseProductVersion());
+            s.sendMessage("Database: " + plugin.getDatabase().getConnection().getMetaData().getDatabaseProductName() + " @ "
+                    + plugin.getDatabase().getConnection().getMetaData().getDatabaseProductVersion());
         } catch (SQLException e) {
             s.sendMessage("Database: A error happed when getting data.");
             e.printStackTrace();

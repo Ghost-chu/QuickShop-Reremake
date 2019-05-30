@@ -13,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -35,7 +34,7 @@ public class ShopLoader {
         try {
             this.plugin.getLogger().info("Loading shops from database...");
             UUID fetchUUID = Util.setTimer();
-            ResultSet rs = DatabaseHelper.selectAllShops(this.plugin.getDatabase());
+            ResultSet rs = plugin.getDatabaseHelper().selectAllShops(this.plugin.getDatabase());
             this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
             while (rs.next()) {
                 UUID singleShopLoadTimer = Util.setTimer();
