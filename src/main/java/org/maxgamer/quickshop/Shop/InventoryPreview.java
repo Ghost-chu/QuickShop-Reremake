@@ -20,8 +20,9 @@ public class InventoryPreview implements Listener {
 
     /**
      * Create a preview item GUI for a player.
+     *
      * @param itemStack The item you want create.
-     * @param player Target player.
+     * @param player    Target player.
      */
     public InventoryPreview(ItemStack itemStack, Player player) {
         this.itemStack = itemStack.clone();

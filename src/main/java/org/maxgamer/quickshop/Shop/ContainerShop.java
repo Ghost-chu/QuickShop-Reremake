@@ -81,6 +81,7 @@ public class ContainerShop implements Shop {
         }
         this.shopType = ShopType.SELLING;
     }
+
     /**
      * Adds a new shop.
      *
