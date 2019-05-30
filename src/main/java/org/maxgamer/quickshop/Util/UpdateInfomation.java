@@ -13,20 +13,25 @@ public class UpdateInfomation {
 
     /**
      * Get newest version on SpigotMC.org
+     *
      * @return The newest version.
      */
     public String getVersion() {
         return version;
     }
+
     /**
      * Get target is or not a new update
+     *
      * @return Is have a new update
      */
     public boolean getIsNewUpdate() {
         return isNewUpdate;
     }
+
     /**
      * Get target build is or not a beta build.
+     *
      * @return Build status
      */
     public boolean getIsBeta() {
