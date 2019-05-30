@@ -13,6 +13,12 @@ public class QueuedShopManager {
     Queue<QueueShopObject> shopQueue = new LinkedBlockingQueue<>();
     int maxShopLoadPerTick = 0;
     boolean useQueue = false;
+
+    /**
+     * QueuedShopManager can help you process shops by queue not in once
+     * This can solve some performance issue
+     * @param quickshop
+     */
     public QueuedShopManager(QuickShop quickshop){
         this.plugin = quickshop;
         this.useQueue = plugin.getConfig().getBoolean("queue.enable");
@@ -30,7 +36,7 @@ public class QueuedShopManager {
                     if(shopQueue == null) //No more queue need to do
                         break; //Jump out, go next tick
                     QueueAction[] actions = queueShopObject.getAction();
-                    for (QueueAction action : actions){
+                    for (QueueAction action : actions){ //Run actions.
                         switch (action){
                             case LOAD:
                                 queueShopObject.getShop().onLoad();
@@ -61,6 +67,10 @@ public class QueuedShopManager {
         }.runTaskTimer(plugin, 0, 1);
     }
 
+    /**
+     * Add QueueShopObjects to queue
+     * @param queueShopObjects
+     */
     public void add(QueueShopObject... queueShopObjects){
         for (QueueShopObject queueShopObject : queueShopObjects){
            this.shopQueue.offer(queueShopObject);
