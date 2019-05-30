@@ -36,8 +36,8 @@ public class UpdateWatcher implements Listener {
                 hasNewUpdate = true;
 
                 if (!info.getIsBeta()) {
-                    QuickShop.instance.getLogger().warning("A new version of QuickShop has been released!");
-                    QuickShop.instance.getLogger().warning("Update here: https://www.spigotmc.org/resources/62575/");
+                    QuickShop.instance.getLogger().info("A new version of QuickShop has been released!");
+                    QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         if (player.isOp()) {
@@ -48,9 +48,9 @@ public class UpdateWatcher implements Listener {
                         }
                     });
                 } else {
-                    QuickShop.instance.getLogger().warning("A new BETA version of QuickShop is available!");
-                    QuickShop.instance.getLogger().warning("Update here: https://www.spigotmc.org/resources/62575/");
-                    QuickShop.instance.getLogger().warning("This is a BETA version, which means you should use with caution.");
+                    QuickShop.instance.getLogger().info("A new BETA version of QuickShop is available!");
+                    QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
+                    QuickShop.instance.getLogger().info("This is a BETA version, which means you should use with caution.");
                 }
 
             }
