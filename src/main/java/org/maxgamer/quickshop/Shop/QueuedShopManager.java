@@ -31,7 +31,7 @@ public class QueuedShopManager {
         task = new BukkitRunnable() {
             @Override
             public void run() {
-                plugin.getQueuedShopManager().runTask();
+                plugin.getQueuedShopManager().runTask(false);
             }
         }.runTaskTimer(plugin, 0, 1);
     }
@@ -39,14 +39,15 @@ public class QueuedShopManager {
     public void uninit() {
         task.cancel();
         plugin.getLogger().info("Please waiting for finish the shops queue works...");
-        runTask();
+        runTask(true);
     }
 
-    private void runTask() {
+    private void runTask(boolean shuttingDown) {
         int loadedShopInTick = 0;
         while (true) {
-            if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
-                break; //Jump out, go next tick
+            if (!shuttingDown)
+                if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
+                    break; //Jump out, go next tick
             QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
             if (queueShopObject == null) //No more queue need to do
                 break; //Jump out, go next tick
