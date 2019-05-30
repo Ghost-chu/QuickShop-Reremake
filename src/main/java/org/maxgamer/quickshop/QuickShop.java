@@ -280,21 +280,7 @@ public class QuickShop extends JavaPlugin {
                     Iterator<Shop> it = getShopManager().getShopIterator();
                     while (it.hasNext()) {
                         Shop shop = it.next();
-                        if (shop instanceof ContainerShop) {
-                            ContainerShop cShop = (ContainerShop) shop;
-                            if (cShop.checkDisplayMoved()) {
-                                log("Display item for " + shop
-                                        + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
-                                // for (Player player : getServer().getOnlinePlayers()) {
-                                //     if (player.hasPermission("quickshop.alerts")) {
-                                //         player.sendMessage(ChatColor.RED + "[QuickShop] Display item for " + shop
-                                //                 + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
-                                //     }
-                                // }
-                                Util.sendMessageToOps("[QuickShop] Display item for " + shop + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
-                                getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.REMOVEDISPLAYITEM));
-                            }
-                        }
+                        getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
                     }
                 }
             }.runTaskTimer(this, 1L, displayItemCheckTicks);
