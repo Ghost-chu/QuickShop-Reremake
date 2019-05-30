@@ -61,7 +61,7 @@ public class WorldListener implements Listener {
             if (inChunk == null)
                 continue;
             for (Shop shop : inChunk.values()) {
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.LOAD }));
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.LOAD));
             }
         }
     }
@@ -79,7 +79,7 @@ public class WorldListener implements Listener {
             if (inChunk == null)
                 continue;
             for (Shop shop : inChunk.values()) {
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.UNLOAD }));
+                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
             }
         }
     }

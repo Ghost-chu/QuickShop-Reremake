@@ -51,8 +51,8 @@ public class QueuedShopManager {
                             case SETSIGNTEXT:
                                 queueShopObject.getShop().setSignText();
                                 break;
-                            case CHECKDISPLAYMOVED:
-                                queueShopObject.getShop().checkDisplay();
+                            case REMOVEDISPLAYITEM:
+                                ((ContainerShop) queueShopObject.getShop()).getDisplayItem().remove();
                                 break;
                             case DELETE:
                                 queueShopObject.getShop().delete();
