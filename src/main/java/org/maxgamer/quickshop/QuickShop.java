@@ -706,6 +706,7 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
         if (noopDisable)
             return;
+        getLogger().info("QuickShop is finishing remaining works, this may need a while...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
@@ -728,6 +729,10 @@ public class QuickShop extends JavaPlugin {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        /* Stop queue processor */
+        this.getDatabaseManager().uninit();
+        this.getQueuedShopManager().uninit();
+
         this.warnings.clear();
         this.reloadConfig();
     }

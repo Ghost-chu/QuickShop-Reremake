@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -14,37 +15,47 @@ public class DatabaseManager {
     private Database database;
     private boolean useQueue;
     Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
-
+    BukkitTask task;
     public DatabaseManager(QuickShop plugin, Database db) {
         this.plugin = plugin;
         this.database = db;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
         if (!useQueue)
             return;
-        new BukkitRunnable() {
+        task = new BukkitRunnable() {
             @Override
             public void run() {
-                while (true) {
-                    PreparedStatement statement = sqlQueue.poll();
-                    if (statement == null)
-                        break;
-                    try {
-                        statement.execute();
-
-                    } catch (SQLException sqle) {
-                        sqle.printStackTrace();
-                    }
-
-                    //Close statement anyway.
-                    try {
-                        statement.close();
-                    } catch (SQLException sqle) {
-                        sqle.printStackTrace();
-                    }
-
-                }
+                plugin.getDatabaseManager().runTask();
             }
         }.runTaskTimer(plugin, 1, 200);
+    }
+
+    public void uninit() {
+        task.cancel();
+        plugin.getLogger().info("Please waiting for flushing data to database...");
+        runTask();
+    }
+
+    private void runTask() {
+        while (true) {
+            PreparedStatement statement = sqlQueue.poll();
+            if (statement == null)
+                break;
+            try {
+                statement.execute();
+
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+
+            //Close statement anyway.
+            try {
+                statement.close();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+
+        }
     }
 
     public void add(PreparedStatement ps) {
