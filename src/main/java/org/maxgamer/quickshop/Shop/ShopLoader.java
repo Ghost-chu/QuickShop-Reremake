@@ -71,6 +71,7 @@ public class ShopLoader {
                         Util.debugLog("Target block can't be shop, removing from database...");
                         shop.delete();
                         singleShopLoaded(singleShopLoadTimer);
+                        continue;
                     }
 
                     Util.debugLog("Loading shop to the world");
@@ -295,25 +296,25 @@ public class ShopLoader {
         logger.warning("  >> Database Info");
         try {
             logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
-        } catch (SQLException e) {
+        } catch (SQLException|NullPointerException e) {
             logger.warning("Connected: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
-        } catch (SQLException e) {
+        } catch (SQLException|NullPointerException e) {
             logger.warning("Readonly: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
-        } catch (SQLException e) {
+        } catch (SQLException|NullPointerException e) {
             logger.warning("ClientInfo: " + "FALSE - Failed reload status.");
         }
 
         try {
             logger.warning("Metadata: " + String.valueOf(plugin.getDatabase().getConnection().getMetaData().toString()));
-        } catch (SQLException e) {
+        } catch (SQLException|NullPointerException e) {
             logger.warning("Metadata: " + "FALSE - Failed reload status.");
         }
 
