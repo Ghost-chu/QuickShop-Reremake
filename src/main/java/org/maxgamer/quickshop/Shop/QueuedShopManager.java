@@ -69,12 +69,19 @@ public class QueuedShopManager {
 
     /**
      * Add QueueShopObjects to queue
-     * @param queueShopObjects
+     * @param queueShopObjects target object you want add
      */
     public void add(QueueShopObject... queueShopObjects){
         for (QueueShopObject queueShopObject : queueShopObjects){
            this.shopQueue.offer(queueShopObject);
         }
     }
+    // /**
+    //  * Add QueueShopObject to queue
+    //  * @param queueShopObject
+    //  */
+    // public void add(QueueShopObject queueShopObject){
+    //     this.shopQueue.offer(queueShopObject);
+    // }
 
 }

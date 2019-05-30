@@ -9,6 +9,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.google.common.io.Files;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
+import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -126,6 +128,7 @@ public class Util {
 
     /**
      * Parse colors for the YamlConfiguration.
+     *
      * @param config
      */
     public static void parseColours(YamlConfiguration config) {
@@ -139,8 +142,10 @@ public class Util {
             config.set(key, filtered);
         }
     }
+
     /**
      * Parse colors for the Text.
+     *
      * @param config
      */
     public static String parseColours(String text) {
@@ -154,7 +159,7 @@ public class Util {
      * @param b The block to check, Possibly a chest, dispenser, etc.
      * @return True if it can be made into a shop, otherwise false.
      */
-    public static boolean canBeShop(Block b, UUID playerUUID) {
+    public static boolean canBeShop(Block b) {
         BlockState bs = b.getState();
         if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
             return false;
@@ -165,13 +170,8 @@ public class Util {
                 return false;
             }
         }
-        if (playerUUID == null) {
-            return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation()
-                    .getWorld().getName()));
-        } else {
-            return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation()
-                    .getWorld().getName()));
-        }
+        return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation()
+                .getWorld().getName()));
 
     }
 
@@ -192,10 +192,10 @@ public class Util {
     /**
      * Returns the chest attached to the given chest. The given block must be a
      * chest.
-     * @deprecated
+     *
      * @param b he chest to check.
      * @return the block which is also a chest and connected to b.
-     *
+     * @deprecated
      */
     @Deprecated
     public static Block getSecondHalf_old(Block b) {
@@ -253,6 +253,7 @@ public class Util {
 
     /**
      * Check two location is or not equals for the BlockPosition on 2D
+     *
      * @param b1
      * @param b2
      * @return Equals or not.
@@ -261,8 +262,10 @@ public class Util {
         return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2
                 .getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
     }
+
     /**
      * Check two location is or not equals for the BlockPosition on 2D
+     *
      * @param b1
      * @param b2
      * @return Equals or not.
@@ -414,6 +417,7 @@ public class Util {
 
     /**
      * First uppercase for every words the first char for a text.
+     *
      * @param string
      * @return Processed text.
      */
@@ -623,17 +627,18 @@ public class Util {
 
     /**
      * Check a material is or not a WALL_SIGN
+     *
      * @param material
      * @return
      */
     public static boolean isWallSign(Material material) {
-		try {
-		if(Tag.WALL_SIGNS.isTagged(material))
-			return true;
-		}catch (Throwable e) {
-			if(material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
-				return true;
-		}
+        try {
+            if (Tag.WALL_SIGNS.isTagged(material))
+                return true;
+        } catch (Throwable e) {
+            if (material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
+                return true;
+        }
         //if (material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
         //    return true;
         return false;
@@ -715,6 +720,7 @@ public class Util {
 
     /**
      * Send the ItemPreview chat msg by NMS.
+     *
      * @param shop
      * @param itemStack
      * @param player
@@ -738,10 +744,12 @@ public class Util {
             sendItemholochatAsNormaly(itemStack, player, normalText);
         }
     }
+
     /**
      * Send the ItemPreview chat msg by Bukkit API.
      * More worst than NMS mode.
      * *STILL WIP*
+     *
      * @param shop
      * @param itemStack
      * @param player
@@ -823,6 +831,7 @@ public class Util {
 
     /**
      * Format ench level.
+     *
      * @param level
      * @return
      */
@@ -885,9 +894,10 @@ public class Util {
      */
     public static void sendDeprecatedMethodWarn() {
         QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
-        StackTraceElement[] stackTraceElements =  Thread.currentThread().getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTraceElements){
-            QuickShop.instance.getLogger().warning("at "+stackTraceElement.getClassName()+"#"+stackTraceElement.getMethodName()+" ("+stackTraceElement.getFileName()+":"+stackTraceElement.getLineNumber()+")");
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            QuickShop.instance.getLogger().warning("at " + stackTraceElement.getClassName() + "#" + stackTraceElement
+                    .getMethodName() + " (" + stackTraceElement.getFileName() + ":" + stackTraceElement.getLineNumber() + ")");
         }
     }
 
@@ -1009,6 +1019,7 @@ public class Util {
 
     /**
      * Get how many shop in the target world.
+     *
      * @param worldName Target world.
      * @return The shops.
      */
@@ -1026,6 +1037,7 @@ public class Util {
 
     /**
      * Read the file to the String
+     *
      * @param fileName Target file.
      * @return Target file's content.
      */
@@ -1054,6 +1066,7 @@ public class Util {
     /**
      * Get the sign material using by plugin.
      * With compatiabily process.
+     *
      * @return The material now using.
      */
     public static Material getSignMaterial() {
@@ -1077,6 +1090,7 @@ public class Util {
 
     /**
      * Read the InputStream to the byte array.
+     *
      * @param filePath Target file
      * @return Byte array
      */
@@ -1101,5 +1115,44 @@ public class Util {
             out.write(buffer, 0, n);
         }
         return out.toByteArray();
+    }
+
+    /**
+     * Backup shops.db
+     *
+     * @return The result for backup
+     */
+    public static boolean backupDatabase() {
+        if (plugin.getDatabase().getCore() instanceof MySQLCore)
+            return true; //Backup and logs by MySQL
+        File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder(), "shop.db");
+        if (!sqlfile.exists()) {
+            plugin.getLogger().warning("Failed to backup! (File not found)");
+            return false;
+        }
+        String uuid = UUID.randomUUID().toString().replaceAll("_", "");
+        File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+                .getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
+        try {
+            Files.copy(sqlfile, bksqlfile);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            plugin.getLogger().warning("Failed to backup database.");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isUUID(String string) {
+        if (string.length() != 36 && string.length() != 32)
+            return false;
+        Util.debugLog("Run extra uuid checking for " + string + ". Length: " + string.length());
+        try {
+            UUID.fromString(string);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
     }
 }
