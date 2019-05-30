@@ -62,7 +62,7 @@ public class MsgUtil {
             }
 
         //Print language copyright infomation
-
+        Util.parseColours(messagei18n);
         if (!Inited) {
             plugin.getLogger().info(getMessage("translation-author"));
             plugin.getLogger().info(getMessage("translation-contributors"));
@@ -76,7 +76,7 @@ public class MsgUtil {
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction from messages.yml. Skipping.");
         }
-        Util.parseColours(messagei18n);
+
     }
 
     public static void updateMessages(int selectedVersion) throws IOException {
