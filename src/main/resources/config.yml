@@ -177,7 +177,7 @@ shop:
 queue:
     #Enable shop queue feature
     enable: true
-    shops-per-tick: 5
+    shops-per-tick: 2
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
