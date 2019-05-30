@@ -20,7 +20,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class ShopLoader {
     private QuickShop plugin;
     private int errors;
-    private ArrayList<Long> loadTimes;
+    private ArrayList<Long> loadTimes = new ArrayList<>();
     private int totalLoaded = 0;
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
@@ -39,6 +39,7 @@ public class ShopLoader {
             this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
             while (rs.next()) {
                 UUID singleShopLoadTimer = Util.setTimer();
+                Util.debugLog("New single timer was set: "+singleShopLoadTimer.toString());
 
                 Util.debugLog("Reading [Database data] to [Origin shop data]");
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
@@ -83,6 +84,7 @@ public class ShopLoader {
                     loadAfterChunkLoaded++;
                 }
                 singleShopLoaded(singleShopLoadTimer);
+                continue;
             }
             long totalUsedTime = Util.endTimer(totalLoadTimer);
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
@@ -249,6 +251,7 @@ public class ShopLoader {
 
     private void singleShopLoaded(@NotNull UUID singleShopLoadTimer) {
         totalLoaded++;
+        Util.debugLog("New single timer was ended: "+singleShopLoadTimer.toString());
         long singleShopLoadTime = Util.endTimer(singleShopLoadTimer);
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
