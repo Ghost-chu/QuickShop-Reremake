@@ -23,7 +23,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -357,7 +356,7 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
-            ResultSet rs = DatabaseHelper.selectAllMessages(plugin.getDB());
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
             while (rs.next()) {
                 UUID owner = UUID.fromString(rs.getString("owner"));
                 String message = rs.getString("message");
@@ -576,7 +575,7 @@ public class MsgUtil {
                 player_messages.put(player, msgs);
             }
             msgs.add(message);
-            DatabaseHelper.sendMessage(player, message, System.currentTimeMillis());
+            plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
         } else {
             p.getPlayer().sendMessage(message);
         }
@@ -590,7 +589,7 @@ public class MsgUtil {
         plugin.getLogger().info("Cleaning purchase messages from database that are over a week old...");
         // 604800,000 msec = 1 week.
         long weekAgo = System.currentTimeMillis() - 604800000;
-        DatabaseHelper.cleanMessage(weekAgo);
+        plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
     }
 
     /**
@@ -607,8 +606,7 @@ public class MsgUtil {
                 for (String msg : msgs) {
                     p.getPlayer().sendMessage(msg);
                 }
-                plugin.getDB().execute("DELETE FROM " + QuickShop.instance.getDbPrefix() + "messages WHERE owner = ?", pName
-                        .toString());
+                plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
                 msgs.clear();
             } else {
                 p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
