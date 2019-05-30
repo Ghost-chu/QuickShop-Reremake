@@ -5,6 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import lombok.*;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
 @Getter
@@ -13,6 +14,7 @@ public class QueuedShopManager {
     Queue<QueueShopObject> shopQueue = new LinkedBlockingQueue<>();
     int maxShopLoadPerTick = 0;
     boolean useQueue = false;
+    private BukkitTask task;
 
     /**
      * QueuedShopManager can help you process shops by queue not in once
@@ -26,49 +28,59 @@ public class QueuedShopManager {
         if (!useQueue)
             return;
         maxShopLoadPerTick = plugin.getConfig().getInt("queue.shops-per-tick");
-        new BukkitRunnable() {
+        task = new BukkitRunnable() {
             @Override
             public void run() {
-                int loadedShopInTick = 0;
-                while (true) {
-                    if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
-                        break; //Jump out, go next tick
-                    QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
-                    if (queueShopObject == null) //No more queue need to do
-                        break; //Jump out, go next tick
-                    QueueAction[] actions = queueShopObject.getAction();
-                    for (QueueAction action : actions) { //Run actions.
-                        switch (action) {
-                            case LOAD:
-                                queueShopObject.getShop().onLoad();
-                                break;
-                            case UNLOAD:
-                                queueShopObject.getShop().onUnload();
-                                break;
-                            case UPDATE:
-                                queueShopObject.getShop().update();
-                                break;
-                            case SETSIGNTEXT:
-                                queueShopObject.getShop().setSignText();
-                                break;
-                            case REMOVEDISPLAYITEM:
-                                ((ContainerShop) queueShopObject.getShop()).getDisplayItem().remove();
-                                break;
-                            case DELETE:
-                                queueShopObject.getShop().delete();
-                                break;
-                            case CLICK:
-                                queueShopObject.getShop().onClick();
-                                break;
-                            case CHECKDISPLAYITEM:
-                                DisplayItem.checkDisplayMove(queueShopObject.getShop());
-                                break;
-                        }
-                    }
-
-                }
+                plugin.getQueuedShopManager().runTask();
             }
         }.runTaskTimer(plugin, 0, 1);
+    }
+
+    public void uninit() {
+        task.cancel();
+        plugin.getLogger().info("Please waiting for finish the shops queue works...");
+        runTask();
+    }
+
+    private void runTask() {
+        int loadedShopInTick = 0;
+        while (true) {
+            if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
+                break; //Jump out, go next tick
+            QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
+            if (queueShopObject == null) //No more queue need to do
+                break; //Jump out, go next tick
+            QueueAction[] actions = queueShopObject.getAction();
+            for (QueueAction action : actions) { //Run actions.
+                switch (action) {
+                    case LOAD:
+                        queueShopObject.getShop().onLoad();
+                        break;
+                    case UNLOAD:
+                        queueShopObject.getShop().onUnload();
+                        break;
+                    case UPDATE:
+                        queueShopObject.getShop().update();
+                        break;
+                    case SETSIGNTEXT:
+                        queueShopObject.getShop().setSignText();
+                        break;
+                    case REMOVEDISPLAYITEM:
+                        ((ContainerShop) queueShopObject.getShop()).getDisplayItem().remove();
+                        break;
+                    case DELETE:
+                        queueShopObject.getShop().delete();
+                        break;
+                    case CLICK:
+                        queueShopObject.getShop().onClick();
+                        break;
+                    case CHECKDISPLAYITEM:
+                        DisplayItem.checkDisplayMove(queueShopObject.getShop());
+                        break;
+                }
+            }
+
+        }
     }
 
     /**
