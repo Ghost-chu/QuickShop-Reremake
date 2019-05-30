@@ -60,6 +60,9 @@ public class QueuedShopManager {
                             case CLICK:
                                 queueShopObject.getShop().onClick();
                                 break;
+                            case CHECKDISPLAYITEM:
+                                DisplayItem.checkDisplayMove(queueShopObject.getShop());
+                                break;
                         }
                     }
 
