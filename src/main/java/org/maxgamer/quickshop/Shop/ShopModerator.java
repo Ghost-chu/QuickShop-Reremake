@@ -18,6 +18,7 @@ public class ShopModerator {
         this.owner = owner;
         this.staffs = new ArrayList<UUID>();
     }
+
     public ShopModerator(UUID owner, ArrayList<UUID> staffs) {
         this.owner = owner;
         this.staffs = new ArrayList<UUID>();

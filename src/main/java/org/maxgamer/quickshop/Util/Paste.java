@@ -23,6 +23,7 @@ public class Paste {
 
     /**
      * Create a server infomation paste
+     *
      * @return The paste result content.
      */
     public String genNewPaste() {
@@ -94,6 +95,7 @@ public class Paste {
 
     /**
      * Paste a text to paste.ubuntu.com
+     *
      * @param text The text you want paste.
      * @return Target paste URL.
      * @throws Exception

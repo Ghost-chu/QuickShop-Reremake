@@ -115,6 +115,7 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * Check the env plugin running.
+     *
      * @throws RuntimeException The error message, use this to create a BootError.
      */
     private void runtimeCheck() throws RuntimeException {
@@ -166,6 +167,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded OpenInv support!");
         }
     }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -514,8 +516,6 @@ public class QuickShop extends JavaPlugin {
     //
     // }
 
-
-
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {
         List<String> commands = new ArrayList<>();
@@ -544,6 +544,7 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * Setup the database
+     *
      * @return The setup result
      */
     private boolean setupDatabase() {
@@ -870,6 +871,7 @@ public class QuickShop extends JavaPlugin {
             return false;
         }
     }
+
     @Override
     public void onDisable() {
         if (noopDisable)
@@ -952,6 +954,7 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
+     *
      * @return The fork name.
      */
     public String getFork() { return "Reremake"; }

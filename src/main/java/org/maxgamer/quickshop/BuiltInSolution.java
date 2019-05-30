@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 class BuiltInSolution {
     /**
      * Call when failed load economy system, and use this to check the reason.
+     *
      * @return The reason of error.
      */
     static BootError econError() {
@@ -21,8 +22,10 @@ class BuiltInSolution {
         }
         return new BootError("No Economy plugin loaded", "Install one economy plugin to let Vault working.");
     }
+
     /**
      * Call when failed load database, and use this to check the reason.
+     *
      * @return The reason of error.
      */
     static BootError databaseError() {

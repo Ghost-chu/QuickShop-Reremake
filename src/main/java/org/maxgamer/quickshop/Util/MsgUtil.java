@@ -339,6 +339,7 @@ public class MsgUtil {
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
+     *
      * @param bool The boolean value
      * @return The result of translate.
      */
@@ -619,7 +620,8 @@ public class MsgUtil {
 
     /**
      * Send a shop infomation to a player.
-     * @param p Target player
+     *
+     * @param p    Target player
      * @param shop The shop
      */
     public static void sendShopInfo(Player p, Shop shop) {
@@ -680,8 +682,9 @@ public class MsgUtil {
 
     /**
      * Send a purchaseSuccess message for a player.
-     * @param p Target player
-     * @param shop Target shop
+     *
+     * @param p      Target player
+     * @param shop   Target shop
      * @param amount Trading item amounts.
      */
     public static void sendPurchaseSuccess(Player p, Shop shop, int amount) {
@@ -718,10 +721,12 @@ public class MsgUtil {
         }
         chatSheetPrinter.printFooter();
     }
+
     /**
      * Send a sellSuccess message for a player.
-     * @param p Target player
-     * @param shop Target shop
+     *
+     * @param p      Target player
+     * @param shop   Target shop
      * @param amount Trading item amounts.
      */
     public static void sendSellSuccess(Player p, Shop shop, int amount) {
@@ -805,8 +810,9 @@ public class MsgUtil {
 
     /**
      * Send the display-item exploit alert for a location.
+     *
      * @param objectDo It is possible be Player, Inventory.
-     * @param action What action trigger the exploit alert.
+     * @param action   What action trigger the exploit alert.
      * @param location Event/Shop location.
      */
     public static void sendExploitAlert(Object objectDo, String action, Location location) {
