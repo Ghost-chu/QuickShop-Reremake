@@ -542,7 +542,6 @@ public class ContainerShop implements Shop {
         lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
         lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
         this.setSignText(lines);
-        Util.debugLog("New sign was setuped.", lines[0], lines[1], lines[2], lines[2]);
     }
 
     /**
@@ -555,7 +554,7 @@ public class ContainerShop implements Shop {
             return;
         for (Sign sign : this.getSigns()) {
             for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
+                sign.setLine(i, lines[i]);
             }
             sign.update(true);
         }
