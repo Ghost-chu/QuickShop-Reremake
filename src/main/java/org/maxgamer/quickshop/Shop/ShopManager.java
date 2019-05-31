@@ -473,7 +473,7 @@ public class ShopManager {
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
         plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
-        shop.setSignText(); // Update the signs count
+        //shop.setSignText(); // Update the signs count
     }
 
     @SuppressWarnings("deprecation")
