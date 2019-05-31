@@ -631,7 +631,8 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
         //Enabled
         Util.sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
-                .getMessage("tableformat.left_begin") + MsgUtil.getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
+                .getMessage("tableformat.left_begin") + " " + MsgUtil
+                .getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
         }
