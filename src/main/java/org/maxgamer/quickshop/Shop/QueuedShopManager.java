@@ -51,36 +51,42 @@ public class QueuedShopManager {
             QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
             if (queueShopObject == null) //No more queue need to do
                 break; //Jump out, go next tick
-            QueueAction[] actions = queueShopObject.getAction();
-            for (QueueAction action : actions) { //Run actions.
-                switch (action) {
-                    case LOAD:
-                        queueShopObject.getShop().onLoad();
-                        break;
-                    case UNLOAD:
-                        queueShopObject.getShop().onUnload();
-                        break;
-                    case UPDATE:
-                        queueShopObject.getShop().update();
-                        break;
-                    case SETSIGNTEXT:
-                        queueShopObject.getShop().setSignText();
-                        break;
-                    case REMOVEDISPLAYITEM:
-                        ((ContainerShop) queueShopObject.getShop()).getDisplayItem().remove();
-                        break;
-                    case DELETE:
-                        queueShopObject.getShop().delete();
-                        break;
-                    case CLICK:
-                        queueShopObject.getShop().onClick();
-                        break;
-                    case CHECKDISPLAYITEM:
-                        DisplayItem.checkDisplayMove(queueShopObject.getShop());
-                        break;
-                }
-            }
+            this.doTask(queueShopObject);
 
+        }
+    }
+
+    private void doTask(QueueShopObject queueShopObject) {
+        if (queueShopObject == null) //No more queue need to do
+            return; //Jump out, go next tick
+        QueueAction[] actions = queueShopObject.getAction();
+        for (QueueAction action : actions) { //Run actions.
+            switch (action) {
+                case LOAD:
+                    queueShopObject.getShop().onLoad();
+                    break;
+                case UNLOAD:
+                    queueShopObject.getShop().onUnload();
+                    break;
+                case UPDATE:
+                    queueShopObject.getShop().update();
+                    break;
+                case SETSIGNTEXT:
+                    queueShopObject.getShop().setSignText();
+                    break;
+                case REMOVEDISPLAYITEM:
+                    ((ContainerShop) queueShopObject.getShop()).getDisplayItem().remove();
+                    break;
+                case DELETE:
+                    queueShopObject.getShop().delete();
+                    break;
+                case CLICK:
+                    queueShopObject.getShop().onClick();
+                    break;
+                case CHECKDISPLAYITEM:
+                    DisplayItem.checkDisplayMove(queueShopObject.getShop());
+                    break;
+            }
         }
     }
 
@@ -91,7 +97,11 @@ public class QueuedShopManager {
      */
     public void add(QueueShopObject... queueShopObjects) {
         for (QueueShopObject queueShopObject : queueShopObjects) {
-            this.shopQueue.offer(queueShopObject);
+            if (useQueue) {
+                this.shopQueue.offer(queueShopObject);
+            } else {
+                this.doTask(queueShopObject); //Direct do actions when turn off queue
+            }
         }
     }
     // /**
