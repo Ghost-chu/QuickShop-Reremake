@@ -76,7 +76,7 @@ public class ContainerShop implements Shop {
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
         if (plugin.isDisplay()) {
-            this.displayItem = new DisplayItem(this, this.item);
+            this.displayItem = new RealDisplayItem(this, this.item);
         }
         this.shopType = ShopType.SELLING;
     }
@@ -98,7 +98,7 @@ public class ContainerShop implements Shop {
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
         if (plugin.isDisplay()) {
-            this.displayItem = new DisplayItem(this, this.item);
+            this.displayItem = new RealDisplayItem(this, this.item);
         }
         this.shopType = type;
         this.unlimited = unlimited;
@@ -678,7 +678,7 @@ public class ContainerShop implements Shop {
             return; // not loaded
         boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
         if (trans && this.getDisplayItem() == null) {
-            this.displayItem = new DisplayItem(this, this.getItem());
+            this.displayItem = new RealDisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
         }
         if (this.getDisplayItem() != null) {
