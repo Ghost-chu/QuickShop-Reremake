@@ -38,36 +38,28 @@ public class ShopLoader {
             this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
             while (rs.next()) {
                 UUID singleShopLoadTimer = Util.setTimer();
-                Util.debugLog("New single timer was set: " + singleShopLoadTimer.toString());
 
-                Util.debugLog("Reading [Database data] to [Origin shop data]");
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
 
-                Util.debugLog("Reading [Origin shop data] to [Shop data]");
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
 
-                Util.debugLog("Creating shop object...");
                 Shop shop = new ContainerShop(data.getLocation(), data.getPrice(), data.getItem(), data.getModerators(), data
                         .isUnlimited(), data
                         .getType());
 
-                Util.debugLog("Checking shop info is exist...");
                 if (shopNullCheck(shop)) {
                     Util.debugLog("Somethings went wrong, skipping loading...");
                     loadAfterWorldLoaded++;
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
                 }
-
-                Util.debugLog("Load shop into RAM");
+                //Load to RAM
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
 
-                Util.debugLog("Checking shop's chunk is or not loaded");
                 boolean chunkLoaded = Util.isLoaded(shop.getLocation());
 
                 if (chunkLoaded) {
-                    Util.debugLog("Check shop container type...");
-
+                    //Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         Util.debugLog("Target block can't be shop, removing from database...");
                         shop.delete();
@@ -75,11 +67,9 @@ public class ShopLoader {
                         continue;
                     }
 
-                    Util.debugLog("Loading shop to the world");
                     plugin.getQueuedShopManager()
                             .add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.LOAD, QueueAction.SETSIGNTEXT }));
                 } else {
-                    Util.debugLog("Shop will load after chunk loaded");
                     loadAfterChunkLoaded++;
                 }
                 singleShopLoaded(singleShopLoadTimer);
