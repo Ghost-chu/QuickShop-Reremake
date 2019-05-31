@@ -39,7 +39,7 @@ public class QS implements CommandExecutor {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null) {
                     shop.setUnlimited(!shop.isUnlimited());
-                    shop.setSignText();
+                    //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                             (shop.isUnlimited() ? "unlimited" : "limited")));
@@ -61,7 +61,7 @@ public class QS implements CommandExecutor {
                     Integer.valueOf(args[3]), Integer.valueOf(args[4])));
             if (shop != null) {
                 shop.setUnlimited(!shop.isUnlimited());
-                shop.setSignText();
+                //shop.setSignText();
                 shop.update();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
@@ -206,7 +206,7 @@ public class QS implements CommandExecutor {
                     @SuppressWarnings("deprecation")
                     OfflinePlayer p = this.plugin.getServer().getOfflinePlayer(args[1]);
                     shop.setOwner(p.getUniqueId());
-                    shop.setSignText();
+                    //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.new-owner",
                             this.plugin.getServer().getOfflinePlayer(shop.getOwner()).getName()));
@@ -437,7 +437,7 @@ public class QS implements CommandExecutor {
                     Integer.valueOf(args[3]), Integer.valueOf(args[4])));
             if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                 shop.setShopType(ShopType.BUYING);
-                shop.setSignText();
+                //shop.setSignText();
                 shop.update();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil
@@ -457,7 +457,7 @@ public class QS implements CommandExecutor {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                     shop.setShopType(ShopType.BUYING);
-                    shop.setSignText();
+                    //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil
                             .getMessage("command.now-buying", MsgUtil.getItemi18n(shop.getItem().getType().name())));
@@ -477,7 +477,7 @@ public class QS implements CommandExecutor {
                     Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])));
             if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                 shop.setShopType(ShopType.SELLING);
-                shop.setSignText();
+                //shop.setSignText();
                 shop.update();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil
@@ -498,7 +498,7 @@ public class QS implements CommandExecutor {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                     shop.setShopType(ShopType.SELLING);
-                    shop.setSignText();
+                    //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil
                             .getMessage("command.now-selling", MsgUtil.getItemi18n(shop.getItem().getType().name())));
@@ -579,7 +579,7 @@ public class QS implements CommandExecutor {
                     }
                     // Update the shop
                     shop.setPrice(price);
-                    shop.setSignText();
+                    //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("price-is-now", plugin.getEcon().format(shop.getPrice())));
                     // Chest shops can be double shops.
