@@ -61,10 +61,8 @@ public class DatabaseManager {
 
     public void add(PreparedStatement ps) {
         if (useQueue) {
-            Util.debugLog("Run task with queue");
             sqlQueue.offer(ps);
         } else {
-            Util.debugLog("Run task without queue");
             try {
                 ps.execute();
             } catch (SQLException sqle) {
