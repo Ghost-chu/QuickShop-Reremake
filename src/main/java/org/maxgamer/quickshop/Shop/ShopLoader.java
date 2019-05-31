@@ -68,7 +68,7 @@ public class ShopLoader {
                     }
 
                     plugin.getQueuedShopManager()
-                            .add(new QueueShopObject(shop, new QueueAction[]{ QueueAction.LOAD, QueueAction.SETSIGNTEXT }));
+                            .add(new QueueShopObject(shop, QueueAction.LOAD, QueueAction.SETSIGNTEXT));
                 } else {
                     loadAfterChunkLoaded++;
                 }
