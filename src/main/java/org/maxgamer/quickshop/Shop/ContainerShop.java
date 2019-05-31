@@ -551,7 +551,6 @@ public class ContainerShop implements Shop {
             return;
         for (Sign sign : this.getSigns()) {
             for (int i = 0; i < lines.length; i++) {
-                Util.debugLog("Setting sign at " + sign.getLocation().toString());
                 sign.setLine(i, lines[i].length() < 16 ? lines[i] : lines[i].substring(0, 15));
             }
             sign.update(true);
