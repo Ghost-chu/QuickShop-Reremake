@@ -93,4 +93,6 @@ public abstract interface Shop {
 
     public abstract ArrayList<UUID> getStaffs();
 
+    public abstract boolean isLoaded();
+
 }
