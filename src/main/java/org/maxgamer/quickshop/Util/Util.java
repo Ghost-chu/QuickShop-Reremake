@@ -1153,6 +1153,14 @@ public class Util {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
 
+    public static void shoppablesCheck(Shop shop) {
+        if (!Util.canBeShop(shop.getLocation().getBlock())) {
+            Util.debugLog("This shopblock can't be shop, deleteing...");
+            shop.onUnload();
+            shop.delete();
+            return;
+        }
     }
 }
