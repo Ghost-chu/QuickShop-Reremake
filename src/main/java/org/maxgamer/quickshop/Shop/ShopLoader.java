@@ -73,7 +73,6 @@ public class ShopLoader {
                     loadAfterChunkLoaded++;
                 }
                 singleShopLoaded(singleShopLoadTimer);
-                continue;
             }
             long totalUsedTime = Util.endTimer(totalLoadTimer);
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
