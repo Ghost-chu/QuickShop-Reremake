@@ -36,7 +36,6 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     private ShopType shopType;
     private QuickShop plugin;
-    private boolean isLoaded = false;
 
     /**
      * Returns a clone of this shop. References to the same display item,
@@ -516,8 +515,6 @@ public class ContainerShop implements Shop {
      * Updates signs attached to the shop
      */
     public void setSignText() {
-        if (this.isLoaded == false)
-            return;
         if (Util.isLoaded(this.getLocation()) == false)
             return;
         String[] lines = new String[4];
@@ -675,8 +672,6 @@ public class ContainerShop implements Shop {
     }
 
     public void checkDisplay() {
-        if (this.isLoaded == false)
-            return;
         if (plugin.isDisplay() == false)
             return;
         if (getLocation().getWorld() == null)
@@ -715,8 +710,6 @@ public class ContainerShop implements Shop {
 
     public boolean checkDisplayMoved() {
         // don't check if the plugin doesn't know about the object
-        if (this.isLoaded == false)
-            return false;
 
         if (this.getDisplayItem() == null) {
             return false;
@@ -744,11 +737,6 @@ public class ContainerShop implements Shop {
             this.getDisplayItem().remove();
             this.displayItem = null;
         }
-        this.isLoaded = false;
-    }
-
-    public boolean isLoaded() {
-        return this.isLoaded;
     }
 
     public void onLoad() {
@@ -759,9 +747,9 @@ public class ContainerShop implements Shop {
         //this.setSignText();
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            if (this.isLoaded)
-                this.onUnload();
-            this.delete();
+            this.onUnload();
+            plugin.getQueuedShopManager()
+                    .add(new QueueShopObject(this, QueueAction.DELETE)); //Use queue make sure not will happend NPE.
             return;
         }
 
@@ -776,7 +764,6 @@ public class ContainerShop implements Shop {
                 this.update();
             }
         }
-        this.isLoaded = true;
     }
 
     public void onClick() {
