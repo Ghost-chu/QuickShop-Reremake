@@ -327,6 +327,7 @@ public class ContainerShop implements Shop {
             inv.removeItem(item);
             remains = remains - stackSize;
         }
+        this.setSignText();
     }
 
     /**
@@ -347,6 +348,7 @@ public class ContainerShop implements Shop {
             inv.addItem(item);
             remains = remains - stackSize;
         }
+        this.setSignText();
     }
 
     /**
@@ -467,6 +469,7 @@ public class ContainerShop implements Shop {
      */
     public void setOwner(UUID owner) {
         this.moderator.setOwner(owner);
+        this.setSignText();
         update();
     }
 
@@ -481,6 +484,7 @@ public class ContainerShop implements Shop {
 
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
+        this.setSignText();
         update();
     }
 
@@ -754,6 +758,7 @@ public class ContainerShop implements Shop {
 
         // check price restriction
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
+
         if (priceRestriction != null) {
             if (price < priceRestriction.getKey()) {
                 price = priceRestriction.getKey();
