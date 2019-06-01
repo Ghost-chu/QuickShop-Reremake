@@ -12,10 +12,9 @@ import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
 
 public class UpdateWatcher implements Listener {
-    static BukkitTask cronTask = null;
-    static volatile boolean hasNewUpdate = false;
-    static boolean isBeta = false;
-    static UpdateInfomation info = null;
+    private static BukkitTask cronTask = null;
+    private static boolean hasNewUpdate = false;
+    private static UpdateInfomation info = null;
 
     public static void init() {
         cronTask = new BukkitRunnable() {
@@ -28,11 +27,11 @@ public class UpdateWatcher implements Listener {
                     hasNewUpdate = false;
                     return;
                 }
-                if (!info.getIsNewUpdate()) {
+
+                if (info.getVersion().equals(QuickShop.getVersion())) {
                     hasNewUpdate = false;
                     return;
                 }
-
                 hasNewUpdate = true;
 
                 if (!info.getIsBeta()) {
