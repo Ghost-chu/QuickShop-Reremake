@@ -200,6 +200,7 @@ public class ContainerShop implements Shop {
      */
     public void setPrice(double price) {
         this.price = price;
+        setSignText();
         update();
     }
 
