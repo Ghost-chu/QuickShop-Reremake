@@ -13,10 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
@@ -313,13 +310,8 @@ public class ShopManager {
                     return false;
                 }
             }
-            PlayerInteractEvent pie = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, AIR, b, bf); // PIE = PlayerInteractEvent -  What else?
-            Bukkit.getPluginManager().callEvent(pie);
-            pie.getPlayer().closeInventory(); // If the player has chat open, this
-            // will close their chat.
-            if (pie.useInteractedBlock() == Result.DENY) {
+            if (!plugin.getPermissionChecker().canBuild(p, b, true))
                 return false;
-            }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
             Bukkit.getPluginManager().callEvent(spce);
             if (spce.isCancelled()) {
@@ -582,20 +574,16 @@ public class ShopManager {
 
             plugin.getCompatibilityTool().toggleInteractListeners(false);
 
-            PlayerInteractEvent be = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR), info
-                    .getLocation().getBlock(), BlockFace.SELF);
-            Bukkit.getPluginManager().callEvent(be);
-
-            plugin.getCompatibilityTool().toggleInteractListeners(true);
-
-            if (be.isCancelled()) {
-                be.getPlayer().sendMessage(MsgUtil.getMessage("no-permission"));
+            if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), true)) {
+                p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
                 Util.debugLog("Failed to create shop: Protection check failed:");
                 for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
                     Util.debugLog(belisteners.getPlugin().getName());
                 }
                 return;
             }
+
+            plugin.getCompatibilityTool().toggleInteractListeners(true);
 
             if (plugin.getShopManager().getShop(info.getLocation()) != null) {
                 p.sendMessage(MsgUtil.getMessage("shop-already-owned"));
