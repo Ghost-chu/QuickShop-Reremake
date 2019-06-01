@@ -78,7 +78,7 @@ public class QuickShop extends JavaPlugin {
 
     /** The plugin OpenInv (null if not present) */
     private Plugin openInvPlugin;
-    private HashMap<String, Integer> limits = new HashMap<String, Integer>();
+    private HashMap<String, Integer> limits = new HashMap<>();
     /** Use SpoutPlugin to get item / block names */
     private boolean useSpout = false;
     // private Metrics metrics;
@@ -268,7 +268,7 @@ public class QuickShop extends JavaPlugin {
         chatListener = new ChatListener(this);
         chunkListener = new ChunkListener(this);
         inventoryListener = new DisplayProtectionListener(this);
-        customInventoryListener = new CustomInventoryListener();
+        customInventoryListener = new CustomInventoryListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
