@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
+import lombok.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,12 +26,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+@AllArgsConstructor
 public class DisplayProtectionListener implements Listener {
-    QuickShop plugin = null;
-
-    public DisplayProtectionListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+    private QuickShop plugin;
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
