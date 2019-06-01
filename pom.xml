@@ -85,7 +85,7 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Vault1.6.10.jar</systemPath>
+            <systemPath>${basedir}/lib/Vault 1.7.9.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
