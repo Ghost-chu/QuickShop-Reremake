@@ -236,6 +236,8 @@ public class ShopLoader {
         for (Long aM : m) {
             sum += aM;
         }
+        if (m.length == 0)
+            return sum;
         return sum / m.length;
     }
 

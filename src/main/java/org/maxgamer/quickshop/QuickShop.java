@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.Compatibility;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.PermissionChecker;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
@@ -98,6 +99,7 @@ public class QuickShop extends JavaPlugin {
     private ShopLoader shopLoader;
     private DatabaseHelper databaseHelper;
     private DatabaseManager databaseManager;
+    private PermissionChecker permissionChecker;
     //private LWCPlugin lwcPlugin;
 
     /**
@@ -211,6 +213,7 @@ public class QuickShop extends JavaPlugin {
         this.shopManager = new ShopManager(this);
         this.queuedShopManager = new QueuedShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
+        this.permissionChecker = new PermissionChecker(this);
 
         if (this.display) {
             // Display item handler thread
@@ -669,6 +672,14 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
 
+        }
+        if (selectedVersion == 29) {
+            getConfig().set("plugin.Multiverse-Core", null);
+            getConfig().set("shop.protection-checking", true);
+            getConfig().set("config-version", 30);
+            selectedVersion = 30;
+            saveConfig();
+            reloadConfig();
         }
     }
 
