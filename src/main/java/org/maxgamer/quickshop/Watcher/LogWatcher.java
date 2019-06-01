@@ -55,6 +55,8 @@ public class LogWatcher implements Runnable {
     }
 
     public void close() {
-        this.ps.close();
+        if (ps != null)
+            this.ps.close();
+        ps = null;
     }
 }

@@ -47,7 +47,7 @@ public class ItemWatcher implements Runnable {
         }
         // Now we can remove it.
         for (Shop shop : toRemove) {
-            new QueueShopObject(shop, new QueueAction[]{ QueueAction.DELETE });
+            new QueueShopObject(shop, QueueAction.DELETE);
         }
     }
 }
