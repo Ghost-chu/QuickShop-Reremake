@@ -19,7 +19,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class ShopLoader {
     private QuickShop plugin;
     private int errors;
-    private ArrayList<Long> loadTimes = new ArrayList<>();
+    final private ArrayList<Long> loadTimes = new ArrayList<>();
     private int totalLoaded = 0;
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;

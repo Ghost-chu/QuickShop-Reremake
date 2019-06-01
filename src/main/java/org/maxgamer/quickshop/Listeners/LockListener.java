@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
+import lombok.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -17,12 +18,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+@AllArgsConstructor
 public class LockListener implements Listener {
     private QuickShop plugin;
-
-    public LockListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
