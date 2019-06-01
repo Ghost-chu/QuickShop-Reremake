@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
+import lombok.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -20,13 +21,9 @@ import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+@AllArgsConstructor
 public class BlockListener implements Listener {
     private QuickShop plugin;
-
-    public BlockListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
-
     /**
      * Listens for chest placement, so a doublechest shop can't be created.
      */

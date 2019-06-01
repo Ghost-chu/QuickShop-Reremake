@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Listeners;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import lombok.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,12 +18,9 @@ import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
 
+@AllArgsConstructor
 public class WorldListener implements Listener {
-    QuickShop plugin;
-
-    public WorldListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
+    private QuickShop plugin;
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {

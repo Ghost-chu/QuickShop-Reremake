@@ -11,7 +11,7 @@ import org.maxgamer.quickshop.QuickShop;
 @Getter
 public class QueuedShopManager {
     QuickShop plugin;
-    Queue<QueueShopObject> shopQueue = new LinkedBlockingQueue<>();
+    final Queue<QueueShopObject> shopQueue = new LinkedBlockingQueue<>();
     int maxShopLoadPerTick = 0;
     boolean useQueue = false;
     private BukkitTask task;
