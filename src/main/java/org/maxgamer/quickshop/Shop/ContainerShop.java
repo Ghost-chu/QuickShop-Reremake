@@ -719,7 +719,8 @@ public class ContainerShop implements Shop {
 
     public boolean checkDisplayMoved() {
         // don't check if the plugin doesn't know about the object
-
+        if (!Util.isLoaded(getLocation()))
+            return false;
         if (this.getDisplayItem() == null) {
             return false;
         }
