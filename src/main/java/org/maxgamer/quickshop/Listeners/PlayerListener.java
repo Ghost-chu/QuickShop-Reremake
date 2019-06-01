@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Listeners;
 import java.util.HashMap;
 import java.util.UUID;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -29,13 +30,9 @@ import org.maxgamer.quickshop.Util.Util;
 
 //import com.griefcraft.lwc.LWC;
 //import com.griefcraft.lwc.LWCPlugin;
-
+@AllArgsConstructor
 public class PlayerListener implements Listener {
     private QuickShop plugin;
-
-    public PlayerListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
 
     /*
      * Could be useful one day private LinkedList<String> getParents(Class<?>

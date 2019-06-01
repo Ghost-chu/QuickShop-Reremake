@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+import lombok.*;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -7,14 +8,13 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+@AllArgsConstructor
+@Getter
+@Setter
 public class ChatSheetPrinter {
     //StringBuffer buffer = new StringBuffer();
-    CommandSender p;
-    ChatColor chatColor = ChatColor.DARK_PURPLE;
-
-    public ChatSheetPrinter(CommandSender sender) {
-        this.p = sender;
-    }
+    private CommandSender p;
+    final ChatColor chatColor = ChatColor.DARK_PURPLE;
 
     public void printHeader() {
         p.sendMessage("");

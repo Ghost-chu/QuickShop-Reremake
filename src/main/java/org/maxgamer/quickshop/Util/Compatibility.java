@@ -7,7 +7,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public class Compatibility {
     private QuickShop plugin;
-    private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
+    final private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
 
     public Compatibility(QuickShop plugin) {
         this.plugin = plugin;
