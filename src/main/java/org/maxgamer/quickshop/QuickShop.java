@@ -124,7 +124,7 @@ public class QuickShop extends JavaPlugin {
             getServer().spigot();
         } catch (Throwable e) {
             getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
-            throw new RuntimeException("Server must is Spigot's fork.");
+            throw new RuntimeException("Server must is Spigot's fork, Don't use CraftBukkit!");
         }
 
         if (getServer().getName().toLowerCase().contains("catserver")) {
@@ -198,7 +198,7 @@ public class QuickShop extends JavaPlugin {
         updateConfig(getConfig().getInt("config-version"));
 
         if (!loadEcon()) {
-            bootError = new BootError("Failed load economy system.", "Make sure you installed Vault and have a economy plugin.");
+            bootError = BuiltInSolution.econError();
             return;
         }
 
