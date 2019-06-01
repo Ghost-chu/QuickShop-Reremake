@@ -65,6 +65,7 @@ failed-to-put-sign: "&cNo enough space around the shop to place infomation sign.
 failed-to-paste: "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)"
 warn-to-paste: "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer."
 price-too-high: "&cShop price too high! You can't create price higher than {0} shop."
+you-cant-create-shop-in-there: "&cYou had no permission create the shop in this location."
 
 unknown-player: "&cTarget player not exist, please check username your typed."
 shop-staff-cleared: "&aSuccessfully remove all staff for your shop."
