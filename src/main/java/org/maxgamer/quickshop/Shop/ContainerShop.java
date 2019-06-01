@@ -678,7 +678,14 @@ public class ContainerShop implements Shop {
             return;
         if (getLocation().getWorld() == null)
             return; // not loaded
-        boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
+        if (!Util.isLoaded(getLocation()))
+            return;
+        boolean trans;
+        try {
+            trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
+        } catch (Throwable t) {
+            trans = false;
+        }
         if (trans && this.getDisplayItem() == null) {
             this.displayItem = new RealDisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
