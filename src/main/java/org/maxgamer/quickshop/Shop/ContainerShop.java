@@ -818,6 +818,7 @@ public class ContainerShop implements Shop {
     @Override
     public void setModerator(ShopModerator shopModerator) {
         this.moderator = shopModerator.clone();
+        update();
     }
 
 }
