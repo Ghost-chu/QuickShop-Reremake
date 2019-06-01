@@ -1,14 +1,18 @@
 package org.maxgamer.quickshop.Listeners;
 
+import lombok.*;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.InventoryPreview;
 
+@AllArgsConstructor
 public class CustomInventoryListener implements Listener {
+    private QuickShop plugin;
     @EventHandler
     public void invEvent(InventoryInteractEvent e) {
         Inventory inventory = e.getInventory();

@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
 
+import lombok.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -16,12 +17,9 @@ import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
+@AllArgsConstructor
 public class ChunkListener implements Listener {
     private QuickShop plugin;
-
-    public ChunkListener(QuickShop plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
