@@ -292,11 +292,26 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
         getLogger().info("QuickShop loaded!");
+        UpdateWatcher.init();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                submitMeritcs();
+            }
+        }.runTaskAsynchronously(this);
+    }
 
+    private void submitMeritcs() {
         if (!getConfig().getBoolean("disabled-metrics")) {
             String serverVer = Bukkit.getVersion();
             String bukkitVer = Bukkit.getBukkitVersion();
             String serverName = Bukkit.getServer().getName();
+            String vaultVer;
+            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+                vaultVer = Bukkit.getPluginManager().getPlugin("Vault").getDescription().getVersion();
+            } else {
+                vaultVer = "Vault not found";
+            }
             metrics = new Metrics(this);
             // Use internal Metric class not Maven for solve plugin name issues
             String display_Items;
@@ -322,11 +337,13 @@ public class QuickShop extends JavaPlugin {
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+            metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
             metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
             metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
             metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
+
             // Exp for stats, maybe i need improve this, so i add this.
             metrics.submitData(); // Submit now!
             getLogger().info("Metrics submited.");
@@ -334,7 +351,6 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("You have disabled mertics, Skipping...");
         }
 
-        UpdateWatcher.init();
     }
 
 
