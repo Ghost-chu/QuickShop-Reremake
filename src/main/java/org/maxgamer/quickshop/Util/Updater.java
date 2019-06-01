@@ -18,7 +18,7 @@ public class Updater {
      */
     public static UpdateInfomation checkUpdate() {
         if (!QuickShop.instance.getConfig().getBoolean("updater")) {
-            return new UpdateInfomation(null, false, false);
+            return new UpdateInfomation(null, false);
         }
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=62575")
@@ -32,14 +32,14 @@ public class Updater {
 //                QuickShgetLogger().info("New QuickShop release now updated on SpigotMC.org! ");
 //                getLogger().info("Update plugin in there:https://www.spigotmc.org/resources/59134/");
                 connection.disconnect();
-                return new UpdateInfomation(spigotPluginVersion, true, spigotPluginVersion.toLowerCase().contains("beta"));
+                return new UpdateInfomation(spigotPluginVersion, spigotPluginVersion.toLowerCase().contains("beta"));
             }
             connection.disconnect();
-            return new UpdateInfomation(spigotPluginVersion, false, spigotPluginVersion.toLowerCase().contains("beta"));
+            return new UpdateInfomation(spigotPluginVersion, false);
         } catch (IOException e) {
             Bukkit.getConsoleSender()
                     .sendMessage(ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! Maybe internet issue or SpigotMC host down. If you want disable update checker, you can disable in config.yml, but we still high-recommend usually check update on SpigotMC.org.");
-            return new UpdateInfomation(null, false, false);
+            return new UpdateInfomation(null, false);
         }
     }
 }
