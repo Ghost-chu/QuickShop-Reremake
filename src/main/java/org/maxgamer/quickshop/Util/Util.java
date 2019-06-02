@@ -484,8 +484,18 @@ public class Util {
             return false; // One of them is null (Can't be both, see above)
         if (stack1.getType() != stack2.getType())
             return false; // Not the same material
-        if (((Damageable) stack1.getItemMeta()).getDamage() != ((Damageable) stack2.getItemMeta()).getDamage())
-            return false; // Not the same durability
+        boolean damageA = stack1.getItemMeta() instanceof Damageable;
+        boolean damageB = stack2.getItemMeta() instanceof Damageable;
+        if (damageA != damageB) {
+            return false;
+        } else {
+            if (damageA = true) { //Already checked they same, so damageA=damageB=true
+                if (((Damageable) stack1.getItemMeta()).getDamage() != ((Damageable) stack2.getItemMeta()).getDamage()) {
+                    return false;
+                }
+            }
+        }
+
         if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
             return false; // They have the same enchants
         if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {

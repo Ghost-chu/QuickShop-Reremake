@@ -296,12 +296,7 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.clean();
         getLogger().info("QuickShop loaded!");
         UpdateWatcher.init();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                submitMeritcs();
-            }
-        }.runTaskAsynchronously(this);
+        submitMeritcs();
     }
 
     private void submitMeritcs() {
