@@ -647,11 +647,11 @@ public class ShopManager {
                 }
             }
 
-            double tax = plugin.getConfig().getDouble("shop.cost");
+            double createCost = plugin.getConfig().getDouble("shop.cost");
             // Tax refers to the cost to create a shop. Not actual
             // tax, that would be silly
-            if (tax != 0 && plugin.getEcon().getBalance(p.getUniqueId()) < tax) {
-                p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(tax)));
+            if (createCost != 0 && plugin.getEcon().getBalance(p.getUniqueId()) < createCost) {
+                p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(createCost)));
                 return;
             }
             // Create the sample shop.
@@ -667,15 +667,15 @@ public class ShopManager {
             // This must be called after the event has been called.
             // Else, if the event is cancelled, they won't get their
             // money back.
-            if (tax != 0) {
-                if (!plugin.getEcon().withdraw(p.getUniqueId(), tax)) {
-                    p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(tax)));
+            if (createCost != 0) {
+                if (!plugin.getEcon().withdraw(p.getUniqueId(), createCost)) {
+                    p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(createCost)));
                     shop.onUnload();
                     return;
                 }
                 try {
                     plugin.getEcon().deposit(
-                            Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), tax);
+                            Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), createCost);
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     plugin.getLogger().log(Level.WARNING,
