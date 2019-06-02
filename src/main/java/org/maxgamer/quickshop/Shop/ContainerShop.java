@@ -673,7 +673,7 @@ public class ContainerShop implements Shop {
     }
 
     public void checkDisplay() {
-        if (plugin.isDisplay() == false)
+        if (!plugin.isDisplay())
             return;
         if (getLocation().getWorld() == null)
             return; // not loaded
@@ -690,11 +690,12 @@ public class ContainerShop implements Shop {
             this.getDisplayItem().spawn();
         }
         if (this.getDisplayItem() != null) {
-            if (!trans) { // We have a display item in a block... delete it
-                this.getDisplayItem().remove();
-                this.displayItem = null;
-                return;
-            }
+            // Already checked above
+            // if (!trans) { // We have a display item in a block... delete it
+            //     this.getDisplayItem().remove();
+            //     this.displayItem = null;
+            //     return;
+            // }
             DisplayItem disItem = this.getDisplayItem();
             Location dispLoc = disItem.getDisplayLocation();
             if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
@@ -710,7 +711,7 @@ public class ContainerShop implements Shop {
             if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
                 disItem.respawn();
                 disItem.removeDupe();
-            } else if (item.getLocation().distanceSquared(dispLoc) > 1) {
+            } else if (checkDisplayMoved()) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
         }
