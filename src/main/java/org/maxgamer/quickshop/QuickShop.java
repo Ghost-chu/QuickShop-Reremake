@@ -27,10 +27,7 @@ import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.*;
-import org.maxgamer.quickshop.Util.Compatibility;
-import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.PermissionChecker;
-import org.maxgamer.quickshop.Util.Util;
+import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
@@ -100,6 +97,8 @@ public class QuickShop extends JavaPlugin {
     private DatabaseHelper databaseHelper;
     private DatabaseManager databaseManager;
     private PermissionChecker permissionChecker;
+    private SentryErrorReporter sentryErrorReporter;
+    private static UUID serverUniqueID;
     //private LWCPlugin lwcPlugin;
 
     /**
@@ -134,7 +133,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
         }
 
-        if (Util.isDevEdition()) {
+        if (Util.isDevMode()) {
             getLogger().severe("WARNING: You are running QSRR on dev-mode");
             getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
             getLogger().severe("WARNING: Test version may destory anything!");
@@ -198,6 +197,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 1);
 
         updateConfig(getConfig().getInt("config-version"));
+
+        metrics = new Metrics(this);
+        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
+        sentryErrorReporter = new SentryErrorReporter(this);
+
 
         if (!loadEcon()) {
             bootError = BuiltInSolution.econError();
@@ -310,7 +314,7 @@ public class QuickShop extends JavaPlugin {
             } else {
                 vaultVer = "Vault not found";
             }
-            metrics = new Metrics(this);
+
             // Use internal Metric class not Maven for solve plugin name issues
             String display_Items;
             if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
@@ -430,6 +434,14 @@ public class QuickShop extends JavaPlugin {
     }
 
     private void updateConfig(int selectedVersion) {
+        String serverUUID = getConfig().getString("server-uuid");
+        if (serverUUID == null || serverUUID.isEmpty()) {
+            UUID uuid = UUID.randomUUID();
+            serverUUID = uuid.toString();
+            getConfig().set("server-uuid", serverUUID);
+            saveConfig();
+            reloadConfig();
+        }
         if (selectedVersion == 1) {
             getConfig().set("disabled-metrics", false);
             getConfig().set("config-version", 2);
@@ -757,7 +769,7 @@ public class QuickShop extends JavaPlugin {
         }
 
         this.warnings.clear();
-        this.reloadConfig();
+        //this.reloadConfig();
     }
 
     /**
@@ -816,4 +828,8 @@ public class QuickShop extends JavaPlugin {
      * @return The fork name.
      */
     public String getFork() { return "Reremake"; }
+
+    public static UUID getUniqueID() {
+        return QuickShop.serverUniqueID;
+    }
 }

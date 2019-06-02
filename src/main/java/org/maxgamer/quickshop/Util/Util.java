@@ -39,13 +39,14 @@ import org.maxgamer.quickshop.Shop.Shop;
  * @author MACHENIKE
  */
 public class Util {
-    private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-    private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
-    private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
+    private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
+    private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
+    private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
+    private static List<String> worldBlacklist = new ArrayList<>();
     private static QuickShop plugin;
     private static Method storageContents;
+    private static boolean devMode;
     static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
-    protected static boolean devMode;
 
     /**
      * Initialize the Util tools.
@@ -54,19 +55,17 @@ public class Util {
         blacklist.clear();
         shoppables.clear();
         restrictedPrices.clear();
-
+        worldBlacklist.clear();
         plugin = QuickShop.instance;
         devMode = plugin.getConfig().getBoolean("dev-mode");
+
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {
             Material mat = Material.matchMaterial(s.toUpperCase());
             if (mat == null) {
-                try {
-                    mat = Material.matchMaterial(s);
-                } catch (NumberFormatException e) {
-                }
+                mat = Material.matchMaterial(s);
             }
             if (mat == null) {
-                plugin.getLogger().info("Invalid shop-block: " + s);
+                plugin.getLogger().warning("Invalid shop-block: " + s);
             } else {
                 shoppables.add(mat);
             }
@@ -76,10 +75,10 @@ public class Util {
             Material mat = Material.getMaterial(s.toUpperCase());
             if (mat == null) {
                 mat = Material.matchMaterial(s);
-                if (mat == null) {
-                    plugin.getLogger().info(s + " is not a valid material.  Check your spelling or ID");
-                    continue;
-                }
+            }
+            if (mat == null) {
+                plugin.getLogger().warning(s + " is not a valid material.  Check your spelling or ID");
+                continue;
             }
             blacklist.add(mat);
         }
@@ -90,25 +89,28 @@ public class Util {
                 try {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
-                        throw new Exception();
+                        plugin.getLogger()
+                                .warning("Material " + sp[0] + " in config.yml can't match with vaild Materials, check your config.yml!");
+                        continue;
                     }
-
                     restrictedPrices.put(mat, new SimpleEntry<Double, Double>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
-                    plugin.getLogger().info("Invalid price restricted material: " + s);
+                    plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
             }
         }
 
-        try {
-            storageContents = Inventory.class.getMethod("getStorageContents");
-        } catch (Exception e) {
-            try {
-                storageContents = Inventory.class.getMethod("getContents");
-            } catch (Exception e1) {
-                throw new RuntimeException(e1);
-            }
-        }
+        // try {
+        //     storageContents = Inventory.class.getMethod("getStorageContents");
+        // } catch (Exception e) {
+        //     try {
+        //         storageContents = Inventory.class.getMethod("getContents");
+        //     } catch (Exception e1) {
+        //         throw new RuntimeException(e1);
+        //     }
+        // }
+        worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
+
     }
 
     /** Return an entry with min and max prices, but null if there isn't a price restriction */
@@ -160,19 +162,34 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(Block b) {
-        BlockState bs = b.getState();
-        if ((bs instanceof InventoryHolder == false) && b.getState().getType() != Material.ENDER_CHEST) {
+        BlockState bs;
+        try {
+            bs = b.getState();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            plugin.getLogger().warning("A known bug was trigged, i can't fix it because it looks a Spigot bug.");
+            plugin.getLogger().warning("QuickShop just got that exception and catch it, if you see this message,");
+            plugin.getLogger().warning("Please give author dump infomation under this line:");
+            plugin.getLogger().warning("Null:" + ((b == null) ? "true" : "false"));
+            if (b != null) {
+                plugin.getLogger().warning("Location: " + b.getLocation().toString());
+            }
             return false;
         }
-        if (b.getState().getType() == Material.ENDER_CHEST) {
+        if ((bs instanceof InventoryHolder == false) && b.getType() != Material.ENDER_CHEST) {
+            return false;
+        }
+        if (b.getType() == Material.ENDER_CHEST) {
             if (plugin.getOpenInvPlugin() == null) {
-                Util.debugLog("OpenInv not loaded");
                 return false;
             }
         }
-        return (isShoppables(b.getType()) && !plugin.getConfig().getList("shop.blacklist-world").contains(b.getLocation()
-                .getWorld().getName()));
+        return (isShoppables(b.getType()) && isBlacklistWorld(b.getWorld()));
 
+    }
+
+    public static boolean isBlacklistWorld(World world) {
+        return worldBlacklist.contains(world.getName());
     }
 
     /**
@@ -233,18 +250,13 @@ public class Util {
             InventoryHolder right = doubleChest.getRightSide();
             Chest leftC = (Chest) left;
             Chest rightC = (Chest) right;
-            Util.debugLog("Left should at " + leftC.getLocation().toString());
-            Util.debugLog("Right should at " + rightC.getLocation().toString());
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
-                Util.debugLog("Right founded");
                 return leftC.getBlock();
-
             }
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
-                Util.debugLog("Left founded");
                 return rightC.getBlock();
             }
-
+            Util.debugLog("Bug detected, DoubleChest holder can't find the any one side chest.");
             return null;
         } else {
             return null;
@@ -1172,5 +1184,9 @@ public class Util {
             shop.delete();
             return;
         }
+    }
+
+    public static boolean isDevMode() {
+        return devMode;
     }
 }
