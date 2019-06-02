@@ -95,8 +95,8 @@ public class RealDisplayItem implements DisplayItem {
         item.setSilent(true);
         item.setInvulnerable(true);
         java.util.List<String> lore = new ArrayList<String>();
-        for (int i = 0; i < 11; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 10 lines lore to make sure no stupid plugin accident remove mark.
+        for (int i = 0; i < 6; i++) {
+            lore.add("QuickShop DisplayItem"); //Create 5 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         item.getItemStack().setItemMeta(iMeta);
