@@ -125,6 +125,7 @@ public class Util {
     }
 
     public static boolean isShoppables(Material material) {
+        Util.debugLog("" + shoppables.contains(material));
         return shoppables.contains(material);
     }
 
@@ -177,18 +178,21 @@ public class Util {
             return false;
         }
         if ((bs instanceof InventoryHolder == false) && b.getType() != Material.ENDER_CHEST) {
+            Util.debugLog("Not InventoryHolder");
             return false;
         }
         if (b.getType() == Material.ENDER_CHEST) {
             if (plugin.getOpenInvPlugin() == null) {
+                Util.debugLog("OpenInv not loaded.");
                 return false;
             }
         }
-        return (isShoppables(b.getType()) && isBlacklistWorld(b.getWorld()));
+        return ((isShoppables(b.getType()) && isBlacklistWorld(b.getWorld())));
 
     }
 
     public static boolean isBlacklistWorld(World world) {
+        Util.debugLog("" + worldBlacklist.contains(world.getName()));
         return worldBlacklist.contains(world.getName());
     }
 
@@ -441,6 +445,13 @@ public class Util {
         }
     }
 
+    /**
+     * Remapping the INT to ROMAIN
+     * 10=X 9=IX 5=V 4=IV 1=I
+     *
+     * @param value
+     * @return
+     */
     public static String toRomain(Integer value) {
         return toRoman(value.intValue());
     }
@@ -484,6 +495,7 @@ public class Util {
 
     /**
      * Compares two items to each other. Returns true if they match.
+     * Rewrite it to use more faster hashCode.
      *
      * @param stack1 The first item stack
      * @param stack2 The second item stack
@@ -555,6 +567,11 @@ public class Util {
         return true;
     }
 
+    /**
+     * Sort the HashMap
+     * @param map
+     * @return Sorted HashMap
+     */
     public static Map sortHashMap(Map map) {
         List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, String>>() {

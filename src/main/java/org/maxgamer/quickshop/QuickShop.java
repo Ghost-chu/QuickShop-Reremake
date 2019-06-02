@@ -76,6 +76,7 @@ public class QuickShop extends JavaPlugin {
 
     /** The plugin OpenInv (null if not present) */
     private Plugin openInvPlugin;
+    /** The shop limites. **/
     private HashMap<String, Integer> limits = new HashMap<>();
     /** Use SpoutPlugin to get item / block names */
     private boolean useSpout = false;
@@ -85,20 +86,33 @@ public class QuickShop extends JavaPlugin {
     private int displayItemCheckTicks;
     private boolean noopDisable;
     private boolean setupDBonEnableding = false;
+    /** Default database prefix, can overwrite by config **/
     private String dbPrefix = "";
     private Tab commandTabCompleter;
+    /** bStats, good helper for metrics. **/
     private Metrics metrics;
+    /** Language manager, to select which language will loaded. **/
     private Language language;
+    /** The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs **/
     private BootError bootError;
     private CustomInventoryListener customInventoryListener;
+    /** WIP **/
     private Compatibility compatibilityTool = new Compatibility(this);
+    /** Queued shop manager **/
     private QueuedShopManager queuedShopManager;
+    /** Rewrited shoploader, more faster. **/
     private ShopLoader shopLoader;
+    /** Contains all SQL tasks **/
     private DatabaseHelper databaseHelper;
+    /** Queued database manager **/
     private DatabaseManager databaseManager;
+    /** A util to call to check some actions permission **/
     private PermissionChecker permissionChecker;
-    private SentryErrorReporter sentryErrorReporter;
+    /** The server UniqueID, use to the ErrorReporter **/
     private static UUID serverUniqueID;
+    /** The error reporter to help devs report errors to Sentry.io **/
+    private SentryErrorReporter sentryErrorReporter;
+
     //private LWCPlugin lwcPlugin;
 
     /**
