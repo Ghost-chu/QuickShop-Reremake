@@ -688,6 +688,14 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
+        if (selectedVersion == 30) {
+            getConfig().set("auto-report-errors", true);
+            getConfig().set("config-version", 31);
+            selectedVersion = 31;
+            saveConfig();
+            reloadConfig();
+        }
+
     }
 
     /** Reloads QuickShops config */

@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 30
+config-version: 31
 
 #Select language you want use, (e.g de), use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -47,6 +47,9 @@ anonymous-metrics: false
 
 #Should allow QS to check update on SpigotMC.org?
 updater: true
+
+#Should allow QS auto report the errors?
+auto-report-errors: true
 
 #Should QS use OfflinePlayer list for TabComplete?
 #This might can give player better experience, but may cause lagg.
