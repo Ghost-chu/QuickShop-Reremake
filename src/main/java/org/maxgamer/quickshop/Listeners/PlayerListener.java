@@ -107,8 +107,7 @@ public class PlayerListener implements Listener {
             // Handles creating shops
 
             else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && p.hasPermission("quickshop.create.sell") && Util.canBeShop(b)
-                    && p.getGameMode() != GameMode.CREATIVE) {
+                    && p.hasPermission("quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
                 if (e.useInteractedBlock() == Result.DENY)
                     return;
                 if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking())
@@ -133,7 +132,13 @@ public class PlayerListener implements Listener {
                         return;
                     }
                 }
-                if (!Util.canBeShop(b) && Util.isWallSign(b.getType())) {
+                // if (!Util.canBeShop(b)) {
+                //     Util.debugLog("Can be shop check failed.");
+                //     return;
+                // }
+                // Already checked above
+                if (Util.isWallSign(b.getType())) {
+                    Util.debugLog("WallSign check failed.");
                     return;
                 }
                 // Finds out where the sign should be placed for the shop
