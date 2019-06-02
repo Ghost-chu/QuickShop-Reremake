@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
+import java.util.Comparator;
 import java.util.Map.Entry;
 
 import com.google.common.io.Files;
@@ -26,7 +27,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -490,60 +490,75 @@ public class Util {
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
     public static boolean matches(ItemStack stack1, ItemStack stack2) {
+
+        if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
+            if (stack1.hashCode() != stack2.hashCode())
+                return false;
+
         if (stack1 == stack2)
             return true; // Referring to the same thing, or both are null.
         if (stack1 == null || stack2 == null)
             return false; // One of them is null (Can't be both, see above)
         if (stack1.getType() != stack2.getType())
             return false; // Not the same material
-        boolean damageA = stack1.getItemMeta() instanceof Damageable;
-        boolean damageB = stack2.getItemMeta() instanceof Damageable;
-        if (damageA != damageB) {
-            return false;
-        } else {
-            if (damageA = true) { //Already checked they same, so damageA=damageB=true
-                if (((Damageable) stack1.getItemMeta()).getDamage() != ((Damageable) stack2.getItemMeta()).getDamage()) {
+        if (stack1.hasItemMeta() != stack2.hasItemMeta())
+            return false; //Not same
+
+        if (stack1.hasItemMeta()) { //Both have ItemMeta, see above
+            ItemMeta stack1Meta = stack1.getItemMeta();
+            ItemMeta stack2Meta = stack2.getItemMeta();
+            /** DisplayName check **/
+            if (stack1Meta.hasDisplayName() != stack2Meta.hasDisplayName())
+                return false; //Has displayName check
+            if (stack1Meta.hasDisplayName()) {
+                String stack1DisplayName = stack1Meta.getDisplayName();
+                String stack2DisplayName = stack2Meta.getDisplayName();
+                if (!stack1DisplayName.equals(stack2DisplayName))
+                    return false; //DisplayName check;
+            }
+            /** Enchants check **/
+            if (stack1Meta.hasEnchants() != stack2Meta.hasEnchants())
+                return false;
+            if (stack1Meta.hasEnchants()) {
+                Map<Enchantment, Integer> stack1Ench = stack1Meta.getEnchants();
+                Map<Enchantment, Integer> stack2Ench = stack2Meta.getEnchants();
+                if (stack1Ench.hashCode() != stack2Ench.hashCode())
                     return false;
-                }
+            }
+            /** Damage check **/
+            if (stack1Meta instanceof Damageable != stack2Meta instanceof Damageable)
+                return false;
+            if (stack1Meta instanceof Damageable) {
+                Damageable stack1Damage = (Damageable) stack1Meta;
+                Damageable stack2Damage = (Damageable) stack2Meta;
+                if (stack1Damage.hashCode() != stack2Damage.hashCode())
+                    return false;
+            }
+            /** Potion check **/
+            if (stack1Meta instanceof PotionMeta != stack2Meta instanceof Damageable)
+                return false;
+            if (stack1Meta instanceof PotionMeta) {
+                PotionMeta stack1Potion = (PotionMeta) stack1Meta;
+                PotionMeta stack2Potion = (PotionMeta) stack2Meta;
+                if (stack1Potion.hashCode() != stack2Potion.hashCode())
+                    return false;
+
             }
         }
-
-        if (!stack1.getEnchantments().equals(stack2.getEnchantments()))
-            return false; // They have the same enchants
-        if (stack1.getItemMeta().hasDisplayName() || stack2.getItemMeta().hasDisplayName()) {
-            if (stack1.getItemMeta().hasDisplayName() && stack2.getItemMeta().hasDisplayName()) {
-                if (!stack1.getItemMeta().getDisplayName().equals(stack2.getItemMeta().getDisplayName())) {
-                    return false; // items have different display name
-                }
-            } else {
-                return false; // one of the item stacks have a display name
-            }
-        }
-        if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
-            if (!stack1.getItemMeta().equals(stack2.getItemMeta()))
-                return false;
-        boolean book1 = stack1.getItemMeta() instanceof EnchantmentStorageMeta;
-        boolean book2 = stack2.getItemMeta() instanceof EnchantmentStorageMeta;
-        if (book1 != book2)
-            return false;// One has enchantment meta, the other does not.
-        if (book1 == true) { // They are the same here (both true or both
-            // false). So if one is true, the other is
-            // true.
-            Map<Enchantment, Integer> ench1 = ((EnchantmentStorageMeta) stack1.getItemMeta()).getStoredEnchants();
-            Map<Enchantment, Integer> ench2 = ((EnchantmentStorageMeta) stack2.getItemMeta()).getStoredEnchants();
-            if (!ench1.equals(ench2))
-                return false; // Enchants aren't the same.
-        }
-        boolean potion1 = stack1.getItemMeta() instanceof PotionMeta;
-        boolean potion2 = stack2.getItemMeta() instanceof PotionMeta;
-        if (potion1 != potion2)
-            return false;
-        if (potion1 == true) {
-            if (!((PotionMeta) stack1.getItemMeta()).equals(((PotionMeta) stack1.getItemMeta())))
-                return false;
-        }
-
         return true;
+    }
+
+    public static Map sortHashMap(Map map) {
+        List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
+            //升序排序
+            public int compare(Entry<String, String> o1,
+                               Entry<String, String> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+
+        });
+        return map;
     }
 
     /**
