@@ -102,7 +102,14 @@ public class SentryErrorReporter {
                     new BreadcrumbBuilder().setMessage(record).build()
             );
         }
-
+        Paste paste = new Paste(plugin);
+        String pasteURL = "Failed to paste.";
+        try {
+            pasteURL = paste.pasteTheText(paste.genNewPaste());
+        } catch (Throwable ex) {
+            //Ignore
+        }
+        this.context.addTag("paste", pasteURL);
         this.sentryClient.sendException(throwable);
         this.context.clearBreadcrumbs();
         plugin.getLogger()
