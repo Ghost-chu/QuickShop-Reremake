@@ -516,6 +516,13 @@ public class Util {
                 if (!stack1DisplayName.equals(stack2DisplayName))
                     return false; //DisplayName check;
             }
+            /** Lores check **/
+            if (stack1Meta.hasLore() != stack2Meta.hasLore())
+                return false;
+            if (stack1Meta.hasLore()) {
+                if (stack1Meta.getLore().hashCode() != stack2Meta.getLore().hashCode())
+                    return false;
+            }
             /** Enchants check **/
             if (stack1Meta.hasEnchants() != stack2Meta.hasEnchants())
                 return false;
