@@ -172,7 +172,8 @@ public class SentryErrorReporter {
             if (Util.isDevMode()) {
                 return true;
             }
-            return false;
+            sendError(record.getThrown(), record.getMessage());
+            return false; //Hide errors
         }
     }
 
