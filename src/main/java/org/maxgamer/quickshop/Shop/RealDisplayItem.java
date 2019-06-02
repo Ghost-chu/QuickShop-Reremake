@@ -95,8 +95,8 @@ public class RealDisplayItem implements DisplayItem {
         item.setSilent(true);
         item.setInvulnerable(true);
         java.util.List<String> lore = new ArrayList<String>();
-        for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+        for (int i = 0; i < 11; i++) {
+            lore.add("QuickShop DisplayItem"); //Create 10 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         item.getItemStack().setItemMeta(iMeta);
@@ -116,10 +116,12 @@ public class RealDisplayItem implements DisplayItem {
         for (Entity e : c.getEntities()) {
             if (!(e instanceof Item))
                 continue;
+            if (this.item == null)
+                continue;
             if (this.item != null && e.getEntityId() == this.item.getEntityId())
                 continue;
             Location eLoc = e.getLocation().getBlock().getLocation();
-            if (eLoc.equals(displayLoc) || eLoc.equals(shop.getLocation())) {
+            if (eLoc.equals(shop.getLocation()) || eLoc.equals(displayLoc)) {
                 ItemStack near = ((Item) e).getItemStack();
                 // if its the same its a dupe
                 if (this.shop.matches(near)) {
