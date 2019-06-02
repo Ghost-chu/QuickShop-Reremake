@@ -125,7 +125,6 @@ public class Util {
     }
 
     public static boolean isShoppables(Material material) {
-        Util.debugLog("" + shoppables.contains(material));
         return shoppables.contains(material);
     }
 
@@ -163,36 +162,24 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(Block b) {
-        BlockState bs;
-        try {
-            bs = b.getState();
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            plugin.getLogger().warning("A known bug was trigged, i can't fix it because it looks a Spigot bug.");
-            plugin.getLogger().warning("QuickShop just got that exception and catch it, if you see this message,");
-            plugin.getLogger().warning("Please give author dump infomation under this line:");
-            plugin.getLogger().warning("Null:" + ((b == null) ? "true" : "false"));
-            if (b != null) {
-                plugin.getLogger().warning("Location: " + b.getLocation().toString());
-            }
-            return false;
-        }
-        if ((bs instanceof InventoryHolder == false) && b.getType() != Material.ENDER_CHEST) {
-            Util.debugLog("Not InventoryHolder");
+        BlockState bs = b.getState();
+        if ((!(bs instanceof InventoryHolder)) && b.getType() != Material.ENDER_CHEST) {
             return false;
         }
         if (b.getType() == Material.ENDER_CHEST) {
             if (plugin.getOpenInvPlugin() == null) {
-                Util.debugLog("OpenInv not loaded.");
                 return false;
             }
         }
-        return ((isShoppables(b.getType()) && isBlacklistWorld(b.getWorld())));
+        if (!isShoppables(b.getType()))
+            return false;
+        if (isBlacklistWorld(b.getWorld()))
+            return false;
+        return true;
 
     }
 
     public static boolean isBlacklistWorld(World world) {
-        Util.debugLog("" + worldBlacklist.contains(world.getName()));
         return worldBlacklist.contains(world.getName());
     }
 

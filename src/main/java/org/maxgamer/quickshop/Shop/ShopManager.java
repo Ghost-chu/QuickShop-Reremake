@@ -310,8 +310,10 @@ public class ShopManager {
                     return false;
                 }
             }
-            if (!plugin.getPermissionChecker().canBuild(p, b, true))
+            if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
+                Util.debugLog("PermissionChecker cancelled shop creating");
                 return false;
+            }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
             Bukkit.getPluginManager().callEvent(spce);
             if (spce.isCancelled()) {
