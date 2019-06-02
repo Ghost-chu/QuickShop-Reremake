@@ -9,6 +9,8 @@ after_success:
 - rm -rf push
 - mkdir push
 - cp ./target/*.jar ./push/
+- rm -f ./push/original*.jar
+- rm -f ./push/*shaded.jar
 - ls ./push -1 | grep ".jar$" > jarname.txt
 deploy:
     skip_cleanup: true
