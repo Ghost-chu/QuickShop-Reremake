@@ -64,7 +64,7 @@ public class SentryErrorReporter {
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
-        plugin.getLogger().setFilter(new QuickShopExceptionFillter()); //Redirect log request passthrough our error catcher.
+        plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
         Util.debugLog("Enabled!");
         enabled = true;
     }
@@ -146,7 +146,7 @@ public class SentryErrorReporter {
         }
     }
 
-    class QuickShopExceptionFillter implements Filter {
+    class QuickShopExceptionFilter implements Filter {
 
         /**
          * Check if a given log record should be published.
