@@ -170,10 +170,17 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
+    /**
+     * Early than onEnable, make sure instance was loaded in first time.
+     */
     @Override
-    public void onEnable() {
+    public void onLoad() {
         instance = this;
         bootError = null;
+    }
+
+    @Override
+    public void onEnable() {
         commandExecutor = new QS(this);
         getCommand("qs").setExecutor(commandExecutor);
         getLogger().info("Quickshop Reremake");
@@ -201,7 +208,6 @@ public class QuickShop extends JavaPlugin {
         metrics = new Metrics(this);
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
-
 
         if (!loadEcon()) {
             bootError = BuiltInSolution.econError();
@@ -298,9 +304,9 @@ public class QuickShop extends JavaPlugin {
         }
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
-        getLogger().info("QuickShop loaded!");
         UpdateWatcher.init();
         submitMeritcs();
+        getLogger().info("QuickShop loaded!");
     }
 
     private void submitMeritcs() {
