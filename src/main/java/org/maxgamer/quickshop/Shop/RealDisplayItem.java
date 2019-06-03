@@ -1,13 +1,13 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,7 +46,6 @@ public class RealDisplayItem implements DisplayItem {
      */
     @Override
     public void spawn() {
-        UUID timer = Util.setTimer();
         if (shop.getLocation().getWorld() == null)
             return;
         Location dispLoc = this.getDisplayLocation();
@@ -69,7 +68,6 @@ public class RealDisplayItem implements DisplayItem {
             plugin.getLogger().log(Level.WARNING,
                     "QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
         }
-        Util.debugLog("Performace for spawn item: " + Util.endTimer(timer) + "ms");
     }
 
     /**
@@ -88,7 +86,6 @@ public class RealDisplayItem implements DisplayItem {
      */
     @Override
     public void safeGuard(Item item) {
-        UUID timer = Util.setTimer();
         item.setPickupDelay(Integer.MAX_VALUE);
         ItemMeta iMeta = item.getItemStack().getItemMeta();
 
@@ -105,7 +102,6 @@ public class RealDisplayItem implements DisplayItem {
         }
         iMeta.setLore(lore);
         item.getItemStack().setItemMeta(iMeta);
-        Util.debugLog("Performace for safeGuard: " + Util.endTimer(timer) + "ms");
     }
 
     /**
@@ -114,18 +110,21 @@ public class RealDisplayItem implements DisplayItem {
      */
     @Override
     public boolean removeDupe() {
-        UUID timer = Util.setTimer();
         if (shop.getLocation().getWorld() == null)
             return false;
         Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
         boolean removed = false;
+        if (!Util.isLoaded(displayLoc))
+            return false;
         Chunk c = displayLoc.getChunk();
         for (Entity e : c.getEntities()) {
+            if (e.getType() != EntityType.DROPPED_ITEM)
+                continue;
             if (!(e instanceof Item))
                 continue;
             if (this.item == null)
                 continue;
-            if (this.item != null && e.getEntityId() == this.item.getEntityId())
+            if (e.getEntityId() == this.item.getEntityId()) //Not dupe, is our item
                 continue;
             Location eLoc = e.getLocation().getBlock().getLocation();
             if (eLoc.equals(shop.getLocation()) || eLoc.equals(displayLoc)) {
@@ -137,7 +136,6 @@ public class RealDisplayItem implements DisplayItem {
                 }
             }
         }
-        Util.debugLog("Performace for displayDupe check: " + Util.endTimer(timer) + "ms");
         return removed;
 
     }

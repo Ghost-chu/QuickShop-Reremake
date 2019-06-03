@@ -562,7 +562,7 @@ public class Util {
     public static Map sortHashMap(Map map) {
         List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
-            //升序排序
+
             public int compare(Entry<String, String> o1,
                                Entry<String, String> o2) {
                 return o1.getValue().compareTo(o2.getValue());
@@ -1025,6 +1025,12 @@ public class Util {
         for (String log : logs) {
             plugin.getLogger().info("[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log);
         }
+    }
+
+    public static void permformanceLog(String className, String methodName, long tookedTime) {
+        if (!devMode)
+            return;
+        plugin.getLogger().info("[PERFORMANCE] [" + className + "] [" + methodName + "] Used time " + tookedTime + "ns.");
     }
 
     /**

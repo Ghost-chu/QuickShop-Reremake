@@ -719,7 +719,6 @@ public class ContainerShop implements Shop {
 
     public boolean checkDisplayMoved() {
         // don't check if the plugin doesn't know about the object
-        UUID timer = Util.setTimer();
 
         if (!Util.isLoaded(getLocation()))
             return false;
@@ -740,7 +739,6 @@ public class ContainerShop implements Shop {
         if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) {
             return false;
         }
-        Util.debugLog("Performace for checkDisplayMoved: " + Util.endTimer(timer) + "ms");
         return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
     }
 
