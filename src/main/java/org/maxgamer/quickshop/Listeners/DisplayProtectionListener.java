@@ -17,8 +17,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -32,18 +35,29 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        for (int i = 0; i < event.getInventory().getContents().length; i++) {
-            try {
-                ItemStack is = event.getInventory().getContents()[i];
-                if (itemStackCheck(is)) {
-                    is.setAmount(0);
-                    is.setType(Material.AIR);
-                    event.getPlayer().closeInventory();
-                    Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + event.getPlayer()
-                            .getLocation().toString() + ")");
-                    Util.inventoryCheck(event.getInventory());
-                }
-            } catch (Exception e) {}
+        // for (int i = 0; i < event.getInventory().getContents().length; i++) {
+        //     try {
+        //         ItemStack is = event.getInventory().getContents()[i];
+        //         if (itemStackCheck(is)) {
+        //             is.setAmount(0);
+        //             is.setType(Material.AIR);
+        //             event.getPlayer().closeInventory();
+        //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + event.getPlayer()
+        //                     .getLocation().toString() + ")");
+        //             //Util.inventoryCheck(event.getInventory());
+        //         }
+        //     } catch (Exception e) {}
+        // }
+
+        for (ItemStack is : event.getInventory().getContents()) {
+            if (itemStackCheck(is)) {
+                is.setType(Material.AIR);
+                is.setAmount(1);
+                event.getPlayer().closeInventory();
+                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + event.getPlayer()
+                        .getLocation().toString() + ")");
+                //Util.inventoryCheck(event.getInventory());
+            }
         }
     }
 
@@ -73,56 +87,56 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void mendItem(PlayerItemMendEvent e) {
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-        try {
-            if (DisplayItem.checkShopItem(stack)) {
-                e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-                        .toString() + ")");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
-            if (DisplayItem.checkShopItem(stackOffHand)) {
-                e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-                        .toString() + ")");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
-        } catch (NullPointerException ex) {
-        }
-    }
+    // @EventHandler(ignoreCancelled = true)
+    // public void mendItem(PlayerItemMendEvent e) {
+    //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+    //     try {
+    //         if (DisplayItem.checkShopItem(stack)) {
+    //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
+    //             // You shouldn't be able to pick up that...
+    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
+    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
+    //                     .toString() + ")");
+    //             Util.inventoryCheck(e.getPlayer().getInventory());
+    //         }
+    //         if (DisplayItem.checkShopItem(stackOffHand)) {
+    //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
+    //             // You shouldn't be able to pick up that...
+    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
+    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
+    //                     .toString() + ")");
+    //             Util.inventoryCheck(e.getPlayer().getInventory());
+    //         }
+    //     } catch (NullPointerException ex) {
+    //     }
+    // }
 
-    @EventHandler(ignoreCancelled = true)
-    public void changeHand(PlayerChangedMainHandEvent e) {
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-        try {
-            if (DisplayItem.checkShopItem(stack)) {
-                e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-                        .toString() + ")");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
-            if (DisplayItem.checkShopItem(stackOffHand)) {
-                e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-                        .toString() + ")");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
-        } catch (NullPointerException ex) {
-        }
-
-    }
+    // @EventHandler(ignoreCancelled = true)
+    // public void changeHand(PlayerChangedMainHandEvent e) {
+    //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+    //     try {
+    //         if (DisplayItem.checkShopItem(stack)) {
+    //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
+    //             // You shouldn't be able to pick up that...
+    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
+    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
+    //                     .toString() + ")");
+    //             Util.inventoryCheck(e.getPlayer().getInventory());
+    //         }
+    //         if (DisplayItem.checkShopItem(stackOffHand)) {
+    //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
+    //             // You shouldn't be able to pick up that...
+    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
+    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
+    //                     .toString() + ")");
+    //             Util.inventoryCheck(e.getPlayer().getInventory());
+    //         }
+    //     } catch (NullPointerException ex) {
+    //     }
+    //
+    // }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickup(EntityPickupItemEvent e) {
