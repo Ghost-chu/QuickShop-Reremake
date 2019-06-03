@@ -25,7 +25,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
-
 public class MsgUtil {
     static QuickShop plugin = QuickShop.instance;
     //	private static YamlConfiguration messages;
@@ -36,6 +35,10 @@ public class MsgUtil {
     private static boolean Inited;
     private static YamlConfiguration messagei18n;
     static File messageFile;
+
+    public static YamlConfiguration getI18nYaml() {
+        return messagei18n;
+    }
 
     public static void loadCfgMessages(String... reload) {
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
@@ -819,7 +822,14 @@ public class MsgUtil {
     public static String getMessage(String loc, String... args) {
         String raw = messagei18n.getString(loc);
         if (raw == null) {
-            return "Invalid message: " + loc + " Please update your messages.yml";
+            return "Invalid message: " + loc + " Did you modify the i18n file?";
+        }
+        return fillArgs(raw, args);
+    }
+
+    public static String fillArgs(String raw, String... args) {
+        if (raw == null) {
+            return "Invalid message: " + "raw";
         }
         if (raw.isEmpty()) {
             return "";

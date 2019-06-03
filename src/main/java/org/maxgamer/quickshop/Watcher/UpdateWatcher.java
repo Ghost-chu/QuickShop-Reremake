@@ -1,5 +1,10 @@
 package org.maxgamer.quickshop.Watcher;
 
+import java.util.List;
+import java.util.Random;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -8,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
 
@@ -39,10 +45,18 @@ public class UpdateWatcher implements Listener {
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        if (player.isOp()) {
+                        if (player.hasPermission("quickshop.alert")) {
+                            List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
+                            Random random = new Random();
+                            int notifyNum = random.nextInt(notifys.size());
+                            String notify = notifys.get(notifyNum);
+                            notify = MsgUtil.fillArgs(notify, fixVer(info.getVersion()), fixVer(QuickShop.getVersion()));
+                            TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
+                                    .getMessage("updatenotify.buttontitle"));
+                            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                            player.sendMessage(ChatColor.GREEN + "A new version of QuickShop has been released!");
-                            player.sendMessage(ChatColor.GREEN + "Update here: https://www.spigotmc.org/resources/62575/");
+                            player.sendMessage(ChatColor.GREEN + notify);
+                            player.spigot().sendMessage(message);
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
                     });
@@ -71,8 +85,19 @@ public class UpdateWatcher implements Listener {
             public void run() {
                 if (hasNewUpdate && e.getPlayer().hasPermission("quickshop.alert")) {
                     if (!info.getIsBeta()) {
-                        e.getPlayer().sendMessage(ChatColor.GREEN + "A new version of QuickShop has been released!");
-                        e.getPlayer().sendMessage(ChatColor.GREEN + "Update here: https://www.spigotmc.org/resources/62575/");
+                        List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
+                        Random random = new Random();
+                        int notifyNum = random.nextInt(notifys.size());
+                        String notify = notifys.get(notifyNum);
+                        notify = MsgUtil.fillArgs(notify, fixVer(info.getVersion()), fixVer(QuickShop.getVersion()));
+
+                        TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
+                                .getMessage("updatenotify.buttontitle"));
+                        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                        e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                        e.getPlayer().sendMessage(ChatColor.GREEN + notify);
+                        e.getPlayer().spigot().sendMessage(message);
+                        e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                     } else {
                         e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
                         e.getPlayer().sendMessage(ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
@@ -83,6 +108,12 @@ public class UpdateWatcher implements Listener {
 
             }
         }.runTaskLater(QuickShop.instance, 80);
+    }
+
+    public static String fixVer(String originalVer) {
+        originalVer = originalVer.replaceAll("Reremake", "");
+        originalVer = originalVer.trim();
+        return originalVer;
     }
 
 }
