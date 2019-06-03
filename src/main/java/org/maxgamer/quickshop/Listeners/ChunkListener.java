@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import lombok.*;
 import org.bukkit.Chunk;
@@ -15,6 +16,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.QueueAction;
 import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.ShopChunk;
 import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
@@ -24,10 +26,11 @@ public class ChunkListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
         Chunk c = e.getChunk();
-        if (plugin.getShopManager().getShops() == null)
+        Map<String, HashMap<ShopChunk, HashMap<Location, Shop>>> map = plugin.getShopManager().getShops();
+        if (plugin.getShopManager().getShops() == null || map.isEmpty())
             return;
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
-        if (inChunk == null)
+        if (inChunk == null || inChunk.isEmpty())
             return;
         new BukkitRunnable() {
 
@@ -47,7 +50,7 @@ public class ChunkListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent e) {
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
-        if (inChunk == null)
+        if (inChunk == null || inChunk.isEmpty())
             return;
         for (Shop shop : inChunk.values()) {
             plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));

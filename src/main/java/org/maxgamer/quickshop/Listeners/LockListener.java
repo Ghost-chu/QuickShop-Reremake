@@ -145,7 +145,7 @@ public class LockListener implements Listener {
             if (shop != null) {
                 // ToDo: Shouldn't I be decrementing 1 here? Concurrency and
                 // all..
-                e.blockList().remove(b);
+                e.blockList().remove(b); //Protect shop
             }
         }
     }
