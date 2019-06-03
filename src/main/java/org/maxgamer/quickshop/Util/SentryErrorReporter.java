@@ -137,6 +137,9 @@ public class SentryErrorReporter {
     }
 
     private boolean canReport(Throwable throwable) {
+        if (!enabled) {
+            return false;
+        }
         String text = throwable.getMessage() + "%" + throwable.getStackTrace()[0];
         if (!reported.contains(text)) {
             reported.add(text);
