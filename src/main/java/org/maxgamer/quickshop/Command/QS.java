@@ -774,7 +774,7 @@ public class QS implements CommandExecutor {
             } else if (subArg.startsWith("silentunlimited")) {
                 silentUnlimited(sender, args);
                 return true;
-            } else if (subArg.equals("setowner")) {
+            } else if (subArg.equals("setowner") || subArg.equals("owner")) {
                 setOwner(sender, args);
                 return true;
             } else if (subArg.equals("find")) {
