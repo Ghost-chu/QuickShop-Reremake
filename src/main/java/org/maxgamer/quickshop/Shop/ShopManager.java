@@ -247,7 +247,7 @@ public class ShopManager {
             for (World world : Bukkit.getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
                     HashMap<Location, Shop> inChunk = this.getShops(chunk);
-                    if (inChunk == null)
+                    if (inChunk == null || inChunk.isEmpty())
                         continue;
                     for (Shop shop : inChunk.values()) {
                         shop.onUnload();
