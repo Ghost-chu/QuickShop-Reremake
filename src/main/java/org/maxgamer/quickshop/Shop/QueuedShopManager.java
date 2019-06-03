@@ -52,6 +52,7 @@ public class QueuedShopManager {
             if (queueShopObject == null) //No more queue need to do
                 break; //Jump out, go next tick
             this.doTask(queueShopObject);
+            loadedShopInTick++;
 
         }
     }

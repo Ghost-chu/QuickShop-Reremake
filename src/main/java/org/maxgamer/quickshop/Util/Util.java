@@ -637,7 +637,7 @@ public class Util {
      */
     public static int countItems(Inventory inv, ItemStack item) {
         int items = 0;
-        for (ItemStack iStack : inv.getContents()) {
+        for (ItemStack iStack : inv.getStorageContents()) {
             if (iStack == null)
                 continue;
             if (Util.matches(item, iStack)) {
@@ -658,8 +658,7 @@ public class Util {
     public static int countSpace(Inventory inv, ItemStack item) {
         int space = 0;
 
-        try {
-            ItemStack[] contents = (ItemStack[]) storageContents.invoke(inv);
+        ItemStack[] contents = inv.getStorageContents();
             for (ItemStack iStack : contents) {
                 if (iStack == null || iStack.getType() == Material.AIR) {
                     space += item.getMaxStackSize();
@@ -667,9 +666,6 @@ public class Util {
                     space += item.getMaxStackSize() - iStack.getAmount();
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         return space;
     }
 
