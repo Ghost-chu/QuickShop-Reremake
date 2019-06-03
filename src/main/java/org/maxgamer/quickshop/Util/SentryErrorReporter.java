@@ -19,8 +19,8 @@ import org.maxgamer.quickshop.QuickShop;
 public class SentryErrorReporter {
     private SentryClient sentryClient;
     private Context context;
-    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041";
-    private boolean enabled = false;
+    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041" + "?" + "stacktrace.app.packages=";
+    private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
 
@@ -44,22 +44,6 @@ public class SentryErrorReporter {
         context.addTag("server_onlinemode", String.valueOf(serverData.get("onlineMode")));
         context.addTag("server_bukkitversion", String.valueOf(serverData.get("bukkitVersion")));
         context.addTag("server_plugins", getPluginInfo());
-        try {
-            context.addTag("plugin_config", new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin
-                    .getName())
-                    .getDataFolder().toString() + "/config.yml")));
-
-        } catch (Throwable th) {
-            context.addTag("plugin_config", "Failed to load");
-        }
-
-        try {
-            context.addTag("plugin_messages", new String(Util.inputStream2ByteArray(Bukkit.getPluginManager().getPlugin(plugin
-                    .getName())
-                    .getDataFolder().toString() + "/messages.yml")));
-        } catch (Throwable th) {
-            context.addTag("plugin_messages", "Failed to load");
-        }
         context.setUser(new UserBuilder().setId(QuickShop.getUniqueID().toString()).build());
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
         sentryClient.setRelease(QuickShop.getVersion());
