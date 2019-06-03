@@ -50,7 +50,7 @@ public class UpdateWatcher implements Listener {
                             Random random = new Random();
                             int notifyNum = random.nextInt(notifys.size());
                             String notify = notifys.get(notifyNum);
-                            notify = MsgUtil.fillArgs(notify, fixVer(info.getVersion()), fixVer(QuickShop.getVersion()));
+                            notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
                             TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
                                     .getMessage("updatenotify.buttontitle"));
                             message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
@@ -89,7 +89,7 @@ public class UpdateWatcher implements Listener {
                         Random random = new Random();
                         int notifyNum = random.nextInt(notifys.size());
                         String notify = notifys.get(notifyNum);
-                        notify = MsgUtil.fillArgs(notify, fixVer(info.getVersion()), fixVer(QuickShop.getVersion()));
+                        notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
 
                         TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
                                 .getMessage("updatenotify.buttontitle"));
