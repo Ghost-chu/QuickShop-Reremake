@@ -136,8 +136,7 @@ public class BlockListener implements Listener {
         if (plugin.getConfig().getBoolean("protect.hopper")) {
             if (event.getDestination().getHolder() instanceof Hopper) {
                 Hopper h = (Hopper) event.getDestination().getHolder();
-                Location minecartLoc = new Location(h.getWorld(), h.getLocation().getBlockX(), h.getLocation().getBlockY() + 1, h
-                        .getLocation().getBlockZ());
+                Location minecartLoc = h.getBlock().getLocation();
                 Shop shop = plugin.getShopManager().getShop(minecartLoc);
                 if (shop == null) {
                     return;
@@ -154,16 +153,15 @@ public class BlockListener implements Listener {
         if (shop == null) {
             return;
         }
-        if (shop != null) {
-            if (plugin.getConfig().getBoolean("protect.entity")) {
-                event.setCancelled(true);
-                event.getEntity().remove();
-                plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of " + shop);
-                Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
-            } else {
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
-            }
+        if (plugin.getConfig().getBoolean("protect.entity")) {
+            event.setCancelled(true);
+            //event.getEntity().remove();
+            //plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of " + shop);
+            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
+        } else {
+            plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
         }
+
     }
 
     //Protect Redstone active shop
@@ -176,11 +174,9 @@ public class BlockListener implements Listener {
         if (shop == null) {
             return;
         }
-        if (shop != null) {
             event.setNewCurrent(event.getOldCurrent());
-            plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
+        //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
             Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Redstone tried to active of " + shop);
-        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -193,12 +189,9 @@ public class BlockListener implements Listener {
             if (shop == null) {
                 return;
             }
-            if (shop != null) {
-                event.setCancelled(true);
-                plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
-                Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
-            }
-
+            event.setCancelled(true);
+            plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
+            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
         }
     }
 

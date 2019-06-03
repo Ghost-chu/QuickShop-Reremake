@@ -233,6 +233,14 @@ public class QuickShop extends JavaPlugin {
         // Initialize Util
         Util.initialize();
 
+        setupDBonEnableding = true;
+        setupDatabase();
+        setupDBonEnableding = false;
+
+        MsgUtil.loadItemi18n();
+        MsgUtil.loadEnchi18n();
+        MsgUtil.loadPotioni18n();
+
         // Create the shop manager.
         this.shopManager = new ShopManager(this);
         this.queuedShopManager = new QueuedShopManager(this);
@@ -265,13 +273,7 @@ public class QuickShop extends JavaPlugin {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        setupDBonEnableding = true;
-        setupDatabase();
-        setupDBonEnableding = false;
 
-        MsgUtil.loadItemi18n();
-        MsgUtil.loadEnchi18n();
-        MsgUtil.loadPotioni18n();
         // Command handlers
         commandTabCompleter = new Tab(this);
         getCommand("qs").setTabCompleter(commandTabCompleter);

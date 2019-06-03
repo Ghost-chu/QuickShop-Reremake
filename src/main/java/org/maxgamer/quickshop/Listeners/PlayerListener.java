@@ -65,7 +65,6 @@ public class PlayerListener implements Listener {
             // If that wasn't a shop, search nearby shops
             if (shop == null) {
                 Block attached = null;
-
                 if (Util.isWallSign(b.getType())) {
                     attached = Util.getAttached(b);
                     if (attached != null) {
