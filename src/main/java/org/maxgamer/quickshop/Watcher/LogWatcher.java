@@ -37,12 +37,11 @@ public class LogWatcher implements Runnable {
                 Iterator<String> iterator = logs.iterator();
                 while (iterator.hasNext()) {
                     ps.print(iterator.next());
-                    iterator.remove();
                 }
+                logs.clear();
+
             }
         }.runTask(QuickShop.instance);
-        logs.clear();
-
     }
 
     public void add(String s) {
