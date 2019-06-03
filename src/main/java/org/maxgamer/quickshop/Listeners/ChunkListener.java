@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import lombok.*;
 import org.bukkit.Chunk;
@@ -16,19 +15,15 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.QueueAction;
 import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopChunk;
 import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {
     private QuickShop plugin;
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
         Chunk c = e.getChunk();
-        Map<String, HashMap<ShopChunk, HashMap<Location, Shop>>> map = plugin.getShopManager().getShops();
-        if (plugin.getShopManager().getShops() == null || map.isEmpty())
-            return;
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
             return;
@@ -46,7 +41,7 @@ public class ChunkListener implements Listener {
         }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
