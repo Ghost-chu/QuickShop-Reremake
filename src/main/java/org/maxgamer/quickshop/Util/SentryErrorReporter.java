@@ -32,7 +32,7 @@ public class SentryErrorReporter {
         sentryClient = SentryClientFactory.sentryClient(this.dsn);
         context = sentryClient.getContext();
         Util.debugLog("Setting basic report data...");
-        context.addTag("plugin_version", QuickShop.getVersion());
+        //context.addTag("plugin_version", QuickShop.getVersion());
         context.addTag("system_os", String.valueOf(serverData.get("osName")));
         context.addTag("system_arch", String.valueOf(serverData.get("osArch")));
         context.addTag("system_version", String.valueOf(serverData.get("osVersion")));
@@ -51,6 +51,10 @@ public class SentryErrorReporter {
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
         Util.debugLog("Enabled!");
         enabled = true;
+        if (!plugin.getConfig().getBoolean("auto-report-errors")) {
+            Util.debugLog("Disabled!'");
+            unit();
+        }
     }
 
     public void unit() {
