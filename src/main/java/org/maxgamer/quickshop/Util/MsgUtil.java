@@ -224,6 +224,32 @@ public class MsgUtil {
             selectedVersion = 13;
             messagei18n.save(messageFile);
         }
+        if (selectedVersion == 13) {
+            messagei18n.set("no-permission-build", "&cYou can't build shop here.");
+            messagei18n.set("success-change-owner-to-server", "&aSuccessfully set shop owner to Server.");
+            messagei18n.set("updatenotify.buttontitle", "[Update Now]");
+            List<String> notifylist = new ArrayList<>();
+            notifylist.add("{0} is released, You still using {1}!");
+            notifylist.add("Boom! New update {0} incoming, Update!");
+            notifylist.add("Surprise! {0} come out, you are on {1}");
+            notifylist.add("Looks you need update, {0} is updated!");
+            notifylist.add("Ooops! {0} new released, you are {1}!");
+            notifylist.add("I promise, QS updated {0}, why not update?");
+            notifylist.add("Fixing and re... Sorry {0} is updated!");
+            notifylist.add("Err! Nope, not error, just {0} updated!");
+            notifylist.add("OMG! {0} come out! Why you still use {1}?");
+            notifylist.add("Today News: QuickShop updated {0}!");
+            notifylist.add("Plugin K.I.A, You should update {0}!");
+            notifylist.add("Fuze is fuzeing update {0}, save update!");
+            notifylist.add("You are update commander, told u {0} come out!");
+            notifylist.add("Look me style---{0} updated, you still {1}");
+            notifylist.add("Ahhhhhhh! New update {0}! Update!");
+            notifylist.add("What U thinking? {0} released! Update!");
+            messagei18n.set("updatenotify.list", notifylist);
+            messagei18n.set("language-version", 14);
+            selectedVersion = 14;
+            messagei18n.save(messageFile);
+        }
     }
 
     public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
@@ -392,7 +418,7 @@ public class MsgUtil {
             if (itemname == null || itemname.equals("")) {
                 plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(material.name())
                         .trim() + "] ,adding it in config...");
-                itemi18n.set("itemi18n." + material.name(), Util.prettifyText(material.name()).trim());
+                itemi18n.set("itemi18n." + material.name(), Util.prettifyText(material.name()));
             }
         }
         try {
