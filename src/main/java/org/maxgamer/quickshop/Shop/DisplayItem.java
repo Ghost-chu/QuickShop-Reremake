@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Util.Util;
 
 public interface DisplayItem {
     public abstract void spawn();
@@ -35,7 +34,7 @@ public interface DisplayItem {
                 //                 + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
                 //     }
                 // }
-                Util.sendMessageToOps("[QuickShop] Display item for " + shop + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
+                //Util.sendMessageToOps("[QuickShop] Display item for " + shop + " is not on the correct location and has been removed. Probably someone is trying to cheat.");
                 QuickShop.instance.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.REMOVEDISPLAYITEM));
             }
         }
