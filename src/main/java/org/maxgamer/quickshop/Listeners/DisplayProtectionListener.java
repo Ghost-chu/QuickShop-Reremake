@@ -49,7 +49,7 @@ public class DisplayProtectionListener implements Listener {
         //     } catch (Exception e) {}
         // }
 
-        for (ItemStack is : event.getInventory().getContents()) {
+        for (ItemStack is : event.getInventory().getStorageContents()) {
             if (itemStackCheck(is)) {
                 is.setType(Material.AIR);
                 is.setAmount(1);

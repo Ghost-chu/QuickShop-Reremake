@@ -50,6 +50,8 @@ public interface DisplayItem {
 
 
     public static boolean checkShopItem(ItemStack itemStack) {
+        if (itemStack == null)
+            return false;
         if (!itemStack.hasItemMeta()) {
             return false;
         }
