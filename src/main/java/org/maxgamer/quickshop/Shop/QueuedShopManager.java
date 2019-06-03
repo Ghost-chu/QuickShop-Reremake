@@ -37,7 +37,8 @@ public class QueuedShopManager {
     }
 
     public void uninit() {
-        task.cancel();
+        if (!task.isCancelled())
+            task.cancel();
         plugin.getLogger().info("Please waiting for finish the shops queue works...");
         runTask(true);
     }

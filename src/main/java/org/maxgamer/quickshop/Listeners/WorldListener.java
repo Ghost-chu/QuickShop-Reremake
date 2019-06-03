@@ -56,7 +56,7 @@ public class WorldListener implements Listener {
         // So manually tell all of these shops they're loaded.
         for (Chunk chunk : world.getLoadedChunks()) {
             HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null)
+            if (inChunk == null || inChunk.isEmpty())
                 continue;
             for (Shop shop : inChunk.values()) {
                 plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.LOAD));
@@ -74,7 +74,7 @@ public class WorldListener implements Listener {
         // So manually tell all of these shops they're unloaded.
         for (Chunk chunk : e.getWorld().getLoadedChunks()) {
             HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null)
+            if (inChunk == null || inChunk.isEmpty())
                 continue;
             for (Shop shop : inChunk.values()) {
                 plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
