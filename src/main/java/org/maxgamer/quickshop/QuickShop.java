@@ -58,6 +58,7 @@ public class QuickShop extends JavaPlugin {
     private WorldListener worldListener;
     private BukkitTask itemWatcherTask;
     private LogWatcher logWatcher;
+    private ItemMatcher itemMatcher;
 //	/** Whether players are required to sneak to create/buy from a shop */
 //	public boolean sneak;
 //	/** Whether players are required to sneak to create a shop */
@@ -231,6 +232,7 @@ public class QuickShop extends JavaPlugin {
         load3rdParty();
 
         // Initialize Util
+        itemMatcher = new ItemMatcher(this);
         Util.initialize();
 
         setupDBonEnableding = true;

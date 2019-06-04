@@ -480,79 +480,7 @@ public class Util {
         }
     }
 
-    /**
-     * Compares two items to each other. Returns true if they match.
-     * Rewrite it to use more faster hashCode.
-     *
-     * @param stack1 The first item stack
-     * @param stack2 The second item stack
-     * @return true if the itemstacks match. (Material, durability, enchants, name)
-     */
-    public static boolean matches(ItemStack stack1, ItemStack stack2) {
 
-        if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
-            if (stack1.hashCode() != stack2.hashCode())
-                return false;
-
-        if (stack1 == stack2)
-            return true; // Referring to the same thing, or both are null.
-        if (stack1 == null || stack2 == null)
-            return false; // One of them is null (Can't be both, see above)
-        if (stack1.getType() != stack2.getType())
-            return false; // Not the same material
-        if (stack1.hasItemMeta() != stack2.hasItemMeta())
-            return false; //Not same
-
-        if (stack1.hasItemMeta()) { //Both have ItemMeta, see above
-            ItemMeta stack1Meta = stack1.getItemMeta();
-            ItemMeta stack2Meta = stack2.getItemMeta();
-            /** DisplayName check **/
-            if (stack1Meta.hasDisplayName() != stack2Meta.hasDisplayName())
-                return false; //Has displayName check
-            if (stack1Meta.hasDisplayName()) {
-                String stack1DisplayName = stack1Meta.getDisplayName();
-                String stack2DisplayName = stack2Meta.getDisplayName();
-                if (!stack1DisplayName.equals(stack2DisplayName))
-                    return false; //DisplayName check;
-            }
-            /** Lores check **/
-            if (stack1Meta.hasLore() != stack2Meta.hasLore())
-                return false;
-            if (stack1Meta.hasLore()) {
-                if (stack1Meta.getLore().hashCode() != stack2Meta.getLore().hashCode())
-                    return false;
-            }
-            /** Enchants check **/
-            if (stack1Meta.hasEnchants() != stack2Meta.hasEnchants())
-                return false;
-            if (stack1Meta.hasEnchants()) {
-                Map<Enchantment, Integer> stack1Ench = stack1Meta.getEnchants();
-                Map<Enchantment, Integer> stack2Ench = stack2Meta.getEnchants();
-                if (stack1Ench.hashCode() != stack2Ench.hashCode())
-                    return false;
-            }
-            /** Damage check **/
-            if (stack1Meta instanceof Damageable != stack2Meta instanceof Damageable)
-                return false;
-            if (stack1Meta instanceof Damageable) {
-                Damageable stack1Damage = (Damageable) stack1Meta;
-                Damageable stack2Damage = (Damageable) stack2Meta;
-                if (stack1Damage.hashCode() != stack2Damage.hashCode())
-                    return false;
-            }
-            /** Potion check **/
-            if (stack1Meta instanceof PotionMeta != stack2Meta instanceof Damageable)
-                return false;
-            if (stack1Meta instanceof PotionMeta) {
-                PotionMeta stack1Potion = (PotionMeta) stack1Meta;
-                PotionMeta stack2Potion = (PotionMeta) stack2Meta;
-                if (stack1Potion.hashCode() != stack2Potion.hashCode())
-                    return false;
-
-            }
-        }
-        return true;
-    }
 
     /**
      * Sort the HashMap
@@ -640,7 +568,7 @@ public class Util {
         for (ItemStack iStack : inv.getStorageContents()) {
             if (iStack == null)
                 continue;
-            if (Util.matches(item, iStack)) {
+            if (plugin.getItemMatcher().matches(item, iStack)) {
                 items += iStack.getAmount();
             }
         }
@@ -662,7 +590,7 @@ public class Util {
             for (ItemStack iStack : contents) {
                 if (iStack == null || iStack.getType() == Material.AIR) {
                     space += item.getMaxStackSize();
-                } else if (matches(item, iStack)) {
+                } else if (plugin.getItemMatcher().matches(item, iStack)) {
                     space += item.getMaxStackSize() - iStack.getAmount();
                 }
             }
