@@ -16,6 +16,9 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * A class allow plugin load shops fast and simply.
+ */
 public class ShopLoader {
     private QuickShop plugin;
     private int errors;
@@ -24,10 +27,18 @@ public class ShopLoader {
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
 
+    /**
+     * The shop load allow plugin load shops fast and simply.
+     *
+     * @param plugin Plugin main class
+     */
     public ShopLoader(QuickShop plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Load all shops
+     */
     public void loadShops() {
 
         UUID totalLoadTimer = Util.setTimer();

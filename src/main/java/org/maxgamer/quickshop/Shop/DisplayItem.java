@@ -8,20 +8,50 @@ import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 
 public interface DisplayItem {
+    /**
+     * Spawn the displayItem
+     */
     public abstract void spawn();
 
+    /**
+     * Respawn the displayItem
+     */
     public abstract void respawn();
 
+    /**
+     * Protect the target Item and mark is QS's shop item.
+     *
+     * @param item The item you want protect.
+     */
     public abstract void safeGuard(Item item);
 
+    /**
+     * Remove the dupe items.
+     * @return Had dupes removed.
+     */
     public abstract boolean removeDupe();
 
+    /**
+     * Remove the DisplayItem
+     */
     public abstract void remove();
 
+    /**
+     * Get the displayLocation
+     * @return DisplayItem's location, not promise target location have the display item.
+     */
     public abstract Location getDisplayLocation();
 
+    /**
+     * Get the displayItem's item, maybe return null
+     * @return The displayItem's item, maybe null when it not exist.
+     */
     public abstract Item getItem();
 
+    /**
+     * Check the display is or not moved.
+     * @param shop
+     */
     public static void checkDisplayMove(Shop shop) {
         if (shop instanceof ContainerShop) {
             ContainerShop cShop = (ContainerShop) shop;
@@ -46,8 +76,6 @@ public interface DisplayItem {
      * @param itemStack The ItemStack you want to check.
      * @return The check result.
      */
-
-
     public static boolean checkShopItem(ItemStack itemStack) {
         if (itemStack == null)
             return false;

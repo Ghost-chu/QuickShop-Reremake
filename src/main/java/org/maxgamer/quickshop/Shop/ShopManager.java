@@ -20,6 +20,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * Manage a lot of shops.
+ */
 public class ShopManager {
     QuickShop plugin = QuickShop.instance;
     private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
@@ -41,8 +44,8 @@ public class ShopManager {
     /**
      * Create a shop use Shop and Info object.
      *
-     * @param shop
-     * @param info
+     * @param shop The shop object
+     * @param info The info object
      */
     public void createShop(Shop shop, Info info) {
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
@@ -148,7 +151,7 @@ public class ShopManager {
      *
      * @param c The chunk to search. Referencing doesn't matter, only
      *          coordinates and world are used.
-     * @return
+     * @return Shops
      */
     public HashMap<Location, Shop> getShops(Chunk c) {
         // long start = System.nanoTime();
@@ -268,6 +271,7 @@ public class ShopManager {
      *
      * @param p The player to check
      * @param b The block to check
+     * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(Player p, Block b, BlockFace bf) {
@@ -732,6 +736,12 @@ public class ShopManager {
         return new ShopIterator();
     }
 
+    /**
+     * Format the price use economy system
+     *
+     * @param d price
+     * @return formated price
+     */
     public String format(double d) {
         return plugin.getEcon().format(d);
     }

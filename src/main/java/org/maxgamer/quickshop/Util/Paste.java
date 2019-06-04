@@ -14,6 +14,9 @@ import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * A util to generate a paste report and upload it to Ubuntu Paste
+ */
 public class Paste {
     private QuickShop plugin;
 

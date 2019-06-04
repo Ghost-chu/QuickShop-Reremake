@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
+/**
+ * A class to create a GUI item preview quickly
+ */
 public class InventoryPreview implements Listener {
 
     private ItemStack itemStack;

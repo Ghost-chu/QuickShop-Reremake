@@ -3,6 +3,9 @@ package org.maxgamer.quickshop;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+/**
+ * A class to check known issue cause plugin failed enable.
+ */
 class BuiltInSolution {
     /**
      * Call when failed load economy system, and use this to check the reason.
