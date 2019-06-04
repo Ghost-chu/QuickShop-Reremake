@@ -564,6 +564,8 @@ public class Util {
      * @return The number of items that match in this inventory.
      */
     public static int countItems(Inventory inv, ItemStack item) {
+        if (inv == null)
+            return 0;
         int items = 0;
         for (ItemStack iStack : inv.getStorageContents()) {
             if (iStack == null)
@@ -584,6 +586,8 @@ public class Util {
      * @return The number of items that can be given to the inventory safely.
      */
     public static int countSpace(Inventory inv, ItemStack item) {
+        if (inv == null)
+            return 0;
         int space = 0;
 
         ItemStack[] contents = inv.getStorageContents();
@@ -892,6 +896,8 @@ public class Util {
      * Call this to check items in inventory and remove it.
      */
     public static void inventoryCheck(Inventory inv) {
+        if (inv == null)
+            return;
         try {
             for (int i = 0; i < inv.getSize(); i++)
                 if (DisplayItem.checkShopItem(inv.getItem(i))) {
