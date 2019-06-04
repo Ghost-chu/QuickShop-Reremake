@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.Level;
@@ -113,6 +114,7 @@ public class SentryErrorReporter {
 
     private boolean checkWasCauseByQS(Throwable throwable) {
         StackTraceElement[] stackTraces = throwable.getStackTrace();
+        Arrays.stream(stackTraces).f
         for (StackTraceElement stackTraceElement : stackTraces) {
             boolean byqs = stackTraceElement.getClassName().contains("org.maxgamer.quickshop");
             if (byqs) {

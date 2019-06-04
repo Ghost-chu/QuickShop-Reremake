@@ -73,7 +73,7 @@ public class ShopManager {
             boolean isWaterLogged = false;
             if (info.getSignBlock().getType() == Material.WATER)
                 isWaterLogged = true;
-            final BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+
             info.getSignBlock().setType(Util.getSignMaterial());
             BlockState bs = info.getSignBlock().getState();
             if (isWaterLogged) {
@@ -81,8 +81,11 @@ public class ShopManager {
                 waterable.setWaterlogged(true); // Looks like sign directly put in water
             }
             org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
-            signBlockDataType.setFacing(bf);
-            bs.setBlockData(signBlockDataType);
+            BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+            if (bf != null) {
+                signBlockDataType.setFacing(bf);
+                bs.setBlockData(signBlockDataType);
+            }
             bs.update(true);
             shop.setSignText();
 
