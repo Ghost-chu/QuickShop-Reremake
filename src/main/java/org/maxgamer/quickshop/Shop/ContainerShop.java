@@ -241,7 +241,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The chest this shop is based on.
      */
-    public Inventory getInventory() throws IllegalStateException {
+    public Inventory getInventory() {
         try {
             if (loc.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
@@ -259,7 +259,8 @@ public class ContainerShop implements Shop {
         } catch (Exception e) {
             this.onUnload();
             this.delete();
-            throw new IllegalStateException("Inventory doesn't exist anymore: " + this + " shop was removed.");
+            Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+            return null;
         }
     }
 
