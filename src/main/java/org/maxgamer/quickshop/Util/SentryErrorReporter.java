@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.Level;
@@ -114,15 +115,22 @@ public class SentryErrorReporter {
 
     private boolean checkWasCauseByQS(Throwable throwable) {
         StackTraceElement[] stackTraces = throwable.getStackTrace();
-        Arrays.stream(stackTraces).f
-        for (StackTraceElement stackTraceElement : stackTraces) {
-            boolean byqs = stackTraceElement.getClassName().contains("org.maxgamer.quickshop");
-            if (byqs) {
-                return true;
-            }
-        }
+        Optional<StackTraceElement> element;
+        element = Arrays.stream(throwable.getStackTrace())
+                .limit(5)
+                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
+                .findFirst();
+        if (!element.isPresent())
+            return false;
+
+        // for (StackTraceElement stackTraceElement : stackTraces) {
+        //     boolean byqs = stackTraceElement.getClassName().contains("org.maxgamer.quickshop");
+        //     if (byqs) {
+        //         return true;
+        //     }
+        // }
         //Not found.
-        return false;
+        return true;
 
     }
 
