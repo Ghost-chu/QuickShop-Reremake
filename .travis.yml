@@ -9,9 +9,13 @@ after_success:
 - rm -rf push
 - mkdir push
 - cp ./target/*.jar ./push/
-- rm -f ./push/original*.jar
-- rm -f ./push/*shaded.jar
-- ls ./push -1 | grep ".jar$" > jarname.txt
+- mkdir devbukkit
+- cp ./target/*.jar ./devbukkit/
+- rm -f ./devbukkit/original-*.jar
+- rm -f ./devbukkit/*-javadoc.jar
+- rm -f ./devbukkit/*-shaded.jar
+- rm -f ./devbukkit/*-sources.jar
+- ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
     skip_cleanup: true
     provider: releases
