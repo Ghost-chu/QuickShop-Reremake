@@ -31,7 +31,8 @@ public class DatabaseManager {
     }
 
     public void uninit() {
-        task.cancel();
+        if ((task != null) && !task.isCancelled())
+            task.cancel();
         plugin.getLogger().info("Please waiting for flushing data to database...");
         runTask();
     }

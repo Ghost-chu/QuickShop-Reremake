@@ -8,12 +8,12 @@ import java.util.logging.Level;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -356,20 +356,22 @@ public class QS implements CommandExecutor {
             if (item.getType() != Material.AIR) {
                 if (sender.hasPermission("quickshop.create.sell")) {
                     BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
-
                     while (bIt.hasNext()) {
                         Block b = bIt.next();
                         if (Util.canBeShop(b)) {
                             if (p != null && b != null && p.isOnline()) {
-                                BlockBreakEvent be = new BlockBreakEvent(b, p);
-                                Bukkit.getPluginManager().callEvent(be);
-                                if (be.isCancelled()) {
+                                if (!plugin.getPermissionChecker().canBuild(p, b, true))
                                     return;
-                                }
+                            }
+                            BlockFace blockFace;
+                            try {
+                                blockFace = p.getFacing();
+                            } catch (Throwable throwable) {
+                                blockFace = Util.getYawFace(p.getLocation().getYaw());
                             }
 
                             if (!plugin.getShopManager().canBuildShop(p, b,
-                                    Util.getYawFace(p.getLocation().getYaw()))) {
+                                    blockFace)) {
                                 // As of the new checking system, most plugins will tell the
                                 // player why they can't create a shop there.
                                 // So telling them a message would cause spam etc.
