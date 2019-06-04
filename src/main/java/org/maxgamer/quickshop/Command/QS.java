@@ -922,6 +922,7 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(ChatColor.RED + "QuickShop Statistics...");
+            sender.sendMessage(ChatColor.GREEN + "Server UniqueID: " + QuickShop.getUniqueID().toString());
             sender.sendMessage(ChatColor.GREEN + "" + (buying + selling) + " shops in " + chunks
                     + " chunks spread over " + worlds + " worlds.");
             sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ");
