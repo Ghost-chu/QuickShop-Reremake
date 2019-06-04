@@ -24,7 +24,8 @@ import org.maxgamer.quickshop.Util.Util;
 @AllArgsConstructor
 public class BlockListener implements Listener {
     private QuickShop plugin;
-    /**
+
+    /*
      * Listens for chest placement, so a doublechest shop can't be created.
      */
     @EventHandler(ignoreCancelled = true)
@@ -42,7 +43,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    /**
+    /*
      * Removes chests when they're destroyed.
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -195,7 +196,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    /**
+    /*
      * Handles shops breaking through explosions
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
