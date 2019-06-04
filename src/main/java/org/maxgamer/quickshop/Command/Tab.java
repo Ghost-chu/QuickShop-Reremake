@@ -26,7 +26,7 @@ public class Tab implements TabCompleter {
             //Make all is low case
         }
         ArrayList<String> tabList = new ArrayList<>();
-        if (args.length == 0) {
+        if (args.length == 1) {
             if (sender.hasPermission("quickshop.unlimited"))
                 tabList.add("unlimited");
             if (sender.hasPermission("quickshop.setowner"))
@@ -58,26 +58,26 @@ public class Tab implements TabCompleter {
             if (sender.hasPermission("quickshop.paste"))
                 tabList.add("paste");
             return tabList;
-        } else if (args.length == 1) {
-            if (args[0].equals("create") && sender.hasPermission("quickshop.create.sell")) {
+        } else if (args.length == 2) {
+            if (args[1].equals("create") && sender.hasPermission("quickshop.create.sell")) {
                 tabList.add(MsgUtil.getMessage("tabcomplete.price"));
             }
-            if (args[0].equals("price") && sender.hasPermission("quickshop.create.changeprice")) {
+            if (args[1].equals("price") && sender.hasPermission("quickshop.create.changeprice")) {
                 tabList.add(MsgUtil.getMessage("tabcomplete.price"));
             }
-            if (args[0].equals("find") && sender.hasPermission("quickshop.find")) {
+            if (args[1].equals("find") && sender.hasPermission("quickshop.find")) {
                 tabList.add(MsgUtil.getMessage("tabcomplete.range"));
             }
-            if (args[0].equals("refill") && sender.hasPermission("quickshop.refill")) {
+            if (args[1].equals("refill") && sender.hasPermission("quickshop.refill")) {
                 tabList.add(MsgUtil.getMessage("tabcomplete.amount"));
             }
-            if (args[0].equals("staff") && sender.hasPermission("quickshop.staff")) {
+            if (args[1].equals("staff") && sender.hasPermission("quickshop.staff")) {
                 tabList.add("add");
                 tabList.add("del");
                 tabList.add("clear");
             }
             return tabList;
-        } else if (args.length == 2) {
+        } else if (args.length == 3) {
             if (args[0].equals("staff") && sender.hasPermission("quickshop.staff")) {
                 if (args[1].equals("add") || args[1].equals("del")) {
                     if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
