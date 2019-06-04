@@ -24,7 +24,7 @@ public class QueuedShopManager {
      * QueuedShopManager can help you process shops by queue not in once
      * This can solve some performance issue
      *
-     * @param quickshop
+     * @param quickshop plugin main class
      */
     public QueuedShopManager(QuickShop quickshop) {
         this.plugin = quickshop;
@@ -72,7 +72,7 @@ public class QueuedShopManager {
 
     /**
      * Run a queuedShopObject.
-     * @param queueShopObject
+     * @param queueShopObject queueShopObject
      */
     private void doTask(QueueShopObject queueShopObject) {
         if (queueShopObject == null) //No more queue need to do

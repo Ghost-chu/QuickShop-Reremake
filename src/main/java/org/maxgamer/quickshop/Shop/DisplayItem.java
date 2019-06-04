@@ -50,7 +50,7 @@ public interface DisplayItem {
 
     /**
      * Check the display is or not moved.
-     * @param shop
+     * @param shop shop
      */
     public static void checkDisplayMove(Shop shop) {
         if (shop instanceof ContainerShop) {

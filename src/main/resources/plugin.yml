@@ -1,6 +1,6 @@
-name: ${name}
-main: ${package}.${name}
-version: ${version}
+name: ${project.name}
+main: ${project.package}.${project.name}
+version: ${project.version}
 authors: [Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul]
 
 description: Economy Shops plugin
