@@ -51,11 +51,10 @@ public class LockListener implements Listener {
             }
             p.sendMessage(MsgUtil.getMessage("that-is-locked"));
             e.setCancelled(true);
-            return;
         }
     }
 
-    /**
+    /*
      * Handles hopper placement
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -79,7 +78,7 @@ public class LockListener implements Listener {
         e.setCancelled(true);
     }
 
-    /**
+    /*
      * Removes chests when they're destroyed.
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -104,7 +103,6 @@ public class LockListener implements Listener {
             if (!shop.getOwner().equals(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
-                return;
             }
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
@@ -127,12 +125,11 @@ public class LockListener implements Listener {
             if (!shop.getOwner().equals(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
-                return;
             }
         }
     }
 
-    /**
+    /*
      * Handles shops breaking through explosions
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

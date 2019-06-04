@@ -437,7 +437,7 @@ public class MsgUtil {
     /**
      * Get item's i18n name
      *
-     * @param String ItemBukkitName(e.g. Material.STONE.name())
+     * @param ItemBukkitName ItemBukkitName(e.g. Material.STONE.name())
      * @return String Item's i18n name.
      */
     public static String getItemi18n(String ItemBukkitName) {
@@ -592,6 +592,7 @@ public class MsgUtil {
      * @param message The message to send them Sends the given player a message if
      *                they're online. Else, if they're not online, queues it for
      *                them in the database.
+     * @param isUnlimited  The shop is or unlimited
      */
     public static void send(UUID player, String message, boolean isUnlimited) {    //TODO Converted to UUID
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
@@ -798,9 +799,8 @@ public class MsgUtil {
 
     /**
      * Get item's displayname.
-     *
-     * @param ItemStack iStack
-     * @return String itemDisplayName
+     * @param iStack stack
+     * @return itemDisplayName
      */
     public static String getDisplayName(ItemStack iStack) {
         ItemStack is = iStack.clone();
@@ -816,8 +816,9 @@ public class MsgUtil {
     /**
      * getMessage in messages.yml
      *
-     * @param String loc, String... args
-     * @return String message
+     * @param loc location
+     * @param args args
+     * @return message
      */
     public static String getMessage(String loc, String... args) {
         String raw = messagei18n.getString(loc);
@@ -827,6 +828,13 @@ public class MsgUtil {
         return fillArgs(raw, args);
     }
 
+    /**
+     * Replace args in raw to args
+     *
+     * @param raw  text
+     * @param args args
+     * @return filled text
+     */
     public static String fillArgs(String raw, String... args) {
         if (raw == null) {
             return "Invalid message: " + "raw";

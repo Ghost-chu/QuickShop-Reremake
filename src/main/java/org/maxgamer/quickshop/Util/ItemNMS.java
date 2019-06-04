@@ -35,9 +35,9 @@ public abstract class ItemNMS {
     /**
      * Save ItemStack to Json passthrough the NMS.
      *
-     * @param bStack
+     * @param bStack ItemStack
      * @return The json for ItemStack.
-     * @throws Throwable
+     * @throws Throwable throws
      */
     public static String saveJsonfromNMS(ItemStack bStack) throws Throwable {
         if (bStack.getType() == Material.AIR)

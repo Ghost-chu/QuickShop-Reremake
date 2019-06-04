@@ -5,6 +5,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * This event is called before the shop display item created
+ */
 public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
@@ -12,7 +15,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private ItemStack iStack;
     private boolean fakeItem;
 
-    /**
+    /*
      * This event is called before the shop display item created
      */
     public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
@@ -20,7 +23,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
         this.iStack = iStack;
     }
 
-    /**
+    /*
      * This event is called before the shop display item created
      */
     public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack, boolean fakeItem) {

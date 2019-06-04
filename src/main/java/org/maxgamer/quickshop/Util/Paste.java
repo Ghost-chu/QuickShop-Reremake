@@ -102,7 +102,7 @@ public class Paste {
      *
      * @param text The text you want paste.
      * @return Target paste URL.
-     * @throws Exception
+     * @throws Exception the throws
      */
     public String pasteTheText(String text) throws Exception {
         URL url = new URL("https://paste.ubuntu.com");

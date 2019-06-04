@@ -157,6 +157,7 @@ public class Util {
      * Parse colors for the Text.
      *
      * @param text the text
+     * @return parsed text
      */
     public static String parseColours(String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
@@ -343,6 +344,7 @@ public class Util {
      *
      * @param config serialized ItemStack
      * @return ItemStack iStack
+     * @throws InvalidConfigurationException when failed deserialize config
      */
     public static ItemStack deserialize(String config) throws InvalidConfigurationException {
         YamlConfiguration cfg = new YamlConfiguration();
@@ -456,12 +458,11 @@ public class Util {
     private static final int[] DECIMAL = { 10, 9, 5, 4, 1 };
 
     /**
-     * Converts the given number to roman numerals. If the number is >= 40 or <=
-     * 0, it will just return the number as a string.
+     * Converts the given number to roman numerals.
      *
      * @param n The number to convert
      * @return The roman numeral representation of this number, or the number in
-     * decimal form as a string if n <= 0 || n >= 40.
+     * decimal form as a string
      */
     public static String toRoman(int n) {
         if (n <= 0 || n >= 40)
@@ -506,7 +507,7 @@ public class Util {
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5
      * dollars.
-     *
+     * @param n price
      * @return The formatted string.
      */
     public static String format(double n) {
@@ -825,7 +826,8 @@ public class Util {
     }
 
     /**
-     * @param iStack
+     * @param iStack itemstack
+     * @return potion data, readable
      */
     public static String getPotiondata(ItemStack iStack) {
         if ((iStack.getType() != Material.POTION) && (iStack.getType() != Material.LINGERING_POTION) && (iStack
@@ -889,6 +891,7 @@ public class Util {
 
     /**
      * Call this to check items in inventory and remove it.
+     * @param inv inv
      */
     public static void inventoryCheck(Inventory inv) {
         if (inv == null)

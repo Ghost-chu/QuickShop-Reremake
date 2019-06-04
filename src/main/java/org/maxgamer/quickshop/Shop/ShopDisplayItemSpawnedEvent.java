@@ -5,6 +5,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * This event is called after the shop display item created
+ */
 public class ShopDisplayItemSpawnedEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
@@ -12,7 +15,7 @@ public class ShopDisplayItemSpawnedEvent extends Event implements Cancellable {
     private Item item;
     private boolean fakeItem;
 
-    /**
+    /*
      * This event is called after the shop display item created
      */
     public ShopDisplayItemSpawnedEvent(Shop shop, Item item) {
@@ -20,7 +23,7 @@ public class ShopDisplayItemSpawnedEvent extends Event implements Cancellable {
         this.item = item;
     }
 
-    /**
+    /*
      * This event is called after the shop display item created
      */
     public ShopDisplayItemSpawnedEvent(Shop shop, Item item, boolean fakeItem) {

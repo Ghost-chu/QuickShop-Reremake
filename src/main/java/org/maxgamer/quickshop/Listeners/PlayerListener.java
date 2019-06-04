@@ -46,7 +46,7 @@ public class PlayerListener implements Listener {
      * clazz = clazz.getSuperclass(); } return classes; }
      */
 
-    /**
+    /*
      * Handles players left clicking a chest. Left click a NORMAL chest with item :
      * Send creation menu Left click a SHOP chest : Send purchase menu
      */
@@ -179,7 +179,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    /**
+    /*
      * Waits for a player to move too far from a shop, then cancels the menu.
      */
     public void onMove(PlayerMoveEvent e) {

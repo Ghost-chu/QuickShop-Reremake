@@ -25,8 +25,8 @@ public class DatabaseManager {
      * Queued database manager.
      * Use queue to solve run SQL make server lagg issue.
      *
-     * @param plugin
-     * @param db
+     * @param plugin plugin main class
+     * @param db database
      */
     public DatabaseManager(QuickShop plugin, Database db) {
         this.plugin = plugin;
