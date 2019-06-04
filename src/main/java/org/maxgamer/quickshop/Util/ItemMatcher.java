@@ -125,8 +125,12 @@ public class ItemMatcher {
                 return false;
             if (!itemFlagsMatches(meta1, meta2))
                 return false;
-            if (!customModelDataMatches(meta1, meta2))
-                return false;
+            try {
+                if (!customModelDataMatches(meta1, meta2))
+                    return false;
+            } catch (NoSuchMethodError err) {
+                //Ignore, for 1.13 compatiable
+            }
             return true;
         }
 

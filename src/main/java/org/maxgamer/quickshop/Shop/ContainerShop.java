@@ -688,8 +688,13 @@ public class ContainerShop implements Shop {
         } catch (Throwable t) {
             trans = false;
         }
-
-        if (trans && Util.isAir(displayItem.getDisplayLocation().getBlock().getType()) && this.getDisplayItem() == null) {
+        Material mat;
+        try {
+            mat = displayItem.getDisplayLocation().getBlock().getType();
+        } catch (NullPointerException ex) {
+            mat = Material.AIR;
+        }
+        if (trans && Util.isAir(mat) && this.getDisplayItem() == null) {
             this.displayItem = new RealDisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
         }
