@@ -94,7 +94,6 @@ public class Tab implements TabCompleter {
                         return tabList;
                     }
                 }
-
             }
         }
         return null;
