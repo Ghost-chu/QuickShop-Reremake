@@ -56,6 +56,8 @@ public class RealDisplayItem implements DisplayItem {
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             return;
         }
+        if (!Util.isAir(dispLoc.getBlock().getType()))
+            return;
         this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
         this.item.setVelocity(new Vector(0, 0.1, 0));
         try {
