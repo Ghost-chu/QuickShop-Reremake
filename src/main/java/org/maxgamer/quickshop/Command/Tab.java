@@ -12,6 +12,9 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
+/**
+ * QS's tab completer
+ */
 public class Tab implements TabCompleter {
     private QuickShop plugin;
 

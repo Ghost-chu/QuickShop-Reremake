@@ -24,6 +24,9 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Paste;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * QS's command executor
+ */
 public class QS implements CommandExecutor {
     private QuickShop plugin;
 

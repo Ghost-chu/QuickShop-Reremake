@@ -10,12 +10,24 @@ import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * Queued database manager.
+ * Use queue to solve run SQL make server lagg issue.
+ */
 public class DatabaseManager {
     private QuickShop plugin;
     private Database database;
     private boolean useQueue;
-    Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
-    BukkitTask task;
+    private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
+    private BukkitTask task;
+
+    /**
+     * Queued database manager.
+     * Use queue to solve run SQL make server lagg issue.
+     *
+     * @param plugin
+     * @param db
+     */
     public DatabaseManager(QuickShop plugin, Database db) {
         this.plugin = plugin;
         this.database = db;
@@ -30,6 +42,9 @@ public class DatabaseManager {
         }.runTaskTimer(plugin, 1, 200);
     }
 
+    /**
+     * Unload the DatabaseManager, run at onDisable()
+     */
     public void uninit() {
         if ((task != null) && !task.isCancelled())
             task.cancel();
@@ -37,6 +52,9 @@ public class DatabaseManager {
         runTask();
     }
 
+    /**
+     * Internal method, runTasks in queue.
+     */
     private void runTask() {
         while (true) {
             PreparedStatement statement = sqlQueue.poll();
@@ -60,6 +78,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Add preparedStatement to queue waiting flush to database,
+     * @param ps The ps you want add in queue.
+     */
     public void add(PreparedStatement ps) {
         if (useQueue) {
             sqlQueue.offer(ps);

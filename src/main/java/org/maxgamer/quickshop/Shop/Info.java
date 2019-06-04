@@ -4,6 +4,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A class contains shop's infomations
+ */
 public class Info {
     private Location loc;
     private ShopAction action;

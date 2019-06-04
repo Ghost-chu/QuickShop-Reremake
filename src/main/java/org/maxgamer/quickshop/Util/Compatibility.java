@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.bukkit.plugin.RegisteredListener;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * WIP
+ */
 public class Compatibility {
     private QuickShop plugin;
     final private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();

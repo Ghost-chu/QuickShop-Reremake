@@ -14,6 +14,10 @@ public class QueueShopObject {
      */
     private QueueAction[] action;
 
+    /**
+     * @param shop   The shop
+     * @param action The action you want to do for the shop.
+     */
     public QueueShopObject(Shop shop, QueueAction... action) {
         this.shop = shop;
         this.action = action;

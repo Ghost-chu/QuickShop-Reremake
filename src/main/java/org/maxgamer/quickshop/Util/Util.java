@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
-import java.util.Comparator;
 import java.util.Map.Entry;
 
 import com.google.common.io.Files;
@@ -46,7 +45,7 @@ public class Util {
     private static QuickShop plugin;
     private static Method storageContents;
     private static boolean devMode;
-    static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
+    private static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
 
     /**
      * Initialize the Util tools.
@@ -113,17 +112,26 @@ public class Util {
 
     }
 
-    /** Return an entry with min and max prices, but null if there isn't a price restriction */
+    /**
+     * Return an entry with min and max prices, but null if there isn't a price restriction
+     *
+     * @param material mat
+     * @return min, max
+     */
     public static Entry<Double, Double> getPriceRestriction(Material material) {
         return restrictedPrices.get(material);
     }
 
     @SuppressWarnings("deprecation")
     public static boolean isTransparent(Material m) {
-        boolean trans = m.isTransparent();
-        return trans;
+        return m.isTransparent();
     }
 
+    /**
+     * Check a material is possible become a shop
+     * @param material Mat
+     * @return Can or not
+     */
     public static boolean isShoppables(Material material) {
         return shoppables.contains(material);
     }
@@ -131,7 +139,7 @@ public class Util {
     /**
      * Parse colors for the YamlConfiguration.
      *
-     * @param config
+     * @param config yaml config
      */
     public static void parseColours(YamlConfiguration config) {
         Set<String> keys = config.getKeys(true);
@@ -148,7 +156,7 @@ public class Util {
     /**
      * Parse colors for the Text.
      *
-     * @param config
+     * @param text the text
      */
     public static String parseColours(String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
@@ -190,8 +198,9 @@ public class Util {
      * @return The percentage 'health' the tool has. (Opposite of total damage)
      */
     public static String getToolPercentage(ItemStack item) {
+        if (!(item instanceof Damageable))
+            return "Error: NaN";
         double dura = ((Damageable) item.getItemMeta()).getDamage();
-        ;
         double max = item.getType().getMaxDurability();
         DecimalFormat formatter = new DecimalFormat("0");
         return formatter.format((1 - dura / max) * 100.0);
@@ -257,11 +266,11 @@ public class Util {
     /**
      * Check two location is or not equals for the BlockPosition on 2D
      *
-     * @param b1
-     * @param b2
+     * @param b1 block 1
+     * @param b2 block 2
      * @return Equals or not.
      */
-    private static final boolean equalsBlockStateLocation(Location b1, Location b2) {
+    private static boolean equalsBlockStateLocation(Location b1, Location b2) {
         return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2
                 .getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
     }
@@ -269,12 +278,14 @@ public class Util {
     /**
      * Check two location is or not equals for the BlockPosition on 2D
      *
-     * @param b1
-     * @param b2
+     * @param loc1 location 1
+     * @param loc2 location 2
      * @return Equals or not.
      */
     public static boolean location3DEqual(Location loc1, Location loc2) {
-        if (loc1.getWorld().getName() != loc2.getWorld().getName())
+        if (loc1.equals(loc2))
+            return true;
+        if (!loc1.getWorld().getName().equals(loc2.getWorld().getName()))
             return false;
         if (loc1.getBlockX() != loc2.getBlockX())
             return false;
@@ -318,7 +329,7 @@ public class Util {
     /**
      * Covert ItemStack to YAML string.
      *
-     * @param ItemStack iStack
+     * @param iStack target ItemStack
      * @return String serialized itemStack
      */
     public static String serialize(ItemStack iStack) {
@@ -330,15 +341,14 @@ public class Util {
     /**
      * Covert YAML string to ItemStack.
      *
-     * @param String serialized itemStack
+     * @param config serialized ItemStack
      * @return ItemStack iStack
      */
     public static ItemStack deserialize(String config) throws InvalidConfigurationException {
         YamlConfiguration cfg = new YamlConfiguration();
         cfg.loadFromString(config);
         cfg.getString("item");
-        ItemStack stack = cfg.getItemStack("item");
-        return stack;
+        return cfg.getItemStack("item");
     }
 
     /**
@@ -379,7 +389,7 @@ public class Util {
     /**
      * Get item's sign name for display on the sign.
      *
-     * @param ItemStack itemStack
+     * @param itemStack target itemStack
      * @return String ItemOnSignName
      */
     // Let's make very long names shorter for our sign
@@ -387,7 +397,6 @@ public class Util {
 //		if (NMS.isPotion(itemStack.getType())) {
 //			return CustomPotionsName.getSignName(itemStack);
 //		}
-
         ItemStack is = itemStack.clone();
         is.setAmount(1);
 
@@ -421,7 +430,7 @@ public class Util {
     /**
      * First uppercase for every words the first char for a text.
      *
-     * @param string
+     * @param string text
      * @return Processed text.
      */
     public static String firstUppercase(String string) {
@@ -436,8 +445,8 @@ public class Util {
      * Remapping the INT to ROMAIN
      * 10=X 9=IX 5=V 4=IV 1=I
      *
-     * @param value
-     * @return
+     * @param value the num you want to convert to
+     * @return the Romain num
      */
     public static String toRomain(Integer value) {
         return toRoman(value.intValue());
@@ -473,32 +482,26 @@ public class Util {
      * it doesn't.
      */
     public static boolean isTool(Material mat) {
-        if (mat.getMaxDurability() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(mat.getMaxDurability() == 0);
     }
 
-
-
-    /**
-     * Sort the HashMap
-     * @param map
-     * @return Sorted HashMap
-     */
-    public static Map sortHashMap(Map map) {
-        List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
-
-            public int compare(Entry<String, String> o1,
-                               Entry<String, String> o2) {
-                return o1.getValue().compareTo(o2.getValue());
-            }
-
-        });
-        return map;
-    }
+    // /**
+    //  * Sort the HashMap
+    //  * @param map map
+    //  * @return Sorted HashMap
+    //  */
+    // public static Map sortHashMap(Map map) {
+    //     List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
+    //     Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
+    //
+    //         public int compare(Entry<String, String> o1,
+    //                            Entry<String, String> o2) {
+    //             return o1.getValue().compareTo(o2.getValue());
+    //         }
+    //
+    //     });
+    //     return map;
+    // }
 
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5
@@ -537,7 +540,7 @@ public class Util {
     /**
      * Fetches the block which the given sign is attached to
      *
-     * @param sign The sign which is attached
+     * @param b The block which is attached
      * @return The block the sign is attached to
      */
     public static Block getAttached(Block b) {
@@ -568,8 +571,8 @@ public class Util {
             return 0;
         int items = 0;
         for (ItemStack iStack : inv.getStorageContents()) {
-            if (iStack == null)
-                continue;
+            // if (iStack == null)
+            //     continue;
             if (plugin.getItemMatcher().matches(item, iStack)) {
                 items += iStack.getAmount();
             }
@@ -604,8 +607,8 @@ public class Util {
     /**
      * Check a material is or not a WALL_SIGN
      *
-     * @param material
-     * @return
+     * @param material mat
+     * @return is or not a wall_sign
      */
     public static boolean isWallSign(Material material) {
         try {
@@ -636,19 +639,13 @@ public class Util {
         // location rounded to the nearest 16.
         int x = (int) Math.floor((loc.getBlockX()) / 16.0);
         int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
-        if (loc.getWorld().isChunkLoaded(x, z)) {
-            // plugin.getLogger().log(Level.WARNING, "Chunk is loaded " + x + ", " + z);
-            return true;
-        } else {
-            // plugin.getLogger().log(Level.WARNING, "Chunk is NOT loaded " + x + ", " + z);
-            return false;
-        }
+        return (loc.getWorld().isChunkLoaded(x, z));
     }
 
     /**
      * Use yaw to calc the BlockFace
      *
-     * @param float yaw
+     * @param yaw Yaw (Player.getLocation().getYaw())
      * @return BlockFace blockFace
      */
     public static BlockFace getYawFace(float yaw) {
@@ -666,7 +663,7 @@ public class Util {
     /**
      * Get this class available or not
      *
-     * @param String qualifiedName
+     * @param qualifiedName class qualifiedName
      * @return boolean Available
      */
     public static boolean isClassAvailable(String qualifiedName) {
@@ -681,8 +678,7 @@ public class Util {
     /**
      * Send a message for all online Ops.
      *
-     * @param String message
-     * @return
+     * @param message The message you want send
      */
     public static void sendMessageToOps(String message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -697,9 +693,9 @@ public class Util {
     /**
      * Send the ItemPreview chat msg by NMS.
      *
-     * @param shop
-     * @param itemStack
-     * @param player
+     * @param shop Target shop
+     * @param itemStack Target ItemStack
+     * @param player Target player
      * @param normalText The text you will see
      */
     public static void sendItemholochat(Shop shop, ItemStack itemStack, Player player, String normalText) {
@@ -726,9 +722,8 @@ public class Util {
      * More worst than NMS mode.
      * *STILL WIP*
      *
-     * @param shop
-     * @param itemStack
-     * @param player
+     * @param itemStack Target ItemStack
+     * @param player Target player
      * @param normalText The text you will see
      */
     // Without NMS
@@ -808,8 +803,8 @@ public class Util {
     /**
      * Format ench level.
      *
-     * @param level
-     * @return
+     * @param level level
+     * @return formated level
      */
     private static String formatEnchLevel(Integer level) {
         switch (level) {
@@ -833,20 +828,20 @@ public class Util {
      * @param iStack
      */
     public static String getPotiondata(ItemStack iStack) {
-        if ((iStack.getType() != Material.POTION) == true && (iStack.getType() != Material.LINGERING_POTION) == true && (iStack
-                .getType() != Material.SPLASH_POTION) == true) {
+        if ((iStack.getType() != Material.POTION) && (iStack.getType() != Material.LINGERING_POTION) && (iStack
+                .getType() != Material.SPLASH_POTION)) {
             return null;
         }
         List<String> pEffects = new ArrayList<String>();
         PotionMeta pMeta = (PotionMeta) iStack.getItemMeta();
-        if (pMeta.getBasePotionData().getType() != null) {
+        //if (pMeta.getBasePotionData().getType() != null) {
             if (!(pMeta.getBasePotionData().isUpgraded())) {
                 pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
             } else {
                 pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()) + " II");
             }
 
-        }
+        //}
         if (pMeta.hasCustomEffects()) {
             List<PotionEffect> cEffects = pMeta.getCustomEffects();
             for (PotionEffect potionEffect : cEffects) {
@@ -936,6 +931,8 @@ public class Util {
     }
 
     private static Class<?> getNMSClass(String className) {
+        if (className == null)
+            className = "MinecraftServer";
         String name = Bukkit.getServer().getClass().getPackage().getName();
         String version = name.substring(name.lastIndexOf('.') + 1);
         try {
@@ -962,7 +959,7 @@ public class Util {
     /**
      * Print debug log when plugin running on dev mode.
      *
-     * @param String logs
+     * @param logs logs
      */
     public static void debugLog(String... logs) {
         if (!devMode)
@@ -996,7 +993,7 @@ public class Util {
     /**
      * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
      *
-     * @param UUID timer's uuid
+     * @param uuid timer's uuid
      * @return long time
      */
     public static long getTimer(UUID uuid) {
@@ -1006,7 +1003,7 @@ public class Util {
     /**
      * Return how long time running when timer set and destory the timer.
      *
-     * @param String logs
+     * @param uuid time's uuid
      * @return long time
      */
     public static long endTimer(UUID uuid) {
@@ -1048,8 +1045,6 @@ public class Util {
             FileInputStream in = new FileInputStream(file);
             in.read(filecontent);
             in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1123,13 +1118,14 @@ public class Util {
     public static boolean backupDatabase() {
         if (plugin.getDatabase().getCore() instanceof MySQLCore)
             return true; //Backup and logs by MySQL
-        File sqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder(), "shop.db");
+        File dataFolder = plugin.getDataFolder();
+        File sqlfile = new File(dataFolder, "shop.db");
         if (!sqlfile.exists()) {
             plugin.getLogger().warning("Failed to backup! (File not found)");
             return false;
         }
         String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-        File bksqlfile = new File(Bukkit.getPluginManager().getPlugin("QuickShop").getDataFolder()
+        File bksqlfile = new File(dataFolder
                 .getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
         try {
             Files.copy(sqlfile, bksqlfile);
@@ -1158,7 +1154,6 @@ public class Util {
             Util.debugLog("This shopblock can't be shop, deleteing...");
             shop.onUnload();
             shop.delete();
-            return;
         }
     }
 

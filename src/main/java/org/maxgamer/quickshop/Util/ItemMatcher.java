@@ -11,6 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * A util allow quickshop check item matches easy and quick.
+ */
 @AllArgsConstructor
 public class ItemMatcher {
     private QuickShop plugin;
