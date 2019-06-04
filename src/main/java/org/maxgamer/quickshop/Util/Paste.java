@@ -37,6 +37,7 @@ public class Paste {
         finalReport.append("QuickShop:\n");
         finalReport.append("\tVersion: " + QuickShop.getVersion() + "\n");
         finalReport.append("\tFork: " + plugin.getFork() + "\n");
+        finalReport.append("\tServer ID: " + QuickShop.getUniqueID().toString() + "\n");
         finalReport.append("\tOpenInv Hook: " + (plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled") + "\n");
         finalReport.append("\tMV Hook: " + (plugin.getMvPlugin() == null ? "Disabled" : "Enabled") + "\n");
         //finalReport.append("Fork: "+plugin.+"\n");
