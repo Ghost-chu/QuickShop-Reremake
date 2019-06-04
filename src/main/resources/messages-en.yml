@@ -117,8 +117,8 @@ command:
     cleaned: "&aCleaned &e{0}&a shops"
     no-type-given: "&cUsage: /qs find <item>"
     no-amount-given: "&cNo amount given. Use &a/qs refill <amount>&c"
-    now-debuging: "&aSuccessfully switch to production mode, Reloading QuickShop..."
-    now-nolonger-debuging: "&aSuccessfully switch to developer mode, Reloading QuickShop..."
+    now-debuging: "&aSuccessfully switch to developing mode, Reloading QuickShop..."
+    now-nolonger-debuging: "&aSuccessfully switch to production mode, Reloading QuickShop..."
     wrong-args: "&cParameters not matched, use /qs help to check help"
     description:
         title: "&aQuickShop Help"
