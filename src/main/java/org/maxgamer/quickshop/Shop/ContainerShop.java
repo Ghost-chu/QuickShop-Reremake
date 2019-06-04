@@ -257,7 +257,9 @@ public class ContainerShop implements Shop {
             container = (InventoryHolder) this.loc.getBlock().getState();
             return container.getInventory();
         } catch (Exception e) {
-            throw new IllegalStateException("Inventory doesn't exist anymore: " + this);
+            this.onUnload();
+            this.delete();
+            throw new IllegalStateException("Inventory doesn't exist anymore: " + this + " shop was removed.");
         }
     }
 
@@ -522,11 +524,6 @@ public class ContainerShop implements Shop {
     public void setSignText() {
         if (Util.isLoaded(this.getLocation()) == false)
             return;
-        if (!Util.canBeShop(this.getLocation().getBlock())) {
-            this.onUnload();
-            this.delete();
-            Util.debugLog("We are removed a shop cause it nolonger had InventoryHolder.");
-        }
         String[] lines = new String[4];
         lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
         if (this.isSelling()) {
