@@ -26,7 +26,7 @@ public class Tab implements TabCompleter {
             //Make all is low case
         }
         ArrayList<String> tabList = new ArrayList<>();
-        if (args.length == 1) {
+        if (args.length == 1 || args.length == 0) {
             if (sender.hasPermission("quickshop.unlimited"))
                 tabList.add("unlimited");
             if (sender.hasPermission("quickshop.setowner"))
