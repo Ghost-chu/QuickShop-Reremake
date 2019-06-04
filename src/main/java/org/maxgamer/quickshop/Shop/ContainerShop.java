@@ -135,7 +135,7 @@ public class ContainerShop implements Shop {
      * @return True if the ItemStack is the same (Excludes amounts)
      */
     public boolean matches(ItemStack item) {
-        return Util.matches(this.item, item);
+        return plugin.getItemMatcher().matches(this.item, item);
     }
 
     /**
