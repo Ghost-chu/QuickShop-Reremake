@@ -16,6 +16,8 @@ config-version: 31
 #ru - Russian
 #pl - Polish
 #zh_TW - Chinese Traditional
+#da - Danish
+#fi - Finnish
 language: en
 
 #Do not touch if you not know what is this
