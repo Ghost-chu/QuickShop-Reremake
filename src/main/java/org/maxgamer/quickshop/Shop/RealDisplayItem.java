@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -120,8 +119,6 @@ public class RealDisplayItem implements DisplayItem {
             return false;
         Chunk c = displayLoc.getChunk();
         for (Entity e : c.getEntities()) {
-            if (e.getType() != EntityType.DROPPED_ITEM)
-                continue;
             if (!(e instanceof Item))
                 continue;
             if (this.item == null)
