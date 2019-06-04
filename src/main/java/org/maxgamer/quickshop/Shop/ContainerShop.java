@@ -688,7 +688,8 @@ public class ContainerShop implements Shop {
         } catch (Throwable t) {
             trans = false;
         }
-        if (trans && this.getDisplayItem() == null) {
+
+        if (trans && Util.isAir(displayItem.getDisplayLocation().getBlock().getType()) && this.getDisplayItem() == null) {
             this.displayItem = new RealDisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
         }
@@ -705,6 +706,10 @@ public class ContainerShop implements Shop {
                 disItem.remove();
                 return;
             }
+            // if(!Util.isAir(dispLoc.getBlock().getType())){
+            //     disItem.remove();
+            //     return;
+            // }
             if (disItem.getItem() == null) {
                 disItem.removeDupe();
                 disItem.spawn();

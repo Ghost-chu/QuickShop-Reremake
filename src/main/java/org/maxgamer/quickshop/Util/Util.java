@@ -945,6 +945,20 @@ public class Util {
         }
     }
 
+    public static boolean isAir(Material mat) {
+        if (mat == Material.AIR)
+            return true;
+        try {
+            if (mat == Material.CAVE_AIR)
+                return true;
+            if (mat == Material.VOID_AIR)
+                return true;
+        } catch (Throwable t) {
+            return false;
+        }
+        return false;
+    }
+
     /**
      * Print debug log when plugin running on dev mode.
      *
