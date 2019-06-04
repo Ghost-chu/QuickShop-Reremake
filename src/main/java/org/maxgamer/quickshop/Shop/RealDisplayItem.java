@@ -83,7 +83,7 @@ public class RealDisplayItem implements DisplayItem {
     /**
      * Set item is QuickShop's DisplayItem and prevent them.
      *
-     * @param item
+     * @param item The item
      */
     @Override
     public void safeGuard(Item item) {

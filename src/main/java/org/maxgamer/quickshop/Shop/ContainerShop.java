@@ -69,7 +69,7 @@ public class ContainerShop implements Shop {
      * @param price The cost per item
      * @param item  The itemstack with the properties we want. This is .cloned, no
      *              need to worry about references
-     * @param owner The player who owns this shop.
+     * @param moderator The moderators
      */
     public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator) {
         this.loc = loc;
@@ -91,7 +91,9 @@ public class ContainerShop implements Shop {
      * @param price The cost per item
      * @param item  The itemstack with the properties we want. This is .cloned, no
      *              need to worry about references
-     * @param owner The player who owns this shop.
+     * @param moderator The modertators
+     * @param type The shop type
+     * @param unlimited The unlimited
      */
     public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator, boolean unlimited, ShopType type) {
         this.loc = loc;
@@ -122,8 +124,7 @@ public class ContainerShop implements Shop {
     /**
      * Returns the number of free spots in the chest for the particular item.
      *
-     * @param stackSize
-     * @return
+     * @return remaining space
      */
     public int getRemainingSpace() {
         if (this.unlimited)
@@ -415,7 +416,6 @@ public class ContainerShop implements Shop {
      * balances
      *
      * @param p      The player to buy from
-     * @param item   The itemStack to buy
      * @param amount The amount to buy
      */
     public void buy(Player p, int amount) {
@@ -472,7 +472,7 @@ public class ContainerShop implements Shop {
     /**
      * Changes the owner of this shop to the given player.
      *
-     * @param owner
+     * @param owner the new owner
      */
     public void setOwner(UUID owner) {
         this.moderator.setOwner(owner);
@@ -676,7 +676,7 @@ public class ContainerShop implements Shop {
     /**
      * Check shop is or not still Valid.
      *
-     * @return
+     * @return isValid
      */
     public boolean isValid() {
         checkDisplay();

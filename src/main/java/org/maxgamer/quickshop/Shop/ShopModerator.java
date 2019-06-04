@@ -98,6 +98,7 @@ public class ShopModerator {
 
     /**
      * Get staffs list
+     * @return Staffs
      */
     public ArrayList<UUID> getStaffs() {
         return staffs;
