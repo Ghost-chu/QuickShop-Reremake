@@ -34,7 +34,7 @@ public class ShopManager {
     }
 
     /**
-     * @return Returns the HashMap<Player name, shopInfo>. Info contains what
+     * @return Returns the HashMap. Info contains what
      * their last question etc was.
      */
     public HashMap<UUID, Info> getActions() {
@@ -127,20 +127,20 @@ public class ShopManager {
     }
 
     /**
-     * Returns a hashmap of World -> Chunk -> Shop
+     * Returns a hashmap of World - Chunk - Shop
      *
-     * @return a hashmap of World -> Chunk -> Shop
+     * @return a hashmap of World - Chunk - Shop
      */
     public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
         return this.shops;
     }
 
     /**
-     * Returns a hashmap of Chunk -> Shop
+     * Returns a hashmap of Chunk - Shop
      *
      * @param world The name of the world (case sensitive) to get the list of
      *              shops from
-     * @return a hashmap of Chunk -> Shop
+     * @return a hashmap of Chunk - Shop
      */
     public HashMap<ShopChunk, HashMap<Location, Shop>> getShops(String world) {
         return this.shops.get(world);

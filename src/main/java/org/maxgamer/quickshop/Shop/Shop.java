@@ -220,7 +220,7 @@ public abstract interface Shop {
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-     * @return
+     * @return owner name
      */
     public abstract String ownerName();
 
@@ -257,7 +257,7 @@ public abstract interface Shop {
 
     /**
      * Directly get all staffs.
-     * @return
+     * @return staffs
      */
     public abstract ArrayList<UUID> getStaffs();
 

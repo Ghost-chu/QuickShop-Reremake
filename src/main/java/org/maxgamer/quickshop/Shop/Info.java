@@ -37,6 +37,7 @@ public class Info {
      * Get shop is or not has changed.
      *
      * @param shop, The need checked with this shop.
+     * @return hasChanged
      */
     public boolean hasChanged(Shop shop) {
         if (this.shop.isUnlimited() != shop.isUnlimited())

@@ -3,8 +3,9 @@ package org.maxgamer.quickshop.Shop;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/** Getting the unloading shop, Can't cancel. **/
 public class ShopUnloadEvent extends Event {
-    /** Getting the unloading shop, Can't cancel. **/
+    /* Getting the unloading shop, Can't cancel. **/
     public ShopUnloadEvent(Shop shop) {
         this.shop = shop;
     }

@@ -62,7 +62,7 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <aggregate>true</aggregate>
-                    <charset>UTF-8</charset>
+                    <charmvnset>UTF-8</charmvnset>
                     <docencoding>UTF-8</docencoding>
                 </configuration>
                 <executions>
