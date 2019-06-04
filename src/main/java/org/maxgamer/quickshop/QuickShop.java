@@ -9,15 +9,12 @@ import java.util.Map.Entry;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import lombok.*;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
 import org.maxgamer.quickshop.Database.*;
@@ -198,20 +195,20 @@ public class QuickShop extends JavaPlugin {
     public void onEnable() {
         commandExecutor = new QS(this);
         getCommand("qs").setExecutor(commandExecutor);
+        commandTabCompleter = new Tab(this);
+        getCommand("qs").setTabCompleter(commandTabCompleter);
         getLogger().info("Quickshop Reremake");
         getLogger().info("Author:Ghost_chu");
         getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's us start load plugin");
-        // NMS.init();
         try {
             runtimeCheck();
         } catch (RuntimeException e) {
             bootError = new BootError(e.getMessage());
         }
-        saveDefaultConfig(); // Creates the config folder and copies config.yml
-        // (If one doesn't exist) as required.
-        reloadConfig(); // Reloads messages.yml too, aswell as config.yml and
-        // others.
+        saveDefaultConfig();
+
+        reloadConfig(); //Plugin support reload, so need reload config here.
 
         getConfig().options().copyDefaults(true); // Load defaults.
 
@@ -276,9 +273,6 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
-        // Command handlers
-        commandTabCompleter = new Tab(this);
-        getCommand("qs").setTabCompleter(commandTabCompleter);
         if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
@@ -379,32 +373,31 @@ public class QuickShop extends JavaPlugin {
 
     }
 
-
-    @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {
-        List<String> commands = new ArrayList<>();
-        commands.add("unlimited");
-        commands.add("buy");
-        commands.add("sell");
-        commands.add("create");
-        commands.add("price");
-        commands.add("clean");
-        commands.add("range");
-        commands.add("refill");
-        commands.add("empty");
-        commands.add("setowner");
-        commands.add("fetchmessage");
-        if (args != null && args.length == 1) {
-            List<String> list = new ArrayList<>();
-            for (String s : commands) {
-                if (s.startsWith(args[0])) {
-                    list.add(s);
-                }
-            }
-            return list;
-        }
-        return null;
-    }
+    // @Override
+    // public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {
+    //     List<String> commands = new ArrayList<>();
+    //     commands.add("unlimited");
+    //     commands.add("buy");
+    //     commands.add("sell");
+    //     commands.add("create");
+    //     commands.add("price");
+    //     commands.add("clean");
+    //     commands.add("range");
+    //     commands.add("refill");
+    //     commands.add("empty");
+    //     commands.add("setowner");
+    //     commands.add("fetchmessage");
+    //     if (args != null && args.length == 1) {
+    //         List<String> list = new ArrayList<>();
+    //         for (String s : commands) {
+    //             if (s.startsWith(args[0])) {
+    //                 list.add(s);
+    //             }
+    //         }
+    //         return list;
+    //     }
+    //     return null;
+    // }
 
     /**
      * Setup the database
