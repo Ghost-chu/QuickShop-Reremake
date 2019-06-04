@@ -1,5 +1,5 @@
-name: ${project.name}
-main: ${project.package}.${project.name}
+name: ${name}
+main: ${package}.${name}
 version: ${project.version}
 authors: [Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul]
 
