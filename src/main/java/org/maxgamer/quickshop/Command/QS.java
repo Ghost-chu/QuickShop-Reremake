@@ -360,8 +360,10 @@ public class QS implements CommandExecutor {
                         Block b = bIt.next();
                         if (Util.canBeShop(b)) {
                             if (p != null && b != null && p.isOnline()) {
-                                if (!plugin.getPermissionChecker().canBuild(p, b, true))
+                                if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
+                                    Util.debugLog("Failed permission build check, cancenlled");
                                     return;
+                                }
                             }
                             BlockFace blockFace;
                             try {
@@ -375,6 +377,7 @@ public class QS implements CommandExecutor {
                                 // As of the new checking system, most plugins will tell the
                                 // player why they can't create a shop there.
                                 // So telling them a message would cause spam etc.
+                                Util.debugLog("Util report you can't build shop there.");
                                 return;
                             }
 
