@@ -20,14 +20,25 @@ public class PermissionChecker {
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
     }
 
+    /**
+     * Check player can build in target location
+     *
+     * @param player   Target player
+     * @param location Target location
+     * @param place    Place block (false = break block)
+     * @return Success
+     */
     public boolean canBuild(Player player, Location location, boolean place) {
-        if (!usePermissionChecker) {
-            return true;
-        } else {
-            return canBuild(player, location.getBlock(), place);
-        }
+        return canBuild(player, location.getBlock(), place);
     }
 
+    /**
+     * Check player can build in target block
+     * @param player Target player
+     * @param block Target block
+     * @param place Place block (false = break block)
+     * @return Success
+     */
     public boolean canBuild(Player player, Block block, boolean place) {
         if (!usePermissionChecker)
             return true;

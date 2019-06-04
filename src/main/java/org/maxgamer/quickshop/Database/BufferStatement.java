@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import org.maxgamer.quickshop.Util.Util;
 
+
 public class BufferStatement {
     private Object[] values;
     private String query;
@@ -40,6 +41,8 @@ public class BufferStatement {
      * @param con The connection to prepare this on using
      *            con.prepareStatement(..)
      * @return The prepared statement, ready for execution.
+     *
+     * @throws SQLException Throw exception when failed execute somethins on SQL
      */
     public PreparedStatement prepareStatement(Connection con) throws SQLException {
         PreparedStatement ps;

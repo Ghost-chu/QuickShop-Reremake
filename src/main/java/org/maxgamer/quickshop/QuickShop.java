@@ -116,6 +116,7 @@ public class QuickShop extends JavaPlugin {
     /**
      * Get the Player's Shop limit.
      *
+     * @param p The player you want get limit.
      * @return int Player's shop limit
      */
     public int getShopLimit(Player p) {
