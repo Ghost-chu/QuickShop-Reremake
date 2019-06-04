@@ -197,6 +197,7 @@ public class QuickShop extends JavaPlugin {
         getCommand("qs").setExecutor(commandExecutor);
         commandTabCompleter = new Tab(this);
         getCommand("qs").setTabCompleter(commandTabCompleter);
+
         getLogger().info("Quickshop Reremake");
         getLogger().info("Author:Ghost_chu");
         getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood");
@@ -309,7 +310,8 @@ public class QuickShop extends JavaPlugin {
                     Iterator<Shop> it = getShopManager().getShopIterator();
                     while (it.hasNext()) {
                         Shop shop = it.next();
-                        getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
+                        if (shop != null)
+                            getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
                     }
                 }
             }.runTaskTimer(this, 1L, displayItemCheckTicks);
