@@ -18,6 +18,9 @@ import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * Auto report errors to qs's sentry.
+ */
 public class SentryErrorReporter {
     private SentryClient sentryClient;
     private Context context;
@@ -59,6 +62,9 @@ public class SentryErrorReporter {
         }
     }
 
+    /**
+     * Unload Sentry error reporter
+     */
     public void unit() {
         enabled = false;
     }
@@ -71,6 +77,13 @@ public class SentryErrorReporter {
         return buffer.toString();
     }
 
+    /**
+     * Send a error to Sentry
+     *
+     * @param throwable Throws
+     * @param context   BreadCrumb
+     * @return Event Uniqud ID
+     */
     public UUID sendError(Throwable throwable, String... context) {
         Util.debugLog("Preparing for reporting errors...");
         if (!enabled) {
@@ -113,6 +126,11 @@ public class SentryErrorReporter {
         return this.context.getLastEventId();
     }
 
+    /**
+     * Check a throw is cause by QS
+     * @param throwable Throws
+     * @return Cause or not
+     */
     private boolean checkWasCauseByQS(Throwable throwable) {
         StackTraceElement[] stackTraces = throwable.getStackTrace();
         Optional<StackTraceElement> element;
@@ -134,6 +152,11 @@ public class SentryErrorReporter {
 
     }
 
+    /**
+     * Dupe report check
+     * @param throwable Throws
+     * @return dupecated
+     */
     private boolean canReport(Throwable throwable) {
         if (!enabled) {
             return false;

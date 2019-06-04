@@ -11,6 +11,9 @@ import org.bukkit.command.CommandSender;
 @AllArgsConstructor
 @Getter
 @Setter
+/**
+ * A utils for print sheet on chat.
+ */
 public class ChatSheetPrinter {
     //StringBuffer buffer = new StringBuffer();
     private CommandSender p;

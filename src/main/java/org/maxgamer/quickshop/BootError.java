@@ -3,6 +3,9 @@ package org.maxgamer.quickshop;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * BootError class contains print errors on /qs command when plugin failed launched.
+ */
 public class BootError {
 
     private String[] errors;
@@ -23,7 +26,7 @@ public class BootError {
      * ####################################################
      * This one.
      *
-     * @param sender
+     * @param sender The sender you want output the errors.
      */
     public void printErrors(CommandSender sender) {
         sender.sendMessage(ChatColor.RED + "#####################################################");
