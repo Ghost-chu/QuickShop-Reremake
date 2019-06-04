@@ -8,6 +8,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
 
+/**
+ * QueuedShopManager can help you process shops by queue not in once
+ * This can solve some performance issue
+ */
 @Getter
 public class QueuedShopManager {
     QuickShop plugin;
@@ -36,6 +40,9 @@ public class QueuedShopManager {
         }.runTaskTimer(plugin, 0, 1);
     }
 
+    /**
+     * Unload the QueuedShopManager.
+     */
     public void uninit() {
         if ((task != null) && !task.isCancelled())
             task.cancel();
@@ -43,6 +50,11 @@ public class QueuedShopManager {
         runTask(true);
     }
 
+    /**
+     * Run tasks in queue now.
+     *
+     * @param shuttingDown Is running when plugin disabling.
+     */
     private void runTask(boolean shuttingDown) {
         int loadedShopInTick = 0;
         while (true) {
@@ -58,6 +70,10 @@ public class QueuedShopManager {
         }
     }
 
+    /**
+     * Run a queuedShopObject.
+     * @param queueShopObject
+     */
     private void doTask(QueueShopObject queueShopObject) {
         if (queueShopObject == null) //No more queue need to do
             return; //Jump out, go next tick

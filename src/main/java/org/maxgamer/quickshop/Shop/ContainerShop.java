@@ -27,6 +27,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * ChestShop core
+ */
 public class ContainerShop implements Shop {
     private Location loc;
     private double price;
@@ -670,11 +673,19 @@ public class ContainerShop implements Shop {
         }
     }
 
+    /**
+     * Check shop is or not still Valid.
+     *
+     * @return
+     */
     public boolean isValid() {
         checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
     }
 
+    /**
+     * Check the display status, respawn, modify display location if need.
+     */
     public void checkDisplay() {
         if (!plugin.isDisplay())
             return;
@@ -730,6 +741,10 @@ public class ContainerShop implements Shop {
         }
     }
 
+    /**
+     * Check the display item is or not moved.
+     * @return Moved
+     */
     public boolean checkDisplayMoved() {
         // don't check if the plugin doesn't know about the object
 
@@ -755,6 +770,9 @@ public class ContainerShop implements Shop {
         return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
     }
 
+    /**
+     * Unload ContainerShop.
+     */
     public void onUnload() {
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
@@ -762,6 +780,9 @@ public class ContainerShop implements Shop {
         }
     }
 
+    /**
+     * Load ContainerShop.
+     */
     public void onLoad() {
         checkDisplay();
 

@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+@Deprecated
 public class Converter {
     /**
      * Attempts to convert the quickshop database, if necessary.

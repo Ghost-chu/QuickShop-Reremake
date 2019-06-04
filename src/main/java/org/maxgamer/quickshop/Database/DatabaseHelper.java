@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+/**
+ * A Util to execute all SQLs.
+ */
 public class DatabaseHelper {
     private Database db;
     private QuickShop plugin;
@@ -32,6 +35,7 @@ public class DatabaseHelper {
 
     /**
      * Verifies that all required columns exist.
+     * @param db The database you want to check
      */
     private void checkColumns(Database db) {
         PreparedStatement ps = null;
@@ -56,6 +60,7 @@ public class DatabaseHelper {
     /**
      * Creates the database table 'shops'.
      *
+     * @param db The database you want create at.
      * @throws SQLException If the connection is invalid.
      */
     public void createShopsTable(Database db) throws SQLException {
@@ -69,6 +74,8 @@ public class DatabaseHelper {
     /**
      * Creates the database table 'messages'
      *
+     * @param db The database you want create at.
+     * @return Create failed or successed.
      * @throws SQLException If the connection is invalid
      */
     public boolean createMessagesTable(Database db) throws SQLException {
