@@ -709,10 +709,12 @@ public class ContainerShop implements Shop {
         if (this.getDisplayItem() != null) {
             if (!trans) {
                 this.getDisplayItem().remove();
+                Util.debugLog("Item was removed cause detected in untrans block: " + this.getLocation());
                 return;
             }
             if (!Util.isAir(mat)) {
                 this.getDisplayItem().remove();
+                Util.debugLog("Item was removed cause detected in not a air block: " + this.getLocation());
                 return;
             }
         }
@@ -739,6 +741,7 @@ public class ContainerShop implements Shop {
             if (disItem.getItem() == null) {
                 disItem.removeDupe();
                 disItem.spawn();
+                Util.debugLog("Item was respawned cause we not detected the item object: " + this.getLocation());
                 return;
             }
             // if (disItem.getItem().isDead() || !disItem.getItem().isValid()) {
@@ -750,13 +753,14 @@ public class ContainerShop implements Shop {
             Item item = disItem.getItem();
 
             if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
-                disItem.remove();
-                disItem.respawn();
                 disItem.removeDupe();
+                disItem.respawn();
+                Util.debugLog("Item was removeddupes and respawned cause AUTO-REGEN: " + this.getLocation());
             } else if (checkDisplayMoved()) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
-            disItem.removeDupe();
+
+            Util.debugLog("Removing dupes...");
         }
     }
 
