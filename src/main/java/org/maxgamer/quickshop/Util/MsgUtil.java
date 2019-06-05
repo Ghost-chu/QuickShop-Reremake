@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
 public class MsgUtil {
     static QuickShop plugin = QuickShop.instance;
     //	private static YamlConfiguration messages;

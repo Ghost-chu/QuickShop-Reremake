@@ -691,8 +691,8 @@ public class ContainerShop implements Shop {
             return;
         if (getLocation().getWorld() == null)
             return; // not loaded
-        if (!Util.isLoaded(getLocation()))
-            return;
+        // if (!Util.isLoaded(getLocation()))
+        //     return;
         boolean trans;
         try {
             trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
@@ -705,10 +705,23 @@ public class ContainerShop implements Shop {
         } catch (NullPointerException ex) {
             mat = Material.AIR;
         }
-        if (trans && Util.isAir(mat) && this.getDisplayItem() == null) {
+
+        if (this.getDisplayItem() != null) {
+            if (!trans) {
+                this.getDisplayItem().remove();
+                return;
+            }
+            if (!Util.isAir(mat)) {
+                this.getDisplayItem().remove();
+                return;
+            }
+        }
+
+        if (trans && Util.isAir(mat) && (this.getDisplayItem() == null)) {
             this.displayItem = new RealDisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
         }
+        //Execute display check
         if (this.getDisplayItem() != null) {
             // Already checked above
             // if (!trans) { // We have a display item in a block... delete it
@@ -718,10 +731,7 @@ public class ContainerShop implements Shop {
             // }
             DisplayItem disItem = this.getDisplayItem();
             Location dispLoc = disItem.getDisplayLocation();
-            if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
-                disItem.remove();
-                return;
-            }
+
             // if(!Util.isAir(dispLoc.getBlock().getType())){
             //     disItem.remove();
             //     return;
@@ -731,13 +741,21 @@ public class ContainerShop implements Shop {
                 disItem.spawn();
                 return;
             }
+            if (disItem.getItem().isDead() || !disItem.getItem().isValid()) {
+                disItem.remove();
+                disItem.removeDupe();
+                disItem.spawn();
+                return;
+            }
             Item item = disItem.getItem();
+
             if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
                 disItem.respawn();
                 disItem.removeDupe();
             } else if (checkDisplayMoved()) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
+
         }
     }
 
