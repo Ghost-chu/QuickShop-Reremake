@@ -104,7 +104,7 @@ public class QueuedShopManager {
                     queueShopObject.getShop().onClick();
                     break;
                 case CHECKDISPLAYITEM:
-                    DisplayItem.checkDisplayMove(queueShopObject.getShop());
+                    queueShopObject.getShop().checkDisplay();
                     break;
             }
         }
