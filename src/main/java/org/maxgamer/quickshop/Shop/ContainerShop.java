@@ -79,7 +79,7 @@ public class ContainerShop implements Shop {
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
         if (plugin.isDisplay()) {
-            this.displayItem = new RealDisplayItem(this, this.item);
+            this.displayItem = new DisplayItem(this, this.item);
         }
         this.shopType = ShopType.SELLING;
     }
@@ -103,7 +103,7 @@ public class ContainerShop implements Shop {
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
         if (plugin.isDisplay()) {
-            this.displayItem = new RealDisplayItem(this, this.item);
+            this.displayItem = new DisplayItem(this, this.item);
         }
         this.shopType = type;
         this.unlimited = unlimited;
@@ -682,97 +682,45 @@ public class ContainerShop implements Shop {
         checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
     }
-
-    /**
-     * Check the display status, respawn, modify display location if need.
-     */
     public void checkDisplay() {
-        if (!plugin.isDisplay())
+        if (plugin.isDisplay() == false)
             return;
         if (getLocation().getWorld() == null)
             return; // not loaded
-        // if (!Util.isLoaded(getLocation()))
-        //     return;
-        boolean trans;
-        try {
-            trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
-        } catch (Throwable t) {
-            trans = false;
-        }
-        Material mat;
-        try {
-            mat = displayItem.getDisplayLocation().getBlock().getType();
-        } catch (NullPointerException ex) {
-            mat = Material.AIR;
-        }
-
-        if (this.getDisplayItem() != null) {
-            if (!trans) {
-                this.getDisplayItem().remove();
-                Util.debugLog("Item was removed cause detected in untrans block: " + this.getLocation());
-                return;
-            }
-            if (!Util.isAir(mat)) {
-                this.getDisplayItem().remove();
-                Util.debugLog("Item was removed cause detected in not a air block: " + this.getLocation());
-                return;
-            }
-        }
-
-        if (trans && Util.isAir(mat) && (this.getDisplayItem() == null)) {
-            this.displayItem = new RealDisplayItem(this, this.getItem());
-            this.getDisplayItem().removeDupe();
+        boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
+        if (trans && this.getDisplayItem() == null) {
+            this.displayItem = new DisplayItem(this, this.getItem());
             this.getDisplayItem().spawn();
-            return;
         }
-        //Execute display check
         if (this.getDisplayItem() != null) {
-            // Already checked above
-            // if (!trans) { // We have a display item in a block... delete it
-            //     this.getDisplayItem().remove();
-            //     this.displayItem = null;
-            //     return;
-            // }
+            if (!trans) { // We have a display item in a block... delete it
+                this.getDisplayItem().remove();
+                this.displayItem = null;
+                return;
+            }
             DisplayItem disItem = this.getDisplayItem();
             Location dispLoc = disItem.getDisplayLocation();
-
-            // if(!Util.isAir(dispLoc.getBlock().getType())){
-            //     disItem.remove();
-            //     return;
-            // }
+            if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
+                disItem.remove();
+                return;
+            }
             if (disItem.getItem() == null) {
                 disItem.removeDupe();
                 disItem.spawn();
-                Util.debugLog("Item was respawned cause we not detected the item object: " + this.getLocation());
                 return;
             }
-            // if (disItem.getItem().isDead() || !disItem.getItem().isValid()) {
-            //     disItem.remove();
-            //     disItem.removeDupe();
-            //     disItem.spawn();
-            //     return;
-            // }
             Item item = disItem.getItem();
-
             if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
-                disItem.removeDupe();
                 disItem.respawn();
-                Util.debugLog("Item was removeddupes and respawned cause AUTO-REGEN: " + this.getLocation());
-            } else if (checkDisplayMoved()) {
+                disItem.removeDupe();
+            } else if (item.getLocation().distanceSquared(dispLoc) > 1) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
         }
     }
 
-    /**
-     * Check the display item is or not moved.
-     * @return Moved
-     */
     public boolean checkDisplayMoved() {
         // don't check if the plugin doesn't know about the object
-
-        if (!Util.isLoaded(getLocation()))
-            return false;
         if (this.getDisplayItem() == null) {
             return false;
         }
@@ -790,6 +738,7 @@ public class ContainerShop implements Shop {
         if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) {
             return false;
         }
+
         return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
     }
 
