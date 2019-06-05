@@ -741,21 +741,22 @@ public class ContainerShop implements Shop {
                 disItem.spawn();
                 return;
             }
-            if (disItem.getItem().isDead() || !disItem.getItem().isValid()) {
-                disItem.remove();
-                disItem.removeDupe();
-                disItem.spawn();
-                return;
-            }
+            // if (disItem.getItem().isDead() || !disItem.getItem().isValid()) {
+            //     disItem.remove();
+            //     disItem.removeDupe();
+            //     disItem.spawn();
+            //     return;
+            // }
             Item item = disItem.getItem();
 
             if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
+                disItem.remove();
                 disItem.respawn();
                 disItem.removeDupe();
             } else if (checkDisplayMoved()) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
-
+            disItem.removeDupe();
         }
     }
 
