@@ -1,8 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -45,14 +43,25 @@ public class MsgUtil {
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messageFile.exists()) {
             plugin.getLogger().info("Creating messages.yml");
-            plugin.getLanguage().saveFile("en", "messages", "messages.yml");
+            plugin.getLanguage().saveFile(plugin.getConfig().getString("language"), "messages", "messages.yml");
         }
         // Store it
         messagei18n = YamlConfiguration.loadConfiguration(messageFile);
         messagei18n.options().copyDefaults(true);
 
-        YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
-                .getFile("en", "messages")));
+        //YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
+        //       .getFile("en", "messages")));
+        //messagei18n.setDefaults(messagei18nYAML);
+
+        //Convert %YAML 1.2 to %YAML 1.0
+
+        String messagei18nYaml2 = new String(Util
+                .inputStream2ByteArray(plugin.getLanguage().getFile(plugin.getConfig().getString("language"), "messages")));
+        YamlIsSucked yamlIsSucked = new YamlIsSucked();
+        String messagei18nJson = yamlIsSucked.readYaml2ToJson(messagei18nYaml2);
+        String messagei18nYaml1 = yamlIsSucked.writeJson2Yaml1(messagei18nJson);
+        InputStream inputStream = new ByteArrayInputStream(messagei18nYaml1.getBytes());
+        YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
         messagei18n.setDefaults(messagei18nYAML);
 
         if (messagei18n.getInt("language-version") == 0) {
