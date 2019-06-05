@@ -1102,6 +1102,24 @@ public class Util {
 
     }
 
+    /**
+     * Read the InputStream to the byte array.
+     *
+     * @param inputStream Target stream
+     * @return Byte array
+     */
+    public static byte[] inputStream2ByteArray(InputStream inputStream) {
+        try {
+            byte[] data = toByteArray(inputStream);
+            inputStream.close();
+            return data;
+        } catch (IOException e) {
+            return null;
+        }
+
+    }
+
+
     private static byte[] toByteArray(InputStream in) throws IOException {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
