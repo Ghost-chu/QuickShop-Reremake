@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -88,21 +88,28 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void safeGuard(Item item) {
         item.setPickupDelay(Integer.MAX_VALUE);
-        ItemMeta iMeta = item.getItemStack().getItemMeta();
-
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            item.setCustomName("QuickShop");
-            iMeta.setDisplayName("QuickShop");
-        }
         item.setPortalCooldown(Integer.MAX_VALUE);
         item.setSilent(true);
         item.setInvulnerable(true);
-        java.util.List<String> lore = new ArrayList<String>();
-        for (int i = 0; i < 6; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 5 lines lore to make sure no stupid plugin accident remove mark.
+        item.setItemStack(safeGuardItemStack(item.getItemStack()));
+    }
+
+    private ItemStack safeGuardItemStack(ItemStack iStack) {
+        iStack = iStack.clone();
+        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+            ItemMeta iMeta = iStack.getItemMeta();
+            if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+                iMeta.setDisplayName("QuickShop");
+
+            }
+            List<String> lore = iMeta.getLore();
+            for (int i = 0; i < 6; i++) {
+                lore.add("QuickShop DisplayItem"); //Create 5 lines lore to make sure no stupid plugin accident remove mark.
+            }
+            iMeta.setLore(lore);
+            iStack.setItemMeta(iMeta);
         }
-        iMeta.setLore(lore);
-        item.getItemStack().setItemMeta(iMeta);
+        return iStack;
     }
 
     /**
@@ -115,25 +122,42 @@ public class RealDisplayItem implements DisplayItem {
             return false;
         Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
         boolean removed = false;
-        if (!Util.isLoaded(displayLoc))
-            return false;
+        // if (!Util.isLoaded(displayLoc))
+        //     return false;
         Chunk c = displayLoc.getChunk();
         for (Entity e : c.getEntities()) {
-            if (!(e instanceof Item))
-                continue;
             if (this.item == null)
+                continue;
+            if (e == null)
+                continue;
+            if (!(e instanceof Item))
                 continue;
             if (e.getEntityId() == this.item.getEntityId()) //Not dupe, is our item
                 continue;
-            Location eLoc = e.getLocation().getBlock().getLocation();
-            if (eLoc.equals(shop.getLocation()) || eLoc.equals(displayLoc)) {
-                ItemStack near = ((Item) e).getItemStack();
-                // if its the same its a dupe
-                if (this.shop.matches(near)) {
-                    e.remove();
-                    removed = true;
-                }
+            Item inChunkEntity = (Item) item;
+            ItemStack displayItemStack = safeGuardItemStack(this.iStack);
+            if (inChunkEntity.getItemStack().equals(displayItemStack)) {
+                inChunkEntity.remove();
+                removed = true;
             }
+            if (inChunkEntity.getItemStack().equals(this.iStack)) { //Not safeGuarded item
+                inChunkEntity.remove();
+                removed = true;
+            }
+            if (safeGuardItemStack(inChunkEntity.getItemStack()).equals(displayItemStack)) {
+                inChunkEntity.remove();
+                removed = true;
+            }
+            // Item
+            // Location eLoc = e.getLocation().getBlock().getLocation();
+            // if (eLoc.equals(shop.getLocation()) || eLoc.equals(displayLoc)) {
+            //     ItemStack near = ((Item) e).getItemStack();
+            //     // if its the same its a dupe
+            //     if (this.shop.matches(near)) {
+            //         e.remove();
+            //         removed = true;
+            //     }
+            // }
         }
         return removed;
 
