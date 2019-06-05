@@ -48,14 +48,17 @@ public class DisplayProtectionListener implements Listener {
         //         }
         //     } catch (Exception e) {}
         // }
-
+        if (event.getInventory() == null)
+            return;
+        if (event.getInventory().getStorageContents() == null)
+            return;
         for (ItemStack is : event.getInventory().getStorageContents()) {
+            if (is == null)
+                continue;
             if (itemStackCheck(is)) {
                 is.setType(Material.AIR);
                 is.setAmount(1);
                 event.getPlayer().closeInventory();
-                Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + event.getPlayer()
-                        .getLocation().toString() + ")");
                 //Util.inventoryCheck(event.getInventory());
             }
         }

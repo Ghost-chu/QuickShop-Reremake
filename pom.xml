@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>Reremake 1.4.4.11-SNAPSHOT</version>
+    <version>Reremake 1.4.4.12</version>
 
     <licenses>
         <license>
@@ -161,7 +161,6 @@
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
             <version>1.7.16</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
