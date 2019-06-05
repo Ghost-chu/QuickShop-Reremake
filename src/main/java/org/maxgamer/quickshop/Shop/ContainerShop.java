@@ -721,7 +721,9 @@ public class ContainerShop implements Shop {
 
         if (trans && Util.isAir(mat) && (this.getDisplayItem() == null)) {
             this.displayItem = new RealDisplayItem(this, this.getItem());
+            this.getDisplayItem().removeDupe();
             this.getDisplayItem().spawn();
+            return;
         }
         //Execute display check
         if (this.getDisplayItem() != null) {
@@ -759,8 +761,6 @@ public class ContainerShop implements Shop {
             } else if (checkDisplayMoved()) {
                 item.teleport(dispLoc, TeleportCause.PLUGIN);
             }
-
-            Util.debugLog("Removing dupes...");
         }
     }
 
