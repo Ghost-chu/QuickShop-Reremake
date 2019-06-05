@@ -57,6 +57,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         if (!Util.isAir(dispLoc.getBlock().getType()))
             return;
+
         this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
         this.item.setVelocity(new Vector(0, 0.1, 0));
         try {
@@ -118,8 +119,9 @@ public class RealDisplayItem implements DisplayItem {
      */
     @Override
     public boolean removeDupe() {
-        if (shop.getLocation().getWorld() == null)
+        if (shop.getLocation().getWorld() == null) {
             return false;
+        }
         Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
         boolean removed = false;
         // if (!Util.isLoaded(displayLoc))
@@ -134,20 +136,20 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             if (e.getEntityId() == this.item.getEntityId()) //Not dupe, is our item
                 continue;
-            Item inChunkEntity = (Item) item;
-            ItemStack displayItemStack = safeGuardItemStack(this.iStack);
-            if (inChunkEntity.getItemStack().equals(displayItemStack)) {
-                inChunkEntity.remove();
+            if (e.getUniqueId().equals(this.item.getUniqueId())) //Not dupe, is our item
+                continue;
+
+            Item inChunkEntity = (Item) e;
+            ItemStack sgDisplayItemStack = safeGuardItemStack(this.iStack);
+            ItemStack sgEntityItemStack = safeGuardItemStack(inChunkEntity.getItemStack());
+
+            if (plugin.getItemMatcher().matches(sgDisplayItemStack, sgEntityItemStack)) {
+                Util.debugLog("The item matches display item but it not manage by QuickShop, removeing: " + inChunkEntity
+                        .getLocation());
+                e.remove();
                 removed = true;
             }
-            if (inChunkEntity.getItemStack().equals(this.iStack)) { //Not safeGuarded item
-                inChunkEntity.remove();
-                removed = true;
-            }
-            if (safeGuardItemStack(inChunkEntity.getItemStack()).equals(displayItemStack)) {
-                inChunkEntity.remove();
-                removed = true;
-            }
+
             // Item
             // Location eLoc = e.getLocation().getBlock().getLocation();
             // if (eLoc.equals(shop.getLocation()) || eLoc.equals(displayLoc)) {
