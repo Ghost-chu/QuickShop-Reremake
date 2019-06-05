@@ -144,7 +144,7 @@ public class RealDisplayItem implements DisplayItem {
             ItemStack sgEntityItemStack = safeGuardItemStack(inChunkEntity.getItemStack());
 
             if (plugin.getItemMatcher().matches(sgDisplayItemStack, sgEntityItemStack)) {
-                Util.debugLog("The item matches display item but it not manage by QuickShop, removeing: " + inChunkEntity
+                Util.debugLog("The item matches display item but it not manage by QuickShop, removeing dupes: " + inChunkEntity
                         .getLocation());
                 e.remove();
                 removed = true;
@@ -193,4 +193,8 @@ public class RealDisplayItem implements DisplayItem {
         return this.item;
     }
 
+    @Override
+    public boolean checkDisplayMoved(Shop shop) {
+        return ((ContainerShop) shop).checkDisplayMoved();
+    }
 }
