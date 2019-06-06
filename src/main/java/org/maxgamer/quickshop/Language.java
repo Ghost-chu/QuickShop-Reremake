@@ -1,9 +1,11 @@
 package org.maxgamer.quickshop;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Language {
@@ -75,51 +77,51 @@ public class Language {
                 e.printStackTrace();
             }
         }
-        // try {
-        //     InputStream is = getFile(language, type);
-        //     FileOutputStream fos = new FileOutputStream(targetFile);
-        //     byte[] b = new byte[1024];
-        //     int length;
-        //     while ((length = is.read(b)) != -1) {
-        //         fos.write(b, 0, length);
-        //     }
-        //     is.close();
-        //     fos.close();
-        // } catch (Exception err) {
-        //     err.printStackTrace();
-        // }
-
-        InputStream is = getFile(language, type);
-        if (is == null)
-            return;
-        String messagei18nYaml2 = new String(Util.inputStream2ByteArray(is));
         try {
-            is.close();
-        } catch (IOException e) {
-            //Ignore
-        }
-        YamlIsSucked yamlIsSucked = new YamlIsSucked();
-        String messagei18nJson = yamlIsSucked.readYaml2ToJson(messagei18nYaml2);
-        String messagei18nYaml1 = yamlIsSucked.writeJson2Yaml1(messagei18nJson);
-        InputStream inputStream = new ByteArrayInputStream(messagei18nYaml1.getBytes());
-        YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        //File name should call    type-language.yml    ---> config-zh.yml
-        String finalYaml1FileContect = messagei18nYAML.saveToString();
-
-        InputStream finalYaml1FileInputStream = new ByteArrayInputStream(finalYaml1FileContect.getBytes());
-        try {
+            InputStream is = getFile(language, type);
             FileOutputStream fos = new FileOutputStream(targetFile);
-
             byte[] b = new byte[1024];
             int length;
-            while ((length = finalYaml1FileInputStream.read(b)) != -1) {
+            while ((length = is.read(b)) != -1) {
                 fos.write(b, 0, length);
             }
+            is.close();
             fos.close();
-
-        } catch (IOException e) {
-            //Ignore
+        } catch (Exception err) {
+            err.printStackTrace();
         }
+
+        // InputStream is = getFile(language, type);
+        // if (is == null)
+        //     return;
+        // String messagei18nYaml2 = new String(Util.inputStream2ByteArray(is));
+        // try {
+        //     is.close();
+        // } catch (IOException e) {
+        //     //Ignore
+        // }
+        // // YamlIsSucked yamlIsSucked = new YamlIsSucked();
+        // // String messagei18nJson = yamlIsSucked.readYaml2ToJson(messagei18nYaml2);
+        // // String messagei18nYaml1 = yamlIsSucked.writeJson2Yaml1(messagei18nJson);
+        // InputStream inputStream = new ByteArrayInputStream(messagei18nYaml1.getBytes());
+        // YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
+        // //File name should call    type-language.yml    ---> config-zh.yml
+        // String finalYaml1FileContect = messagei18nYAML.saveToString();
+        //
+        // InputStream finalYaml1FileInputStream = new ByteArrayInputStream(finalYaml1FileContect.getBytes());
+        // try {
+        //     FileOutputStream fos = new FileOutputStream(targetFile);
+        //
+        //     byte[] b = new byte[1024];
+        //     int length;
+        //     while ((length = finalYaml1FileInputStream.read(b)) != -1) {
+        //         fos.write(b, 0, length);
+        //     }
+        //     fos.close();
+        //
+        // } catch (IOException e) {
+        //     //Ignore
+        // }
 
 
     }
