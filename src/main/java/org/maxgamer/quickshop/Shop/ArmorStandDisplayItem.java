@@ -1,13 +1,11 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -42,9 +40,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
             Util.debugLog("Cancelled the displayItem spawning cause a plugin setCancelled the spawning event, usually is QuickShop Addon");
             return;
         }
-
-        this.armorStand = (ArmorStand) this.shop.getLocation().getWorld().spawnEntity(this.shop
-                .getLocation(), EntityType.ARMOR_STAND);
+        this.armorStand = (ArmorStand) this.shop.getLocation().getWorld()
+                .spawnEntity(getDisplayLocation(), EntityType.ARMOR_STAND);
         //Set basic armorstand datas.
         this.armorStand.setArms(false);
         this.armorStand.setBasePlate(false);
@@ -68,17 +65,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
-        ItemStack itemStack = armorStand.getItemInHand();
-        ItemMeta iMeta = itemStack.getItemMeta();
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            iMeta.setDisplayName("QuickShop");
-        }
-        java.util.List<String> lore = new ArrayList<String>();
-        for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
-        }
-        iMeta.setLore(lore);
-        itemStack.setItemMeta(iMeta);
+
         armorStand.setItemInHand(itemStack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
@@ -102,5 +89,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
         spawn();
     }
 
+    public Entity getDisplay() {
+        return this.armorStand;
+    }
 
+    @Override
+    public Location getDisplayLocation() {
+        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    }
 }
