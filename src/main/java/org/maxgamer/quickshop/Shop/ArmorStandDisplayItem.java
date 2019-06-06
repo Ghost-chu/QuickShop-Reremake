@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -119,11 +120,46 @@ public class ArmorStandDisplayItem implements DisplayItem {
     public boolean checkIsShopEntity(Entity entity) {
         if (!(entity instanceof ArmorStand))
             return false;
-        return checkIsShopEntity(((ArmorStand) entity).getItemInHand());
+        return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
     }
 
     @Override
-    public boolean checkIsShopEntity(ItemStack itemStack) {
-        return DisplayItem.checkIsGuardItemStack(itemStack);
+    public boolean removeDupe() {
+        if (this.armorStand == null)
+            return false;
+        boolean removed = false;
+        Chunk chunk = shop.getLocation().getChunk();
+        for (Entity entity : chunk.getEntities()) {
+            if (!(entity instanceof ArmorStand))
+                continue;
+            ArmorStand eArmorStand = (ArmorStand) entity;
+            if (eArmorStand.getItemInHand().equals(this.guardedIstack)) {
+                if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
+                            .getLocation().toString());
+                    entity.remove();
+                    removed = true;
+                }
+            }
+        }
+        return removed;
+    }
+
+    @Override
+    public void fixDisplayMoved() {
+        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
+            if (!(entity instanceof ArmorStand))
+                continue;
+            ArmorStand eArmorStand = (ArmorStand) entity;
+            if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                eArmorStand.teleport(getDisplayLocation());
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void fixDisplayNeedRegen() {
+        respawn();
     }
 }
