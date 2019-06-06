@@ -35,7 +35,6 @@ public interface DisplayItem {
 
     /**
      * Check target Entity is or not a QuickShop display Entity.
-     *
      * @param entity Target entity
      * @return Is or not
      */

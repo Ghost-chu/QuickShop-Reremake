@@ -3,6 +3,8 @@ package org.maxgamer.quickshop.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -55,7 +57,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.setAI(false);
         this.armorStand.setCollidable(false);
         this.armorStand.setCanPickupItems(false);
-        this.armorStand.setSmall(true);
+        //this.armorStand.setSmall(true);
 
         //Set armorstand item in hand
         this.armorStand.setItemInHand(iStack);
@@ -84,6 +86,13 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
     private void setPoseForArmorStand() {
         //TODO
+        BlockFace containerBlockFace = BlockFace.NORTH; //Set default vaule
+
+        if (this.shop.getLocation().getBlock().getState() instanceof Directional)
+            containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getState())
+                    .getFacing(); //Replace by container face.
+
+
 
         this.armorStand.setRightArmPose(new EulerAngle(0, 0, 0));
     }
