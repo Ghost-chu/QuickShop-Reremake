@@ -92,8 +92,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
             containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getState())
                     .getFacing(); //Replace by container face.
 
-
-
+        //EulerAngle = pitch, yaw, roll.
         this.armorStand.setRightArmPose(new EulerAngle(0, 0, 0));
     }
 
