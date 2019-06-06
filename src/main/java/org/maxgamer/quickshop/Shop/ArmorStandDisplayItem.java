@@ -21,6 +21,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.iStack = shop.getItem().clone();
     }
 
+    @Override
     public void spawn() {
         if (shop.getLocation().getWorld() == null) {
             Util.debugLog("Cancelled the displayItem spawning cause location world is null.");
@@ -59,6 +60,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         Util.debugLog("Spawned new ArmorStand DisplayItem for shop " + shop.getLocation().toString());
     }
 
+    @Override
     public void safeGuard(Entity entity) {
         if (entity == null) {
             Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
@@ -73,11 +75,11 @@ public class ArmorStandDisplayItem implements DisplayItem {
         armorStand.setItemInHand(guardedIstack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
-
     private void setPoseForArmorStand() {
         //TODO
     }
 
+    @Override
     public void remove() {
         if (this.armorStand == null || !this.armorStand.isValid() || this.armorStand.isDead()) {
             Util.debugLog("Ignore the armorStand removeing cause this armorStand already gone.");
@@ -88,17 +90,40 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.guardedIstack = null;
     }
 
+    @Override
     public void respawn() {
         remove();
         spawn();
     }
 
+    @Override
     public Entity getDisplay() {
         return this.armorStand;
     }
-
     @Override
     public Location getDisplayLocation() {
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    }
+
+    @Override
+    public boolean checkDisplayIsMoved() {
+        return !this.armorStand.getLocation().equals(getDisplayLocation());
+    }
+
+    @Override
+    public boolean checkDisplayNeedRegen() {
+        return !this.armorStand.isValid() || this.armorStand.isDead();
+    }
+
+    @Override
+    public boolean checkIsShopEntity(Entity entity) {
+        if (!(entity instanceof ArmorStand))
+            return false;
+        return checkIsShopEntity(((ArmorStand) entity).getItemInHand());
+    }
+
+    @Override
+    public boolean checkIsShopEntity(ItemStack itemStack) {
+        return DisplayItem.checkIsGuardItemStack(itemStack);
     }
 }
