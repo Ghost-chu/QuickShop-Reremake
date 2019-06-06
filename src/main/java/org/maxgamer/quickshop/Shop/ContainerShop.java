@@ -843,6 +843,8 @@ public class ContainerShop implements Shop {
     public void checkDisplay() {
         if (this.displayItem == null)
             return;
+        if (!this.displayItem.isSpawned())
+            this.displayItem.spawn();
         if (this.displayItem.checkDisplayNeedRegen())
             this.displayItem.fixDisplayNeedRegen();
         if (this.displayItem.checkDisplayIsMoved())
