@@ -54,6 +54,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.setAI(false);
         this.armorStand.setCollidable(false);
         this.armorStand.setCanPickupItems(false);
+        this.armorStand.setSmall(true);
 
         //Set armorstand item in hand
         this.armorStand.setItemInHand(iStack);
