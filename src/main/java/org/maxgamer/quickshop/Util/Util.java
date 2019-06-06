@@ -898,7 +898,7 @@ public class Util {
             return;
         try {
             for (int i = 0; i < inv.getSize(); i++)
-                if (DisplayItem.checkShopItem(inv.getItem(i))) {
+                if (DisplayItem.checkIsGuardItemStack(inv.getItem(i))) {
                     // Found Item and remove it.
                     inv.setItem(i, new ItemStack(Material.AIR, 0));
                     Util.debugLog("Found displayitem in inventory, removed.");

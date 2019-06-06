@@ -16,9 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -69,28 +67,6 @@ public class ContainerShop implements Shop {
      * @param price The cost per item
      * @param item  The itemstack with the properties we want. This is .cloned, no
      *              need to worry about references
-     * @param moderator The moderators
-     */
-    public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator) {
-        this.loc = loc;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
-        this.item.setAmount(1);
-        if (plugin.isDisplay()) {
-            this.displayItem = new DisplayItem(this, this.item);
-        }
-        this.shopType = ShopType.SELLING;
-    }
-
-    /**
-     * Adds a new shop.
-     *
-     * @param loc   The location of the chest block
-     * @param price The cost per item
-     * @param item  The itemstack with the properties we want. This is .cloned, no
-     *              need to worry about references
      * @param moderator The modertators
      * @param type The shop type
      * @param unlimited The unlimited
@@ -102,16 +78,25 @@ public class ContainerShop implements Shop {
         this.item = item.clone();
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
+        this.shopType = type;
+        this.unlimited = unlimited;
+
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog("Failed to create ContainerShop displayItem, the type is unknown.");
+                    break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
+                    break;
+                case ARMORSTAND:
+                    this.displayItem = new ArmorStandDisplayItem(this);
+                    break;
+                default:
+                    Util.debugLog("Failed to create ContainerShop displayItem, the type we didn't know.");
             }
         }
-        this.shopType = type;
-        this.unlimited = unlimited;
+
 
     }
 
@@ -688,63 +673,64 @@ public class ContainerShop implements Shop {
         return Util.canBeShop(this.getLocation().getBlock());
     }
     public void checkDisplay() {
-        if (plugin.isDisplay() == false)
-            return;
-        if (getLocation().getWorld() == null)
-            return; // not loaded
-        boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
-        if (trans && this.getDisplayItem() == null) {
-            this.displayItem = new DisplayItem(this, this.getItem());
-            this.getDisplayItem().spawn();
-        }
-        if (this.getDisplayItem() != null) {
-            if (!trans) { // We have a display item in a block... delete it
-                this.getDisplayItem().remove();
-                this.displayItem = null;
-                return;
-            }
-            DisplayItem disItem = this.getDisplayItem();
-            Location dispLoc = disItem.getDisplayLocation();
-            if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
-                disItem.remove();
-                return;
-            }
-            if (disItem.getItem() == null) {
-                disItem.removeDupe();
-                disItem.spawn();
-                return;
-            }
-            Item item = disItem.getItem();
-            if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
-                disItem.respawn();
-                disItem.removeDupe();
-            } else if (item.getLocation().distanceSquared(dispLoc) > 1) {
-                item.teleport(dispLoc, TeleportCause.PLUGIN);
-            }
-        }
+        //TODO
+        // if (plugin.isDisplay() == false)
+        //     return;
+        // if (getLocation().getWorld() == null)
+        //     return; // not loaded
+        // boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
+        // if (trans && this.getDisplayItem() == null) {
+        //     this.displayItem = new DisplayItem(this, this.getItem());
+        //     this.getDisplayItem().spawn();
+        // }
+        // if (this.getDisplayItem() != null) {
+        //     if (!trans) { // We have a display item in a block... delete it
+        //         this.getDisplayItem().remove();
+        //         this.displayItem = null;
+        //         return;
+        //     }
+        //     DisplayItem disItem = this.getDisplayItem();
+        //     Location dispLoc = disItem.getDisplayLocation();
+        //     if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
+        //         disItem.remove();
+        //         return;
+        //     }
+        //     if (disItem.getItem() == null) {
+        //         disItem.removeDupe();
+        //         disItem.spawn();
+        //         return;
+        //     }
+        //     Item item = disItem.getItem();
+        //     if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
+        //         disItem.respawn();
+        //         disItem.removeDupe();
+        //     } else if (item.getLocation().distanceSquared(dispLoc) > 1) {
+        //         item.teleport(dispLoc, TeleportCause.PLUGIN);
+        //     }
+        // }
     }
 
     public boolean checkDisplayMoved() {
-        // don't check if the plugin doesn't know about the object
-        if (this.getDisplayItem() == null) {
-            return false;
-        }
-
-        Item item = this.getDisplayItem().getItem();
-        if (item == null) {
-            return false;
-        }
-
-        if (item.isDead()) {
-            return false;
-        }
-
-        // don't check if the chunk is not loaded
-        if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) {
-            return false;
-        }
-
-        return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
+        // // don't check if the plugin doesn't know about the object
+        // if (this.getDisplayItem() == null) {
+        //     return false;
+        // }
+        //
+        // Item item = this.getDisplayItem().getItem();
+        // if (item == null) {
+        //     return false;
+        // }
+        //
+        // if (item.isDead()) {
+        //     return false;
+        // }
+        //
+        // // don't check if the chunk is not loaded
+        // if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) {
+        //     return false;
+        // }
+        //
+        // return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
     }
 
     /**
