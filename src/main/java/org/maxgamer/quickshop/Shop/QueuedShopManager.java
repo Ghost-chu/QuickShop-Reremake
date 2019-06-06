@@ -7,6 +7,7 @@ import lombok.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 /**
  * QueuedShopManager can help you process shops by queue not in once
@@ -79,6 +80,8 @@ public class QueuedShopManager {
             return; //Jump out, go next tick
         QueueAction[] actions = queueShopObject.getAction();
         for (QueueAction action : actions) { //Run actions.
+            Util.debugLog("Execute action " + action.name() + " for shop at " + queueShopObject.getShop().getLocation()
+                    .toString());
             switch (action) {
                 case LOAD:
                     queueShopObject.getShop().onLoad();
