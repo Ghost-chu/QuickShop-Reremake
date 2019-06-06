@@ -98,6 +98,8 @@ public interface DisplayItem {
 
     public abstract boolean checkIsShopEntity(ItemStack itemStack);
 
+    public abstract boolean checkIsShopEntity(Entity entity);
+
     // /**
     //  * Check the ItemStack is or not a DisplayItem
     //  * @param itemStack The ItemStack you want to check.
@@ -178,7 +180,7 @@ public interface DisplayItem {
     // }
     //
 
-    public abstract Entity getItem();
+    public abstract Entity getDisplay();
 
     // /**
     //  * Returns the reference to this shops item. Do not modify.
