@@ -256,6 +256,12 @@ public abstract interface Shop {
     public abstract void clearStaffs();
 
     /**
+     * Get this container shop is loaded or unloaded.
+     */
+    public abstract boolean isLoaded();
+
+    /**
+     /**
      * Directly get all staffs.
      * @return staffs
      */

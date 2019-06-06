@@ -37,6 +37,7 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     private ShopType shopType;
     private QuickShop plugin;
+    private boolean isLoaded;
 
     /**
      * Returns a clone of this shop. References to the same display item,
@@ -633,6 +634,8 @@ public class ContainerShop implements Shop {
      *                   you are iterating*
      */
     public void delete(boolean fromMemory) {
+        // Unload the shop
+        this.onUnload();
         // Delete the display item
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
@@ -741,6 +744,7 @@ public class ContainerShop implements Shop {
             this.getDisplayItem().remove();
             this.displayItem = null;
         }
+        this.isLoaded = false;
     }
 
     /**
@@ -755,8 +759,7 @@ public class ContainerShop implements Shop {
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
-            plugin.getQueuedShopManager()
-                    .add(new QueueShopObject(this, QueueAction.DELETE)); //Use queue make sure not will happend NPE.
+            this.delete();
             return;
         }
 
@@ -772,6 +775,7 @@ public class ContainerShop implements Shop {
                 this.update();
             }
         }
+        this.isLoaded = true;
     }
 
     public void onClick() {
@@ -819,4 +823,8 @@ public class ContainerShop implements Shop {
         update();
     }
 
+    @Override
+    public boolean isLoaded() {
+        return false;
+    }
 }
