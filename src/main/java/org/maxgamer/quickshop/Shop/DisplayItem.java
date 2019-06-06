@@ -2,7 +2,6 @@ package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 //import org.maxgamer.quickshop.Util.NMS;
 
@@ -97,7 +96,7 @@ public interface DisplayItem {
     // }
     //
 
-    public abstract boolean checkShopItem(ItemStack itemStack);
+    public abstract boolean checkIsShopEntity(ItemStack itemStack);
 
     // /**
     //  * Check the ItemStack is or not a DisplayItem
@@ -179,7 +178,7 @@ public interface DisplayItem {
     // }
     //
 
-    public abstract Item getItem();
+    public abstract Entity getItem();
 
     // /**
     //  * Returns the reference to this shops item. Do not modify.
