@@ -101,8 +101,6 @@ public interface DisplayItem {
     // }
     //
 
-    public abstract boolean checkIsShopEntity(ItemStack itemStack);
-
     public abstract boolean checkIsShopEntity(Entity entity);
 
     // /**
