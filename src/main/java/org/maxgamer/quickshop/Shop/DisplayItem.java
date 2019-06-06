@@ -216,6 +216,8 @@ public interface DisplayItem {
     }
 
     public static boolean checkIsGuardItemStack(ItemStack itemStack) {
+        if (itemStack == null)
+            return false;
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
@@ -236,7 +238,7 @@ public interface DisplayItem {
     }
 
     public static DisplayType getNowUsing() {
-        //TODO
+        //TODO Read config and choosen which type we need to use.
     }
 
 }
