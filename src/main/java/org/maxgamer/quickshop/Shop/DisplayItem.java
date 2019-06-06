@@ -106,6 +106,13 @@ public interface DisplayItem {
     public abstract void fixDisplayNeedRegen();
 
     /**
+     * Check the display is or not already spawned
+     *
+     * @return Spawned
+     */
+    public abstract boolean isSpawned();
+
+    /**
      * Create a new itemStack with protect flag.
      * @param itemStack Old itemStack
      * @return New itemStack with protect flag.

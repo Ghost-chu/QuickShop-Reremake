@@ -127,11 +127,15 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
+        if (this.armorStand == null)
+            return false;
         return !this.armorStand.getLocation().equals(getDisplayLocation());
     }
 
     @Override
     public boolean checkDisplayNeedRegen() {
+        if (this.armorStand == null)
+            return false;
         return !this.armorStand.isValid() || this.armorStand.isDead();
     }
 
@@ -184,5 +188,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void fixDisplayNeedRegen() {
         respawn();
+    }
+
+    @Override
+    public boolean isSpawned() {
+        if (this.armorStand == null)
+            return false;
+        return this.armorStand.isValid();
     }
 }
