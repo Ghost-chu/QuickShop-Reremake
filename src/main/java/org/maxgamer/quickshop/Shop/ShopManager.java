@@ -664,7 +664,8 @@ public class ShopManager {
                 return;
             }
             // Create the sample shop.
-            Shop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()));
+            Shop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p
+                    .getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
             Bukkit.getPluginManager().callEvent(e);
