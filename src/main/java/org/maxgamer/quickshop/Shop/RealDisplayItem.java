@@ -102,7 +102,7 @@ public class RealDisplayItem implements DisplayItem {
      * @return The check result.
      */
 
-    public boolean checkShopItem(ItemStack itemStack) {
+    public boolean checkIsShopEntity(ItemStack itemStack) {
         if (itemStack == null)
             return false;
         if (!itemStack.hasItemMeta()) {
