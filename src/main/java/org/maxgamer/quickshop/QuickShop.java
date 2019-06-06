@@ -211,6 +211,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
 
         reloadConfig(); //Plugin support reload, so need reload config here.
+        this.reloadConfig();
 
         getConfig().options().copyDefaults(true); // Load defaults.
 
