@@ -834,6 +834,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean isLoaded() {
-        return false;
+        return this.isLoaded;
     }
 }
