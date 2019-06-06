@@ -229,5 +229,8 @@ public interface DisplayItem {
         return false;
     }
 
+    public static DisplayType getNowUsing() {
+        //TODO
+    }
 
 }
