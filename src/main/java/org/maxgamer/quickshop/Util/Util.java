@@ -728,7 +728,7 @@ public class Util {
      * @param normalText The text you will see
      */
     // Without NMS
-    public static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
+    private static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
         try {
             String Itemname = null;
             List<String> Itemlore = new ArrayList<>();
