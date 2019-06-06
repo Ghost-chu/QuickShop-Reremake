@@ -549,8 +549,10 @@ public class ContainerShop implements Shop {
      */
     public void setSignText(String[] lines) {
         for (Sign sign : this.getSigns()) {
-            if (sign.getLines().equals(lines))
+            if (sign.getLines().equals(lines)) {
+                Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
+            }
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
             }
