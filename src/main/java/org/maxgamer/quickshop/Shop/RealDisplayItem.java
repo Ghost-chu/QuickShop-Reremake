@@ -1,23 +1,20 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class RealDisplayItem implements DisplayItem {
 
     private Shop shop;
-    private ItemStack iStack;
+    private ItemStack originalItemStack;
+    private ItemStack guardedIstack;
     private Item item;
     static QuickShop plugin = QuickShop.instance;
 
@@ -28,157 +25,294 @@ public class RealDisplayItem implements DisplayItem {
      */
     public RealDisplayItem(Shop shop) {
         this.shop = shop;
-        this.iStack = shop.getItem().clone();
+        this.originalItemStack = shop.getItem().clone();
 
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
-    /**
-     * Spawns the dummy item on top of the shop.
-     */
+    @Override
     public void spawn() {
         if (shop.getLocation().getWorld() == null) {
+            Util.debugLog("Cancelled the displayItem spawning cause location world is null.");
             return;
         }
-        Location dispLoc = this.getDisplayLocation();
-        //Call Event for QSAPI
 
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+        if (originalItemStack == null) {
+            Util.debugLog("Cancelled the displayItem spawning cause ItemStack is null.");
+            return;
+        }
+        if (item != null && item.isValid() && !item.isDead()) {
+            Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when already have a exist one Dropped Item, This may cause dupe Dropped Item!");
+            StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+            for (StackTraceElement trace : traces) {
+                Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+            }
+        }
+
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
+            Util.debugLog("Cancelled the displayItem spawning cause a plugin setCancelled the spawning event, usually is QuickShop Addon");
             return;
         }
-        this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
-        this.item.setVelocity(new Vector(0, 0.1, 0));
-        try {
-            this.safeGuard(this.item);
-            ShopDisplayItemSpawnedEvent shopDisplayItemSpawnedEvent = new ShopDisplayItemSpawnedEvent(shop, this.item);
-            Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnedEvent);
-            // NMS.safeGuard
-        } catch (Exception e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING,
-                    "QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
-        }
+
+        this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), originalItemStack);
+        this.item.setPickupDelay(Integer.MAX_VALUE);
+        this.item.setSilent(true);
+        this.item.setPortalCooldown(Integer.MAX_VALUE);
+        this.item.setGravity(false);
+        safeGuard(this.item);
+        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation().toString());
     }
 
-    /**
-     * Spawns the new display item. Does not remove duplicate items.
-     */
-    public void respawn() {
-        if (item.isValid() == false) {
-            spawn();
-        }
-    }
-
-    /**
-     * Set item is QuickShop's DisplayItem and prevent them.
-     *
-     * @param entity
-     */
+    @Override
     public void safeGuard(Entity entity) {
+        if (entity == null) {
+            Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
+        }
+        if (!(entity instanceof ArmorStand)) {
+            Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a ArmorStand");
+            return;
+        }
         Item item = (Item) entity;
-        item.setPickupDelay(Integer.MAX_VALUE);
-        ItemMeta iMeta = item.getItemStack().getItemMeta();
-
-        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            item.setCustomName("QuickShop");
-            iMeta.setDisplayName("QuickShop");
-        }
-        item.setPortalCooldown(Integer.MAX_VALUE);
-        item.setSilent(true);
-        item.setInvulnerable(true);
-        java.util.List<String> lore = new ArrayList<String>();
-        for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
-        }
-        iMeta.setLore(lore);
-        item.getItemStack().setItemMeta(iMeta);
+        //Set item protect in the armorstand's hand
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
+        item.setItemStack(this.guardedIstack);
+        Util.debugLog("Successfully safeGuard Item: " + item.getLocation().toString());
     }
 
-    /**
-     * Check the ItemStack is or not a DisplayItem
-     *
-     * @param itemStack The ItemStack you want to check.
-     * @return The check result.
-     */
-    public boolean checkIsShopEntity(ItemStack itemStack) {
-        if (itemStack == null) {
-            return false;
+    @Override
+    public void remove() {
+        if (this.item == null || !this.item.isValid() || this.item.isDead()) {
+            Util.debugLog("Ignore the Item removeing cause this Item already gone.");
+            return;
         }
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        if (itemStack.getItemMeta().hasDisplayName() && itemStack.getItemMeta().getDisplayName().contains("QuickShop")) {
-            return true;
-        }
-        if (itemStack.getItemMeta().hasLore()) {
-            List<String> lores = itemStack.getItemMeta().getLore();
-            for (String singleLore : lores) {
-                if (singleLore.equals("QuickShop DisplayItem") || singleLore.contains("QuickShop DisplayItem")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        this.item.remove();
+        this.item = null;
+        this.guardedIstack = null;
     }
 
-    /**
-     * Removes all items floating ontop of the chest that aren't the display
-     * item.
-     */
+    @Override
     public boolean removeDupe() {
-        if (shop.getLocation().getWorld() == null) {
+        if (this.item == null) {
+            Util.debugLog("Warning: Trying removeDupe for no display shop.");
             return false;
         }
-        Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
         boolean removed = false;
-        Chunk c = displayLoc.getChunk();
-        for (Entity e : c.getEntities()) {
-            if (!(e instanceof Item)) {
+        Chunk chunk = shop.getLocation().getChunk();
+        for (Entity entity : chunk.getEntities()) {
+            if (!(entity instanceof Item))
                 continue;
-            }
-            if (this.item != null && e.getEntityId() == this.item.getEntityId()) {
-                continue;
-            }
-            Location eLoc = e.getLocation().getBlock().getLocation();
-            if (eLoc.equals(displayLoc) || eLoc.equals(shop.getLocation())) {
-                ItemStack near = ((Item) e).getItemStack();
-                // if its the same its a dupe
-                if (this.shop.matches(near)) {
-                    e.remove();
+            Item eItem = (Item) entity;
+            if (eItem.getItemStack().equals(this.guardedIstack)) {
+                if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
+                    Util.debugLog("Removing dupes ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
+                            .getLocation().toString());
+                    entity.remove();
                     removed = true;
                 }
             }
         }
         return removed;
-
     }
 
-    /**
-     * Removes the display item.
-     */
-    public void remove() {
-        if (this.item == null) {
-            return;
-        }
-        this.item.remove();
-        this.item = null;
+    @Override
+    public void respawn() {
+        remove();
+        spawn();
     }
 
-    /**
-     * @return Returns the exact location of the display item. (1 above shop
-     * block, in the center)
-     */
-    public Location getDisplayLocation() {
-        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
-    }
-
-    /**
-     * Returns the reference to this shops item. Do not modify.
-     */
-    public Item getItem() {
+    @Override
+    public Entity getDisplay() {
         return this.item;
     }
 
+    @Override
+    public boolean checkIsShopEntity(Entity entity) {
+        if (!(entity instanceof Item))
+            return false;
+        return DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack());
+    }
+
+    @Override
+    public boolean checkDisplayNeedRegen() {
+        return !this.item.isValid() || this.item.isDead();
+    }
+
+    @Override
+    public boolean checkDisplayIsMoved() {
+        return !this.item.getLocation().equals(getDisplayLocation());
+    }
+
+    @Override
+    public void fixDisplayNeedRegen() {
+        respawn();
+    }
+
+    @Override
+    public void fixDisplayMoved() {
+        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
+            if (!(entity instanceof Item))
+                continue;
+            Item eItem = (Item) entity;
+            if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId().toString() + " at " + eItem
+                        .getLocation().toString());
+                eItem.teleport(getDisplayLocation());
+                return;
+            }
+        }
+    }
+
+    // /**
+    //  * Spawns the dummy item on top of the shop.
+    //  */
+    // public void spawn() {
+    //     if (shop.getLocation().getWorld() == null) {
+    //         return;
+    //     }
+    //     Location dispLoc = this.getDisplayLocation();
+    //     //Call Event for QSAPI
+    //
+    //     ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+    //     Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+    //     if (shopDisplayItemSpawnEvent.isCancelled()) {
+    //         return;
+    //     }
+    //     this.item = shop.getLocation().getWorld().dropItem(dispLoc, this.iStack);
+    //     this.item.setVelocity(new Vector(0, 0.1, 0));
+    //     try {
+    //         this.safeGuard(this.item);
+    //         ShopDisplayItemSpawnedEvent shopDisplayItemSpawnedEvent = new ShopDisplayItemSpawnedEvent(shop, this.item);
+    //         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnedEvent);
+    //         // NMS.safeGuard
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         plugin.getLogger().log(Level.WARNING,
+    //                 "QuickShop version mismatch! This version of QuickShop is incompatible with this version of bukkit! Try update?");
+    //     }
+    // }
+    //
+    // /**
+    //  * Spawns the new display item. Does not remove duplicate items.
+    //  */
+    // public void respawn() {
+    //     if (item.isValid() == false) {
+    //         spawn();
+    //     }
+    // }
+    //
+    // /**
+    //  * Set item is QuickShop's DisplayItem and prevent them.
+    //  *
+    //  * @param entity
+    //  */
+    // public void safeGuard(Entity entity) {
+    //     Item item = (Item) entity;
+    //     item.setPickupDelay(Integer.MAX_VALUE);
+    //     ItemMeta iMeta = item.getItemStack().getItemMeta();
+    //
+    //     if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+    //         item.setCustomName("QuickShop");
+    //         iMeta.setDisplayName("QuickShop");
+    //     }
+    //     item.setPortalCooldown(Integer.MAX_VALUE);
+    //     item.setSilent(true);
+    //     item.setInvulnerable(true);
+    //     java.util.List<String> lore = new ArrayList<String>();
+    //     for (int i = 0; i < 21; i++) {
+    //         lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+    //     }
+    //     iMeta.setLore(lore);
+    //     item.getItemStack().setItemMeta(iMeta);
+    // }
+    //
+    // /**
+    //  * Check the ItemStack is or not a DisplayItem
+    //  *
+    //  * @param itemStack The ItemStack you want to check.
+    //  * @return The check result.
+    //  */
+    // public boolean checkIsShopEntity(ItemStack itemStack) {
+    //     if (itemStack == null) {
+    //         return false;
+    //     }
+    //     if (!itemStack.hasItemMeta()) {
+    //         return false;
+    //     }
+    //     if (itemStack.getItemMeta().hasDisplayName() && itemStack.getItemMeta().getDisplayName().contains("QuickShop")) {
+    //         return true;
+    //     }
+    //     if (itemStack.getItemMeta().hasLore()) {
+    //         List<String> lores = itemStack.getItemMeta().getLore();
+    //         for (String singleLore : lores) {
+    //             if (singleLore.equals("QuickShop DisplayItem") || singleLore.contains("QuickShop DisplayItem")) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
+    //
+    // /**
+    //  * Removes all items floating ontop of the chest that aren't the display
+    //  * item.
+    //  */
+    // public boolean removeDupe() {
+    //     if (shop.getLocation().getWorld() == null) {
+    //         return false;
+    //     }
+    //     Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
+    //     boolean removed = false;
+    //     Chunk c = displayLoc.getChunk();
+    //     for (Entity e : c.getEntities()) {
+    //         if (!(e instanceof Item)) {
+    //             continue;
+    //         }
+    //         if (this.item != null && e.getEntityId() == this.item.getEntityId()) {
+    //             continue;
+    //         }
+    //         Location eLoc = e.getLocation().getBlock().getLocation();
+    //         if (eLoc.equals(displayLoc) || eLoc.equals(shop.getLocation())) {
+    //             ItemStack near = ((Item) e).getItemStack();
+    //             // if its the same its a dupe
+    //             if (this.shop.matches(near)) {
+    //                 e.remove();
+    //                 removed = true;
+    //             }
+    //         }
+    //     }
+    //     return removed;
+    //
+    // }
+    //
+    // /**
+    //  * Removes the display item.
+    //  */
+    // public void remove() {
+    //     if (this.item == null) {
+    //         return;
+    //     }
+    //     this.item.remove();
+    //     this.item = null;
+    // }
+    //
+    // /**
+    //  * @return Returns the exact location of the display item. (1 above shop
+    //  * block, in the center)
+    //  */
+    // public Location getDisplayLocation() {
+    //     return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    // }
+    //
+    // /**
+    //  * Returns the reference to this shops item. Do not modify.
+    //  */
+    // public Item getItem() {
+    //     return this.item;
+    // }
+    @Override
+    public Location getDisplayLocation() {
+        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+    }
 }

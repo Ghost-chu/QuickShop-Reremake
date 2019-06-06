@@ -15,14 +15,14 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class ArmorStandDisplayItem implements DisplayItem {
     private QuickShop plugin = QuickShop.instance;
-    private ItemStack iStack;
+    private ItemStack originalItemStack;
     private ItemStack guardedIstack;
     private ArmorStand armorStand;
     private Shop shop;
 
     public ArmorStandDisplayItem(Shop shop) {
         this.shop = shop;
-        this.iStack = shop.getItem().clone();
+        this.originalItemStack = shop.getItem().clone();
     }
 
     @Override
@@ -32,15 +32,19 @@ public class ArmorStandDisplayItem implements DisplayItem {
             return;
         }
 
-        if (iStack == null) {
+        if (originalItemStack == null) {
             Util.debugLog("Cancelled the displayItem spawning cause ItemStack is null.");
             return;
         }
 
-        if (armorStand != null && armorStand.isValid() && !armorStand.isDead())
+        if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
             Util.debugLog("Warning: Spawning the armorStand for DisplayItem when already have a exist one armorStand, This may cause dupe armorStand!");
-
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, iStack);
+            StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+            for (StackTraceElement trace : traces) {
+                Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+            }
+        }
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog("Cancelled the displayItem spawning cause a plugin setCancelled the spawning event, usually is QuickShop Addon");
@@ -60,7 +64,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         //this.armorStand.setSmall(true);
 
         //Set armorstand item in hand
-        this.armorStand.setItemInHand(iStack);
+        this.armorStand.setItemInHand(originalItemStack);
         //Set safeGuard
         safeGuard(this.armorStand);
         //Set pose
@@ -79,8 +83,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.iStack);
-        setPoseForArmorStand();
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
         armorStand.setItemInHand(guardedIstack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
@@ -152,7 +155,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 continue;
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getItemInHand().equals(this.guardedIstack)) {
-                if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                     Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
                             .getLocation().toString());
                     entity.remove();
