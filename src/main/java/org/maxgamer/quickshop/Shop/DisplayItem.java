@@ -239,6 +239,7 @@ public interface DisplayItem {
 
     public static DisplayType getNowUsing() {
         //TODO Read config and choosen which type we need to use.
+        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
     }
 
 }
