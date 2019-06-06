@@ -5,7 +5,6 @@ import java.io.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.maxgamer.quickshop.Util.Util;
-import org.maxgamer.quickshop.Util.YamlIsSucked;
 
 public class Language {
     private QuickShop plugin;
