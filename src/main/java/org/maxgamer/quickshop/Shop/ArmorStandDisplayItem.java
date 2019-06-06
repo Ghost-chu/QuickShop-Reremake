@@ -7,6 +7,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.EulerAngle;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -77,11 +78,14 @@ public class ArmorStandDisplayItem implements DisplayItem {
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.iStack);
+        setPoseForArmorStand();
         armorStand.setItemInHand(guardedIstack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
     private void setPoseForArmorStand() {
         //TODO
+
+        this.armorStand.setRightArmPose(new EulerAngle(0, 0, 0));
     }
 
     @Override
