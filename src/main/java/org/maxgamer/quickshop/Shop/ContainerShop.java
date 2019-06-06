@@ -635,7 +635,8 @@ public class ContainerShop implements Shop {
      */
     public void delete(boolean fromMemory) {
         // Unload the shop
-        this.onUnload();
+        if (isLoaded)
+            this.onUnload();
         // Delete the display item
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
@@ -740,6 +741,10 @@ public class ContainerShop implements Shop {
      * Unload ContainerShop.
      */
     public void onUnload() {
+        if (!this.isLoaded) {
+            Util.debugLog("Dupe unload request, cancelled.");
+            return;
+        }
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
             this.displayItem = null;
@@ -751,6 +756,10 @@ public class ContainerShop implements Shop {
      * Load ContainerShop.
      */
     public void onLoad() {
+        if (this.isLoaded) {
+            Util.debugLog("Dupe load request, cancelled.");
+            return;
+        }
         checkDisplay();
 
         //Clear the chest?
