@@ -52,6 +52,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.setGravity(false);
         this.armorStand.setSilent(true);
         this.armorStand.setAI(false);
+        this.armorStand.setCollidable(false);
+        this.armorStand.setCanPickupItems(false);
+
         //Set armorstand item in hand
         this.armorStand.setItemInHand(iStack);
         //Set safeGuard
@@ -125,8 +128,10 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean removeDupe() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
+            Util.debugLog("Warning: Trying removeDupe for no display shop.");
             return false;
+        }
         boolean removed = false;
         Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : chunk.getEntities()) {
@@ -152,6 +157,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 continue;
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                Util.debugLog("Fixing moved ArmorStand displayItem " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
+                        .getLocation().toString());
                 eArmorStand.teleport(getDisplayLocation());
                 return;
             }
