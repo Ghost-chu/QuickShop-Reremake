@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,16 +22,36 @@ public class YamlIsSucked {
      * @return Json string
      */
     public String readYaml2ToJson(String yaml2) {
-        LoadSettings settings = new LoadSettingsBuilder().build();
-        Load load = new Load(settings);
-        @SuppressWarnings("unchecked")
-        Map<String, Object> map = (Map<String, Object>) load.loadFromString(yaml2);
-        Gson gson = new Gson();
-        return gson.toJson(map);
+        // try{
+        //     JsonNode jsonNodeTree = new ObjectMapper(new YAMLFactory()).readTree(yaml2);
+        //     return jsonNodeTree.asText();
+        // }catch (IOException e){
+        //     e.printStackTrace();
+        //     return null;
+        // }
+        try {
+            LoadSettings settings = new LoadSettingsBuilder().build();
+            Load load = new Load(settings);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) load.loadFromString("a: 1\nb: 2\nc:\n  - aaa\n  - bbb");
+            Gson gson = new Gson();
+            return gson.toJson(map);
+
+        } catch (IOException e) {
+            return null;
+        }
+
+        //
+        // // Load load = new Load(settings);
+        // // @SuppressWarnings("unchecked")
+        // // Map<String, Object> map = (Map<String, Object>) load.loadFromString(yaml2);
+        // Gson gson = new Gson();
+        // return gson.toJson(map);
     }
 
     /**
      * Convert Json to YAML1.0 config
+     *
      * @param json Target Json string
      * @return YAML 1.0 config
      */
