@@ -4,6 +4,7 @@ import lombok.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Event.Result;
@@ -12,16 +13,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerFishEvent.State;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -38,7 +39,7 @@ public class DisplayProtectionListener implements Listener {
         // for (int i = 0; i < event.getInventory().getContents().length; i++) {
         //     try {
         //         ItemStack is = event.getInventory().getContents()[i];
-        //         if (itemStackCheck(is)) {
+        //         if (DisplayItem.checkIsGuardItemStack(is)) {
         //             is.setAmount(0);
         //             is.setType(Material.AIR);
         //             event.getPlayer().closeInventory();
@@ -55,7 +56,7 @@ public class DisplayProtectionListener implements Listener {
         for (ItemStack is : event.getInventory().getStorageContents()) {
             if (is == null)
                 continue;
-            if (itemStackCheck(is)) {
+            if (DisplayItem.checkIsGuardItemStack(is)) {
                 is.setType(Material.AIR);
                 is.setAmount(1);
                 event.getPlayer().closeInventory();
@@ -69,7 +70,7 @@ public class DisplayProtectionListener implements Listener {
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
         try {
-            if (DisplayItem.checkShopItem(stack)) {
+            if (DisplayItem.checkIsGuardItemStack(stack)) {
                 e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
                 // You shouldn't be able to pick up that...
                 MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -77,7 +78,7 @@ public class DisplayProtectionListener implements Listener {
                         .toString() + ")");
                 Util.inventoryCheck(e.getPlayer().getInventory());
             }
-            if (DisplayItem.checkShopItem(stackOffHand)) {
+            if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
                 e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
                 // You shouldn't be able to pick up that...
                 MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -95,7 +96,7 @@ public class DisplayProtectionListener implements Listener {
     //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
     //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
     //     try {
-    //         if (DisplayItem.checkShopItem(stack)) {
+    //         if (DisplayItem.checkIsGuardItemStack(stack)) {
     //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
     //             // You shouldn't be able to pick up that...
     //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -103,7 +104,7 @@ public class DisplayProtectionListener implements Listener {
     //                     .toString() + ")");
     //             Util.inventoryCheck(e.getPlayer().getInventory());
     //         }
-    //         if (DisplayItem.checkShopItem(stackOffHand)) {
+    //         if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
     //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
     //             // You shouldn't be able to pick up that...
     //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -120,7 +121,7 @@ public class DisplayProtectionListener implements Listener {
     //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
     //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
     //     try {
-    //         if (DisplayItem.checkShopItem(stack)) {
+    //         if (DisplayItem.checkIsGuardItemStack(stack)) {
     //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
     //             // You shouldn't be able to pick up that...
     //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -128,7 +129,7 @@ public class DisplayProtectionListener implements Listener {
     //                     .toString() + ")");
     //             Util.inventoryCheck(e.getPlayer().getInventory());
     //         }
-    //         if (DisplayItem.checkShopItem(stackOffHand)) {
+    //         if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
     //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
     //             // You shouldn't be able to pick up that...
     //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
@@ -145,7 +146,7 @@ public class DisplayProtectionListener implements Listener {
     public void onPlayerPickup(EntityPickupItemEvent e) {
         ItemStack stack = e.getItem().getItemStack();
         try {
-            if (DisplayItem.checkShopItem(stack)) {
+            if (DisplayItem.checkIsGuardItemStack(stack)) {
                 e.setCancelled(true);
                 Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getEntity().getLocation()
                         .toString() + ")");
@@ -170,12 +171,12 @@ public class DisplayProtectionListener implements Listener {
         ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
         boolean found = false;
         try {
-            if (DisplayItem.checkShopItem(stack)) {
+            if (DisplayItem.checkIsGuardItemStack(stack)) {
                 stack.setType(Material.AIR);
                 found = true;
                 // You shouldn't be able to pick up that...
             }
-            if (DisplayItem.checkShopItem(stackOffHand)) {
+            if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
                 stack.setType(Material.AIR);
                 found = true;
             }
@@ -193,7 +194,7 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         try {
-            if (itemStackCheck(event.getCurrentItem())) {
+            if (DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
                 event.setCancelled(true);
                 MsgUtil.sendExploitAlert(event.getClickedInventory(), "Click the DisplayItem in Inventory", event.getViewers()
                         .get(0).getLocation());
@@ -204,7 +205,7 @@ public class DisplayProtectionListener implements Listener {
                         .getLocation().toString() + ")");
                 Util.inventoryCheck(event.getInventory());
             }
-            if (itemStackCheck(event.getCursor())) {
+            if (DisplayItem.checkIsGuardItemStack(event.getCursor())) {
                 event.setCancelled(true);
                 MsgUtil.sendExploitAlert(event.getClickedInventory(), "Click the DisplayItem in Inventory", event.getViewers()
                         .get(0).getLocation());
@@ -223,7 +224,7 @@ public class DisplayProtectionListener implements Listener {
     public void onInventoryPickupItem(InventoryPickupItemEvent event) {
         try {
             ItemStack is = event.getItem().getItemStack();
-            if (itemStackCheck(is)) {
+            if (DisplayItem.checkIsGuardItemStack(is)) {
                 event.setCancelled(true);
 //				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory().getName()+" at "+event.getItem().getLocation()+" picked up display item "+is);
 //				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getView().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
@@ -240,7 +241,7 @@ public class DisplayProtectionListener implements Listener {
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
         try {
             ItemStack is = event.getItem();
-            if (itemStackCheck(is)) {
+            if (DisplayItem.checkIsGuardItemStack(is)) {
                 event.setCancelled(true);
                 Util.debugLog("Some inventory trying move QuickShop displayItem to another container, already cancelled.");
                 MsgUtil.sendExploitAlert(event.getInitiator(), "Move DisplayItem", event.getInitiator().getLocation());
@@ -262,7 +263,7 @@ public class DisplayProtectionListener implements Listener {
         try {
             Item item = (Item) event.getCaught();
             ItemStack is = item.getItemStack();
-            if (itemStackCheck(is)) {
+            if (DisplayItem.checkIsGuardItemStack(is)) {
                 //item.remove();
                 event.getHook().remove();
                 //event.getCaught().remove();
@@ -347,7 +348,38 @@ public class DisplayProtectionListener implements Listener {
         MsgUtil.sendExploitAlert(event.getPlayer(), "Place water and use water to push DisplayItem", waterBlock.getLocation());
     }
 
-    public boolean itemStackCheck(ItemStack is) {
-        return DisplayItem.checkShopItem(is);
+    @EventHandler(ignoreCancelled = true)
+    public void onTryPickOrPlaceItemWithArmorStand(PlayerArmorStandManipulateEvent event) {
+        if (!DisplayItem.checkIsGuardItemStack(event.getArmorStandItem()))
+            return;
+        event.setCancelled(true);
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onActionTheArmorStand(EntityInteractEvent event) {
+        if (!(event.getEntity() instanceof ArmorStand))
+            return;
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
+            return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorStandWasDamageing(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof ArmorStand))
+            return;
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
+            return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorStandBreaked(EntityDeathEvent event) {
+        if (!(event.getEntity() instanceof ArmorStand))
+            return;
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
+            return;
+        event.setDroppedExp(0);
+    }
+    
 }
