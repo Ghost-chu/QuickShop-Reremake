@@ -25,11 +25,10 @@ public class RealDisplayItem implements DisplayItem {
      * Creates a new display item.
      *
      * @param shop   The shop (See Shop)
-     * @param iStack The item stack to clone properties of the display item from.
      */
-    public RealDisplayItem(Shop shop, ItemStack iStack) {
+    public RealDisplayItem(Shop shop) {
         this.shop = shop;
-        this.iStack = iStack.clone();
+        this.iStack = shop.getItem().clone();
 
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }

@@ -60,6 +60,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     public void safeGuard(Entity entity) {
+        if (entity == null) {
+            Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
+        }
         if (!(entity instanceof ArmorStand)) {
             Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a ArmorStand");
             return;
@@ -83,7 +86,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.remove();
         this.armorStand = null;
         this.guardedIstack = null;
-
     }
 
     public void respawn() {
