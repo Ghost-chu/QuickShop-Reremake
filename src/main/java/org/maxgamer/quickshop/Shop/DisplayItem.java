@@ -1,8 +1,12 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.maxgamer.quickshop.QuickShop;
 //import org.maxgamer.quickshop.Util.NMS;
 
 /**
@@ -188,4 +192,21 @@ public interface DisplayItem {
     // public Item getItem() {
     //     return this.item;
     // }
+
+    public static ItemStack createGuardItemStack(ItemStack itemStack) {
+        itemStack = itemStack.clone();
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
+            iMeta.setDisplayName("QuickShop");
+        }
+        java.util.List<String> lore = new ArrayList<String>();
+        for (int i = 0; i < 21; i++) {
+            lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+        }
+        iMeta.setLore(lore);
+        itemStack.setItemMeta(iMeta);
+        return itemStack;
+    }
+
+
 }
