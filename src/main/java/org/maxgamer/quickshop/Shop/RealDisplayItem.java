@@ -15,16 +15,16 @@ import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
 
 public class RealDisplayItem implements DisplayItem {
+
     private Shop shop;
     private ItemStack iStack;
     private Item item;
     static QuickShop plugin = QuickShop.instance;
 
     /**
-     * ZZ
-     * Creates a new display item.
+     * ZZ Creates a new display item.
      *
-     * @param shop   The shop (See Shop)
+     * @param shop The shop (See Shop)
      */
     public RealDisplayItem(Shop shop) {
         this.shop = shop;
@@ -37,8 +37,9 @@ public class RealDisplayItem implements DisplayItem {
      * Spawns the dummy item on top of the shop.
      */
     public void spawn() {
-        if (shop.getLocation().getWorld() == null)
+        if (shop.getLocation().getWorld() == null) {
             return;
+        }
         Location dispLoc = this.getDisplayLocation();
         //Call Event for QSAPI
 
@@ -65,8 +66,9 @@ public class RealDisplayItem implements DisplayItem {
      * Spawns the new display item. Does not remove duplicate items.
      */
     public void respawn() {
-        remove();
-        spawn();
+        if (item.isValid() == false) {
+            spawn();
+        }
     }
 
     /**
@@ -100,10 +102,10 @@ public class RealDisplayItem implements DisplayItem {
      * @param itemStack The ItemStack you want to check.
      * @return The check result.
      */
-
     public boolean checkIsShopEntity(ItemStack itemStack) {
-        if (itemStack == null)
+        if (itemStack == null) {
             return false;
+        }
         if (!itemStack.hasItemMeta()) {
             return false;
         }
@@ -126,16 +128,19 @@ public class RealDisplayItem implements DisplayItem {
      * item.
      */
     public boolean removeDupe() {
-        if (shop.getLocation().getWorld() == null)
+        if (shop.getLocation().getWorld() == null) {
             return false;
+        }
         Location displayLoc = shop.getLocation().getBlock().getRelative(0, 1, 0).getLocation();
         boolean removed = false;
         Chunk c = displayLoc.getChunk();
         for (Entity e : c.getEntities()) {
-            if (!(e instanceof Item))
+            if (!(e instanceof Item)) {
                 continue;
-            if (this.item != null && e.getEntityId() == this.item.getEntityId())
+            }
+            if (this.item != null && e.getEntityId() == this.item.getEntityId()) {
                 continue;
+            }
             Location eLoc = e.getLocation().getBlock().getLocation();
             if (eLoc.equals(displayLoc) || eLoc.equals(shop.getLocation())) {
                 ItemStack near = ((Item) e).getItemStack();
@@ -154,8 +159,9 @@ public class RealDisplayItem implements DisplayItem {
      * Removes the display item.
      */
     public void remove() {
-        if (this.item == null)
+        if (this.item == null) {
             return;
+        }
         this.item.remove();
         this.item = null;
     }
