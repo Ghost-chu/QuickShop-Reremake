@@ -146,8 +146,8 @@ public class RealDisplayItem implements DisplayItem {
         if (this.item == null)
             return false;
         //return !this.item.getLocation().equals(getDisplayLocation());
-        /* We give 0.2 value to allow item drop on the chest, not floating on the air. */
-        return this.item.getLocation().distance(getDisplayLocation()) > 0.2;
+        /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
+        return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
     }
 
     @Override

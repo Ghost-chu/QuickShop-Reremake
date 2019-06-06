@@ -24,7 +24,7 @@ import org.maxgamer.quickshop.QuickShop;
 public class SentryErrorReporter {
     private SentryClient sentryClient;
     private Context context;
-    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=&async=true";
+    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=";
     private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
