@@ -103,7 +103,7 @@ public class ContainerShop implements Shop {
         this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
         this.item.setAmount(1);
         if (plugin.isDisplay()) {
-            this.displayItem = new DisplayItem(this, this.item);
+            this.displayItem = new RealDisplayItem(this, this.item);
         }
         this.shopType = type;
         this.unlimited = unlimited;
