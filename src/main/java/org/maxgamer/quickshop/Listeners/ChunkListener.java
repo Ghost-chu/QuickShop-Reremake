@@ -15,7 +15,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.QueueAction;
 import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {
@@ -34,7 +33,6 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 for (Shop shop : inChunk.values()) {
-                    Util.debugLog("Add shop at " + shop.getLocation().toString() + " to waiting load queue.");
                     plugin.getQueuedShopManager()
                             .add(new QueueShopObject(shop, QueueAction.LOAD, QueueAction.SETSIGNTEXT));
                 }
