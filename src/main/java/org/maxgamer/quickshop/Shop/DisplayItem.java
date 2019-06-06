@@ -194,6 +194,14 @@ public interface DisplayItem {
     //     return this.item;
     // }
 
+    public abstract boolean checkDisplayIsMoved();
+
+    public abstract boolean checkDisplayNeedRegen();
+
+    public abstract void fixDisplayMoved();
+
+    public abstract void fixDisplayNeedRegen();
+
     public static ItemStack createGuardItemStack(ItemStack itemStack) {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
