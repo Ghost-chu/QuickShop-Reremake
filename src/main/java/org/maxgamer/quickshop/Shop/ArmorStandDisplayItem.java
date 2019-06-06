@@ -12,12 +12,13 @@ import org.maxgamer.quickshop.Util.Util;
 public class ArmorStandDisplayItem implements DisplayItem {
     private QuickShop plugin = QuickShop.instance;
     private ItemStack iStack;
+    private ItemStack guardedIstack;
     private ArmorStand armorStand;
     private Shop shop;
 
-    public ArmorStandDisplayItem(Shop shop, ItemStack iStack) {
+    public ArmorStandDisplayItem(Shop shop) {
         this.shop = shop;
-        this.iStack = iStack.clone();
+        this.iStack = shop.getItem().clone();
     }
 
     public void spawn() {
@@ -65,8 +66,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
-
-        armorStand.setItemInHand(itemStack);
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.iStack);
+        armorStand.setItemInHand(guardedIstack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
 
@@ -81,6 +82,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         this.armorStand.remove();
         this.armorStand = null;
+        this.guardedIstack = null;
 
     }
 
