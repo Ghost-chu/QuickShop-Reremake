@@ -88,7 +88,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
     private void setPoseForArmorStand() {
-        //TODO
         BlockFace containerBlockFace = BlockFace.NORTH; //Set default vaule
 
         if (this.shop.getLocation().getBlock().getState() instanceof Directional)
