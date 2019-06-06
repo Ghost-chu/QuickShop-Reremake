@@ -3,10 +3,10 @@ package org.maxgamer.quickshop.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -60,7 +60,7 @@ public class RealDisplayItem implements DisplayItem {
         this.item.setPickupDelay(Integer.MAX_VALUE);
         this.item.setSilent(true);
         this.item.setPortalCooldown(Integer.MAX_VALUE);
-        this.item.setGravity(false);
+        this.item.setVelocity(new Vector(0, 0.1, 0));
         safeGuard(this.item);
         Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation().toString());
     }
@@ -70,8 +70,8 @@ public class RealDisplayItem implements DisplayItem {
         if (entity == null) {
             Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
         }
-        if (!(entity instanceof ArmorStand)) {
-            Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a ArmorStand");
+        if (!(entity instanceof Item)) {
+            Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a Item");
             return;
         }
         Item item = (Item) entity;
@@ -136,12 +136,18 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayNeedRegen() {
+        if (this.item == null)
+            return false;
         return !this.item.isValid() || this.item.isDead();
     }
 
     @Override
     public boolean checkDisplayIsMoved() {
-        return !this.item.getLocation().equals(getDisplayLocation());
+        if (this.item == null)
+            return false;
+        //return !this.item.getLocation().equals(getDisplayLocation());
+        /* We give 0.2 value to allow item drop on the chest, not floating on the air. */
+        return this.item.getLocation().distance(getDisplayLocation()) > 0.2;
     }
 
     @Override
@@ -162,6 +168,13 @@ public class RealDisplayItem implements DisplayItem {
                 return;
             }
         }
+    }
+
+    @Override
+    public boolean isSpawned() {
+        if (this.item == null)
+            return false;
+        return this.item.isValid();
     }
 
     // /**
