@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 31
+config-version: 32
 
 #Select language you want use, (e.g de), use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -128,6 +128,10 @@ shop:
 
     #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
     display-items-check-ticks: 1200
+
+    #The display type you want use.
+    #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Dropped Item
+    display-type: 0
 
     #When someone uses /qs find <item>, how far should we search in blocks?
     #This command lets users shop quickly without wasting time searching
