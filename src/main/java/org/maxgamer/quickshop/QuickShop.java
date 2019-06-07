@@ -112,8 +112,6 @@ public class QuickShop extends JavaPlugin {
     /** The error reporter to help devs report errors to Sentry.io **/
     private SentryErrorReporter sentryErrorReporter;
 
-    //private LWCPlugin lwcPlugin;
-
     /**
      * Get the Player's Shop limit.
      *
@@ -723,9 +721,6 @@ public class QuickShop extends JavaPlugin {
         super.reloadConfig();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
-//		this.sneak = this.getConfig().getBoolean("shop.sneak-only");
-//		this.sneakCreate = this.getConfig().getBoolean("shop.sneak-to-create");
-//		this.sneakTrade = this.getConfig().getBoolean("shop.sneak-to-trade");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         language = new Language(this); //Init locale
