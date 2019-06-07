@@ -853,12 +853,13 @@ public class Util {
                 pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + formatEnchLevel(potionEffect.getAmplifier()));
             }
         }
-        if (pEffects != null && pEffects.isEmpty() == false) {
-            String result = new String();
+        if (!pEffects.isEmpty()) {
+            StringBuilder result = new StringBuilder();
             for (String effectString : pEffects) {
-                result += effectString + "\n";
+                result.append(effectString);
+                result.append("\n");
             }
-            return result;
+            return result.toString();
         } else {
             return null;
         }
