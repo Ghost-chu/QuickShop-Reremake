@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+import org.maxgamer.quickshop.Util.WarningSender;
 
 /**
  * QueuedShopManager can help you process shops by queue not in once
@@ -21,6 +22,7 @@ public class QueuedShopManager {
     int maxShopLoadPerTick = 0;
     boolean useQueue = false;
     private BukkitTask task;
+    private WarningSender warningSender;
 
     /**
      * QueuedShopManager can help you process shops by queue not in once
@@ -30,6 +32,7 @@ public class QueuedShopManager {
      */
     public QueuedShopManager(@NotNull QuickShop quickshop) {
         this.plugin = quickshop;
+        this.warningSender = new WarningSender(this.plugin, 60000);
         this.useQueue = plugin.getConfig().getBoolean("queue.enable");
         if (!useQueue)
             return;
@@ -130,6 +133,9 @@ public class QueuedShopManager {
         for (QueueShopObject queueShopObject : queueShopObjects) {
             if (useQueue) {
                 this.shopQueue.offer(queueShopObject);
+                if (this.shopQueue.size() > 50)
+                    this.warningSender
+                            .sendWarn("Too many task in queue and can't execute them timely, please pick a bigger number in queue.shops-per-tick in config.yml");
             } else {
                 this.doTask(queueShopObject); //Direct do actions when turn off queue
             }
