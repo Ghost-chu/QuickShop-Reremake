@@ -852,5 +852,6 @@ public class ContainerShop implements Shop {
             this.displayItem.fixDisplayNeedRegen();
         if (this.displayItem.checkDisplayIsMoved())
             this.displayItem.fixDisplayMoved();
+        this.displayItem.removeDupe();
     }
 }
