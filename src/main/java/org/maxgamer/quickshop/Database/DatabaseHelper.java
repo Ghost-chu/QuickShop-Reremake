@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -37,7 +38,7 @@ public class DatabaseHelper {
      * Verifies that all required columns exist.
      * @param db The database you want to check
      */
-    private void checkColumns(Database db) {
+    private void checkColumns(@NotNull Database db) {
         PreparedStatement ps = null;
         try {
             // V3.4.2
@@ -63,7 +64,7 @@ public class DatabaseHelper {
      * @param db The database you want create at.
      * @throws SQLException If the connection is invalid.
      */
-    public void createShopsTable(Database db) throws SQLException {
+    public void createShopsTable(@NotNull Database db) throws SQLException {
         Statement st = db.getConnection().createStatement();
         String createTable = null;
         createTable = "CREATE TABLE " + QuickShop.instance
@@ -78,7 +79,7 @@ public class DatabaseHelper {
      * @return Create failed or successed.
      * @throws SQLException If the connection is invalid
      */
-    public boolean createMessagesTable(Database db) throws SQLException {
+    public boolean createMessagesTable(@NotNull Database db) throws SQLException {
         Statement st = db.getConnection().createStatement();
         String createTable = null;
         createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
@@ -98,7 +99,7 @@ public class DatabaseHelper {
         return st.executeQuery(selectAllShops);
     }
 
-    public boolean removeShop(Database db, int x, int y, int z, String worldName) throws SQLException {
+    public boolean removeShop(@NotNull Database db, int x, int y, int z, @NotNull String worldName) throws SQLException {
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
 //						+ " AND z = " + z + " AND world = \"" + worldName + "\""
@@ -116,7 +117,7 @@ public class DatabaseHelper {
         return ps.execute();
     }
 
-    public void updateOwner2UUID(Database db, String ownerUUID, int x, int y, int z, String worldName)
+    public void updateOwner2UUID(@NotNull Database db, @NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName)
             throws SQLException {
         //QuickShop.instance.getDB().getConnection().createStatement()
         //         .executeUpdate("UPDATE " + QuickShop.instance.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
@@ -134,7 +135,7 @@ public class DatabaseHelper {
         plugin.getDatabaseManager().add(ps);
     }
 
-    public void updateShop(Database db, String owner, ItemStack item, int unlimited, int shopType,
+    public void updateShop(@NotNull Database db, @NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, String world) {
         try {
             String sqlString = "UPDATE " + QuickShop.instance
@@ -157,7 +158,7 @@ public class DatabaseHelper {
 
     }
 
-    public void createShop(Database db, String owner, double price, ItemStack item, int unlimited, int shopType, String world, int x, int y, int z) {
+    public void createShop(@NotNull Database db, @NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z) {
         try {
             String sqlString = "INSERT INTO " + QuickShop.instance
                     .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -178,7 +179,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void sendMessage(Database db, UUID player, String message, long time) {
+    public void sendMessage(@NotNull Database db, @NotNull UUID player, @NotNull String message, long time) {
         try {
             String sqlString = "INSERT INTO " + QuickShop.instance
                     .getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
@@ -193,7 +194,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void cleanMessage(Database db, long weekAgo) {
+    public void cleanMessage(@NotNull Database db, long weekAgo) {
         try {
             //QuickShop.instance.getDB().execute("DELETE FROM " + QuickShop.instance
             //        .getDbPrefix() + "messages WHERE time < ?", weekAgo);
@@ -207,7 +208,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void cleanMessageForPlayer(Database db, UUID player) {
+    public void cleanMessageForPlayer(@NotNull Database db, @NotNull UUID player) {
         try {
             String sqlString = "DELETE FROM " + QuickShop.instance.getDbPrefix() + "messages WHERE owner = ?";
             PreparedStatement ps = db.getConnection().prepareStatement(sqlString);

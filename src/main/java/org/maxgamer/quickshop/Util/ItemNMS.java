@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public abstract class ItemNMS {
@@ -39,7 +40,7 @@ public abstract class ItemNMS {
      * @return The json for ItemStack.
      * @throws Throwable throws
      */
-    public static String saveJsonfromNMS(ItemStack bStack) throws Throwable {
+    public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
         if (bStack.getType() == Material.AIR)
             return null;
         Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);

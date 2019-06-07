@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -30,7 +31,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class QS implements CommandExecutor {
     private QuickShop plugin;
 
-    public QS(QuickShop plugin) {
+    public QS(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 

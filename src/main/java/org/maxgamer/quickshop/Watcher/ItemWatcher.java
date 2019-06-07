@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.QueueAction;
 import org.maxgamer.quickshop.Shop.QueueShopObject;
@@ -21,7 +22,7 @@ import org.maxgamer.quickshop.Shop.ShopChunk;
 public class ItemWatcher implements Runnable {
     private QuickShop plugin;
 
-    public ItemWatcher(QuickShop plugin) {
+    public ItemWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 

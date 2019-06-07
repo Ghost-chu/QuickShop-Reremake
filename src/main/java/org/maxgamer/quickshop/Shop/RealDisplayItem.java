@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -23,7 +24,7 @@ public class RealDisplayItem implements DisplayItem {
      *
      * @param shop The shop (See Shop)
      */
-    public RealDisplayItem(Shop shop) {
+    public RealDisplayItem(@NotNull Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
 
@@ -66,7 +67,7 @@ public class RealDisplayItem implements DisplayItem {
     }
 
     @Override
-    public void safeGuard(Entity entity) {
+    public void safeGuard(@NotNull Entity entity) {
         if (entity == null) {
             Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
         }
@@ -128,7 +129,7 @@ public class RealDisplayItem implements DisplayItem {
     }
 
     @Override
-    public boolean checkIsShopEntity(Entity entity) {
+    public boolean checkIsShopEntity(@NotNull Entity entity) {
         if (!(entity instanceof Item))
             return false;
         return DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack());

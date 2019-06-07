@@ -6,6 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import lombok.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -27,7 +28,7 @@ public class QueuedShopManager {
      *
      * @param quickshop plugin main class
      */
-    public QueuedShopManager(QuickShop quickshop) {
+    public QueuedShopManager(@NotNull QuickShop quickshop) {
         this.plugin = quickshop;
         this.useQueue = plugin.getConfig().getBoolean("queue.enable");
         if (!useQueue)
@@ -75,9 +76,9 @@ public class QueuedShopManager {
      * Run a queuedShopObject.
      * @param queueShopObject queueShopObject
      */
-    private void doTask(QueueShopObject queueShopObject) {
-        if (queueShopObject == null) //No more queue need to do
-            return; //Jump out, go next tick
+    private void doTask(@NotNull QueueShopObject queueShopObject) {
+        // if (queueShopObject == null) //No more queue need to do
+        //     return; //Jump out, go next tick
         QueueAction[] actions = queueShopObject.getAction();
         for (QueueAction action : actions) { //Run actions.
             Util.debugLog("Execute action " + action.name() + " for shop at " + queueShopObject.getShop().getLocation()
@@ -118,7 +119,7 @@ public class QueuedShopManager {
      *
      * @param queueShopObjects target object you want add
      */
-    public void add(QueueShopObject... queueShopObjects) {
+    public void add(@NotNull QueueShopObject... queueShopObjects) {
         for (QueueShopObject queueShopObject : queueShopObjects) {
             if (useQueue) {
                 this.shopQueue.offer(queueShopObject);

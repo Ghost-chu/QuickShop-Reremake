@@ -9,13 +9,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public class PermissionChecker {
     private QuickShop plugin;
     private boolean usePermissionChecker;
 
-    public PermissionChecker(QuickShop plugin) {
+    public PermissionChecker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
     }
@@ -28,7 +29,7 @@ public class PermissionChecker {
      * @param place    Place block (false = break block)
      * @return Success
      */
-    public boolean canBuild(Player player, Location location, boolean place) {
+    public boolean canBuild(@NotNull Player player, @NotNull Location location, boolean place) {
         return canBuild(player, location.getBlock(), place);
     }
 
@@ -39,7 +40,7 @@ public class PermissionChecker {
      * @param place Place block (false = break block)
      * @return Success
      */
-    public boolean canBuild(Player player, Block block, boolean place) {
+    public boolean canBuild(@NotNull Player player, @NotNull Block block, boolean place) {
         if (!usePermissionChecker)
             return true;
         BlockEvent beMainHand;
