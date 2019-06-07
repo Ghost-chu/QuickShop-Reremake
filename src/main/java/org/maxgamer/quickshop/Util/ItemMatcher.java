@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 /**
@@ -27,17 +28,17 @@ public class ItemMatcher {
      * @param stack2 The second item stack
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
-    public boolean matches(ItemStack stack1, ItemStack stack2) {
-
-        if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
-            if (stack1.equals(stack2))
-                return false;
+    public boolean matches(@Nullable ItemStack stack1, @Nullable ItemStack stack2) {
 
         if (stack1 == stack2)
             return true; // Referring to the same thing, or both are null.
 
         if (stack1 == null || stack2 == null)
             return false; // One of them is null (Can't be both, see above)
+
+        if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
+            if (stack1.equals(stack2))
+                return false;
 
         if (stack1.hashCode() == stack2.hashCode())
             return true;

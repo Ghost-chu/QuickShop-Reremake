@@ -29,6 +29,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -118,12 +119,12 @@ public class Util {
      * @param material mat
      * @return min, max
      */
-    public static Entry<Double, Double> getPriceRestriction(Material material) {
+    public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
         return restrictedPrices.get(material);
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean isTransparent(Material m) {
+    public static boolean isTransparent(@NotNull Material m) {
         return m.isTransparent();
     }
 
@@ -132,7 +133,7 @@ public class Util {
      * @param material Mat
      * @return Can or not
      */
-    public static boolean isShoppables(Material material) {
+    public static boolean isShoppables(@NotNull Material material) {
         return shoppables.contains(material);
     }
 
@@ -141,7 +142,7 @@ public class Util {
      *
      * @param config yaml config
      */
-    public static void parseColours(YamlConfiguration config) {
+    public static void parseColours(@NotNull YamlConfiguration config) {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
             String filtered = config.getString(key);
@@ -159,7 +160,7 @@ public class Util {
      * @param text the text
      * @return parsed text
      */
-    public static String parseColours(String text) {
+    public static String parseColours(@NotNull String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
     }
@@ -170,7 +171,7 @@ public class Util {
      * @param b The block to check, Possibly a chest, dispenser, etc.
      * @return True if it can be made into a shop, otherwise false.
      */
-    public static boolean canBeShop(Block b) {
+    public static boolean canBeShop(@NotNull Block b) {
         BlockState bs = b.getState();
         if ((!(bs instanceof InventoryHolder)) && b.getType() != Material.ENDER_CHEST) {
             return false;
@@ -188,7 +189,7 @@ public class Util {
 
     }
 
-    public static boolean isBlacklistWorld(World world) {
+    public static boolean isBlacklistWorld(@NotNull World world) {
         return worldBlacklist.contains(world.getName());
     }
 
@@ -198,7 +199,7 @@ public class Util {
      * @param item The ItemStack of tools to check
      * @return The percentage 'health' the tool has. (Opposite of total damage)
      */
-    public static String getToolPercentage(ItemStack item) {
+    public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item instanceof Damageable))
             return "Error: NaN";
         double dura = ((Damageable) item.getItemMeta()).getDamage();
@@ -216,7 +217,7 @@ public class Util {
      * @deprecated
      */
     @Deprecated
-    public static Block getSecondHalf_old(Block b) {
+    public static Block getSecondHalf_old(@NotNull Block b) {
         if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
             return null;
         Block[] blocks = new Block[4];
@@ -239,7 +240,7 @@ public class Util {
      * @param b The chest to check.
      * @return the block which is also a chest and connected to b.
      */
-    public static Block getSecondHalf(Block b) {
+    public static Block getSecondHalf(@NotNull Block b) {
         if ((b.getType() != Material.CHEST) && (b.getType() != Material.TRAPPED_CHEST)) {
             return null;
         }
@@ -271,7 +272,7 @@ public class Util {
      * @param b2 block 2
      * @return Equals or not.
      */
-    private static boolean equalsBlockStateLocation(Location b1, Location b2) {
+    private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
         return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2
                 .getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
     }
@@ -283,7 +284,7 @@ public class Util {
      * @param loc2 location 2
      * @return Equals or not.
      */
-    public static boolean location3DEqual(Location loc1, Location loc2) {
+    public static boolean location3DEqual(@NotNull Location loc1, @NotNull Location loc2) {
         if (loc1.equals(loc2))
             return true;
         if (!loc1.getWorld().getName().equals(loc2.getWorld().getName()))
@@ -304,7 +305,7 @@ public class Util {
      * @param p The player performing the action.
      * @return true if a nearby shop was found, false otherwise.
      */
-    public static boolean isOtherShopWithinHopperReach(Block b, Player p) {
+    public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
         // Check 5 relative positions that can be affected by a hopper: behind, in front of, to the right,
         // to the left and underneath.
         Block[] blocks = new Block[5];
@@ -333,7 +334,7 @@ public class Util {
      * @param iStack target ItemStack
      * @return String serialized itemStack
      */
-    public static String serialize(ItemStack iStack) {
+    public static String serialize(@NotNull ItemStack iStack) {
         YamlConfiguration cfg = new YamlConfiguration();
         cfg.set("item", iStack);
         return cfg.saveToString();
@@ -346,7 +347,7 @@ public class Util {
      * @return ItemStack iStack
      * @throws InvalidConfigurationException when failed deserialize config
      */
-    public static ItemStack deserialize(String config) throws InvalidConfigurationException {
+    public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
         YamlConfiguration cfg = new YamlConfiguration();
         cfg.loadFromString(config);
         cfg.getString("item");
@@ -360,7 +361,7 @@ public class Util {
      * @param itemStack The itemstack to fetch the name of
      * @return The human readable item name.
      */
-    public static String getName(ItemStack itemStack) {
+    public static String getName(@NotNull ItemStack itemStack) {
 //		if (NMS.isPotion(itemStack.getType())) {
 //			return CustomPotionsName.getFullName(itemStack);
 //		}		
@@ -374,7 +375,7 @@ public class Util {
      * @param ugly The string such as IRON_INGOT
      * @return A nicer version, such as Iron Ingot
      */
-    public static String prettifyText(String ugly) {
+    public static String prettifyText(@NotNull String ugly) {
         String[] nameParts = ugly.split("_");
         if (nameParts.length == 1) {
             return firstUppercase(ugly);
@@ -395,7 +396,7 @@ public class Util {
      * @return String ItemOnSignName
      */
     // Let's make very long names shorter for our sign
-    public static String getNameForSign(ItemStack itemStack) {
+    public static String getNameForSign(@NotNull ItemStack itemStack) {
 //		if (NMS.isPotion(itemStack.getType())) {
 //			return CustomPotionsName.getSignName(itemStack);
 //		}
@@ -435,7 +436,7 @@ public class Util {
      * @param string text
      * @return Processed text.
      */
-    public static String firstUppercase(String string) {
+    public static String firstUppercase(@NotNull String string) {
         if (string.length() > 1) {
             return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
         } else {
@@ -450,7 +451,7 @@ public class Util {
      * @param value the num you want to convert to
      * @return the Romain num
      */
-    public static String toRomain(Integer value) {
+    public static String toRomain(@NotNull Integer value) {
         return toRoman(value.intValue());
     }
 
@@ -482,7 +483,7 @@ public class Util {
      * @return Returns true if the item is a tool (Has durability) or false if
      * it doesn't.
      */
-    public static boolean isTool(Material mat) {
+    public static boolean isTool(@NotNull Material mat) {
         return !(mat.getMaxDurability() == 0);
     }
 
@@ -534,7 +535,7 @@ public class Util {
      * @param m The material to check if it is blacklisted
      * @return true if the material is black listed. False if not.
      */
-    public static boolean isBlacklisted(Material m) {
+    public static boolean isBlacklisted(@NotNull Material m) {
         return blacklist.contains(m);
     }
 
@@ -544,7 +545,7 @@ public class Util {
      * @param b The block which is attached
      * @return The block the sign is attached to
      */
-    public static Block getAttached(Block b) {
+    public static Block getAttached(@NotNull Block b) {
         try {
             if (b.getBlockData() instanceof Directional) {
                 Directional directional = (Directional) b.getBlockData();
@@ -567,7 +568,7 @@ public class Util {
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
      */
-    public static int countItems(Inventory inv, ItemStack item) {
+    public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
         if (inv == null)
             return 0;
         int items = 0;
@@ -589,7 +590,7 @@ public class Util {
      *             match for 'stackability' to occur.
      * @return The number of items that can be given to the inventory safely.
      */
-    public static int countSpace(Inventory inv, ItemStack item) {
+    public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
         if (inv == null)
             return 0;
         int space = 0;
@@ -611,7 +612,7 @@ public class Util {
      * @param material mat
      * @return is or not a wall_sign
      */
-    public static boolean isWallSign(Material material) {
+    public static boolean isWallSign(@NotNull Material material) {
         try {
             if (Tag.WALL_SIGNS.isTagged(material))
                 return true;
@@ -630,7 +631,7 @@ public class Util {
      * @param loc The location
      * @return true if the given location is loaded or not.
      */
-    public static boolean isLoaded(Location loc) {
+    public static boolean isLoaded(@NotNull Location loc) {
         // plugin.getLogger().log(Level.WARNING, "Checking isLoaded(Location loc)");
         if (loc.getWorld() == null) {
             // plugin.getLogger().log(Level.WARNING, "Is not loaded. (No world)");
@@ -667,7 +668,7 @@ public class Util {
      * @param qualifiedName class qualifiedName
      * @return boolean Available
      */
-    public static boolean isClassAvailable(String qualifiedName) {
+    public static boolean isClassAvailable(@NotNull String qualifiedName) {
         try {
             Class.forName(qualifiedName);
             return true;
@@ -681,7 +682,7 @@ public class Util {
      *
      * @param message The message you want send
      */
-    public static void sendMessageToOps(String message) {
+    public static void sendMessageToOps(@NotNull String message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.isOp() || player.hasPermission("quickshop.alert")) {
                 player.sendMessage(message);
@@ -699,7 +700,7 @@ public class Util {
      * @param player Target player
      * @param normalText The text you will see
      */
-    public static void sendItemholochat(Shop shop, ItemStack itemStack, Player player, String normalText) {
+    public static void sendItemholochat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
         try {
             String json = ItemNMS.saveJsonfromNMS(itemStack);
             if (json == null)
@@ -728,7 +729,7 @@ public class Util {
      * @param normalText The text you will see
      */
     // Without NMS
-    private static void sendItemholochatAsNormaly(ItemStack itemStack, Player player, String normalText) {
+    private static void sendItemholochatAsNormaly(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
         try {
             String Itemname = null;
             List<String> Itemlore = new ArrayList<>();
@@ -807,7 +808,7 @@ public class Util {
      * @param level level
      * @return formated level
      */
-    private static String formatEnchLevel(Integer level) {
+    private static String formatEnchLevel(@NotNull Integer level) {
         switch (level) {
             case 1:
                 return "I";
@@ -829,7 +830,7 @@ public class Util {
      * @param iStack itemstack
      * @return potion data, readable
      */
-    public static String getPotiondata(ItemStack iStack) {
+    public static String getPotiondata(@NotNull ItemStack iStack) {
         if ((iStack.getType() != Material.POTION) && (iStack.getType() != Material.LINGERING_POTION) && (iStack
                 .getType() != Material.SPLASH_POTION)) {
             return null;
@@ -893,7 +894,7 @@ public class Util {
      * Call this to check items in inventory and remove it.
      * @param inv inv
      */
-    public static void inventoryCheck(Inventory inv) {
+    public static void inventoryCheck(@Nullable Inventory inv) {
         if (inv == null)
             return;
         try {
@@ -933,7 +934,7 @@ public class Util {
 
     }
 
-    private static Class<?> getNMSClass(String className) {
+    private static Class<?> getNMSClass(@Nullable String className) {
         if (className == null)
             className = "MinecraftServer";
         String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -945,7 +946,7 @@ public class Util {
         }
     }
 
-    public static boolean isAir(Material mat) {
+    public static boolean isAir(@NotNull Material mat) {
         if (mat == Material.AIR)
             return true;
         try {
@@ -964,7 +965,7 @@ public class Util {
      *
      * @param logs logs
      */
-    public static void debugLog(String... logs) {
+    public static void debugLog(@NotNull String... logs) {
         if (!devMode)
             return;
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -975,7 +976,7 @@ public class Util {
         }
     }
 
-    public static void permformanceLog(String className, String methodName, long tookedTime) {
+    public static void permformanceLog(@NotNull String className, @NotNull String methodName, long tookedTime) {
         if (!devMode)
             return;
         plugin.getLogger().info("[PERFORMANCE] [" + className + "] [" + methodName + "] Used time " + tookedTime + "ns.");
@@ -999,7 +1000,7 @@ public class Util {
      * @param uuid timer's uuid
      * @return long time
      */
-    public static long getTimer(UUID uuid) {
+    public static long getTimer(@NotNull UUID uuid) {
         return System.currentTimeMillis() - timerMap.get(uuid);
     }
 
@@ -1009,7 +1010,7 @@ public class Util {
      * @param uuid time's uuid
      * @return long time
      */
-    public static long endTimer(UUID uuid) {
+    public static long endTimer(@NotNull UUID uuid) {
         long time = System.currentTimeMillis() - timerMap.get(uuid);
         timerMap.remove(uuid);
         return time;
@@ -1021,7 +1022,7 @@ public class Util {
      * @param worldName Target world.
      * @return The shops.
      */
-    public static int getShopsInWorld(String worldName) {
+    public static int getShopsInWorld(@NotNull String worldName) {
         int cost = 0;
         Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
         while (iterator.hasNext()) {
@@ -1039,7 +1040,7 @@ public class Util {
      * @param fileName Target file.
      * @return Target file's content.
      */
-    public static String readToString(String fileName) {
+    public static String readToString(@NotNull String fileName) {
         String encoding = "UTF-8";
         File file = new File(fileName);
         Long filelength = file.length();
@@ -1090,7 +1091,7 @@ public class Util {
      * @param filePath Target file
      * @return Byte array
      */
-    public static byte[] inputStream2ByteArray(String filePath) {
+    public static byte[] inputStream2ByteArray(@NotNull String filePath) {
         try {
             InputStream in = new FileInputStream(filePath);
             byte[] data = toByteArray(in);
@@ -1108,7 +1109,7 @@ public class Util {
      * @param inputStream Target stream
      * @return Byte array
      */
-    public static byte[] inputStream2ByteArray(InputStream inputStream) {
+    public static byte[] inputStream2ByteArray(@NotNull InputStream inputStream) {
         try {
             byte[] data = toByteArray(inputStream);
             inputStream.close();
@@ -1119,8 +1120,7 @@ public class Util {
 
     }
 
-
-    private static byte[] toByteArray(InputStream in) throws IOException {
+    private static byte[] toByteArray(@NotNull InputStream in) throws IOException {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024 * 4];
@@ -1158,7 +1158,7 @@ public class Util {
         return true;
     }
 
-    public static boolean isUUID(String string) {
+    public static boolean isUUID(@NotNull String string) {
         if (string.length() != 36 && string.length() != 32)
             return false;
         Util.debugLog("Run extra uuid checking for " + string + ". Length: " + string.length());
@@ -1170,7 +1170,7 @@ public class Util {
         }
     }
 
-    public static void shoppablesCheck(Shop shop) {
+    public static void shoppablesCheck(@NotNull Shop shop) {
         if (!Util.canBeShop(shop.getLocation().getBlock())) {
             Util.debugLog("This shopblock can't be shop, deleteing...");
             shop.onUnload();

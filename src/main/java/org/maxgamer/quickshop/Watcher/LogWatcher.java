@@ -7,6 +7,7 @@ import java.util.Queue;
 import com.google.common.collect.Lists;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public class LogWatcher implements Runnable {
@@ -44,7 +45,7 @@ public class LogWatcher implements Runnable {
         }.runTask(QuickShop.instance);
     }
 
-    public void add(String s) {
+    public void add(@NotNull String s) {
         new BukkitRunnable() {
             public void run() {
                 logs.add(s);

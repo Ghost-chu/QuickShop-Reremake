@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Util.Util;
 
 
@@ -22,7 +23,7 @@ public class BufferStatement {
      * @param values The values to replace ? with in
      *               query. These are in order.
      */
-    public BufferStatement(String query, Object... values) {
+    public BufferStatement(@NotNull String query, @NotNull Object... values) {
         this.query = query;
         Util.debugLog(query);
         this.values = values;
@@ -44,7 +45,7 @@ public class BufferStatement {
      *
      * @throws SQLException Throw exception when failed execute somethins on SQL
      */
-    public PreparedStatement prepareStatement(Connection con) throws SQLException {
+    public PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {
         PreparedStatement ps;
         Util.debugLog(query);
         ps = con.prepareStatement(query);

@@ -32,7 +32,7 @@ public class ShopLoader {
      *
      * @param plugin Plugin main class
      */
-    public ShopLoader(QuickShop plugin) {
+    public ShopLoader(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 
@@ -260,7 +260,7 @@ public class ShopLoader {
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
 
-    private boolean shopNullCheck(Shop shop) {
+    private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
             Util.debugLog("Shop Object is null");
             return true;
@@ -288,7 +288,7 @@ public class ShopLoader {
         return false;
     }
 
-    private void exceptionHandler(Exception ex, Location shopLocation) {
+    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
         Logger logger = plugin.getLogger();
         logger.warning("##########FAILED TO LOAD SHOP##########");
@@ -391,7 +391,7 @@ public class ShopLoader {
             }
         }
 
-        private ItemStack deserializeItem(String itemConfig) {
+        private ItemStack deserializeItem(@NotNull String itemConfig) {
             try {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
@@ -402,7 +402,7 @@ public class ShopLoader {
             }
         }
 
-        private ShopModerator deserializeModerator(String moderatorJson) {
+        private ShopModerator deserializeModerator(@NotNull String moderatorJson) {
             // try {
             //     UUID.fromString(moderators);
             //     if (!isBackuped) {

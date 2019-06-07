@@ -167,6 +167,13 @@
             <artifactId>sentry</artifactId>
             <version>1.7.16</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
+        </dependency>
+
         <!--<dependency>-->
         <!--<groupId>com.amihaiemil.web</groupId>-->
         <!--<artifactId>eo-yaml</artifactId>-->

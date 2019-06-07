@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
@@ -110,7 +111,7 @@ public class UpdateWatcher implements Listener {
         }.runTaskLater(QuickShop.instance, 80);
     }
 
-    public static String fixVer(String originalVer) {
+    public static String fixVer(@NotNull String originalVer) {
         originalVer = originalVer.replaceAll("Reremake", "");
         originalVer = originalVer.trim();
         return originalVer;

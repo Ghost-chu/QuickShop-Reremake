@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.*;
 
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
@@ -12,7 +13,7 @@ public class ShopModerator {
     private UUID owner;
     private ArrayList<UUID> staffs;
 
-    private ShopModerator(ShopModerator shopModerator) {
+    private ShopModerator(@NotNull ShopModerator shopModerator) {
         this.owner = shopModerator.owner;
         this.staffs = shopModerator.staffs;
     }
@@ -22,7 +23,7 @@ public class ShopModerator {
      *
      * @param owner The owner
      */
-    public ShopModerator(UUID owner) {
+    public ShopModerator(@NotNull UUID owner) {
         this.owner = owner;
         this.staffs = new ArrayList<UUID>();
     }
@@ -32,7 +33,7 @@ public class ShopModerator {
      * @param owner The owner
      * @param staffs The staffs
      */
-    public ShopModerator(UUID owner, ArrayList<UUID> staffs) {
+    public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
         this.owner = owner;
         this.staffs = new ArrayList<UUID>();
     }
@@ -53,7 +54,7 @@ public class ShopModerator {
      * Set moderators owner (Shop Owner)
      * @param player Owner's UUID
      */
-    public void setOwner(UUID player) {
+    public void setOwner(@NotNull UUID player) {
         this.owner = player;
     }
 
@@ -61,7 +62,7 @@ public class ShopModerator {
      * Set moderators staffs
      * @param players staffs list
      */
-    public void setStaffs(ArrayList<UUID> players) {
+    public void setStaffs(@NotNull ArrayList<UUID> players) {
         this.staffs = players;
     }
 
@@ -70,7 +71,7 @@ public class ShopModerator {
      * @param player New staff
      * @return Success
      */
-    public boolean addStaff(UUID player) {
+    public boolean addStaff(@NotNull UUID player) {
         if (staffs.contains(player))
             return false;
         staffs.add(player);
@@ -82,7 +83,7 @@ public class ShopModerator {
      * @param player Staff
      * @return Success
      */
-    public boolean delStaff(UUID player) {
+    public boolean delStaff(@NotNull UUID player) {
         if (!staffs.contains(player))
             return false;
         staffs.remove(player);
@@ -109,7 +110,7 @@ public class ShopModerator {
      * @param player Player
      * @return yes or no
      */
-    public boolean isOwner(UUID player) {
+    public boolean isOwner(@NotNull UUID player) {
         return player.equals(owner);
     }
 
@@ -118,7 +119,7 @@ public class ShopModerator {
      * @param player Player
      * @return yes or no
      */
-    public boolean isStaff(UUID player) {
+    public boolean isStaff(@NotNull UUID player) {
         return staffs.contains(player);
     }
 
@@ -127,7 +128,7 @@ public class ShopModerator {
      * @param player Player
      * @return yes or no, return true when it is staff or owner
      */
-    public boolean isModerator(UUID player) {
+    public boolean isModerator(@NotNull UUID player) {
         if (isOwner(player))
             return true;
         if (isStaff(player))
@@ -135,12 +136,12 @@ public class ShopModerator {
         return false;
     }
 
-    public static String serialize(ShopModerator shopModerator) {
+    public static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = new Gson();
         return gson.toJson(shopModerator); //Use Gson serialize this class
     }
 
-    public static ShopModerator deserialize(String serilized) {
+    public static ShopModerator deserialize(@NotNull String serilized) {
         //Use Gson deserialize data
         Gson gson = new Gson();
         return gson.fromJson(serilized, ShopModerator.class);

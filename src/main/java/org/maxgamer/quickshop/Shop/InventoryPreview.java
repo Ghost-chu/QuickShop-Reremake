@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
 /**
@@ -27,7 +28,7 @@ public class InventoryPreview implements Listener {
      * @param itemStack The item you want create.
      * @param player    Target player.
      */
-    public InventoryPreview(ItemStack itemStack, Player player) {
+    public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
         this.itemStack = itemStack.clone();
         this.player = player;
         if (this.itemStack.getItemMeta().hasLore()) {
@@ -74,7 +75,7 @@ public class InventoryPreview implements Listener {
         inventory = null; // Destory
     }
 
-    public static boolean isPreviewItem(ItemStack stack) {
+    public static boolean isPreviewItem(@Nullable ItemStack stack) {
         if (stack == null)
             return false;
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore())
