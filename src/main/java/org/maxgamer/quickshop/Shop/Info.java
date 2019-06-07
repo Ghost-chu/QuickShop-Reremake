@@ -15,23 +15,22 @@ public class Info {
     private Block last;
     private Shop shop;
 
-    public Info(@NotNull Location loc, @NotNull ShopAction action, @NotNull ItemStack item, @NotNull Block last) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @NotNull Block last) {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        // if (item != null)
-        this.item = item.clone();
+        if (item != null)
+            this.item = item.clone();
     }
 
-    public Info(@NotNull Location loc, @NotNull ShopAction action, @NotNull ItemStack item, @NotNull Block last, @NotNull Shop shop) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @NotNull Block last, @Nullable Shop shop) {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        // if (item != null)
+        if (item != null)
             this.item = item.clone();
-        // if (shop != null) {
+        if (shop != null)
             this.shop = shop.clone();
-        // }
     }
 
     /**
