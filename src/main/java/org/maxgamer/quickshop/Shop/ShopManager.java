@@ -92,27 +92,6 @@ public class ShopManager {
             }
             bs.update(true);
             shop.setSignText();
-
-            /*
-             * Block b = shop.getLocation().getBlock(); ItemFrame iFrame = (ItemFrame)
-             * b.getWorld().spawnEntity(b.getLocation(), EntityType.ITEM_FRAME);
-             *
-             * BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.EAST,
-             * BlockFace.SOUTH, BlockFace.WEST}; for(BlockFace face : faces){ if(face == bf)
-             * continue; //This is the sign's location iFrame.setFacingDirection(bf, true);
-             * //iFrame.setItem(shop.getItem()); ItemStack iStack = shop.getItem().clone();
-             * iStack.setAmount(0); iFrame.setItem(iStack); /* Field handleField =
-             * iFrame.getClass().getField("entity"); handleField.setAccessible(true); Object
-             * handle = handleField.get(iFrame);
-             *
-             * ItemStack bukkitStack = shop.getItem();
-             *
-             * Field itemStackHandle =
-             *
-             * Method setItemStack = handle.getClass().getMethod("a", Object.class);
-             * setItemStack.
-             */
-            // }
         }
     }
 
