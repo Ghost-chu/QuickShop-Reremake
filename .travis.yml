@@ -41,6 +41,8 @@ deploy:
     - ./push/*
     file_glob: true
     prerelease: true
+    on:
+        tags: false
 #after_deploy:
 #- chmod +x after_deploy.sh
 #- ./after_deploy.sh $Curse_token
