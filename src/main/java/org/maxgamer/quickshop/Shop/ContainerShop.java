@@ -518,7 +518,7 @@ public class ContainerShop implements Shop {
      * Updates signs attached to the shop
      */
     public void setSignText() {
-        if (Util.isLoaded(this.getLocation()) == false)
+        if (!Util.isLoaded(this.getLocation()))
             return;
         String[] lines = new String[4];
         lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
