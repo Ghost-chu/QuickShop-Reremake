@@ -446,7 +446,6 @@ public class MsgUtil {
         try {
             itemi18n.save(itemi18nFile);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
         }
