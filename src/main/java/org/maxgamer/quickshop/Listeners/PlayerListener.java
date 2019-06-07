@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import lombok.*;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -88,6 +85,9 @@ public class PlayerListener implements Listener {
                 if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking())
                     return;
                 shop.onClick();
+                if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
+                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+                }
                 // Text menu
                 MsgUtil.sendShopInfo(p, shop);
                 shop.setSignText();

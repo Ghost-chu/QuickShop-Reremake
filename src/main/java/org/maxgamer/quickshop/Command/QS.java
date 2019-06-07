@@ -775,6 +775,11 @@ public class QS implements CommandExecutor {
             return true;
         }
 
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            ((Player) sender).playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
+        }
+
         if (args.length > 0) {
             String subArg = args[0].toLowerCase();
             if (subArg.equals("unlimited")) {

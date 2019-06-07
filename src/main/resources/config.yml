@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 32
+config-version: 33
 
 #Select language you want use, (e.g de), use other exist language to override it.
 #After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
@@ -220,4 +220,8 @@ plugin:
     Multiverse-Core: true
     #If you have OpenInv, QSRR will enable EnderChest feature.
     OpenInv: true
-    #
+effect:
+    sound:
+        ontabcomplete: true
+        oncommand: true
+        onclick: true
