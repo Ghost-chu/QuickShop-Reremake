@@ -667,7 +667,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 27) {
             getConfig().set("queue.enable", true);
-            getConfig().set("queue.shops-per-tick", 2);
+            getConfig().set("queue.shops-per-tick", 5);
             getConfig().set("config-version", 28);
             selectedVersion = 28;
             saveConfig();
