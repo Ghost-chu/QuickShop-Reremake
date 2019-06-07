@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -24,6 +26,12 @@ public class Tab implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @NotNull String[] args) {
+        if (plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
+            }
+        }
         for (int i = 0; i < args.length; i++) {
             args[i] = args[i].toLowerCase();
             //Make all is low case

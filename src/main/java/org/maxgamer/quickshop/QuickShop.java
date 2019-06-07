@@ -724,6 +724,15 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
+        if (selectedVersion == 32) {
+            getConfig().set("effect.sound.ontabcomplete", true);
+            getConfig().set("effect.sound.oncommand", true);
+            getConfig().set("effect.sound.ononclick", true); ;
+            getConfig().set("config-version", 33);
+            selectedVersion = 33;
+            saveConfig();
+            reloadConfig();
+        }
 
     }
 
