@@ -15,6 +15,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class ArmorStandDisplayItem implements DisplayItem {
+
     private QuickShop plugin = QuickShop.instance;
     private ItemStack originalItemStack;
     private ItemStack guardedIstack;
@@ -65,7 +66,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         //this.armorStand.setSmall(true);
 
         //Set armorstand item in hand
-        this.armorStand.setItemInHand(originalItemStack);
+        this.armorStand.setItemInHand(originalItemStack.clone());
         //Set safeGuard
         safeGuard(this.armorStand);
         //Set pose
@@ -82,18 +83,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
-        armorStand.setItemInHand(guardedIstack);
+        armorStand.setItemInHand(guardedIstack.clone());
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
+
     private void setPoseForArmorStand() {
-        BlockFace containerBlockFace = BlockFace.NORTH; //Set default vaule
-
-        if (this.shop.getLocation().getBlock().getBlockData() instanceof Directional)
-            containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getBlockData())
-                    .getFacing(); //Replace by container face.
-
-        //EulerAngle = pitch, yaw, roll.
-        this.armorStand.setRightArmPose(new EulerAngle(0, 0, 0));
+        this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
     }
 
     @Override
@@ -117,29 +112,76 @@ public class ArmorStandDisplayItem implements DisplayItem {
     public Entity getDisplay() {
         return this.armorStand;
     }
+
     @Override
     public Location getDisplayLocation() {
-        return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
+        BlockFace containerBlockFace = BlockFace.NORTH; //Set default vaule
+        if (this.shop.getLocation().getBlock().getBlockData() instanceof Directional) {
+            containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getBlockData())
+                    .getFacing(); //Replace by container face.
+        }
+        Location asloc = this.shop.getLocation().clone();
+        switch (containerBlockFace) {
+            case SOUTH:
+                if (Util.isTool(this.originalItemStack.getType())) {
+                    asloc.setYaw(90);
+                    asloc.add(0.9, -0.4, 1);
+                } else {
+                    asloc.setYaw(0);
+                    asloc.add(0.9, -0.4, 0);
+                }
+                break;
+            case WEST:
+                if (Util.isTool(this.originalItemStack.getType())) {
+                    asloc.add(0.9, -0.4, 0);
+                } else {
+                    asloc.setYaw(-90);
+                    asloc.add(-0.1, -0.4, 0.15);
+                }
+                break;
+            case EAST:
+                if (Util.isTool(this.originalItemStack.getType())) {
+                    asloc.add(0.9, -0.4, 0);
+                } else {
+                    asloc.setYaw(-90);
+                    asloc.add(0, -0.4, 0.1);
+                }
+                break;
+            case NORTH:
+                if (Util.isTool(this.originalItemStack.getType())) {
+                    asloc.setYaw(90);
+                    asloc.add(1, -0.4, 1);
+                } else {
+                    asloc.add(0.9, -0.4, 0);
+                }
+                break;
+            default:
+                break;
+        }
+        return asloc;
     }
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return !this.armorStand.getLocation().equals(getDisplayLocation());
     }
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return !this.armorStand.isValid() || this.armorStand.isDead();
     }
 
     @Override
     public boolean checkIsShopEntity(@NotNull Entity entity) {
-        if (!(entity instanceof ArmorStand))
+        if (!(entity instanceof ArmorStand)) {
             return false;
+        }
         return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
     }
 
@@ -152,8 +194,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
         boolean removed = false;
         Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : chunk.getEntities()) {
-            if (!(entity instanceof ArmorStand))
+            if (!(entity instanceof ArmorStand)) {
                 continue;
+            }
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getItemInHand().equals(this.guardedIstack)) {
                 if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
@@ -170,8 +213,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void fixDisplayMoved() {
         for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
-            if (!(entity instanceof ArmorStand))
+            if (!(entity instanceof ArmorStand)) {
                 continue;
+            }
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                 Util.debugLog("Fixing moved ArmorStand displayItem " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
@@ -189,8 +233,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean isSpawned() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return this.armorStand.isValid();
     }
 }
