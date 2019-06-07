@@ -68,7 +68,14 @@ public class QueuedShopManager {
                 break; //Jump out, go next tick
             this.doTask(queueShopObject);
             loadedShopInTick++;
-
+            if (shuttingDown) {
+                if (shopQueue.size() > 20) {
+                    Util.debugLog("Have " + shopQueue.size() + " tasks remaining");
+                    if (String.valueOf(shopQueue.size()).endsWith("0"))
+                        plugin.getLogger().info("Have " + shopQueue
+                                .size() + " tasks remaining in the queue to waiting finish, this may need take while...");
+                }
+            }
         }
     }
 
