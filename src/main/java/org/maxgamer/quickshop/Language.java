@@ -14,26 +14,8 @@ public class Language {
 
     Language(QuickShop plugin) {
         this.plugin = plugin;
-        // languages.clear();
-        // languages.add("en");
-        // languages.add("fr");
-        // languages.add("de");
-        // languages.add("ko");
-        // languages.add("pl");
-        // languages.add("ru");
-        // languages.add("sv");
-        // languages.add("zh_TW");
-    }
 
-    // public String getComputerLanguage() {
-    // 	if(plugin.getConfig().getString("language")==null || plugin.getConfig().getString("language").equals("default")) {//Allow user replace this
-    // 		return Locale.getDefault().getLanguage().toString();
-    // 	}
-    // 	return plugin.getConfig().getString("language");
-    // }
-    //public List<String> getSupportsLanguageList() {
-    //    return languages;
-    //}
+    }
 
     /**
      * Get target language's type file.
@@ -90,39 +72,5 @@ public class Language {
         } catch (Exception err) {
             err.printStackTrace();
         }
-
-        // InputStream is = getFile(language, type);
-        // if (is == null)
-        //     return;
-        // String messagei18nYaml2 = new String(Util.inputStream2ByteArray(is));
-        // try {
-        //     is.close();
-        // } catch (IOException e) {
-        //     //Ignore
-        // }
-        // // YamlIsSucked yamlIsSucked = new YamlIsSucked();
-        // // String messagei18nJson = yamlIsSucked.readYaml2ToJson(messagei18nYaml2);
-        // // String messagei18nYaml1 = yamlIsSucked.writeJson2Yaml1(messagei18nJson);
-        // InputStream inputStream = new ByteArrayInputStream(messagei18nYaml1.getBytes());
-        // YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        // //File name should call    type-language.yml    ---> config-zh.yml
-        // String finalYaml1FileContect = messagei18nYAML.saveToString();
-        //
-        // InputStream finalYaml1FileInputStream = new ByteArrayInputStream(finalYaml1FileContect.getBytes());
-        // try {
-        //     FileOutputStream fos = new FileOutputStream(targetFile);
-        //
-        //     byte[] b = new byte[1024];
-        //     int length;
-        //     while ((length = finalYaml1FileInputStream.read(b)) != -1) {
-        //         fos.write(b, 0, length);
-        //     }
-        //     fos.close();
-        //
-        // } catch (IOException e) {
-        //     //Ignore
-        // }
-
-
     }
 }
