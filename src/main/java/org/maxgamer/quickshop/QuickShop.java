@@ -779,19 +779,23 @@ public class QuickShop extends JavaPlugin {
             return;
         getLogger().info("QuickShop is finishing remaining works, this may need a while...");
         Iterator shopIterator = shopManager.getShopIterator();
+        Util.debugLog("Cleaning up shop queues...");
+        this.getQueuedShopManager().uninit();
+        Util.debugLog("Unloading shops...");
         while (shopIterator.hasNext()) {
             Shop shop = (Shop) shopIterator.next();
             if (shop.isLoaded())
                 shop.onUnload();
         }
+        Util.debugLog("Close all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
 
-        /* Stop queue processor */
+        Util.debugLog("Cleaning up database queues...");
         this.getDatabaseManager().uninit();
-        this.getQueuedShopManager().uninit();
 
+        Util.debugLog("Unregisteringg tasks...");
         if (itemWatcherTask != null) {
             itemWatcherTask.cancel();
         }
@@ -801,6 +805,7 @@ public class QuickShop extends JavaPlugin {
         }
         /* Unload UpdateWatcher */
         UpdateWatcher.uninit();
+        Util.debugLog("Cleaning up resources...");
         /* Remove all display items, and any dupes we can find */
         shopManager.clear();
         /* Empty the buffer */
@@ -814,6 +819,7 @@ public class QuickShop extends JavaPlugin {
 
         this.warnings.clear();
         //this.reloadConfig();
+        Util.debugLog("All shutting down works are finished.");
     }
 
     /**
