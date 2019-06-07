@@ -40,10 +40,7 @@ public class SQLiteCore implements DatabaseCore {
                 Class.forName("org.sqlite.JDBC");
                 this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.dbFile);
                 return this.connection;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            } catch (SQLException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
                 return null;
             }
@@ -74,7 +71,7 @@ public class SQLiteCore implements DatabaseCore {
 
     @Override
     public void flush() {
-        while (queue.isEmpty() == false) {
+        while (!queue.isEmpty()) {
             BufferStatement bs;
             synchronized (queue) {
                 bs = queue.removeFirst();
