@@ -170,6 +170,9 @@ public class PlayerListener implements Listener {
                     .getLocation()).getOwner().equals(e.getPlayer().getUniqueId())) {
                 if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking())
                     return;
+                if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
+                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+                }
                 MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
                         plugin.getShopManager().getShop(block.getLocation()));
                 plugin.getShopManager().getShop(block.getLocation()).setSignText();
