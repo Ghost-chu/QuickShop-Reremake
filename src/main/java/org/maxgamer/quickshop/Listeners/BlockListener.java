@@ -31,7 +31,7 @@ public class BlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
         BlockState bs = e.getBlock().getState();
-        if (bs instanceof DoubleChest == false)
+        if (!(bs instanceof DoubleChest))
             return;
         Block b = e.getBlock();
         Player p = e.getPlayer();
