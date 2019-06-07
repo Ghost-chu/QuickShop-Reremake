@@ -201,8 +201,8 @@ public class QuickShop extends JavaPlugin {
         getCommand("qs").setTabCompleter(commandTabCompleter);
 
         getLogger().info("Quickshop Reremake");
-        getLogger().info("Author:Ghost_chu");
-        getLogger().info("Original author:Netherfoam, Timtower, KaiNoMood,TiaraRinne");
+        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's us start load plugin");
         try {
             runtimeCheck();
