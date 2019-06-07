@@ -8,8 +8,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.QuickShop;
-//import org.maxgamer.quickshop.Util.NMS;
-
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
  * cannot be interacted with.
@@ -51,15 +49,6 @@ public interface DisplayItem {
      */
     public abstract void remove();
 
-    // /**
-    //  * Removes the display item.
-    //  */
-    // public void remove() {
-    //     if (this.item == null)
-    //         return;
-    //     this.item.remove();
-    //     this.item = null;
-    // }
 
     /**
      * Get display should at location.
@@ -67,15 +56,6 @@ public interface DisplayItem {
      * @return Should at
      */
     public abstract Location getDisplayLocation();
-
-    // /**
-    //  * @return Returns the exact location of the display item. (1 above shop
-    //  * block, in the center)
-    //  */
-    // public Location getDisplayLocation() {
-    //     return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
-    // }
-    //
 
     /**
      * Get the display entity

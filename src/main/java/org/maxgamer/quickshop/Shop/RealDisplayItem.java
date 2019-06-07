@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -97,7 +96,7 @@ public class RealDisplayItem implements DisplayItem {
             return false;
         }
         boolean removed = false;
-        Chunk chunk = shop.getLocation().getChunk();
+        //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof Item))
                 continue;
