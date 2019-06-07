@@ -790,12 +790,7 @@ public class QuickShop extends JavaPlugin {
         Iterator shopIterator = shopManager.getShopIterator();
         Util.debugLog("Cleaning up shop queues...");
         this.getQueuedShopManager().uninit();
-        Util.debugLog("Unloading shops...");
-        while (shopIterator.hasNext()) {
-            Shop shop = (Shop) shopIterator.next();
-            if (shop.isLoaded())
-                shop.onUnload();
-        }
+
         Util.debugLog("Close all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
@@ -814,7 +809,7 @@ public class QuickShop extends JavaPlugin {
         }
         /* Unload UpdateWatcher */
         UpdateWatcher.uninit();
-        Util.debugLog("Cleaning up resources...");
+        Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         shopManager.clear();
         /* Empty the buffer */
