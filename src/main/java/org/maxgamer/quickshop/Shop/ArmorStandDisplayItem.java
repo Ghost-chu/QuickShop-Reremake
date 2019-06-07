@@ -75,9 +75,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public void safeGuard(@NotNull Entity entity) {
-        if (entity == null) {
-            Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
-        }
         if (!(entity instanceof ArmorStand)) {
             Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a ArmorStand");
             return;
