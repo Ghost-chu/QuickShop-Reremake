@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Database;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,6 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+import org.maxgamer.quickshop.Util.WarningSender;
 
 /**
  * Queued database manager.
@@ -21,6 +23,7 @@ public class DatabaseManager {
     private boolean useQueue;
     private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
     private BukkitTask task;
+    private WarningSender warningSender;
 
     /**
      * Queued database manager.
@@ -31,6 +34,7 @@ public class DatabaseManager {
      */
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
         this.plugin = plugin;
+        this.warningSender = new WarningSender(plugin, 600000);
         this.database = db;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
         if (!useQueue)
@@ -58,6 +62,7 @@ public class DatabaseManager {
      */
     private void runTask() {
         while (true) {
+            UUID timer = Util.setTimer();
             PreparedStatement statement = sqlQueue.poll();
             if (statement == null)
                 break;
@@ -68,14 +73,16 @@ public class DatabaseManager {
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
             }
-
             //Close statement anyway.
             try {
                 statement.close();
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
             }
-
+            long tookTime = Util.endTimer(timer);
+            if (tookTime > 300)
+                warningSender
+                        .sendWarn("Database performance warn: Used too long time (" + tookTime + ") to execute the task, change to a better one MySQL server or switch to local SQLite database!");
         }
     }
 
