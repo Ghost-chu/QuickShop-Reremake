@@ -1179,7 +1179,7 @@ public class Util {
      * Convert strList to String.
      * E.g "Foo, Bar"
      *
-     * @param strArray Target list
+     * @param strList Target list
      * @return str
      */
     public static String list2String(List<String> strList) {
