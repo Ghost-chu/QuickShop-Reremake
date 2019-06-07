@@ -193,12 +193,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         boolean removed = false;
         Chunk chunk = shop.getLocation().getChunk();
-        for (Entity entity : chunk.getEntities()) {
+        for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof ArmorStand)) {
                 continue;
             }
             ArmorStand eArmorStand = (ArmorStand) entity;
-            if (eArmorStand.getItemInHand().equals(this.guardedIstack)) {
+            if (plugin.getItemMatcher().matches(eArmorStand.getItemInHand(),this.guardedIstack)) {
                 if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                     Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
                             .getLocation().toString());
