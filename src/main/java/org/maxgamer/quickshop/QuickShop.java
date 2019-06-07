@@ -824,13 +824,6 @@ public class QuickShop extends JavaPlugin {
         this.logWatcher.add("[" + time.toString() + "] " + s);
     }
 
-    // /**
-    //  * @return Returns the database handler for queries etc.
-    //  */
-    // public Database getDB() {
-    //     return this.database;
-    // }
-
     /**
      * Returns the ShopManager. This is used for fetching, adding and removing
      * shops.
