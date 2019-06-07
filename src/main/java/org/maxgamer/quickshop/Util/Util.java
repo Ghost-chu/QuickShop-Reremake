@@ -1158,6 +1158,40 @@ public class Util {
         return true;
     }
 
+    /**
+     * Convert strArray to String.
+     * E.g "Foo, Bar"
+     *
+     * @param strArray Target array
+     * @return str
+     */
+    public static String array2String(String[] strArray) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < strArray.length; i++) {
+            builder.append(strArray[i]);
+            if (i + 1 != strArray.length)
+                builder.append(",");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Convert strList to String.
+     * E.g "Foo, Bar"
+     *
+     * @param strArray Target list
+     * @return str
+     */
+    public static String list2String(List<String> strList) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < strList.size(); i++) {
+            builder.append(strList.get(i));
+            if (i + 1 != strList.size())
+                builder.append(",");
+        }
+        return builder.toString();
+    }
+
     public static boolean isUUID(@NotNull String string) {
         if (string.length() != 36 && string.length() != 32)
             return false;
