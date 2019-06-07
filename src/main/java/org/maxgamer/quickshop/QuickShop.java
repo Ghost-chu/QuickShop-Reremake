@@ -337,8 +337,9 @@ public class QuickShop extends JavaPlugin {
             String bukkitVer = Bukkit.getBukkitVersion();
             String serverName = Bukkit.getServer().getName();
             String vaultVer;
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                vaultVer = Bukkit.getPluginManager().getPlugin("Vault").getDescription().getVersion();
+            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
+            if (vault != null) {
+                vaultVer = vault.getDescription().getVersion();
             } else {
                 vaultVer = "Vault not found";
             }
