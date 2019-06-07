@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -28,7 +29,7 @@ public class DatabaseManager {
      * @param plugin plugin main class
      * @param db database
      */
-    public DatabaseManager(QuickShop plugin, Database db) {
+    public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
         this.plugin = plugin;
         this.database = db;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
@@ -82,7 +83,7 @@ public class DatabaseManager {
      * Add preparedStatement to queue waiting flush to database,
      * @param ps The ps you want add in queue.
      */
-    public void add(PreparedStatement ps) {
+    public void add(@NotNull PreparedStatement ps) {
         if (useQueue) {
             sqlQueue.offer(ps);
         } else {

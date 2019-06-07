@@ -21,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -50,7 +51,7 @@ public class ContainerShop implements Shop {
         return new ContainerShop(this);
     }
 
-    private ContainerShop(ContainerShop s) {
+    private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
         this.shopType = s.shopType;
         this.item = s.item;
@@ -72,7 +73,7 @@ public class ContainerShop implements Shop {
      * @param type The shop type
      * @param unlimited The unlimited
      */
-    public ContainerShop(Location loc, double price, ItemStack item, ShopModerator moderator, boolean unlimited, ShopType type) {
+    public ContainerShop(@NotNull Location loc, double price, @NotNull ItemStack item, @NotNull ShopModerator moderator, boolean unlimited, @NotNull ShopType type) {
         this.loc = loc;
         this.price = price;
         this.moderator = moderator;
@@ -129,7 +130,7 @@ public class ContainerShop implements Shop {
      * @param item The ItemStack
      * @return True if the ItemStack is the same (Excludes amounts)
      */
-    public boolean matches(ItemStack item) {
+    public boolean matches(@Nullable ItemStack item) {
         return plugin.getItemMatcher().matches(this.item, item);
     }
 
@@ -275,14 +276,14 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public boolean addStaff(UUID player) {
+    public boolean addStaff(@NotNull UUID player) {
         boolean result = this.moderator.addStaff(player);
         update();
         return result;
     }
 
     @Override
-    public boolean delStaff(UUID player) {
+    public boolean delStaff(@NotNull UUID player) {
         boolean result = this.moderator.delStaff(player);
         update();
         return result;
@@ -315,7 +316,7 @@ public class ContainerShop implements Shop {
      *               else
      * @param amount The amount to remove from the shop.
      */
-    public void remove(ItemStack item, int amount) {
+    public void remove(@NotNull ItemStack item, @NotNull int amount) {
         if (this.unlimited)
             return;
         Inventory inv = this.getInventory();
@@ -336,7 +337,7 @@ public class ContainerShop implements Shop {
      *               else
      * @param amount The amount to add to the shop.
      */
-    public void add(ItemStack item, int amount) {
+    public void add(@NotNull ItemStack item, @NotNull int amount) {
         if (this.unlimited)
             return;
         Inventory inv = this.getInventory();
@@ -357,7 +358,7 @@ public class ContainerShop implements Shop {
      * @param p      The player to sell to
      * @param amount The amount to sell
      */
-    public void sell(Player p, int amount) {
+    public void sell(@NotNull Player p, @NotNull int amount) {
         if (amount < 0)
             this.buy(p, -amount);
         // Items to drop on floor
@@ -409,7 +410,7 @@ public class ContainerShop implements Shop {
      * @param p      The player to buy from
      * @param amount The amount to buy
      */
-    public void buy(Player p, int amount) {
+    public void buy(@NotNull Player p, @NotNull int amount) {
         if (amount < 0)
             this.sell(p, -amount);
         if (this.isUnlimited()) {
@@ -465,7 +466,7 @@ public class ContainerShop implements Shop {
      *
      * @param owner the new owner
      */
-    public void setOwner(UUID owner) {
+    public void setOwner(@NotNull UUID owner) {
         this.moderator.setOwner(owner);
         this.setSignText();
         update();
@@ -507,7 +508,7 @@ public class ContainerShop implements Shop {
      *
      * @param shopType The new type (ShopType.BUYING or ShopType.SELLING)
      */
-    public void setShopType(ShopType shopType) {
+    public void setShopType(@NotNull ShopType shopType) {
         this.shopType = shopType;
         this.setSignText();
         update();
@@ -547,7 +548,7 @@ public class ContainerShop implements Shop {
      *
      * @param lines The array of lines to change. Index is line number.
      */
-    public void setSignText(String[] lines) {
+    public void setSignText(@NotNull String[] lines) {
         for (Sign sign : this.getSigns()) {
             if (sign.getLines().equals(lines)) {
                 Util.debugLog("Skipped new sign text setup: Same content");
@@ -609,7 +610,7 @@ public class ContainerShop implements Shop {
         return signs;
     }
 
-    public boolean isAttached(Block b) {
+    public boolean isAttached(@NotNull Block b) {
         return this.getLocation().getBlock().equals(Util.getAttached(b));
     }
 

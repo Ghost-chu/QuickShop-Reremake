@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Util;
 import java.util.ArrayList;
 
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 /**
@@ -12,7 +13,7 @@ public class Compatibility {
     private QuickShop plugin;
     final private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
 
-    public Compatibility(QuickShop plugin) {
+    public Compatibility(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         knownIncompatiablePlugin.add("OpenInv");
         knownIncompatiablePlugin.add("LWC");
@@ -27,7 +28,7 @@ public class Compatibility {
      *
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      */
-    public void toggleInteractListeners(boolean status) {
+    public void toggleInteractListeners(@NotNull boolean status) {
         // if (status) {
         //     disabledListeners.clear();
         //     for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {

@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Shop;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 
 /**
  * A class contains shop's infomations
@@ -14,23 +15,23 @@ public class Info {
     private Block last;
     private Shop shop;
 
-    public Info(Location loc, ShopAction action, ItemStack item, Block last) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @NotNull ItemStack item, @NotNull Block last) {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        if (item != null)
-            this.item = item.clone();
+        // if (item != null)
+        this.item = item.clone();
     }
 
-    public Info(Location loc, ShopAction action, ItemStack item, Block last, Shop shop) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @NotNull ItemStack item, @NotNull Block last, @NotNull Shop shop) {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        if (item != null)
+        // if (item != null)
             this.item = item.clone();
-        if (shop != null) {
+        // if (shop != null) {
             this.shop = shop.clone();
-        }
+        // }
     }
 
     /**
@@ -39,7 +40,7 @@ public class Info {
      * @param shop, The need checked with this shop.
      * @return hasChanged
      */
-    public boolean hasChanged(Shop shop) {
+    public boolean hasChanged(@NotNull Shop shop) {
         if (this.shop.isUnlimited() != shop.isUnlimited())
             return true;
         if (this.shop.getShopType() != shop.getShopType())

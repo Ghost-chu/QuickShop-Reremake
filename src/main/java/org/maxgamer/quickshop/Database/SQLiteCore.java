@@ -8,13 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
+import org.jetbrains.annotations.*;
+
 public class SQLiteCore implements DatabaseCore {
     private Connection connection;
     private File dbFile;
     private volatile Thread watcher;
-    private volatile LinkedList<BufferStatement> queue = new LinkedList<BufferStatement>();
+    private final LinkedList<BufferStatement> queue = new LinkedList<BufferStatement>();
 
-    public SQLiteCore(File dbFile) {
+    public SQLiteCore(@NotNull File dbFile) {
         this.dbFile = dbFile;
     }
 
@@ -61,7 +63,7 @@ public class SQLiteCore implements DatabaseCore {
     }
 
     @Override
-    public void queue(BufferStatement bs) {
+    public void queue(@NotNull BufferStatement bs) {
         synchronized (queue) {
             queue.add(bs);
         }
