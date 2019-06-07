@@ -91,8 +91,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
     private void setPoseForArmorStand() {
         BlockFace containerBlockFace = BlockFace.NORTH; //Set default vaule
 
-        if (this.shop.getLocation().getBlock().getState() instanceof Directional)
-            containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getState())
+        if (this.shop.getLocation().getBlock().getBlockData() instanceof Directional)
+            containerBlockFace = ((Directional) this.shop.getLocation().getBlock().getBlockData())
                     .getFacing(); //Replace by container face.
 
         //EulerAngle = pitch, yaw, roll.
