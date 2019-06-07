@@ -257,6 +257,7 @@ public abstract interface Shop {
 
     /**
      * Get this container shop is loaded or unloaded.
+     * @return Loaded
      */
     public abstract boolean isLoaded();
 
