@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
+import org.jetbrains.annotations.*;
+
 public enum ShopType {
     SELLING(0), BUYING(1);
     private int id;
@@ -17,7 +19,7 @@ public enum ShopType {
         return null;
     }
 
-    public static int toID(ShopType shopType) {
+    public static int toID(@NotNull ShopType shopType) {
         return shopType.id;
     }
 

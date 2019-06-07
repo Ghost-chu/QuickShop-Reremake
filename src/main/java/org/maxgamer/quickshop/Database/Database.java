@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -24,7 +25,7 @@ public class Database {
      * @param core The core for the database, either MySQL or SQLite.
      * @throws ConnectionException If the connection was invalid
      */
-    public Database(DatabaseCore core) throws ConnectionException {
+    public Database(@NotNull DatabaseCore core) throws ConnectionException {
         try {
             try {
                 if (!core.getConnection().isValid(10)) {
@@ -64,7 +65,7 @@ public class Database {
      * @param query The query
      * @param objs  The string values for each ? in the given query.
      */
-    public void execute(String query, Object... objs) {
+    public void execute(@NotNull String query, @NotNull Object... objs) {
         Util.debugLog(query);
         BufferStatement bs = new BufferStatement(query, objs);
         core.queue(bs);
@@ -77,7 +78,7 @@ public class Database {
      * @return True if the table is found
      * @throws SQLException Throw exception when failed execute somethins on SQL
      */
-    public boolean hasTable(String table) throws SQLException {
+    public boolean hasTable(@NotNull String table) throws SQLException {
         ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         while (rs.next()) {
             if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
@@ -104,7 +105,7 @@ public class Database {
      * @return True if the given table has the given column
      * @throws SQLException If the database isn't connected
      */
-    public boolean hasColumn(String table, String column) throws SQLException {
+    public boolean hasColumn(@NotNull String table, @NotNull String column) throws SQLException {
         if (!hasTable(table))
             return false;
         String query = "SELECT * FROM " + table + " LIMIT 0,1";
@@ -145,7 +146,7 @@ public class Database {
      * @param db The database to copy data to
      * @throws SQLException if an error occurs.
      */
-    public void copyTo(Database db) throws SQLException {
+    public void copyTo(@NotNull Database db) throws SQLException {
         ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         List<String> tables = new LinkedList<String>();
         while (rs.next()) {

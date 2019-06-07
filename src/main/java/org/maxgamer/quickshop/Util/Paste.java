@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.*;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -20,7 +21,7 @@ import org.maxgamer.quickshop.QuickShop;
 public class Paste {
     private QuickShop plugin;
 
-    public Paste(QuickShop plugin) {
+    public Paste(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 
@@ -104,7 +105,7 @@ public class Paste {
      * @return Target paste URL.
      * @throws Exception the throws
      */
-    public String pasteTheText(String text) throws Exception {
+    public String pasteTheText(@NotNull String text) throws Exception {
         URL url = new URL("https://paste.ubuntu.com");
         URLConnection conn = url.openConnection();
         conn.setRequestProperty("accept", "*/*");
@@ -126,10 +127,8 @@ public class Paste {
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         Util.debugLog("Request Completed: " + conn.getURL().toString());
         String link = conn.getURL().toString();
-        if (in != null)
-            in.close();
-        if (out != null)
-            out.close();
+        in.close();
+        out.close();
         return link;
     }
 }

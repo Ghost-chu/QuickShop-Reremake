@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
+import org.jetbrains.annotations.*;
+
 public enum DisplayType {
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
     private int id;
@@ -17,7 +19,7 @@ public enum DisplayType {
         return null;
     }
 
-    public static int toID(DisplayType displayType) {
+    public static int toID(@NotNull DisplayType displayType) {
         return displayType.id;
     }
 
@@ -25,7 +27,7 @@ public enum DisplayType {
         return id;
     }
 
-    public static DisplayType typeIs(DisplayItem displayItem) {
+    public static DisplayType typeIs(@Nullable DisplayItem displayItem) {
         if (displayItem instanceof RealDisplayItem)
             return REALITEM;
         if (displayItem instanceof ArmorStandDisplayItem)

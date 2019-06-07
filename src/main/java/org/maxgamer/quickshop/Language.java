@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.bukkit.Bukkit;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Language {
@@ -42,7 +42,7 @@ public class Language {
      * @param type     The file type for you want get. e.g. messages
      * @return The target file's InputStream.
      */
-    public InputStream getFile(String language, String type) {
+    public InputStream getFile(@Nullable String language, @Nullable String type) {
         if ((language == null)) {
             language = "en";
             Util.debugLog("Use default language cause language is null.");
@@ -67,8 +67,8 @@ public class Language {
      * @param type     Target type
      * @param fileName The filename you want write to the plugin datafolder.
      */
-    public void saveFile(String language, String type, String fileName) {
-        File targetFile = new File(Bukkit.getPluginManager().getPlugin(plugin.getName()).getDataFolder()
+    public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) {
+        File targetFile = new File(plugin.getDataFolder()
                 .toPath() + "/" + fileName);
         if (!targetFile.exists()) {
             try {
