@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
@@ -192,7 +191,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
             return false;
         }
         boolean removed = false;
-        Chunk chunk = shop.getLocation().getChunk();
+        //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof ArmorStand)) {
                 continue;
