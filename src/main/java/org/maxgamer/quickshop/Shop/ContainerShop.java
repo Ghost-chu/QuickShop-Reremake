@@ -767,9 +767,6 @@ public class ContainerShop implements Shop {
         }
         checkDisplay();
 
-        //Clear the chest?
-        //this.setSignText();
-
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
             this.delete();

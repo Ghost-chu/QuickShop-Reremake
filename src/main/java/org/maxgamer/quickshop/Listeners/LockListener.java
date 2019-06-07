@@ -140,8 +140,6 @@ public class LockListener implements Listener {
             Block b = e.blockList().get(i);
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
-                // ToDo: Shouldn't I be decrementing 1 here? Concurrency and
-                // all..
                 e.blockList().remove(b); //Protect shop
             }
         }

@@ -36,19 +36,6 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        // for (int i = 0; i < event.getInventory().getContents().length; i++) {
-        //     try {
-        //         ItemStack is = event.getInventory().getContents()[i];
-        //         if (DisplayItem.checkIsGuardItemStack(is)) {
-        //             is.setAmount(0);
-        //             is.setType(Material.AIR);
-        //             event.getPlayer().closeInventory();
-        //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + event.getPlayer()
-        //                     .getLocation().toString() + ")");
-        //             //Util.inventoryCheck(event.getInventory());
-        //         }
-        //     } catch (Exception e) {}
-        // }
         if (event.getInventory() == null)
             return;
         if (event.getInventory().getStorageContents() == null)
@@ -91,57 +78,6 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    // @EventHandler(ignoreCancelled = true)
-    // public void mendItem(PlayerItemMendEvent e) {
-    //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-    //     try {
-    //         if (DisplayItem.checkIsGuardItemStack(stack)) {
-    //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
-    //             // You shouldn't be able to pick up that...
-    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-    //                     .toString() + ")");
-    //             Util.inventoryCheck(e.getPlayer().getInventory());
-    //         }
-    //         if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
-    //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
-    //             // You shouldn't be able to pick up that...
-    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-    //                     .toString() + ")");
-    //             Util.inventoryCheck(e.getPlayer().getInventory());
-    //         }
-    //     } catch (NullPointerException ex) {
-    //     }
-    // }
-
-    // @EventHandler(ignoreCancelled = true)
-    // public void changeHand(PlayerChangedMainHandEvent e) {
-    //     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    //     ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-    //     try {
-    //         if (DisplayItem.checkIsGuardItemStack(stack)) {
-    //             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
-    //             // You shouldn't be able to pick up that...
-    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-    //                     .toString() + ")");
-    //             Util.inventoryCheck(e.getPlayer().getInventory());
-    //         }
-    //         if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
-    //             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
-    //             // You shouldn't be able to pick up that...
-    //             MsgUtil.sendExploitAlert(e.getPlayer(), "Player Inventory Scan", e.getPlayer().getLocation());
-    //             Util.debugLog("Something trying collect QuickShop displayItem, already cancelled. (" + e.getPlayer().getLocation()
-    //                     .toString() + ")");
-    //             Util.inventoryCheck(e.getPlayer().getInventory());
-    //         }
-    //     } catch (NullPointerException ex) {
-    //     }
-    //
-    // }
-
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickup(EntityPickupItemEvent e) {
         ItemStack stack = e.getItem().getItemStack();
@@ -157,7 +93,7 @@ public class DisplayProtectionListener implements Listener {
                 if (e.getEntityType() != EntityType.PLAYER) {
                     Util.debugLog("A entity at " + e.getEntity().getLocation().toString() + " named " + e.getEntity()
                             .getCustomName() + "(" + e.getEntityType()
-                            .name() + " trying pickup item, already banned this entity item pickup power.");
+                            .name() + " trying pickup item, already banned this entity item pickup ability.");
                 }
 
             }
