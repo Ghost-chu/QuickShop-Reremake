@@ -15,7 +15,7 @@ public class Info {
     private Block last;
     private Shop shop;
 
-    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @NotNull Block last) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @Nullable Block last) {
         this.loc = loc;
         this.action = action;
         this.last = last;
@@ -23,7 +23,7 @@ public class Info {
             this.item = item.clone();
     }
 
-    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @NotNull Block last, @Nullable Shop shop) {
+    public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @Nullable Block last, @Nullable Shop shop) {
         this.loc = loc;
         this.action = action;
         this.last = last;

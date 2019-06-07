@@ -105,7 +105,9 @@ public class RealDisplayItem implements DisplayItem {
             if (!(entity instanceof Item))
                 continue;
             Item eItem = (Item) entity;
-            if (eItem.getItemStack().equals(this.guardedIstack)) {
+            if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack()))
+                continue;
+            if (plugin.getItemMatcher().matches(eItem.getItemStack(), this.guardedIstack)) {
                 if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
                     Util.debugLog("Removing dupes ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
                             .getLocation().toString());
