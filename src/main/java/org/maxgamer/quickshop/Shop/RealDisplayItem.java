@@ -98,7 +98,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         boolean removed = false;
         Chunk chunk = shop.getLocation().getChunk();
-        for (Entity entity : chunk.getEntities()) {
+        for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof Item))
                 continue;
             Item eItem = (Item) entity;
