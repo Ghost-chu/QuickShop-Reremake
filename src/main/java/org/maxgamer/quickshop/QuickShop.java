@@ -778,9 +778,16 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable)
             return;
         getLogger().info("QuickShop is finishing remaining works, this may need a while...");
+        Iterator shopIterator = shopManager.getShopIterator();
+        while (shopIterator.hasNext()) {
+            Shop shop = (Shop) shopIterator.next();
+            if (shop.isLoaded())
+                shop.onUnload();
+        }
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
+
         /* Stop queue processor */
         this.getDatabaseManager().uninit();
         this.getQueuedShopManager().uninit();
