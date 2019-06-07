@@ -17,15 +17,28 @@ after_success:
 - rm -f ./devbukkit/*-sources.jar
 - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
+#Release
+-   provider: releases
     skip_cleanup: true
-    provider: releases
+    overwrite: true
+    api_key:
+        secure: $Github_token
+    file:
+    - ./push/*
+    script: bash upload2bukkit.sh
+    file_glob: true
+    on:
+        tags: true
+#Pre-Release
+-   provider: releases
+    skip_cleanup: true
+    overwrite: true
     api_key:
         secure: $Github_token
     file:
     - ./push/*
     file_glob: true
-    on:
-        tags: true
-after_deploy:
-- chmod +x depoly.sh
-- ./depoly.sh $Curse_token
+    prerelease: true
+#after_deploy:
+#- chmod +x after_deploy.sh
+#- ./after_deploy.sh $Curse_token
