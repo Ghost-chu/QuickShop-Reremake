@@ -15,6 +15,7 @@ import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.*;
 import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -29,7 +30,7 @@ public class SentryErrorReporter {
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
 
-    public SentryErrorReporter(QuickShop plugin) {
+    public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         JSONObject serverData = plugin.getMetrics().getServerData();
         //sentryClient = Sentry.init(dsn);
@@ -84,7 +85,7 @@ public class SentryErrorReporter {
      * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
-    public UUID sendError(Throwable throwable, String... context) {
+    public UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         Util.debugLog("Preparing for reporting errors...");
         if (!enabled) {
             Util.debugLog("Errors not sended, cause ErrorReport not enabled.");
@@ -131,7 +132,7 @@ public class SentryErrorReporter {
      * @param throwable Throws
      * @return Cause or not
      */
-    private boolean checkWasCauseByQS(Throwable throwable) {
+    private boolean checkWasCauseByQS(@NotNull Throwable throwable) {
         StackTraceElement[] stackTraces = throwable.getStackTrace();
         Optional<StackTraceElement> element;
         element = Arrays.stream(throwable.getStackTrace())
@@ -157,7 +158,7 @@ public class SentryErrorReporter {
      * @param throwable Throws
      * @return dupecated
      */
-    private boolean canReport(Throwable throwable) {
+    private boolean canReport(@NotNull Throwable throwable) {
         if (!enabled) {
             return false;
         }
@@ -179,7 +180,7 @@ public class SentryErrorReporter {
          * @return true if the log record should be published.
          */
         @Override
-        public boolean isLoggable(LogRecord record) {
+        public boolean isLoggable(@NotNull LogRecord record) {
             if (!enabled) {
                 return true;
             }

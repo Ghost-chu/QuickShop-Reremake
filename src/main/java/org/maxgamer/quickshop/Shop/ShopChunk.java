@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import lombok.*;
+import org.jetbrains.annotations.*;
 
 @Getter
 public class ShopChunk {
@@ -9,7 +10,7 @@ public class ShopChunk {
     private int z;
     private int hash = 0;
 
-    public ShopChunk(String world, int x, int z) {
+    public ShopChunk(@NotNull String world, int x, int z) {
         this.world = world;
         this.x = x;
         this.z = z;
@@ -19,7 +20,7 @@ public class ShopChunk {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@NotNull Object obj) {
         if (obj.getClass() != this.getClass()) {
             return false;
         } else {

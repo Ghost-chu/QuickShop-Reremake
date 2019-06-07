@@ -6,6 +6,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -37,21 +38,21 @@ public class Economy_Vault implements EconomyCore {
     }
 
     @Deprecated
-    public boolean deposit(String name, double amount) {
+    public boolean deposit(@NotNull String name, double amount) {
         Util.sendDeprecatedMethodWarn();
         boolean result = this.vault.depositPlayer(name, amount).transactionSuccess();
         return result;
     }
 
     @Deprecated
-    public boolean withdraw(String name, double amount) {
+    public boolean withdraw(@NotNull String name, double amount) {
         Util.sendDeprecatedMethodWarn();
         boolean result = this.vault.withdrawPlayer(name, amount).transactionSuccess();
         return result;
     }
 
     @Deprecated
-    public boolean transfer(String from, String to, double amount) {
+    public boolean transfer(@NotNull String from, @NotNull String to, double amount) {
         Util.sendDeprecatedMethodWarn();
         if (this.vault.getBalance(from) >= amount) {
             if (this.vault.withdrawPlayer(from, amount).transactionSuccess()) {
@@ -67,7 +68,7 @@ public class Economy_Vault implements EconomyCore {
     }
 
     @Deprecated
-    public double getBalance(String name) {
+    public double getBalance(@NotNull String name) {
         Util.sendDeprecatedMethodWarn();
         return this.vault.getBalance(name);
     }
@@ -94,21 +95,21 @@ public class Economy_Vault implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(UUID name, double amount) {
+    public boolean deposit(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         boolean result = this.vault.depositPlayer(p, amount).transactionSuccess();
         return result;
     }
 
     @Override
-    public boolean withdraw(UUID name, double amount) {
+    public boolean withdraw(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         boolean result = this.vault.withdrawPlayer(p, amount).transactionSuccess();
         return result;
     }
 
     @Override
-    public boolean transfer(UUID from, UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
         OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
         if (this.vault.getBalance(pFrom) >= amount) {
@@ -125,7 +126,7 @@ public class Economy_Vault implements EconomyCore {
     }
 
     @Override
-    public double getBalance(UUID name) {
+    public double getBalance(@NotNull UUID name) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         return this.vault.getBalance(p);
     }

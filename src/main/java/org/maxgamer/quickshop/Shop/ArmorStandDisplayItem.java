@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -20,7 +21,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     private ArmorStand armorStand;
     private Shop shop;
 
-    public ArmorStandDisplayItem(Shop shop) {
+    public ArmorStandDisplayItem(@NotNull Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
     }
@@ -73,7 +74,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     @Override
-    public void safeGuard(Entity entity) {
+    public void safeGuard(@NotNull Entity entity) {
         if (entity == null) {
             Util.debugLog("Failed to safeGuard the NULL, somethings given a wrong args.");
         }
@@ -139,7 +140,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     @Override
-    public boolean checkIsShopEntity(Entity entity) {
+    public boolean checkIsShopEntity(@NotNull Entity entity) {
         if (!(entity instanceof ArmorStand))
             return false;
         return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());

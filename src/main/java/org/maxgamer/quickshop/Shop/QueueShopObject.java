@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import lombok.*;
+import org.jetbrains.annotations.*;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class QueueShopObject {
      * @param shop   The shop
      * @param action The action you want to do for the shop.
      */
-    public QueueShopObject(Shop shop, QueueAction... action) {
+    public QueueShopObject(@NotNull Shop shop, @NotNull QueueAction... action) {
         this.shop = shop;
         this.action = action;
     }

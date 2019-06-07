@@ -23,6 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -41,7 +42,7 @@ public class MsgUtil {
         return messagei18n;
     }
 
-    public static void loadCfgMessages(String... reload) {
+    public static void loadCfgMessages(@NotNull String... reload) {
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messageFile.exists()) {
             plugin.getLogger().info("Creating messages.yml");
@@ -94,7 +95,7 @@ public class MsgUtil {
 
     }
 
-    public static void updateMessages(int selectedVersion) throws IOException {
+    public static void updateMessages(@NotNull int selectedVersion) throws IOException {
         if (selectedVersion == 1) {
             messagei18n.set("shop-not-exist", "&cThere had no shop.");
             messagei18n.set("controlpanel.infomation", "&aShop Control Panel:");
@@ -267,7 +268,7 @@ public class MsgUtil {
         }
     }
 
-    public static void sendControlPanelInfo(CommandSender sender, Shop shop) {
+    public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
         if (!sender.hasPermission("quickshop.use")) {
             return;
         }
@@ -383,7 +384,7 @@ public class MsgUtil {
      * @param bool The boolean value
      * @return The result of translate.
      */
-    public static String bool2String(boolean bool) {
+    public static String bool2String(@NotNull boolean bool) {
         if (bool) {
             return MsgUtil.getMessage("booleanformat.success");
         } else {
@@ -452,7 +453,7 @@ public class MsgUtil {
      * @param ItemBukkitName ItemBukkitName(e.g. Material.STONE.name())
      * @return String Item's i18n name.
      */
-    public static String getItemi18n(String ItemBukkitName) {
+    public static String getItemi18n(@NotNull String ItemBukkitName) {
         if (ItemBukkitName == null) {
             return "";
         }
@@ -519,7 +520,7 @@ public class MsgUtil {
      * @param key The Enchantment.
      * @return Enchantment's i18n name.
      */
-    public static String getEnchi18n(Enchantment key) {
+    public static String getEnchi18n(@NotNull Enchantment key) {
         if (key == null) {
             return "ERROR";
         }
@@ -580,7 +581,7 @@ public class MsgUtil {
      * @param potion potionType
      * @return Potion's i18n name.
      */
-    public static String getPotioni18n(PotionEffectType potion) {
+    public static String getPotioni18n(@NotNull PotionEffectType potion) {
         if (potion == null) {
             return "ERROR";
         }
@@ -606,7 +607,7 @@ public class MsgUtil {
      *                them in the database.
      * @param isUnlimited  The shop is or unlimited
      */
-    public static void send(UUID player, String message, boolean isUnlimited) {    //TODO Converted to UUID
+    public static void send(@NotNull UUID player, @NotNull String message, @NotNull boolean isUnlimited) {
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
             return; //Ignore unlimited shops messages.
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
@@ -640,7 +641,7 @@ public class MsgUtil {
      * @param p The player to message
      * @return True if success, False if the player is offline or null
      */
-    public static boolean flush(OfflinePlayer p) {    //TODO Changed to UUID
+    public static boolean flush(@NotNull OfflinePlayer p) {    //TODO Changed to UUID
         if (p != null && p.isOnline()) {
             UUID pName = p.getUniqueId();
             LinkedList<String> msgs = player_messages.get(pName);
@@ -664,7 +665,7 @@ public class MsgUtil {
      * @param p    Target player
      * @param shop The shop
      */
-    public static void sendShopInfo(Player p, Shop shop) {
+    public static void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
@@ -728,7 +729,7 @@ public class MsgUtil {
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendPurchaseSuccess(Player p, Shop shop, int amount) {
+    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, @NotNull int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase"));
@@ -770,7 +771,7 @@ public class MsgUtil {
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendSellSuccess(Player p, Shop shop, int amount) {
+    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, @NotNull int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold"));
@@ -814,7 +815,7 @@ public class MsgUtil {
      * @param iStack stack
      * @return itemDisplayName
      */
-    public static String getDisplayName(ItemStack iStack) {
+    public static String getDisplayName(@NotNull ItemStack iStack) {
         ItemStack is = iStack.clone();
 
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
@@ -832,7 +833,7 @@ public class MsgUtil {
      * @param args args
      * @return message
      */
-    public static String getMessage(String loc, String... args) {
+    public static String getMessage(@NotNull String loc, @NotNull String... args) {
         String raw = messagei18n.getString(loc);
         if (raw == null) {
             return "Invalid message: " + loc + " Did you modify the i18n file?";
@@ -847,7 +848,7 @@ public class MsgUtil {
      * @param args args
      * @return filled text
      */
-    public static String fillArgs(String raw, String... args) {
+    public static String fillArgs(@NotNull String raw, @NotNull String... args) {
         if (raw == null) {
             return "Invalid message: " + "raw";
         }
@@ -870,7 +871,7 @@ public class MsgUtil {
      * @param action   What action trigger the exploit alert.
      * @param location Event/Shop location.
      */
-    public static void sendExploitAlert(Object objectDo, String action, Location location) {
+    public static void sendExploitAlert(@NotNull Object objectDo, @NotNull String action, @NotNull Location location) {
         Util.sendMessageToOps(ChatColor.RED + "[QuickShop][ExploitAlert] A displayItem exploit was found!");
         if (objectDo instanceof Player) {
             Player player = (Player) objectDo;

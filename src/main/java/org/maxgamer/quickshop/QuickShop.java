@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
 import org.maxgamer.quickshop.Database.*;
@@ -119,7 +120,7 @@ public class QuickShop extends JavaPlugin {
      * @param p The player you want get limit.
      * @return int Player's shop limit
      */
-    public int getShopLimit(Player p) {
+    public int getShopLimit(@NotNull Player p) {
         int max = getConfig().getInt("limits.default");
         for (Entry<String, Integer> entry : limits.entrySet()) {
             if (entry.getValue() > max && p.hasPermission(entry.getKey()))
@@ -822,7 +823,7 @@ public class QuickShop extends JavaPlugin {
      *
      * @param s The string to log. It will be prefixed with the date and time.
      */
-    public void log(String s) {
+    public void log(@NotNull String s) {
         if (this.logWatcher == null)
             return;
         Date date = Calendar.getInstance().getTime();

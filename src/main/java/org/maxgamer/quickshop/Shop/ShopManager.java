@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -29,7 +30,7 @@ public class ShopManager {
     private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>();
     final private static ItemStack AIR = new ItemStack(Material.AIR);
 
-    public ShopManager(QuickShop plugin) {
+    public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 
@@ -47,7 +48,7 @@ public class ShopManager {
      * @param shop The shop object
      * @param info The info object
      */
-    public void createShop(Shop shop, Info info) {
+    public void createShop(@NotNull Shop shop, @NotNull Info info) {
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
         Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
         if (ssShopCreateEvent.isCancelled()) {
@@ -122,7 +123,7 @@ public class ShopManager {
      * @param world The world the shop is in
      * @param shop  The shop to load
      */
-    public void loadShop(String world, Shop shop) {
+    public void loadShop(@NotNull String world, @NotNull Shop shop) {
         this.addShop(world, shop);
     }
 
@@ -142,7 +143,7 @@ public class ShopManager {
      *              shops from
      * @return a hashmap of Chunk - Shop
      */
-    public HashMap<ShopChunk, HashMap<Location, Shop>> getShops(String world) {
+    public HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
         return this.shops.get(world);
     }
 
@@ -153,7 +154,7 @@ public class ShopManager {
      *          coordinates and world are used.
      * @return Shops
      */
-    public HashMap<Location, Shop> getShops(Chunk c) {
+    public HashMap<Location, Shop> getShops(@NotNull Chunk c) {
         // long start = System.nanoTime();
         HashMap<Location, Shop> shops = getShops(c.getWorld().getName(), c.getX(), c.getZ());
         // long end = System.nanoTime();
@@ -177,7 +178,7 @@ public class ShopManager {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
-    public Shop getShop(Location loc) {
+    public Shop getShop(@NotNull Location loc) {
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
@@ -193,7 +194,7 @@ public class ShopManager {
      * @param world The name of the world
      * @param shop  The shop to add
      */
-    private void addShop(String world, Shop shop) {
+    private void addShop(@NotNull String world, @NotNull Shop shop) {
 
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(shop);
         Bukkit.getPluginManager().callEvent(shopLoadEvent);
@@ -231,7 +232,7 @@ public class ShopManager {
      *
      * @param shop The shop to remove
      */
-    public void removeShop(Shop shop) {
+    public void removeShop(@NotNull Shop shop) {
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(shop);
         Bukkit.getPluginManager().callEvent(shopUnloadEvent);
         Location loc = shop.getLocation();
@@ -274,7 +275,7 @@ public class ShopManager {
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
-    public boolean canBuildShop(Player p, Block b, BlockFace bf) {
+    public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
         RegisteredListener openInvRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
         // try {
         // 	if (plugin.openInvPlugin != null) {
@@ -336,7 +337,7 @@ public class ShopManager {
         return true;
     }
 
-    public void handleChat(final Player p, String msg) {
+    public void handleChat(@NotNull Player p, @NotNull String msg) {
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -370,7 +371,7 @@ public class ShopManager {
         });
     }
 
-    private void actionTrade(Player p, HashMap<UUID, Info> actions, Info info, String message) {
+    private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
         int amount = 0;
         try {
             amount = Integer.parseInt(message);
@@ -401,7 +402,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionBuy(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop, int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, @NotNull int amount) {
         int space = shop.getRemainingSpace();
         if (space == -1)
             space = 10000;
@@ -478,7 +479,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionSell(Player p, HashMap<UUID, Info> actions2, Info info, String message, Shop shop2, int amount) {
+    private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop2, @NotNull int amount) {
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
         if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
@@ -574,7 +575,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionCreate(Player p, HashMap<UUID, Info> actions2, Info info, String message) {
+    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message) {
         Util.debugLog("actionCreate");
         try {
             // Checking the shop can be created
@@ -743,7 +744,7 @@ public class ShopManager {
      * @param d price
      * @return formated price
      */
-    public String format(double d) {
+    public String format(@NotNull double d) {
         return plugin.getEcon().format(d);
     }
 

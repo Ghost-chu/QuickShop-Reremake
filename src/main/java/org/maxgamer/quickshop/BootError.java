@@ -2,6 +2,7 @@ package org.maxgamer.quickshop;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.*;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
@@ -10,7 +11,7 @@ public class BootError {
 
     private String[] errors;
 
-    BootError(String... errors) {
+    BootError(@NotNull String... errors) {
         this.errors = errors;
     }
 

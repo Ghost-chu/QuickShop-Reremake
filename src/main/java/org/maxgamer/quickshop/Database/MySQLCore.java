@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.jetbrains.annotations.*;
+
 public class MySQLCore implements DatabaseCore {
     private String url;
     /** The connection properties... user, pass, autoReconnect.. */
@@ -14,7 +16,7 @@ public class MySQLCore implements DatabaseCore {
     private static final int MAX_CONNECTIONS = 8;
     private static ArrayList<Connection> pool = new ArrayList<Connection>();
 
-    public MySQLCore(String host, String user, String pass, String database, String port, boolean useSSL) {
+    public MySQLCore(@NotNull String host, @NotNull String user, @NotNull String pass, @NotNull String database, @NotNull String port, boolean useSSL) {
         info = new Properties();
         info.setProperty("autoReconnect", "true");
         info.setProperty("user", user);
@@ -54,7 +56,7 @@ public class MySQLCore implements DatabaseCore {
     }
 
     @Override
-    public void queue(BufferStatement bs) {
+    public void queue(@NotNull BufferStatement bs) {
         try {
             Connection con = this.getConnection();
             while (con == null) {

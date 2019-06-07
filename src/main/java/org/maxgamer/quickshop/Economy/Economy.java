@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Economy;
 
 import java.util.UUID;
 
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Economy implements EconomyCore {
@@ -38,22 +39,22 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(UUID name, double amount) {
+    public boolean deposit(@NotNull UUID name, double amount) {
         return core.deposit(name, amount);
     }
 
     @Override
-    public boolean withdraw(UUID name, double amount) {
+    public boolean withdraw(@NotNull UUID name, double amount) {
         return core.withdraw(name, amount);
     }
 
     @Override
-    public boolean transfer(UUID from, UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, UUID to, double amount) {
         return core.transfer(from, to, amount);
     }
 
     @Override
-    public double getBalance(UUID name) {
+    public double getBalance(@NotNull UUID name) {
         return core.getBalance(name);
     }
 }
