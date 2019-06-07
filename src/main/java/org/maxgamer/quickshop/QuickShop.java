@@ -195,6 +195,7 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        /* PreInit for BootError feature */
         commandExecutor = new QS(this);
         getCommand("qs").setExecutor(commandExecutor);
         commandTabCompleter = new Tab(this);
@@ -204,11 +205,13 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's us start load plugin");
+        /* Check the running envs is support or not. */
         try {
             runtimeCheck();
         } catch (RuntimeException e) {
             bootError = new BootError(e.getMessage());
         }
+        /* Process the config */
         saveDefaultConfig();
 
         reloadConfig(); //Plugin support reload, so need reload config here.
@@ -221,29 +224,33 @@ public class QuickShop extends JavaPlugin {
 
         updateConfig(getConfig().getInt("config-version"));
 
+        /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
 
+        /* Process the Economy system. */
         if (!loadEcon()) {
             bootError = BuiltInSolution.econError();
             return;
         }
 
+        /* Load 3rd party supports */
         load3rdParty();
 
-        // Initialize Util
+        /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
 
         setupDBonEnableding = true;
-        setupDatabase();
+        setupDatabase(); //Load the database
         setupDBonEnableding = false;
 
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
 
+        /* Initalize the tools */
         // Create the shop manager.
         this.shopManager = new ShopManager(this);
         this.queuedShopManager = new QueuedShopManager(this);
@@ -377,32 +384,6 @@ public class QuickShop extends JavaPlugin {
         }
 
     }
-
-    // @Override
-    // public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @Nullable String alias, @Nullable String[] args) {
-    //     List<String> commands = new ArrayList<>();
-    //     commands.add("unlimited");
-    //     commands.add("buy");
-    //     commands.add("sell");
-    //     commands.add("create");
-    //     commands.add("price");
-    //     commands.add("clean");
-    //     commands.add("range");
-    //     commands.add("refill");
-    //     commands.add("empty");
-    //     commands.add("setowner");
-    //     commands.add("fetchmessage");
-    //     if (args != null && args.length == 1) {
-    //         List<String> list = new ArrayList<>();
-    //         for (String s : commands) {
-    //             if (s.startsWith(args[0])) {
-    //                 list.add(s);
-    //             }
-    //         }
-    //         return list;
-    //     }
-    //     return null;
-    // }
 
     /**
      * Setup the database
