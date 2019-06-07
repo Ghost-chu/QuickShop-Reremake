@@ -17,7 +17,7 @@ after_success:
 - rm -f ./devbukkit/*-sources.jar
 - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 before_deploy:
-- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)-$TRAVIS_BUILD_NUMBER}
+- export TRAVIS_TAG=${TRAVIS_TAG:-SNAPSHOT-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)-$TRAVIS_BUILD_NUMBER}
 deploy:
 #Release
 -   provider: releases
