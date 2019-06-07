@@ -40,15 +40,13 @@ public class Economy_Vault implements EconomyCore {
     @Deprecated
     public boolean deposit(@NotNull String name, double amount) {
         Util.sendDeprecatedMethodWarn();
-        boolean result = this.vault.depositPlayer(name, amount).transactionSuccess();
-        return result;
+        return this.vault.depositPlayer(name, amount).transactionSuccess();
     }
 
     @Deprecated
     public boolean withdraw(@NotNull String name, double amount) {
         Util.sendDeprecatedMethodWarn();
-        boolean result = this.vault.withdrawPlayer(name, amount).transactionSuccess();
-        return result;
+        return this.vault.withdrawPlayer(name, amount).transactionSuccess();
     }
 
     @Deprecated
@@ -97,15 +95,13 @@ public class Economy_Vault implements EconomyCore {
     @Override
     public boolean deposit(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
-        boolean result = this.vault.depositPlayer(p, amount).transactionSuccess();
-        return result;
+        return this.vault.depositPlayer(p, amount).transactionSuccess();
     }
 
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
-        boolean result = this.vault.withdrawPlayer(p, amount).transactionSuccess();
-        return result;
+        return this.vault.withdrawPlayer(p, amount).transactionSuccess();
     }
 
     @Override
