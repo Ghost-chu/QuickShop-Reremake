@@ -266,6 +266,12 @@ public class MsgUtil {
             selectedVersion = 14;
             messagei18n.save(messageFile);
         }
+        if (selectedVersion == 14) {
+            messagei18n.set("flush-finished", "&aSuccessfully flushed the messages.");
+            messagei18n.set("language-version", 15);
+            selectedVersion = 15;
+            messagei18n.save(messageFile);
+        }
     }
 
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
@@ -652,7 +658,7 @@ public class MsgUtil {
                 plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
                 msgs.clear();
             } else {
-                p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
+                //p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
             }
             return true;
         }
