@@ -573,8 +573,9 @@ public class Util {
             return 0;
         int items = 0;
         for (ItemStack iStack : inv.getStorageContents()) {
-            // if (iStack == null)
-            //     continue;
+            //noinspection ConstantConditions
+            if (iStack == null)
+                continue;
             if (plugin.getItemMatcher().matches(item, iStack)) {
                 items += iStack.getAmount();
             }
@@ -597,6 +598,7 @@ public class Util {
 
         ItemStack[] contents = inv.getStorageContents();
             for (ItemStack iStack : contents) {
+                //noinspection ConstantConditions
                 if (iStack == null || iStack.getType() == Material.AIR) {
                     space += item.getMaxStackSize();
                 } else if (plugin.getItemMatcher().matches(item, iStack)) {
