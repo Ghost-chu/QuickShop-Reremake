@@ -66,7 +66,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         //this.armorStand.setSmall(true);
 
         //Set armorstand item in hand
-        this.armorStand.setItemInHand(originalItemStack.clone());
+        this.armorStand.setItemInHand(new ItemStack(originalItemStack.getType()));
         //Set safeGuard
         safeGuard(this.armorStand);
         //Set pose
@@ -82,8 +82,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
-        armorStand.setItemInHand(guardedIstack.clone());
+//        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
+        armorStand.setItemInHand(new ItemStack(originalItemStack.getType()));
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
 
