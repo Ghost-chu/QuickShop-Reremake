@@ -22,6 +22,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ShopDeleteEvent;
+import org.maxgamer.quickshop.Event.ShopUnloadEvent;
+import org.maxgamer.quickshop.Event.ShopUpdateEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -211,6 +214,13 @@ public class ContainerShop implements Shop {
      * Upates the shop into the database.
      */
     public void update() {
+
+        ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
+        if (shopUpdateEvent.isCancelled()) {
+            Util.debugLog("Shop update action was cancelled by a plugin.");
+            return;
+        }
+
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
@@ -639,6 +649,12 @@ public class ContainerShop implements Shop {
      *                   you are iterating*
      */
     public void delete(boolean fromMemory) {
+        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
+        Bukkit.getPluginManager().callEvent(shopDeleteEvent);
+        if (shopDeleteEvent.isCancelled()) {
+            Util.debugLog("Shop deltetion was cancelled cause a plugin cancel that.");
+            return;
+        }
         // Unload the shop
         if (isLoaded)
             this.onUnload();
@@ -755,12 +771,20 @@ public class ContainerShop implements Shop {
             this.displayItem = null;
         }
         this.isLoaded = false;
+        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
+        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }
 
     /**
      * Load ContainerShop.
      */
     public void onLoad() {
+        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
+        Bukkit.getPluginManager().callEvent(shopLoadEvent);
+        if (shopLoadEvent.isCancelled()) {
+            return;
+        }
+
         if (this.isLoaded) {
             Util.debugLog("Dupe load request, cancelled.");
             return;

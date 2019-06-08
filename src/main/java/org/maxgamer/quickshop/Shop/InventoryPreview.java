@@ -11,7 +11,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ShopInventoryPreview;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 /**
  * A class to create a GUI item preview quickly
@@ -52,10 +54,18 @@ public class InventoryPreview implements Listener {
     public void show() {
         if (inventory != null) // Not inited
             close();
+        if (itemStack == null) // Null pointer exception
+            return;
         if (player == null) // Null pointer exception
             return;
         if (player.isSleeping()) // Bed bug
             return;
+        ShopInventoryPreview shopInventoryPreview = new ShopInventoryPreview(player, itemStack);
+        Bukkit.getPluginManager().callEvent(shopInventoryPreview);
+        if (shopInventoryPreview.isCancelled()) {
+            Util.debugLog("Inventory preview was cancelled by a plugin.");
+            return;
+        }
         final int size = 9;
         inventory = Bukkit.createInventory(null, size, MsgUtil.getMessage("menu.preview"));
         for (int i = 0; i < size; i++) {
