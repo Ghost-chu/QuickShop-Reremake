@@ -174,7 +174,15 @@ public class SentryErrorReporter {
         if (!enabled) {
             return false;
         }
-        String text = throwable.getMessage() + "%" + throwable.getStackTrace()[0];
+        StackTraceElement stackTraceElement;
+        if (throwable.getStackTrace().length < 3) {
+            stackTraceElement = throwable.getStackTrace()[1];
+        } else {
+            stackTraceElement = throwable.getStackTrace()[2];
+        }
+
+        String text = stackTraceElement.getClassName() + "#" + stackTraceElement.getMethodName() + "#" + stackTraceElement
+                .getLineNumber();
         if (!reported.contains(text)) {
             reported.add(text);
             return true;
@@ -207,6 +215,11 @@ public class SentryErrorReporter {
             }
             //There wasn't need check from who, it just directly report it.
             if (Util.isDevMode()) {
+                return true;
+            }
+            //No, pls do not report the OutOfMemory Error, i didn't care it.
+
+            if (record.getThrown() instanceof OutOfMemoryError) {
                 return true;
             }
             sendError(record.getThrown(), record.getMessage());
