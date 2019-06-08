@@ -17,6 +17,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ShopCreateEvent;
+import org.maxgamer.quickshop.Event.ShopPreCreateEvent;
+import org.maxgamer.quickshop.Event.ShopPurchaseEvent;
+import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -174,12 +178,7 @@ public class ShopManager {
      * @param shop  The shop to add
      */
     private void addShop(@NotNull String world, @NotNull Shop shop) {
-
-        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(shop);
-        Bukkit.getPluginManager().callEvent(shopLoadEvent);
-        if (shopLoadEvent.isCancelled()) {
-            return;
-        }
+        shop.onLoad();
 
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
         // There's no world storage yet. We need to create that hashmap.
@@ -212,8 +211,7 @@ public class ShopManager {
      * @param shop The shop to remove
      */
     public void removeShop(@NotNull Shop shop) {
-        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(shop);
-        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
+        shop.onUnload();
         Location loc = shop.getLocation();
         String world = loc.getWorld().getName();
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
@@ -381,7 +379,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, @NotNull int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         int space = shop.getRemainingSpace();
         if (space == -1)
             space = 10000;
@@ -411,15 +409,16 @@ public class ShopManager {
         if (e.isCancelled())
             return; // Cancelled
         // Money handling
+        double tax = plugin.getConfig().getDouble("tax");
+        double total = amount * shop.getPrice();
         if (!p.getUniqueId().equals(shop.getOwner())) {
             // Don't tax them if they're purchasing from
             // themselves.
             // Do charge an amount of tax though.
-            double tax = plugin.getConfig().getDouble("tax");
             if (shop.getOwner().equals(p.getUniqueId())) {
                 tax = 0;
             }
-            double total = amount * shop.getPrice();
+
             if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
                 // Tries to check their balance nicely to see if
                 // they can afford it.
@@ -453,12 +452,14 @@ public class ShopManager {
         }
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, tax * total);
+        Bukkit.getPluginManager().callEvent(se);
         plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
         //shop.setSignText(); // Update the signs count
     }
 
     @SuppressWarnings("deprecation")
-    private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop2, @NotNull int amount) {
+    private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop2, int amount) {
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
         if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
@@ -496,6 +497,8 @@ public class ShopManager {
         if (e.isCancelled())
             return; // Cancelled
         // Money handling
+        double tax = plugin.getConfig().getDouble("tax");
+        double total = amount * shop.getPrice();
         if (!p.getUniqueId().equals(shop.getOwner())) {
             // Check their balance. Works with *most* economy
             // plugins*
@@ -508,12 +511,9 @@ public class ShopManager {
             // Don't tax them if they're purchasing from
             // themselves.
             // Do charge an amount of tax though.
-            double tax = plugin.getConfig().getDouble("tax");
             if (shop.getOwner().equals(p.getUniqueId())) {
                 tax = 0;
             }
-
-            double total = amount * shop.getPrice();
             if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
                 p.sendMessage(MsgUtil
                         .getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon()
@@ -550,6 +550,8 @@ public class ShopManager {
         }
         shop.sell(p, amount);
         MsgUtil.sendPurchaseSuccess(p, shop, amount);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, tax * total);
+        Bukkit.getPluginManager().callEvent(se);
         plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
     }
 
