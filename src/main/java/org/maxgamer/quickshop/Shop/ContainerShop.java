@@ -697,66 +697,6 @@ public class ContainerShop implements Shop {
         checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
     }
-    // public void checkDisplay() {
-    //     //TODO
-    //     // if (plugin.isDisplay() == false)
-    //     //     return;
-    //     // if (getLocation().getWorld() == null)
-    //     //     return; // not loaded
-    //     // boolean trans = Util.isTransparent(getLocation().clone().add(0.5, 1.2, 0.5).getBlock().getType());
-    //     // if (trans && this.getDisplayItem() == null) {
-    //     //     this.displayItem = new DisplayItem(this, this.getItem());
-    //     //     this.getDisplayItem().spawn();
-    //     // }
-    //     // if (this.getDisplayItem() != null) {
-    //     //     if (!trans) { // We have a display item in a block... delete it
-    //     //         this.getDisplayItem().remove();
-    //     //         this.displayItem = null;
-    //     //         return;
-    //     //     }
-    //     //     DisplayItem disItem = this.getDisplayItem();
-    //     //     Location dispLoc = disItem.getDisplayLocation();
-    //     //     if (dispLoc.getBlock() != null && dispLoc.getBlock().getType() == Material.WATER) {
-    //     //         disItem.remove();
-    //     //         return;
-    //     //     }
-    //     //     if (disItem.getItem() == null) {
-    //     //         disItem.removeDupe();
-    //     //         disItem.spawn();
-    //     //         return;
-    //     //     }
-    //     //     Item item = disItem.getItem();
-    //     //     if (item.getTicksLived() > 5000 || !item.isValid() || item.isDead()) {
-    //     //         disItem.respawn();
-    //     //         disItem.removeDupe();
-    //     //     } else if (item.getLocation().distanceSquared(dispLoc) > 1) {
-    //     //         item.teleport(dispLoc, TeleportCause.PLUGIN);
-    //     //     }
-    //     // }
-    // }
-    //
-    // public boolean checkDisplayMoved() {
-    //     // // don't check if the plugin doesn't know about the object
-    //     // if (this.getDisplayItem() == null) {
-    //     //     return false;
-    //     // }
-    //     //
-    //     // Item item = this.getDisplayItem().getItem();
-    //     // if (item == null) {
-    //     //     return false;
-    //     // }
-    //     //
-    //     // if (item.isDead()) {
-    //     //     return false;
-    //     // }
-    //     //
-    //     // // don't check if the chunk is not loaded
-    //     // if (!item.getLocation().getWorld().isChunkLoaded(item.getLocation().getChunk())) {
-    //     //     return false;
-    //     // }
-    //     //
-    //     // return this.getDisplayItem().getDisplayLocation().distanceSquared(item.getLocation()) > 0.2;
-    // }
 
     /**
      * Unload ContainerShop.
