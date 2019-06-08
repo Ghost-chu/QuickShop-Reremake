@@ -87,7 +87,11 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     private void setPoseForArmorStand() {
-        this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+        if (this.originalItemStack.getType().isBlock()) {
+            this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
+        } else {
+            this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+        }
     }
 
     @Override
@@ -120,6 +124,10 @@ public class ArmorStandDisplayItem implements DisplayItem {
                     .getFacing(); //Replace by container face.
         }
         Location asloc = this.shop.getLocation().clone();
+        Util.debugLog("containerBlockFace " + containerBlockFace);
+        if(this.originalItemStack.getType().isBlock()){
+            asloc.add(0, 1, 0);
+        }
         switch (containerBlockFace) {
             case SOUTH:
                 if (Util.isTool(this.originalItemStack.getType())) {
@@ -197,7 +205,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 continue;
             }
             ArmorStand eArmorStand = (ArmorStand) entity;
-            if (plugin.getItemMatcher().matches(eArmorStand.getItemInHand(),this.guardedIstack)) {
+            if (plugin.getItemMatcher().matches(eArmorStand.getItemInHand(), this.guardedIstack)) {
                 if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                     Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
                             .getLocation().toString());
