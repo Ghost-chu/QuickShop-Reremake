@@ -129,7 +129,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         Location asloc = this.shop.getLocation().clone();
         Util.debugLog("containerBlockFace " + containerBlockFace);
-        if(this.originalItemStack.getType().isBlock()){
+        if (this.originalItemStack.getType().isBlock()) {
             asloc.add(0, 1, 0);
         }
         switch (containerBlockFace) {
@@ -137,6 +137,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 if (Util.isTool(this.originalItemStack.getType())) {
                     asloc.setYaw(90);
                     asloc.add(0.9, -0.4, 1);
+                } else if (originalItemStack.getType().isBlock()) {
+                    asloc.add(0.87, -0.4, 0.2);
                 } else {
                     asloc.setYaw(0);
                     asloc.add(0.9, -0.4, 0);
@@ -145,6 +147,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
             case WEST:
                 if (Util.isTool(this.originalItemStack.getType())) {
                     asloc.add(0.9, -0.4, 0);
+                } else if (originalItemStack.getType().isBlock()) {
+                    asloc.add(0.85, -0.4, 0.15);
                 } else {
                     asloc.setYaw(-90);
                     asloc.add(-0.1, -0.4, 0.15);
@@ -153,6 +157,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
             case EAST:
                 if (Util.isTool(this.originalItemStack.getType())) {
                     asloc.add(0.9, -0.4, 0);
+                } else if (originalItemStack.getType().isBlock()) {
+                    asloc.setYaw(-90);
+                    asloc.add(0.15, -0.4, 0.1);
                 } else {
                     asloc.setYaw(-90);
                     asloc.add(0, -0.4, 0.1);
@@ -162,6 +169,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 if (Util.isTool(this.originalItemStack.getType())) {
                     asloc.setYaw(90);
                     asloc.add(1, -0.4, 1);
+                } else if (originalItemStack.getType().isBlock()) {
+                    asloc.add(0.85, -0.4, 0.1);
                 } else {
                     asloc.add(0.9, -0.4, 0);
                 }
