@@ -1,28 +1,32 @@
-package org.maxgamer.quickshop.Shop;
+package org.maxgamer.quickshop.Event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.maxgamer.quickshop.Shop.Shop;
 
-public class ShopPurchaseEvent extends Event implements Cancellable {
+public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private Shop shop;
     private Player p;
     private int amount;
     private boolean cancelled;
+    private double tax;
 
     /**
      * Builds a new shop purchase event
+     * This time, purchase not start, please listen the ShopSuccessPurchaseEvent.
      *
      * @param shop   The shop bought from
      * @param p      The player buying
      * @param amount The amount they're buying
      */
-    public ShopPurchaseEvent(Shop shop, Player p, int amount) {
+    public ShopSuccessPurchaseEvent(Shop shop, Player p, int amount, double tax) {
         this.shop = shop;
         this.p = p;
         this.amount = amount;
+        this.tax = tax;
     }
 
     /**
@@ -50,6 +54,15 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
      */
     public int getAmount() {
         return this.amount;
+    }
+
+    /**
+     * Get the tax in this purchase
+     *
+     * @return Tax
+     */
+    public double getTax() {
+        return tax;
     }
 
     @Override
