@@ -51,50 +51,6 @@ public class ItemMatcher {
         if (stack1.hasItemMeta()) {
             if (!itemMetaMatcher.matches(stack1, stack2))
                 return false;
-            // /** DisplayName check **/
-            // if (stack1Meta.hasDisplayName() != stack2Meta.hasDisplayName())
-            //     return false; //Has displayName check
-            // if (stack1Meta.hasDisplayName()) {
-            //     String stack1DisplayName = stack1Meta.getDisplayName();
-            //     String stack2DisplayName = stack2Meta.getDisplayName();
-            //     if (!stack1DisplayName.equals(stack2DisplayName))
-            //         return false; //DisplayName check;
-            // }
-            // /** Lores check **/
-            // if (stack1Meta.hasLore() != stack2Meta.hasLore())
-            //     return false;
-            // if (stack1Meta.hasLore()) {
-            //     if (stack1Meta.getLore().hashCode() != stack2Meta.getLore().hashCode())
-            //         return false;
-            // }
-            // /** Enchants check **/
-            // if (stack1Meta.hasEnchants() != stack2Meta.hasEnchants())
-            //     return false;
-            // if (stack1Meta.hasEnchants()) {
-            //     Map<Enchantment, Integer> stack1Ench = stack1Meta.getEnchants();
-            //     Map<Enchantment, Integer> stack2Ench = stack2Meta.getEnchants();
-            //     if (stack1Ench.hashCode() != stack2Ench.hashCode())
-            //         return false;
-            // }
-            // /** Damage check **/
-            // if (stack1Meta instanceof Damageable != stack2Meta instanceof Damageable)
-            //     return false;
-            // if (stack1Meta instanceof Damageable) {
-            //     Damageable stack1Damage = (Damageable) stack1Meta;
-            //     Damageable stack2Damage = (Damageable) stack2Meta;
-            //     if (stack1Damage.hashCode() != stack2Damage.hashCode())
-            //         return false;
-            // }
-            // /** Potion check **/
-            // if (stack1Meta instanceof PotionMeta != stack2Meta instanceof Damageable)
-            //     return false;
-            // if (stack1Meta instanceof PotionMeta) {
-            //     PotionMeta stack1Potion = (PotionMeta) stack1Meta;
-            //     PotionMeta stack2Potion = (PotionMeta) stack2Meta;
-            //     if (stack1Potion.hashCode() != stack2Potion.hashCode())
-            //         return false;
-            //
-            // }
         }
         return true;
     }
