@@ -218,7 +218,9 @@ public class Util {
      */
     @Deprecated
     public static Block getSecondHalf_old(@NotNull Block b) {
-        if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
+        // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
+        //         //     return null;
+        if (!isDoubleChest(b))
             return null;
         Block[] blocks = new Block[4];
         blocks[0] = b.getRelative(1, 0, 0);
@@ -241,9 +243,8 @@ public class Util {
      * @return the block which is also a chest and connected to b.
      */
     public static Block getSecondHalf(@NotNull Block b) {
-        if ((b.getType() != Material.CHEST) && (b.getType() != Material.TRAPPED_CHEST)) {
+        if (!isDoubleChest(b))
             return null;
-        }
         Chest oneSideOfChest = (Chest) b.getState();
         InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
         if (chestHolder instanceof DoubleChest) {
@@ -1195,6 +1196,12 @@ public class Util {
         return builder.toString();
     }
 
+    /**
+     * Check a string is or not a UUID string
+     *
+     * @param string Target string
+     * @return is UUID
+     */
     public static boolean isUUID(@NotNull String string) {
         if (string.length() != 36 && string.length() != 32)
             return false;
@@ -1215,7 +1222,21 @@ public class Util {
         }
     }
 
+    /**
+     * Get the plugin is under dev-mode(debug mode)
+     * @return under dev-mode
+     */
     public static boolean isDevMode() {
         return devMode;
+    }
+
+    public static boolean isDoubleChest(@Nullable Block b) {
+        if (b == null)
+            return false;
+        if (!(b.getState() instanceof InventoryHolder))
+            return false;
+        InventoryHolder inventoryHolder = (InventoryHolder) b.getState();
+        return (inventoryHolder.getInventory() instanceof DoubleChest);
+
     }
 }
