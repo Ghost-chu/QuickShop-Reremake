@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
                     if (attached != null) {
                         shop = plugin.getShopManager().getShop(attached.getLocation());
                     }
-                } else if (b.getType() == Material.CHEST || b.getType() == Material.TRAPPED_CHEST) {
+                } else if (Util.isDoubleChest(b)) {
                     attached = Util.getSecondHalf(b);
                     if (attached != null) {
                         Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
