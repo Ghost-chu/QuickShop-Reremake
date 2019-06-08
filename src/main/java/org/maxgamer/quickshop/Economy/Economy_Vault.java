@@ -12,7 +12,8 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class Economy_Vault implements EconomyCore {
     private Economy vault;
-    QuickShop plugin;
+    private QuickShop plugin;
+    final private String errorMsg = "QuickShop got a error when calling your Economy system, is NOT a QuickShop error, please do not feedback this issue to QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     public Economy_Vault() {
         setupEconomy();
@@ -95,35 +96,63 @@ public class Economy_Vault implements EconomyCore {
     @Override
     public boolean deposit(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
-        return this.vault.depositPlayer(p, amount).transactionSuccess();
+        try {
+            return this.vault.depositPlayer(p, amount).transactionSuccess();
+        } catch (Throwable t) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            t.printStackTrace();
+            plugin.getLogger().warning(this.errorMsg);
+            return false;
+        }
     }
 
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
-        return this.vault.withdrawPlayer(p, amount).transactionSuccess();
+        try {
+            return this.vault.withdrawPlayer(p, amount).transactionSuccess();
+        } catch (Throwable t) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            t.printStackTrace();
+            plugin.getLogger().warning(this.errorMsg);
+            return false;
+        }
     }
 
     @Override
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
         OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
-        if (this.vault.getBalance(pFrom) >= amount) {
-            if (this.vault.withdrawPlayer(pFrom, amount).transactionSuccess()) {
-                if (!this.vault.depositPlayer(pTo, amount).transactionSuccess()) {
-                    this.vault.depositPlayer(pFrom, amount);
-                    return false;
+        try {
+            if (this.vault.getBalance(pFrom) >= amount) {
+                if (this.vault.withdrawPlayer(pFrom, amount).transactionSuccess()) {
+                    if (!this.vault.depositPlayer(pTo, amount).transactionSuccess()) {
+                        this.vault.depositPlayer(pFrom, amount);
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
             return false;
+        } catch (Throwable t) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            t.printStackTrace();
+            plugin.getLogger().warning(this.errorMsg);
+            return false;
         }
-        return false;
     }
 
     @Override
     public double getBalance(@NotNull UUID name) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
-        return this.vault.getBalance(p);
+        try {
+            return this.vault.getBalance(p);
+        } catch (Throwable t) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            t.printStackTrace();
+            plugin.getLogger().warning(this.errorMsg);
+            return 0.0;
+        }
     }
 }
