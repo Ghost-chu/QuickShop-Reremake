@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.ArmorStand;
@@ -134,7 +135,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         switch (containerBlockFace) {
             case SOUTH:
-                if (Util.isTool(this.originalItemStack.getType())) {
+                if (isTool(this.originalItemStack.getType())) {
                     asloc.setYaw(90);
                     asloc.add(0.9, -0.4, 1);
                 } else if (originalItemStack.getType().isBlock()) {
@@ -145,7 +146,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 }
                 break;
             case WEST:
-                if (Util.isTool(this.originalItemStack.getType())) {
+                if (isTool(this.originalItemStack.getType())) {
                     asloc.add(0.9, -0.4, 0);
                 } else if (originalItemStack.getType().isBlock()) {
                     asloc.add(0.85, -0.4, 0.15);
@@ -155,7 +156,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 }
                 break;
             case EAST:
-                if (Util.isTool(this.originalItemStack.getType())) {
+                if (isTool(this.originalItemStack.getType())) {
                     asloc.add(0.9, -0.4, 0);
                 } else if (originalItemStack.getType().isBlock()) {
                     asloc.setYaw(-90);
@@ -166,7 +167,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 }
                 break;
             case NORTH:
-                if (Util.isTool(this.originalItemStack.getType())) {
+                if (isTool(this.originalItemStack.getType())) {
                     asloc.setYaw(90);
                     asloc.add(1, -0.4, 1);
                 } else if (originalItemStack.getType().isBlock()) {
@@ -257,5 +258,10 @@ public class ArmorStandDisplayItem implements DisplayItem {
             return false;
         }
         return this.armorStand.isValid();
+    }
+
+    private static boolean isTool(Material material) {
+        String nlc = material.name().toLowerCase();
+        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
     }
 }
