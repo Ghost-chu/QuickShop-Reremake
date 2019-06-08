@@ -29,7 +29,7 @@ public class ShopDeleteEvent extends Event implements Cancellable {
      * @return only from memory
      */
     public boolean isFromMemory() {
-        return fromMemory;
+        return this.fromMemory;
     }
 
     /**
