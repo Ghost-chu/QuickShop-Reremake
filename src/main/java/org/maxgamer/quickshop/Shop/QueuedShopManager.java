@@ -65,10 +65,10 @@ public class QueuedShopManager {
         while (true) {
             if (!shuttingDown)
                 if (loadedShopInTick >= maxShopLoadPerTick) //Max loads check
-                    break; //Jump out, go next tick
+                    return; //Jump out, go next tick
             QueueShopObject queueShopObject = shopQueue.poll(); //Load QueueShopObject
             if (queueShopObject == null) //No more queue need to do
-                break; //Jump out, go next tick
+                return; //Jump out, go next tick
             this.doTask(queueShopObject);
             loadedShopInTick++;
             if (shuttingDown) {
