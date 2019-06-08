@@ -10,6 +10,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
+import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -103,6 +105,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.remove();
         this.armorStand = null;
         this.guardedIstack = null;
+        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack);
+        Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
     @Override
