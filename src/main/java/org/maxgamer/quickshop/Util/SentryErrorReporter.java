@@ -151,18 +151,7 @@ public class SentryErrorReporter {
                 .limit(5)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .findFirst();
-        if (!element.isPresent())
-            return false;
-
-        // for (StackTraceElement stackTraceElement : stackTraces) {
-        //     boolean byqs = stackTraceElement.getClassName().contains("org.maxgamer.quickshop");
-        //     if (byqs) {
-        //         return true;
-        //     }
-        // }
-        //Not found.
-        return true;
-
+        return element.isPresent();
     }
 
     /**
