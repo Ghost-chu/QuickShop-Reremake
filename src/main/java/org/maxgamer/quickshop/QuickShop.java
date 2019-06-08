@@ -57,6 +57,7 @@ public class QuickShop extends JavaPlugin {
     private BukkitTask itemWatcherTask;
     private LogWatcher logWatcher;
     private ItemMatcher itemMatcher;
+    private DisplayBugFixListener displayBugFixListener;
 //	/** Whether players are required to sneak to create/buy from a shop */
 //	public boolean sneak;
 //	/** Whether players are required to sneak to create a shop */
@@ -303,6 +304,7 @@ public class QuickShop extends JavaPlugin {
         chunkListener = new ChunkListener(this);
         inventoryListener = new DisplayProtectionListener(this);
         customInventoryListener = new CustomInventoryListener(this);
+        displayBugFixListener = new DisplayBugFixListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
@@ -310,6 +312,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
+        Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
 
         if (display && displayItemCheckTicks > 0) {
             new BukkitRunnable() {
