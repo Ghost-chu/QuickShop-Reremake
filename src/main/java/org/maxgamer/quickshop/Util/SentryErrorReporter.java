@@ -29,6 +29,8 @@ public class SentryErrorReporter {
     private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
+    private boolean tempDisable;
+    private boolean disable;
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -86,6 +88,16 @@ public class SentryErrorReporter {
      * @return Event Uniqud ID
      */
     public UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+        if (tempDisable) {
+            Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
+            this.tempDisable = true;
+            return null;
+        }
+        if (disable) {
+            Util.debugLog("Ignore a throw, cause report now is disabled.");
+            this.disable = true;
+            return null;
+        }
         Util.debugLog("Preparing for reporting errors...");
         if (!enabled) {
             Util.debugLog("Errors not sended, cause ErrorReport not enabled.");
@@ -200,6 +212,30 @@ public class SentryErrorReporter {
             sendError(record.getThrown(), record.getMessage());
             return false; //Hide errors
         }
+    }
+
+    /**
+     * Set ignore throw.
+     * It will unlocked after accept a throw
+     */
+    public void ignoreThrow() {
+        tempDisable = true;
+    }
+
+    /**
+     * Set ignore throws.
+     * It will unlocked after called method resetIgnores.
+     */
+    public void ignoreThrows() {
+        disable = true;
+    }
+
+    /**
+     * Reset ignore throw(s).
+     */
+    public void resetIgnores() {
+        tempDisable = false;
+        disable = false;
     }
 
 }
