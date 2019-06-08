@@ -164,14 +164,6 @@ public class QuickShop extends JavaPlugin {
      * Load 3rdParty plugin support module.
      */
     private void load3rdParty() {
-        // ProtocolLib Support
-        // protocolManager = ProtocolLibrary.getProtocolManager();
-        // if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-        //     if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-        //         mvPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-        //         getLogger().info("Successfully loaded MultiverseCore support!");
-        //     }
-        // }
         // added for compatibility reasons with OpenInv - see
         // https://github.com/KaiKikuchi/QuickShop/issues/139
         if (getConfig().getBoolean("plugin.OpenInv")) {
