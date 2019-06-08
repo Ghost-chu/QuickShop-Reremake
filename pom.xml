@@ -167,6 +167,13 @@
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
+        <dependency>
+            <groupId>org.apache.clerezza.ext</groupId>
+            <artifactId>org.json.simple</artifactId>
+            <version>0.4</version>
+        </dependency>
+
 
         <!--<dependency>-->
         <!--<groupId>com.amihaiemil.web</groupId>-->
