@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -82,7 +81,6 @@ public class QuickShop extends JavaPlugin {
     private boolean useSpout = false;
     // private Metrics metrics;
     private QS commandExecutor = null;
-    private MultiverseCore mvPlugin = null;
     private int displayItemCheckTicks;
     private boolean noopDisable;
     private boolean setupDBonEnableding = false;
@@ -168,12 +166,12 @@ public class QuickShop extends JavaPlugin {
     private void load3rdParty() {
         // ProtocolLib Support
         // protocolManager = ProtocolLibrary.getProtocolManager();
-        if (getConfig().getBoolean("plugin.Multiverse-Core")) {
-            if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-                mvPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
-                getLogger().info("Successfully loaded MultiverseCore support!");
-            }
-        }
+        // if (getConfig().getBoolean("plugin.Multiverse-Core")) {
+        //     if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
+        //         mvPlugin = (MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core");
+        //         getLogger().info("Successfully loaded MultiverseCore support!");
+        //     }
+        // }
         // added for compatibility reasons with OpenInv - see
         // https://github.com/KaiKikuchi/QuickShop/issues/139
         if (getConfig().getBoolean("plugin.OpenInv")) {
