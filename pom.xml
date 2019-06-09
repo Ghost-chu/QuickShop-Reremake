@@ -173,37 +173,10 @@
             <artifactId>org.json.simple</artifactId>
             <version>0.4</version>
         </dependency>
-
-
-        <!--<dependency>-->
-        <!--<groupId>com.amihaiemil.web</groupId>-->
-        <!--<artifactId>eo-yaml</artifactId>-->
-        <!--<version>2.0.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--<artifactId>jackson-core</artifactId>-->
-        <!--<version>2.9.9</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--<artifactId>jackson-databind</artifactId>-->
-        <!--<version>2.9.9</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.fasterxml.jackson.dataformat</groupId>-->
-        <!--<artifactId>jackson-dataformat-yaml</artifactId>-->
-        <!--<version>2.9.9</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.25</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.snakeyaml</groupId>-->
-        <!--<artifactId>snakeyaml-engine</artifactId>-->
-        <!--<version>1.0</version>-->
-        <!--</dependency>-->
     </dependencies>
 </project>
