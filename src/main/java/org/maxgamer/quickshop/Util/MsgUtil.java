@@ -28,15 +28,14 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class MsgUtil {
-    static QuickShop plugin = QuickShop.instance;
-    //	private static YamlConfiguration messages;
+    private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration itemi18n;
     private static YamlConfiguration enchi18n;
     private static YamlConfiguration potioni18n;
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
     private static boolean Inited;
     private static YamlConfiguration messagei18n;
-    static File messageFile;
+    private static File messageFile;
 
     public static YamlConfiguration getI18nYaml() {
         return messagei18n;
