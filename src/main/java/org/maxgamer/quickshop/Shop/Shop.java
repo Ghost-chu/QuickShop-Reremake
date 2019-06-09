@@ -183,7 +183,6 @@ public abstract interface Shop {
      *
      * @return The text will show on the sign
      */
-    @Deprecated
     public abstract String getDataName();
 
     /**
