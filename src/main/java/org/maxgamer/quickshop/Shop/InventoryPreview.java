@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Event.ShopInventoryPreview;
+import org.maxgamer.quickshop.Event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -60,7 +60,7 @@ public class InventoryPreview implements Listener {
             return;
         if (player.isSleeping()) // Bed bug
             return;
-        ShopInventoryPreview shopInventoryPreview = new ShopInventoryPreview(player, itemStack);
+        ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
         Bukkit.getPluginManager().callEvent(shopInventoryPreview);
         if (shopInventoryPreview.isCancelled()) {
             Util.debugLog("Inventory preview was canceled by a plugin.");
