@@ -3,13 +3,13 @@ package org.maxgamer.quickshop.Database;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Queue;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Util.WarningSender;
 
@@ -62,7 +62,7 @@ public class DatabaseManager {
      */
     private void runTask() {
         while (true) {
-            UUID timer = Util.setTimer();
+            Timer timer = new Timer(true);
             PreparedStatement statement = sqlQueue.poll();
             if (statement == null)
                 break;
@@ -79,7 +79,7 @@ public class DatabaseManager {
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
             }
-            long tookTime = Util.endTimer(timer);
+            long tookTime = timer.endTimer();
             if (tookTime > 300)
                 warningSender
                         .sendWarn("Database performance warning: It took to long time (" + tookTime + ") to execute the task, change to a better MySQL server or switch to a local SQLite database!");
