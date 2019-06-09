@@ -433,40 +433,6 @@ public class Util {
     }
 
     /**
-     * Remapping the INT to ROMAIN
-     * 10=X 9=IX 5=V 4=IV 1=I
-     *
-     * @param value the num you want to convert to
-     * @return the Romain num
-     */
-    public static String toRomain(@NotNull Integer value) {
-        return toRoman(value.intValue());
-    }
-
-    private static final String[] ROMAN = { "X", "IX", "V", "IV", "I" };
-    private static final int[] DECIMAL = { 10, 9, 5, 4, 1 };
-
-    /**
-     * Converts the given number to roman numerals.
-     *
-     * @param n The number to convert
-     * @return The roman numeral representation of this number, or the number in
-     * decimal form as a string
-     */
-    public static String toRoman(int n) {
-        if (n <= 0 || n >= 40)
-            return "" + n;
-        String roman = "";
-        for (int i = 0; i < ROMAN.length; i++) {
-            while (n >= DECIMAL[i]) {
-                n -= DECIMAL[i];
-                roman += ROMAN[i];
-            }
-        }
-        return roman;
-    }
-
-    /**
      * @param mat The material to check
      * @return Returns true if the item is a tool (Has durability) or false if
      * it doesn't.
@@ -767,7 +733,7 @@ public class Util {
             a.addAll(Itemenchs.keySet());
             b.addAll(Itemenchs.values());
             for (int i = 0; i < a.size(); i++) {
-                finalItemdata += ChatColor.GRAY + a.get(i) + " " + toRomain(b.get(i)) + "\n";
+                finalItemdata += ChatColor.GRAY + a.get(i) + " " + RomanNumber.toRoman(b.get(i)) + "\n";
             }
 
             String potionResult = getPotiondata(itemStack);
@@ -838,7 +804,8 @@ public class Util {
         if (pMeta.hasCustomEffects()) {
             List<PotionEffect> cEffects = pMeta.getCustomEffects();
             for (PotionEffect potionEffect : cEffects) {
-                pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + toRomain(potionEffect.getAmplifier()));
+                pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + RomanNumber
+                        .toRoman(potionEffect.getAmplifier()));
             }
         }
         if (!pEffects.isEmpty()) {
