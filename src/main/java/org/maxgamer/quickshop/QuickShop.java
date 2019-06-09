@@ -144,7 +144,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
         }
 
-        if (Util.isDevMode()) {
+        if (Util.isDevEdition()) {
             getLogger().severe("WARNING: You are running QSRR in dev-mode");
             getLogger().severe("WARNING: Keep backup and DO NOT run this in a production environment!");
             getLogger().severe("WARNING: Test version may destroy everything!");
