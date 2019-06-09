@@ -852,8 +852,13 @@ public class MsgUtil {
                 if (livingEntity instanceof Tameable) {
                     Tameable tamedEntity = (Tameable) livingEntity;
                     AnimalTamer tamer = tamedEntity.getOwner();
-                    Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
-                            .name() + "; Tamer=" + Bukkit.getOfflinePlayer(tamer.getUniqueId()));
+                    if (tamer != null) {
+                        Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
+                                .name() + "; Tamer=" + Bukkit.getOfflinePlayer(tamer.getUniqueId()));
+                    } else {
+                        Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
+                                .name());
+                    }
                 }
                 Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType().name());
             }
