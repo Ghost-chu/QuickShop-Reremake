@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.*;
@@ -190,7 +191,19 @@ public class ItemMatcher {
             Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
             Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
 
-            return (enchMap1.hashCode() == enchMap2.hashCode());
+            if (enchMap1.hashCode() == enchMap2.hashCode())
+                return true;
+
+            if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta)
+                return false;
+            if (meta1 instanceof EnchantmentStorageMeta) {
+                EnchantmentStorageMeta stor1 = (EnchantmentStorageMeta) meta1;
+                EnchantmentStorageMeta stor2 = (EnchantmentStorageMeta) meta2;
+                if (stor1.hasStoredEnchants() != stor2.hasStoredEnchants())
+                    return false;
+                return (stor1.getStoredEnchants().hashCode() == stor2.getStoredEnchants().hashCode());
+            }
+            return true;
         }
 
         private boolean potionMatches(ItemMeta meta1, ItemMeta meta2) {
