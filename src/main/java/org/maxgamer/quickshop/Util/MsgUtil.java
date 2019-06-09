@@ -441,8 +441,12 @@ public class MsgUtil {
             if (itemi18nString != null && !itemi18nString.isEmpty())
                 continue;
             String itemName = material.name();
-            itemi18n.set("itemi18n." + itemName, Util.prettifyText(itemName));
-            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(itemName) + "] ,adding it in config...");
+            String lastItemName = Util.prettifyText(itemName);
+            String localizedName = Util.getLocalizedName(new ItemStack(material));
+            if (localizedName != null)
+                lastItemName = localizedName;
+            itemi18n.set("itemi18n." + itemName, lastItemName);
+            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(lastItemName) + "] ,adding it in config...");
         }
         try {
             itemi18n.save(itemi18nFile);
