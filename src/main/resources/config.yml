@@ -189,8 +189,8 @@ shop:
 #This feature can help solve server laggy when load huge numbers shops or dead-lock threads.
 queue:
     #Enable shop queue feature
-    enable: true
-    shops-per-tick: 5
+    enable: false
+    shops-per-tick: 200
 
 #List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
