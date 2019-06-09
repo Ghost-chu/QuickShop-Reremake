@@ -3,7 +3,7 @@ package org.maxgamer.quickshop.Util;
 import java.util.List;
 import java.util.Map;
 
-import lombok.*;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -15,10 +15,14 @@ import org.maxgamer.quickshop.QuickShop;
 /**
  * A util allow quickshop check item matches easy and quick.
  */
-@AllArgsConstructor
 public class ItemMatcher {
     private QuickShop plugin;
-    private final ItemMetaMatcher itemMetaMatcher = new ItemMetaMatcher();
+    private ItemMetaMatcher itemMetaMatcher;
+
+    public ItemMatcher(QuickShop plugin) {
+        this.plugin = plugin;
+        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"));
+    }
 
     /**
      * Compares two items to each other. Returns true if they match.
@@ -60,6 +64,28 @@ public class ItemMatcher {
     }
 
     class ItemMetaMatcher {
+        private boolean damage;
+        private boolean displayname;
+        private boolean lores;
+        private boolean enchs;
+        private boolean potions;
+        private boolean attributes;
+        private boolean itemflags;
+        private boolean custommodeldata;
+
+        public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
+            this.damage = itemMatcherConfig.getBoolean("damage");
+            this.displayname = itemMatcherConfig.getBoolean("displayname");
+            this.lores = itemMatcherConfig.getBoolean("lores");
+            this.enchs = itemMatcherConfig.getBoolean("enchs");
+            this.potions = itemMatcherConfig.getBoolean("potions");
+            this.attributes = itemMatcherConfig.getBoolean("attributes");
+            this.itemflags = itemMatcherConfig.getBoolean("itemflags");
+            this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
+        }
+
+
+
         boolean matches(ItemStack stack1, ItemStack stack2) {
             if (stack1.hasItemMeta() != stack2.hasItemMeta())
                 return false;
@@ -81,6 +107,8 @@ public class ItemMatcher {
                 return false;
             if (!enchMatches(meta1, meta2))
                 return false;
+            if (!potionMatches(meta1, meta2))
+                return false;
             if (!attributeModifiersMatches(meta1, meta2))
                 return false;
             if (!itemFlagsMatches(meta1, meta2))
@@ -99,6 +127,8 @@ public class ItemMatcher {
         }
 
         private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.damage)
+                return true;
             if ((meta1 instanceof Damageable) != (meta2 instanceof Damageable))
                 return false;
 
@@ -119,6 +149,8 @@ public class ItemMatcher {
         }
 
         private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.displayname)
+                return true;
             if (meta1.hasDisplayName() != meta2.hasDisplayName())
                 return false;
 
@@ -129,6 +161,8 @@ public class ItemMatcher {
         }
 
         private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.lores)
+                return true;
             if (meta1.hasLore() != meta2.hasLore())
                 return false;
 
@@ -145,6 +179,8 @@ public class ItemMatcher {
         }
 
         private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.enchs)
+                return true;
             if (meta1.hasEnchants() != meta2.hasEnchants())
                 return false;
 
@@ -158,6 +194,8 @@ public class ItemMatcher {
         }
 
         private boolean potionMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.potions)
+                return true;
             if ((meta1 instanceof PotionMeta) != (meta2 instanceof PotionMeta))
                 return false;
 
@@ -186,6 +224,8 @@ public class ItemMatcher {
         }
 
         private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.attributes)
+                return true;
             if (meta1.hasAttributeModifiers() != meta2.hasAttributeModifiers())
                 return false;
 
@@ -196,10 +236,14 @@ public class ItemMatcher {
         }
 
         private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.itemflags)
+                return true;
             return (meta1.getItemFlags().hashCode() == meta2.getItemFlags().hashCode());
         }
 
         private boolean customModelDataMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.custommodeldata)
+                return true;
             if (meta1.hasCustomModelData() != meta2.hasCustomModelData())
                 return false;
             if (!meta1.hasCustomModelData())

@@ -700,9 +700,23 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 32) {
             getConfig().set("effect.sound.ontabcomplete", true);
             getConfig().set("effect.sound.oncommand", true);
-            getConfig().set("effect.sound.ononclick", true); ;
+            getConfig().set("effect.sound.ononclick", true);
             getConfig().set("config-version", 33);
             selectedVersion = 33;
+            saveConfig();
+            reloadConfig();
+        }
+        if (selectedVersion == 33) {
+            getConfig().set("matcher.item.damage", true);
+            getConfig().set("matcher.item.displayname", true);
+            getConfig().set("matcher.item.lores", true);
+            getConfig().set("matcher.item.enchs", true);
+            getConfig().set("matcher.item.potions", true);
+            getConfig().set("matcher.item.attributes", true);
+            getConfig().set("matcher.item.itemflags", true);
+            getConfig().set("matcher.item.custommodeldata", true);
+            getConfig().set("config-version", 34);
+            selectedVersion = 34;
             saveConfig();
             reloadConfig();
         }
