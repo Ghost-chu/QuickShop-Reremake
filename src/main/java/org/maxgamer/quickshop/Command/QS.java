@@ -402,7 +402,8 @@ public class QS implements CommandExecutor {
                                         b.getRelative(p.getFacing().getOppositeFace()));
                                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                                 p.sendMessage(
-                                        MsgUtil.getMessage("how-much-to-trade-for", Util.getName(info.getItem())));
+                                        MsgUtil.getMessage("how-much-to-trade-for", MsgUtil
+                                                .getItemi18n(info.getItem().getType().name())));
                             } else {
                                 plugin.getShopManager().handleChat(p, args[1]);
                             }
