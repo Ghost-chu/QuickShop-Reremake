@@ -97,7 +97,7 @@ public interface DisplayItem {
      * @param itemStack Old itemStack
      * @return New itemStack with protect flag.
      */
-    public static ItemStack createGuardItemStack(ItemStack itemStack) {
+    public static ItemStack createGuardItemStack(ItemStack itemStack, Shop shop) {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
@@ -105,7 +105,8 @@ public interface DisplayItem {
         }
         java.util.List<String> lore = new ArrayList<String>();
         for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem"); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+            lore.add("QuickShop DisplayItem#" + shop
+                    .hashCode()); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
@@ -134,6 +135,32 @@ public interface DisplayItem {
                 if (lore.toLowerCase().contains("quickshop displayitem")) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check the itemStack is target shop's display
+     *
+     * @param itemStack Target ItemStack
+     * @param shop      Target shop
+     * @return Is target shop's display
+     */
+    public static boolean checkIsTargetShopDisplay(ItemStack itemStack, Shop shop) {
+        if (itemStack == null)
+            return false;
+        itemStack = itemStack.clone();
+        if (!itemStack.hasItemMeta())
+            return false;
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (!iMeta.hasLore())
+            return false;
+        List<String> lores = iMeta.getLore();
+        for (String lore : lores) {
+            if (lore.toLowerCase().contains("quickshop displayitem")) {
+                if (lore.equals("quickshop displayitem#" + shop.hashCode()))
+                    return true;
             }
         }
         return false;
