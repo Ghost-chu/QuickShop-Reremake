@@ -183,8 +183,10 @@ public class Util {
      * @return The percentage 'health' the tool has. (Opposite of total damage)
      */
     public static String getToolPercentage(@NotNull ItemStack item) {
-        if (!(item instanceof Damageable))
+        if (!(item.getItemMeta() instanceof Damageable)) {
+            Util.debugLog(item.getType().name() + " not Damageable.");
             return "Error: NaN";
+        }
         double dura = ((Damageable) item.getItemMeta()).getDamage();
         double max = item.getType().getMaxDurability();
         DecimalFormat formatter = new DecimalFormat("0");
