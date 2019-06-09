@@ -84,7 +84,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         ArmorStand armorStand = (ArmorStand) entity;
         //Set item protect in the armorstand's hand
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         armorStand.setItemInHand(guardedIstack);
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
@@ -221,10 +221,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (plugin.getItemMatcher().matches(eArmorStand.getItemInHand(), this.guardedIstack)) {
                 if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
-                            .getLocation().toString());
-                    entity.remove();
-                    removed = true;
+                    if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+                        Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
+                                .getLocation().toString());
+                        entity.remove();
+                        removed = true;
+                    }
                 }
             }
         }
