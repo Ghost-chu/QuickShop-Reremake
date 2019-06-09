@@ -37,6 +37,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * @author MACHENIKE
  */
+@SuppressWarnings("WeakerAccess")
 public class Util {
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
@@ -108,11 +109,6 @@ public class Util {
      */
     public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
         return restrictedPrices.get(material);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static boolean isTransparent(@NotNull Material m) {
-        return m.isTransparent();
     }
 
     /**
