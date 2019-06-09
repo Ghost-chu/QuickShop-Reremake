@@ -872,5 +872,4 @@ public class MsgUtil {
         Util.sendMessageToOps(ChatColor.RED + "Location: " + "World=" + location.getWorld().getName() + " X=" + location
                 .getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ());
     }
-
 }
