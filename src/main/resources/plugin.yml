@@ -50,13 +50,13 @@ permissions:
         description: Allows a Staff Member to change the owner of any shop
         default: op
     quickshop.staff:
-        description: Allow shops owner set staffs for shop
+        description: Allow a shop owner to add staff to the shop
         default: op
     quickshio.areashop.bypass:
-        description: If you enable special zone only and have this permission, the special zone only will ignore you limit.
+        description: If you enable a special zone only and the player has this permission, the special zone will only ignore your limit.
         default: op
     quickshop.find:
-        description: Allows a player to locate the nearest shop of a specific item type. Works in a 3 chunk radius.
+        description: Allows a player to locate the nearest shop that has a specific item type. Works in a 3 chunk radius.
         default: true
     quickshop.refill:
         description: Allows a Staff Member to refill the shop theyre looking at with the given number of items.
@@ -65,10 +65,10 @@ permissions:
         description: Allows a Staff Member to empty the shop theyre looking at of all items.
         default: op
     quickshop.debug:
-        description: Switch debug or non-debug mode
+        description: Switch to or from developer mode
         default: op
     quickshop.export:
-        description: Allows exporting database to mysql or sqlite
+        description: Allows exporting the database to mysql or sqlite
         default: op
     quickshop.alerts:
         description: Alert the player when someone tries to cheat with the display item
@@ -80,11 +80,11 @@ permissions:
         description: Show QuickShop Statistics.
         default: op
     quickshop.fetchmessage:
-        description: Use command /qs fetchmessage to manual fetch shop message from database. Not effect auto fetch if you turn on auto fetch...
+        description: Use command /qs fetchmessage to manual fetch shop message from database. Will not effect auto fetch if you have it on...
         default: true
     quickshop.paste:
-        description: Command for paste server infomation to Pastebin. !WARN, paste may leak your config.
+        description: Command to upload server information to Pastebin. !WARNING, This will upload your data and it may leak your server configuration and other sensitive information.
         default: op
     quickshop.preview:
-        description: Permission for preview item use GUI
+        description: Permission for preview item to use a GUI
         default: true
