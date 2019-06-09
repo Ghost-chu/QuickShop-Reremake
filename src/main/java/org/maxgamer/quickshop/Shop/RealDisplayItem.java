@@ -78,7 +78,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         Item item = (Item) entity;
         //Set item protect in the armorstand's hand
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack);
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         item.setItemStack(this.guardedIstack);
         Util.debugLog("Successfully safeGuard Item: " + item.getLocation().toString());
     }
@@ -110,10 +110,12 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             if (plugin.getItemMatcher().matches(eItem.getItemStack(), this.guardedIstack)) {
                 if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
-                            .getLocation().toString());
-                    entity.remove();
-                    removed = true;
+                    if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
+                        Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
+                                .getLocation().toString());
+                        entity.remove();
+                        removed = true;
+                    }
                 }
             }
         }
