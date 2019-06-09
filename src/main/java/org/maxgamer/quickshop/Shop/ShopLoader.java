@@ -43,10 +43,10 @@ public class ShopLoader {
 
         UUID totalLoadTimer = Util.setTimer();
         try {
-            this.plugin.getLogger().info("Loading shops from database...");
+            this.plugin.getLogger().info("Loading shops from the database...");
             UUID fetchUUID = Util.setTimer();
             ResultSet rs = plugin.getDatabaseHelper().selectAllShops(this.plugin.getDatabase());
-            this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from database.");
+            this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 UUID singleShopLoadTimer = Util.setTimer();
 
@@ -59,7 +59,7 @@ public class ShopLoader {
                         .getType());
 
                 if (shopNullCheck(shop)) {
-                    Util.debugLog("Somethings went wrong, skipping loading...");
+                    Util.debugLog("Somethings gone wrong, skipping the loading...");
                     loadAfterWorldLoaded++;
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
@@ -72,7 +72,7 @@ public class ShopLoader {
                 if (chunkLoaded) {
                     //Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                        Util.debugLog("Target block can't be shop, removing from database...");
+                        Util.debugLog("Target block can't be a shop, removing it from the database...");
                         shop.delete();
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
@@ -90,7 +90,7 @@ public class ShopLoader {
             this.plugin.getLogger()
                     .info("Successfully loaded " + totalLoaded + " shops! (Used " + totalUsedTime + "ms, Avg " + avgPerShop + "ms per shop)");
             this.plugin.getLogger()
-                    .info(this.loadAfterChunkLoaded + " shops will load after chunk loaded, " + this.loadAfterWorldLoaded + " shops will load after world loaded.");
+                    .info(this.loadAfterChunkLoaded + " shops will load after chunk have loaded, " + this.loadAfterWorldLoaded + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
@@ -180,7 +180,7 @@ public class ShopLoader {
 
         logger.warning("#######################################");
         if (errors > 10)
-            logger.severe("QuickShop detect too many errors when loading shops, you should backup your shop database and ask developer to get help");
+            logger.severe("QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
     }
 
     @Getter
@@ -250,8 +250,8 @@ public class ShopLoader {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
                 e.printStackTrace();
-                plugin.getLogger().warning("Failed load shop data, cause target config can't deserialize to ItemStack.");
-                Util.debugLog("Failed load data to ItemStack: " + itemConfig);
+                plugin.getLogger().warning("Failed load shop data, because target config can't deserialize the ItemStack.");
+                Util.debugLog("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }
         }
