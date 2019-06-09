@@ -3,7 +3,6 @@ package org.maxgamer.quickshop.Util;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -44,9 +43,7 @@ public class Util {
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
     private static List<String> worldBlacklist = new ArrayList<>();
     private static QuickShop plugin;
-    private static Method storageContents;
     private static boolean devMode;
-    private static Map<UUID, Long> timerMap = new HashMap<UUID, Long>();
 
     /**
      * Initialize the Util tools.
@@ -986,39 +983,7 @@ public class Util {
         plugin.getLogger().info("[PERFORMANCE] [" + className + "] [" + methodName + "] Used time " + tookedTime + "ns.");
     }
 
-    /**
-     * Create a Timer and return this timer's UUID
-     * Time Unit: ms
-     *
-     * @return The timer UUID.
-     */
-    public static UUID setTimer() {
-        UUID random = UUID.randomUUID();
-        timerMap.put(random, System.currentTimeMillis());
-        return random;
-    }
 
-    /**
-     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
-     *
-     * @param uuid timer's uuid
-     * @return long time
-     */
-    public static long getTimer(@NotNull UUID uuid) {
-        return System.currentTimeMillis() - timerMap.get(uuid);
-    }
-
-    /**
-     * Return how long time running when timer set and destory the timer.
-     *
-     * @param uuid time's uuid
-     * @return long time
-     */
-    public static long endTimer(@NotNull UUID uuid) {
-        long time = System.currentTimeMillis() - timerMap.get(uuid);
-        timerMap.remove(uuid);
-        return time;
-    }
 
     /**
      * Get how many shop in the target world.
