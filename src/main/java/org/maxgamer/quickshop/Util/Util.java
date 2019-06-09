@@ -908,6 +908,7 @@ public class Util {
     public static boolean isAir(@NotNull Material mat) {
         if (mat == Material.AIR)
             return true;
+        /* For 1.13 new AIR */
         try {
             if (mat == Material.CAVE_AIR)
                 return true;
@@ -1122,6 +1123,7 @@ public class Util {
             return false;
         Util.debugLog("Run an extra uuid check for " + string + ". Length: " + string.length());
         try {
+            //noinspection ResultOfMethodCallIgnored
             UUID.fromString(string);
             return true;
         } catch (IllegalArgumentException e) {
