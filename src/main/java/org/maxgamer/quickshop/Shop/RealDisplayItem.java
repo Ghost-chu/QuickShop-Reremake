@@ -49,6 +49,10 @@ public class RealDisplayItem implements DisplayItem {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
+        if (!Util.isAir(getDisplayLocation().add(0, 1, 0).getBlock().getType())) {
+            Util.debugLog("Can't spawn displayItem cause not AIR block.");
+            return;
+        }
 
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
