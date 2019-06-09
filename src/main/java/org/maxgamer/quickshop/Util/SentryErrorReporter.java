@@ -68,7 +68,7 @@ public class SentryErrorReporter {
     /**
      * Unload Sentry error reporter
      */
-    public void unit() {
+    private void unit() {
         enabled = false;
     }
 
@@ -87,7 +87,7 @@ public class SentryErrorReporter {
      * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
-    public UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+    private UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         if (tempDisable) {
             Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
             this.tempDisable = true;
@@ -145,9 +145,7 @@ public class SentryErrorReporter {
      * @return Cause or not
      */
     private boolean checkWasCauseByQS(@NotNull Throwable throwable) {
-        StackTraceElement[] stackTraces = throwable.getStackTrace();
-        Optional<StackTraceElement> element;
-        element = Arrays.stream(throwable.getStackTrace())
+        Optional<StackTraceElement> element = Arrays.stream(throwable.getStackTrace())
                 .limit(5)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .findFirst();
@@ -169,7 +167,6 @@ public class SentryErrorReporter {
         } else {
             stackTraceElement = throwable.getStackTrace()[2];
         }
-
         String text = stackTraceElement.getClassName() + "#" + stackTraceElement.getMethodName() + "#" + stackTraceElement
                 .getLineNumber();
         if (!reported.contains(text)) {
@@ -203,6 +200,8 @@ public class SentryErrorReporter {
                 return true;
             }
             //There wasn't need check from who, it just directly report it.
+
+            //Do not reporting when it is develop env.
             if (Util.isDevMode()) {
                 return true;
             }
