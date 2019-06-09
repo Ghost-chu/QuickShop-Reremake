@@ -177,7 +177,7 @@ public class BlockListener implements Listener {
         }
             event.setNewCurrent(event.getOldCurrent());
         //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
-            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Redstone tried to active of " + shop);
+            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
