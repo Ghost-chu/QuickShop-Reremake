@@ -96,16 +96,6 @@ public class Util {
                 }
             }
         }
-
-        // try {
-        //     storageContents = Inventory.class.getMethod("getStorageContents");
-        // } catch (Exception e) {
-        //     try {
-        //         storageContents = Inventory.class.getMethod("getContents");
-        //     } catch (Exception e1) {
-        //         throw new RuntimeException(e1);
-        //     }
-        // }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
 
     }
@@ -777,7 +767,7 @@ public class Util {
             a.addAll(Itemenchs.keySet());
             b.addAll(Itemenchs.values());
             for (int i = 0; i < a.size(); i++) {
-                finalItemdata += ChatColor.GRAY + a.get(i) + " " + Util.formatEnchLevel(b.get(i)) + "\n";
+                finalItemdata += ChatColor.GRAY + a.get(i) + " " + toRomain(b.get(i)) + "\n";
             }
 
             String potionResult = getPotiondata(itemStack);
@@ -802,29 +792,29 @@ public class Util {
         }
     }
 
-    /**
-     * Format ench level.
-     *
-     * @param level level
-     * @return formated level
-     */
-    private static String formatEnchLevel(@NotNull Integer level) {
-        switch (level) {
-            case 1:
-                return "I";
-            case 2:
-                return "II";
-            case 3:
-                return "III";
-            case 4:
-                return "IV";
-            case 5:
-                return "V";
-            default:
-                return String.valueOf(level);
-
-        }
-    }
+    // /**
+    //  * Format ench level.
+    //  *
+    //  * @param level level
+    //  * @return formated level
+    //  */
+    // private static String formatEnchLevel(@NotNull Integer level) {
+    //     switch (level) {
+    //         case 1:
+    //             return "I";
+    //         case 2:
+    //             return "II";
+    //         case 3:
+    //             return "III";
+    //         case 4:
+    //             return "IV";
+    //         case 5:
+    //             return "V";
+    //         default:
+    //             return String.valueOf(level);
+    //
+    //     }
+    // }
 
     /**
      * @param iStack itemstack
@@ -848,7 +838,7 @@ public class Util {
         if (pMeta.hasCustomEffects()) {
             List<PotionEffect> cEffects = pMeta.getCustomEffects();
             for (PotionEffect potionEffect : cEffects) {
-                pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + formatEnchLevel(potionEffect.getAmplifier()));
+                pEffects.add(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + toRomain(potionEffect.getAmplifier()));
             }
         }
         if (!pEffects.isEmpty()) {
@@ -877,14 +867,15 @@ public class Util {
     }
 
     /**
-     * Check QuickShop is running on dev mode or not.
+     * Check QuickShop is running on dev edition or not.
      *
-     * @return DevMode status
+     * @return DevEdition status
      */
     public static boolean isDevEdition() {
         String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
-        if (version.contains("dev") | version.contains("develop") | version.contains("alpha") | version.contains("beta") | version
-                .contains("test") | version.contains("snapshot") | version.contains("preview")) {
+        if (version.contains("dev") || version.contains("develop") || version.contains("alpha") || version
+                .contains("beta") || version
+                .contains("test") || version.contains("snapshot") || version.contains("preview")) {
             return true;
         } else {
             return false;
@@ -976,14 +967,6 @@ public class Util {
             plugin.getLogger().info("[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log);
         }
     }
-
-    public static void permformanceLog(@NotNull String className, @NotNull String methodName, long tookedTime) {
-        if (!devMode)
-            return;
-        plugin.getLogger().info("[PERFORMANCE] [" + className + "] [" + methodName + "] Used time " + tookedTime + "ns.");
-    }
-
-
 
     /**
      * Get how many shop in the target world.
@@ -1178,14 +1161,14 @@ public class Util {
             return false;
         }
     }
-
-    public static void shoppablesCheck(@NotNull Shop shop) {
-        if (!Util.canBeShop(shop.getLocation().getBlock())) {
-            Util.debugLog("This shopblock can't be a shop, deleting...");
-            shop.onUnload();
-            shop.delete();
-        }
-    }
+    //
+    // public static void shoppablesCheck(@NotNull Shop shop) {
+    //     if (!Util.canBeShop(shop.getLocation().getBlock())) {
+    //         Util.debugLog("This shopblock can't be a shop, deleting...");
+    //         shop.onUnload();
+    //         shop.delete();
+    //     }
+    // }
 
     /**
      * Get the plugin is under dev-mode(debug mode)
