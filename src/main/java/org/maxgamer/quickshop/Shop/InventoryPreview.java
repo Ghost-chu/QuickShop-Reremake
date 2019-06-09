@@ -63,7 +63,7 @@ public class InventoryPreview implements Listener {
         ShopInventoryPreview shopInventoryPreview = new ShopInventoryPreview(player, itemStack);
         Bukkit.getPluginManager().callEvent(shopInventoryPreview);
         if (shopInventoryPreview.isCancelled()) {
-            Util.debugLog("Inventory preview was cancelled by a plugin.");
+            Util.debugLog("Inventory preview was canceled by a plugin.");
             return;
         }
         final int size = 9;

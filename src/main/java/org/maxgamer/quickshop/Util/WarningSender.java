@@ -23,7 +23,7 @@ public class WarningSender {
      * Send warning a warning
      *
      * @param text The text you want send/
-     * @return Success sended, if in cooldowning, it will return false
+     * @return Success sent, if it is in a cool-down, it will return false
      */
     public boolean sendWarn(String text) {
         if (System.currentTimeMillis() - lastSend > cooldown) {
