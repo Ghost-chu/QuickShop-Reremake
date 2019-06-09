@@ -51,7 +51,7 @@ public class QueuedShopManager {
     public void uninit() {
         if ((task != null) && !task.isCancelled())
             task.cancel();
-        plugin.getLogger().info("Please waiting for finish the shops queue works...");
+        plugin.getLogger().info("Please wait for the shop queue to finish...");
         runTask(true);
     }
 
@@ -76,7 +76,7 @@ public class QueuedShopManager {
                     Util.debugLog("Have " + shopQueue.size() + " tasks remaining");
                     if (String.valueOf(shopQueue.size()).endsWith("0"))
                         plugin.getLogger().info("Have " + shopQueue
-                                .size() + " tasks remaining in the queue to waiting finish, this may need take while...");
+                                .size() + " tasks remaining in the queue waiting to finish, this may need take while...");
                 }
             }
         }
@@ -135,7 +135,7 @@ public class QueuedShopManager {
                 this.shopQueue.offer(queueShopObject);
                 if (this.shopQueue.size() > 50)
                     this.warningSender
-                            .sendWarn("Too many task in queue and can't execute them timely, please pick a bigger number in queue.shops-per-tick in config.yml");
+                            .sendWarn("There are too many task in queue and they can't be executed in a timely manner, please raise the number of shops per tick via queue.shops-per-tick in config.yml");
             } else {
                 this.doTask(queueShopObject); //Direct do actions when turn off queue
             }

@@ -365,7 +365,7 @@ public class QS implements CommandExecutor {
                         if (Util.canBeShop(b)) {
                             if (p != null && b != null && p.isOnline()) {
                                 if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
-                                    Util.debugLog("Failed permission build check, cancenlled");
+                                    Util.debugLog("Failed permission build check, canceled");
                                     return;
                                 }
                             }
@@ -582,7 +582,7 @@ public class QS implements CommandExecutor {
                         } catch (Exception e) {
                             e.getMessage();
                             plugin.getLogger().log(Level.WARNING,
-                                    "QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
+                                    "QuickShop can't pay tax to the account in config.yml, please set the tax account name to an existing player!");
                         }
 
                     }
@@ -725,12 +725,12 @@ public class QS implements CommandExecutor {
     private void about(CommandSender sender) {
         sender.sendMessage("[QuickShop] About QuickShop");
         sender.sendMessage("[QuickShop] Hello, I'm Ghost_chu Author of QS reremake.");
-        sender.sendMessage("[QuickShop] This plugin is remake by SunnySide Community.");
-        sender.sendMessage("[QuickShop] Original author is KaiNoMood. This is QS unofficial version.");
-        sender.sendMessage("[QuickShop] Have more feature, and design for 1.13 and higher version.");
-        sender.sendMessage("[QuickShop] You can see our SpigotMC page to read more:");
+        sender.sendMessage("[QuickShop] This plugin is a remake by the SunnySide Community.");
+        sender.sendMessage("[QuickShop] Original author is KaiNoMood. This is an unofficial QS version.");
+        sender.sendMessage("[QuickShop] It has more feature, and has been designed for 1.13 and newer versions.");
+        sender.sendMessage("[QuickShop] You can look at our SpigotMC page to learn more:");
         sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/quickshop-reremake-for-1-13.62575/");
-        sender.sendMessage("[QuickShop] Thanks for use QuickShop-Reremake.");
+        sender.sendMessage("[QuickShop] Thanks for using QuickShop-Reremake.");
     }
 
     private void reload(CommandSender sender) {
@@ -757,7 +757,7 @@ public class QS implements CommandExecutor {
                         sender.sendMessage(paste.pasteTheText(paste.genNewPaste()));
 
                     } catch (Exception err) {
-                        sender.sendMessage("Paste failed, see console for details.");
+                        sender.sendMessage("The paste failed, see console for details.");
                     }
                 }
             }.runTaskAsynchronously(plugin);

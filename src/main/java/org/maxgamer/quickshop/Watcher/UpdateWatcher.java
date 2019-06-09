@@ -64,7 +64,7 @@ public class UpdateWatcher implements Listener {
                 } else {
                     QuickShop.instance.getLogger().info("A new BETA version of QuickShop is available!");
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
-                    QuickShop.instance.getLogger().info("This is a BETA version, which means you should use with caution.");
+                    QuickShop.instance.getLogger().info("This is a BETA version, which means you should use it with caution.");
                 }
 
             }
@@ -103,7 +103,7 @@ public class UpdateWatcher implements Listener {
                         e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
                         e.getPlayer().sendMessage(ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
                         e.getPlayer()
-                                .sendMessage(ChatColor.GRAY + "This is a BETA version, which means you should use with caution.");
+                                .sendMessage(ChatColor.GRAY + "This is a BETA version, which means you should use it with caution.");
                     }
                 }
 
