@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 33
+config-version: 34
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -191,7 +191,7 @@ shop:
 queue:
     #Enable the shop queue feature
     enable: false
-    shops-per-tick: 200
+    shops-per-tick: 250
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
@@ -226,3 +226,23 @@ effect:
         ontabcomplete: true
         oncommand: true
         onclick: true
+#Item matcher, don't touch it if you didn't know how to use it.
+matcher:
+    #For Item
+    item:
+        #Plugin should check the item damage?
+        damage: true
+        #Plugin should check the item display name?
+        displayname: true
+        #Plugin should check the item lores?
+        lores: true
+        #Plugin should check the item enchs?
+        enchs: true
+        #Plugin should check the item potions?
+        potions: true
+        #Plugin should check the item attributes?
+        attributes: true
+        #Plugin should check the item itemflags?
+        itemflags: true
+        #Plugin should check the item custommodeldata?
+        custommodeldata: true
