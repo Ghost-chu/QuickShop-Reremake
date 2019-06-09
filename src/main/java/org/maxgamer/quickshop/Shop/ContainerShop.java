@@ -89,7 +89,7 @@ public class ContainerShop implements Shop {
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
-                    Util.debugLog("Failed to create ContainerShop displayItem, the type is unknown.");
+                    Util.debugLog("Failed to create a ContainerShop displayItem, the type is unknown.");
                     break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
@@ -98,7 +98,7 @@ public class ContainerShop implements Shop {
                     this.displayItem = new ArmorStandDisplayItem(this);
                     break;
                 default:
-                    Util.debugLog("Failed to create ContainerShop displayItem, the type we didn't know.");
+                    Util.debugLog("Failed to create a ContainerShop displayItem, the type we didn't know.");
             }
         }
 
@@ -217,7 +217,7 @@ public class ContainerShop implements Shop {
 
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (shopUpdateEvent.isCancelled()) {
-            Util.debugLog("Shop update action was cancelled by a plugin.");
+            Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
 
@@ -233,7 +233,7 @@ public class ContainerShop implements Shop {
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
             e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not update shop in database! Changes will revert after a reboot!");
+            plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!");
         }
     }
 
@@ -652,7 +652,7 @@ public class ContainerShop implements Shop {
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
         Bukkit.getPluginManager().callEvent(shopDeleteEvent);
         if (shopDeleteEvent.isCancelled()) {
-            Util.debugLog("Shop deltetion was cancelled cause a plugin cancel that.");
+            Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
         // Unload the shop
@@ -703,7 +703,7 @@ public class ContainerShop implements Shop {
      */
     public void onUnload() {
         if (!this.isLoaded) {
-            Util.debugLog("Dupe unload request, cancelled.");
+            Util.debugLog("Dupe unload request, canceled.");
             return;
         }
         if (this.getDisplayItem() != null) {
@@ -726,7 +726,7 @@ public class ContainerShop implements Shop {
         }
 
         if (this.isLoaded) {
-            Util.debugLog("Dupe load request, cancelled.");
+            Util.debugLog("Dupe load request, canceled.");
             return;
         }
         checkDisplay();

@@ -29,7 +29,7 @@ public abstract class ItemNMS {
         } catch (Throwable t) {
             QuickShop.instance.getLogger().info("A error happend:");
             t.printStackTrace();
-            QuickShop.instance.getLogger().info("Try update QSRR. And feedback this bug on issue tracker.");
+            QuickShop.instance.getLogger().info("Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
         }
     }
 
