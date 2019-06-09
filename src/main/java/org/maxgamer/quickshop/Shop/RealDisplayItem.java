@@ -34,30 +34,30 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void spawn() {
         if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Cancelled the displayItem spawning cause location world is null.");
+            Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;
         }
 
         if (originalItemStack == null) {
-            Util.debugLog("Cancelled the displayItem spawning cause ItemStack is null.");
+            Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
         if (item != null && item.isValid() && !item.isDead()) {
-            Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when already have a exist one Dropped Item, This may cause dupe Dropped Item!");
+            Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
             for (StackTraceElement trace : traces) {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
         if (!Util.isAir(getDisplayLocation().add(0, 1, 0).getBlock().getType())) {
-            Util.debugLog("Can't spawn displayItem cause not AIR block.");
+            Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
 
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog("Cancelled the displayItem spawning cause a plugin setCancelled the spawning event, usually is QuickShop Addon");
+            Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
 
@@ -86,7 +86,7 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void remove() {
         if (this.item == null || !this.item.isValid() || this.item.isDead()) {
-            Util.debugLog("Ignore the Item removeing cause this Item already gone.");
+            Util.debugLog("Ignore the Item removing because the Item is already gone.");
             return;
         }
         this.item.remove();
@@ -97,7 +97,7 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public boolean removeDupe() {
         if (this.item == null) {
-            Util.debugLog("Warning: Trying removeDupe for no display shop.");
+            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
             return false;
         }
         boolean removed = false;
@@ -110,7 +110,7 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             if (plugin.getItemMatcher().matches(eItem.getItemStack(), this.guardedIstack)) {
                 if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                    Util.debugLog("Removing dupes ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
                             .getLocation().toString());
                     entity.remove();
                     removed = true;

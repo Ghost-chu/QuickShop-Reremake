@@ -53,7 +53,7 @@ public class DatabaseManager {
     public void uninit() {
         if ((task != null) && !task.isCancelled())
             task.cancel();
-        plugin.getLogger().info("Please waiting for flushing data to database...");
+        plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
     }
 
@@ -82,7 +82,7 @@ public class DatabaseManager {
             long tookTime = Util.endTimer(timer);
             if (tookTime > 300)
                 warningSender
-                        .sendWarn("Database performance warn: Used too long time (" + tookTime + ") to execute the task, change to a better one MySQL server or switch to local SQLite database!");
+                        .sendWarn("Database performance warning: It took to long time (" + tookTime + ") to execute the task, change to a better MySQL server or switch to a local SQLite database!");
         }
     }
 

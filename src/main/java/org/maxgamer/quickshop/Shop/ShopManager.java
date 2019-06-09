@@ -296,7 +296,7 @@ public class ShopManager {
                 }
             }
             if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
-                Util.debugLog("PermissionChecker cancelled shop creating");
+                Util.debugLog("PermissionChecker canceled shop creation");
                 return false;
             }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
@@ -671,7 +671,7 @@ public class ShopManager {
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     plugin.getLogger().log(Level.WARNING,
-                            "QuickShop can't pay tax to account in config.yml,Please set tax account name to a exist player!");
+                            "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
                 }
             }
 

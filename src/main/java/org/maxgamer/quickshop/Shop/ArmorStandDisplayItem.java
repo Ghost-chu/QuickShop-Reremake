@@ -32,17 +32,17 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void spawn() {
         if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Cancelled the displayItem spawning cause location world is null.");
+            Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;
         }
 
         if (originalItemStack == null) {
-            Util.debugLog("Cancelled the displayItem spawning cause ItemStack is null.");
+            Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
 
         if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
-            Util.debugLog("Warning: Spawning the armorStand for DisplayItem when already have a exist one armorStand, This may cause dupe armorStand!");
+            Util.debugLog("Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
             for (StackTraceElement trace : traces) {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
@@ -51,7 +51,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog("Cancelled the displayItem spawning cause a plugin setCancelled the spawning event, usually is QuickShop Addon");
+            Util.debugLog("Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
             return;
         }
         this.armorStand = (ArmorStand) this.shop.getLocation().getWorld()
@@ -73,7 +73,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         safeGuard(this.armorStand);
         //Set pose
         setPoseForArmorStand();
-        Util.debugLog("Spawned new ArmorStand DisplayItem for shop " + shop.getLocation().toString());
+        Util.debugLog("Spawned a new ArmorStand DisplayItem for a shop " + shop.getLocation().toString());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void remove() {
         if (this.armorStand == null || !this.armorStand.isValid() || this.armorStand.isDead()) {
-            Util.debugLog("Ignore the armorStand removeing cause this armorStand already gone.");
+            Util.debugLog("Ignore the armorStand removing because the armorStand is already gone.");
             return;
         }
         this.armorStand.remove();
@@ -209,7 +209,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public boolean removeDupe() {
         if (this.armorStand == null) {
-            Util.debugLog("Warning: Trying removeDupe for no display shop.");
+            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
             return false;
         }
         boolean removed = false;

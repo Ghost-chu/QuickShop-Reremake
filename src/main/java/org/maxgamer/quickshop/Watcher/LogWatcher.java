@@ -24,10 +24,10 @@ public class LogWatcher implements Runnable {
             this.ps = new PrintStream(fos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            plugin.getLogger().severe("Log file not found!");
+            plugin.getLogger().severe("Log file was not found!");
         } catch (IOException e) {
             e.printStackTrace();
-            plugin.getLogger().severe("Could not create log file!");
+            plugin.getLogger().severe("Could not create the log file!");
         }
     }
 

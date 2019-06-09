@@ -135,8 +135,8 @@ public class QuickShop extends JavaPlugin {
         try {
             getServer().spigot();
         } catch (Throwable e) {
-            getLogger().severe("FATAL: QSRR only can running on Spigot and Spigot's forks server!");
-            throw new RuntimeException("Server must is Spigot's fork, Don't use CraftBukkit!");
+            getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
+            throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
         }
 
         if (getServer().getName().toLowerCase().contains("catserver")) {
@@ -145,16 +145,16 @@ public class QuickShop extends JavaPlugin {
         }
 
         if (Util.isDevMode()) {
-            getLogger().severe("WARNING: You are running QSRR on dev-mode");
-            getLogger().severe("WARNING: Keep backup and DO NOT running on production environment!");
-            getLogger().severe("WARNING: Test version may destory anything!");
+            getLogger().severe("WARNING: You are running QSRR in dev-mode");
+            getLogger().severe("WARNING: Keep backup and DO NOT run this in a production environment!");
+            getLogger().severe("WARNING: Test version may destroy everything!");
             getLogger().severe(
-                    "WARNING: QSRR won't start without you confirm, nothing will change before you turn on dev allowed.");
+                    "WARNING: QSRR won't start without your confirmation, nothing will change before you turn on dev allowed.");
             if (!getConfig().getBoolean("dev-mode")) {
                 getLogger().severe(
-                        "WARNING: Set dev-mode: true in config.yml to allow qs load on dev mode(Maybe need add this line by your self).");
+                        "WARNING: Set dev-mode: true in config.yml to allow qs load in dev mode(You may need add this line to the config yourself).");
                 noopDisable = true;
-                throw new RuntimeException("Snapshot cannot running when dev-mode is false");
+                throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
 
@@ -193,7 +193,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Quickshop Reremake");
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
-        getLogger().info("Let's us start load plugin");
+        getLogger().info("Let's start loading the plugin");
         /* Check the running envs is support or not. */
         try {
             runtimeCheck();
@@ -370,7 +370,7 @@ public class QuickShop extends JavaPlugin {
 
             // Exp for stats, maybe i need improve this, so i add this.
             metrics.submitData(); // Submit now!
-            getLogger().info("Metrics submited.");
+            getLogger().info("Metrics submitted.");
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
         }
@@ -411,7 +411,7 @@ public class QuickShop extends JavaPlugin {
                 bootError = BuiltInSolution.databaseError();
                 return false;
             } else {
-                getLogger().severe("Error connecting to database.");
+                getLogger().severe("Error connecting to the database.");
             }
             return false;
         } catch (SQLException e) {
@@ -421,7 +421,7 @@ public class QuickShop extends JavaPlugin {
                 bootError = BuiltInSolution.databaseError();
                 return false;
             } else {
-                getLogger().severe("Error setting up database.");
+                getLogger().severe("Error setting up the database.");
             }
             return false;
         }
@@ -733,7 +733,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = new Economy_Vault();
             if (!core.isValid()) {
                 // getLogger().severe("Economy is not valid!");
-                getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
+                getLogger().severe("QuickShop could not hook into an economy plugin/Not found Vault!");
                 getLogger().severe("QuickShop CANNOT start!");
                 bootError = BuiltInSolution.econError();
                 // if(econ.equals("Vault"))
@@ -756,7 +756,7 @@ public class QuickShop extends JavaPlugin {
     public void onDisable() {
         if (noopDisable)
             return;
-        getLogger().info("QuickShop is finishing remaining works, this may need a while...");
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         Iterator shopIterator = shopManager.getShopIterator();
         Util.debugLog("Cleaning up shop queues...");
         this.getQueuedShopManager().uninit();
@@ -769,7 +769,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Cleaning up database queues...");
         this.getDatabaseManager().uninit();
 
-        Util.debugLog("Unregisteringg tasks...");
+        Util.debugLog("Unregistering tasks...");
         if (itemWatcherTask != null) {
             itemWatcherTask.cancel();
         }
@@ -793,7 +793,7 @@ public class QuickShop extends JavaPlugin {
 
         this.warnings.clear();
         //this.reloadConfig();
-        Util.debugLog("All shutting down works are finished.");
+        Util.debugLog("All shutdown work is finished.");
     }
 
     /**
