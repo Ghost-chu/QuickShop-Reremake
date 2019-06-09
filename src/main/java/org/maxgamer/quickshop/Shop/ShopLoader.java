@@ -14,6 +14,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 
 /**
@@ -41,14 +42,14 @@ public class ShopLoader {
      */
     public void loadShops() {
 
-        UUID totalLoadTimer = Util.setTimer();
+        Timer totalLoadTimer = new Timer(true);
         try {
             this.plugin.getLogger().info("Loading shops from the database...");
-            UUID fetchUUID = Util.setTimer();
+            Timer fetchTimer = new Timer(true);
             ResultSet rs = plugin.getDatabaseHelper().selectAllShops(this.plugin.getDatabase());
-            this.plugin.getLogger().info("Used " + Util.endTimer(fetchUUID) + "ms to fetch all shops from the database.");
+            this.plugin.getLogger().info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
             while (rs.next()) {
-                UUID singleShopLoadTimer = Util.setTimer();
+                Timer singleShopLoadTimer = new Timer(true);
 
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
 
@@ -85,7 +86,7 @@ public class ShopLoader {
                 }
                 singleShopLoaded(singleShopLoadTimer);
             }
-            long totalUsedTime = Util.endTimer(totalLoadTimer);
+            long totalUsedTime = totalLoadTimer.endTimer();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin.getLogger()
                     .info("Successfully loaded " + totalLoaded + " shops! (Used " + totalUsedTime + "ms, Avg " + avgPerShop + "ms per shop)");
@@ -106,10 +107,9 @@ public class ShopLoader {
         return sum / m.length;
     }
 
-    private void singleShopLoaded(@NotNull UUID singleShopLoadTimer) {
+    private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
         totalLoaded++;
-        Util.debugLog("New single timer was ended: " + singleShopLoadTimer.toString());
-        long singleShopLoadTime = Util.endTimer(singleShopLoadTimer);
+        long singleShopLoadTime = singleShopLoadTimer.endTimer();
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
