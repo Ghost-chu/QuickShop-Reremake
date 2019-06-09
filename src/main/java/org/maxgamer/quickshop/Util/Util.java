@@ -384,6 +384,21 @@ public class Util {
     }
 
     /**
+     * Get ItemStack's local name, return null if failed to get.
+     *
+     * @param itemStack Target ItemStack
+     * @return LocalName or NULL
+     */
+    public static String getLocalizedName(@NotNull ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null)
+            return null;
+        if (!itemMeta.hasLocalizedName())
+            return null;
+        return itemMeta.getLocalizedName();
+    }
+
+    /**
      * Get item's sign name for display on the sign.
      *
      * @param itemStack target itemStack
