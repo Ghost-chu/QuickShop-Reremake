@@ -13,7 +13,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class Economy_Vault implements EconomyCore {
     private Economy vault;
     private QuickShop plugin = QuickShop.instance;
-    final private String errorMsg = "QuickShop got a error when calling your Economy system, is NOT a QuickShop error, please do not feedback this issue to QuickShop's Issue tracker, ask your Economy plugin's author.";
+    final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     public Economy_Vault() {
         setupEconomy();
