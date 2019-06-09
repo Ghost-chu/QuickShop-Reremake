@@ -27,6 +27,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
+@SuppressWarnings("WeakerAccess")
 public class MsgUtil {
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration itemi18n;
@@ -65,7 +66,6 @@ public class MsgUtil {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
 
         Util.parseColours(messagei18n);
 
