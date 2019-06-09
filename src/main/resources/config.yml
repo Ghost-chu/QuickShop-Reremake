@@ -3,11 +3,11 @@
 #Do not touch if you not clear know about this
 config-version: 33
 
-#Select language you want use, (e.g de), use other exist language to override it.
-#After you use new language override it, you need delete `messages.yml` to let plugin regen your language file.
+#Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
+#After you set the new language, you need to delete `messages.yml` to let plugin regen it with your desired language file.
 
-#Avaliable languages:
+#Available languages:
 #en - English
 #sv - Swedish
 #fr - France
@@ -20,13 +20,13 @@ config-version: 33
 #fi - Finnish
 language: en
 
-#Do not touch if you not know what is this
+#This enables developer mode, Do not touch this if you not know what it does
 dev-mode: false
 
 #Tax amount (decimal) - Eg, P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and tax-account gains $(0.05)*50.
 tax: 0.05
 
-#The fake player who money from taxing people goes to
+#The fake player where money from taxing people goes to
 tax-account: tax
 
 #Whether or not to show taxes paid when selling to a shop
@@ -41,21 +41,21 @@ whole-number-prices-only: false
 #Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
 force-bukkit-chat-handler: false
 
-#Disallow QuickShop-Reremake send metrics data to bStats.
+#Disallow QuickShop-Reremake to send metrics data to bStats.
 disabled-metrics: false
-#Use "Anonymous" to replace your server name, BUT it will cause we cannot send important alert.
-#Usually, if have important alert need sent. We will pull down servers name from bStats and Google your server discord and send alert to server administrators.
+#Use "Anonymous" to replace your server name, BUT it will make it so we cannot send important alerts.
+#Usually, if we have an important alert that needs to be sent. We will get your servers name from bStats and Google your servers discord and send an alert to the server administrators there.
 anonymous-metrics: false
 
-#Should allow QS to check update on SpigotMC.org?
+#Should QS be allowed to check for updates on SpigotMC.org?
 updater: true
 
-#Should allow QS auto report the errors?
+#Should QS be allowed to auto report errors to the author?
 auto-report-errors: true
 
 #Should QS use OfflinePlayer list for TabComplete?
-#This might can give player better experience, but may cause lagg.
-#false = Only use OnlinePlayer list, true = All players joined your server before list.
+#This might give players a better experience, but may cause lag due to searching what can be a long list.
+#false = Only use the OnlinePlayer list, true = A list of all players that have ever joined your server before.
 include-offlineplayer-list: false
 
 database:
@@ -90,7 +90,7 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks which implement InventoryHolder
 #in other words, no enderchest shops, no shops on dirt blocks, etc.
-#May cause unexpected behaviour with some blocks... Eg don't make a 
+#May cause unexpected behavior with some blocks... Eg don't make a 
 #shop on a hopper (It sucks the display item in) and furnace shops
 #allow players to put whatever item they want in all 3 slots and
 #dispenser shops aren't protected from redstone... Etc.
@@ -99,9 +99,9 @@ shop-blocks:
 - TRAPPED_CHEST
 - ENDER_CHEST
 shop:
-    #Cost to make a stall
+    #Cost to make a shop
     cost: 10
-    #Should we refund when their shops are deleted/removed/broken?
+    #Should we refund the player when their shops are deleted/removed/broken?
     refund: false
 
     #Is there a fee for changing prices on a shop (Help deter endless undercutting)
@@ -120,13 +120,13 @@ shop:
     #Should we automatically create the sign for the chest?
     auto-sign: true
 
-    #Should pay money from unlimited shops owner to player?
+    #Should we pay money from unlimited shops owner to the hidden owner?
     pay-unlimited-shop-owners: false
 
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
     display-items: true
 
-    #The plugin will check if the display item is in a valid position every the specified amount of ticks. 0 to disable.
+    #The plugin will check if the display item is in a valid position every specified amount of ticks. 0 to disable.
     display-items-check-ticks: 1200
 
     #The display type you want use.
@@ -138,34 +138,35 @@ shop:
     #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
     find-distance: 45
 
-    #If vault not return coins symbol, QuickShop will use this symbol to replace it.
+    #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
     alternate-currency-symbol: '$'
 
-    #It should can fix Vault or economy not correctly process the price and return "0" result problem.
+    #It should fix Vault or an economy plugin that is not correctly processing the price and returns a "0" result problem.
     #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
     disable-vault-format: false
 
-    #Ignore trade messages if shop is unlimited
+    #Ignore trade messages if the shop is unlimited
     ignore-unlimited-shop-messages: false
 
-    #Enable this if you only want player create the shop in special region
-    #When you enable this, you only can create shop in AreaShop's area
+    #Enable this if you only want players to create shops in a special region
+    #When you enable this, you only can create shop in the AreaShop's area
     special-region-only: false
 
-    #Allow auto fetch player shop, if you disable it ,Player need use /qs fetchmessage to fetch history shop messages. (Disable it may cause database size lost control.)
+    #Allow auto fetching player shops, if you disable this, players need to use /qs fetchmessage to fetch the shops history messages. (Disabling it may cause database issues.)
     auto-fetch-shop-messages: true
 
-    #Ignore cancel chat event, maybe can improve compatibility with other chat plugin.
+    #Ignore cancel chat event, can improve compatibility with other chat plugin in some cases.
     ignore-cancel-chat-event: false
 
-    #Allow create shop in the sign cannot placed environment (e.g Player no permission put sign on that location / No enough space)
+    #Allow shops to be created in a place where a sign cannot placed 
+    #(e.g There is blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
     allow-shop-without-space-for-sign: false
 
-    #The maximum price for shop, This not affect exists shops, set -1 to disable it.
+    #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
     maximum-price: -1
 
     #The wall sign material.
-    #In 1.13 and legacy version, only WALL_SIGN is avaliable.
+    #In 1.13 and legacy versions, only WALL_SIGN is available.
     #
     #For 1.14, you can use these:
     #ACACIA_WALL_SIGN
@@ -179,44 +180,44 @@ shop:
     blacklist-world:
     - disabled_world_name
 
-    #Check itemstack more strict!
+    #Enable a stricter itemstack check
     strict-matches-check: false
 
     #Protection check
     protection-checking: true
 
-#ShopQueue can help low-performance server load shops one by one not all in same time.
-#This feature can help solve server laggy when load huge numbers shops or dead-lock threads.
+#ShopQueue can help low-performance server load shops one by one and not all at once.
+#This feature can help solve laggy servers when they are loading a huge number of shops or the server threads dead-lock.
 queue:
-    #Enable shop queue feature
+    #Enable the shop queue feature
     enable: false
     shops-per-tick: 200
 
-#List of items to disallow selling of.  Anyone with quickshop.bypass.<itemID> can bypass it    
+#List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
 - Bedrock
 
 protect:
-    #Protect shop item can or cannot pull out by HopperMincart (Will remove HopprtMincart
+    #Protected shop items can or cannot be pulled out by a HopperMincart (Will remove HopprtMincart)
     minecart: true
-    #Protect shop block can or cannot pick up by entity (Will remove Entity
+    #Protected shop blocks can or cannot be picked up by an entity (Will remove Entity)
     entity: true
-    #Protect shop block can or cannot active by Redstone
+    #Protected shop blocks can or cannot be activated by Redstone
     redstone: true
-    #Protect shop block can or cannot break by something growup
+    #Protected shop blocks can or cannot be broken by a plant growing
     structuregrow: true
-    #Protect shop block can or cannot break by Entity and Block explode
+    #Protected shop blocks can or cannot be broken by an Entity and or a Block explosion
     explode: true
-    #Protect shop block can or cannot pull out by Hopper
+    #Protected shop blocks can or cannot be pulled out by a Hopper
     hopper: true
 lockette:
-    #Fix Quickshop not cancel break lock sign event(Impossible break locked chest)\
+    #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest)\
     enable: true
     private: "[Private]"
     more_users: "[More Users]"
 # Enable or disable plugin support.
 plugin:
-    #If you have Multiverse-Core, QSRR will try load world when shop's world not exist and throw out exception auto repair the shop.
+    #If you have Multiverse-Core, QSRR will try load world when shop's world don't exist and will throw an exception and auto repair the shops.
     Multiverse-Core: true
     #If you have OpenInv, QSRR will enable EnderChest feature.
     OpenInv: true
