@@ -368,9 +368,17 @@ public class Util {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (String part : nameParts) {
-            sb.append(firstUppercase(part) + " ");
+
+        for (int i = 0; i < nameParts.length; i++) {
+            sb.append(firstUppercase(nameParts[i]));
+            if (i + 1 != nameParts.length)
+                sb.append(" ");
+
         }
+
+        // for (String part : nameParts) {
+        //     sb.append(firstUppercase(part) + " ");
+        // }
 
         return sb.toString();
     }
