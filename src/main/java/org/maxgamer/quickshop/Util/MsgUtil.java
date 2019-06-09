@@ -460,6 +460,7 @@ public class MsgUtil {
      * @return String Item's i18n name.
      */
     public static String getItemi18n(@NotNull String itemBukkitName) {
+        Util.debugLog(itemBukkitName);
         if (itemBukkitName.isEmpty())
             return "Item is empty";
         String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
