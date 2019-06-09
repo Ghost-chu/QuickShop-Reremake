@@ -29,6 +29,21 @@
         <developerConnection>scm:git:git@github.com:${developer}/${version}.git</developerConnection>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>QuickShop</id>
+            <url>
+                packagecloud+https://packagecloud.io/Ghost_chu/Quickshop
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>QuickShop</id>
+            <url>
+                packagecloud+https://packagecloud.io/Ghost_chu/Quickshop
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -99,6 +114,14 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.6</version>
+            </extension>
+        </extensions>
+
     </build>
 
     <repositories>
