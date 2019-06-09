@@ -291,6 +291,7 @@ public class Metrics {
         connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
         connection.setConnectTimeout(300000);
         connection.setReadTimeout(300000);
+        connection.setDoOutput(true);
         // Send data
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.write(compressedData);
