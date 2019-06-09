@@ -129,7 +129,7 @@ public class SentryErrorReporter {
         this.sentryClient.sendException(throwable);
         this.context.clearBreadcrumbs();
         plugin.getLogger()
-                .warning("A exception was throwed, QuickShop already caught this exception and reported, switch to debug mode to get full errors.");
+                .warning("A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
         plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
         plugin.getLogger().warning("Description: " + throwable.getMessage());
         plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId().toString());

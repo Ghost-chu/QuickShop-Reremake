@@ -44,7 +44,7 @@ public class ItemMatcher {
             return true;
 
         if (!typeMatches(stack1, stack2)) {
-            Util.debugLog("Type not matches.");
+            Util.debugLog("The Type doesn't match.");
             return false;
         }
 
@@ -89,7 +89,7 @@ public class ItemMatcher {
                 if (!customModelDataMatches(meta1, meta2))
                     return false;
             } catch (NoSuchMethodError err) {
-                //Ignore, for 1.13 compatiable
+                //Ignore, for 1.13 compatibility
             }
             return true;
         }
@@ -133,7 +133,7 @@ public class ItemMatcher {
                 return false;
 
             if (!meta1.hasLore())
-                return true; // No lores need to check.
+                return true; // No lores need to be checked.
 
             List<String> lores1 = meta1.getLore();
             List<String> lores2 = meta2.getLore();
@@ -149,7 +149,7 @@ public class ItemMatcher {
                 return false;
 
             if (!meta1.hasEnchants())
-                return true; //No enchs need to check
+                return true; //No enchs need to be checked.
 
             Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
             Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
@@ -162,7 +162,7 @@ public class ItemMatcher {
                 return false;
 
             if (!(meta1 instanceof PotionMeta))
-                return true; //No potion meta need to check.
+                return true; //No potion meta needs to be checked.
 
             PotionMeta potion1 = (PotionMeta) meta1;
             PotionMeta potion2 = (PotionMeta) meta2;
@@ -190,7 +190,7 @@ public class ItemMatcher {
                 return false;
 
             if (!meta1.hasAttributeModifiers())
-                return true; //No attributeModifiers need to check
+                return true; //No attributeModifiers need to be checked.
 
             return (meta1.getAttributeModifiers().hashCode() == meta2.getAttributeModifiers().hashCode());
         }
@@ -203,7 +203,7 @@ public class ItemMatcher {
             if (meta1.hasCustomModelData() != meta2.hasCustomModelData())
                 return false;
             if (!meta1.hasCustomModelData())
-                return true; //No customModelData need to check.
+                return true; //No customModelData needs to be checked.
             return (meta1.getCustomModelData() == meta2.getCustomModelData());
         }
 
