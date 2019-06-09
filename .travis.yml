@@ -27,7 +27,7 @@ deploy:
         secure: $Github_token
     file:
     - ./push/*
-    script: bash upload2bukkit.sh
+    script: bash deploy.sh
     file_glob: true
     on:
         tags: true
