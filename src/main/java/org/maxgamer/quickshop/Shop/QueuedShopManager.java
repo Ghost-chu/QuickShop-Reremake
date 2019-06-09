@@ -135,7 +135,8 @@ public class QueuedShopManager {
                 this.shopQueue.offer(queueShopObject);
                 if (this.shopQueue.size() > 50)
                     this.warningSender
-                            .sendWarn("There are too many task in queue and they can't be executed in a timely manner, please raise the number of shops per tick via queue.shops-per-tick in config.yml");
+                            .sendWarn("There are too many tasks in queue (" + this.shopQueue
+                                    .size() + ") and they can't be executed in a timely manner, please raise the number of shops per tick via queue.shops-per-tick in config.yml or disable this feature.");
             } else {
                 this.doTask(queueShopObject); //Direct do actions when turn off queue
             }
