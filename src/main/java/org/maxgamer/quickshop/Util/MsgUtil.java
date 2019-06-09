@@ -43,6 +43,7 @@ public class MsgUtil {
     }
 
     public static void loadCfgMessages(@NotNull String... reload) {
+        /* Check & Load & Create default messages.yml */
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messageFile.exists()) {
             plugin.getLogger().info("Creating messages.yml");
@@ -55,18 +56,7 @@ public class MsgUtil {
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
         messagei18n.setDefaults(messagei18nYAML);
-
-        // //Convert %YAML 1.2 to %YAML 1.0
-        //
-        // String messagei18nYaml2 = new String(Util
-        //         .inputStream2ByteArray(plugin.getLanguage().getFile(plugin.getConfig().getString("language"), "messages")));
-        // YamlIsSucked yamlIsSucked = new YamlIsSucked();
-        // String messagei18nJson = yamlIsSucked.readYaml2ToJson(messagei18nYaml2);
-        // String messagei18nYaml1 = yamlIsSucked.writeJson2Yaml1(messagei18nJson);
-        // InputStream inputStream = new ByteArrayInputStream(messagei18nYaml1.getBytes());
-        // YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        // messagei18n.setDefaults(messagei18nYAML);
-
+        /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
         }
@@ -77,15 +67,18 @@ public class MsgUtil {
                 e1.printStackTrace();
             }
 
-        //Print language copyright infomation
+
         Util.parseColours(messagei18n);
+
+        /* Print to console this language file's author, contributors, and region*/
         if (!Inited) {
             plugin.getLogger().info(getMessage("translation-author"));
             plugin.getLogger().info(getMessage("translation-contributors"));
             plugin.getLogger().info(getMessage("translation-country"));
-            plugin.getLogger().info(getMessage("translation-version"));
+            //plugin.getLogger().info(getMessage("translation-version"));
             Inited = true;
         }
+        /* Save the upgraded messages.yml */
         try {
             messagei18n.save(messageFile);
         } catch (IOException e) {
@@ -95,7 +88,7 @@ public class MsgUtil {
 
     }
 
-    public static void updateMessages(@NotNull int selectedVersion) throws IOException {
+    private static void updateMessages(int selectedVersion) throws IOException {
         if (selectedVersion == 1) {
             messagei18n.set("shop-not-exist", "&cThere had no shop.");
             messagei18n.set("controlpanel.infomation", "&aShop Control Panel:");
@@ -274,6 +267,12 @@ public class MsgUtil {
         }
     }
 
+    /**
+     * Send controlPanel infomation to sender
+     *
+     * @param sender Target sender
+     * @param shop   Target shop
+     */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
         if (!sender.hasPermission("quickshop.use")) {
             return;
@@ -390,7 +389,7 @@ public class MsgUtil {
      * @param bool The boolean value
      * @return The result of translate.
      */
-    public static String bool2String(@NotNull boolean bool) {
+    public static String bool2String(boolean bool) {
         if (bool) {
             return MsgUtil.getMessage("booleanformat.success");
         } else {
@@ -421,6 +420,9 @@ public class MsgUtil {
         }
     }
 
+    /**
+     * Load Itemi18n fron file
+     */
     public static void loadItemi18n() {
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
         if (!itemi18nFile.exists()) {
@@ -436,12 +438,12 @@ public class MsgUtil {
         Util.parseColours(itemi18n);
         Material[] itemsi18n = Material.values();
         for (Material material : itemsi18n) {
-            String itemname = itemi18n.getString("itemi18n." + material.name());
-            if (itemname == null || itemname.equals("")) {
-                plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(material.name())
-                        .trim() + "] ,adding it in config...");
-                itemi18n.set("itemi18n." + material.name(), Util.prettifyText(material.name()));
-            }
+            String itemi18nString = itemi18n.getString("itemi18n." + material.name());
+            if (itemi18nString != null && !itemi18nString.isEmpty())
+                continue;
+            String itemName = material.name();
+            itemi18n.set("itemi18n." + itemName, Util.prettifyText(itemName));
+            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(itemName) + "] ,adding it in config...");
         }
         try {
             itemi18n.save(itemi18nFile);
@@ -455,36 +457,19 @@ public class MsgUtil {
     /**
      * Get item's i18n name
      *
-     * @param ItemBukkitName ItemBukkitName(e.g. Material.STONE.name())
+     * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
      * @return String Item's i18n name.
      */
-    public static String getItemi18n(@NotNull String ItemBukkitName) {
-        if (ItemBukkitName == null) {
-            return "";
-        }
-        if (ItemBukkitName.isEmpty()) {
-            return "";
-        }
-        ItemBukkitName = ItemBukkitName.trim().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
-
-        String Itemname_i18n = null;
-        try {
-            Itemname_i18n = itemi18n.getString("itemi18n." + ItemBukkitName).trim();
-        } catch (Exception e) {
-            Itemname_i18n = null;
-        }
-
-        if (Itemname_i18n == null) {
-            String material = null;
-            try {
-                material = Material.matchMaterial(ItemBukkitName).name();
-            } catch (Exception e) {
-                material = "ERROR";
-            }
-            return Util.prettifyText(material);
-        } else {
-            return Itemname_i18n;
-        }
+    public static String getItemi18n(@NotNull String itemBukkitName) {
+        if (itemBukkitName.isEmpty())
+            return "Item is empty";
+        String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
+        if (itemnameI18n != null && !itemnameI18n.isEmpty())
+            return itemnameI18n;
+        Material material = Material.matchMaterial(itemBukkitName);
+        if (material == null)
+            return "Material not exist";
+        return Util.prettifyText(material.name());
     }
 
     public static void loadEnchi18n() {
@@ -497,22 +482,22 @@ public class MsgUtil {
         // Store it
         enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
         enchi18n.options().copyDefaults(true);
-        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
-                .getResource("enchi18n.yml")));
+        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.
+                getResource("enchi18n.yml")));
         enchi18n.setDefaults(enchi18nYAML);
         Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
-            String enchname = enchi18n.getString("enchi18n." + ench.getKey().getKey().toString().trim());
-            if (enchname == null || enchname.equals("")) {
-                plugin.getLogger().info("Found new ench [" + ench.getKey().getKey().toString() + "] ,add it in config...");
-                enchi18n.set("enchi18n." + ench.getKey().getKey().toString().trim(), ench.getKey().getKey().toString().trim());
-            }
+            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().toString().trim());
+            if (enchi18nString != null && !enchi18nString.isEmpty())
+                continue;
+            String enchName = ench.getKey().getKey();
+            enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
+            plugin.getLogger().info("Found new ench [" + enchName + "] ,add it in config...");
         }
         try {
             enchi18n.save(enchi18nFile);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
         }
@@ -526,24 +511,13 @@ public class MsgUtil {
      * @return Enchantment's i18n name.
      */
     public static String getEnchi18n(@NotNull Enchantment key) {
-        if (key == null) {
-            return "ERROR";
-        }
-        String EnchString = null;
-        //support for legacy
-        EnchString = key.getKey().getKey().toString().trim();
-        String Ench_i18n = null;
-        try {
-            Ench_i18n = enchi18n.getString("enchi18n." + EnchString);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Ench_i18n = null;
-        }
-        if (Ench_i18n == null) {
-            return EnchString;
-        } else {
-            return Ench_i18n;
-        }
+        String enchString = key.getKey().getKey();
+        if (enchString.isEmpty())
+            return "Enchantment key is empty";
+        String enchI18n = enchi18n.getString("enchi18n." + enchString);
+        if (enchI18n != null && !enchI18n.isEmpty())
+            return enchI18n;
+        return Util.prettifyText(enchString);
     }
 
     public static void loadPotioni18n() {
@@ -563,17 +537,17 @@ public class MsgUtil {
         PotionEffectType[] potionsi18n = PotionEffectType.values();
         for (PotionEffectType potion : potionsi18n) {
             if (potion != null) {
-                String potionname = potioni18n.getString("potioni18n." + potion.getName().trim());
-                if (potionname == null || potionname.equals("")) {
-                    plugin.getLogger().info("Found new potion [" + potion.getName() + "] ,add it in config...");
-                    potioni18n.set("potioni18n." + potion.getName().trim(), potion.getName().trim());
-                }
+                String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
+                if (potionI18n != null && !potionI18n.isEmpty())
+                    continue;
+                String potionName = potion.getName();
+                plugin.getLogger().info("Found new potion [" + potionName + "] ,add it in config...");
+                potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
             }
         }
         try {
             potioni18n.save(potioni18nFile);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
         }
@@ -587,22 +561,13 @@ public class MsgUtil {
      * @return Potion's i18n name.
      */
     public static String getPotioni18n(@NotNull PotionEffectType potion) {
-        if (potion == null) {
-            return "ERROR";
-        }
-        String PotionString = potion.getName().trim();
-        String Potion_i18n = null;
-        try {
-            Potion_i18n = potioni18n.getString("potioni18n." + PotionString);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Potion_i18n = null;
-        }
-        if (Potion_i18n == null) {
-            return PotionString;
-        } else {
-            return Potion_i18n;
-        }
+        String potionString = potion.getName().trim();
+        if (potionString.isEmpty())
+            return "Potion name is empty.";
+        String potionI18n = potioni18n.getString("potioni18n." + potionString);
+        if (potionI18n != null && !potionI18n.isEmpty())
+            return potionI18n;
+        return Util.prettifyText(potionString);
     }
 
     /**
@@ -616,16 +581,17 @@ public class MsgUtil {
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
             return; //Ignore unlimited shops messages.
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
-        if (p == null || !p.isOnline()) {
+        if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
-            if (msgs == null) {
-                msgs = new LinkedList<String>();
-                player_messages.put(player, msgs);
-            }
+            // msgs = new LinkedList<String>();
+            if (msgs == null)
+                msgs = new LinkedList<>();
+            player_messages.put(player, msgs);
             msgs.add(message);
             plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
         } else {
-            p.getPlayer().sendMessage(message);
+            if (p.getPlayer() != null)
+                p.getPlayer().sendMessage(message);
         }
     }
 
@@ -647,17 +613,16 @@ public class MsgUtil {
      * @return True if success, False if the player is offline or null
      */
     public static boolean flush(@NotNull OfflinePlayer p) {    //TODO Changed to UUID
-        if (p != null && p.isOnline()) {
+        if (p.isOnline()) {
             UUID pName = p.getUniqueId();
             LinkedList<String> msgs = player_messages.get(pName);
             if (msgs != null) {
                 for (String msg : msgs) {
-                    p.getPlayer().sendMessage(msg);
+                    if (p.getPlayer() != null)
+                        p.getPlayer().sendMessage(msg);
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
                 msgs.clear();
-            } else {
-                //p.getPlayer().sendMessage(getMessage("nothing-to-flush"));
             }
             return true;
         }
@@ -704,8 +669,10 @@ public class MsgUtil {
         } else {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling"));
         }
-        Map<Enchantment, Integer> enchs = items.getItemMeta().getEnchants();
-        if (enchs != null && !enchs.isEmpty()) {
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (items.hasItemMeta() && items.getItemMeta().hasEnchants())
+            enchs = items.getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
@@ -715,7 +682,7 @@ public class MsgUtil {
             EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
-            if (enchs != null && !enchs.isEmpty()) {
+            if (!enchs.isEmpty()) {
                 chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants") + MsgUtil
                         .getMessage("tableformat.right_half_line"));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
@@ -741,25 +708,20 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil
                 .getMessage("menu.item-name-and-price", "" + amount, MsgUtil.getDisplayName(shop.getItem()), Util
                         .format((amount * shop.getPrice()))));
-        Map<Enchantment, Integer> enchs = shop.getItem().getItemMeta().getEnchants();
-        if (enchs != null && !enchs.isEmpty()) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.enchants") + "-----------------------+");
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+            enchs = shop.getItem().getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-            }
-        }
-        enchs = shop.getItem().getItemMeta().getEnchants();
-        if (enchs != null && !enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
             }
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
-            if (enchs != null && !enchs.isEmpty()) {
+            if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
@@ -776,7 +738,7 @@ public class MsgUtil {
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, @NotNull int amount) {
+    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold"));
@@ -788,14 +750,16 @@ public class MsgUtil {
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!p.getUniqueId().equals(shop.getOwner())) {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax", "" + Util.format((tax * total))));
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax", Util.format((tax * total))));
                 } else {
                     chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self"));
                 }
             }
         }
-        Map<Enchantment, Integer> enchs = shop.getItem().getItemMeta().getEnchants();
-        if (enchs != null && !enchs.isEmpty()) {
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+            enchs = shop.getItem().getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
@@ -805,7 +769,7 @@ public class MsgUtil {
             EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
-            if (enchs != null && !enchs.isEmpty()) {
+            if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
@@ -822,7 +786,6 @@ public class MsgUtil {
      */
     public static String getDisplayName(@NotNull ItemStack iStack) {
         ItemStack is = iStack.clone();
-
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
             return is.getItemMeta().getDisplayName();
         } else {
@@ -853,7 +816,7 @@ public class MsgUtil {
      * @param args args
      * @return filled text
      */
-    public static String fillArgs(@NotNull String raw, @NotNull String... args) {
+    public static String fillArgs(@Nullable String raw, @Nullable String... args) {
         if (raw == null) {
             return "Invalid message: " + "raw";
         }
