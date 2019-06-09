@@ -29,7 +29,7 @@ public class Database {
         try {
             try {
                 if (!core.getConnection().isValid(10)) {
-                    throw new ConnectionException("Database doesn not appear to be valid!");
+                    throw new ConnectionException("The database does not appear to be valid!");
                 }
             } catch (AbstractMethodError e) {
                 // You don't need to validate this core.

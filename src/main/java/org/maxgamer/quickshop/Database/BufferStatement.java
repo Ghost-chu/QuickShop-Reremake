@@ -43,7 +43,7 @@ public class BufferStatement {
      *            con.prepareStatement(..)
      * @return The prepared statement, ready for execution.
      *
-     * @throws SQLException Throw exception when failed execute somethins on SQL
+     * @throws SQLException Throw exception when failed to execute something in SQL
      */
     public PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {
         PreparedStatement ps;

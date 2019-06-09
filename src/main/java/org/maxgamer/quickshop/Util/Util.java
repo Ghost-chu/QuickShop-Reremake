@@ -90,7 +90,7 @@ public class Util {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
                         plugin.getLogger()
-                                .warning("Material " + sp[0] + " in config.yml can't match with vaild Materials, check your config.yml!");
+                                .warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
                     restrictedPrices.put(mat, new SimpleEntry<Double, Double>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
@@ -801,7 +801,7 @@ public class Util {
         } catch (Exception e) {
             player.sendMessage(normalText);
             QuickShop.instance.getLogger()
-                    .severe("QuickShop cannot send Advanced chat message, Are you using CraftBukkit? Please use Spigot or SpigotFork.");
+                    .severe("QuickShop cannot send Advanced chat message, Are you using CraftBukkit? Please use Spigot or a Spigot fork.");
         }
     }
 
@@ -871,7 +871,7 @@ public class Util {
      * With the trace.
      */
     public static void sendDeprecatedMethodWarn() {
-        QuickShop.instance.getLogger().warning("Some plugin calling Deprecated method, Please contact author to use new api!");
+        QuickShop.instance.getLogger().warning("Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         for (StackTraceElement stackTraceElement : stackTraceElements) {
             QuickShop.instance.getLogger().warning("at " + stackTraceElement.getClassName() + "#" + stackTraceElement
@@ -906,7 +906,7 @@ public class Util {
                 if (DisplayItem.checkIsGuardItemStack(inv.getItem(i))) {
                     // Found Item and remove it.
                     inv.setItem(i, new ItemStack(Material.AIR, 0));
-                    Util.debugLog("Found displayitem in inventory, removed.");
+                    Util.debugLog("Found a displayitem in an inventory, it has been removed.");
                 }
         } catch (Throwable t) {
         }
@@ -1156,7 +1156,7 @@ public class Util {
             Files.copy(sqlfile, bksqlfile);
         } catch (Exception e1) {
             e1.printStackTrace();
-            plugin.getLogger().warning("Failed to backup database.");
+            plugin.getLogger().warning("Failed to backup the database.");
             return false;
         }
         return true;
@@ -1205,7 +1205,7 @@ public class Util {
     public static boolean isUUID(@NotNull String string) {
         if (string.length() != 36 && string.length() != 32)
             return false;
-        Util.debugLog("Run extra uuid checking for " + string + ". Length: " + string.length());
+        Util.debugLog("Run an extra uuid check for " + string + ". Length: " + string.length());
         try {
             UUID.fromString(string);
             return true;
@@ -1216,7 +1216,7 @@ public class Util {
 
     public static void shoppablesCheck(@NotNull Shop shop) {
         if (!Util.canBeShop(shop.getLocation().getBlock())) {
-            Util.debugLog("This shopblock can't be shop, deleteing...");
+            Util.debugLog("This shopblock can't be a shop, deleting...");
             shop.onUnload();
             shop.delete();
         }

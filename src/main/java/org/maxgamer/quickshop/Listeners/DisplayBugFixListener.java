@@ -35,7 +35,7 @@ public class DisplayBugFixListener implements Listener {
             ArmorStand armorStand = (ArmorStand) entity;
             if (DisplayItem.checkIsGuardItemStack(armorStand.getItemInHand())) {
                 e.setBuildable(true);
-                Util.debugLog("Re-set the allow build here cause found cause display-item blocking.");
+                Util.debugLog("Re-set the allowed build flag here because it found the cause of the display-item blocking it before.");
                 break;
             }
         }
