@@ -807,12 +807,19 @@ public class ContainerShop implements Shop {
     public void checkDisplay() {
         if (this.displayItem == null)
             return;
-        if (!this.displayItem.isSpawned())
+        if (!this.displayItem.isSpawned()) {
+            /* Not spawned yet. */
             this.displayItem.spawn();
-        if (this.displayItem.checkDisplayNeedRegen())
-            this.displayItem.fixDisplayNeedRegen();
-        if (this.displayItem.checkDisplayIsMoved())
-            this.displayItem.fixDisplayMoved();
-        this.displayItem.removeDupe();
+            return;
+        } else {
+            /* If not spawned, we didn't need check these, only check them when we need. */
+            if (this.displayItem.checkDisplayNeedRegen())
+                this.displayItem.fixDisplayNeedRegen();
+            if (this.displayItem.checkDisplayIsMoved())
+                this.displayItem.fixDisplayMoved();
+        }
+        /* Dupe is always need check, if enabled display */
+        if (plugin.isDisplay())
+            this.displayItem.removeDupe();
     }
 }
