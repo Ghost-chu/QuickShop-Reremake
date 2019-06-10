@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 34
+config-version: 35
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
