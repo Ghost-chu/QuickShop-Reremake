@@ -127,7 +127,7 @@ shop:
     display-items: true
 
     #The plugin will check if the display item is in a valid position every specified amount of ticks. 0 to disable.
-    display-items-check-ticks: 1200
+    display-items-check-ticks: 6000
 
     #The display type you want use.
     #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Dropped Item
