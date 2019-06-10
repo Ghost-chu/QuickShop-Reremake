@@ -25,6 +25,7 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
@@ -183,6 +184,7 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Timer enableTimer = new Timer(true);
         /* PreInit for BootError feature */
         commandExecutor = new QS(this);
         getCommand("qs").setExecutor(commandExecutor);
@@ -302,7 +304,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
-
+        getLogger().info("Registering DisplayCheck Task....");
         if (display && displayItemCheckTicks > 0) {
             new BukkitRunnable() {
                 @Override
@@ -318,11 +320,14 @@ public class QuickShop extends JavaPlugin {
                 }
             }.runTaskTimer(this, 1L, displayItemCheckTicks);
         }
+        getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
+        getLogger().info("Registering UpdateWatcher...");
         UpdateWatcher.init();
+        getLogger().info("Registering BStats Mertics...");
         submitMeritcs();
-        getLogger().info("QuickShop loaded!");
+        getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
     }
 
     private void submitMeritcs() {
@@ -337,7 +342,6 @@ public class QuickShop extends JavaPlugin {
             } else {
                 vaultVer = "Vault not found";
             }
-
             // Use internal Metric class not Maven for solve plugin name issues
             String display_Items;
             if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
