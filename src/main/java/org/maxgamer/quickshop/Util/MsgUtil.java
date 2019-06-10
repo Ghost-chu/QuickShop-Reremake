@@ -446,7 +446,7 @@ public class MsgUtil {
             if (localizedName != null)
                 lastItemName = localizedName;
             itemi18n.set("itemi18n." + itemName, lastItemName);
-            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(lastItemName) + "] ,adding it in config...");
+            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(lastItemName) + "] , adding it to the config...");
         }
         try {
             itemi18n.save(itemi18nFile);
@@ -497,7 +497,7 @@ public class MsgUtil {
                 continue;
             String enchName = ench.getKey().getKey();
             enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
-            plugin.getLogger().info("Found new ench [" + enchName + "] ,add it in config...");
+            plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
         }
         try {
             enchi18n.save(enchi18nFile);
@@ -545,7 +545,7 @@ public class MsgUtil {
                 if (potionI18n != null && !potionI18n.isEmpty())
                     continue;
                 String potionName = potion.getName();
-                plugin.getLogger().info("Found new potion [" + potionName + "] ,add it in config...");
+                plugin.getLogger().info("Found new potion [" + potionName + "] , adding it to the config...");
                 potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
             }
         }
@@ -604,7 +604,7 @@ public class MsgUtil {
      * on space.
      */
     public static void clean() {
-        plugin.getLogger().info("Cleaning purchase messages from database that are over a week old...");
+        plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         long weekAgo = System.currentTimeMillis() - 604800000;
         plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
