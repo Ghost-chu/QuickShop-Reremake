@@ -25,7 +25,6 @@ import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
-import org.maxgamer.quickshop.Watcher.ItemWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
@@ -246,12 +245,12 @@ public class QuickShop extends JavaPlugin {
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
 
-        if (this.display) {
+        //if (this.display) {
             // Display item handler thread
-            getLogger().info("Starting item scheduler");
-            ItemWatcher itemWatcher = new ItemWatcher(this);
-            itemWatcherTask = Bukkit.getScheduler().runTaskTimer(this, itemWatcher, 600, 600);
-        }
+        // getLogger().info("Starting item scheduler");
+        // ShopVaildWatcher itemWatcher = new ShopVaildWatcher(this);
+        // shopVaildWatchTask = Bukkit.getScheduler().runTaskTimer(this, itemWatcher, 600, 600);
+        //}
         if (this.getConfig().getBoolean("log-actions")) {
             // Logger Handler
             this.logWatcher = new LogWatcher(this, new File(this.getDataFolder(), "qs.log"));
@@ -311,8 +310,10 @@ public class QuickShop extends JavaPlugin {
                     Iterator<Shop> it = getShopManager().getShopIterator();
                     while (it.hasNext()) {
                         Shop shop = it.next();
-                        if (shop != null)
-                            getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
+                        if (shop == null)
+                            continue;
+                        getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
+
                     }
                 }
             }.runTaskTimer(this, 1L, displayItemCheckTicks);
@@ -722,6 +723,8 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 34) {
             getConfig().set("queue.enable", false); // Close it for everyone
+            if (getConfig().getInt("shop.display-items-check-ticks") == 1200)
+                getConfig().set("shop.display-items-check-ticks", 6000);
             getConfig().set("config-version", 35);
             selectedVersion = 35;
             saveConfig();
