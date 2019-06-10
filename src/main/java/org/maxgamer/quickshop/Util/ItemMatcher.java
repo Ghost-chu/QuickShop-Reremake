@@ -85,8 +85,6 @@ public class ItemMatcher {
             this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
         }
 
-
-
         boolean matches(ItemStack stack1, ItemStack stack2) {
             if (stack1.hasItemMeta() != stack2.hasItemMeta())
                 return false;
@@ -154,10 +152,8 @@ public class ItemMatcher {
                 return true;
             if (meta1.hasDisplayName() != meta2.hasDisplayName())
                 return false;
-
             if (!meta1.hasDisplayName())
                 return true; //Passed check. no display need to check
-
             return (meta1.getDisplayName().equals(meta2.getDisplayName()));
         }
 
@@ -166,16 +162,12 @@ public class ItemMatcher {
                 return true;
             if (meta1.hasLore() != meta2.hasLore())
                 return false;
-
             if (!meta1.hasLore())
                 return true; // No lores need to be checked.
-
             List<String> lores1 = meta1.getLore();
             List<String> lores2 = meta2.getLore();
-
             if (lores1.size() != lores2.size())
                 return false;
-
             return (lores2.hashCode() == lores2.hashCode());
         }
 
