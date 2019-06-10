@@ -779,7 +779,6 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable)
             return;
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        Iterator shopIterator = shopManager.getShopIterator();
         Util.debugLog("Cleaning up shop queues...");
         this.getQueuedShopManager().uninit();
 
