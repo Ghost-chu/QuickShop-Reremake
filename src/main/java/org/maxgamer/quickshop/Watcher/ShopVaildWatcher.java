@@ -19,15 +19,17 @@ import org.maxgamer.quickshop.Shop.ShopChunk;
  * @author Netherfoam Maintains the display items, restoring them when needed.
  * Also deletes invalid items.
  */
-public class ItemWatcher implements Runnable {
+@Deprecated
+public class ShopVaildWatcher implements Runnable {
     private QuickShop plugin;
 
-    public ItemWatcher(@NotNull QuickShop plugin) {
+    @Deprecated
+    public ShopVaildWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 
     public void run() {
-        List<Shop> toRemove = new ArrayList<>(1);
+        List<Shop> toRemove = new ArrayList<>();
         for (Entry<String, HashMap<ShopChunk, HashMap<Location, Shop>>> inWorld : plugin.getShopManager().getShops().entrySet()) {
             // This world
             World world = Bukkit.getWorld(inWorld.getKey());

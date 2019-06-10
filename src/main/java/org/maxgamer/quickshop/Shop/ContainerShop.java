@@ -694,7 +694,7 @@ public class ContainerShop implements Shop {
      * @return isValid
      */
     public boolean isValid() {
-        checkDisplay();
+        //checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
     }
 
@@ -729,7 +729,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Dupe load request, canceled.");
             return;
         }
-        checkDisplay();
+
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
@@ -750,6 +750,7 @@ public class ContainerShop implements Shop {
             }
         }
         this.isLoaded = true;
+        checkDisplay();
     }
 
     public void onClick() {

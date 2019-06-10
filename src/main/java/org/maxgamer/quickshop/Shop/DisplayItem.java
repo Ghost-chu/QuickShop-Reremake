@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -97,7 +98,7 @@ public interface DisplayItem {
      * @param itemStack Old itemStack
      * @return New itemStack with protect flag.
      */
-    public static ItemStack createGuardItemStack(ItemStack itemStack, Shop shop) {
+    public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
@@ -118,9 +119,7 @@ public interface DisplayItem {
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
-    public static boolean checkIsGuardItemStack(ItemStack itemStack) {
-        if (itemStack == null)
-            return false;
+    public static boolean checkIsGuardItemStack(@NotNull ItemStack itemStack) {
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
@@ -132,9 +131,8 @@ public interface DisplayItem {
         if (iMeta.hasLore()) {
             List<String> lores = iMeta.getLore();
             for (String lore : lores) {
-                if (lore.toLowerCase().contains("quickshop displayitem")) {
+                if (lore.toLowerCase().contains("quickshop displayitem"))
                     return true;
-                }
             }
         }
         return false;
@@ -147,9 +145,7 @@ public interface DisplayItem {
      * @param shop      Target shop
      * @return Is target shop's display
      */
-    public static boolean checkIsTargetShopDisplay(ItemStack itemStack, Shop shop) {
-        if (itemStack == null)
-            return false;
+    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
