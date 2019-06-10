@@ -124,7 +124,7 @@ public class ItemMatcher {
         }
 
         private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
-            return (meta1.equals(meta2));
+            return (meta1.hashCode() == meta2.hashCode());
         }
 
         private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
