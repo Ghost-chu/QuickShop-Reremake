@@ -114,14 +114,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <extensions>
-            <extension>
-                <groupId>io.packagecloud.maven.wagon</groupId>
-                <artifactId>maven-packagecloud-wagon</artifactId>
-                <version>0.0.6</version>
-            </extension>
-        </extensions>
-
     </build>
 
     <repositories>
