@@ -219,8 +219,10 @@ public class ItemMatcher {
             if (potion1.hasCustomEffects() != potion2.hasCustomEffects())
                 return false;
 
-            if (potion1.getCustomEffects().hashCode() != potion2.getCustomEffects().hashCode())
-                return false;
+            if (potion1.hasCustomEffects()) {
+                if (potion1.getCustomEffects().hashCode() != potion2.getCustomEffects().hashCode())
+                    return false;
+            }
 
             if (potion1.getBasePotionData().hashCode() != potion2.getBasePotionData().hashCode())
                 return false;
