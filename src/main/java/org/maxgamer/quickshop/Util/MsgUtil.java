@@ -443,6 +443,7 @@ public class MsgUtil {
             String itemName = material.name();
             String lastItemName = Util.prettifyText(itemName);
             String localizedName = Util.getLocalizedName(new ItemStack(material));
+            /* If have localizedName, use localizedName, not our processed name */
             if (localizedName != null)
                 lastItemName = localizedName;
             itemi18n.set("itemi18n." + itemName, lastItemName);
