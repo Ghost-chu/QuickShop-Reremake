@@ -98,9 +98,9 @@ public class ItemMatcher {
                 return false;
             if (meta1 == null)
                 return true; //Both null...
-            if (!rootMatches(meta1, meta2)) //Directly check itemMeta.
-                return false;
-            if (!damageMatches(meta1, meta2)) //Directly check itemMeta.
+            if (rootMatches(meta1, meta2)) //Directly check itemMeta.
+                return true; // If not passed the check, it's okay, cause this is a strict check.
+            if (!damageMatches(meta1, meta2))
                 return false;
             if (!displayMatches(meta1, meta2))
                 return false;
