@@ -212,10 +212,10 @@ public class ItemMatcher {
 
             if (potion1.hasColor() != potion2.hasColor())
                 return false;
-
-            if (!potion1.getColor().equals(potion2.getColor()))
-                return false;
-
+            if (potion1.hasColor()) {
+                if (!potion1.getColor().equals(potion2.getColor()))
+                    return false;
+            }
             if (potion1.hasCustomEffects() != potion2.hasCustomEffects())
                 return false;
 
