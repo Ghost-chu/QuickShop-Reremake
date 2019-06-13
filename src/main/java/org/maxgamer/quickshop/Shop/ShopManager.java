@@ -219,6 +219,8 @@ public class ShopManager {
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         ShopChunk shopChunk = new ShopChunk(world, x, z);
         HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
+        if (inChunk == null || loc == null)
+            return;
         inChunk.remove(loc);
     }
 
