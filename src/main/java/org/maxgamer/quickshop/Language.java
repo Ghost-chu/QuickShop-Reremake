@@ -25,7 +25,7 @@ public class Language {
      * @return The target file's InputStream.
      */
     public InputStream getFile(@Nullable String language, @Nullable String type) {
-        if ((language == null)) {
+        if (language == null) {
             language = "en";
             Util.debugLog("Using the default language (EN) cause language is null.");
         }
@@ -34,7 +34,7 @@ public class Language {
         InputStream inputStream = plugin.getResource(type + "-" + language + ".yml");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
-            plugin.getResource(type + "-" + "en" + ".yml");
+            inputStream = plugin.getResource(type + "-" + "en" + ".yml");
         }
         return inputStream;
         //File name should call    type-language.yml    ---> config-zh.yml
@@ -50,8 +50,7 @@ public class Language {
      * @param fileName The filename you want write to the plugin datafolder.
      */
     public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) {
-        File targetFile = new File(plugin.getDataFolder()
-                .toPath() + "/" + fileName);
+        File targetFile = new File(plugin.getDataFolder(), fileName);
         if (!targetFile.exists()) {
             try {
                 targetFile.createNewFile();
