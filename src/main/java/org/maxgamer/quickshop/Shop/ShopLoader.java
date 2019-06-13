@@ -74,7 +74,10 @@ public class ShopLoader {
                     //Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the database...");
-                        shop.delete();
+                        //shop.delete();
+                        plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), shop.getLocation().getBlockX(), shop
+                                .getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld()
+                                .getName());
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
