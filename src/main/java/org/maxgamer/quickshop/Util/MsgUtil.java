@@ -34,7 +34,7 @@ public class MsgUtil {
     private static YamlConfiguration enchi18n;
     private static YamlConfiguration potioni18n;
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
-    private static boolean Inited;
+    private static boolean inited;
     private static YamlConfiguration messagei18n;
     private static File messageFile;
 
@@ -70,12 +70,12 @@ public class MsgUtil {
         Util.parseColours(messagei18n);
 
         /* Print to console this language file's author, contributors, and region*/
-        if (!Inited) {
+        if (!inited) {
             plugin.getLogger().info(getMessage("translation-author"));
             plugin.getLogger().info(getMessage("translation-contributors"));
             plugin.getLogger().info(getMessage("translation-country"));
             //plugin.getLogger().info(getMessage("translation-version"));
-            Inited = true;
+            inited = true;
         }
         /* Save the upgraded messages.yml */
         try {
