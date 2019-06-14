@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo "Deploy to the packagecloud.io"
-
-mvn deploy
-
 echo "Deploy jar to dev.bukkit.org"
 
 # 获取从install完成后输出的JAR文件的名字
