@@ -160,25 +160,19 @@ public class ShopLoader {
         try {
             logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
         } catch (SQLException | NullPointerException e) {
-            logger.warning("Connected: " + "FALSE - Failed reload status.");
+            logger.warning("Connected: " + "FALSE - Failed to load status.");
         }
 
         try {
             logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
         } catch (SQLException | NullPointerException e) {
-            logger.warning("Readonly: " + "FALSE - Failed reload status.");
+            logger.warning("Readonly: " + "FALSE - Failed to load status.");
         }
 
         try {
             logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
         } catch (SQLException | NullPointerException e) {
-            logger.warning("ClientInfo: " + "FALSE - Failed reload status.");
-        }
-
-        try {
-            logger.warning("Metadata: " + String.valueOf(plugin.getDatabase().getConnection().getMetaData().toString()));
-        } catch (SQLException | NullPointerException e) {
-            logger.warning("Metadata: " + "FALSE - Failed reload status.");
+            logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
         }
 
         logger.warning("#######################################");
