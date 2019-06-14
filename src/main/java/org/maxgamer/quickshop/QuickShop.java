@@ -200,6 +200,7 @@ public class QuickShop extends JavaPlugin {
             runtimeCheck();
         } catch (RuntimeException e) {
             bootError = new BootError(e.getMessage());
+            return;
         }
         /* Process the config */
         saveDefaultConfig();
