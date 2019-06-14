@@ -9,7 +9,7 @@ echo "Deploy jar to dev.bukkit.org"
 # 获取从install完成后输出的JAR文件的名字
 filename="./jarname.txt"
 
-if [ ! -f $filename ]
+if [[ ! -f $filename ]]
 then
     echo "The file $filename doesn't exist."
     exit 1
