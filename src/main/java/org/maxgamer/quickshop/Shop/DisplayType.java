@@ -6,7 +6,7 @@ public enum DisplayType {
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
     private int id;
 
-    private DisplayType(int id) {
+    DisplayType(int id) {
         this.id = id;
     }
 
