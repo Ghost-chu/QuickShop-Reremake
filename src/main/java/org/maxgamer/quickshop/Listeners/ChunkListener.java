@@ -15,7 +15,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.QueueAction;
 import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {
@@ -25,7 +24,6 @@ public class ChunkListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent e) {
         if (e.isNewChunk()) //Ignore it
             return;
-        Util.debugLog("Chunk " + e.getChunk().getX() + "#" + e.getChunk().getZ() + " was loaded, searching the shops...");
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
@@ -45,7 +43,6 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
-        Util.debugLog("Chunk " + e.getChunk().getX() + "#" + e.getChunk().getZ() + " was unloaded, searching the shops...");
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
