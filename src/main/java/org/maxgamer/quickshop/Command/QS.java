@@ -786,7 +786,7 @@ public class QS implements CommandExecutor {
             if (subArg.equals("unlimited")) {
                 setUnlimited(sender);
                 return true;
-            } else if (subArg.startsWith("silentunlimited")) {
+            } else if (subArg.startsWith("silentunlimited") || subArg.startsWith("slientunlimited")) {
                 silentUnlimited(sender, args);
                 return true;
             } else if (subArg.equals("setowner") || subArg.equals("owner")) {

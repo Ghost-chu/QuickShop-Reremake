@@ -668,7 +668,7 @@ public class MsgUtil {
             }
         }
         chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.price-per", MsgUtil.getItemi18n(shop.getDataName()), Util.format(shop.getPrice())));
+                .getMessage("menu.price-per", MsgUtil.getDisplayName(shop.getItem()), Util.format(shop.getPrice())));
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying"));
         } else {
