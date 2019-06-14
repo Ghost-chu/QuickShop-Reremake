@@ -57,6 +57,7 @@ public class SentryErrorReporter {
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
+        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
         Util.debugLog("Enabled!");
         enabled = true;
         if (!plugin.getConfig().getBoolean("auto-report-errors")) {
@@ -200,6 +201,51 @@ public class SentryErrorReporter {
                 return true;
             }
             //There wasn't need check from who, it just directly report it.
+
+            //Do not reporting when it is develop env.
+            if (Util.isDevMode()) {
+                return true;
+            }
+            //No, pls do not report the OutOfMemory Error, i didn't care it.
+
+            if (record.getThrown() instanceof OutOfMemoryError) {
+                return true;
+            }
+            sendError(record.getThrown(), record.getMessage());
+            return false; //Hide errors
+        }
+    }
+
+    class GlobalExceptionFilter implements Filter {
+
+        /**
+         * Check if a given log record should be published.
+         *
+         * @param record a LogRecord
+         * @return true if the log record should be published.
+         */
+        @Override
+        public boolean isLoggable(@NotNull LogRecord record) {
+            if (!enabled) {
+                return true;
+            }
+            Level level = record.getLevel();
+            if (level != Level.WARNING && level != Level.SEVERE) {
+                //We didn't care normal logs.
+                return true;
+            }
+            if (record.getThrown() == null) {
+                //We didn't care warnings/errors for non-exception.
+                return true;
+            }
+            /* Check is it cause by QS */
+            boolean isByQS = false;
+            if (checkWasCauseByQS(record.getThrown()))
+                isByQS = true;
+            if (checkWasCauseByQS(record.getThrown().getCause()))
+                isByQS = true;
+            if (!isByQS)
+                return true;
 
             //Do not reporting when it is develop env.
             if (Util.isDevMode()) {
