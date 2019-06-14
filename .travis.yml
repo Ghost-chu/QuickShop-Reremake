@@ -9,13 +9,7 @@ after_success:
 - rm -rf push
 - mkdir push
 - cp ./target/*.jar ./push/
-- mkdir devbukkit
-- cp ./target/*.jar ./devbukkit/
-- rm -f ./devbukkit/original-*.jar
-- rm -f ./devbukkit/*-javadoc.jar
-- rm -f ./devbukkit/*-shaded.jar
-- rm -f ./devbukkit/*-sources.jar
-- ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+- ls ./push -1 | grep ".jar$" > jarname.txt
 before_deploy:
 - export TRAVIS_TAG=${TRAVIS_TAG:-SNAPSHOT-\#$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)-$(date +'%Y%m%d%H%M%S')}
 deploy:
@@ -27,7 +21,7 @@ deploy:
         secure: $Github_token
     file:
     - ./push/*
-    script: bash deploy.sh
+    script: ./deploy.sh
     file_glob: true
     on:
         tags: true
