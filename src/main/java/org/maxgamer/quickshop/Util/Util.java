@@ -1106,7 +1106,7 @@ public class Util {
      * @param strArray Target array
      * @return str
      */
-    public static String array2String(String[] strArray) {
+    public static String array2String(@NotNull String[] strArray) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strArray.length; i++) {
             builder.append(strArray[i]);
@@ -1123,7 +1123,7 @@ public class Util {
      * @param strList Target list
      * @return str
      */
-    public static String list2String(List<String> strList) {
+    public static String list2String(@NotNull List<String> strList) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strList.size(); i++) {
             builder.append(strList.get(i));

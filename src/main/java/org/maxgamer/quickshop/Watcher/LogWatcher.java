@@ -35,6 +35,8 @@ public class LogWatcher implements Runnable {
         new BukkitRunnable() {
             public void run() {
                 for (String log : logs) {
+                    if (ps == null)
+                        continue;
                     ps.print(log);
                 }
                 logs.clear();
