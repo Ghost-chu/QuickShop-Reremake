@@ -13,6 +13,9 @@ public class BootError {
 
     BootError(@NotNull String... errors) {
         this.errors = errors;
+        for (String err : errors) {
+            QuickShop.instance.getLogger().severe(err);
+        }
     }
 
     public String[] getErrors() {
