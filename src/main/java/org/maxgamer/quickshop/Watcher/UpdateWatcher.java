@@ -49,8 +49,15 @@ public class UpdateWatcher implements Listener {
                         if (player.hasPermission("quickshop.alert")) {
                             List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
                             Random random = new Random();
-                            int notifyNum = random.nextInt(notifys.size());
-                            String notify = notifys.get(notifyNum);
+                            int notifyNum = -1;
+                            if (notifys.size() > 1)
+                                notifyNum = random.nextInt(notifys.size());
+                            String notify;
+                            if (notifyNum > 0) { //Translate bug.
+                                notify = notifys.get(notifyNum);
+                            } else {
+                                notify = "New update {0} now avaliable! Please update!";
+                            }
                             notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
                             TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
                                     .getMessage("updatenotify.buttontitle"));
