@@ -88,7 +88,8 @@ public class ShopManager {
         }
         //Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-            if (Util.isAir(info.getSignBlock().getType())) {
+            if (!Util.isAir(info.getSignBlock().getType())) {
+                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                 return;
             }
             boolean isWaterLogged = false;
