@@ -74,8 +74,7 @@ public class ShopManager {
         }
         //Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-            Material signType = info.getSignBlock().getType();
-            if (signType != Material.AIR && signType != Material.CAVE_AIR && signType != Material.VOID_AIR && signType != Material.WATER) {
+            if (Util.isAir(info.getSignBlock().getType())) {
                 return;
             }
             boolean isWaterLogged = false;
