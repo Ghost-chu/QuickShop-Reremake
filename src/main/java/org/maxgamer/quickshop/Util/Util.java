@@ -950,6 +950,14 @@ public class Util {
         if (!devMode)
             return;
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        try {
+            Class c = Class.forName(className);
+            className = c.getSimpleName();
+            if (!c.getSimpleName().isEmpty())
+                className = c.getSimpleName();
+        } catch (ClassNotFoundException e) {
+            //Ignore
+        }
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
         for (String log : logs) {

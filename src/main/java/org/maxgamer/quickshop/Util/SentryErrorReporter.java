@@ -25,7 +25,7 @@ import org.maxgamer.quickshop.QuickShop;
 public class SentryErrorReporter {
     private SentryClient sentryClient;
     private Context context;
-    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=";
+    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
     private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
@@ -145,7 +145,9 @@ public class SentryErrorReporter {
      * @param throwable Throws
      * @return Cause or not
      */
-    private boolean checkWasCauseByQS(@NotNull Throwable throwable) {
+    private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
+        if (throwable == null)
+            return false;
         Optional<StackTraceElement> element = Arrays.stream(throwable.getStackTrace())
                 .limit(5)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
@@ -196,6 +198,9 @@ public class SentryErrorReporter {
                 //We didn't care normal logs.
                 return true;
             }
+            /* Check stupid Sentry's Warning*/
+            if (record.getMessage().contains("stacktrace.app.packages"))
+                return false;
             if (record.getThrown() == null) {
                 //We didn't care warnings/errors for non-exception.
                 return true;
@@ -234,17 +239,16 @@ public class SentryErrorReporter {
                 //We didn't care normal logs.
                 return true;
             }
+            /* Check stupid Sentry's Warning*/
+            if (record.getMessage().contains("stacktrace.app.packages"))
+                return false;
+
             if (record.getThrown() == null) {
                 //We didn't care warnings/errors for non-exception.
                 return true;
             }
             /* Check is it cause by QS */
-            boolean isByQS = false;
-            if (checkWasCauseByQS(record.getThrown()))
-                isByQS = true;
-            if (checkWasCauseByQS(record.getThrown().getCause()))
-                isByQS = true;
-            if (!isByQS)
+            if (!checkWasCauseByQS(record.getThrown()) && !checkWasCauseByQS(record.getThrown().getCause()))
                 return true;
 
             //Do not reporting when it is develop env.
