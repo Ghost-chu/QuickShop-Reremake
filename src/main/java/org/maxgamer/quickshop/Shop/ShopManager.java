@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -68,9 +69,22 @@ public class ShopManager {
                     0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             // Add it to the world
             addShop(loc.getWorld().getName(), shop);
-        } catch (Exception error) {
-            error.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not create shop! Changes will revert after a reboot!");
+        } catch (SQLException error) {
+            plugin.getLogger().warning("SQLException detected, trying auto fixing...");
+            boolean backupSuccess = Util.backupDatabase();
+            try {
+                if (backupSuccess) {
+                    plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), loc.getBlockX(), loc.getBlockY(), loc
+                            .getBlockZ(), loc.getWorld().getName());
+                } else {
+                    plugin.getLogger().warning("Failed to backup database, all changes will revert after a reboot.");
+                }
+            } catch (SQLException error2) {
+                //Failed removing
+                plugin.getLogger().warning("Failed to autofix, all changes will revert after a reboot.");
+                error.printStackTrace();
+                error2.printStackTrace();
+            }
         }
         //Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {

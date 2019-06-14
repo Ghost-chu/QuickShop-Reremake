@@ -158,8 +158,8 @@ public class DatabaseHelper {
 
     }
 
-    public void createShop(@NotNull Database db, @NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z) {
-        try {
+    public void createShop(@NotNull Database db, @NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z)
+            throws SQLException {
             String sqlString = "INSERT INTO " + QuickShop.instance
                     .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
@@ -174,9 +174,6 @@ public class DatabaseHelper {
             ps.setInt(8, unlimited);
             ps.setInt(9, shopType);
             plugin.getDatabaseManager().add(ps);
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
     }
 
     public void sendMessage(@NotNull Database db, @NotNull UUID player, @NotNull String message, long time) {
