@@ -1087,8 +1087,7 @@ public class Util {
             return false;
         }
         String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-        File bksqlfile = new File(dataFolder
-                .getAbsolutePath().toString() + "/shop_backup_" + uuid + ".db");
+        File bksqlfile = new File(dataFolder, "/shop_backup_" + uuid + ".db");
         try {
             Files.copy(sqlfile, bksqlfile);
         } catch (Exception e1) {
