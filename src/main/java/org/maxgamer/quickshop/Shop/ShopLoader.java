@@ -37,10 +37,13 @@ public class ShopLoader {
         this.plugin = plugin;
     }
 
+    public void loadShops() {
+        loadShops(null);
+    }
     /**
      * Load all shops
      */
-    public void loadShops() {
+    public void loadShops(String worldName) {
 
         Timer totalLoadTimer = new Timer(true);
         try {
@@ -52,7 +55,8 @@ public class ShopLoader {
                 Timer singleShopLoadTimer = new Timer(true);
 
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
-
+                if (worldName != null && !origin.getWorld().equals(worldName))
+                    continue;
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
 
                 Shop shop = new ContainerShop(data.getLocation(), data.getPrice(), data.getItem(), data.getModerators(), data

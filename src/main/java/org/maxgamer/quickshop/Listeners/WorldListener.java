@@ -30,7 +30,9 @@ public class WorldListener implements Listener {
          * world value is the same.
          *  ************************************
          */
+
         World world = e.getWorld();
+        plugin.getShopLoader().loadShops(world.getName());
         // New world data
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<ShopChunk, HashMap<Location, Shop>>(1);
         // Old world data
