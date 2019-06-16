@@ -33,6 +33,7 @@ deploy:
         secure: $Github_token
     file:
     - ./push/*
+    script: ./snapshot-deploy.sh
     file_glob: true
     prerelease: true
     on:
