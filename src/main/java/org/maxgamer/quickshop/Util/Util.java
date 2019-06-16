@@ -916,7 +916,7 @@ public class Util {
 
     }
 
-    private static Class<?> getNMSClass(@Nullable String className) {
+    public static Class<?> getNMSClass(@Nullable String className) {
         if (className == null)
             className = "MinecraftServer";
         String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -926,6 +926,11 @@ public class Util {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getNMSVersion() {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     public static boolean isAir(@NotNull Material mat) {
