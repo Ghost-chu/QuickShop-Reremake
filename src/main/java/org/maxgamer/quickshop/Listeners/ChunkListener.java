@@ -47,8 +47,13 @@ public class ChunkListener implements Listener {
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
             return;
-        for (Shop shop : inChunk.values()) {
-            plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Shop shop : inChunk.values()) {
+                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
+                }
+            }
+        }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
     }
 }
