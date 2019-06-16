@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.google.common.io.Files;
+import lombok.*;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -43,6 +44,7 @@ public class Util {
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
     private static List<String> worldBlacklist = new ArrayList<>();
+    @Getter private static List<String> debugLogs = new LinkedList<>();
     private static QuickShop plugin;
     private static boolean devMode;
 
@@ -947,8 +949,7 @@ public class Util {
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
-        if (!devMode)
-            return;
+
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
             Class c = Class.forName(className);
@@ -960,8 +961,15 @@ public class Util {
         }
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
+
         for (String log : logs) {
-            plugin.getLogger().info("[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log);
+            String text = "[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log;
+            debugLogs.add(text);
+            if (debugLogs.size() > 4999) /* Keep debugLogs max can have 5k lines. */
+                debugLogs.remove(0);
+            if (!devMode)
+                return;
+            plugin.getLogger().info(text);
         }
     }
 
