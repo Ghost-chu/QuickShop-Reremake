@@ -41,7 +41,7 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     private ShopType shopType;
     private QuickShop plugin;
-    private boolean isLoaded;
+    private boolean isLoaded = false;
 
     /**
      * Returns a clone of this shop. References to the same display item,
@@ -214,7 +214,6 @@ public class ContainerShop implements Shop {
      * Upates the shop into the database.
      */
     public void update() {
-
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (shopUpdateEvent.isCancelled()) {
             Util.debugLog("The Shop update action was canceled by a plugin.");
