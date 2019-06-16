@@ -44,7 +44,7 @@ public class Util {
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
     private static List<String> worldBlacklist = new ArrayList<>();
-    @Getter private static List<String> debugLogs = new LinkedList<>();
+    @Getter private static List<String> debugLogs = new ArrayList<>();
     private static QuickShop plugin;
     private static boolean devMode;
 
