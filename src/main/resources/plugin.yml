@@ -1,11 +1,12 @@
 name: ${name}
 main: ${package}.${name}
 version: ${project.version}
-authors: [Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
+authors: [BukkitCommonsStudio,Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
-softdepend: [Vault, WorldGuard, Essentials, OpenInv, Multiverse-Core, AreaShop]
+#Now we only need Vault.
+softdepend: [Vault]
 
 api-version: 1.13
 
