@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -258,6 +259,9 @@ public class SentryErrorReporter {
             //No, pls do not report the OutOfMemory Error, i didn't care it.
 
             if (record.getThrown() instanceof OutOfMemoryError) {
+                return true;
+            }
+            if (record.getThrown() instanceof IOException) {
                 return true;
             }
             sendError(record.getThrown(), record.getMessage());
