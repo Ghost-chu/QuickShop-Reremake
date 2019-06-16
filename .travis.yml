@@ -42,8 +42,7 @@ deploy:
     file:
     - ./push/*
     file_glob: true
+    script: ./snapshot-deploy.sh $Curse_token
     prerelease: true
     on:
         tags: false
-after_deploy:
-    ./snapshot-deploy.sh $Curse_token
