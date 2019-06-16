@@ -15,7 +15,7 @@
     </licenses>
     <properties>
         <package>org.maxgamer.quickshop</package>
-        <developer>Ghost_chu</developer>
+        <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
