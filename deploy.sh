@@ -16,7 +16,7 @@ read JAR < $filename
 xToken=$1
 curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, see update details on spigotmc.org","gameVersions":[7330,7105],"releaseType":"release"}' -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
 cat fileid.json
-echo "Finished upload to dev.bukkit.org."
+echo "Finished upload $JAR  to dev.bukkit.org."
 
 #退出脚本，且退出状态码为0
 exit 0
