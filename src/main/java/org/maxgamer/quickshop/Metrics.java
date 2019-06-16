@@ -252,12 +252,7 @@ public class Metrics {
                     // Send the data
                     plugin.getLogger().info("Sending stats data...");
                     sendData(data);
-                } catch (Exception e) {
-                    // Something went wrong! :(
-                    if (logFailedRequests) {
-                        plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
-                    }
-                }
+                } catch (Throwable e) { /*Ignore*/ }
             }
         }).start();
     }
