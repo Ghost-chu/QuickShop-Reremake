@@ -141,7 +141,6 @@ public class SentryErrorReporter {
         plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId().toString());
         plugin.getLogger().warning("Server   ID: " + QuickShop.getUniqueID().toString());
         plugin.getLogger().warning("====QuickShop Error Report E N D===");
-        plugin.getLogger().warning("Copy report and send to author to help us fix bugs.");
         return this.context.getLastEventId();
     }
 
