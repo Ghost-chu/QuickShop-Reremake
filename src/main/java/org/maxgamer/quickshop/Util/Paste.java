@@ -94,6 +94,10 @@ public class Paste {
             finalReport.append("\t\t\n" + new String(Util
                     .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())) + "\n");
             finalReport.append("\t*********************************\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\tInternal Debug Log:\n");
+            finalReport.append("\t\t\n" + Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n") + "\n");
+            finalReport.append("\t*********************************\n");
         } catch (Throwable th) {
             finalReport.append("\tFailed to get data\n");
         }
