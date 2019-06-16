@@ -55,8 +55,10 @@ public class ShopLoader {
                 Timer singleShopLoadTimer = new Timer(true);
 
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
-                if (worldName != null && !origin.getWorld().equals(worldName))
+                if (worldName != null && !origin.getWorld().equals(worldName)) {
+                    singleShopLoaded(singleShopLoadTimer);
                     continue;
+                }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
 
                 Shop shop = new ContainerShop(data.getLocation(), data.getPrice(), data.getItem(), data.getModerators(), data
