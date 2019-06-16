@@ -37,7 +37,7 @@ public class LogWatcher implements Runnable {
                 for (String log : logs) {
                     if (ps == null)
                         continue;
-                    ps.print(log);
+                    ps.print(log + "\n");
                 }
                 logs.clear();
 
