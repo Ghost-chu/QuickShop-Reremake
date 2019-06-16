@@ -1,10 +1,8 @@
 package org.maxgamer.quickshop.Util;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import java.net.ProtocolException;
+import java.util.*;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -32,6 +30,7 @@ public class SentryErrorReporter {
     private QuickShop plugin;
     private boolean tempDisable;
     private boolean disable;
+    private List<Class> ignoredException = new ArrayList<>();
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -59,6 +58,11 @@ public class SentryErrorReporter {
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
         Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        /* Ignore we won't report errors */
+        ignoredException.add(IOException.class);
+        ignoredException.add(OutOfMemoryError.class);
+        ignoredException.add(ProtocolException.class);
+
         Util.debugLog("Enabled!");
         enabled = true;
         if (!plugin.getConfig().getBoolean("auto-report-errors")) {
@@ -214,9 +218,8 @@ public class SentryErrorReporter {
             }
             //No, pls do not report the OutOfMemory Error, i didn't care it.
 
-            if (record.getThrown() instanceof OutOfMemoryError) {
+            if (ignoredException.contains(record.getThrown().getClass()))
                 return true;
-            }
             sendError(record.getThrown(), record.getMessage());
             return false; //Hide errors
         }
@@ -257,13 +260,8 @@ public class SentryErrorReporter {
                 return true;
             }
             //No, pls do not report the OutOfMemory Error, i didn't care it.
-
-            if (record.getThrown() instanceof OutOfMemoryError) {
+            if (ignoredException.contains(record.getThrown().getClass()))
                 return true;
-            }
-            if (record.getThrown() instanceof IOException) {
-                return true;
-            }
             sendError(record.getThrown(), record.getMessage());
             return false; //Hide errors
         }
