@@ -6,43 +6,26 @@ script:
 - mvn clean
 - mvn install
 after_success:
-- rm -rf github_push
-- rm -rf devbukkit_push
-- mkdir github_push
-- mkdir devbukkit_push
-- cp ./target/*.jar ./github_push/
-- cp ./target/*.jar ./devbukkit_push/
-- rm -rf ./devbukkit_push/original-*.jar
-- rm -rf ./devbukkit_push/*-javadoc.jar
-- rm -rf ./devbukkit_push/*-shaded.jar
-- rm -rf ./devbukkit_push/*-sources.jar
-- ls ./devbukkit_push -1 | grep ".jar$" > jarname.txt
-before_deploy:
-- export TRAVIS_TAG=${TRAVIS_TAG:-SNAPSHOT-\#$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)-$(date +'%Y%m%d%H%M%S')}
-- chmod +x *.sh
+- rm -rf push
+- mkdir push
+- cp ./target/*.jar ./push/
+- mkdir devbukkit
+- cp ./target/*.jar ./devbukkit/
+- rm -f ./devbukkit/original-*.jar
+- rm -f ./devbukkit/*-javadoc.jar
+- rm -f ./devbukkit/*-shaded.jar
+- rm -f ./devbukkit/*-sources.jar
+- ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
-#Release
--   provider: releases
     skip_cleanup: true
-    overwrite: true
+    provider: releases
     api_key:
         secure: $Github_token
     file:
     - ./push/*
-    script: ./deploy.sh $Curse_token
     file_glob: true
     on:
         tags: true
-#Pre-Release
--   provider: releases
-    skip_cleanup: true
-    overwrite: true
-    api_key:
-        secure: $Github_token
-    file:
-    - ./push/*
-    file_glob: true
-    script: ./snapshot-deploy.sh $Curse_token
-    prerelease: true
-    on:
-        tags: false
+after_deploy:
+- chmod +x depoly.sh
+- ./depoly.sh $Curse_token
