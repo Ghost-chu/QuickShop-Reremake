@@ -14,7 +14,7 @@ commands:
     qs:
         description: QuickShop command
         usage: /qs
-        aliases: [shop,qsshop,qshop,quickshop]
+        aliases: [shop,qsshop,qshop,quickshop,chestshop,cshop]
 
 permissions:
     quickshop.create.sell:
