@@ -27,5 +27,5 @@ deploy:
     on:
         tags: true
 after_deploy:
-- chmod +x depoly.sh
-- ./depoly.sh $Curse_token
+- chmod +x deploy.sh
+- ./deploy.sh $Curse_token
