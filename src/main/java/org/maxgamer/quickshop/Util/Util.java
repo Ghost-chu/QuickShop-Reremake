@@ -1131,7 +1131,7 @@ public class Util {
         for (int i = 0; i < strArray.length; i++) {
             builder.append(strArray[i]);
             if (i + 1 != strArray.length)
-                builder.append(",");
+                builder.append(", ");
         }
         return builder.toString();
     }
@@ -1148,7 +1148,7 @@ public class Util {
         for (int i = 0; i < strList.size(); i++) {
             builder.append(strList.get(i));
             if (i + 1 != strList.size())
-                builder.append(",");
+                builder.append(", ");
         }
         return builder.toString();
     }
