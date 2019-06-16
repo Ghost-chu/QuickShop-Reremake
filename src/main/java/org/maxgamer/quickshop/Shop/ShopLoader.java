@@ -43,7 +43,7 @@ public class ShopLoader {
     /**
      * Load all shops
      */
-    public void loadShops(String worldName) {
+    public void loadShops(@Nullable String worldName) {
 
         Timer totalLoadTimer = new Timer(true);
         try {
