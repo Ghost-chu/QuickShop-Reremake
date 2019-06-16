@@ -6,10 +6,17 @@ script:
 - mvn clean
 - mvn install
 after_success:
-- rm -rf push
-- mkdir push
-- cp ./target/*.jar ./push/
-- ls ./push -1 | grep ".jar$" > jarname.txt
+- rm -rf github_push
+- rm -rf devbukkit_push
+- mkdir github_push
+- mkdir devbukkit_push
+- cp ./target/*.jar ./github_push/
+- cp ./target/*.jar ./devbukkit_push/
+- rm -rf ./devbukkit_push/original-*.jar
+- rm -rr ./devbukkit_push/*-javadoc.jar
+- rm -rr ./devbukkit_push/*-shaded.jar
+- rm -rr ./devbukkit_push/*-sources.jar
+- ls ./devbukkit_push -1 | grep ".jar$" > jarname.txt
 before_deploy:
 - export TRAVIS_TAG=${TRAVIS_TAG:-SNAPSHOT-\#$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)-$(date +'%Y%m%d%H%M%S')}
 - chmod +x *.sh
