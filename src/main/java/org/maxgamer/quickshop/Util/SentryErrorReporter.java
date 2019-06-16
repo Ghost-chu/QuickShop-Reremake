@@ -7,6 +7,7 @@ import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import io.sentry.Sentry;
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
@@ -22,9 +23,10 @@ import org.maxgamer.quickshop.QuickShop;
  * Auto report errors to qs's sentry.
  */
 public class SentryErrorReporter {
-    private SentryClient sentryClient;
     private Context context;
     private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
+    /* Pre-init it if it called before the we create it... */
+    private SentryClient sentryClient = Sentry.init(this.dsn);
     private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
@@ -34,12 +36,12 @@ public class SentryErrorReporter {
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        JSONObject serverData = plugin.getMetrics().getServerData();
         //sentryClient = Sentry.init(dsn);
         Util.debugLog("Loading SentryErrorReporter");
         sentryClient = SentryClientFactory.sentryClient(this.dsn);
         context = sentryClient.getContext();
         Util.debugLog("Setting basic report data...");
+        JSONObject serverData = plugin.getMetrics().getServerData();
         //context.addTag("plugin_version", QuickShop.getVersion());
         context.addTag("system_os", String.valueOf(serverData.get("osName")));
         context.addTag("system_arch", String.valueOf(serverData.get("osArch")));
