@@ -63,6 +63,7 @@ shop-staff-added: "&aPomyślnie dodano {0} gracza to twojego sklepu."
 shop-staff-deleted: "&a Pomyślnie usunięto {0} gracza z twojego sklepu."
 no-permission-build: "&cNie możesz zrobić sklepu tutaj."
 success-change-owner-to-server: "&aZ powodzeniem zmieniono właściciela sklepu na Server."
+flush-finished: "&aPomyślnie wyczyszczono wiadomości."
 menu:
     successful-purchase: "&aZakupiono:"
     successfully-sold: "&aSprzedano:"
@@ -103,8 +104,8 @@ command:
     cleaned: "&aUsunięto &e{0}&ze sklepu"
     no-type-given: "&cUżycie: /qs find <item>"
     no-amount-given: "&cNie dano ilości. Użyj &a/qs refill <ilość>&c"
-    now-debuging: "&aPomyślnie przełączono się do trybu produkcji, Przeładuj QuickShop ..."
-    now-nolonger-debuging: "&aPomyślnie przełączono się do trybu deweloperskiego, Przeładuj QuickShop ..."
+    now-debuging: "&aPomyślnie przełączono się do trybu developerskiego, Przeładuj QuickShop ..."
+    now-nolonger-debuging: "&aPomyślnie przełączono się do trybu produkcji, Przeładuj QuickShop ..."
     wrong-args: "&cOpcja nie istnieje, użyj /qs help aby uzyskać pomoc"
     description:
         title: "&aQuickShop Help"
