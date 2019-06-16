@@ -1,5 +1,4 @@
 #!/bin/sh
-
 echo "Deploy jar to dev.bukkit.org"
 
 # 获取从install完成后输出的JAR文件的名字
@@ -14,9 +13,9 @@ fi
 # JAR为编译后jar文件名称
 read JAR < $filename
 xToken=$1
-curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, The snapshot may damage your server, not working, destory your saves and databases, backup and use it at your own risk.","gameVersions":[7330,7105],"releaseType":"release"}' -F "file=@./devbukkit_push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
+curl -X POST -H "X-Api-Token: $xToken" -F 'metadata={"changelog":"Auto upload by TravisCI, see update details on spigotmc.org","gameVersions":[7330,7105],"releaseType":"release"}' -F "file=@./push/$JAR" -s "https://dev.bukkit.org/api/projects/320536/upload-file" > fileid.json
 cat fileid.json
-echo "Finished upload $JAR to dev.bukkit.org."
+echo "Finished upload to dev.bukkit.org."
 
 #退出脚本，且退出状态码为0
 exit 0
