@@ -157,6 +157,12 @@ public class QuickShop extends JavaPlugin {
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
+        try {
+            getLogger().info("Running QuickShop-Reremake on Minecraft version " + Util.getNMSVersion());
+
+        } catch (Throwable ignore) {
+
+        }
 
     }
 
