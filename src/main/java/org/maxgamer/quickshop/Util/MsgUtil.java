@@ -498,7 +498,7 @@ public class MsgUtil {
                 continue;
             String enchName = ench.getKey().getKey();
             enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
-            plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
+            plugin.getLogger().info("Found new ench [" + Util.prettifyText(enchName) + "] , adding it to the config...");
         }
         try {
             enchi18n.save(enchi18nFile);
@@ -546,7 +546,7 @@ public class MsgUtil {
                 if (potionI18n != null && !potionI18n.isEmpty())
                     continue;
                 String potionName = potion.getName();
-                plugin.getLogger().info("Found new potion [" + potionName + "] , adding it to the config...");
+                plugin.getLogger().info("Found new potion [" + Util.prettifyText(potionName) + "] , adding it to the config...");
                 potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
             }
         }
