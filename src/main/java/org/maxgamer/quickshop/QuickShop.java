@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
@@ -23,7 +22,6 @@ import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.*;
-import org.maxgamer.quickshop.Shop.QueuedShopManager;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -56,7 +54,7 @@ public class QuickShop extends JavaPlugin {
     private DisplayProtectionListener inventoryListener;
     private ChunkListener chunkListener;
     private WorldListener worldListener;
-    private BukkitTask itemWatcherTask;
+    //private BukkitTask itemWatcherTask;
     private LogWatcher logWatcher;
     private ItemMatcher itemMatcher;
     private DisplayBugFixListener displayBugFixListener;
@@ -99,8 +97,8 @@ public class QuickShop extends JavaPlugin {
     private CustomInventoryListener customInventoryListener;
     /** WIP **/
     private Compatibility compatibilityTool = new Compatibility(this);
-    /** Queued shop manager **/
-    private QueuedShopManager queuedShopManager;
+    ///** Queued shop manager **/
+    //private QueuedShopManager queuedShopManager;
     /** Rewrited shoploader, more faster. **/
     private ShopLoader shopLoader;
     /** Contains all SQL tasks **/
@@ -253,7 +251,7 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the tools */
         // Create the shop manager.
         this.shopManager = new ShopManager(this);
-        this.queuedShopManager = new QueuedShopManager(this);
+        //this.queuedShopManager = new QueuedShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
 
@@ -801,22 +799,22 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable)
             return;
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        Util.debugLog("Cleaning up shop queues...");
-        if (this.getQueuedShopManager() != null)
-            this.getQueuedShopManager().uninit();
+        // Util.debugLog("Cleaning up shop queues...");
+        // if (this.getQueuedShopManager() != null)
+        //     this.getQueuedShopManager().uninit();
 
-        Util.debugLog("Close all GUIs...");
+        Util.debugLog("Closing all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
 
         Util.debugLog("Cleaning up database queues...");
-        this.getDatabaseManager().uninit();
+        if (this.getShopManager() != null)
+            this.getDatabaseManager().uninit();
 
         Util.debugLog("Unregistering tasks...");
-        if (itemWatcherTask != null) {
-            itemWatcherTask.cancel();
-        }
+        //if (itemWatcherTask != null)
+        //    itemWatcherTask.cancel();
         if (logWatcher != null) {
             logWatcher.task.cancel();
             logWatcher.close(); // Closes the file
