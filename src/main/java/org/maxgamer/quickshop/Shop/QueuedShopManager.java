@@ -16,6 +16,7 @@ import org.maxgamer.quickshop.Util.WarningSender;
  * This can solve some performance issue
  */
 @Getter
+@Deprecated
 public class QueuedShopManager {
     QuickShop plugin;
     final Queue<QueueShopObject> shopQueue = new LinkedBlockingQueue<>();
