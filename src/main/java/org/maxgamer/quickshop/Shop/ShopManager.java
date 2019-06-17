@@ -187,13 +187,12 @@ public class ShopManager {
 
     /**
      * Adds a shop to the world. Does NOT require the chunk or world to be loaded
+     * Call shop.onLoad by yourself
      *
      * @param world The name of the world
      * @param shop  The shop to add
      */
     private void addShop(@NotNull String world, @NotNull Shop shop) {
-        shop.onLoad();
-
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
         // There's no world storage yet. We need to create that hashmap.
         if (inWorld == null) {
@@ -216,16 +215,19 @@ public class ShopManager {
         }
         // Put the shop in its location in the chunk list.
         inChunk.put(shop.getLocation(), shop);
+        // shop.onLoad();
+
     }
 
     /**
      * Removes a shop from the world. Does NOT remove it from the database. *
      * REQUIRES * the world to be loaded
+     * Call shop.onUnload by your self.
      *
      * @param shop The shop to remove
      */
     public void removeShop(@NotNull Shop shop) {
-        shop.onUnload();
+        // shop.onUnload();
         Location loc = shop.getLocation();
         String world = loc.getWorld().getName();
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
@@ -236,6 +238,7 @@ public class ShopManager {
         if (inChunk == null || loc == null)
             return;
         inChunk.remove(loc);
+        // shop.onUnload();
     }
 
     /**
