@@ -23,7 +23,10 @@ import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.Listeners.*;
-import org.maxgamer.quickshop.Shop.*;
+import org.maxgamer.quickshop.Shop.QueuedShopManager;
+import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.ShopLoader;
+import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
@@ -321,7 +324,7 @@ public class QuickShop extends JavaPlugin {
                         Shop shop = it.next();
                         if (shop == null)
                             continue;
-                        getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.CHECKDISPLAYITEM));
+                        shop.checkDisplay();
 
                     }
                 }
