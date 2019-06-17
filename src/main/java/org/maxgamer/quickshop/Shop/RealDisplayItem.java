@@ -116,12 +116,7 @@ public class RealDisplayItem implements DisplayItem {
                             .getLocation().toString());
                     entity.remove();
                     removed = true;
-                } else {
-                    Util.debugLog(Util
-                            .getName(eItem.getItemStack()) + " not a shop displayItem: Failed check is current shop's display");
                 }
-            } else {
-                Util.debugLog(Util.getName(eItem.getItemStack()) + " not a shop displayItem: Same uniqueID for display");
             }
         }
         return removed;
