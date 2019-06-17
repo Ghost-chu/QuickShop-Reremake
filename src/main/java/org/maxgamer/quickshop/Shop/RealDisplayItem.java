@@ -107,17 +107,21 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             Item eItem = (Item) entity;
             if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
+                Util.debugLog(Util.getName(eItem.getItemStack()) + " not a shop displayItem: Failed check guardedItemStack");
                 continue;
             }
-            if (plugin.getItemMatcher().matches(eItem.getItemStack(), this.guardedIstack)) {
-                if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                    if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                        Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
-                                .getLocation().toString());
-                        entity.remove();
-                        removed = true;
-                    }
+            if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
+                if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
+                            .getLocation().toString());
+                    entity.remove();
+                    removed = true;
+                } else {
+                    Util.debugLog(Util
+                            .getName(eItem.getItemStack()) + " not a shop displayItem: Failed check is current shop's display");
                 }
+            } else {
+                Util.debugLog(Util.getName(eItem.getItemStack()) + " not a shop displayItem: Same uniqueID for display");
             }
         }
         return removed;
@@ -183,6 +187,7 @@ public class RealDisplayItem implements DisplayItem {
             return false;
         return this.item.isValid();
     }
+
     @Override
     public Location getDisplayLocation() {
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
