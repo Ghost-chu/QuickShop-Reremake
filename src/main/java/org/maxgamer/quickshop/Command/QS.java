@@ -644,7 +644,7 @@ public class QS implements CommandExecutor {
             }
 
             for (Shop shop : pendingRemoval)
-                plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.DELETE));
+                shop.delete();
 
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));

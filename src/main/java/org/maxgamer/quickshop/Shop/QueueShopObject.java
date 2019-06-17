@@ -5,6 +5,7 @@ import org.jetbrains.annotations.*;
 
 @Getter
 @Setter
+@Deprecated
 public class QueueShopObject {
     /**
      * The shop you want to do actions
