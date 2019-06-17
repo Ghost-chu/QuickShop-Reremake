@@ -751,7 +751,6 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
-
     }
 
     /** Reloads QuickShops config */
