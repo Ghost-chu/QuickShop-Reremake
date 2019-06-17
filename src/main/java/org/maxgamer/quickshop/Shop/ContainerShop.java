@@ -693,7 +693,7 @@ public class ContainerShop implements Shop {
      * @return isValid
      */
     public boolean isValid() {
-        //checkDisplay();
+        checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
     }
 
@@ -718,17 +718,21 @@ public class ContainerShop implements Shop {
      * Load ContainerShop.
      */
     public void onLoad() {
+        if (this.isLoaded) {
+            Util.debugLog("Dupe load request, canceled.");
+            return;
+        }
+
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
         Bukkit.getPluginManager().callEvent(shopLoadEvent);
         if (shopLoadEvent.isCancelled()) {
             return;
         }
 
-        if (this.isLoaded) {
-            Util.debugLog("Dupe load request, canceled.");
+        if (!Util.isLoaded(this.getLocation())) {
+            Util.debugLog("Shop " + this.getLocation().toString() + " skipped to load: Target location not loaded.");
             return;
         }
-
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
@@ -754,6 +758,7 @@ public class ContainerShop implements Shop {
 
     public void onClick() {
         this.setSignText();
+        this.checkDisplay();
     }
 
     public String ownerName() {
@@ -804,10 +809,12 @@ public class ContainerShop implements Shop {
 
     @Override
     public void checkDisplay() {
+        Util.debugLog("Checking the display...");
         if (this.displayItem == null)
             return;
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
+            Util.debugLog("Target item not spawned, spawning...");
             this.displayItem.spawn();
             return;
         } else {
