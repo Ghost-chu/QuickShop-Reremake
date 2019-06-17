@@ -70,18 +70,18 @@ public class ShopManager {
             // Add it to the world
             addShop(loc.getWorld().getName(), shop);
         } catch (SQLException error) {
-            plugin.getLogger().warning("SQLException detected, trying auto fixing...");
+            plugin.getLogger().warning("SQLException detected, trying to auto fix the database...");
             boolean backupSuccess = Util.backupDatabase();
             try {
                 if (backupSuccess) {
                     plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), loc.getBlockX(), loc.getBlockY(), loc
                             .getBlockZ(), loc.getWorld().getName());
                 } else {
-                    plugin.getLogger().warning("Failed to backup database, all changes will revert after a reboot.");
+                    plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
                 }
             } catch (SQLException error2) {
                 //Failed removing
-                plugin.getLogger().warning("Failed to autofix, all changes will revert after a reboot.");
+                plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
                 error.printStackTrace();
                 error2.printStackTrace();
             }
