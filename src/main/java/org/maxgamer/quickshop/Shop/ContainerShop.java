@@ -810,7 +810,7 @@ public class ContainerShop implements Shop {
     @Override
     public void checkDisplay() {
         Util.debugLog("Checking the display...");
-        if (this.displayItem == null)
+        if (!plugin.isDisplay())
             return;
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
