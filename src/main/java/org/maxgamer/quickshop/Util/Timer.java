@@ -12,6 +12,7 @@ public class Timer {
 
     /**
      * Create a empty time, auto start if autoSet is true
+     * @param autoSet Auto set the timer
      */
     public Timer(boolean autoSet) {
         if (autoSet)
@@ -47,6 +48,7 @@ public class Timer {
     /**
      * Return how long time running after atTimeS. THIS NOT WILL DESTORY AND STOP THE TIMER
      *
+     * @param atTime The inited time
      * @return time
      */
     public long getTimerAt(long atTime) {

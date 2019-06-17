@@ -219,14 +219,13 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 continue;
             }
             ArmorStand eArmorStand = (ArmorStand) entity;
-            if (plugin.getItemMatcher().matches(eArmorStand.getItemInHand(), this.guardedIstack)) {
-                if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                    if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
-                        Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
-                                .getLocation().toString());
-                        entity.remove();
-                        removed = true;
-                    }
+
+            if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
+                            .getLocation().toString());
+                    entity.remove();
+                    removed = true;
                 }
             }
         }

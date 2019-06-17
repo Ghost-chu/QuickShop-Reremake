@@ -4,7 +4,6 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import lombok.*;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
@@ -38,12 +37,12 @@ public class QueuedShopManager {
         if (!useQueue)
             return;
         maxShopLoadPerTick = plugin.getConfig().getInt("queue.shops-per-tick");
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                plugin.getQueuedShopManager().runTask(false);
-            }
-        }.runTaskTimer(plugin, 0, 1);
+        // task = new BukkitRunnable() {
+        //     @Override
+        //     public void run() {
+        //         plugin.getQueuedShopManager().runTask(false);
+        //     }
+        // }.runTaskTimer(plugin, 0, 1);
     }
 
     /**
