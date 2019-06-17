@@ -74,9 +74,7 @@ public class ShopLoader {
                 //Load to RAM
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
 
-                boolean chunkLoaded = Util.isLoaded(shop.getLocation());
-
-                if (chunkLoaded) {
+                if (Util.isLoaded(shop.getLocation())) {
                     //Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the database...");
