@@ -816,7 +816,6 @@ public class ContainerShop implements Shop {
             /* Not spawned yet. */
             Util.debugLog("Target item not spawned, spawning...");
             this.displayItem.spawn();
-            return;
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
             if (this.displayItem.checkDisplayNeedRegen())
