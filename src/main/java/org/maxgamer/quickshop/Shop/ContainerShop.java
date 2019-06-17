@@ -89,7 +89,8 @@ public class ContainerShop implements Shop {
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
-                    Util.debugLog("Failed to create a ContainerShop displayItem, the type is unknown.");
+                    Util.debugLog("Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
+                    this.displayItem = new RealDisplayItem(this);
                     break;
                 case REALITEM:
                     this.displayItem = new RealDisplayItem(this);
@@ -98,8 +99,12 @@ public class ContainerShop implements Shop {
                     this.displayItem = new ArmorStandDisplayItem(this);
                     break;
                 default:
-                    Util.debugLog("Failed to create a ContainerShop displayItem, the type we didn't know.");
+                    Util.debugLog("Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
+                    this.displayItem = new RealDisplayItem(this);
+                    break;
             }
+        } else {
+            Util.debugLog("The display was disabled.");
         }
 
 
@@ -707,7 +712,6 @@ public class ContainerShop implements Shop {
         }
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
-            this.displayItem = null;
         }
         this.isLoaded = false;
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
@@ -812,6 +816,12 @@ public class ContainerShop implements Shop {
         Util.debugLog("Checking the display...");
         if (!plugin.isDisplay())
             return;
+        if (this.displayItem == null) {
+            Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
+            Util.debugLog("Call from: " + Thread.currentThread().getStackTrace()[2].getClassName() + "#" + Thread.currentThread()
+                    .getStackTrace()[2].getMethodName() + "%" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            return;
+        }
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
             Util.debugLog("Target item not spawned, spawning...");
