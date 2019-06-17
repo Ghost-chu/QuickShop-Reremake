@@ -12,8 +12,6 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.QueueAction;
-import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 
 @AllArgsConstructor
@@ -33,8 +31,7 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 for (Shop shop : inChunk.values()) {
-                    plugin.getQueuedShopManager()
-                            .add(new QueueShopObject(shop, QueueAction.LOAD, QueueAction.SETSIGNTEXT));
+                    shop.onLoad();
                 }
 
             }
@@ -51,7 +48,7 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 for (Shop shop : inChunk.values()) {
-                    plugin.getQueuedShopManager().add(new QueueShopObject(shop, QueueAction.UNLOAD));
+                    shop.onUnload();
                 }
             }
         }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.

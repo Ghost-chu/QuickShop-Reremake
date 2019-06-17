@@ -10,8 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.QueueAction;
-import org.maxgamer.quickshop.Shop.QueueShopObject;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
 
@@ -50,7 +48,7 @@ public class ShopVaildWatcher implements Runnable {
         }
         // Now we can remove it.
         for (Shop shop : toRemove) {
-            new QueueShopObject(shop, QueueAction.DELETE);
+            shop.delete();
         }
     }
 }
