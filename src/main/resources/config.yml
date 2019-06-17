@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 35
+config-version: 36
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -185,13 +185,6 @@ shop:
 
     #Protection check
     protection-checking: true
-
-#ShopQueue can help low-performance server load shops one by one and not all at once.
-#This feature can help solve laggy servers when they are loading a huge number of shops or the server threads dead-lock.
-queue:
-    #Enable the shop queue feature
-    enable: false
-    shops-per-tick: 250
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
