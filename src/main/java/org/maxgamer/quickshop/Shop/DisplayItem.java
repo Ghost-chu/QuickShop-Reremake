@@ -106,8 +106,8 @@ public interface DisplayItem {
         }
         java.util.List<String> lore = new ArrayList<String>();
         for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem#" + shop
-                    .hashCode()); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+            lore.add("QuickShop DisplayItem#" + shop.getLocation()
+                    .toString()); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
@@ -155,7 +155,7 @@ public interface DisplayItem {
         List<String> lores = iMeta.getLore();
         for (String lore : lores) {
             if (lore.toLowerCase().contains("quickshop displayitem")) {
-                if (lore.equals("quickshop displayitem#" + shop.hashCode()))
+                if (lore.equals("quickshop displayitem#" + shop.getLocation().toString()))
                     return true;
             }
         }
