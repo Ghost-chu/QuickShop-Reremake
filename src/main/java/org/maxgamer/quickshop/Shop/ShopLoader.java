@@ -85,8 +85,8 @@ public class ShopLoader {
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
-
                     shop.onLoad();
+
                 } else {
                     loadAfterChunkLoaded++;
                 }
