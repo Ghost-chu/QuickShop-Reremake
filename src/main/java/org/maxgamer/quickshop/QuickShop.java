@@ -744,7 +744,13 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
-
+        if (selectedVersion == 35) {
+            getConfig().set("queue", null); // Close it for everyone
+            getConfig().set("config-version", 36);
+            selectedVersion = 36;
+            saveConfig();
+            reloadConfig();
+        }
 
     }
 
