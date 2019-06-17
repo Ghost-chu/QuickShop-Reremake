@@ -104,6 +104,37 @@ public class Util {
     }
 
     /**
+     * Match the map1 and map2
+     *
+     * @param map1 Map1
+     * @param map2 Map2
+     * @return Map1 match Map2
+     */
+    public static boolean mapMatches(Map map1, Map map2) {
+        for (Object obj : map1.keySet()) {
+            if (!map2.containsKey(obj))
+                return false;
+            if (map1.get(obj) != map2.get(obj))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Match the both map1 and map2
+     *
+     * @param map1 Map1
+     * @param map2 Map2
+     * @return Map1 match Map2 and Map2 match Map1
+     */
+    public static boolean mapDuoMatches(Map map1, Map map2) {
+        boolean result = mapMatches(map1, map2);
+        if (!result)
+            return false;
+        return mapMatches(map2, map1);
+    }
+
+    /**
      * Return an entry with min and max prices, but null if there isn't a price restriction
      *
      * @param material mat
