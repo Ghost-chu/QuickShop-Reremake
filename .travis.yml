@@ -16,44 +16,16 @@ after_success:
 - rm -f ./devbukkit/*-shaded.jar
 - rm -f ./devbukkit/*-sources.jar
 - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
-before_deploy:
-- export TRAVIS_TAG=${TRAVIS_TAG:-SNAPSHOT-\#$TRAVIS_BUILD_NUMBER-$(git log --format=%h -1)-$(date +'%Y%m%d%H%M%S')}
-- chmod +x *.sh
-#deploy:
-#    skip_cleanup: true
-#    provider: releases
-#    api_key:
-#        secure: $Github_token
-#    file:
-#    - ./push/*
-#    file_glob: true
-#    on:
-#        tags: true
 deploy:
-#Release
--   provider: releases
     skip_cleanup: true
-    overwrite: true
+    provider: releases
     api_key:
         secure: $Github_token
     file:
     - ./push/*
-    script: ./deploy.sh $Curse_token
     file_glob: true
     on:
         tags: true
-#Pre-Release
--   provider: releases
-    skip_cleanup: true
-    overwrite: true
-    api_key:
-        secure: $Github_token
-    file:
-    - ./push/*
-    file_glob: true
-    prerelease: true
-    on:
-        tags: false
-#after_deploy:
-#- chmod +x deploy.sh
-#- ./deploy.sh $Curse_token
+after_deploy:
+- chmod +x deploy.sh
+- ./deploy.sh $Curse_token
