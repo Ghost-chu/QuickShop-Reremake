@@ -17,7 +17,7 @@ public class RealDisplayItem implements DisplayItem {
     private ItemStack originalItemStack;
     private ItemStack guardedIstack;
     private Item item;
-    static QuickShop plugin = QuickShop.instance;
+    private static QuickShop plugin = QuickShop.instance;
 
     /**
      * ZZ Creates a new display item.
