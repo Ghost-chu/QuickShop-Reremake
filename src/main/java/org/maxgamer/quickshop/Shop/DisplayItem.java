@@ -3,12 +3,16 @@ package org.maxgamer.quickshop.Shop;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
+
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
  * cannot be interacted with.
@@ -105,9 +109,12 @@ public interface DisplayItem {
             iMeta.setDisplayName("QuickShop DisplayItem");
         }
         java.util.List<String> lore = new ArrayList<String>();
+        Gson gson = new Gson();
+        ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util
+                .serialize(shop.getItem()));
+        String protectFlag = gson.toJson(shopProtectionFlag);
         for (int i = 0; i < 21; i++) {
-            lore.add("QuickShop DisplayItem#" + shop.getLocation()
-                    .toString()); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
+            lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
@@ -128,13 +135,18 @@ public interface DisplayItem {
             if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem"))
                 return true;
         }
-        if (iMeta.hasLore()) {
+        if (!iMeta.hasLore())
+            return false;
             List<String> lores = iMeta.getLore();
+        Gson gson = new Gson();
             for (String lore : lores) {
-                if (lore.toLowerCase().contains("quickshop displayitem"))
+                try {
+                    gson.fromJson(lore, ShopProtectionFlag.class);
                     return true;
+                } catch (JsonSyntaxException e) {
+                    //Ignore
+                }
             }
-        }
         return false;
     }
 
@@ -153,10 +165,14 @@ public interface DisplayItem {
         if (!iMeta.hasLore())
             return false;
         List<String> lores = iMeta.getLore();
+        Gson gson = new Gson();
         for (String lore : lores) {
-            if (lore.toLowerCase().contains("quickshop displayitem")) {
-                if (lore.equals("quickshop displayitem#" + shop.getLocation().toString()))
+            try {
+                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString()))
                     return true;
+            } catch (JsonSyntaxException e) {
+                //Ignore
             }
         }
         return false;

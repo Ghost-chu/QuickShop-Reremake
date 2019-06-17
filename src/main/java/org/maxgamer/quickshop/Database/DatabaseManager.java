@@ -80,9 +80,9 @@ public class DatabaseManager {
                 sqle.printStackTrace();
             }
             long tookTime = timer.endTimer();
-            if (tookTime > 300)
+            if (tookTime > 1500)
                 warningSender
-                        .sendWarn("Database performance warning: It took to long time (" + tookTime + ") to execute the task, change to a better MySQL server or switch to a local SQLite database!");
+                        .sendWarn("Database performance warning: It took too long time (" + tookTime + "ms) to execute the task, change to a better MySQL server or switch to a local SQLite database!");
         }
     }
 
