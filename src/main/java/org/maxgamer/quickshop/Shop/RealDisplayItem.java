@@ -106,8 +106,9 @@ public class RealDisplayItem implements DisplayItem {
             if (!(entity instanceof Item))
                 continue;
             Item eItem = (Item) entity;
-            if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack()))
+            if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
                 continue;
+            }
             if (plugin.getItemMatcher().matches(eItem.getItemStack(), this.guardedIstack)) {
                 if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
                     if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
