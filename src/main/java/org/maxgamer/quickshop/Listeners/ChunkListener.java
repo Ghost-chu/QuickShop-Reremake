@@ -32,7 +32,6 @@ public class ChunkListener implements Listener {
             public void run() {
                 for (Shop shop : inChunk.values()) {
                     shop.onLoad();
-                    shop.checkDisplay();
                 }
 
             }
