@@ -1,11 +1,11 @@
 package org.maxgamer.quickshop.Economy;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 /**
  * @author creatorfromhell
@@ -18,11 +18,12 @@ public class Economy_Reserve implements EconomyCore {
     setup();
   }
 
-  private void setup() {
-    if(((Reserve)Bukkit.getPluginManager().getPlugin("Reserve")).economyProvided()) {
-      reserve = ((Reserve)Bukkit.getPluginManager().getPlugin("Reserve")).economy();
+    @SuppressWarnings("ConstantConditions")
+    private void setup() {
+        if(((Reserve)Bukkit.getPluginManager().getPlugin("Reserve")).economyProvided()) {
+            reserve = ((Reserve)Bukkit.getPluginManager().getPlugin("Reserve")).economy();
+        }
     }
-  }
 
   /**
    * Checks that this economy is valid. Returns false if it is not valid.
