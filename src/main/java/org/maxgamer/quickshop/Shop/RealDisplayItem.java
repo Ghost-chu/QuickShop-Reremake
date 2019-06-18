@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -11,6 +12,7 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+@EqualsAndHashCode
 public class RealDisplayItem implements DisplayItem {
 
     private Shop shop;
