@@ -156,13 +156,11 @@ public class QuickShop extends JavaPlugin {
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
-        try {
-            getLogger().info("Running QuickShop-Reremake on Minecraft version " + Util.getNMSVersion());
-
-        } catch (Throwable ignore) {
-
-        }
-
+        String nmsVersion = Util.getNMSVersion();
+        IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
+        getLogger().info("Running QuickShop-Reremake on Minecraft version " + nmsVersion);
+        if (incompatibleChecker.isIncompatible(nmsVersion))
+            throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
     }
 
     /**
@@ -253,7 +251,7 @@ public class QuickShop extends JavaPlugin {
         this.permissionChecker = new PermissionChecker(this);
 
         //if (this.display) {
-            // Display item handler thread
+        // Display item handler thread
         // getLogger().info("Starting item scheduler");
         // ShopVaildWatcher itemWatcher = new ShopVaildWatcher(this);
         // shopVaildWatchTask = Bukkit.getScheduler().runTaskTimer(this, itemWatcher, 600, 600);
