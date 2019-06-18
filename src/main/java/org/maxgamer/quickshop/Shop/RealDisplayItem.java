@@ -13,6 +13,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 @EqualsAndHashCode
+@ToString
 public class RealDisplayItem implements DisplayItem {
 
     private Shop shop;
