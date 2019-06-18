@@ -804,17 +804,21 @@ public class QS implements CommandExecutor {
     }
 
     private void debug(CommandSender sender, String[] args) {
-        boolean debug = plugin.getConfig().getBoolean("dev-mode");
-        if (debug) {
-            plugin.getConfig().set("dev-mode", false);
-            plugin.saveConfig();
-            sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging"));
-            reload(sender);
+        if (sender.hasPermission("quickshop.debug")) {
+            boolean debug = plugin.getConfig().getBoolean("dev-mode");
+            if (debug) {
+                plugin.getConfig().set("dev-mode", false);
+                plugin.saveConfig();
+                sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging"));
+                reload(sender);
+            } else {
+                plugin.getConfig().set("dev-mode", true);
+                plugin.saveConfig();
+                sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
+                reload(sender);
+            }
         } else {
-            plugin.getConfig().set("dev-mode", true);
-            plugin.saveConfig();
-            sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
-            reload(sender);
+            sender.sendMessage(MsgUtil.getMessage("no-permission"));
         }
     }
 
