@@ -2,6 +2,11 @@ package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
 
+import lombok.*;
+
+@Getter
+@Setter
+@ToString
 public class IncompatibleChecker {
     private final ArrayList<String> incompatibleVersionList = new ArrayList<>();
 

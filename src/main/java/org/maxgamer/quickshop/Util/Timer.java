@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Util;
 import lombok.*;
 
 @EqualsAndHashCode
+@ToString
 public class Timer {
     private long startTime;
 

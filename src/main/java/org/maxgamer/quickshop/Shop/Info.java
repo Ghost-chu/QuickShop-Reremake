@@ -10,6 +10,7 @@ import org.jetbrains.annotations.*;
  * A class contains shop's infomations
  */
 @EqualsAndHashCode
+@ToString
 public class Info {
     private Location loc;
     private ShopAction action;

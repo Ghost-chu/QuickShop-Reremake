@@ -9,6 +9,7 @@ import org.jetbrains.annotations.*;
  * BootError class contains print errors on /qs command when plugin failed launched.
  */
 @EqualsAndHashCode
+@ToString
 public class BootError {
 
     private String[] errors;

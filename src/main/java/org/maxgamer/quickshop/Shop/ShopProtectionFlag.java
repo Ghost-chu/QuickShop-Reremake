@@ -5,6 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class ShopProtectionFlag {
     private String shopLocation;
     private String itemStackString;

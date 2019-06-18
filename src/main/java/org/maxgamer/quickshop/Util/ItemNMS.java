@@ -2,12 +2,14 @@ package org.maxgamer.quickshop.Util;
 
 import java.lang.reflect.Method;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
+@Getter
 public abstract class ItemNMS {
     private static Method craftItemStack_asNMSCopyMethod;
     private static Class<?> nbtTagCompoundClass;
