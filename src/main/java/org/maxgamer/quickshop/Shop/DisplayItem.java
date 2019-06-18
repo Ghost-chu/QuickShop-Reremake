@@ -142,6 +142,10 @@ public interface DisplayItem {
             for (String lore : lores) {
                 try {
                     ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                    if (shopProtectionFlag == null)
+                        continue;
+                    if (shopProtectionFlag.getMark() == null)
+                        continue;
                     if (shopProtectionFlag.getMark().equals("QuickShop DisplayItem"))
                         return true;
                 } catch (JsonSyntaxException e) {
@@ -170,6 +174,10 @@ public interface DisplayItem {
         for (String lore : lores) {
             try {
                 ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                if (shopProtectionFlag == null)
+                    continue;
+                if (shopProtectionFlag.getMark() == null)
+                    continue;
                 if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString()))
                     return true;
             } catch (JsonSyntaxException e) {
