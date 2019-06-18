@@ -49,7 +49,7 @@ public class RealDisplayItem implements DisplayItem {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
-        if (!Util.isAir(getDisplayLocation().add(0, 1, 0).getBlock().getType())) {
+        if (!Util.isAir(getDisplayLocation().getBlock().getType())) {
             Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }

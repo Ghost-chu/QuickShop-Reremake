@@ -974,7 +974,7 @@ public class Util {
             if (mat == Material.VOID_AIR)
                 return true;
         } catch (Throwable t) {
-            return false;
+            //ignore
         }
         return false;
     }
