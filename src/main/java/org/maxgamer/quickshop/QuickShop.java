@@ -1,61 +1,35 @@
 package org.maxgamer.quickshop;
 
-import lombok.Getter;
+import java.io.File;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.Map.Entry;
+
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
-import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Database.DatabaseCore;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Database.DatabaseManager;
-import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.Database.SQLiteCore;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Reserve;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
-import org.maxgamer.quickshop.Listeners.BlockListener;
-import org.maxgamer.quickshop.Listeners.ChatListener;
-import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.CustomInventoryListener;
-import org.maxgamer.quickshop.Listeners.DisplayBugFixListener;
-import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
-import org.maxgamer.quickshop.Listeners.LockListener;
-import org.maxgamer.quickshop.Listeners.PlayerListener;
-import org.maxgamer.quickshop.Listeners.WorldListener;
+import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
-import org.maxgamer.quickshop.Util.Compatibility;
-import org.maxgamer.quickshop.Util.IncompatibleChecker;
-import org.maxgamer.quickshop.Util.ItemMatcher;
-import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.PermissionChecker;
-import org.maxgamer.quickshop.Util.SentryErrorReporter;
+import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Timer;
-import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
 
 //import com.griefcraft.lwc.LWCPlugin;
 @Getter
@@ -791,13 +765,12 @@ public class QuickShop extends JavaPlugin {
                 final EconomyCore reserveCore = new Economy_Reserve();
                 if(reserveCore.isValid()) {
                     core = reserveCore;
+                    Util.debugLog("QuickShop now using Reserve for economy system.");
                 }
             }
 
             if (!core.isValid()) {
                 // getLogger().severe("Economy is not valid!");
-                getLogger().severe("QuickShop could not hook into an economy plugin/Not found Vault!");
-                getLogger().severe("QuickShop CANNOT start!");
                 bootError = BuiltInSolution.econError();
                 // if(econ.equals("Vault"))
                 // getLogger().severe("(Does Vault have an Economy to hook into?!)");
@@ -808,7 +781,7 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            getLogger().severe("QuickShop could not hook an economy/Not found Vault!");
+            getLogger().severe("QuickShop could not hook an economy/Not found Vault and Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
             bootError = BuiltInSolution.econError();
             return false;
