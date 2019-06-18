@@ -137,65 +137,6 @@ public class QS implements CommandExecutor {
         }
     }
 
-    // @SuppressWarnings("unused")
-    // private void export(CommandSender sender, String[] args) {
-    //     if (args.length < 2) {
-    //         sender.sendMessage(ChatColor.RED + "Usage: /qs export mysql|sqlite");
-    //         return;
-    //     }
-    //     String type = args[1].toLowerCase();
-    //     if (type.startsWith("mysql")) {
-    //         if (plugin.getDB().getCore() instanceof MySQLCore) {
-    //             sender.sendMessage(ChatColor.RED + "Database is already MySQL");
-    //             return;
-    //         }
-    //         ConfigurationSection cfg = plugin.getConfig().getConfigurationSection("database");
-    //         String host = cfg.getString("host");
-    //         String port = cfg.getString("port");
-    //         String user = cfg.getString("user");
-    //         String pass = cfg.getString("password");
-    //         String name = cfg.getString("database");
-    //         boolean useSSL = cfg.getBoolean("usessl");
-    //         MySQLCore core = new MySQLCore(host, user, pass, name, port, useSSL);
-    //         Database target;
-    //         try {
-    //             target = new Database(core);
-    //             QuickShop.instance.getDB().copyTo(target);
-    //             sender.sendMessage(ChatColor.GREEN + "Success - Exported to MySQL " + user + "@" + host + "." + name);
-    //         } catch (Exception e) {
-    //             e.printStackTrace();
-    //             sender.sendMessage(ChatColor.RED + "Failed to export to MySQL " + user + "@" + host + "." + name
-    //                     + ChatColor.DARK_RED + " Reason: " + e.getMessage());
-    //         }
-    //         return;
-    //     }
-    //     if (type.startsWith("sql") || type.contains("file")) {
-    //         if (plugin.getDB().getCore() instanceof SQLiteCore) {
-    //             sender.sendMessage(ChatColor.RED + "Database is already SQLite");
-    //             return;
-    //         }
-    //         File file = new File(plugin.getDataFolder(), "shops.db");
-    //         if (file.exists()) {
-    //             if (file.delete() == false) {
-    //                 sender.sendMessage(
-    //                         ChatColor.RED + "Warning: Failed to delete old shops.db file. This may cause errors.");
-    //             }
-    //         }
-    //         SQLiteCore core = new SQLiteCore(file);
-    //         try {
-    //             Database target = new Database(core);
-    //             QuickShop.instance.getDB().copyTo(target);
-    //             sender.sendMessage(ChatColor.GREEN + "Success - Exported to SQLite: " + file.toString());
-    //         } catch (Exception e) {
-    //             e.printStackTrace();
-    //             sender.sendMessage(ChatColor.RED + "Failed to export to SQLite: " + file.toString() + " Reason: "
-    //                     + e.getMessage());
-    //         }
-    //         return;
-    //     }
-    //     sender.sendMessage(ChatColor.RED + "No target given. Usage: /qs export mysql|sqlite");
-    // }
-
     private void setOwner(CommandSender sender, String[] args) {
         if (sender instanceof Player && sender.hasPermission("quickshop.setowner")) {
             if (args.length < 2) {
@@ -839,9 +780,6 @@ public class QS implements CommandExecutor {
                 return true;
             } else if (subArg.equals("reload")) {
                 reload(sender);
-                return true;
-            } else if (subArg.equals("export")) {
-                //export(sender, args);
                 return true;
             } else if (subArg.equals("about")) {
                 about(sender);
