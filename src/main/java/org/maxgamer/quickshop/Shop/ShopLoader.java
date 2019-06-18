@@ -197,7 +197,7 @@ public class ShopLoader {
         private int type;
         private boolean unlimited;
 
-        public ShopDatabaseInfoOrigin(ResultSet rs) {
+        ShopDatabaseInfoOrigin(ResultSet rs) {
             try {
                 this.x = rs.getInt("x");
                 this.y = rs.getInt("y");
@@ -229,7 +229,7 @@ public class ShopLoader {
         private ShopModerator moderators;
         private Location location;
 
-        public ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
+        ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
                 this.x = origin.getX();
                 this.y = origin.getY();
