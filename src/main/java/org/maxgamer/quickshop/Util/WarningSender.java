@@ -1,8 +1,10 @@
 package org.maxgamer.quickshop.Util;
 
+import lombok.*;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
+@EqualsAndHashCode
 public class WarningSender {
     private long cooldown;
     private long lastSend = 0;
