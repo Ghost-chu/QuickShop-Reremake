@@ -37,7 +37,7 @@ public class MsgUtil {
     private static YamlConfiguration itemi18n;
     private static YamlConfiguration enchi18n;
     private static YamlConfiguration potioni18n;
-    private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<UUID, LinkedList<String>>();
+    private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static boolean inited;
     private static YamlConfiguration messagei18n;
     private static File messageFile;
@@ -90,6 +90,7 @@ public class MsgUtil {
         }
     }
 
+    @SuppressWarnings("UnusedAssignment")
     private static void updateMessages(int selectedVersion) throws IOException {
         if (selectedVersion == 1) {
             messagei18n.set("shop-not-exist", "&cThere had no shop.");
@@ -409,11 +410,7 @@ public class MsgUtil {
             while (rs.next()) {
                 UUID owner = UUID.fromString(rs.getString("owner"));
                 String message = rs.getString("message");
-                LinkedList<String> msgs = player_messages.get(owner);
-                if (msgs == null) {
-                    msgs = new LinkedList<String>();
-                    player_messages.put(owner, msgs);
-                }
+                LinkedList<String> msgs = player_messages.computeIfAbsent(owner, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
@@ -584,7 +581,7 @@ public class MsgUtil {
      *                them in the database.
      * @param isUnlimited  The shop is or unlimited
      */
-    public static void send(@NotNull UUID player, @NotNull String message, @NotNull boolean isUnlimited) {
+    public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
             return; //Ignore unlimited shops messages.
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
@@ -708,7 +705,7 @@ public class MsgUtil {
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, @NotNull int amount) {
+    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase"));
