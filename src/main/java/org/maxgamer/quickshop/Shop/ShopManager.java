@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Event.ShopCreateEvent;
 import org.maxgamer.quickshop.Event.ShopPreCreateEvent;
@@ -260,8 +261,8 @@ public class ShopManager {
      * Checks other plugins to make sure they can use the chest they're making a
      * shop.
      *
-     * @param p The player to check
-     * @param b The block to check
+     * @param p  The player to check
+     * @param b  The block to check
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
@@ -328,29 +329,34 @@ public class ShopManager {
     }
 
     public void handleChat(@NotNull Player p, @NotNull String msg) {
-        final String message = ChatColor.stripColor(msg);
-        // Use from the main thread, because Bukkit hates life
-        HashMap<UUID, Info> actions = getActions();
-        // They wanted to do something.
-        Info info = actions.remove(p.getUniqueId());
-        if (info == null)
-            return; // multithreaded means this can happen
-        if (info.getLocation().getWorld() != p.getLocation().getWorld()) {
-            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-            return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                final String message = ChatColor.stripColor(msg);
+                // Use from the main thread, because Bukkit hates life
+                HashMap<UUID, Info> actions = getActions();
+                // They wanted to do something.
+                Info info = actions.remove(p.getUniqueId());
+                if (info == null)
+                    return; // multithreaded means this can happen
+                if (info.getLocation().getWorld() != p.getLocation().getWorld()) {
+                    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                    return;
+                }
+                if (info.getLocation().distanceSquared(p.getLocation()) > 25) {
+                    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                    return;
+                }
+                /* Creation handling */
+                if (info.getAction() == ShopAction.CREATE) {
+                    actionCreate(p, actions, info, message);
+                    /* Purchase Handling */
+                } else if (info.getAction() == ShopAction.BUY) {
+                    actionTrade(p, actions, info, message);
+                }
+                /* If it was already cancelled (from destroyed) */
+            }
         }
-        if (info.getLocation().distanceSquared(p.getLocation()) > 25) {
-            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-            return;
-        }
-        /* Creation handling */
-        if (info.getAction() == ShopAction.CREATE) {
-            actionCreate(p, actions, info, message);
-            /* Purchase Handling */
-        } else if (info.getAction() == ShopAction.BUY) {
-            actionTrade(p, actions, info, message);
-        }
-        /* If it was already cancelled (from destroyed) */
     }
 
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
