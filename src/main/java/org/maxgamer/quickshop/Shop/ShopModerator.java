@@ -134,9 +134,7 @@ public class ShopModerator {
     public boolean isModerator(@NotNull UUID player) {
         if (isOwner(player))
             return true;
-        if (isStaff(player))
-            return true;
-        return false;
+        return isStaff(player);
     }
 
     public static String serialize(@NotNull ShopModerator shopModerator) {
