@@ -7,7 +7,6 @@ import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import io.sentry.Sentry;
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
@@ -26,7 +25,7 @@ public class SentryErrorReporter {
     private Context context;
     private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
     /* Pre-init it if it called before the we create it... */
-    private SentryClient sentryClient = Sentry.init(this.dsn);
+    private SentryClient sentryClient;
     private boolean enabled;
     private final ArrayList<String> reported = new ArrayList<>();
     private QuickShop plugin;
@@ -83,7 +82,8 @@ public class SentryErrorReporter {
     private String getPluginInfo() {
         StringBuilder buffer = new StringBuilder();
         for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
-            buffer.append("\t" + bplugin.getName() + "@" + (bplugin.isEnabled() ? "Enabled" : "Disabled") + "\n");
+            buffer.append("\t").append(bplugin.getName()).append("@").append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append("\n");
         }
         return buffer.toString();
     }
