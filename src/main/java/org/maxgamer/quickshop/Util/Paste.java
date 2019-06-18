@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,12 +20,9 @@ import org.maxgamer.quickshop.QuickShop;
 /**
  * A util to generate a paste report and upload it to Ubuntu Paste
  */
+@AllArgsConstructor
 public class Paste {
     private QuickShop plugin;
-
-    public Paste(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-    }
 
     /**
      * Create a server infomation paste
