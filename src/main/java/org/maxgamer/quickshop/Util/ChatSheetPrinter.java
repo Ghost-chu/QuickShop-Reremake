@@ -12,8 +12,8 @@ import org.jetbrains.annotations.*;
 @AllArgsConstructor
 @Getter
 @Setter
-/**
- * A utils for print sheet on chat.
+/*
+  A utils for print sheet on chat.
  */
 public class ChatSheetPrinter {
     //StringBuffer buffer = new StringBuffer();
