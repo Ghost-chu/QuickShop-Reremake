@@ -6,6 +6,7 @@ public class IncompatibleChecker {
     private final ArrayList<String> incompatibleVersionList = new ArrayList<>();
 
     public IncompatibleChecker() {
+        incompatibleVersionList.clear();
         mc1_5();
         mc1_6();
         mc1_7();
