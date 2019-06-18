@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
@@ -65,6 +66,7 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
         return tax;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;
