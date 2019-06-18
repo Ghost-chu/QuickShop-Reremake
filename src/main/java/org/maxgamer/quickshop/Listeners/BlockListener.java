@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
 import lombok.*;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -132,8 +131,8 @@ public class BlockListener implements Listener {
                 }
                 event.setCancelled(true);
                 hm.remove();
-                plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of " + shop);
-                Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A HopperMinecart tried to move the item of " + shop);
+                //plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of " + shop);
+                //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] A HopperMinecart tried to move the item of " + shop);
             }
         }
         if (plugin.getConfig().getBoolean("protect.hopper")) {
@@ -160,7 +159,7 @@ public class BlockListener implements Listener {
             event.setCancelled(true);
             //event.getEntity().remove();
             //plugin.getLogger().warning("[Exploit Alert] a Entity tried to break the shop of " + shop);
-            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
+            //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] A Entity tried to break the shop of " + shop);
         } else {
             shop.delete();
         }
@@ -177,9 +176,9 @@ public class BlockListener implements Listener {
         if (shop == null) {
             return;
         }
-            event.setNewCurrent(event.getOldCurrent());
+        event.setNewCurrent(event.getOldCurrent());
         //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
-            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
+        //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -193,8 +192,8 @@ public class BlockListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
-            Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
+            //plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
+            //Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
         }
     }
 
@@ -209,8 +208,8 @@ public class BlockListener implements Listener {
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
-                    plugin.getLogger().warning("[Exploit Alert] a EntityExplode tried to break the shop of " + shop);
-                    Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A EntityExplode tried to break the shop of " + shop);
+                    //plugin.getLogger().warning("[Exploit Alert] a EntityExplode tried to break the shop of " + shop);
+                    //Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A EntityExplode tried to break the shop of " + shop);
                 } else {
                     shop.delete();
                 }
@@ -226,8 +225,8 @@ public class BlockListener implements Listener {
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
-                    plugin.getLogger().warning("[Exploit Alert] a BlockExplode tried to break the shop of " + shop);
-                    Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A BlockExplode tried to break the shop of " + shop);
+                    // plugin.getLogger().warning("[Exploit Alert] a BlockExplode tried to break the shop of " + shop);
+                    //Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A BlockExplode tried to break the shop of " + shop);
                 } else {
                     shop.delete();
                 }
