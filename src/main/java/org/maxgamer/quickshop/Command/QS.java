@@ -146,7 +146,7 @@ public class QS implements CommandExecutor {
                     //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.new-owner",
-                            this.plugin.getServer().getOfflinePlayer(shop.getOwner()).getName()));
+                            Bukkit.getOfflinePlayer(shop.getOwner()).getName()));
                     return;
                 }
             }
