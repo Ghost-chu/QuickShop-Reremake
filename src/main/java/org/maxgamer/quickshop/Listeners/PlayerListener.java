@@ -156,7 +156,7 @@ public class PlayerListener implements Listener {
                 Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                 p.sendMessage(
-                        MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(shop.getItem())));
+                        MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(e.getItem())));
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                 && Util.isWallSign(e.getClickedBlock().getType())) {
