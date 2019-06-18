@@ -54,7 +54,7 @@ public class SentryErrorReporter {
         context.addTag("server_onlinemode", String.valueOf(serverData.get("onlineMode")));
         context.addTag("server_bukkitversion", String.valueOf(serverData.get("bukkitVersion")));
         context.addTag("server_plugins", getPluginInfo());
-        context.setUser(new UserBuilder().setId(QuickShop.getUniqueID().toString()).build());
+        context.setUser(new UserBuilder().setId(plugin.getServerUniqueID().toString()).build());
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
@@ -141,7 +141,7 @@ public class SentryErrorReporter {
         plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
         plugin.getLogger().warning("Description: " + throwable.getMessage());
         plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId().toString());
-        plugin.getLogger().warning("Server   ID: " + QuickShop.getUniqueID().toString());
+        plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID().toString());
         plugin.getLogger().warning("====QuickShop Error Report E N D===");
         return this.context.getLastEventId();
     }

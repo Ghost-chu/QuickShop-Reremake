@@ -419,7 +419,7 @@ public class Util {
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
         }
         try {
-            String formated = plugin.getEcon().format(n);
+            String formated = plugin.getEconomy().format(n);
             if (formated == null || formated.isEmpty()) {
                 Util.debugLog("Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
                 return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
