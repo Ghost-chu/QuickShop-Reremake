@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.*;
 
 /**
  * This event is called before the shop creation request is sent. E.g. A player
@@ -40,6 +41,7 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
         return p;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

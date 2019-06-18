@@ -5,6 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 
 public class ShopInventoryPreviewEvent extends Event implements Cancellable {
 
@@ -42,6 +43,7 @@ public class ShopInventoryPreviewEvent extends Event implements Cancellable {
         return p;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;
