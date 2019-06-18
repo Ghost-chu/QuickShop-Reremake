@@ -4,6 +4,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -48,6 +49,7 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
         return iStack;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

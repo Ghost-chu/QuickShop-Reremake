@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Event;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopUpdateEvent extends Event implements Cancellable {
@@ -28,6 +29,7 @@ public class ShopUpdateEvent extends Event implements Cancellable {
         return this.shop;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;
