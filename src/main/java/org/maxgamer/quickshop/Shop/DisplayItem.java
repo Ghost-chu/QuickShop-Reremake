@@ -141,8 +141,9 @@ public interface DisplayItem {
         Gson gson = new Gson();
             for (String lore : lores) {
                 try {
-                    gson.fromJson(lore, ShopProtectionFlag.class);
-                    return true;
+                    ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                    if (shopProtectionFlag.getMark().equals("QuickShop DisplayItem"))
+                        return true;
                 } catch (JsonSyntaxException e) {
                     //Ignore
                 }
