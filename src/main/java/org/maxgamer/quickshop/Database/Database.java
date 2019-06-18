@@ -78,7 +78,8 @@ public class Database {
      * @return True if the table is found
      * @throws SQLException Throw exception when failed execute somethins on SQL
      */
-    public boolean hasTable(@NotNull String table) throws SQLException {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    boolean hasTable(@NotNull String table) throws SQLException {
         ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         while (rs.next()) {
             if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
@@ -113,9 +114,8 @@ public class Database {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                rs.getString(column); // Throws an exception if it can't find
-                // that column
-                return true;
+                if (rs.getString(column) != null)
+                    return true;
             }
         } catch (SQLException e) {
             return false;
@@ -130,7 +130,7 @@ public class Database {
     public static class ConnectionException extends Exception {
         private static final long serialVersionUID = 8348749992936357317L;
 
-        public ConnectionException(String msg) {
+        private ConnectionException(String msg) {
             super(msg);
         }
     }
@@ -159,7 +159,7 @@ public class Database {
         for (String table : tables) {
             if (table.contains("schedule"))
                 return; // go way!
-            String finalTable = null;
+            String finalTable;
             if (table.startsWith(prefix)) {
                 finalTable = table;
             } else {
@@ -176,17 +176,17 @@ public class Database {
             rs = getConnection().prepareStatement("SELECT * FROM " + table).executeQuery();
             int n = 0;
             // Build the query
-            String query = "INSERT INTO " + finalTable + " VALUES (";
+            StringBuilder query = new StringBuilder("INSERT INTO " + finalTable + " VALUES (");
             // Append another placeholder for the value
-            query += "?";
+            query.append("?");
             for (int i = 2; i <= rs.getMetaData().getColumnCount(); i++) {
                 // Add the rest of the placeholders and values. This is so we
                 // have (?, ?, ?) and not (?, ?, ?, ).
-                query += ", ?";
+                query.append(", ?");
             }
             // End the query
-            query += ")";
-            PreparedStatement ps = db.getConnection().prepareStatement(query);
+            query.append(")");
+            PreparedStatement ps = db.getConnection().prepareStatement(query.toString());
             while (rs.next()) {
                 n++;
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
