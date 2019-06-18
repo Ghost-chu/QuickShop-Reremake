@@ -651,7 +651,7 @@ public class ShopManager {
                     // p.sendMessage(ChatColor.RED+"Restricted prices for
                     // "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max
                     // "+priceRestriction.getValue());
-                    p.sendMessage(MsgUtil.getMessage("restricted-prices", MsgUtil.getDisplayName(info.getItem()),
+                    p.sendMessage(MsgUtil.getMessage("restricted-prices", Util.getItemStackName(info.getItem()),
                             String.valueOf(priceRestriction.getKey()), String.valueOf(priceRestriction.getValue())));
                 }
             }
@@ -696,7 +696,7 @@ public class ShopManager {
             /* The shop has hereforth been successfully created */
             createShop(shop, info);
             Location loc = shop.getLocation();
-            plugin.log(p.getName() + " created a " + MsgUtil.getDisplayName(shop.getItem()) + " shop at ("
+            plugin.log(p.getName() + " created a " + Util.getItemStackName(shop.getItem()) + " shop at ("
                     + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
             if (!plugin.getConfig().getBoolean("shop.lock")) {
                 // Warn them if they haven't been warned since
