@@ -177,24 +177,21 @@ public class ItemMatcher {
             if (meta1.hasEnchants() != meta2.hasEnchants())
                 return false;
 
-            if (!meta1.hasEnchants())
-                return true; //No enchs need to be checked.
+            if (meta1.hasEnchants()) {
+                Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
+                Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
 
-            Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
-            Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-
-            if (!Util.mapDuoMatches(enchMap1, enchMap2))
-                return false;
-
+                if (!Util.mapDuoMatches(enchMap1, enchMap2))
+                    return false;
+            }
             if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta)
                 return false;
-            if (!(meta1 instanceof EnchantmentStorageMeta))
-                return true;
-
-            Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
-            Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-
-            return Util.mapDuoMatches(stor1, stor2);
+            if (meta1 instanceof EnchantmentStorageMeta) {
+                Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+                Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+                return Util.mapDuoMatches(stor1, stor2);
+            }
+            return true;
         }
 
         private boolean potionMatches(ItemMeta meta1, ItemMeta meta2) {
