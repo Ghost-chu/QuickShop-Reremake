@@ -9,6 +9,10 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -22,6 +26,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
@@ -84,7 +89,6 @@ public class MsgUtil {
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction from messages.yml. Skipping.");
         }
-
     }
 
     private static void updateMessages(int selectedVersion) throws IOException {
@@ -647,7 +651,7 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information"));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
         //Enabled
-        Util.sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
+        sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
                 .getMessage("tableformat.left_begin") + " " + MsgUtil
                 .getMessage("menu.item", MsgUtil.getDisplayName(shop.getItem())));
         if (Util.isTool(items.getType())) {
@@ -876,4 +880,115 @@ public class MsgUtil {
         Util.sendMessageToOps(ChatColor.RED + "Location: " + "World=" + location.getWorld().getName() + " X=" + location
                 .getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ());
     }
+
+    /**
+     * Send the ItemPreview chat msg by NMS.
+     *
+     * @param shop       Target shop
+     * @param itemStack  Target ItemStack
+     * @param player     Target player
+     * @param normalText The text you will see
+     */
+    public static void sendItemholochat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+        try {
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json == null)
+                return;
+            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
+            ComponentBuilder cBuilder = new ComponentBuilder(json);
+            if (player.hasPermission("quickshop.preview"))
+                normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
+                        .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
+                                .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
+                                .valueOf(shop.getLocation().getBlockZ()))));
+            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+            player.spigot().sendMessage(normalmessage);
+        } catch (Throwable t) {
+            sendItemholochatAsNormaly(itemStack, player, normalText);
+        }
+    }
+
+    /**
+     * Send the ItemPreview chat msg by Bukkit API.
+     * More worst than NMS mode.
+     * *STILL WIP*
+     *
+     * @param itemStack  Target ItemStack
+     * @param player     Target player
+     * @param normalText The text you will see
+     */
+    // Without NMS
+    private static void sendItemholochatAsNormaly(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+        try {
+            String Itemname = null;
+            List<String> Itemlore = new ArrayList<>();
+            String finalItemdata = null;
+            Map<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
+            Map<String, Integer> Itemenchs = new HashMap<String, Integer>();
+            if (itemStack.hasItemMeta()) {
+                ItemMeta iMeta = itemStack.getItemMeta();
+                if (iMeta.hasDisplayName()) {
+                    Itemname = iMeta.getDisplayName();
+                } else {
+                    Itemname = MsgUtil.getItemi18n(itemStack.getType().name());
+                }
+                if (iMeta.hasLore()) {
+                    Itemlore = iMeta.getLore();
+                } else {
+                    Itemlore = new ArrayList<String>();
+                }
+                if (iMeta.hasEnchants()) {
+                    enchs = iMeta.getEnchants();
+                    for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                        String i18n = MsgUtil.getEnchi18n(entries.getKey());
+                        if (i18n != null) {
+                            Itemenchs.put(i18n, entries.getValue());
+                        } else {
+                            Itemenchs = null;
+                        }
+                    }
+                }
+            } else {
+                Itemname = MsgUtil.getDisplayName(itemStack);
+                Itemlore = null;
+                Itemenchs = null;
+            }
+            if (Itemname != MsgUtil.getItemi18n(itemStack.getType().name())) {
+                finalItemdata = Itemname + " " + ChatColor.GRAY + "(" + MsgUtil.getItemi18n(itemStack.getType()
+                        .name()) + ChatColor.GRAY + ")";
+            } else {
+                finalItemdata = Itemname;
+            }
+
+            finalItemdata += "\n";
+            List<String> a = new ArrayList<>();
+            List<Integer> b = new ArrayList<>();
+            a.addAll(Itemenchs.keySet());
+            b.addAll(Itemenchs.values());
+            for (int i = 0; i < a.size(); i++) {
+                finalItemdata += ChatColor.GRAY + a.get(i) + " " + RomanNumber.toRoman(b.get(i)) + "\n";
+            }
+
+            String potionResult = Util.getPotiondata(itemStack);
+            if (potionResult != null) {
+                finalItemdata += potionResult;
+            }
+
+            if (Itemlore != null) {
+                for (String string : Itemlore) {
+                    finalItemdata += ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + string + "\n";
+                }
+            }
+            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
+            ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
+            HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
+            normalmessage.setHoverEvent(he);
+            player.spigot().sendMessage(normalmessage);
+        } catch (Exception e) {
+            player.sendMessage(normalText);
+            QuickShop.instance.getLogger()
+                    .severe("QuickShop cannot send Advanced chat message, Are you using CraftBukkit? Please use Spigot or a Spigot fork.");
+        }
+    }
+
 }
