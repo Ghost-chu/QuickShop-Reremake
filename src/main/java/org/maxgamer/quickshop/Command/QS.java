@@ -492,9 +492,9 @@ public class QS implements CommandExecutor {
             double fee = 0;
             if (plugin.isPriceChangeRequiresFee()) {
                 fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
-                if (fee > 0 && plugin.getEcon().getBalance(p.getUniqueId()) < fee) {
+                if (fee > 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < fee) {
                     sender.sendMessage(
-                            MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEcon().format(fee)));
+                            MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEconomy().format(fee)));
                     return;
                 }
             }
@@ -511,15 +511,15 @@ public class QS implements CommandExecutor {
                         return;
                     }
                     if (fee > 0) {
-                        if (!plugin.getEcon().withdraw(p.getUniqueId(), fee)) {
+                        if (!plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
                             sender.sendMessage(MsgUtil.getMessage("you-cant-afford-to-change-price",
-                                    plugin.getEcon().format(fee)));
+                                    plugin.getEconomy().format(fee)));
                             return;
                         }
                         sender.sendMessage(
-                                MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEcon().format(fee)));
+                                MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEconomy().format(fee)));
                         try {
-                            plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
+                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
                                     .getUniqueId(), fee);
                         } catch (Exception e) {
                             e.getMessage();
@@ -532,7 +532,7 @@ public class QS implements CommandExecutor {
                     shop.setPrice(price);
                     //shop.setSignText();
                     shop.update();
-                    sender.sendMessage(MsgUtil.getMessage("price-is-now", plugin.getEcon().format(shop.getPrice())));
+                    sender.sendMessage(MsgUtil.getMessage("price-is-now", plugin.getEconomy().format(shop.getPrice())));
                     // Chest shops can be double shops.
                     if (shop instanceof ContainerShop) {
                         ContainerShop cs = (ContainerShop) shop;
@@ -875,7 +875,7 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(ChatColor.RED + "QuickShop Statistics...");
-            sender.sendMessage(ChatColor.GREEN + "Server UniqueID: " + QuickShop.getUniqueID().toString());
+            sender.sendMessage(ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
             sender.sendMessage(ChatColor.GREEN + "" + (buying + selling) + " shops in " + chunks
                     + " chunks spread over " + worlds + " worlds.");
             sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ");
