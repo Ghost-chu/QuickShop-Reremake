@@ -11,7 +11,7 @@ public interface EconomyCore {
      *
      * @return True if this economy will work, false if it will not.
      */
-    public boolean isValid();
+    boolean isValid();
 
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50
@@ -20,7 +20,7 @@ public interface EconomyCore {
      * @param balance The given number
      * @return The balance in human readable text.
      */
-    public String format(double balance);
+    String format(double balance);
 
     /**
      * Deposits a given amount of money from thin air to the given username.
@@ -29,7 +29,7 @@ public interface EconomyCore {
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
      */
-    public boolean deposit(UUID name, double amount);
+    boolean deposit(UUID name, double amount);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to
@@ -39,7 +39,7 @@ public interface EconomyCore {
      * @param amount The amount to take from them
      * @return True if success, false if they didn't have enough cash
      */
-    public boolean withdraw(UUID name, double amount);
+    boolean withdraw(UUID name, double amount);
 
     /**
      * Transfers the given amount of money from Player1 to Player2
@@ -50,7 +50,7 @@ public interface EconomyCore {
      * @return true if success (Payer had enough cash, receiver was able to
      * receive the funds)
      */
-    public boolean transfer(UUID from, UUID to, double amount);
+    boolean transfer(UUID from, UUID to, double amount);
 
     /**
      * Fetches the balance of the given account name
@@ -58,5 +58,5 @@ public interface EconomyCore {
      * @param name The name of the account
      * @return Their current balance.
      */
-    public double getBalance(UUID name);
+    double getBalance(UUID name);
 }
