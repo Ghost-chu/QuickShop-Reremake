@@ -13,10 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -316,6 +313,15 @@ public class DisplayProtectionListener implements Listener {
         if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
             return;
         event.setDroppedExp(0);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void itemDespawnEvent(ItemDespawnEvent event) {
+        ItemStack itemStack = event.getEntity().getItemStack();
+        if (!DisplayItem.checkIsGuardItemStack(itemStack))
+            return; //We didn't care that
+        event.setCancelled(true);
+        Util.debugLog("We cancelled a Item despawning cause they are our display item.");
     }
     
 }
