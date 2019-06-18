@@ -21,12 +21,12 @@ public interface DisplayItem {
     /**
      * Spawn new Displays
      */
-    public abstract void spawn();
+    void spawn();
 
     /**
      * Respawn the displays, if it not exist, it will spawn new one.
      */
-    public abstract void respawn();
+    void respawn();
 
     /**
      * Add the protect flags for entity or entity's hand item.
@@ -34,25 +34,25 @@ public interface DisplayItem {
      *
      * @param entity Target entity
      */
-    public abstract void safeGuard(Entity entity);
+    void safeGuard(Entity entity);
 
     /**
      * Check target Entity is or not a QuickShop display Entity.
      * @param entity Target entity
      * @return Is or not
      */
-    public abstract boolean checkIsShopEntity(Entity entity);
+    boolean checkIsShopEntity(Entity entity);
 
     /**
      * Remove this shop's display in the whole world.(Not whole server)
      * @return Success
      */
-    public abstract boolean removeDupe();
+    boolean removeDupe();
 
     /**
      * Remove the display entity.
      */
-    public abstract void remove();
+    void remove();
 
 
     /**
@@ -60,49 +60,49 @@ public interface DisplayItem {
      * Not display current location.
      * @return Should at
      */
-    public abstract Location getDisplayLocation();
+    Location getDisplayLocation();
 
     /**
      * Get the display entity
      * @return Target entity
      */
-    public abstract Entity getDisplay();
+    Entity getDisplay();
 
     /**
      * Check the display is or not moved.
      * @return Moved
      */
-    public abstract boolean checkDisplayIsMoved();
+    boolean checkDisplayIsMoved();
 
     /**
      * Check the display is or not need respawn
      * @return Need
      */
-    public abstract boolean checkDisplayNeedRegen();
+    boolean checkDisplayNeedRegen();
 
     /**
      * Fix the display moved issue.
      */
-    public abstract void fixDisplayMoved();
+    void fixDisplayMoved();
 
     /**
      * Fix display need respawn issue.
      */
-    public abstract void fixDisplayNeedRegen();
+    void fixDisplayNeedRegen();
 
     /**
      * Check the display is or not already spawned
      *
      * @return Spawned
      */
-    public abstract boolean isSpawned();
+    boolean isSpawned();
 
     /**
      * Create a new itemStack with protect flag.
      * @param itemStack Old itemStack
      * @return New itemStack with protect flag.
      */
-    public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
@@ -126,7 +126,7 @@ public interface DisplayItem {
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
-    public static boolean checkIsGuardItemStack(@NotNull ItemStack itemStack) {
+    static boolean checkIsGuardItemStack(@NotNull ItemStack itemStack) {
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
@@ -162,7 +162,7 @@ public interface DisplayItem {
      * @param shop      Target shop
      * @return Is target shop's display
      */
-    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
@@ -191,7 +191,7 @@ public interface DisplayItem {
      * Get plugin now is using which one DisplayType
      * @return Using displayType.
      */
-    public static DisplayType getNowUsing() {
+    static DisplayType getNowUsing() {
         return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
     }
 
