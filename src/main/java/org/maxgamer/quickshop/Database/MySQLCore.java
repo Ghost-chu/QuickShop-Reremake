@@ -14,7 +14,7 @@ public class MySQLCore implements DatabaseCore {
     /** The connection properties... user, pass, autoReconnect.. */
     private Properties info;
     private static final int MAX_CONNECTIONS = 8;
-    private static ArrayList<Connection> pool = new ArrayList<Connection>();
+    private static ArrayList<Connection> pool = new ArrayList<>();
 
     public MySQLCore(@NotNull String host, @NotNull String user, @NotNull String pass, @NotNull String database, @NotNull String port, boolean useSSL) {
         info = new Properties();
@@ -63,6 +63,7 @@ public class MySQLCore implements DatabaseCore {
                 try {
                     Thread.sleep(15);
                 } catch (InterruptedException e) {
+                    //ignore
                 }
                 // Try again
                 con = this.getConnection();
