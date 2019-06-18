@@ -356,7 +356,7 @@ public class ShopManager {
                 }
                 /* If it was already cancelled (from destroyed) */
             }
-        }
+        }.runTask(plugin);
     }
 
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
