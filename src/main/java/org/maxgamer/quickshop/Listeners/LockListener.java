@@ -25,6 +25,8 @@ public class LockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
         Block b = e.getClickedBlock();
+        if (b == null)
+            return;
         if (!Util.canBeShop(b))
             return;
         Player p = e.getPlayer();
@@ -134,8 +136,6 @@ public class LockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent e) {
-        if (e.isCancelled())
-            return;
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
