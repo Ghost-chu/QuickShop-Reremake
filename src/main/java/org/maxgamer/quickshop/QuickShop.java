@@ -97,8 +97,6 @@ public class QuickShop extends JavaPlugin {
     private CustomInventoryListener customInventoryListener;
     /** WIP **/
     private Compatibility compatibilityTool = new Compatibility(this);
-    ///** Queued shop manager **/
-    //private QueuedShopManager queuedShopManager;
     /** Rewrited shoploader, more faster. **/
     private ShopLoader shopLoader;
     /** Contains all SQL tasks **/
@@ -251,7 +249,6 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the tools */
         // Create the shop manager.
         this.shopManager = new ShopManager(this);
-        //this.queuedShopManager = new QueuedShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
 
