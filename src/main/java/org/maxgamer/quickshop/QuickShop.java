@@ -426,6 +426,7 @@ public class QuickShop extends JavaPlugin {
         return true;
     }
 
+    @SuppressWarnings("UnusedAssignment")
     private void updateConfig(int selectedVersion) {
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
