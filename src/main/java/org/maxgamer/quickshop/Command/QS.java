@@ -51,10 +51,8 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-            return;
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -70,11 +68,9 @@ public class QS implements CommandExecutor {
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                         (shop.isUnlimited() ? "unlimited" : "limited")));
-                return;
             }
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -125,16 +121,12 @@ public class QS implements CommandExecutor {
                 Integer.valueOf(args[3]), Integer.valueOf(args[4])));
         if (shop == null)
             return;
-
-        if (shop != null) {
             if (shop.getOwner().equals(p.getUniqueId()) || sender.hasPermission("quickshop.other.destroy")) {
                 shop.onUnload();
                 shop.delete();
             } else {
                 sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
             }
-            return;
-        }
     }
 
     private void setOwner(CommandSender sender, String[] args) {
@@ -159,10 +151,8 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-            return;
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -190,10 +180,8 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-            return;
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -208,13 +196,11 @@ public class QS implements CommandExecutor {
                     cs.getInventory().clear();
                     MsgUtil.sendControlPanelInfo(sender, shop);
                     sender.sendMessage(MsgUtil.getMessage("empty-success"));
-                    return;
                 }
             }
 
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -237,10 +223,8 @@ public class QS implements CommandExecutor {
                 }
             }
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-            return;
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -288,10 +272,8 @@ public class QS implements CommandExecutor {
             p.teleport(this.lookAt(loc, lookat).add(0, -1.62, 0), TeleportCause.UNKNOWN);
             p.sendMessage(
                     MsgUtil.getMessage("nearby-shop-this-way", "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
-            return;
         } else {
             sender.sendMessage(MsgUtil.getMessage("no-permission"));
-            return;
         }
     }
 
@@ -360,7 +342,6 @@ public class QS implements CommandExecutor {
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-        return;
     }
 
     private void amount(CommandSender sender, String[] args) {
@@ -379,7 +360,6 @@ public class QS implements CommandExecutor {
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-        return;
     }
 
     private void silentBuy(CommandSender sender, String[] args) {
@@ -397,7 +377,6 @@ public class QS implements CommandExecutor {
             }
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     private void setBuy(CommandSender sender) {
@@ -419,7 +398,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     private void silentSell(CommandSender sender, String[] args) {
@@ -438,7 +416,6 @@ public class QS implements CommandExecutor {
 
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     private void setSell(CommandSender sender) {
@@ -460,7 +437,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     @SuppressWarnings("deprecation")
@@ -557,7 +533,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     private void clean(CommandSender sender) {
@@ -592,7 +567,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     private void staff(CommandSender sender, String[] args) {
@@ -660,8 +634,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
-
     }
 
     private void about(CommandSender sender) {
@@ -683,7 +655,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     public void paste(CommandSender sender) {
@@ -706,7 +677,6 @@ public class QS implements CommandExecutor {
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return;
     }
 
     @Override
@@ -824,13 +794,11 @@ public class QS implements CommandExecutor {
                         ContainerShop cs = (ContainerShop) shop;
                         InventoryPreview inventoryPreview = new InventoryPreview(cs.getItem(), (Player) sender);
                         inventoryPreview.show();
-                        return;
                     }
                 }
 
             } else {
                 sender.sendMessage(MsgUtil.getMessage("no-permission"));
-                return;
             }
         }
     }
