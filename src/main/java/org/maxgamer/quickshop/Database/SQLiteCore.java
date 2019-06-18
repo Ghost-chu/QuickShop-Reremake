@@ -12,9 +12,9 @@ import org.jetbrains.annotations.*;
 
 public class SQLiteCore implements DatabaseCore {
     private Connection connection;
-    private File dbFile;
+    private final File dbFile;
     private volatile Thread watcher;
-    private final LinkedList<BufferStatement> queue = new LinkedList<BufferStatement>();
+    private final LinkedList<BufferStatement> queue = new LinkedList<>();
 
     public SQLiteCore(@NotNull File dbFile) {
         this.dbFile = dbFile;
@@ -95,16 +95,14 @@ public class SQLiteCore implements DatabaseCore {
     }
 
     private void startWatcher() {
-        watcher = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                }
-                flush();
+        watcher = new Thread(() -> {
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                //ignore
             }
-        };
+            flush();
+        });
         watcher.start();
     }
 }
