@@ -56,8 +56,7 @@ public class PermissionChecker {
             return false;
 
         if (beMainHand instanceof BlockPlaceEvent)
-            if (!((BlockPlaceEvent) beMainHand).canBuild())
-                return false;
+            return ((BlockPlaceEvent) beMainHand).canBuild();
 
         return true;
     }
