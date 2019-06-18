@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import com.google.common.io.Files;
 import lombok.*;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
@@ -37,7 +36,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class Util {
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
-    private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<Material, Entry<Double, Double>>(Material.class);
+    private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
     private static List<String> worldBlacklist = new ArrayList<>();
     @Getter private static List<String> debugLogs = new ArrayList<>();
     private static QuickShop plugin;
@@ -88,7 +87,7 @@ public class Util {
                                 .warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
-                    restrictedPrices.put(mat, new SimpleEntry<Double, Double>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+                    restrictedPrices.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
@@ -157,6 +156,8 @@ public class Util {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
             String filtered = config.getString(key);
+            if (filtered == null)
+                continue;
             if (filtered.startsWith("MemorySection")) {
                 continue;
             }
@@ -194,6 +195,7 @@ public class Util {
         }
         if (!isShoppables(b.getType()))
             return false;
+        //noinspection RedundantIfStatement
         if (isBlacklistWorld(b.getWorld()))
             return false;
         return true;
@@ -292,27 +294,6 @@ public class Util {
     }
 
     /**
-     * Check two location is or not equals for the BlockPosition on 2D
-     *
-     * @param loc1 location 1
-     * @param loc2 location 2
-     * @return Equals or not.
-     */
-    public static boolean location3DEqual(@NotNull Location loc1, @NotNull Location loc2) {
-        if (loc1.equals(loc2))
-            return true;
-        if (!loc1.getWorld().getName().equals(loc2.getWorld().getName()))
-            return false;
-        if (loc1.getBlockX() != loc2.getBlockX())
-            return false;
-        if (loc1.getBlockY() != loc2.getBlockY())
-            return false;
-        if (loc1.getBlockZ() != loc2.getBlockZ())
-            return false;
-        return true;
-    }
-
-    /**
      * Checks whether someone else's shop is within reach of a hopper being placed by a player.
      *
      * @param b The block being placed.
@@ -369,21 +350,6 @@ public class Util {
     }
 
     /**
-     * Fetches an ItemStack's name - For example, converting INK_SAC:11 to
-     * Dandellion Yellow, or WOOL:14 to Red Wool
-     *
-     * @param itemStack The itemstack to fetch the name of
-     * @return The human readable item name.
-     */
-    public static String getName(@NotNull ItemStack itemStack) {
-//		if (NMS.isPotion(itemStack.getType())) {
-//			return CustomPotionsName.getFullName(itemStack);
-//		}		
-        String vanillaName = itemStack.getType().name();
-        return prettifyText(vanillaName);
-    }
-
-    /**
      * Converts a name like IRON_INGOT into Iron Ingot to improve readability
      *
      * @param ugly The string such as IRON_INGOT
@@ -394,20 +360,13 @@ public class Util {
         if (nameParts.length == 1) {
             return firstUppercase(ugly);
         }
-
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < nameParts.length; i++) {
             sb.append(firstUppercase(nameParts[i]));
             if (i + 1 != nameParts.length)
                 sb.append(" ");
 
         }
-
-        // for (String part : nameParts) {
-        //     sb.append(firstUppercase(part) + " ");
-        // }
-
         return sb.toString();
     }
 
@@ -424,47 +383,6 @@ public class Util {
         if (!itemMeta.hasLocalizedName())
             return null;
         return itemMeta.getLocalizedName();
-    }
-
-    /**
-     * Get item's sign name for display on the sign.
-     *
-     * @param itemStack target itemStack
-     * @return String ItemOnSignName
-     */
-    // Let's make very long names shorter for our sign
-    public static String getNameForSign(@NotNull ItemStack itemStack) {
-//		if (NMS.isPotion(itemStack.getType())) {
-//			return CustomPotionsName.getSignName(itemStack);
-//		}
-        ItemStack is = itemStack.clone();
-        is.setAmount(1);
-
-        if (is.hasItemMeta()) {
-            if (is.getItemMeta().hasDisplayName()) {
-                return is.getItemMeta().getDisplayName();
-            }
-        }
-
-        String name = MsgUtil.getItemi18n(itemStack.getType().name()).trim();
-
-        String[] nameParts = name.split("_");
-        if (nameParts.length == 1) {
-            return firstUppercase(nameParts[0]);
-        }
-
-        for (int i = 0; i < nameParts.length - 1; i++) {
-            int length = StringUtils.join(nameParts).length();
-            if (length > 16) {
-                nameParts[i] = nameParts[i].substring(0, 1) + ".";
-            } else {
-                nameParts[i] = firstUppercase(nameParts[i]);
-            }
-        }
-
-        nameParts[nameParts.length - 1] = firstUppercase(nameParts[nameParts.length - 1]);
-
-        return StringUtils.join(nameParts);
     }
 
     /**
@@ -490,24 +408,6 @@ public class Util {
         return !(mat.getMaxDurability() == 0);
     }
 
-    // /**
-    //  * Sort the HashMap
-    //  * @param map map
-    //  * @return Sorted HashMap
-    //  */
-    // public static Map sortHashMap(Map map) {
-    //     List<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>(map.entrySet());
-    //     Collections.sort(list, new Comparator<Map.Entry<String, String>>() {
-    //
-    //         public int compare(Entry<String, String> o1,
-    //                            Entry<String, String> o2) {
-    //             return o1.getValue().compareTo(o2.getValue());
-    //         }
-    //
-    //     });
-    //     return map;
-    // }
-
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5
      * dollars.
@@ -530,7 +430,6 @@ public class Util {
             Util.debugLog("format", e.getMessage());
             Util.debugLog("format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
-            // return "$" + n;
         }
     }
 
@@ -618,16 +517,6 @@ public class Util {
      * @return is or not a wall_sign
      */
     public static boolean isWallSign(@NotNull Material material) {
-
-        // try {
-        //     if (Tag.WALL_SIGNS.isTagged(material))
-        //         return true;
-        // } catch (Throwable e) {
-        //     if (material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
-        //         return true;
-        // }
-        //if (material.name().endsWith("WALL_SIGN") || material.name().equals("WALL_SIGN"))
-        //    return true;
         return Tag.WALL_SIGNS.isTagged(material);
     }
 
@@ -696,33 +585,6 @@ public class Util {
         }
     }
 
-    //Use NMS
-
-
-    // /**
-    //  * Format ench level.
-    //  *
-    //  * @param level level
-    //  * @return formated level
-    //  */
-    // private static String formatEnchLevel(@NotNull Integer level) {
-    //     switch (level) {
-    //         case 1:
-    //             return "I";
-    //         case 2:
-    //             return "II";
-    //         case 3:
-    //             return "III";
-    //         case 4:
-    //             return "IV";
-    //         case 5:
-    //             return "V";
-    //         default:
-    //             return String.valueOf(level);
-    //
-    //     }
-    // }
-
     /**
      * @param iStack itemstack
      * @return potion data, readable
@@ -781,13 +643,13 @@ public class Util {
      */
     public static boolean isDevEdition() {
         String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
-        if (version.contains("dev") || version.contains("develop") || version.contains("alpha") || version
-                .contains("beta") || version
-                .contains("test") || version.contains("snapshot") || version.contains("preview")) {
-            return true;
-        } else {
-            return false;
-        }
+        return (version.contains("dev") ||
+                version.contains("develop") ||
+                version.contains("alpha") ||
+                version.contains("beta") ||
+                version.contains("test") ||
+                version.contains("snapshot") ||
+                version.contains("preview"));
     }
 
     /**
@@ -798,15 +660,26 @@ public class Util {
         if (inv == null)
             return;
         try {
-            for (int i = 0; i < inv.getSize(); i++)
-                if (DisplayItem.checkIsGuardItemStack(inv.getItem(i))) {
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack itemStack = inv.getItem(i);
+                if (itemStack == null)
+                    continue;
+                if (DisplayItem.checkIsGuardItemStack(itemStack)) {
                     // Found Item and remove it.
                     inv.setItem(i, new ItemStack(Material.AIR, 0));
                     Util.debugLog("Found a displayitem in an inventory, it has been removed.");
                 }
+            }
         } catch (Throwable t) {
+            //Ignore
         }
 
+    }
+
+    public static String getItemStackName(@NotNull ItemStack itemStack) {
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+            return itemStack.getItemMeta().getDisplayName();
+        return MsgUtil.getItemi18n(itemStack.getType().name());
     }
 
     private static Object serverInstance;
