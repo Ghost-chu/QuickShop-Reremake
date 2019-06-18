@@ -107,7 +107,8 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             Item eItem = (Item) entity;
             if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
-                Util.debugLog(Util.getName(eItem.getItemStack()) + " not a shop displayItem: Failed check guardedItemStack");
+                Util.debugLog(Util
+                        .getItemStackName(eItem.getItemStack()) + " not a shop displayItem: Failed check guardedItemStack");
                 continue;
             }
             if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
@@ -117,7 +118,8 @@ public class RealDisplayItem implements DisplayItem {
                     entity.remove();
                     removed = true;
                 } else {
-                    Util.debugLog(Util.getName(eItem.getItemStack()) + " not a shop displayItem: Failed check shop display.");
+                    Util.debugLog(Util
+                            .getItemStackName(eItem.getItemStack()) + " not a shop displayItem: Failed check shop display.");
                 }
             }
         }

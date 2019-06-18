@@ -404,14 +404,13 @@ public class ShopManager {
             space = 10000;
         if (space < amount) {
             p.sendMessage(MsgUtil
-                    .getMessage("shop-has-no-space", "" + space, MsgUtil.getItemi18n(shop.getItem().getType().name())));
+                    .getMessage("shop-has-no-space", "" + space, Util.getItemStackName(shop.getItem())));
             return;
         }
         int count = Util.countItems(p.getInventory(), shop.getItem());
         // Not enough items
         if (amount > count) {
-            p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, MsgUtil
-                    .getItemi18n(shop.getItem().getType().name())));
+            p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", "" + count, Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount == 0) {
@@ -462,8 +461,8 @@ public class ShopManager {
             // Give them the money after we know we succeeded
             plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
             // Notify the owner of the purchase.
-            String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, MsgUtil
-                    .getItemi18n(shop.getItem().getType().name()));
+            String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, Util
+                    .getItemStackName(shop.getItem()));
             if (space == amount)
                 msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(), "" + shop.getLocation()
                         .getBlockY(), "" + shop.getLocation().getBlockZ());
@@ -493,8 +492,8 @@ public class ShopManager {
         if (stock == -1)
             stock = 10000;
         if (stock < amount) {
-            p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", "" + shop.getRemainingStock(), MsgUtil
-                    .getItemi18n(shop.getItem().getType().name())));
+            p.sendMessage(MsgUtil
+                    .getMessage("shop-stock-too-low", "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount == 0) {
@@ -548,20 +547,20 @@ public class ShopManager {
             }
             // Notify the shop owner
             if (plugin.getConfig().getBoolean("show-tax")) {
-                String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount, MsgUtil
-                        .getItemi18n(shop.getItem().getType().name()), Util.format((tax * total)));
+                String msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p.getName(), "" + amount, Util
+                        .getItemStackName(shop.getItem()), Util.format((tax * total)));
                 if (stock == amount)
                     msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop
-                            .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil
-                            .getItemi18n(shop.getItem().getType().name()));
+                            .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), Util
+                            .getItemStackName(shop.getItem()));
                 MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
             } else {
-                String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount, MsgUtil
-                        .getItemi18n(shop.getItem().getType().name()));
+                String msg = MsgUtil.getMessage("player-bought-from-your-store", p.getName(), "" + amount, Util
+                        .getItemStackName(shop.getItem()));
                 if (stock == amount)
                     msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop
-                            .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), MsgUtil
-                            .getItemi18n(shop.getItem().getType().name()));
+                            .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), Util
+                            .getItemStackName(shop.getItem()));
                 MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
             }
             // Transfers the item from A to B
