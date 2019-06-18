@@ -193,7 +193,7 @@ public class ShopManager {
      * @param world The name of the world
      * @param shop  The shop to add
      */
-    private void addShop(@NotNull String world, @NotNull Shop shop) {
+    public void addShop(@NotNull String world, @NotNull Shop shop) {
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops()
                 .computeIfAbsent(world, k -> new HashMap<>(3));
         // There's no world storage yet. We need to create that hashmap.
