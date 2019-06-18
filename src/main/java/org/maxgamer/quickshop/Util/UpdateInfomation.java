@@ -5,6 +5,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Getter
+@Setter
 public class UpdateInfomation {
     private String version;
     private boolean isBeta;
