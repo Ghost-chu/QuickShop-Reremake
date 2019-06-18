@@ -179,13 +179,6 @@ public abstract interface Shop {
     public abstract boolean isAttached(Block paramBlock);
 
     /**
-     * Get item will show on the sign
-     *
-     * @return The text will show on the sign
-     */
-    public abstract String getDataName();
-
-    /**
      * Delete shop from ram, and database.
      */
     public abstract void delete();

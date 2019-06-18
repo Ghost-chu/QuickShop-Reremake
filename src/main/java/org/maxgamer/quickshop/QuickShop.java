@@ -58,6 +58,7 @@ public class QuickShop extends JavaPlugin {
     private LogWatcher logWatcher;
     private ItemMatcher itemMatcher;
     private DisplayBugFixListener displayBugFixListener;
+    private LockListener lockListener;
 //	/** Whether players are required to sneak to create/buy from a shop */
 //	public boolean sneak;
 //	/** Whether players are required to sneak to create a shop */
@@ -190,8 +191,10 @@ public class QuickShop extends JavaPlugin {
         Timer enableTimer = new Timer(true);
         /* PreInit for BootError feature */
         commandExecutor = new QS(this);
+        //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandExecutor);
         commandTabCompleter = new Tab(this);
+        //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandTabCompleter);
 
         getLogger().info("Quickshop Reremake");
@@ -220,6 +223,9 @@ public class QuickShop extends JavaPlugin {
 
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
+
+        /* It will generate a new UUID above updateConfig */
+        //noinspection ConstantConditions
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
 
@@ -236,13 +242,13 @@ public class QuickShop extends JavaPlugin {
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
 
-        setupDBonEnableding = true;
-        setupDatabase(); //Load the database
-        setupDBonEnableding = false;
-
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+
+        setupDBonEnableding = true;
+        setupDatabase(); //Load the database
+        setupDBonEnableding = false;
 
         /* Initalize the tools */
         // Create the shop manager.
@@ -250,22 +256,7 @@ public class QuickShop extends JavaPlugin {
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
 
-        //if (this.display) {
-        // Display item handler thread
-        // getLogger().info("Starting item scheduler");
-        // ShopVaildWatcher itemWatcher = new ShopVaildWatcher(this);
-        // shopVaildWatchTask = Bukkit.getScheduler().runTaskTimer(this, itemWatcher, 600, 600);
-        //}
-        if (this.getConfig().getBoolean("log-actions")) {
-            // Logger Handler
-            this.logWatcher = new LogWatcher(this, new File(this.getDataFolder(), "qs.log"));
-            logWatcher.task = Bukkit.getScheduler().runTaskTimerAsynchronously(this, this.logWatcher, 150, 150);
-        }
-        if (getConfig().getBoolean("shop.lock")) {
-            LockListener ll = new LockListener(this);
-            getServer().getPluginManager().registerEvents(ll, this);
-        }
-        getServer().getPluginManager().registerEvents(new UpdateWatcher(), this);
+
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
         if (limitCfg != null) {
             getLogger().info("Limit cfg found...");
@@ -280,17 +271,16 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
-
+        /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
 
+        getLogger().info("Registering Listeners...");
+        // Register events
         if (getConfig().getBoolean("shop.lock")) {
             LockListener lockListener = new LockListener(this);
             Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
         }
-
-        getLogger().info("Registering Listeners");
-        // Register events
         blockListener = new BlockListener(this);
         playerListener = new PlayerListener(this);
         worldListener = new WorldListener(this);

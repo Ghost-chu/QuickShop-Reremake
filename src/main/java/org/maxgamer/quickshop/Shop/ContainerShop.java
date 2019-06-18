@@ -445,7 +445,7 @@ public class ContainerShop implements Shop {
             // This should not happen.
             if (amount > 0) {
                 plugin.getLogger().log(Level.WARNING, "Could not take all items from a players inventory on purchase! " + p
-                        .getName() + ", missing: " + amount + ", item: " + this.getDataName() + "!");
+                        .getName() + ", missing: " + amount + ", item: " + Util.getItemStackName(this.getItem()) + "!");
             }
         } else {
             ItemStack[] playerContents = p.getInventory().getContents();
@@ -626,16 +626,6 @@ public class ContainerShop implements Shop {
 
     public boolean isAttached(@NotNull Block b) {
         return this.getLocation().getBlock().equals(Util.getAttached(b));
-    }
-
-    /**
-     * Convenience method. Equivilant to
-     * org.maxgamer.quickshop.Util.getName(shop.getItem()).
-     *
-     * @return The name of this shops item
-     */
-    public String getDataName() {
-        return Util.getName(this.getItem());
     }
 
     /**

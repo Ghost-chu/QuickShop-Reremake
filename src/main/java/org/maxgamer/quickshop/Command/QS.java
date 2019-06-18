@@ -254,8 +254,7 @@ public class QS implements CommandExecutor {
             for (int i = 2; i < args.length; i++) {
                 sb.append(" " + args[i]);
             }
-            String lookFor = sb.toString();
-            lookFor = lookFor.toLowerCase();
+            String lookFor = sb.toString().toLowerCase();
             Player p = (Player) sender;
             Location loc = p.getEyeLocation().clone();
             double minDistance = plugin.getConfig().getInt("shop.find-distance");
@@ -270,11 +269,13 @@ public class QS implements CommandExecutor {
                     if (inChunk == null)
                         continue;
                     for (Shop shop : inChunk.values()) {
-                        if (MsgUtil.getItemi18n(shop.getDataName()).toLowerCase().contains(lookFor)
-                                && shop.getLocation().distanceSquared(loc) < minDistanceSquared) {
-                            closest = shop;
-                            minDistanceSquared = shop.getLocation().distanceSquared(loc);
-                        }
+                        if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor))
+                            continue;
+
+                        if (!(shop.getLocation().distanceSquared(loc) < minDistanceSquared))
+                            continue;
+                        closest = shop;
+                        minDistanceSquared = shop.getLocation().distanceSquared(loc);
                     }
                 }
             }
@@ -343,8 +344,7 @@ public class QS implements CommandExecutor {
                                         b.getRelative(p.getFacing().getOppositeFace()));
                                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                                 p.sendMessage(
-                                        MsgUtil.getMessage("how-much-to-trade-for", MsgUtil
-                                                .getItemi18n(info.getItem().getType().name())));
+                                        MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(item)));
                             } else {
                                 plugin.getShopManager().handleChat(p, args[1]);
                             }
@@ -392,7 +392,7 @@ public class QS implements CommandExecutor {
                 shop.update();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil
-                        .getMessage("command.now-buying", MsgUtil.getItemi18n(shop.getItem().getType().name())));
+                        .getMessage("command.now-buying", Util.getItemStackName(shop.getItem())));
                 return;
             }
         }
@@ -411,7 +411,7 @@ public class QS implements CommandExecutor {
                     //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil
-                            .getMessage("command.now-buying", MsgUtil.getItemi18n(shop.getItem().getType().name())));
+                            .getMessage("command.now-buying", Util.getItemStackName(shop.getItem())));
                     return;
                 }
             }
@@ -432,7 +432,7 @@ public class QS implements CommandExecutor {
                 shop.update();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil
-                        .getMessage("command.now-selling", MsgUtil.getItemi18n(shop.getItem().getType().name())));
+                        .getMessage("command.now-selling", Util.getItemStackName(shop.getItem())));
                 return;
             }
 
@@ -452,7 +452,7 @@ public class QS implements CommandExecutor {
                     //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil
-                            .getMessage("command.now-selling", MsgUtil.getItemi18n(shop.getItem().getType().name())));
+                            .getMessage("command.now-selling", Util.getItemStackName(shop.getItem())));
                     return;
                 }
             }
