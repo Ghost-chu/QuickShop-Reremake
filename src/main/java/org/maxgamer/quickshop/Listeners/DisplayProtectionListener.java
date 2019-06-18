@@ -321,7 +321,7 @@ public class DisplayProtectionListener implements Listener {
         if (!DisplayItem.checkIsGuardItemStack(itemStack))
             return; //We didn't care that
         event.setCancelled(true);
-        Util.debugLog("We cancelled a Item despawning cause they are our display item.");
+        Util.debugLog("We canceled an Item from despawning because they are our display item.");
     }
     
 }
