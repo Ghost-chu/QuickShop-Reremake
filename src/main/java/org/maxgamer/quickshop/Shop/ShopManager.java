@@ -440,26 +440,26 @@ public class ShopManager {
             if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
                 // Tries to check their balance nicely to see if
                 // they can afford it.
-                if (plugin.getEcon().getBalance(shop.getOwner()) < amount * shop.getPrice()) {
+                if (plugin.getEconomy().getBalance(shop.getOwner()) < amount * shop.getPrice()) {
                     p.sendMessage(MsgUtil
                             .getMessage("the-owner-cant-afford-to-buy-from-you", format(amount * shop.getPrice()), format(plugin
-                                    .getEcon().getBalance(shop.getOwner()))));
+                                    .getEconomy().getBalance(shop.getOwner()))));
                     return;
                 }
                 // Check for plugins faking econ.has(amount)
-                if (!plugin.getEcon().withdraw(shop.getOwner(), total)) {
+                if (!plugin.getEconomy().withdraw(shop.getOwner(), total)) {
                     p.sendMessage(MsgUtil
                             .getMessage("the-owner-cant-afford-to-buy-from-you", format(amount * shop.getPrice()), format(plugin
-                                    .getEcon().getBalance(shop.getOwner()))));
+                                    .getEconomy().getBalance(shop.getOwner()))));
                     return;
                 }
                 if (tax != 0) {
-                    plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
+                    plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
                             .getUniqueId(), total * tax);
                 }
             }
             // Give them the money after we know we succeeded
-            plugin.getEcon().deposit(p.getUniqueId(), total * (1 - tax));
+            plugin.getEconomy().deposit(p.getUniqueId(), total * (1 - tax));
             // Notify the owner of the purchase.
             String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), "" + amount, Util
                     .getItemStackName(shop.getItem()));
@@ -520,9 +520,9 @@ public class ShopManager {
         if (!p.getUniqueId().equals(shop.getOwner())) {
             // Check their balance. Works with *most* economy
             // plugins*
-            if (plugin.getEcon().getBalance(p.getUniqueId()) < amount * shop.getPrice()) {
+            if (plugin.getEconomy().getBalance(p.getUniqueId()) < amount * shop.getPrice()) {
                 p.sendMessage(MsgUtil
-                        .getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon()
+                        .getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEconomy()
                                 .getBalance(p.getUniqueId()))));
                 return;
             }
@@ -532,16 +532,16 @@ public class ShopManager {
             if (shop.getOwner().equals(p.getUniqueId())) {
                 tax = 0;
             }
-            if (!plugin.getEcon().withdraw(p.getUniqueId(), total)) {
+            if (!plugin.getEconomy().withdraw(p.getUniqueId(), total)) {
                 p.sendMessage(MsgUtil
-                        .getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEcon()
+                        .getMessage("you-cant-afford-to-buy", format(amount * shop.getPrice()), format(plugin.getEconomy()
                                 .getBalance(p.getUniqueId()))));
                 return;
             }
             if (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-                plugin.getEcon().deposit(shop.getOwner(), total * (1 - tax));
+                plugin.getEconomy().deposit(shop.getOwner(), total * (1 - tax));
                 if (tax != 0) {
-                    plugin.getEcon().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
+                    plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
                             .getUniqueId(), total * tax);
                 }
             }
@@ -659,7 +659,7 @@ public class ShopManager {
             double createCost = plugin.getConfig().getDouble("shop.cost");
             // Tax refers to the cost to create a shop. Not actual
             // tax, that would be silly
-            if (createCost != 0 && plugin.getEcon().getBalance(p.getUniqueId()) < createCost) {
+            if (createCost != 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < createCost) {
                 p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(createCost)));
                 return;
             }
@@ -678,13 +678,13 @@ public class ShopManager {
             // Else, if the event is cancelled, they won't get their
             // money back.
             if (createCost != 0) {
-                if (!plugin.getEcon().withdraw(p.getUniqueId(), createCost)) {
+                if (!plugin.getEconomy().withdraw(p.getUniqueId(), createCost)) {
                     p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", format(createCost)));
                     shop.onUnload();
                     return;
                 }
                 try {
-                    plugin.getEcon().deposit(
+                    plugin.getEconomy().deposit(
                             Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), createCost);
                 } catch (Exception e2) {
                     e2.printStackTrace();
@@ -744,7 +744,7 @@ public class ShopManager {
      * @return formated price
      */
     public String format(@NotNull double d) {
-        return plugin.getEcon().format(d);
+        return plugin.getEconomy().format(d);
     }
 
     public class ShopIterator implements Iterator<Shop> {
