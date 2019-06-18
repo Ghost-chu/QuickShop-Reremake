@@ -18,6 +18,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 @EqualsAndHashCode
+@ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
     private QuickShop plugin = QuickShop.instance;
