@@ -107,7 +107,7 @@ public class QuickShop extends JavaPlugin {
     /** A util to call to check some actions permission **/
     private PermissionChecker permissionChecker;
     /** The server UniqueID, use to the ErrorReporter **/
-    private static UUID serverUniqueID;
+    private UUID serverUniqueID;
     /** The error reporter to help devs report errors to Sentry.io **/
     private SentryErrorReporter sentryErrorReporter;
 
@@ -824,15 +824,6 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
-     * Returns the economy for moving currency around
-     *
-     * @return The economy for moving currency around
-     */
-    public EconomyCore getEcon() {
-        return economy;
-    }
-
-    /**
      * Logs the given string to qs.log, if QuickShop is configured to do so.
      *
      * @param s The string to log. It will be prefixed with the date and time.
@@ -843,16 +834,6 @@ public class QuickShop extends JavaPlugin {
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date.getTime());
         this.logWatcher.add("[" + time.toString() + "] " + s);
-    }
-
-    /**
-     * Returns the ShopManager. This is used for fetching, adding and removing
-     * shops.
-     *
-     * @return The ShopManager.
-     */
-    public ShopManager getShopManager() {
-        return this.shopManager;
     }
 
     /**
@@ -873,7 +854,4 @@ public class QuickShop extends JavaPlugin {
      */
     public String getFork() { return "Reremake"; }
 
-    public static UUID getUniqueID() {
-        return QuickShop.serverUniqueID;
-    }
 }
