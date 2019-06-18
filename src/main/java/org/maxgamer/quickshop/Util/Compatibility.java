@@ -28,7 +28,7 @@ public class Compatibility {
      *
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      */
-    public void toggleInteractListeners(@NotNull boolean status) {
+    public void toggleInteractListeners(boolean status) {
         // if (status) {
         //     disabledListeners.clear();
         //     for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
