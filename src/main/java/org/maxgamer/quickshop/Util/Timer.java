@@ -1,5 +1,8 @@
 package org.maxgamer.quickshop.Util;
 
+import lombok.*;
+
+@EqualsAndHashCode
 public class Timer {
     private long startTime;
 

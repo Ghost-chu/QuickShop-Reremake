@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import lombok.*;
 import org.jetbrains.annotations.*;
 
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
  */
+@EqualsAndHashCode
 public class ShopModerator {
     private UUID owner;
     private ArrayList<UUID> staffs;

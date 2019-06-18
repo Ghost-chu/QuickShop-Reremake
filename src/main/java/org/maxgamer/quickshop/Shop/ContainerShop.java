@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import com.lishid.openinv.OpenInv;
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +33,7 @@ import org.maxgamer.quickshop.Util.Util;
 /**
  * ChestShop core
  */
+@EqualsAndHashCode
 public class ContainerShop implements Shop {
     private Location loc;
     private double price;
@@ -41,7 +43,7 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     private ShopType shopType;
     private QuickShop plugin;
-    private boolean isLoaded = false;
+    @EqualsAndHashCode.Exclude private boolean isLoaded = false;
 
     /**
      * Returns a clone of this shop. References to the same display item,
