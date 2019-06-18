@@ -742,9 +742,7 @@ public class Util {
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
         if (isAir(mat))
             return true;
-        if (isWallSign(mat))
-            return true;
-        return false;
+        return isWallSign(mat);
     }
     /**
      * Print debug log when plugin running on dev mode.
