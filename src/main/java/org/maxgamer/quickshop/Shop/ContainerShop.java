@@ -733,10 +733,10 @@ public class ContainerShop implements Shop {
             return;
         }
 
-        if (!Util.isLoaded(this.getLocation())) {
-            Util.debugLog("Shop " + this.getLocation().toString() + " skipped to load: Target location not loaded.");
-            return;
-        }
+        // if (!Util.isLoaded(this.getLocation())) {
+        //     Util.debugLog("Shop " + this.getLocation().toString() + " skipped to load: Target location not loaded.");
+        //     return;
+        // }
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
