@@ -30,7 +30,7 @@ public class Paste {
      * @return The paste result content.
      */
     public String genNewPaste() {
-        StringBuffer finalReport = new StringBuffer();
+        StringBuilder finalReport = new StringBuilder();
         finalReport.append("###############################\n");
         finalReport.append("QuickShop-Reremake Paste Result\n");
         finalReport.append("###############################\n");
@@ -38,65 +38,67 @@ public class Paste {
         finalReport.append("\n");
         finalReport.append("================================================\n");
         finalReport.append("QuickShop:\n");
-        finalReport.append("\tVersion: " + QuickShop.getVersion() + "\n");
-        finalReport.append("\tFork: " + plugin.getFork() + "\n");
-        finalReport.append("\tServer ID: " + plugin.getServerUniqueID().toString() + "\n");
-        finalReport.append("\tOpenInv Hook: " + (plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled") + "\n");
+        finalReport.append("\tVersion: ").append(QuickShop.getVersion()).append("\n");
+        finalReport.append("\tFork: ").append(plugin.getFork()).append("\n");
+        finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID().toString()).append("\n");
+        finalReport.append("\tOpenInv Hook: ").append(plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled").append("\n");
         //finalReport.append("Fork: "+plugin.+"\n");
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
         JSONObject serverData = plugin.getMetrics().getServerData();
-        finalReport.append("\tOS: " + serverData.get("osName") + "\n");
-        finalReport.append("\tArch: " + serverData.get("osArch") + "\n");
-        finalReport.append("\tVersion: " + serverData.get("osVersion") + "\n");
-        finalReport.append("\tCores: " + serverData.get("coreCount") + "\n");
+        finalReport.append("\tOS: ").append(serverData.get("osName")).append("\n");
+        finalReport.append("\tArch: ").append(serverData.get("osArch")).append("\n");
+        finalReport.append("\tVersion: ").append(serverData.get("osVersion")).append("\n");
+        finalReport.append("\tCores: ").append(serverData.get("coreCount")).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
-        finalReport.append("\tBuild: " + Bukkit.getServer().getVersion() + "\n");
-        finalReport.append("\tNMSV: " + Util.getNMSVersion() + "\n");
-        finalReport.append("\tJava: " + serverData.get("javaVersion") + "\n");
-        finalReport.append("\tPlayers: " + serverData.get("playerAmount") + "/" + Bukkit.getOfflinePlayers().length + "\n");
-        finalReport.append("\tOnlineMode: " + serverData.get("onlineMode") + "\n");
-        finalReport.append("\tBukkitVersion: " + serverData.get("bukkitVersion") + "\n");
-        finalReport.append("\tWorldContainer: " + Bukkit.getWorldContainer().toString() + "\n");
+        finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
+        finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
+        finalReport.append("\tJava: ").append(serverData.get("javaVersion")).append("\n");
+        finalReport.append("\tPlayers: ").append(serverData.get("playerAmount")).append("/").append(Bukkit
+                .getOfflinePlayers().length).append("\n");
+        finalReport.append("\tOnlineMode: ").append(serverData.get("onlineMode")).append("\n");
+        finalReport.append("\tBukkitVersion: ").append(serverData.get("bukkitVersion")).append("\n");
+        finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer().toString()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
-        finalReport.append("\tTotal: " + Bukkit.getWorlds().size() + "\n");
+        finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
         for (World world : Bukkit.getWorlds()) {
             finalReport.append("\t*********************************\n");
-            finalReport.append("\t\tName: " + world.getName() + "\n");
-            finalReport.append("\t\tEnvironment: " + world.getEnvironment().name() + "\n");
-            finalReport.append("\t\tLoaded Chunks: " + world.getLoadedChunks().length + "\n");
-            finalReport.append("\t\tPlayer In World: " + world.getPlayers().size() + "\n");
-            finalReport.append("\t\tShops In World: " + Util.getShopsInWorld(world.getName()) + "\n");
+            finalReport.append("\t\tName: ").append(world.getName()).append("\n");
+            finalReport.append("\t\tEnvironment: ").append(world.getEnvironment().name()).append("\n");
+            finalReport.append("\t\tLoaded Chunks: ").append(world.getLoadedChunks().length).append("\n");
+            finalReport.append("\t\tPlayer In World: ").append(world.getPlayers().size()).append("\n");
+            finalReport.append("\t\tShops In World: ").append(Util.getShopsInWorld(world.getName())).append("\n");
         }
         finalReport.append("\t*********************************\n");//Add a line after last world
         finalReport.append("================================================\n");
         finalReport.append("Plugins:\n");
-        finalReport.append("\tTotal: " + Bukkit.getPluginManager().getPlugins().length + "\n");
+        finalReport.append("\tTotal: ").append(Bukkit.getPluginManager().getPlugins().length).append("\n");
         for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
-            finalReport.append("\t" + bplugin.getName() + "@" + (bplugin.isEnabled() ? "Enabled" : "Disabled") + "\n");
+            finalReport.append("\t").append(bplugin.getName()).append("@").append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append("\n");
         }
         finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
         try {
             finalReport.append("\t*********************************\n");
             finalReport.append("\tconfig.yml:\n");
-            finalReport.append("\t\t\n" + new String(Util
-                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/config.yml")) + "\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/config.yml"))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tmessages.yml:\n");
-            finalReport.append("\t\t\n" + new String(Util
-                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/messages.yml")) + "\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/messages.yml"))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tlatest.log:\n");
-            finalReport.append("\t\t\n" + new String(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())) + "\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
-            finalReport.append("\t\t\n" + Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n") + "\n");
+            finalReport.append("\t\t\n").append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n")).append("\n");
             finalReport.append("\t*********************************\n");
         } catch (Throwable th) {
             finalReport.append("\tFailed to get data\n");
@@ -134,15 +136,14 @@ public class Paste {
         conn.setDoOutput(true);
         conn.setDoInput(true);
         PrintWriter out = new PrintWriter(conn.getOutputStream());
-        StringBuilder builder = new StringBuilder();
-        builder.append("poster=");
-        builder.append("QuickShop Paster");
-        builder.append("&syntax=text");
-        builder.append("&expiration=week");
-        builder.append("&content=");
-        builder.append(URLEncoder.encode(text, "UTF-8"));
         //poster=aaaaaaa&syntax=text&expiration=&content=%21%40
-        out.print(builder.toString());
+        String builder = "poster=" +
+                "QuickShop Paster" +
+                "&syntax=text" +
+                "&expiration=week" +
+                "&content=" +
+                URLEncoder.encode(text, "UTF-8");
+        out.print(builder);
         out.flush();//Drop
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         Util.debugLog("Request Completed: " + conn.getURL().toString());
