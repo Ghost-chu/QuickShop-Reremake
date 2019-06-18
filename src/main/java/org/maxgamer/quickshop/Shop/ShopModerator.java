@@ -11,6 +11,7 @@ import org.jetbrains.annotations.*;
  * Contains shop's moderators infomations, owner, staffs etc.
  */
 @EqualsAndHashCode
+@ToString
 public class ShopModerator {
     private UUID owner;
     private ArrayList<UUID> staffs;

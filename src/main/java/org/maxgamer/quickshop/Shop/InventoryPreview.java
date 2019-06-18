@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Shop;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -18,6 +19,8 @@ import org.maxgamer.quickshop.Util.Util;
 /**
  * A class to create a GUI item preview quickly
  */
+@EqualsAndHashCode
+@ToString
 public class InventoryPreview implements Listener {
 
     private ItemStack itemStack;

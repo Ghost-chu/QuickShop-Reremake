@@ -5,10 +5,11 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 @EqualsAndHashCode
+@ToString
 public class WarningSender {
     private long cooldown;
     private long lastSend = 0;
-    private QuickShop plugin;
+    @ToString.Exclude private QuickShop plugin;
 
     /**
      * Create a warning sender
