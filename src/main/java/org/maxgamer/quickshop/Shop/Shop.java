@@ -253,7 +253,6 @@ public abstract interface Shop {
      */
     public abstract boolean isLoaded();
 
-    /**
      /**
      * Directly get all staffs.
      * @return staffs

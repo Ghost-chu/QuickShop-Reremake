@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
+import lombok.*;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.*;
 /**
  * A class contains shop's infomations
  */
+@EqualsAndHashCode
 public class Info {
     private Location loc;
     private ShopAction action;
