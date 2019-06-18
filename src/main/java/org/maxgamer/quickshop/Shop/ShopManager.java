@@ -29,10 +29,11 @@ import org.maxgamer.quickshop.Util.Util;
 /**
  * Manage a lot of shops.
  */
+@SuppressWarnings("WeakerAccess")
 public class ShopManager {
-    QuickShop plugin = QuickShop.instance;
+    private QuickShop plugin;
     private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
-    private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>();
+    private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
     final private static ItemStack AIR = new ItemStack(Material.AIR);
 
     public ShopManager(@NotNull QuickShop plugin) {
@@ -193,26 +194,19 @@ public class ShopManager {
      * @param shop  The shop to add
      */
     private void addShop(@NotNull String world, @NotNull Shop shop) {
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
+        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops()
+                .computeIfAbsent(world, k -> new HashMap<>(3));
         // There's no world storage yet. We need to create that hashmap.
-        if (inWorld == null) {
-            inWorld = new HashMap<ShopChunk, HashMap<Location, Shop>>(3);
-            // Put it in the data universe
-            this.getShops().put(world, inWorld);
-        }
+        // Put it in the data universe
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
         // location rounded to the nearest 16.
         int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         // Get the chunk set from the world info
         ShopChunk shopChunk = new ShopChunk(world, x, z);
-        HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
+        HashMap<Location, Shop> inChunk = inWorld.computeIfAbsent(shopChunk, k -> new HashMap<>(1));
         // That chunk data hasn't been created yet - Create it!
-        if (inChunk == null) {
-            inChunk = new HashMap<Location, Shop>(1);
-            // Put it in the world
-            inWorld.put(shopChunk, inChunk);
-        }
+        // Put it in the world
         // Put the shop in its location in the chunk list.
         inChunk.put(shop.getLocation(), shop);
         // shop.onLoad();
@@ -235,7 +229,7 @@ public class ShopManager {
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         ShopChunk shopChunk = new ShopChunk(world, x, z);
         HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
-        if (inChunk == null || loc == null)
+        if (inChunk == null)
             return;
         inChunk.remove(loc);
         // shop.onUnload();
@@ -336,39 +330,31 @@ public class ShopManager {
     public void handleChat(@NotNull Player p, @NotNull String msg) {
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                HashMap<UUID, Info> actions = getActions();
-                // They wanted to do something.
-                Info info = actions.remove(p.getUniqueId());
-                if (info == null)
-                    return; // multithreaded means this can happen
-                if (info.getLocation().getWorld() != p.getLocation().getWorld()) {
-                    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-                    return;
-                }
-                if (info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-                    return;
-                }
-                /* Creation handling */
-                if (info.getAction() == ShopAction.CREATE) {
-                    actionCreate(p, actions, info, message);
-                    /* Purchase Handling */
-                } else if (info.getAction() == ShopAction.BUY) {
-                    actionTrade(p, actions, info, message);
-                }
-                /* If it was already cancelled (from destroyed) */
-                else {
-                    return; // It was cancelled, go away.
-                }
-            }
-        });
+        HashMap<UUID, Info> actions = getActions();
+        // They wanted to do something.
+        Info info = actions.remove(p.getUniqueId());
+        if (info == null)
+            return; // multithreaded means this can happen
+        if (info.getLocation().getWorld() != p.getLocation().getWorld()) {
+            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+            return;
+        }
+        if (info.getLocation().distanceSquared(p.getLocation()) > 25) {
+            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+            return;
+        }
+        /* Creation handling */
+        if (info.getAction() == ShopAction.CREATE) {
+            actionCreate(p, actions, info, message);
+            /* Purchase Handling */
+        } else if (info.getAction() == ShopAction.BUY) {
+            actionTrade(p, actions, info, message);
+        }
+        /* If it was already cancelled (from destroyed) */
     }
 
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
-        int amount = 0;
+        int amount;
         try {
             amount = Integer.parseInt(message);
         } catch (NumberFormatException e) {
@@ -393,7 +379,6 @@ public class ShopManager {
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation().toString());
-            return;
         }
     }
 
@@ -664,7 +649,7 @@ public class ShopManager {
                 return;
             }
             // Create the sample shop.
-            Shop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p
+            ContainerShop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p
                     .getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
@@ -709,21 +694,17 @@ public class ShopManager {
             // Figures out which way we should put the sign on and
             // sets its text.
 
-            if (shop instanceof ContainerShop) {
-                ContainerShop cs = (ContainerShop) shop;
-                if (cs.isDoubleShop()) {
-                    Shop nextTo = cs.getAttachedShop();
-                    if (nextTo.getPrice() > shop.getPrice()) {
-                        // The one next to it must always be a
-                        // buying shop.
-                        p.sendMessage(MsgUtil.getMessage("buying-more-than-selling"));
-                    }
+            if (shop.isDoubleShop()) {
+                Shop nextTo = shop.getAttachedShop();
+                if (nextTo.getPrice() > shop.getPrice()) {
+                    // The one next to it must always be a
+                    // buying shop.
+                    p.sendMessage(MsgUtil.getMessage("buying-more-than-selling"));
                 }
             }
         }
         /* They didn't enter a number. */ catch (NumberFormatException ex) {
             p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-            return;
         }
     }
 
@@ -743,7 +724,7 @@ public class ShopManager {
      * @param d price
      * @return formated price
      */
-    public String format(@NotNull double d) {
+    public String format(double d) {
         return plugin.getEconomy().format(d);
     }
 
