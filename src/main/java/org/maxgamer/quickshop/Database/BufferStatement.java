@@ -12,7 +12,6 @@ import org.maxgamer.quickshop.Util.Util;
 public class BufferStatement {
     private Object[] values;
     private String query;
-    private Exception stacktrace;
 
     /**
      * Represents a PreparedStatement in a state before preparing it (E.g. No
@@ -27,9 +26,6 @@ public class BufferStatement {
         this.query = query;
         Util.debugLog(query);
         this.values = values;
-        this.stacktrace = new Exception(); // For error handling
-        this.stacktrace.fillInStackTrace(); // We can declare where this
-        // statement came from.
     }
 
     /**
@@ -45,7 +41,7 @@ public class BufferStatement {
      *
      * @throws SQLException Throw exception when failed to execute something in SQL
      */
-    public PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {
+    PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {
         PreparedStatement ps;
         Util.debugLog(query);
         ps = con.prepareStatement(query);
@@ -53,18 +49,6 @@ public class BufferStatement {
             ps.setObject(i, values[i - 1]);
         }
         return ps;
-    }
-
-    /**
-     * Used for debugging. This stacktrace is recorded when the statement is
-     * created, so printing it to the screen will provide useful debugging
-     * information about where the query came from, if something went wrong
-     * while executing it.
-     *
-     * @return The stacktrace elements.
-     */
-    public StackTraceElement[] getStackTrace() {
-        return stacktrace.getStackTrace();
     }
 
     /**
