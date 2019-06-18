@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -25,16 +26,14 @@ public class ChunkListener implements Listener {
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
             return;
-        // new BukkitRunnable() {
-        //
-        //     @Override
-        //     public void run() {
-        for (Shop shop : inChunk.values()) {
-            shop.onLoad();
-        }
-        //
-        //     }
-        // }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Shop shop : inChunk.values()) {
+                    shop.onLoad();
+                }
+            }
+        }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -43,13 +42,13 @@ public class ChunkListener implements Listener {
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
             return;
-        // new BukkitRunnable() {
-        //     @Override
-        //     public void run() {
-        for (Shop shop : inChunk.values()) {
-            shop.onUnload();
-        }
-        //     }
-        // }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Shop shop : inChunk.values()) {
+                    shop.onUnload();
+                }
+            }
+        }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
     }
 }
