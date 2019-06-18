@@ -27,7 +27,7 @@ public class RealDisplayItem implements DisplayItem {
      *
      * @param shop The shop (See Shop)
      */
-    public RealDisplayItem(@NotNull Shop shop) {
+    RealDisplayItem(@NotNull Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
 

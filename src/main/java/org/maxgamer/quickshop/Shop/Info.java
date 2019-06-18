@@ -42,7 +42,7 @@ public class Info {
      * @param shop, The need checked with this shop.
      * @return hasChanged
      */
-    public boolean hasChanged(@NotNull Shop shop) {
+    boolean hasChanged(@NotNull Shop shop) {
         if (this.shop.isUnlimited() != shop.isUnlimited())
             return true;
         if (this.shop.getShopType() != shop.getShopType())
@@ -53,9 +53,7 @@ public class Info {
             return true;
         if (!this.shop.getLocation().equals(shop.getLocation()))
             return true;
-        if (!this.shop.matches(shop.getItem()))
-            return true;
-        return false;
+        return !this.shop.matches(shop.getItem());
     }
 
     /**
@@ -91,7 +89,7 @@ public class Info {
     /**
      * @return Block signBlock, Get block of shop's sign, may return the null.
      */
-    public Block getSignBlock() {
+    Block getSignBlock() {
         return this.last;
     }
 }
