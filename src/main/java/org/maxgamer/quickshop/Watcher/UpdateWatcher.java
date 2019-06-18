@@ -41,7 +41,7 @@ public class UpdateWatcher implements Listener {
                 }
                 hasNewUpdate = true;
 
-                if (!info.getIsBeta()) {
+                if (!info.isBeta()) {
                     QuickShop.instance.getLogger().info("A new version of QuickShop has been released!");
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
@@ -92,7 +92,7 @@ public class UpdateWatcher implements Listener {
             @Override
             public void run() {
                 if (hasNewUpdate && e.getPlayer().hasPermission("quickshop.alert")) {
-                    if (!info.getIsBeta()) {
+                    if (!info.isBeta()) {
                         List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
                         Random random = new Random();
                         int notifyNum = random.nextInt(notifys.size());
