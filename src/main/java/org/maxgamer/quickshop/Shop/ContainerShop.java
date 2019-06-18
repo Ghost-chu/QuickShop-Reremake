@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Event.ShopDeleteEvent;
+import org.maxgamer.quickshop.Event.ShopLoadEvent;
 import org.maxgamer.quickshop.Event.ShopUnloadEvent;
 import org.maxgamer.quickshop.Event.ShopUpdateEvent;
 import org.maxgamer.quickshop.QuickShop;
