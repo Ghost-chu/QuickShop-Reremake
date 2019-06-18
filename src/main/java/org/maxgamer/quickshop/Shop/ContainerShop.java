@@ -667,7 +667,7 @@ public class ContainerShop implements Shop {
         String world = this.getLocation().getWorld().getName();
         // Refund if necessary
         if (plugin.getConfig().getBoolean("shop.refund")) {
-            plugin.getEcon().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
+            plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
         }
         if (fromMemory) {
             // Delete it from memory
