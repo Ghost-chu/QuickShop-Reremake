@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
 import org.json.simple.JSONObject;
@@ -103,7 +104,20 @@ public class Paste {
             finalReport.append("\tFailed to get data\n");
         }
         finalReport.append("================================================\n");
-        return finalReport.toString();
+
+        //Process the data to protect passwords.
+        String report = finalReport.toString();
+        try {
+            ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection("database");
+            report = report.replaceAll(configurationSection.getString("user"), "[PROTECTED]");
+            report = report.replaceAll(configurationSection.getString("password"), "[PROTECTED]");
+            report = report.replaceAll(configurationSection.getString("host"), "[PROTECTED]");
+            report = report.replaceAll(configurationSection.getString("port"), "[PROTECTED]");
+            report = report.replaceAll(configurationSection.getString("database"), "[PROTECTED]");
+        } catch (Throwable tg) {
+            //Ignore
+        }
+        return report;
     }
 
     /**
