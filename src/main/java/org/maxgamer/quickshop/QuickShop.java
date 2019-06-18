@@ -781,7 +781,7 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            getLogger().severe("QuickShop could not hook an economy/Not found Vault and Reserve!");
+            getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
             bootError = BuiltInSolution.econError();
             return false;
