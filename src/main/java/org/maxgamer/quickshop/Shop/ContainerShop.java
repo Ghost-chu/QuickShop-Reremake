@@ -552,7 +552,7 @@ public class ContainerShop implements Shop {
             }
 
         }
-        lines[2] = MsgUtil.getMessage("signs.item", Util.getNameForSign(this.item));
+        lines[2] = MsgUtil.getMessage("signs.item", Util.getItemStackName(this.getItem()));
         lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
         this.setSignText(lines);
     }
