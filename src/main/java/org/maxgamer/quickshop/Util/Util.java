@@ -517,7 +517,11 @@ public class Util {
      * @return is or not a wall_sign
      */
     public static boolean isWallSign(@NotNull Material material) {
-        return Tag.WALL_SIGNS.isTagged(material);
+        try {
+            return Tag.WALL_SIGNS.isTagged(material);
+        } catch (NoSuchFieldError e) {
+            return material.name().equals("WALL_SIGN");
+        }
     }
 
     /**
