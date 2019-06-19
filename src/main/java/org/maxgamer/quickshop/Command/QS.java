@@ -104,12 +104,7 @@ public class QS implements CommandExecutor {
             return;
         }
         Player p = (Player) sender;
-        Bukkit.getScheduler().runTask(QuickShop.instance, new Runnable() {
-            @Override
-            public void run() {
-                MsgUtil.flush(p);
-            }
-        });
+        Bukkit.getScheduler().runTask(QuickShop.instance, () -> MsgUtil.flush(p));
     }
 
     private void silentRemove(CommandSender sender, String[] args) {
@@ -169,7 +164,7 @@ public class QS implements CommandExecutor {
                 sender.sendMessage(MsgUtil.getMessage("thats-not-a-number"));
                 return;
             }
-            BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -206,7 +201,7 @@ public class QS implements CommandExecutor {
 
     private void empty(CommandSender sender, String[] args) {
         if (sender instanceof Player && sender.hasPermission("quickshop.refill")) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -236,7 +231,7 @@ public class QS implements CommandExecutor {
             }
             StringBuilder sb = new StringBuilder(args[1]);
             for (int i = 2; i < args.length; i++) {
-                sb.append(" " + args[i]);
+                sb.append(" ").append(args[i]);
             }
             String lookFor = sb.toString().toLowerCase();
             Player p = (Player) sender;
@@ -283,11 +278,11 @@ public class QS implements CommandExecutor {
             ItemStack item = p.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
                 if (sender.hasPermission("quickshop.create.sell")) {
-                    BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+                    BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                     while (bIt.hasNext()) {
                         Block b = bIt.next();
                         if (Util.canBeShop(b)) {
-                            if (p != null && b != null && p.isOnline()) {
+                            if (p.isOnline()) {
                                 if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
                                     Util.debugLog("Failed permission build check, canceled");
                                     return;
@@ -381,7 +376,7 @@ public class QS implements CommandExecutor {
 
     private void setBuy(CommandSender sender) {
         if (sender instanceof Player && sender.hasPermission("quickshop.create.buy")) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -420,7 +415,7 @@ public class QS implements CommandExecutor {
 
     private void setSell(CommandSender sender) {
         if (sender instanceof Player && sender.hasPermission("quickshop.create.sell")) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -571,7 +566,7 @@ public class QS implements CommandExecutor {
 
     private void staff(CommandSender sender, String[] args) {
         if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) (Player) sender, 10);
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -609,10 +604,10 @@ public class QS implements CommandExecutor {
                         }
                         @SuppressWarnings("deprecation")
                         OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
-                        if (player == null) {
-                            sender.sendMessage(MsgUtil.getMessage("unknown-player"));
-                            return;
-                        }
+                        // if (player == null) {
+                        //     sender.sendMessage(MsgUtil.getMessage("unknown-player"));
+                        //     return;
+                        // }
 
                         if (args[1].equals("add")) {
 
@@ -664,7 +659,6 @@ public class QS implements CommandExecutor {
                 @Override
                 public void run() {
                     try {
-                        /**@TODO i18n*/
                         sender.sendMessage("Please wait...");
                         Paste paste = new Paste(plugin);
                         sender.sendMessage(paste.pasteTheText(paste.genNewPaste()));
@@ -753,9 +747,6 @@ public class QS implements CommandExecutor {
                 return true;
             } else if (subArg.equals("about")) {
                 about(sender);
-                return true;
-            } else if (subArg.equals("remove")) {
-                remover(sender, args);
                 return true;
             } else if (subArg.equals("debug")) {
                 debug(sender, args);
@@ -912,7 +903,7 @@ public class QS implements CommandExecutor {
             } else {
                 loc.setYaw((float) (0.5 * Math.PI));
             }
-            loc.setYaw((float) loc.getYaw() - (float) Math.atan(dz / dx));
+            loc.setYaw(loc.getYaw() - (float) Math.atan(dz / dx));
         } else if (dz < 0) {
             loc.setYaw((float) Math.PI);
         }
