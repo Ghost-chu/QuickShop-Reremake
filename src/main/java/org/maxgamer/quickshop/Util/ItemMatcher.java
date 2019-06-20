@@ -49,7 +49,10 @@ public class ItemMatcher {
             return true;
 
         if (!typeMatches(stack1, stack2)) {
-            Util.debugLog("The Type doesn't match.");
+            return false;
+        }
+
+        if (stack1.hasItemMeta() != stack2.hasItemMeta()) {
             return false;
         }
 
