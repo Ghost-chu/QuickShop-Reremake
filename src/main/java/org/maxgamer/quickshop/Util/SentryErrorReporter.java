@@ -23,7 +23,7 @@ import org.maxgamer.quickshop.QuickShop;
  */
 public class SentryErrorReporter {
     private Context context;
-    private final String dsn = "https://9a64b22513544155b32d302392a46564@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
+    private final String dsn = "https://6a7881aa07164412bcb84a0f76253ae9@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
     private boolean enabled;
