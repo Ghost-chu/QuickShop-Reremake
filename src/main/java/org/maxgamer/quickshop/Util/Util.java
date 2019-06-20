@@ -258,8 +258,10 @@ public class Util {
      * @return the block which is also a chest and connected to b.
      */
     public static Block getSecondHalf(@NotNull Block b) {
-        if (!isDoubleChest(b))
+        if (!isDoubleChest(b)) {
+            Util.debugLog("Target block not a DoubleChest, ignored.");
             return null;
+        }
         Chest oneSideOfChest = (Chest) b.getState();
         InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
         if (chestHolder instanceof DoubleChest) {
@@ -269,14 +271,17 @@ public class Util {
             Chest leftC = (Chest) left;
             Chest rightC = (Chest) right;
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
+                Util.debugLog("Left chest was founded.");
                 return leftC.getBlock();
             }
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
+                Util.debugLog("Right chest was founded.");
                 return rightC.getBlock();
             }
             Util.debugLog("Bug detected, DoubleChest holder can't find the any one side chest.");
             return null;
         } else {
+            Util.debugLog("ChestHolder not a DoubleChest holder.");
             return null;
         }
     }
@@ -770,7 +775,7 @@ public class Util {
         for (String log : logs) {
             String text = "[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log;
             debugLogs.add(text);
-            if (debugLogs.size() > 4999) /* Keep debugLogs max can have 5k lines. */
+            if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */
                 debugLogs.remove(0);
             if (!devMode)
                 return;
@@ -989,10 +994,14 @@ public class Util {
     }
 
     public static boolean isDoubleChest(@Nullable Block b) {
-        if (b == null)
+        if (b == null) {
+            Util.debugLog("The block is NULL.");
             return false;
-        if (!(b.getState() instanceof InventoryHolder))
+        }
+        if (!(b.getState() instanceof InventoryHolder)) {
+            Util.debugLog("Target block not a InventoryHolder.");
             return false;
+        }
         InventoryHolder inventoryHolder = (InventoryHolder) b.getState();
         return (inventoryHolder.getInventory() instanceof DoubleChest);
 
