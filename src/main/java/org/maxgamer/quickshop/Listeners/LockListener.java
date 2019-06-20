@@ -62,12 +62,8 @@ public class LockListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
         Block b = e.getBlock();
-        try {
-            if (b.getType() != Material.HOPPER)
-                return;
-        } catch (NoSuchFieldError er) {
-            return; // Your server doesn't have hoppers
-        }
+        if (b.getType() != Material.HOPPER)
+            return;
         Player p = e.getPlayer();
         if (!Util.isOtherShopWithinHopperReach(b, p))
             return;
