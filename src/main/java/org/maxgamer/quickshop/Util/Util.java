@@ -16,6 +16,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -998,12 +999,11 @@ public class Util {
             Util.debugLog("The block is NULL.");
             return false;
         }
-        if (!(b.getState() instanceof InventoryHolder)) {
-            Util.debugLog("Target block not a InventoryHolder.");
+        if (!(b.getState() instanceof Container)) {
+            Util.debugLog("Target block not a Container.");
             return false;
         }
-        InventoryHolder inventoryHolder = (InventoryHolder) b.getState();
-        return (inventoryHolder instanceof DoubleChest);
-
+        Container container = (Container) b.getState();
+        return (container.getInventory() instanceof DoubleChestInventory);
     }
 }
