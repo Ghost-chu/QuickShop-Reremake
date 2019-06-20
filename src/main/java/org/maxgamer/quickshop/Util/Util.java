@@ -1003,7 +1003,7 @@ public class Util {
             return false;
         }
         InventoryHolder inventoryHolder = (InventoryHolder) b.getState();
-        return (inventoryHolder.getInventory() instanceof DoubleChest);
+        return (inventoryHolder instanceof DoubleChest);
 
     }
 }
