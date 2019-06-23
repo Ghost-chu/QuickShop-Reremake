@@ -272,11 +272,11 @@ public class Util {
             Chest leftC = (Chest) left;
             Chest rightC = (Chest) right;
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
-                Util.debugLog("Left chest was founded.");
+                Util.debugLog("The left side of the chest was found.");
                 return leftC.getBlock();
             }
             if (equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
-                Util.debugLog("Right chest was founded.");
+                Util.debugLog("The right side of the chest was found.");
                 return rightC.getBlock();
             }
             Util.debugLog("Bug detected, DoubleChest holder can't find the any one side chest.");
