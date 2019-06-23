@@ -30,7 +30,7 @@ permissions:
         description: Allow a player to change their shop's price
         default: op
     quickshop.create.cmd:
-        description: Allow a player use /qs create to create a shop
+        description: Allow a player to use /qs create to create a shop
         default: op
     quickshop.use:
         description: Allows a player to buy/sell using other players shops
