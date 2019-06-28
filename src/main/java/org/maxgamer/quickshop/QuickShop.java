@@ -18,10 +18,7 @@ import org.maxgamer.quickshop.Command.QS;
 import org.maxgamer.quickshop.Command.Tab;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Economy.Economy;
-import org.maxgamer.quickshop.Economy.EconomyCore;
-import org.maxgamer.quickshop.Economy.Economy_Reserve;
-import org.maxgamer.quickshop.Economy.Economy_Vault;
+import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
@@ -769,15 +766,30 @@ public class QuickShop extends JavaPlugin {
      */
     private boolean loadEcon() {
         try {
-            EconomyCore core = new Economy_Vault();
+            //EconomyCore core = new Economy_Vault();
+            EconomyCore core = null;
 
-            if(Bukkit.getPluginManager().isPluginEnabled("Reserve")) {
-                final EconomyCore reserveCore = new Economy_Reserve();
-                if(reserveCore.isValid()) {
-                    core = reserveCore;
-                    Util.debugLog("QuickShop now using Reserve for economy system.");
-                }
+            switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
+                case UNKNOWN:
+                    bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
+                    return false;
+                case VAULT:
+                    core = new Economy_Vault();
+                    Util.debugLog("Now using the Vault economy system.");
+                    break;
+                case RESERVE:
+                    core = new Economy_Reserve();
+                    Util.debugLog("Now using the Reserve economy system.");
+                    break;
             }
+
+            // if(Bukkit.getPluginManager().isPluginEnabled("Reserve")) {
+            //     final EconomyCore reserveCore = new Economy_Reserve();
+            //     if(reserveCore.isValid()) {
+            //         core = reserveCore;
+            //         Util.debugLog("QuickShop now using Reserve for economy system.");
+            //     }
+            // }
 
             if (!core.isValid()) {
                 // getLogger().severe("Economy is not valid!");
