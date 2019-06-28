@@ -218,14 +218,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 1);
 
         updateConfig(getConfig().getInt("config-version"));
-
         /* It will generate a new UUID above updateConfig */
         //noinspection ConstantConditions
-        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
-        sentryErrorReporter = new SentryErrorReporter(this);
-
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
+        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
+        sentryErrorReporter = new SentryErrorReporter(this);
 
 
 
