@@ -187,7 +187,6 @@ public class ItemMatcher {
             if (meta1.hasEnchants()) {
                 Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
                 Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-
                 if (!Util.mapDuoMatches(enchMap1, enchMap2))
                     return false;
             }
