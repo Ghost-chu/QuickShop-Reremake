@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Util;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.*;
+import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -249,6 +251,53 @@ public class Util {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the server specific data.
+     *
+     * @return The server specific data.
+     * author by bStats
+     */
+    public static JSONObject getServerData() {
+        // Minecraft specific data
+        int playerAmount;
+        try {
+            // Around MC 1.8 the return type was changed to a collection from an array,
+            // This fixes java.lang.NoSuchMethodError: org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
+            Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
+            playerAmount = onlinePlayersMethod.getReturnType().equals(Collection.class)
+                    ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
+                    : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
+        } catch (Exception e) {
+            playerAmount = Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+        }
+        int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
+        String bukkitVersion = org.bukkit.Bukkit.getVersion();
+        bukkitVersion = bukkitVersion.substring(bukkitVersion.indexOf("MC: ") + 4, bukkitVersion.length() - 1);
+
+        // OS/Java specific data
+        String javaVersion = System.getProperty("java.version");
+        String osName = System.getProperty("os.name");
+        String osArch = System.getProperty("os.arch");
+        String osVersion = System.getProperty("os.version");
+        int coreCount = Runtime.getRuntime().availableProcessors();
+
+        JSONObject data = new JSONObject();
+
+        data.put("serverUUID", plugin.getServerUniqueID());
+
+        data.put("playerAmount", playerAmount);
+        data.put("onlineMode", onlineMode);
+        data.put("bukkitVersion", bukkitVersion);
+
+        data.put("javaVersion", javaVersion);
+        data.put("osName", osName);
+        data.put("osArch", osArch);
+        data.put("osVersion", osVersion);
+        data.put("coreCount", coreCount);
+
+        return data;
     }
 
     /**

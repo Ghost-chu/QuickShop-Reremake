@@ -222,13 +222,15 @@ public class QuickShop extends JavaPlugin {
 
         updateConfig(getConfig().getInt("config-version"));
 
-        /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this);
-
         /* It will generate a new UUID above updateConfig */
         //noinspection ConstantConditions
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
+
+        /* Process Metrics and Sentry error reporter. */
+        metrics = new Metrics(this);
+
+
 
         /* Process the Economy system. */
         if (!loadEcon()) {
