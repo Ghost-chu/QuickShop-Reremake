@@ -5,14 +5,12 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public class LogWatcher implements Runnable {
     private PrintStream ps;
     private Queue<String> logs = new LinkedBlockingQueue<>();
-    public BukkitTask task;
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
@@ -53,7 +51,6 @@ public class LogWatcher implements Runnable {
         }.runTask(QuickShop.instance);
 
     }
-
     public void close() {
         if (ps != null)
             this.ps.close();
