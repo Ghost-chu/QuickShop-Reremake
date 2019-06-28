@@ -837,7 +837,6 @@ public class QuickShop extends JavaPlugin {
         //if (itemWatcherTask != null)
         //    itemWatcherTask.cancel();
         if (logWatcher != null) {
-            logWatcher.task.cancel();
             logWatcher.close(); // Closes the file
         }
         /* Unload UpdateWatcher */
