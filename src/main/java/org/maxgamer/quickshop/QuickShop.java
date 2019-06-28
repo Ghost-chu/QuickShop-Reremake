@@ -269,6 +269,9 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
+        if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
+            getLogger().severe("Shop.display-items-check-ticks is too low! It may cause lag! Pick a number > 3000");
+        }
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
