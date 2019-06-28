@@ -3,10 +3,12 @@ package org.maxgamer.quickshop.Economy;
 import java.util.UUID;
 
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Economy implements EconomyCore {
     private EconomyCore core;
+    private QuickShop plugin = QuickShop.instance;
 
     public Economy(EconomyCore core) {
         this.core = core;
@@ -56,5 +58,9 @@ public class Economy implements EconomyCore {
     @Override
     public double getBalance(@NotNull UUID name) {
         return core.getBalance(name);
+    }
+
+    public EconomyType getNowUsing() {
+        return EconomyType.fromID(plugin.getConfig().getInt("economy-type"));
     }
 }
