@@ -51,7 +51,7 @@ public class DatabaseManager {
      * Unload the DatabaseManager, run at onDisable()
      */
     public void uninit() {
-        if ((task != null) && !task.isCancelled())
+        if (task != null && !task.isCancelled())
             task.cancel();
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
@@ -67,7 +67,7 @@ public class DatabaseManager {
             if (statement == null)
                 break;
             try {
-                Util.debugLog("Executing the SQL task...");
+                Util.debugLog("Executing the SQL task: " + statement.toString());
                 statement.execute();
 
             } catch (SQLException sqle) {
