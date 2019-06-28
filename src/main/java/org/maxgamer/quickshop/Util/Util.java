@@ -898,8 +898,12 @@ public class Util {
             return signMaterial;
         }
         //What the fuck!?
-        plugin.getLogger().warning("QuickShop can't found any useable sign material, report to author!");
-        return null;
+        plugin.getLogger().warning("QuickShop can't found any useable sign material, we will use default Sign Material.");
+        try {
+            return Material.OAK_WALL_SIGN;
+        } catch (Throwable e) {
+            return Material.matchMaterial("WALL_SIGN");
+        }
     }
 
     /**
