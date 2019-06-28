@@ -40,7 +40,7 @@ public class SentryErrorReporter {
         sentryClient = SentryClientFactory.sentryClient(this.dsn);
         context = sentryClient.getContext();
         Util.debugLog("Setting basic report data...");
-        JSONObject serverData = Util.getServerData();
+        JSONObject serverData = plugin.getMetrics().getPluginData();
         //context.addTag("plugin_version", QuickShop.getVersion());
         context.addTag("system_os", String.valueOf(serverData.get("osName")));
         context.addTag("system_arch", String.valueOf(serverData.get("osArch")));
