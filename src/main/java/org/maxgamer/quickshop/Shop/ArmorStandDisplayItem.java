@@ -218,9 +218,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
         boolean removed = false;
         //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
-            if (!(entity instanceof ArmorStand)) {
+            if (!(entity instanceof ArmorStand))
                 continue;
-            }
             ArmorStand eArmorStand = (ArmorStand) entity;
 
             if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
