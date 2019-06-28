@@ -754,6 +754,11 @@ public class QuickShop extends JavaPlugin {
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         language = new Language(this); //Init locale
+        if (this.getConfig().getBoolean("log-actions")) {
+            logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
+        } else {
+            logWatcher = null;
+        }
         MsgUtil.loadCfgMessages();
     }
 
