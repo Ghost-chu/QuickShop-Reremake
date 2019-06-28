@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -100,14 +101,21 @@ public class ShopManager {
             info.getSignBlock().setType(Util.getSignMaterial());
             BlockState bs = info.getSignBlock().getState();
             if (isWaterLogged) {
-                Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                waterable.setWaterlogged(true); // Looks like sign directly put in water
+                if (bs.getBlockData() instanceof Waterlogged) {
+                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                    waterable.setWaterlogged(true); // Looks like sign directly put in water
+                }
             }
-            org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
-            BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-            if (bf != null) {
-                signBlockDataType.setFacing(bf);
-                bs.setBlockData(signBlockDataType);
+            if (bs.getBlockData() instanceof WallSign) {
+                org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
+                BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+                if (bf != null) {
+                    signBlockDataType.setFacing(bf);
+                    bs.setBlockData(signBlockDataType);
+                }
+            } else {
+                plugin.getLogger().warning("Sign material " + bs.getType()
+                        .name() + " not a WallSign, make sure you using correct sign material.");
             }
             bs.update(true);
             shop.setSignText();
@@ -154,11 +162,10 @@ public class ShopManager {
      */
     public HashMap<Location, Shop> getShops(@NotNull Chunk c) {
         // long start = System.nanoTime();
-        HashMap<Location, Shop> shops = getShops(c.getWorld().getName(), c.getX(), c.getZ());
+        return getShops(c.getWorld().getName(), c.getX(), c.getZ());
         // long end = System.nanoTime();
         // plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
         // "ms.");
-        return shops;
     }
 
     public HashMap<Location, Shop> getShops(String world, int chunkX, int chunkZ) {
@@ -345,15 +352,21 @@ public class ShopManager {
                 return;
             }
             /* Creation handling */
-            if (info.getAction() == ShopAction.CREATE) {
-                actionCreate(p, actions, info, message);
-                /* Purchase Handling */
-            } else if (info.getAction() == ShopAction.BUY) {
-                actionTrade(p, actions, info, message);
-            }
-            /* If it was already cancelled (from destroyed) */
-            else {
-                return; // It was cancelled, go away.
+            // if (info.getAction() == ShopAction.CREATE) {
+            //     actionCreate(p, actions, info, message);
+            //     /* Purchase Handling */
+            // } else if (info.getAction() == ShopAction.BUY) {
+            //     actionTrade(p, actions, info, message);
+            // }
+            switch (info.getAction()) {
+                case CREATE:
+                    actionCreate(p, actions, info, message);
+                    break;
+                case BUY:
+                    actionTrade(p, actions, info, message);
+                    break;
+                case CANCELLED:
+                    break; //Go away
             }
         });
     }
