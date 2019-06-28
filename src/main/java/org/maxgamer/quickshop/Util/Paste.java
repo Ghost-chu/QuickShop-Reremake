@@ -45,7 +45,7 @@ public class Paste {
         //finalReport.append("Fork: "+plugin.+"\n");
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
-        JSONObject serverData = Util.getServerData();
+        JSONObject serverData = plugin.getMetrics().getServerData();
         finalReport.append("\tOS: ").append(serverData.get("osName")).append("\n");
         finalReport.append("\tArch: ").append(serverData.get("osArch")).append("\n");
         finalReport.append("\tVersion: ").append(serverData.get("osVersion")).append("\n");
