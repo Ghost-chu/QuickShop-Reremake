@@ -16,7 +16,7 @@ public enum DisplayType {
                 return type;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 
     public static int toID(@NotNull DisplayType displayType) {
