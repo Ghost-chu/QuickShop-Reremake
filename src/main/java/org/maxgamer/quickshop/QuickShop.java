@@ -309,7 +309,6 @@ public class QuickShop extends JavaPlugin {
                         if (shop == null)
                             continue;
                         shop.checkDisplay();
-
                     }
                 }
             }.runTaskTimer(this, 1L, displayItemCheckTicks);
