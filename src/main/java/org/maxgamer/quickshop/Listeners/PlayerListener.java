@@ -52,6 +52,7 @@ public class PlayerListener implements Listener {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
             if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
+                Util.debugLog(b.getType().name() + " can't be shop.");
                 return;
             }
             Player p = e.getPlayer();
@@ -82,8 +83,10 @@ public class PlayerListener implements Listener {
             }
             // Purchase handling
             if (shop != null && p.hasPermission("quickshop.use")) {
-                if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking())
+                if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
+                    Util.debugLog("Player not in sneaking.");
                     return;
+                }
                 shop.onClick();
                 if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
@@ -102,19 +105,42 @@ public class PlayerListener implements Listener {
                 Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
                 actions.put(p.getUniqueId(), info);
                 return;
-            }
-            // Handles creating shops
-
-            else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && p.hasPermission("quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
-                if (e.useInteractedBlock() == Result.DENY)
+            } else {
+                // Handles creating shops
+                if (e.useInteractedBlock() != Result.ALLOW) {
+                    Util.debugLog("Interact action was canncelled: " + e.useInteractedBlock().name());
                     return;
-                if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking())
+                }
+                if (shop != null) {
+                    Util.debugLog("Target block is a shop.");
                     return;
+                }
+                if (item == null) {
+                    Util.debugLog("Item can't be null");
+                    return;
+                }
+                if (item.getType() == Material.AIR) {
+                    Util.debugLog("Item can't be AIR");
+                    return;
+                }
+                if (!p.hasPermission("quickshop.create.sell")) {
+                    Util.debugLog("Player " + p.getName() + " no enough permission.");
+                    return;
+                }
+                if (p.getGameMode() != GameMode.SURVIVAL) {
+                    Util.debugLog("Only " + GameMode.SURVIVAL.name() + " can create the shop, " + p
+                            .getName() + "'s gamemode is " + p.getGameMode().name());
+                    return;
+                }
+                if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()) {
+                    Util.debugLog("Must sneak to create the shop.");
+                    return;
+                }
                 if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                     // As of the new checking system, most plugins will tell the
                     // player why they can't create a shop there.
                     // So telling them a message would cause spam etc.
+                    Util.debugLog(b.getType().name() + " can't be shop.");
                     return;
                 }
                 if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
@@ -127,9 +153,8 @@ public class PlayerListener implements Listener {
                     return;
                 }
                 if (b.getType() == Material.ENDER_CHEST) {
-                    if (!p.hasPermission("quickshop.create.enderchest")) {
+                    if (!p.hasPermission("quickshop.create.enderchest"))
                         return;
-                    }
                 }
                 // if (!Util.canBeShop(b)) {
                 //     Util.debugLog("Can be shop check failed.");
@@ -158,8 +183,15 @@ public class PlayerListener implements Listener {
                 p.sendMessage(
                         MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(e.getItem())));
             }
-        } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                && Util.isWallSign(e.getClickedBlock().getType())) {
+        } else {
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                Util.debugLog("Not right click the block");
+                return;
+            }
+            if (!Util.isWallSign(e.getClickedBlock().getType())) {
+                Util.debugLog(e.getClickedBlock().getType().name() + " not a wall sign.");
+                return;
+            }
             Block block;
             if (Util.isWallSign(e.getClickedBlock().getType())) {
                 block = Util.getAttached(e.getClickedBlock());
