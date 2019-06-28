@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import lombok.*;
 import org.bukkit.Chunk;
@@ -26,10 +27,18 @@ public class ChunkListener implements Listener {
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())
             return;
+        HashMap<Location, Shop> inChunkClone = new HashMap<>();
+        Iterator<Location> locationIterator = inChunk.keySet().iterator();
+        /** Clone HashMap to fix ConcurrentModificationException **/
+        while (locationIterator.hasNext()) {
+            Location key = locationIterator.next();
+            inChunkClone.put(key, inChunk.get(key));
+        }
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Shop shop : inChunk.values()) {
+                for (Shop shop : inChunkClone.values()) {
                     shop.onLoad();
                 }
             }
