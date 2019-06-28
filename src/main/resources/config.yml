@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 36
+config-version: 37
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -57,6 +57,11 @@ auto-report-errors: true
 #This might give players a better experience, but may cause lag due to searching what can be a long list.
 #false = Only use the OnlinePlayer list, true = A list of all players that have ever joined your server before.
 include-offlineplayer-list: false
+
+#What economy provider you want let QuickShop use?
+#0=Vault
+#1=Reserve
+economy-type: 0
 
 database:
     mysql: false

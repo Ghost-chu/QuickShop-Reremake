@@ -738,6 +738,14 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
+        if (selectedVersion == 36) {
+            getConfig().set("economy-type", 0); // Close it for everyone
+            getConfig().set("config-version", 37);
+            selectedVersion = 37;
+            saveConfig();
+            reloadConfig();
+        }
+
     }
 
     /** Reloads QuickShops config */
