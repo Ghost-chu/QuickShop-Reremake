@@ -8,7 +8,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Util.Util;
 
 public class Economy_Vault implements EconomyCore {
     private Economy vault;
@@ -36,40 +35,6 @@ public class Economy_Vault implements EconomyCore {
     @Override
     public boolean isValid() {
         return this.vault != null;
-    }
-
-    @Deprecated
-    public boolean deposit(@NotNull String name, double amount) {
-        Util.sendDeprecatedMethodWarn();
-        return this.vault.depositPlayer(name, amount).transactionSuccess();
-    }
-
-    @Deprecated
-    public boolean withdraw(@NotNull String name, double amount) {
-        Util.sendDeprecatedMethodWarn();
-        return this.vault.withdrawPlayer(name, amount).transactionSuccess();
-    }
-
-    @Deprecated
-    public boolean transfer(@NotNull String from, @NotNull String to, double amount) {
-        Util.sendDeprecatedMethodWarn();
-        if (this.vault.getBalance(from) >= amount) {
-            if (this.vault.withdrawPlayer(from, amount).transactionSuccess()) {
-                if (!this.vault.depositPlayer(to, amount).transactionSuccess()) {
-                    this.vault.depositPlayer(from, amount);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
-    @Deprecated
-    public double getBalance(@NotNull String name) {
-        Util.sendDeprecatedMethodWarn();
-        return this.vault.getBalance(name);
     }
 
     @Override
