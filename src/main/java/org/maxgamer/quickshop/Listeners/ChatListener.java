@@ -22,7 +22,8 @@ public class ChatListener implements Listener {
             return;
         }
         if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
-            plugin.log(plugin.getShopManager().getActions().toString());
+            plugin.log(e.getPlayer().getName() + "(" + e.getPlayer().getUniqueId().toString() + ") was " + plugin.getShopManager()
+                    .getActions().get(e.getPlayer().getUniqueId()).getAction().name() + " the shop.");
             return;
         }
         plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());

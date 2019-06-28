@@ -830,9 +830,12 @@ public class MsgUtil {
      */
     public static void sendExploitAlert(@NotNull Object objectDo, @NotNull String action, @NotNull Location location) {
         Util.sendMessageToOps(ChatColor.RED + "[QuickShop][ExploitAlert] A displayItem exploit was found!");
+        StringBuilder builder = new StringBuilder();
+        builder.append("[ExploitAlert] A displayItem exploit was found!");
         if (objectDo instanceof Player) {
             Player player = (Player) objectDo;
             Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "Player=" + player.getName());
+            builder.append(" #Player=").append(player.getName());
         }
         if (objectDo instanceof Inventory) {
             Inventory inventory = (Inventory) objectDo;
@@ -844,22 +847,28 @@ public class MsgUtil {
                     if (tamer != null) {
                         Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
                                 .name() + "; Tamer=" + Bukkit.getOfflinePlayer(tamer.getUniqueId()));
+                        builder.append(" #LivingEntity=").append(livingEntity.getType().name()).append(", Tamer=").append(Bukkit
+                                .getOfflinePlayer(tamer.getUniqueId()));
                     } else {
                         Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
                                 .name());
                     }
                 }
                 Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType().name());
+                builder.append(" #LivingEntity=").append(livingEntity.getType().name());
             }
             if (inventory.getHolder() instanceof Block) {
                 Block block = (Block) inventory;
                 Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "Block=" + block.getType().name());
+                builder.append(" #Block=").append(block.getType().name());
             }
             Util.sendMessageToOps(ChatColor.RED + "Exploiter: Unknown Inventory");
         }
         Util.sendMessageToOps(ChatColor.RED + "Action: " + action);
+        builder.append(" #Action=").append(action);
         Util.sendMessageToOps(ChatColor.RED + "Location: " + "World=" + location.getWorld().getName() + " X=" + location
                 .getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ());
+        builder.append(" #Location=").append(location.toString());
     }
 
     /**

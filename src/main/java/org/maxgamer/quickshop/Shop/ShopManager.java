@@ -610,7 +610,7 @@ public class ShopManager {
                 p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
                 return;
             }
-            if (info.getLocation().getWorld().getBlockAt(info.getLocation()).getType() == Material.ENDER_CHEST) {
+            if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) {
                 if (!p.hasPermission("quickshop.create.enderchest"))
                     return;
             }
@@ -623,8 +623,7 @@ public class ShopManager {
                     return;
                 }
                 Material signType = info.getSignBlock().getType();
-                if (signType != Material.AIR && signType != Material.CAVE_AIR
-                        && signType != Material.VOID_AIR && signType != Material.WATER) {
+                if (Util.isAir(signType) && signType != Material.WATER) {
                     p.sendMessage(MsgUtil.getMessage("failed-to-put-sign"));
                     return;
                 }
@@ -720,8 +719,8 @@ public class ShopManager {
                     p.sendMessage(MsgUtil.getMessage("buying-more-than-selling"));
                 }
             }
-        }
-        /* They didn't enter a number. */ catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
+            //No number input
             p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
         }
     }

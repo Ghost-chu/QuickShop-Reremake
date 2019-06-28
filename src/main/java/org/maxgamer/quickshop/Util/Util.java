@@ -522,7 +522,9 @@ public class Util {
      * @param material mat
      * @return is or not a wall_sign
      */
-    public static boolean isWallSign(@NotNull Material material) {
+    public static boolean isWallSign(@Nullable Material material) {
+        if (material == null)
+            return false;
         try {
             return Tag.WALL_SIGNS.isTagged(material);
         } catch (NoSuchFieldError e) {
