@@ -171,6 +171,10 @@ public class ItemMatcher {
             List<String> lores2 = meta2.getLore();
             if (lores1.size() != lores2.size())
                 return false;
+            for (int i = 0; i < lores1.size(); i++) {
+                if (!lores1.get(i).equals(lores2.get(i)))
+                    return false;
+            }
             return (lores2.hashCode() == lores2.hashCode());
         }
 
