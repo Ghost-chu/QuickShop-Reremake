@@ -59,4 +59,5 @@ public interface EconomyCore {
      * @return Their current balance.
      */
     double getBalance(UUID name);
+
 }
