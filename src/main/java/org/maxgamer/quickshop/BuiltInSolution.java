@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
  * A class to check known issue cause plugin failed enable.
  */
 class BuiltInSolution {
+    private static QuickShop plugin = QuickShop.instance;
     /**
      * Call when failed load economy system, and use this to check the reason.
      *
@@ -25,9 +26,10 @@ class BuiltInSolution {
         // Vault is installed
         if (Bukkit.getPluginManager().getPlugin("CMI") != null) {
             // Found may in-compatiable plugin
-            return new BootError("No Economy plugin loaded", "Make sure you have an economy plugin hooked into Vault or Reserve.", ChatColor.YELLOW + "Incompatibility detected: CMI Installed", "Download CMI Edition of Vault might fix this.");
+            return new BootError("No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.", "Make sure you have an economy plugin hooked into Vault or Reserve.", ChatColor.YELLOW + "Incompatibility detected: CMI Installed", "Download CMI Edition of Vault might fix this.");
         }
-        return new BootError("No Economy plugin loaded", "Install an economy plugin to get Vault or Reserve working.");
+
+        return new BootError("No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.", "Install an economy plugin to get Vault or Reserve working.");
     }
 
     /**
