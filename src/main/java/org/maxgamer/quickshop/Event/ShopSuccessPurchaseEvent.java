@@ -29,6 +29,7 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
         this.p = p;
         this.amount = amount;
         this.tax = tax;
+        this.total = total;
     }
 
     /**
