@@ -12,8 +12,9 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     private Shop shop;
     private Player p;
     private int amount;
-    private boolean cancelled;
+    private double total;
     private double tax;
+    private boolean cancelled;
 
     /**
      * Builds a new shop purchase event
@@ -23,7 +24,7 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      * @param p      The player buying
      * @param amount The amount they're buying
      */
-    public ShopSuccessPurchaseEvent(Shop shop, Player p, int amount, double tax) {
+    public ShopSuccessPurchaseEvent(Shop shop, Player p, int amount, double total, double tax) {
         this.shop = shop;
         this.p = p;
         this.amount = amount;
@@ -56,6 +57,22 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     public int getAmount() {
         return this.amount;
     }
+
+    /**
+     * The total money changes in this purchase.
+     * Calculate tax, if you want get total without tax, please use getBalanceWithoutTax()
+     *
+     * @return the total money with calculate tax
+     */
+    public double getBalance() {return this.total * (1 - tax);}
+
+    /**
+     * The total money changes in this purchase.
+     * No calculate tax, if you want get total with tax, please use getBalance()
+     *
+     * @return the total money without calculate tax
+     */
+    public double getBalanceWithoutTax() {return this.total;}
 
     /**
      * Get the tax in this purchase
