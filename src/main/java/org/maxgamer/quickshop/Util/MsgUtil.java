@@ -268,6 +268,14 @@ public class MsgUtil {
             selectedVersion = 15;
             messagei18n.save(messageFile);
         }
+        if (selectedVersion == 15) {
+            messagei18n.set("purchase-failed", "&cPurchase failed: Internal Error, please contact the server administrator..");
+            messagei18n.set("language-version", 16);
+            selectedVersion = 16;
+            messagei18n.save(messageFile);
+        }
+
+
     }
 
     /**
