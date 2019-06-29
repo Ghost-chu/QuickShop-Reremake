@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 15
+language-version: 16
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -73,6 +73,7 @@ shop-staff-deleted: "&aSuccessfully removed {0} from your shop staffs."
 no-permission-build: "&cYou can't build a shop here."
 success-change-owner-to-server: "&aSuccessfully set the shop owner to Server."
 flush-finished: "&aSuccessfully flushed the messages."
+purchase-failed: "&cPurchase failed: Internal Error, please contact the server administrator."
 
 
 menu:

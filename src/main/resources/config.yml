@@ -125,7 +125,7 @@ shop:
     #Should we automatically create the sign for the chest?
     auto-sign: true
 
-    #Should we pay money from unlimited shops owner to the hidden owner?
+    #Should we pay/take money to/from unlimited shops owner?
     pay-unlimited-shop-owners: false
 
     #Should we place display items on the chests? This may cause duped items, especially for modded servers.
