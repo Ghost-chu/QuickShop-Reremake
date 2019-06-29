@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Economy;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import lombok.*;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
@@ -12,7 +13,8 @@ import org.maxgamer.quickshop.QuickShop;
  * @author creatorfromhell
  */
 public class Economy_Reserve implements EconomyCore {
-
+    @Getter
+    @Setter
     private EconomyAPI reserve = null;
     private QuickShop plugin = QuickShop.instance;
     final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
