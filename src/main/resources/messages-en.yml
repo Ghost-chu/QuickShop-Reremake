@@ -168,7 +168,7 @@ controlpanel:
     remove-hover: "&eClick to remove this shop."
     commands:
         setowner: "/qs setowner [Player]"
-        unlimited: "/qs slientunlimited {0} {1} {2} {3}"
+        unlimited: "/qs silentunlimited {0} {1} {2} {3}"
         buy: "/qs silentbuy {0} {1} {2} {3}"
         sell: "/qs silentsell {0} {1} {2} {3}"
         price: "/qs price [New Price]"
