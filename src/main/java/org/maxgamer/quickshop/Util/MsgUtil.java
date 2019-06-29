@@ -41,6 +41,7 @@ public class MsgUtil {
     private static boolean inited;
     private static YamlConfiguration messagei18n;
     private static File messageFile;
+    public static String invaildMsg = "Invaild message";
 
     public static YamlConfiguration getI18nYaml() {
         return messagei18n;
@@ -801,7 +802,7 @@ public class MsgUtil {
     public static String getMessage(@NotNull String loc, @NotNull String... args) {
         String raw = messagei18n.getString(loc);
         if (raw == null) {
-            return "Invalid message: " + loc + " Did you modify the i18n file?";
+            return invaildMsg;
         }
         return fillArgs(raw, args);
     }

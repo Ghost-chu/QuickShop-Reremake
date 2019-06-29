@@ -1,0 +1,39 @@
+package org.maxgamer.quickshop.Command.SubCommands;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Command.CommandProcesser;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Paste;
+
+public class SubCommand_Paste implements CommandProcesser {
+    private QuickShop plugin = QuickShop.instance;
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        //do actions
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    sender.sendMessage("Please wait...");
+                    Paste paste = new Paste(plugin);
+                    sender.sendMessage(paste.pasteTheText(paste.genNewPaste()));
+
+                } catch (Exception err) {
+                    sender.sendMessage("The paste failed, see console for details.");
+                }
+            }
+        }.runTaskAsynchronously(plugin);
+        return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+}
