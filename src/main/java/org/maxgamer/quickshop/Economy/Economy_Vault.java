@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Economy;
 
 import java.util.UUID;
 
+import lombok.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,6 +11,8 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public class Economy_Vault implements EconomyCore {
+    @Getter
+    @Setter
     private Economy vault;
     private QuickShop plugin = QuickShop.instance;
     final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
@@ -27,7 +30,7 @@ public class Economy_Vault implements EconomyCore {
         }
 
         if (economyProvider != null) {
-            this.vault = ((Economy) economyProvider.getProvider());
+            this.vault = economyProvider.getProvider();
         }
         return this.vault != null;
     }

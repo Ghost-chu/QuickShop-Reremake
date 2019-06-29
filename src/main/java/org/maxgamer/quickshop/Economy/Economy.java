@@ -2,11 +2,14 @@ package org.maxgamer.quickshop.Economy;
 
 import java.util.UUID;
 
+import lombok.*;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Economy implements EconomyCore {
+    @Getter
+    @Setter
     private EconomyCore core;
     private QuickShop plugin = QuickShop.instance;
 

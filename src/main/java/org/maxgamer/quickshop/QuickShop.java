@@ -807,6 +807,7 @@ public class QuickShop extends JavaPlugin {
                 return true;
             }
         } catch (Exception e) {
+            this.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
@@ -850,6 +851,7 @@ public class QuickShop extends JavaPlugin {
         try {
             this.database.getConnection().close();
         } catch (SQLException e) {
+            this.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
         }
 
