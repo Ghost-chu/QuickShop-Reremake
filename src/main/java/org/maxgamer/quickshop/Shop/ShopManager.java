@@ -459,9 +459,11 @@ public class ShopManager {
         if (!successB) {
             plugin.getLogger().warning("Failed to deposit the money to player " + e.getPlayer().getName());
             /* Rollback the trade */
-            if (!eco.deposit(shop.getOwner(), total * (1 - tax))) {
-                plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit
-                        .getOfflinePlayer(shop.getOwner()).getName());
+            if (shouldPayOwner) {
+                if (!eco.deposit(shop.getOwner(), total * (1 - tax))) {
+                    plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit
+                            .getOfflinePlayer(shop.getOwner()).getName());
+                }
             }
             p.sendMessage(MsgUtil.getMessage("purchase-failed"));
             return;
@@ -483,7 +485,7 @@ public class ShopManager {
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, tax * total);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
         Bukkit.getPluginManager().callEvent(se);
         plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
         shop.setSignText(); // Update the signs count
@@ -572,7 +574,7 @@ public class ShopManager {
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.sell(p, amount);
         MsgUtil.sendPurchaseSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, tax * total);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
         Bukkit.getPluginManager().callEvent(se);
         plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
     }
