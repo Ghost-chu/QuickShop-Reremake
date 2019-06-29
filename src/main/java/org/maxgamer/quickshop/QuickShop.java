@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javafx.scene.control.Tab;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,8 +15,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Command.QS;
-import org.maxgamer.quickshop.Command.Tab;
+import org.maxgamer.quickshop.Command.CommandManager;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
@@ -80,7 +80,6 @@ public class QuickShop extends JavaPlugin {
     /** Use SpoutPlugin to get item / block names */
     private boolean useSpout = false;
     // private Metrics metrics;
-    private QS commandExecutor = null;
     private int displayItemCheckTicks;
     private boolean noopDisable;
     private boolean setupDBonEnableding = false;
@@ -108,6 +107,7 @@ public class QuickShop extends JavaPlugin {
     private UUID serverUniqueID;
     /** The error reporter to help devs report errors to Sentry.io **/
     private SentryErrorReporter sentryErrorReporter;
+    private CommandManager commandManager;
 
     /**
      * Get the Player's Shop limit.
@@ -188,12 +188,11 @@ public class QuickShop extends JavaPlugin {
     public void onEnable() {
         Timer enableTimer = new Timer(true);
         /* PreInit for BootError feature */
-        commandExecutor = new QS(this);
+        commandManager = new CommandManager();
         //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandExecutor);
-        commandTabCompleter = new Tab(this);
+        getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandTabCompleter);
+        getCommand("qs").setTabCompleter(commandManager);
 
         getLogger().info("Quickshop Reremake");
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
