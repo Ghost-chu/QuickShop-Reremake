@@ -118,8 +118,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 ((Player) sender).playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
             }
         }
-
-        String[] temp = new String[cmdArg.length - 1];
+        String[] temp;
+        if (cmdArg.length != 0)
+            temp = new String[cmdArg.length - 1];
+        else
+            temp = new String[0];
         System.arraycopy(cmdArg, 1, temp, 0, temp.length);
         if (cmdArg.length == 0)
             return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
