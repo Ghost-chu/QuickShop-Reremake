@@ -119,14 +119,14 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             }
         }
         String[] temp;
-        if (cmdArg.length != 0)
+        if (cmdArg.length != 0) {
             temp = new String[cmdArg.length - 1];
-        else
+            System.arraycopy(cmdArg, 1, temp, 0, temp.length)；
+        } else {
             temp = new String[0];
-        System.arraycopy(cmdArg, 1, temp, 0, temp.length);
+        }
         if (cmdArg.length == 0)
             return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
-        System.arraycopy(cmdArg, 1, temp, 0, temp.length);
         for (CommandContainer container : cmds) {
             if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
                 if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
