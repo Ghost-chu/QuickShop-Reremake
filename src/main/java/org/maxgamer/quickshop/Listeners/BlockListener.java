@@ -14,6 +14,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
@@ -148,6 +149,37 @@ public class BlockListener implements Listener {
         }
     }
 
+    //Protect Minecart steal shop
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onInventoryPickup(InventoryPickupItemEvent event) {
+        if (plugin.getConfig().getBoolean("protect.minecart")) {
+            // Additional Hopper Minecart Check
+            if (event.getInventory().getHolder() instanceof HopperMinecart) {
+                HopperMinecart hm = (HopperMinecart) event.getInventory().getHolder();
+                Location minecartLoc = new Location(hm.getWorld(), hm.getLocation().getBlockX(), hm.getLocation()
+                        .getBlockY() + 1, hm.getLocation().getBlockZ());
+                Shop shop = plugin.getShopManager().getShop(minecartLoc);
+                if (shop == null) {
+                    return;
+                }
+                event.setCancelled(true);
+                hm.remove();
+                //plugin.getLogger().warning("[Exploit Alert] a HopperMinecart tried to move the item of " + shop);
+                //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] A HopperMinecart tried to move the item of " + shop);
+            }
+        }
+        if (plugin.getConfig().getBoolean("protect.hopper")) {
+            if (event.getInventory().getHolder() instanceof Hopper) {
+                Hopper h = (Hopper) event.getInventory().getHolder();
+                Location minecartLoc = h.getBlock().getLocation();
+                Shop shop = plugin.getShopManager().getShop(minecartLoc);
+                if (shop == null) {
+                    return;
+                }
+                event.setCancelled(true);
+            }
+        }
+    }
     //Protect Entity pickup shop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobChangeBlock(EntityChangeBlockEvent event) {
