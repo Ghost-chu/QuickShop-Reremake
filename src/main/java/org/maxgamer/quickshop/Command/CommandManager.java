@@ -121,7 +121,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         String[] temp;
         if (cmdArg.length != 0) {
             temp = new String[cmdArg.length - 1];
-            System.arraycopy(cmdArg, 1, temp, 0, temp.length)；
+            System.arraycopy(cmdArg, 1, temp, 0, temp.length);
         } else {
             temp = new String[0];
         }
