@@ -843,9 +843,11 @@ public class QuickShop extends JavaPlugin {
         UpdateWatcher.uninit();
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
-        shopManager.clear();
+        if (shopManager != null)
+            shopManager.clear();
         /* Empty the buffer */
-        database.close();
+        if (databaseManager != null)
+            database.close();
         /* Close Database */
         try {
             this.database.getConnection().close();
@@ -853,8 +855,8 @@ public class QuickShop extends JavaPlugin {
             this.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
         }
-
-        this.warnings.clear();
+        if (warnings != null)
+            warnings.clear();
         //this.reloadConfig();
         Util.debugLog("All shutdown work is finished.");
     }
