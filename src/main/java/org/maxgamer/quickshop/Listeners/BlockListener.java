@@ -122,8 +122,7 @@ public class BlockListener implements Listener {
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (plugin.getConfig().getBoolean("protect.minecart")) {
             // Additional Hopper Minecart Check
-            if (event.getDestination().getHolder() instanceof HopperMinecart || event.getInitiator()
-                    .getHolder() instanceof HopperMinecart) {
+            if (event.getDestination().getHolder() instanceof HopperMinecart) {
                 HopperMinecart hm = (HopperMinecart) event.getDestination().getHolder();
                 Location minecartLoc = new Location(hm.getWorld(), hm.getLocation().getBlockX(), hm.getLocation()
                         .getBlockY() + 1, hm.getLocation().getBlockZ());
