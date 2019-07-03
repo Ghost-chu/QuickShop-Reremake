@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
             }
         }
         if (plugin.getConfig().getBoolean("protect.hopper")) {
-            if (event.getDestination().getHolder() instanceof Hopper || event.getInitiator().getHolder() instanceof Hopper) {
+            if (event.getDestination().getHolder() instanceof Hopper) {
                 Hopper h = (Hopper) event.getDestination().getHolder();
                 Location minecartLoc = h.getBlock().getLocation();
                 Shop shop = plugin.getShopManager().getShop(minecartLoc);
@@ -157,8 +157,7 @@ public class BlockListener implements Listener {
             // Additional Hopper Minecart Check
             if (event.getInventory().getHolder() instanceof HopperMinecart) {
                 HopperMinecart hm = (HopperMinecart) event.getInventory().getHolder();
-                Location minecartLoc = new Location(hm.getWorld(), hm.getLocation().getBlockX(), hm.getLocation()
-                        .getBlockY() + 1, hm.getLocation().getBlockZ());
+                Location minecartLoc = hm.getLocation().add(0, 1, 0);
                 Shop shop = plugin.getShopManager().getShop(minecartLoc);
                 if (shop == null) {
                     return;
