@@ -155,7 +155,7 @@ public class SentryErrorReporter {
         if (throwable == null)
             return false;
         Optional<StackTraceElement> element = Arrays.stream(throwable.getStackTrace())
-                .limit(5)
+                .limit(1)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .findFirst();
         return element.isPresent();
@@ -244,16 +244,13 @@ public class SentryErrorReporter {
                 //We didn't care normal logs.
                 return true;
             }
-            /* Check stupid Sentry's Warning*/
-            if (record.getMessage().contains("stacktrace.app.packages"))
-                return false;
 
             if (record.getThrown() == null) {
                 //We didn't care warnings/errors for non-exception.
                 return true;
             }
             /* Check is it cause by QS */
-            if (!checkWasCauseByQS(record.getThrown()) && !checkWasCauseByQS(record.getThrown().getCause()))
+            if (!checkWasCauseByQS(record.getThrown()))
                 return true;
 
             //Do not reporting when it is develop env.
