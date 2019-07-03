@@ -2,7 +2,10 @@ package org.maxgamer.quickshop.Util;
 
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -58,7 +61,7 @@ public class SentryErrorReporter {
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
-        //Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
         /* Ignore we won't report errors */
         ignoredException.add(IOException.class);
         ignoredException.add(OutOfMemoryError.class);
@@ -154,11 +157,14 @@ public class SentryErrorReporter {
     private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
         if (throwable == null)
             return false;
-        Optional<StackTraceElement> element = Arrays.stream(throwable.getStackTrace())
-                .limit(1)
+        while (throwable.getCause() != null) {
+            throwable = throwable.getCause();
+        }
+        long element = Arrays.stream(throwable.getStackTrace())
+                .limit(10)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
-                .findFirst();
-        return element.isPresent();
+                .count();
+        return element > 0;
     }
 
     /**
