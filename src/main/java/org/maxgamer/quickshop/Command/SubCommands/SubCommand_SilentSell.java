@@ -20,6 +20,10 @@ public class SubCommand_SilentSell implements CommandProcesser {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 4) {
+            Util.debugLog("Exception on command, cancel.");
+            return false;
+        }
         Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
                 Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
         if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {

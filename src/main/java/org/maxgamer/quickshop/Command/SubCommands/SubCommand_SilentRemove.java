@@ -13,14 +13,17 @@ import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_SilentRemove implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 4)
-            return true;
+        if (cmdArg.length < 4) {
+            Util.debugLog("Exception on command, cancel.");
+            return false;
+        }
         Player p = (Player) sender;
         Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
                 Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
