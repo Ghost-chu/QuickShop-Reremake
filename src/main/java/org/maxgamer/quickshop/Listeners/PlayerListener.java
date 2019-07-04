@@ -91,13 +91,6 @@ public class PlayerListener implements Listener {
                 // Text menu
                 MsgUtil.sendShopInfo(p, shop);
                 shop.setSignText();
-                if (plugin.getShopManager().getShop(Util.getAttached(b).getLocation()) != null)
-                    plugin.getShopManager().getShop(Util.getAttached(b).getLocation()).setSignText();
-                if (Util.isDoubleChest(Util.getAttached(b)))
-                    if (Util.getAttached(Util.getAttached(b)) != null)
-                        if (plugin.getShopManager().getShop(Util.getAttached(Util.getAttached(b)).getLocation()) != null)
-                            plugin.getShopManager().getShop(Util.getAttached(Util.getAttached(b)).getLocation()).setSignText();
-
                 if (shop.isSelling()) {
                     p.sendMessage(MsgUtil.getMessage("how-many-buy"));
                 } else {
