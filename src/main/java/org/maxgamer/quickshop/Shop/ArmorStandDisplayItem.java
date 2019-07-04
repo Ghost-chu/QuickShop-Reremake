@@ -69,9 +69,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.setCollidable(false);
         this.armorStand.setCanPickupItems(false);
         //this.armorStand.setSmall(true);
-
-        //Set armorstand item in hand
-//        this.armorStand.setItemInHand(new ItemStack(originalItemStack.getType()));
         //Set safeGuard
         safeGuard(this.armorStand);
         //Set pose
@@ -93,11 +90,10 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     private void setPoseForArmorStand() {
-        if (this.originalItemStack.getType().isBlock()) {
+        if (this.originalItemStack.getType().isBlock())
             this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
-        } else {
+        else
             this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
-        }
     }
 
     @Override
@@ -187,25 +183,22 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.armorStand == null) {
+        if (this.armorStand == null)
             return false;
-        }
         return !this.armorStand.getLocation().equals(getDisplayLocation());
     }
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.armorStand == null) {
+        if (this.armorStand == null)
             return false;
-        }
         return !this.armorStand.isValid() || this.armorStand.isDead();
     }
 
     @Override
     public boolean checkIsShopEntity(@NotNull Entity entity) {
-        if (!(entity instanceof ArmorStand)) {
+        if (!(entity instanceof ArmorStand))
             return false;
-        }
         return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
     }
 
@@ -216,7 +209,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
             return false;
         }
         boolean removed = false;
-        //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof ArmorStand))
                 continue;
@@ -237,9 +229,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void fixDisplayMoved() {
         for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
-            if (!(entity instanceof ArmorStand)) {
+            if (!(entity instanceof ArmorStand))
                 continue;
-            }
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                 Util.debugLog("Fixing moved ArmorStand displayItem " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
@@ -257,9 +248,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean isSpawned() {
-        if (this.armorStand == null) {
+        if (this.armorStand == null)
             return false;
-        }
         return this.armorStand.isValid();
     }
 
