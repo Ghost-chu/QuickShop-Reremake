@@ -61,7 +61,7 @@ public class SentryErrorReporter {
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
-        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        //Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
         /* Ignore we won't report errors */
         ignoredException.add(IOException.class);
         ignoredException.add(OutOfMemoryError.class);
