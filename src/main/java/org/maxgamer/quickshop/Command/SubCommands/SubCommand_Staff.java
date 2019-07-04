@@ -35,12 +35,12 @@ public class SubCommand_Staff implements CommandProcesser {
                 if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                     if (cmdArg.length == 0) { // qs staff
                         // Send
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-cmdArg"));
+                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                         return true;
                     }
                     if (cmdArg.length == 1) { // qs staff [add|del|clear|others]
                         if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del") && !cmdArg[0].equals("clear")) {
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-cmdArg"));
+                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                             return true;
                         }
                         if (cmdArg[0].equals("clear")) {
@@ -56,12 +56,12 @@ public class SubCommand_Staff implements CommandProcesser {
                             shop.clearStaffs();
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
                         }
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-cmdArg"));
+                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                         return true;
                     }
                     if (cmdArg.length == 2) { // qs staff [add|del] [player]
                         if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del")) {
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-cmdArg"));
+                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                             return true;
                         }
                         @SuppressWarnings("deprecation")
@@ -95,7 +95,7 @@ public class SubCommand_Staff implements CommandProcesser {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList tabList = new ArrayList();
+        ArrayList<String> tabList = new ArrayList<>();
         if (cmdArg[0].equals("add") || cmdArg[0].equals("del")) {
             if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
                 //Include
