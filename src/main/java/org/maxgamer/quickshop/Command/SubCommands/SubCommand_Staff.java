@@ -96,6 +96,26 @@ public class SubCommand_Staff implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> tabList = new ArrayList<>();
+        if (cmdArg.length < 2) {
+            if (cmdArg.length == 1) {
+                String prefix = cmdArg[0].toLowerCase();
+                if ("add".startsWith(prefix) || "add".equals(prefix))
+                    tabList.add("add");
+                if ("del".startsWith(prefix) || "del".equals(prefix))
+                    tabList.add("del");
+                if ("list".startsWith(prefix) || "list".equals(prefix))
+                    tabList.add("list");
+                if ("clear".startsWith(prefix) || "clear".equals(prefix))
+                    tabList.add("clear");
+            } else {
+                tabList.add("add");
+                tabList.add("del");
+                tabList.add("list");
+                tabList.add("clear");
+            }
+
+            return tabList;
+        }
         if (cmdArg[0].equals("add") || cmdArg[0].equals("del")) {
             if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
                 //Include
