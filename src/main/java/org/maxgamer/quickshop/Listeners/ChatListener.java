@@ -15,7 +15,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class ChatListener implements Listener {
     private QuickShop plugin;
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
         if (e.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancel-chat-event")) {
             Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
