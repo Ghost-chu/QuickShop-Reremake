@@ -224,8 +224,6 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
 
-
-
         /* Process the Economy system. */
         if (!loadEcon()) {
             bootError = BuiltInSolution.econError();
@@ -256,21 +254,16 @@ public class QuickShop extends JavaPlugin {
 
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
         if (limitCfg != null) {
-            getLogger().info("Limit cfg found...");
-            this.limit = limitCfg.getBoolean("use", false);
-            getLogger().info("Limits.use: " + limit);
+            this.limit = limitCfg.getBoolean("use", false); ;
             limitCfg = limitCfg.getConfigurationSection("ranks");
             for (String key : limitCfg.getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-
-        if (getConfig().getInt("shop.find-distance") > 100) {
+        if (getConfig().getInt("shop.find-distance") > 100)
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
-        }
-        if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
+        if (getConfig().getInt("shop.display-items-check-ticks") < 3000)
             getLogger().severe("Shop.display-items-check-ticks is too low! It may cause lag! Pick a number > 3000");
-        }
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -297,7 +290,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
-        getLogger().info("Registering DisplayCheck Task....");
+        getLogger().info("Registering DisplayCheck task....");
         if (display && displayItemCheckTicks > 0) {
             new BukkitRunnable() {
                 @Override
@@ -641,7 +634,8 @@ public class QuickShop extends JavaPlugin {
             reloadConfig();
         }
         if (selectedVersion == 25) {
-            if (getConfig().getString("language").equals("default"))
+            String language = getConfig().getString("language");
+            if (language == null || language.isEmpty() || language.equals("default"))
                 getConfig().set("language", "en");
             getConfig().set("config-version", 26);
             selectedVersion = 26;
@@ -794,15 +788,6 @@ public class QuickShop extends JavaPlugin {
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
             }
-
-            // if(Bukkit.getPluginManager().isPluginEnabled("Reserve")) {
-            //     final EconomyCore reserveCore = new Economy_Reserve();
-            //     if(reserveCore.isValid()) {
-            //         core = reserveCore;
-            //         Util.debugLog("QuickShop now using Reserve for economy system.");
-            //     }
-            // }
-
             if (!core.isValid()) {
                 // getLogger().severe("Economy is not valid!");
                 bootError = BuiltInSolution.econError();
@@ -828,9 +813,6 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable)
             return;
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        // Util.debugLog("Cleaning up shop queues...");
-        // if (this.getQueuedShopManager() != null)
-        //     this.getQueuedShopManager().uninit();
 
         Util.debugLog("Closing all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
