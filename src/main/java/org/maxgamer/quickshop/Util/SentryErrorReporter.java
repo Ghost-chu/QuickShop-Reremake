@@ -16,6 +16,7 @@ import io.sentry.context.Context;
 import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
 import org.json.simple.JSONObject;
@@ -66,6 +67,8 @@ public class SentryErrorReporter {
         ignoredException.add(IOException.class);
         ignoredException.add(OutOfMemoryError.class);
         ignoredException.add(ProtocolException.class);
+        ignoredException.add(InvalidPluginException.class);
+
 
         Util.debugLog("Enabled!");
         enabled = true;
@@ -98,7 +101,7 @@ public class SentryErrorReporter {
      * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
-    private UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+    private @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         if (tempDisable) {
             Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
             this.tempDisable = true;
