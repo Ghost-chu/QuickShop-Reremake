@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
         if (plugin.getConfig().getBoolean("protect.hopper")) {
             if (event.getDestination().getHolder() instanceof Hopper) {
                 Hopper h = (Hopper) event.getDestination().getHolder();
-                Location minecartLoc = h.getLocation().add(0, 1, 0); ;
+                Location minecartLoc = h.getLocation().add(0, 1, 0);
                 Shop shop = plugin.getShopManager().getShop(minecartLoc);
                 if (shop == null) {
                     return;
