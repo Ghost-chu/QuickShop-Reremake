@@ -14,6 +14,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
@@ -106,7 +107,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
         if (QuickShop.instance.getBootError() != null) {
             QuickShop.instance.getBootError().printErrors(sender);
             return true;
@@ -118,23 +118,27 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 ((Player) sender).playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
             }
         }
-        String[] temp;
+
+        String[] passthroughArgs;
         if (cmdArg.length != 0) {
-            temp = new String[cmdArg.length - 1];
-            System.arraycopy(cmdArg, 1, temp, 0, temp.length);
+            passthroughArgs = new String[cmdArg.length - 1];
+            System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
+            Util.debugLog(Util.array2String(passthroughArgs));
         } else {
-            temp = new String[0];
+            passthroughArgs = new String[0];
+            Util.debugLog(Util.array2String(passthroughArgs));
+            return rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         }
-        if (cmdArg.length == 0)
-            return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
+        // if (cmdArg.length == 0)
+        //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
         for (CommandContainer container : cmds) {
             if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
                 if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
                         .getPermission()))
-                    return container.getExecutor().onCommand(sender, commandLabel, temp);
+                    return container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
                 else
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
         }
-        return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
+        return rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
     }
 }
