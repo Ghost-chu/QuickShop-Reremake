@@ -14,7 +14,6 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Util;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
@@ -88,21 +87,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
             }
         }
-        if (cmdArg.length == 0)
-            return rootContainer.getExecutor().onTabComplete(sender, commandLabel, new String[]{});
-        if (cmdArg.length == 1)
-            return rootContainer.getExecutor().onTabComplete(sender, commandLabel, cmdArg);
-        ArrayList<String> candidate = new ArrayList<>();
+        if (cmdArg.length == 0 || cmdArg.length == 1) {
+            //No args
+            return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+        }
+        //Main args/more args
+        String[] passthroughArgs;
+        passthroughArgs = new String[cmdArg.length - 1];
+        System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         for (CommandContainer container : cmds) {
-            if (container.getPrefix().startsWith(cmdArg[0].toLowerCase()) || container.getPrefix().equals(cmdArg[0]
-                    .toLowerCase()))
+            if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
                 if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
                         .getPermission()))
-                    if (!container.isHidden())
-                        candidate.add(container.getPrefix());
+                    return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
         }
-        return candidate;
-
+        return null;
     }
 
     @Override
@@ -123,10 +122,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (cmdArg.length != 0) {
             passthroughArgs = new String[cmdArg.length - 1];
             System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
-            Util.debugLog(Util.array2String(passthroughArgs));
         } else {
             passthroughArgs = new String[0];
-            Util.debugLog(Util.array2String(passthroughArgs));
             return rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         }
         // if (cmdArg.length == 0)
