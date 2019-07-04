@@ -14,16 +14,14 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -801,9 +799,8 @@ public class MsgUtil {
      */
     public static String getMessage(@NotNull String loc, @NotNull String... args) {
         String raw = messagei18n.getString(loc);
-        if (raw == null) {
-            return invaildMsg;
-        }
+        if (raw == null)
+            return invaildMsg + ": " + loc;
         return fillArgs(raw, args);
     }
 
@@ -815,69 +812,15 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (raw == null) {
-            return "Invalid message: " + "raw";
-        }
-        if (raw.isEmpty()) {
+        if (raw == null)
+            return "Invalid message: null";
+        if (raw.isEmpty())
             return "";
-        }
-        if (args == null) {
+        if (args == null)
             return raw;
-        }
-        for (int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++)
             raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
-        }
         return raw;
-    }
-
-    /**
-     * Send the display-item exploit alert for a location.
-     *
-     * @param objectDo It is possible be Player, Inventory.
-     * @param action   What action trigger the exploit alert.
-     * @param location Event/Shop location.
-     */
-    public static void sendExploitAlert(@NotNull Object objectDo, @NotNull String action, @NotNull Location location) {
-        Util.sendMessageToOps(ChatColor.RED + "[QuickShop][ExploitAlert] A displayItem exploit was found!");
-        StringBuilder builder = new StringBuilder();
-        builder.append("[ExploitAlert] A displayItem exploit was found!");
-        if (objectDo instanceof Player) {
-            Player player = (Player) objectDo;
-            Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "Player=" + player.getName());
-            builder.append(" #Player=").append(player.getName());
-        }
-        if (objectDo instanceof Inventory) {
-            Inventory inventory = (Inventory) objectDo;
-            if (inventory.getHolder() instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) inventory;
-                if (livingEntity instanceof Tameable) {
-                    Tameable tamedEntity = (Tameable) livingEntity;
-                    AnimalTamer tamer = tamedEntity.getOwner();
-                    if (tamer != null) {
-                        Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
-                                .name() + "; Tamer=" + Bukkit.getOfflinePlayer(tamer.getUniqueId()));
-                        builder.append(" #LivingEntity=").append(livingEntity.getType().name()).append(", Tamer=").append(Bukkit
-                                .getOfflinePlayer(tamer.getUniqueId()));
-                    } else {
-                        Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType()
-                                .name());
-                    }
-                }
-                Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "LivingEntity=" + livingEntity.getType().name());
-                builder.append(" #LivingEntity=").append(livingEntity.getType().name());
-            }
-            if (inventory.getHolder() instanceof Block) {
-                Block block = (Block) inventory;
-                Util.sendMessageToOps(ChatColor.RED + "Exploiter: " + "Block=" + block.getType().name());
-                builder.append(" #Block=").append(block.getType().name());
-            }
-            Util.sendMessageToOps(ChatColor.RED + "Exploiter: Unknown Inventory");
-        }
-        Util.sendMessageToOps(ChatColor.RED + "Action: " + action);
-        builder.append(" #Action=").append(action);
-        Util.sendMessageToOps(ChatColor.RED + "Location: " + "World=" + location.getWorld().getName() + " X=" + location
-                .getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ());
-        builder.append(" #Location=").append(location.toString());
     }
 
     /**
