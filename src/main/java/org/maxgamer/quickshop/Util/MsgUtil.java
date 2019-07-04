@@ -743,6 +743,18 @@ public class MsgUtil {
     }
 
     /**
+     * Send globalAlert to ops, console, log file.
+     *
+     * @param content The content to send.
+     */
+    public static void sendGlobalAlert(String content) {
+        Util.sendMessageToOps(content);
+        plugin.getLogger().warning(content);
+        plugin.getLogWatcher().add(content);
+        Util.debugLog(content);
+    }
+
+    /**
      * Send a sellSuccess message for a player.
      *
      * @param p      Target player
