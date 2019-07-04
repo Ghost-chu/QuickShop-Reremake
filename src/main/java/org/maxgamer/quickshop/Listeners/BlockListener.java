@@ -48,7 +48,7 @@ public class BlockListener implements Listener {
     /*
      * Removes chests when they're destroyed.
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW)
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
@@ -70,8 +70,13 @@ public class BlockListener implements Listener {
                 return;
             // If they're either survival or the owner, they can break it
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+                //Check SuperTool
+                if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
+                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool"));
+                    return;
+                }
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-creative-break"));
+                p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
@@ -82,6 +87,7 @@ public class BlockListener implements Listener {
             shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
+            e.setCancelled(false);
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
                 Sign sign = (Sign) b;
@@ -105,15 +111,11 @@ public class BlockListener implements Listener {
                 }
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
-                return;
             }
-            if (e.isCancelled()) {
-                return;
-            }
-            e.setCancelled(true);
             // Cancel the event so that the sign does not
             // drop.. TODO: Find a better way.
             //b.setType(Material.AIR);
+            e.setCancelled(true);
         }
     }
 
