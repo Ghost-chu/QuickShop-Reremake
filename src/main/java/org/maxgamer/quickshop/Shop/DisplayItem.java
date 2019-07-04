@@ -126,7 +126,9 @@ public interface DisplayItem {
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
-    static boolean checkIsGuardItemStack(@NotNull ItemStack itemStack) {
+    static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+        if (itemStack == null)
+            return false;
         itemStack = itemStack.clone();
         if (!itemStack.hasItemMeta())
             return false;
