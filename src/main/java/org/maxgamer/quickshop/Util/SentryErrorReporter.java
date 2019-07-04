@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;
@@ -60,9 +61,10 @@ public class SentryErrorReporter {
         context.setUser(new UserBuilder().setId(plugin.getServerUniqueID().toString()).build());
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
         sentryClient.setRelease(QuickShop.getVersion());
-        sentryClient.setEnvironment(Util.isDevEdition() ? "Development" : "Production");
+        sentryClient.setEnvironment(Util.isDevEdition() ? "development" : "production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
-        //Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        Logger.getGlobal().setFilter(new GlobalExceptionFilter());
         /* Ignore we won't report errors */
         ignoredException.add(IOException.class);
         ignoredException.add(OutOfMemoryError.class);
@@ -122,15 +124,17 @@ public class SentryErrorReporter {
             Util.debugLog("Errors not sended, cause it not throw by QuickShop");
             return null;
         }
+
         if (!canReport(throwable)) {
             Util.debugLog("This errors not sended, cause it disallow send.(Already sended?)");
             return null;
         }
-
+        if (ignoredException.contains(throwable.getClass())) {
+            Util.debugLog("Errors not sended, cause type is blocked.");
+            return null;
+        }
         for (String record : context) {
-            this.context.recordBreadcrumb(
-                    new BreadcrumbBuilder().setMessage(record).build()
-            );
+            this.context.recordBreadcrumb(new BreadcrumbBuilder().setMessage(record).build());
         }
         Paste paste = new Paste(plugin);
         String pasteURL = "Failed to paste.";
@@ -193,6 +197,7 @@ public class SentryErrorReporter {
         } else {
             return false;
         }
+
     }
 
     class QuickShopExceptionFilter implements Filter {
@@ -205,33 +210,17 @@ public class SentryErrorReporter {
          */
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
-            if (!enabled) {
+            if (!enabled)
                 return true;
-            }
             Level level = record.getLevel();
-            if (level != Level.WARNING && level != Level.SEVERE) {
-                //We didn't care normal logs.
+            if (level != Level.WARNING && level != Level.SEVERE)
                 return true;
-            }
-            /* Check stupid Sentry's Warning*/
-            if (record.getMessage().contains("stacktrace.app.packages"))
-                return false;
-            if (record.getThrown() == null) {
-                //We didn't care warnings/errors for non-exception.
-                return true;
-            }
-            //There wasn't need check from who, it just directly report it.
-
-            //Do not reporting when it is develop env.
             if (Util.isDevMode()) {
+                sendError(record.getThrown(), record.getMessage());
                 return true;
+            } else {
+                return sendError(record.getThrown(), record.getMessage()) == null;
             }
-            //No, pls do not report the OutOfMemory Error, i didn't care it.
-
-            if (ignoredException.contains(record.getThrown().getClass()))
-                return true;
-            sendError(record.getThrown(), record.getMessage());
-            return false; //Hide errors
         }
     }
 
@@ -245,32 +234,17 @@ public class SentryErrorReporter {
          */
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
-            if (!enabled) {
+            if (!enabled)
                 return true;
-            }
             Level level = record.getLevel();
-            if (level != Level.WARNING && level != Level.SEVERE) {
-                //We didn't care normal logs.
+            if (level != Level.WARNING && level != Level.SEVERE)
                 return true;
-            }
-
-            if (record.getThrown() == null) {
-                //We didn't care warnings/errors for non-exception.
-                return true;
-            }
-            /* Check is it cause by QS */
-            if (!checkWasCauseByQS(record.getThrown()))
-                return true;
-
-            //Do not reporting when it is develop env.
             if (Util.isDevMode()) {
+                sendError(record.getThrown(), record.getMessage());
                 return true;
+            } else {
+                return sendError(record.getThrown(), record.getMessage()) == null;
             }
-            //No, pls do not report the OutOfMemory Error, i didn't care it.
-            if (ignoredException.contains(record.getThrown().getClass()))
-                return true;
-            sendError(record.getThrown(), record.getMessage());
-            return false; //Hide errors
         }
     }
 
