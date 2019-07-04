@@ -47,7 +47,7 @@ public class PlayerListener implements Listener {
      * Handles players left clicking a chest. Left click a NORMAL chest with item :
      * Send creation menu Left click a SHOP chest : Send purchase menu
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
