@@ -1,8 +1,7 @@
 package org.maxgamer.quickshop.Util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -29,8 +28,6 @@ public class Updater {
             String localPluginVersion = QuickShop.instance.getDescription().getVersion();
             String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
             if (spigotPluginVersion != null && !spigotPluginVersion.equals(localPluginVersion)) {
-//                QuickShgetLogger().info("New QuickShop release now updated on SpigotMC.org! ");
-//                getLogger().info("Update plugin in there:https://www.spigotmc.org/resources/59134/");
                 connection.disconnect();
                 return new UpdateInfomation(spigotPluginVersion, spigotPluginVersion.toLowerCase().contains("beta"));
             }
@@ -41,5 +38,20 @@ public class Updater {
                     .sendMessage(ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
             return new UpdateInfomation(null, false);
         }
+    }
+
+    public byte[] downloadUpdatedJar() throws IOException {
+        final String uurl = "https://api.spiget.org/v2/resources/62575/versions/latest/download";
+        URL url = new URL(uurl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.addRequestProperty("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion());// Set User-Agent
+        InputStream is = connection.getInputStream();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        byte[] buff = new byte[1024];
+        int len;
+        while ((len = is.read(buff)) != -1) {
+            os.write(buff, 0, len);
+        }
+        return os.toByteArray();
     }
 }
