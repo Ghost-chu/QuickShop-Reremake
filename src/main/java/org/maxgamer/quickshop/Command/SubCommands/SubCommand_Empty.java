@@ -39,13 +39,14 @@ public class SubCommand_Empty implements CommandProcesser {
                         ContainerShop cs = (ContainerShop) shop;
                         cs.getInventory().clear();
                         sender.sendMessage(MsgUtil.getMessage("empty-success"));
-                        return;
                     } else {
                         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                        return;
+
                     }
+                    return;
                 }
             }
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         } else {
             sender.sendMessage("Can't run this command from Console");
         }

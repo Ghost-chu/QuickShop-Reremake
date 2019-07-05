@@ -115,10 +115,12 @@ public class SubCommand_Price implements CommandProcesser {
                                 }
                             }
                         }
+                        return;
                     }
                     return;
                 }
             }
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
             return;
         }
         sender.sendMessage("Can't run this command by Console");

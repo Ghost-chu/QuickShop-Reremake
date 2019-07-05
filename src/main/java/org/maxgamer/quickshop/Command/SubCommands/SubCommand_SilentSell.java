@@ -38,6 +38,8 @@ public class SubCommand_SilentSell implements CommandProcesser {
             MsgUtil.sendControlPanelInfo(sender, shop);
             sender.sendMessage(MsgUtil
                     .getMessage("command.now-selling", Util.getItemStackName(shop.getItem())));
+            return;
         }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
     }
 }

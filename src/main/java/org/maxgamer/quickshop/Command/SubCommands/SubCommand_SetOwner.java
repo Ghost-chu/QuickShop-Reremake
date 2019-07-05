@@ -46,9 +46,10 @@ public class SubCommand_SetOwner implements CommandProcesser {
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.new-owner",
                             Bukkit.getOfflinePlayer(shop.getOwner()).getName()));
+                    return;
                 }
             }
-
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         } else {
             sender.sendMessage(MsgUtil.getMessage("Only player can run this command"));
         }
