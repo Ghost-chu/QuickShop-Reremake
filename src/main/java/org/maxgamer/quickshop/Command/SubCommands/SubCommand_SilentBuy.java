@@ -39,5 +39,6 @@ public class SubCommand_SilentBuy implements CommandProcesser {
             sender.sendMessage(MsgUtil
                     .getMessage("command.now-buying", Util.getItemStackName(shop.getItem())));
         }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
     }
 }

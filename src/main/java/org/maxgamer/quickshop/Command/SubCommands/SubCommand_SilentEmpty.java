@@ -36,7 +36,9 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
                 cs.getInventory().clear();
                 MsgUtil.sendControlPanelInfo(sender, shop);
                 sender.sendMessage(MsgUtil.getMessage("empty-success"));
+                return;
             }
         }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
     }
 }

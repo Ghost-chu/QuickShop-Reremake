@@ -36,6 +36,8 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
             MsgUtil.sendControlPanelInfo(sender, shop);
             sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                     (shop.isUnlimited() ? "unlimited" : "limited")));
+            return;
         }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
     }
 }
