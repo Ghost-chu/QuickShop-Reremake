@@ -17,12 +17,12 @@ public class SubCommand_Unlimited implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((Player) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return true;
+                return ;
             }
             while (bIt.hasNext()) {
                 Block b = bIt.next();
@@ -38,7 +38,6 @@ public class SubCommand_Unlimited implements CommandProcesser {
         } else {
             sender.sendMessage("Only player can run this command.");
         }
-        return true;
     }
 
     @Override

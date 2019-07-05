@@ -23,13 +23,13 @@ public class SubCommand_Create implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             ItemStack item = p.getInventory().getItemInMainHand();
             if (!sender.hasPermission("quickshop.create.cmd")) {
                 sender.sendMessage(MsgUtil.getMessage("no-permission"));
-                return true;
+                return;
             }
             if (item.getType() != Material.AIR) {
                 if (sender.hasPermission("quickshop.create.sell")) {
@@ -40,7 +40,7 @@ public class SubCommand_Create implements CommandProcesser {
                             if (p.isOnline()) {
                                 if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
                                     Util.debugLog("Failed permission build check, canceled");
-                                    return true;
+                                    return ;
                                 }
                             }
                             BlockFace blockFace;
@@ -56,17 +56,17 @@ public class SubCommand_Create implements CommandProcesser {
                                 // player why they can't create a shop there.
                                 // So telling them a message would cause spam etc.
                                 Util.debugLog("Util report you can't build shop there.");
-                                return true;
+                                return ;
                             }
 
                             if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
                                 p.sendMessage(MsgUtil.getMessage("no-double-chests"));
-                                return true;
+                                return ;
                             }
                             if (Util.isBlacklisted(item.getType())
                                     && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
                                 p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
-                                return true;
+                                return;
                             }
 
                             if (cmdArg.length < 1) {
@@ -80,7 +80,7 @@ public class SubCommand_Create implements CommandProcesser {
                             } else {
                                 plugin.getShopManager().handleChat(p, cmdArg[0]);
                             }
-                            return true;
+                            return ;
                         }
                     }
                 } else {
@@ -92,7 +92,6 @@ public class SubCommand_Create implements CommandProcesser {
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-        return true;
     }
 
     @Override

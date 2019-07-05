@@ -13,8 +13,8 @@ public class SubCommand_ROOT implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
     }
 
     @Override
