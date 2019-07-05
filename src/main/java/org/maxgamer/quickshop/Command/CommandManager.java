@@ -132,10 +132,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         for (CommandContainer container : cmds) {
             if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
                 if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
-                        .getPermission()))
+                        .getPermission())) {
                     container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
-                else
+                    return true;
+                } else {
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
+                    return true;
+                }
         }
         rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         return true;
