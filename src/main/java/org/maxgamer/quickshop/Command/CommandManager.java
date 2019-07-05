@@ -32,7 +32,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .executor(new SubCommand_SilentUnlimited()).build());
         registerCmd(CommandContainer.builder().prefix("setowner").permission("quickshop.setowner")
                 .executor(new SubCommand_SetOwner()).build());
-        registerCmd(CommandContainer.builder().prefix("owner").permission("quickshop.setowner")
+        registerCmd(CommandContainer.builder().prefix("owner").hidden(true).permission("quickshop.setowner")
                 .executor(new SubCommand_SetOwner()).build());
         registerCmd(CommandContainer.builder().prefix("amount").permission(null).executor(new SubCommand_Amount()).build());
         registerCmd(CommandContainer.builder().prefix("buy").permission("quickshop.create.buy").executor(new SubCommand_Buy())
