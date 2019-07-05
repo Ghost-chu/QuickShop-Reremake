@@ -19,10 +19,15 @@ public class SubCommand_SilentSell implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 4) {
             Util.debugLog("Exception on command, cancel.");
-            return ;
+            return;
         }
         Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
                 Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
@@ -34,10 +39,5 @@ public class SubCommand_SilentSell implements CommandProcesser {
             sender.sendMessage(MsgUtil
                     .getMessage("command.now-selling", Util.getItemStackName(shop.getItem())));
         }
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
     }
 }

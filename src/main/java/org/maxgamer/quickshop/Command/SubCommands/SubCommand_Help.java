@@ -15,13 +15,13 @@ public class SubCommand_Help implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        sendHelp(sender, commandLabel);
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        sendHelp(sender, commandLabel);
     }
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {

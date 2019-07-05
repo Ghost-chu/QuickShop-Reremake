@@ -19,6 +19,11 @@ public class SubCommand_SilentRemove implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 4) {
             Util.debugLog("Exception on command, cancel.");
@@ -35,10 +40,5 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         } else {
             sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
         }
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
     }
 }

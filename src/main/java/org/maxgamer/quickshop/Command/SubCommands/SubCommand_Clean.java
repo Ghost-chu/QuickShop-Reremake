@@ -16,6 +16,11 @@ public class SubCommand_Clean implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender.hasPermission("quickshop.clean")) {
             sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
@@ -50,10 +55,5 @@ public class SubCommand_Clean implements CommandProcesser {
         }
         sender.sendMessage("Can't run this command by Console");
         return;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
     }
 }
