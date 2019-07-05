@@ -14,23 +14,23 @@ public class SubCommand_Amount implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             sender.sendMessage("Missing amount");
-            return true;
+            return;
         }
 
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
                 sender.sendMessage("You do not have any pending action!");
-                return true;
+                return;
             }
             plugin.getShopManager().handleChat(player, cmdArg[0]);
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-        return true;
+        return;
     }
 
     @Override

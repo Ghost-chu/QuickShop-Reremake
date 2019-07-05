@@ -15,9 +15,8 @@ public class SubCommand_Help implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         sendHelp(sender, commandLabel);
-        return true;
     }
 
     @Override

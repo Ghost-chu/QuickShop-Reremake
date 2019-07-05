@@ -16,7 +16,7 @@ public class SubCommand_Clean implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender.hasPermission("quickshop.clean")) {
             sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
             Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
@@ -46,10 +46,10 @@ public class SubCommand_Clean implements CommandProcesser {
 
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
-            return true;
+            return;
         }
         sender.sendMessage("Can't run this command by Console");
-        return true;
+        return;
     }
 
     @Override

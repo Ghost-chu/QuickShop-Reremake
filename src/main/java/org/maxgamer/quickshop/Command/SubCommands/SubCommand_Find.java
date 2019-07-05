@@ -20,11 +20,11 @@ public class SubCommand_Find implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
                 sender.sendMessage(MsgUtil.getMessage("command.no-type-given"));
-                return true;
+                return;
             }
             StringBuilder sb = new StringBuilder(cmdArg[0]);
             for (int i = 1; i < cmdArg.length; i++) {
@@ -57,7 +57,7 @@ public class SubCommand_Find implements CommandProcesser {
             }
             if (closest == null) {
                 sender.sendMessage(MsgUtil.getMessage("no-nearby-shop", cmdArg[0]));
-                return true;
+                return ;
             }
             Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
             // Hack fix to make /qs find not used by /back
@@ -67,7 +67,7 @@ public class SubCommand_Find implements CommandProcesser {
         } else {
             sender.sendMessage(MsgUtil.getMessage("Only player can run this command"));
         }
-        return true;
+        return ;
     }
 
     @Override
