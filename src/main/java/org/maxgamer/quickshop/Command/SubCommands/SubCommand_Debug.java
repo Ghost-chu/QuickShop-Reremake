@@ -14,6 +14,11 @@ public class SubCommand_Debug implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         boolean debug = plugin.getConfig().getBoolean("dev-mode");
         if (debug) {
@@ -29,11 +34,6 @@ public class SubCommand_Debug implements CommandProcesser {
             Bukkit.getPluginManager().enablePlugin(plugin);
             sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
         }
-        return ;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return;
     }
 }

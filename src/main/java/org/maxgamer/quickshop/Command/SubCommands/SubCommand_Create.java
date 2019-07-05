@@ -23,6 +23,13 @@ public class SubCommand_Create implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(MsgUtil.getMessage("tabcomplete.amount"));
+        return list;
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
@@ -40,7 +47,7 @@ public class SubCommand_Create implements CommandProcesser {
                             if (p.isOnline()) {
                                 if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
                                     Util.debugLog("Failed permission build check, canceled");
-                                    return ;
+                                    return;
                                 }
                             }
                             BlockFace blockFace;
@@ -56,12 +63,12 @@ public class SubCommand_Create implements CommandProcesser {
                                 // player why they can't create a shop there.
                                 // So telling them a message would cause spam etc.
                                 Util.debugLog("Util report you can't build shop there.");
-                                return ;
+                                return;
                             }
 
                             if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
                                 p.sendMessage(MsgUtil.getMessage("no-double-chests"));
-                                return ;
+                                return;
                             }
                             if (Util.isBlacklisted(item.getType())
                                     && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
@@ -80,7 +87,7 @@ public class SubCommand_Create implements CommandProcesser {
                             } else {
                                 plugin.getShopManager().handleChat(p, cmdArg[0]);
                             }
-                            return ;
+                            return;
                         }
                     }
                 } else {
@@ -92,13 +99,6 @@ public class SubCommand_Create implements CommandProcesser {
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount"));
-        return list;
     }
 
 }

@@ -20,6 +20,11 @@ public class SubCommand_Find implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
@@ -57,7 +62,7 @@ public class SubCommand_Find implements CommandProcesser {
             }
             if (closest == null) {
                 sender.sendMessage(MsgUtil.getMessage("no-nearby-shop", cmdArg[0]));
-                return ;
+                return;
             }
             Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
             // Hack fix to make /qs find not used by /back
@@ -67,11 +72,6 @@ public class SubCommand_Find implements CommandProcesser {
         } else {
             sender.sendMessage(MsgUtil.getMessage("Only player can run this command"));
         }
-        return ;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return;
     }
 }

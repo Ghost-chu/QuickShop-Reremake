@@ -22,77 +22,6 @@ public class SubCommand_Staff implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-            if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return ;
-            }
-            while (bIt.hasNext()) {
-                Block b = bIt.next();
-                Shop shop = plugin.getShopManager().getShop(b.getLocation());
-                if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-                    if (cmdArg.length == 0) { // qs staff
-                        // Send
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return ;
-                    }
-                    if (cmdArg.length == 1) { // qs staff [add|del|clear|others]
-                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del") && !cmdArg[0].equals("clear")) {
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                            return ;
-                        }
-                        if (cmdArg[0].equals("clear")) {
-
-                            shop.clearStaffs();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
-                        }
-                        if (cmdArg[0].equals("list")) {
-                            for (UUID uuid : shop.getStaffs()) {
-                                sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
-                                        .getPlayer(uuid).getName());
-                            }
-                            shop.clearStaffs();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
-                        }
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return ;
-                    }
-                    if (cmdArg.length == 2) { // qs staff [add|del] [player]
-                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del")) {
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                            return ;
-                        }
-                        @SuppressWarnings("deprecation")
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(cmdArg[1]);
-                        // if (player == null) {
-                        //     sender.sendMessage(MsgUtil.getMessage("unknown-player"));
-                        //     return true;
-                        // }
-
-                        if (cmdArg[0].equals("add")) {
-
-                            shop.addStaff(player.getUniqueId());
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-added", cmdArg[1]));
-                            return ;
-                        }
-                        if (cmdArg[0].equals("del")) {
-
-                            shop.delStaff(player.getUniqueId());
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", cmdArg[1]));
-                            return ;
-                        }
-                    }
-                    return ;
-                }
-            }
-            return ;
-        }
-        sender.sendMessage(MsgUtil.getMessage("no-permission"));
-    }
-
-    @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> tabList = new ArrayList<>();
         if (cmdArg.length < 2) {
@@ -129,5 +58,76 @@ public class SubCommand_Staff implements CommandProcesser {
             }
         }
         return tabList;
+    }
+
+    @Override
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
+            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+            if (!bIt.hasNext()) {
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                return;
+            }
+            while (bIt.hasNext()) {
+                Block b = bIt.next();
+                Shop shop = plugin.getShopManager().getShop(b.getLocation());
+                if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+                    if (cmdArg.length == 0) { // qs staff
+                        // Send
+                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                        return;
+                    }
+                    if (cmdArg.length == 1) { // qs staff [add|del|clear|others]
+                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del") && !cmdArg[0].equals("clear")) {
+                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                            return;
+                        }
+                        if (cmdArg[0].equals("clear")) {
+
+                            shop.clearStaffs();
+                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+                        }
+                        if (cmdArg[0].equals("list")) {
+                            for (UUID uuid : shop.getStaffs()) {
+                                sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
+                                        .getPlayer(uuid).getName());
+                            }
+                            shop.clearStaffs();
+                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+                        }
+                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                        return;
+                    }
+                    if (cmdArg.length == 2) { // qs staff [add|del] [player]
+                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del")) {
+                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                            return;
+                        }
+                        @SuppressWarnings("deprecation")
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(cmdArg[1]);
+                        // if (player == null) {
+                        //     sender.sendMessage(MsgUtil.getMessage("unknown-player"));
+                        //     return true;
+                        // }
+
+                        if (cmdArg[0].equals("add")) {
+
+                            shop.addStaff(player.getUniqueId());
+                            sender.sendMessage(MsgUtil.getMessage("shop-staff-added", cmdArg[1]));
+                            return;
+                        }
+                        if (cmdArg[0].equals("del")) {
+
+                            shop.delStaff(player.getUniqueId());
+                            sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", cmdArg[1]));
+                            return;
+                        }
+                    }
+                    return;
+                }
+            }
+            return;
+        }
+        sender.sendMessage(MsgUtil.getMessage("no-permission"));
     }
 }

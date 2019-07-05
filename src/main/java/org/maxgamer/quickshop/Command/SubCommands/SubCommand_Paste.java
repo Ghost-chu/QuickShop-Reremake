@@ -14,6 +14,11 @@ public class SubCommand_Paste implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         //do actions
         new BukkitRunnable() {
@@ -29,10 +34,5 @@ public class SubCommand_Paste implements CommandProcesser {
                 }
             }
         }.runTaskAsynchronously(plugin);
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
     }
 }

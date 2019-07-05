@@ -16,6 +16,11 @@ public class SubCommand_FetchMessage implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Only players may use that command.");
@@ -23,11 +28,6 @@ public class SubCommand_FetchMessage implements CommandProcesser {
         }
         Player p = (Player) sender;
         Bukkit.getScheduler().runTask(QuickShop.instance, () -> MsgUtil.flush(p));
-        return ;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return;
     }
 }

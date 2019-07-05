@@ -12,6 +12,11 @@ public class SubCommand_About implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         sender.sendMessage("[QuickShop] About QuickShop");
         sender.sendMessage("[QuickShop] Hello, I'm Ghost_chu Author of QS reremake.");
@@ -21,10 +26,5 @@ public class SubCommand_About implements CommandProcesser {
         sender.sendMessage("[QuickShop] You can look at our SpigotMC page to learn more:");
         sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/62575/");
         sender.sendMessage("[QuickShop] Thanks for using QuickShop-Reremake.");
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
     }
 }
