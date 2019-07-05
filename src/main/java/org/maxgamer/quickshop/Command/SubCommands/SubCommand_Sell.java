@@ -44,7 +44,7 @@ public class SubCommand_Sell implements CommandProcesser {
                     return;
                 }
             }
-            return;
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         }
         sender.sendMessage(MsgUtil.getMessage("Can't run command by Console"));
     }
