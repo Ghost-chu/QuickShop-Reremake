@@ -13,6 +13,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.InventoryPreview;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_SilentPreview implements CommandProcesser {
@@ -37,9 +38,10 @@ public class SubCommand_SilentPreview implements CommandProcesser {
                     ContainerShop cs = (ContainerShop) shop;
                     InventoryPreview inventoryPreview = new InventoryPreview(cs.getItem(), (Player) sender);
                     inventoryPreview.show();
+                    return;
                 }
             }
-
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         } else {
             sender.sendMessage("Can't run this command from Console");
         }

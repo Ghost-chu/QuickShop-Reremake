@@ -38,8 +38,10 @@ public class SubCommand_Unlimited implements CommandProcesser {
                     shop.update();
                     sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
                             (shop.isUnlimited() ? "unlimited" : "limited")));
+                    return;
                 }
             }
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         } else {
             sender.sendMessage("Only player can run this command.");
         }

@@ -52,6 +52,7 @@ public class SubCommand_Refill implements CommandProcesser {
                     return;
                 }
             }
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
         } else {
             sender.sendMessage("Can't run by Console");
         }
