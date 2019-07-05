@@ -124,7 +124,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         } else {
             passthroughArgs = new String[0];
-            return rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
+            rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
+            return true;
         }
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
@@ -132,10 +133,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
                 if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
                         .getPermission()))
-                    return container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
+                    container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
                 else
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
         }
-        return rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
+        rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
+        return true;
     }
 }
