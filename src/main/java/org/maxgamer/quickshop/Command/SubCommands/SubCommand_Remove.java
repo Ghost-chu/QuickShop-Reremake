@@ -48,6 +48,6 @@ public class SubCommand_Remove implements CommandProcesser {
                 return;
             }
         }
-        return;
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
     }
 }

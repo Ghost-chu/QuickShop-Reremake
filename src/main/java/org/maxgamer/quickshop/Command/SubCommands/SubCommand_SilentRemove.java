@@ -32,8 +32,10 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         Player p = (Player) sender;
         Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
                 Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
-        if (shop == null)
+        if (shop == null) {
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
             return;
+        }
         if (shop.getModerator().isModerator(p.getUniqueId()) || sender.hasPermission("quickshop.other.destroy")) {
             shop.onUnload();
             shop.delete();

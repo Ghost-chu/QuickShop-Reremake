@@ -37,6 +37,5 @@ public class SubCommand_Amount implements CommandProcesser {
         } else {
             sender.sendMessage("This command can't be run by console");
         }
-        return;
     }
 }

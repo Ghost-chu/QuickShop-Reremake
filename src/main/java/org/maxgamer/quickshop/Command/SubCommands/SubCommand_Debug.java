@@ -34,6 +34,5 @@ public class SubCommand_Debug implements CommandProcesser {
             Bukkit.getPluginManager().enablePlugin(plugin);
             sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
         }
-        return;
     }
 }
