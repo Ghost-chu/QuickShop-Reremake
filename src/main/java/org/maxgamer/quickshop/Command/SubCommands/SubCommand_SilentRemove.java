@@ -19,23 +19,22 @@ public class SubCommand_SilentRemove implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 4) {
             Util.debugLog("Exception on command, cancel.");
-            return false;
+            return;
         }
         Player p = (Player) sender;
         Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
                 Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
         if (shop == null)
-            return true;
+            return;
         if (shop.getModerator().isModerator(p.getUniqueId()) || sender.hasPermission("quickshop.other.destroy")) {
             shop.onUnload();
             shop.delete();
         } else {
             sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
         }
-        return true;
     }
 
     @Override

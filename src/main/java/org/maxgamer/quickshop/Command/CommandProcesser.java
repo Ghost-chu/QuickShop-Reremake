@@ -38,5 +38,5 @@ public interface CommandProcesser {
      * @param cmdArg Args
      * @return
      */
-    boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
+    void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 }

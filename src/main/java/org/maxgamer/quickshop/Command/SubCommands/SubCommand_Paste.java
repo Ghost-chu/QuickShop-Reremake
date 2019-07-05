@@ -14,7 +14,7 @@ public class SubCommand_Paste implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         //do actions
         new BukkitRunnable() {
             @Override
@@ -29,7 +29,6 @@ public class SubCommand_Paste implements CommandProcesser {
                 }
             }
         }.runTaskAsynchronously(plugin);
-        return true;
     }
 
     @Override
