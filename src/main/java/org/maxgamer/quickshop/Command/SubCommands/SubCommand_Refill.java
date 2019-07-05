@@ -18,6 +18,13 @@ public class SubCommand_Refill implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(MsgUtil.getMessage("tabcomplete.amount"));
+        return list;
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
@@ -34,7 +41,7 @@ public class SubCommand_Refill implements CommandProcesser {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return ;
+                return;
             }
             while (bIt.hasNext()) {
                 Block b = bIt.next();
@@ -42,18 +49,11 @@ public class SubCommand_Refill implements CommandProcesser {
                 if (shop != null) {
                     shop.add(shop.getItem(), add);
                     sender.sendMessage(MsgUtil.getMessage("refill-success"));
-                    return ;
+                    return;
                 }
             }
         } else {
             sender.sendMessage("Can't run by Console");
         }
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount"));
-        return list;
     }
 }
