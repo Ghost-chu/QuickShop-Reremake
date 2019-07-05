@@ -14,11 +14,10 @@ public class SubCommand_Reload implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         sender.sendMessage(MsgUtil.getMessage("command.reloading"));
         Bukkit.getPluginManager().disablePlugin(plugin);
         Bukkit.getPluginManager().enablePlugin(plugin);
-        return true;
     }
 
     @Override

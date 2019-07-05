@@ -22,12 +22,12 @@ public class SubCommand_Staff implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return true;
+                return ;
             }
             while (bIt.hasNext()) {
                 Block b = bIt.next();
@@ -36,12 +36,12 @@ public class SubCommand_Staff implements CommandProcesser {
                     if (cmdArg.length == 0) { // qs staff
                         // Send
                         sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return true;
+                        return ;
                     }
                     if (cmdArg.length == 1) { // qs staff [add|del|clear|others]
                         if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del") && !cmdArg[0].equals("clear")) {
                             sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                            return true;
+                            return ;
                         }
                         if (cmdArg[0].equals("clear")) {
 
@@ -57,12 +57,12 @@ public class SubCommand_Staff implements CommandProcesser {
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
                         }
                         sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return true;
+                        return ;
                     }
                     if (cmdArg.length == 2) { // qs staff [add|del] [player]
                         if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del")) {
                             sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                            return true;
+                            return ;
                         }
                         @SuppressWarnings("deprecation")
                         OfflinePlayer player = Bukkit.getOfflinePlayer(cmdArg[1]);
@@ -75,22 +75,21 @@ public class SubCommand_Staff implements CommandProcesser {
 
                             shop.addStaff(player.getUniqueId());
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-added", cmdArg[1]));
-                            return true;
+                            return ;
                         }
                         if (cmdArg[0].equals("del")) {
 
                             shop.delStaff(player.getUniqueId());
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", cmdArg[1]));
-                            return true;
+                            return ;
                         }
                     }
-                    return true;
+                    return ;
                 }
             }
-            return true;
+            return ;
         }
         sender.sendMessage(MsgUtil.getMessage("no-permission"));
-        return true;
     }
 
     @Override

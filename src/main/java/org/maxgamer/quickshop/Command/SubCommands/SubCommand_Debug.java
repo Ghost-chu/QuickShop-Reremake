@@ -14,7 +14,7 @@ public class SubCommand_Debug implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         boolean debug = plugin.getConfig().getBoolean("dev-mode");
         if (debug) {
             plugin.getConfig().set("dev-mode", false);
@@ -29,7 +29,7 @@ public class SubCommand_Debug implements CommandProcesser {
             Bukkit.getPluginManager().enablePlugin(plugin);
             sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
         }
-        return true;
+        return ;
     }
 
     @Override

@@ -18,23 +18,23 @@ public class SubCommand_Refill implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
                 sender.sendMessage(MsgUtil.getMessage("command.no-amount-given"));
-                return true;
+                return;
             }
             int add;
             try {
                 add = Integer.parseInt(cmdArg[0]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(MsgUtil.getMessage("thats-not-a-number"));
-                return true;
+                return;
             }
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return true;
+                return ;
             }
             while (bIt.hasNext()) {
                 Block b = bIt.next();
@@ -42,14 +42,12 @@ public class SubCommand_Refill implements CommandProcesser {
                 if (shop != null) {
                     shop.add(shop.getItem(), add);
                     sender.sendMessage(MsgUtil.getMessage("refill-success"));
-                    return true;
+                    return ;
                 }
             }
-            return true;
         } else {
             sender.sendMessage("Can't run by Console");
         }
-        return true;
     }
 
     @Override

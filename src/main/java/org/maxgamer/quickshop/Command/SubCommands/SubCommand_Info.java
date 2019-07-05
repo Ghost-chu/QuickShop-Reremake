@@ -18,7 +18,7 @@ public class SubCommand_Info implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         int buying, selling, doubles, chunks, worlds;
         buying = selling = doubles = chunks = worlds = 0;
         int nostock = 0;
@@ -49,7 +49,6 @@ public class SubCommand_Info implements CommandProcesser {
         sender.sendMessage(ChatColor.GREEN + "" + nostock
                 + " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
         sender.sendMessage(ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
-        return true;
     }
 
     @Override
