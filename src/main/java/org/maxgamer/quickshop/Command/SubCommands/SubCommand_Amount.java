@@ -23,14 +23,14 @@ public class SubCommand_Amount implements CommandProcesser {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            sender.sendMessage("Missing amount");
+            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
             return;
         }
 
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-                sender.sendMessage("You do not have any pending action!");
+                sender.sendMessage(MsgUtil.getMessage("no-pending-action"));
                 return;
             }
             plugin.getShopManager().handleChat(player, cmdArg[0]);

@@ -273,7 +273,17 @@ public class MsgUtil {
             selectedVersion = 16;
             messagei18n.save(messageFile);
         }
-
+        if (selectedVersion == 16) {
+            messagei18n.set("command.description.owner", "&eChanges who owns a shop");
+            messagei18n.set("command.description.remove", "&eRemove your looking the shop");
+            messagei18n.set("command.description.amount", "&eExecute for your actions with amount(For chat plugin issue)");
+            messagei18n.set("command.description.about", "&eShow QuickShop abouts");
+            messagei18n.set("command.description.help", "&eShow QuickShop helps");
+            messagei18n.set("no-pending-action", "&cYou do not have any pending action");
+            messagei18n.set("language-version", 17);
+            selectedVersion = 17;
+            messagei18n.save(messageFile);
+        }
 
     }
 

@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 16
+language-version: 17
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -74,7 +74,7 @@ no-permission-build: "&cYou can't build a shop here."
 success-change-owner-to-server: "&aSuccessfully set the shop owner to Server."
 flush-finished: "&aSuccessfully flushed the messages."
 purchase-failed: "&cPurchase failed: Internal Error, please contact the server administrator."
-
+no-pending-action: "&cYou do not have any pending action"
 
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
@@ -127,6 +127,7 @@ command:
         title: "&aQuickShop Help"
         unlimited: "&eMakes a shop unlimited"
         setowner: "&eChanges who owns a shop"
+        owner: "&eChanges who owns a shop"
         buy: "&eConverts a shop to &dBUY&e mode"
         sell: "&eConverts a shop to &bSELL&e mode"
         clean: "&eRemoves all (loaded) shops with 0 stock"
@@ -141,6 +142,11 @@ command:
         info: "&eShow QuickShop Statistics"
         paste: "&eAuto upload server data to Pastebin"
         staff: "&eManage your shop staffs"
+        remove: "&eRemove your looking the shop"
+        amount: "&eExecute for your actions with amount(For chat plugin issue)"
+        about: "&eShow QuickShop abouts"
+        help: "&eShow QuickShop helps"
+
 signs:
     header: "&c{0}"
     selling: "Selling {0}"

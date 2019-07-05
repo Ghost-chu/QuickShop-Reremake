@@ -29,7 +29,7 @@ public class SubCommand_Help implements CommandProcesser {
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             if (container.getPermission() == null || container.getPermission().isEmpty() || s.hasPermission(container
                     .getPermission())) {
-                if (!MsgUtil.getMessage("command.description." + container.getPrefix()).equals(MsgUtil.invaildMsg))
+                if (!container.isHidden())
                     s.sendMessage(ChatColor.GREEN + "/" + commandLabel + " " + container
                             .getPrefix() + ChatColor.YELLOW + " - "
                             + MsgUtil.getMessage("command.description." + container.getPrefix()));
