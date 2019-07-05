@@ -20,23 +20,30 @@ public class SubCommand_Price implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(MsgUtil.getMessage("tabcomplete.price"));
+        return list;
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (cmdArg.length < 1) {
                 sender.sendMessage(MsgUtil.getMessage("no-price-given"));
-                return ;
+                return;
             }
             double price;
             try {
                 price = Double.parseDouble(cmdArg[0]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(MsgUtil.getMessage("thats-not-a-number"));
-                return ;
+                return;
             }
             if (price < 0.01) {
                 sender.sendMessage(MsgUtil.getMessage("price-too-cheap"));
-                return ;
+                return;
             }
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
@@ -67,13 +74,13 @@ public class SubCommand_Price implements CommandProcesser {
                     if (shop.getPrice() == price) {
                         // Stop here if there isn't a price change
                         sender.sendMessage(MsgUtil.getMessage("no-price-change"));
-                        return ;
+                        return;
                     }
                     if (fee > 0) {
                         if (!plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
                             sender.sendMessage(MsgUtil.getMessage("you-cant-afford-to-change-price",
                                     plugin.getEconomy().format(fee)));
-                            return ;
+                            return;
                         }
                         sender.sendMessage(
                                 MsgUtil.getMessage("fee-charged-for-price-change", plugin.getEconomy().format(fee)));
@@ -115,12 +122,5 @@ public class SubCommand_Price implements CommandProcesser {
             return;
         }
         sender.sendMessage("Can't run this command by Console");
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.price"));
-        return list;
     }
 }

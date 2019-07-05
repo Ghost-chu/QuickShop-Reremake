@@ -13,11 +13,6 @@ public class SubCommand_ROOT implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
-    }
-
-    @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
         List<String> candidate = new ArrayList<>();
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
@@ -29,6 +24,11 @@ public class SubCommand_ROOT implements CommandProcesser {
             }
         }
         return candidate;
+    }
+
+    @Override
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
     }
 }
 

@@ -19,12 +19,17 @@ public class SubCommand_Empty implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                return ;
+                return;
             }
             while (bIt.hasNext()) {
                 Block b = bIt.next();
@@ -34,21 +39,16 @@ public class SubCommand_Empty implements CommandProcesser {
                         ContainerShop cs = (ContainerShop) shop;
                         cs.getInventory().clear();
                         sender.sendMessage(MsgUtil.getMessage("empty-success"));
-                        return ;
+                        return;
                     } else {
                         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                        return ;
+                        return;
                     }
                 }
             }
         } else {
             sender.sendMessage("Can't run this command from Console");
         }
-        return ;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return;
     }
 }

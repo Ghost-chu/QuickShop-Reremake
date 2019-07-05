@@ -14,6 +14,13 @@ public class SubCommand_Amount implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(MsgUtil.getMessage("tabcomplete.amount"));
+        return list;
+    }
+
+    @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             sender.sendMessage("Missing amount");
@@ -31,12 +38,5 @@ public class SubCommand_Amount implements CommandProcesser {
             sender.sendMessage("This command can't be run by console");
         }
         return;
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount"));
-        return list;
     }
 }
