@@ -140,6 +140,7 @@ public class QuickShop extends JavaPlugin {
         if (getServer().getName().toLowerCase().contains("catserver")) {
             // Send FATAL ERROR TO CatServer's users.
             getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
+            throw new RuntimeException("QuickShop doen't support CatServer");
         }
 
         if (Util.isDevEdition()) {
@@ -839,12 +840,14 @@ public class QuickShop extends JavaPlugin {
         if (databaseManager != null)
             database.close();
         /* Close Database */
-        try {
-            this.database.getConnection().close();
-        } catch (SQLException e) {
-            this.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
-        }
+        if (database != null)
+            try {
+                this.database.getConnection().close();
+            } catch (SQLException e) {
+                if (getSentryErrorReporter() != null)
+                    this.getSentryErrorReporter().ignoreThrow();
+                e.printStackTrace();
+            }
         if (warnings != null)
             warnings.clear();
         //this.reloadConfig();
