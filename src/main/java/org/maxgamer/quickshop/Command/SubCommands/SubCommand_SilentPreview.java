@@ -19,11 +19,11 @@ public class SubCommand_SilentPreview implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 4) {
                 Util.debugLog("Exception on command, cancel.");
-                return false;
+                return ;
             }
             Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]),
                     Integer.valueOf(cmdArg[1]), Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
@@ -38,8 +38,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
         } else {
             sender.sendMessage("Can't run this command from Console");
         }
-        return true;
-    }
+}
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

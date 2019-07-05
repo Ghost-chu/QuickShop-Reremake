@@ -18,16 +18,16 @@ public class SubCommand_Remove implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Only players may use that command.");
-            return true;
+            return ;
         }
         Player p = (Player) sender;
         BlockIterator bIt = new BlockIterator(p, 10);
         if (!bIt.hasNext()) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-            return true;
+            return ;
         }
         while (bIt.hasNext()) {
             Block b = bIt.next();
@@ -40,10 +40,10 @@ public class SubCommand_Remove implements CommandProcesser {
                 } else {
                     sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission"));
                 }
-                return true;
+                return ;
             }
         }
-        return true;
+        return ;
     }
 
     @Override
