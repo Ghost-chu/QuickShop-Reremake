@@ -84,8 +84,8 @@ public class DisplayProtectionListener implements Listener {
                     MsgUtil.sendGlobalAlert("[DisplayProtection] Entity " + e.getEntity()
                             .toString() + " pickedup the displayItem, QuickShop already removed it.");
                 } else {
-                    MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + ((Player) e)
-                            .getName() + " pickedup the displayItem, QuickShop already removed it.");
+                    MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + e
+                            .getEntity().getType().name() + " pickedup the displayItem, QuickShop already removed it.");
                 }
 
             }
