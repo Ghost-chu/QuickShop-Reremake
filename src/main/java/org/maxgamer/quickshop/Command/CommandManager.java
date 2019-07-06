@@ -74,6 +74,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(CommandContainer.builder().prefix("create").permission("quickshop.create.cmd")
                 .executor(new SubCommand_Create())
                 .build());
+        registerCmd(CommandContainer.builder().prefix("silentupdate").hidden(true).permission("quickshop.alert")
+                .executor(new SubCommand_SilentUpdate())
+                .build());
     }
 
     private void registerCmd(CommandContainer container) {

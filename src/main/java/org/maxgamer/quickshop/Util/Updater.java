@@ -42,7 +42,7 @@ public class Updater {
         }
     }
 
-    public void replaceTheJar(byte[] data) throws RuntimeException, IOException {
+    public static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
         File pluginFolder = new File("plugins");
         if (!pluginFolder.exists())
             throw new RuntimeException("Can't find the plugins folder.");
@@ -71,7 +71,7 @@ public class Updater {
         outputStream.close();
     }
 
-    public byte[] downloadUpdatedJar() throws IOException {
+    public static byte[] downloadUpdatedJar() throws IOException {
         final String uurl = "https://api.spiget.org/v2/resources/62575/versions/latest/download";
         URL url = new URL(uurl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
