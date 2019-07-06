@@ -15,7 +15,8 @@ public class SubCommand_SilentUpdate implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (!Updater.checkUpdate().getVersion().equals(plugin.getDescription().getVersion())) {
+        sender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
+        if (Updater.checkUpdate().getVersion().equals(plugin.getDescription().getVersion())) {
             sender.sendMessage(ChatColor.GREEN + "No updates can update now.");
             return;
         }
