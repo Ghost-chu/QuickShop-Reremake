@@ -284,6 +284,12 @@ public class MsgUtil {
             selectedVersion = 17;
             messagei18n.save(messageFile);
         }
+        if (selectedVersion == 17) {
+            messagei18n.set("updatenotify.onekeybuttontitle", "[OneKey Update]");
+            messagei18n.set("language-version", 18);
+            selectedVersion = 18;
+            messagei18n.save(messageFile);
+        }
 
     }
 
