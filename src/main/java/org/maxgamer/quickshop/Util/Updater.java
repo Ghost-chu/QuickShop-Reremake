@@ -1,14 +1,20 @@
 package org.maxgamer.quickshop.Util;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.kohsuke.github.GHAsset;
+import org.kohsuke.github.GitHub;
 import org.maxgamer.quickshop.QuickShop;
 
 public class Updater {
@@ -57,6 +63,7 @@ public class Updater {
                 PluginDescriptionFile desc = QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
                 if (!desc.getName().equals(QuickShop.instance.getDescription().getName()))
                     continue;
+                Util.debugLog("Selected: " + plugin.getPath());
                 quickshop = plugin;
                 break;
             } catch (InvalidDescriptionException e) { //Ignore }
@@ -72,17 +79,40 @@ public class Updater {
     }
 
     public static byte[] downloadUpdatedJar() throws IOException {
-        final String uurl = "https://api.spiget.org/v2/resources/62575/versions/latest/download";
-        URL url = new URL(uurl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion());// Set User-Agent
-        InputStream is = connection.getInputStream();
+        org.kohsuke.github.GHRelease ghRelease = GitHub.connectAnonymously().getUser("Ghost-chu")
+                .getRepository("QuickShop-Reremake").getLatestRelease();
+        Util.debugLog("Pulling update with release: " + ghRelease.getTagName());
+        List<GHAsset> assets = ghRelease.getAssets();
+        String uurl = null;
+        for (GHAsset asset : assets) {
+            if (asset.getName().contains("original-"))
+                continue;
+            if (asset.getName().contains("-javadoc"))
+                continue;
+            if (asset.getName().contains("-sources"))
+                continue;
+            uurl = asset.getBrowserDownloadUrl();
+        }
+
+        if (uurl == null)
+            throw new IOException("Failed read the URL, cause it is empty.");
+        Util.debugLog("Downloading from " + uurl);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpget = new HttpGet(uurl);
+        httpget.setHeader("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion());
+        CloseableHttpResponse response = httpClient.execute(httpget);
+        InputStream is = response.getEntity().getContent();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len;
+        int downloaded = 0;
+        int size = os.size();
         while ((len = is.read(buff)) != -1) {
             os.write(buff, 0, len);
+            downloaded += len;
+            Util.debugLog("File Downloader:  " + downloaded + "/" + size + " bytes.");
         }
+        Util.debugLog("Download complete.");
         return os.toByteArray();
     }
 }
