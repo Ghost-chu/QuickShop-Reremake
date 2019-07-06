@@ -59,12 +59,17 @@ public class UpdateWatcher implements Listener {
                                 notify = "New update {0} now avaliable! Please update!";
                             }
                             notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
-                            TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
+                            TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
                                     .getMessage("updatenotify.buttontitle"));
-                            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                            TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
+                                    .getMessage("updatenotify.onekeybuttontitle"));
+                            updatenow
+                                    .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                            onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                            TextComponent finallyText = new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + notify);
-                            player.spigot().sendMessage(message);
+                            player.spigot().sendMessage(finallyText);
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
                     });
@@ -99,12 +104,17 @@ public class UpdateWatcher implements Listener {
                         String notify = notifys.get(notifyNum);
                         notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
 
-                        TextComponent message = new TextComponent(ChatColor.AQUA + MsgUtil
+                        TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
                                 .getMessage("updatenotify.buttontitle"));
-                        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                        TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
+                                .getMessage("updatenotify.onekeybuttontitle"));
+                        updatenow
+                                .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                        onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                        TextComponent finallyText = new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
                         e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         e.getPlayer().sendMessage(ChatColor.GREEN + notify);
-                        e.getPlayer().spigot().sendMessage(message);
+                        e.getPlayer().spigot().sendMessage(finallyText);
                         e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                     } else {
                         e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
