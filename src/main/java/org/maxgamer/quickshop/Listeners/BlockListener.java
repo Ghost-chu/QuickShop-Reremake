@@ -79,11 +79,19 @@ public class BlockListener implements Listener {
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
+
+            if (!shop.getModerator().isOwner(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
+                e.setCancelled(true);
+                p.sendMessage(MsgUtil.getMessage("no-permission"));
+                return;
+            }
+
             // Cancel their current menu... Doesnt cancel other's menu's.
             Info action = plugin.getShopManager().getActions().get(p.getUniqueId());
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
+
             shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
