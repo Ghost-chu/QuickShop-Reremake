@@ -589,7 +589,7 @@ public class ShopManager {
 
             plugin.getCompatibilityTool().toggleInteractListeners(false);
 
-            if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), true)) {
+            if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), false)) {
                 p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
                 Util.debugLog("Failed to create shop: Protection check failed:");
                 for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
