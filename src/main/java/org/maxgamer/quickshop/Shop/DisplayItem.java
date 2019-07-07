@@ -104,6 +104,7 @@ public interface DisplayItem {
      */
     static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
+        itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
             iMeta.setDisplayName("QuickShop DisplayItem");
@@ -167,6 +168,7 @@ public interface DisplayItem {
      */
     static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
+        itemStack.setAmount(1);
         if (!itemStack.hasItemMeta())
             return false;
         ItemMeta iMeta = itemStack.getItemMeta();
