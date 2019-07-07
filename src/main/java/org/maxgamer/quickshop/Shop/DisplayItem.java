@@ -130,6 +130,7 @@ public interface DisplayItem {
         if (itemStack == null)
             return false;
         itemStack = itemStack.clone();
+        itemStack.setAmount(1);
         if (!itemStack.hasItemMeta())
             return false;
         ItemMeta iMeta = itemStack.getItemMeta();
