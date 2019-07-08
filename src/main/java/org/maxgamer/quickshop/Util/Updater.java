@@ -105,7 +105,7 @@ public class Updater {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len;
-        int downloaded = 0;
+        long downloaded = 0;
         int size = os.size();
         while ((len = is.read(buff)) != -1) {
             os.write(buff, 0, len);
