@@ -63,20 +63,31 @@ public class DatabaseManager {
     private void runTask() {
         while (true) {
             Timer timer = new Timer(true);
+            try {
+                if (!this.database.getConnection().isValid(3000)) {
+                    this.plugin.getLogger()
+                            .warning("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                    break; //Waiting next crycle and hope it success reconnected.
+                }
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                sqle.printStackTrace();
+            }
             PreparedStatement statement = sqlQueue.poll();
             if (statement == null)
                 break;
             try {
                 Util.debugLog("Executing the SQL task: " + statement.toString());
                 statement.execute();
-
             } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
                 sqle.printStackTrace();
             }
             //Close statement anyway.
             try {
                 statement.close();
             } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
                 sqle.printStackTrace();
             }
             long tookTime = timer.endTimer();
