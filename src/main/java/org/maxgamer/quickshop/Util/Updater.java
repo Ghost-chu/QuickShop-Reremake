@@ -84,6 +84,7 @@ public class Updater {
         Util.debugLog("Pulling update with release: " + ghRelease.getTagName());
         List<GHAsset> assets = ghRelease.getAssets();
         String uurl = null;
+        long uurlSize = 0;
         for (GHAsset asset : assets) {
             if (asset.getName().contains("original-"))
                 continue;
@@ -92,6 +93,7 @@ public class Updater {
             if (asset.getName().contains("-sources"))
                 continue;
             uurl = asset.getBrowserDownloadUrl();
+            uurlSize = asset.getSize();
         }
 
         if (uurl == null)
@@ -111,6 +113,10 @@ public class Updater {
             os.write(buff, 0, len);
             downloaded += len;
             Util.debugLog("File Downloader:  " + downloaded + "/" + size + " bytes.");
+        }
+        Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
+        if (downloaded != uurlSize) {
+            Util.debugLog("Size not match, download may broken.");
         }
         Util.debugLog("Download complete.");
         return os.toByteArray();
