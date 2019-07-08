@@ -23,7 +23,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     public CommandManager() {
         cmds.clear();
-        registerCmd(CommandContainer.builder().prefix("help").permission(null).executor(new SubCommand_Unlimited()).build());
+        registerCmd(CommandContainer.builder().prefix("help").permission(null).executor(new SubCommand_Help()).build());
         registerCmd(CommandContainer.builder().prefix("unlimited").permission("quickshop.unlimited")
                 .executor(new SubCommand_Unlimited()).build());
         registerCmd(CommandContainer.builder().prefix("silentunlimited").hidden(true).permission("quickshop.unlimited")
