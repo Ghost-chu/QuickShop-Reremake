@@ -15,6 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
 import org.json.simple.JSONObject;
+import org.maxgamer.quickshop.Economy.EconomyCore;
+import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.QuickShop;
 
 /**
@@ -42,7 +44,18 @@ public class Paste {
         finalReport.append("\tFork: ").append(plugin.getFork()).append("\n");
         finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID().toString()).append("\n");
         finalReport.append("\tOpenInv Hook: ").append(plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled").append("\n");
-        //finalReport.append("Fork: "+plugin.+"\n");
+        finalReport.append("\tEconomy System: ");
+        EconomyCore economyCore = plugin.getEconomy().getCore();
+        if (economyCore != null) {
+            if (economyCore instanceof Economy_Vault) {
+                finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
+            } else {
+                finalReport.append("Reserve");
+            }
+            finalReport.append("\n");
+        } else {
+            finalReport.append("null");
+        }
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
         JSONObject serverData = plugin.getMetrics().getServerData();
