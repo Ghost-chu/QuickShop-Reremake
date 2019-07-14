@@ -19,7 +19,8 @@ public interface CommandProcesser {
      *
      * @param sender Sender
      * @param cmdArg Args
-     * @return
+     * @param commandLabel The command prefix /qs is qs
+     * @return The result for tab-complete lists
      */
     @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 
@@ -36,7 +37,7 @@ public interface CommandProcesser {
      *
      * @param sender Sender
      * @param cmdArg Args
-     * @return
+     * @param commandLabel The command prefix /qs is qs
      */
     void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
 }

@@ -23,6 +23,8 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      * @param shop   The shop bought from
      * @param p      The player buying
      * @param amount The amount they're buying
+     * @param tax The tax in this purchase
+     * @param total The money in this purchase
      */
     public ShopSuccessPurchaseEvent(Shop shop, Player p, int amount, double total, double tax) {
         this.shop = shop;
