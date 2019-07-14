@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 38
+config-version: 39
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -191,13 +191,19 @@ shop:
     #Protection check
     protection-checking: true
 
+    #SetSignText for InventoryMoveEvent
+
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
 - Bedrock
 
 protect:
-    #Protected shop items can or cannot be pulled out by a HopperMincart (Will remove HopprtMincart)
-    minecart: true
+    #Protected shop blocks if InventoryMoveEvent called. (e.g Hopper, HopperMinecart)
+    inventorymove: true
+    #Protected shop blocks if BlockSpreadEvent called. (e.g vines)
+    spread: true
+    #Protected shop items if BlockFromToEvent called. (e.g water,lava and )
+    fromto: true
     #Protected shop blocks can or cannot be picked up by an entity (Will remove Entity)
     entity: true
     #Protected shop blocks can or cannot be activated by Redstone
@@ -206,8 +212,6 @@ protect:
     structuregrow: true
     #Protected shop blocks can or cannot be broken by an Entity and or a Block explosion
     explode: true
-    #Protected shop blocks can or cannot be pulled out by a Hopper
-    hopper: true
 lockette:
     #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest)\
     enable: true
