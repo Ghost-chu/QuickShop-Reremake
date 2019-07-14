@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
 
 public class SubCommand_Update implements CommandProcesser {
@@ -20,7 +21,13 @@ public class SubCommand_Update implements CommandProcesser {
             @Override
             public void run() {
                 sender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
-                if (Updater.checkUpdate().getVersion().equals(plugin.getDescription().getVersion())) {
+                UpdateInfomation updateInfomation = Updater.checkUpdate();
+                String updateVersion = updateInfomation.getVersion();
+                if (updateVersion == null) {
+                    sender.sendMessage(ChatColor.RED + "Failed check the update, connection issue?");
+                    return;
+                }
+                if (updateVersion.equals(plugin.getDescription().getVersion())) {
                     sender.sendMessage(ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
