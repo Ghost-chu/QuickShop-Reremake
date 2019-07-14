@@ -113,14 +113,15 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         for (CommandContainer container : cmds) {
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null)
-            for (String requirePermission : requirePermissions) {
-                if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
-                    Util.debugLog("Sender " + sender.getName() + " trying tab-complete the command: " + commandLabel + " " + Util
-                            .array2String(cmdArg) + ", but no permission " + requirePermission);
-                    return null;
+                for (String requirePermission : requirePermissions) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
+                        Util.debugLog("Sender " + sender
+                                .getName() + " trying tab-complete the command: " + commandLabel + " " + Util
+                                .array2String(cmdArg) + ", but no permission " + requirePermission);
+                        return null;
+                    }
                 }
-            }
-            return container.getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+            return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
 
         }
         return null;
@@ -146,26 +147,30 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         } else {
             passthroughArgs = new String[0];
+            Util.debugLog("Print help cause no args (/qs)");
             rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
             return true;
         }
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
-
         for (CommandContainer container : cmds) {
+            if (!container.getPrefix().toLowerCase().equals(commandLabel.toLowerCase()))
+                continue;
             List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() != null)
-            for (String requirePermission : requirePermissions) {
-                if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
-                    Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
-                            .array2String(cmdArg) + ", but no permission " + requirePermission);
-                    sender.sendMessage(MsgUtil.getMessage("no-permission"));
-                    return true;
+            if (container.getPermissions() != null) {
+                for (String requirePermission : requirePermissions) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
+                        Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
+                                .array2String(cmdArg) + ", but no permission " + requirePermission);
+                        sender.sendMessage(MsgUtil.getMessage("no-permission"));
+                        return true;
+                    }
                 }
             }
-            container.getExecutor().onCommand(sender, commandLabel, cmdArg);
+            container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
             return true;
         }
+        Util.debugLog("All checks failed, print helps");
         rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         return true;
     }
