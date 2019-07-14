@@ -31,23 +31,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class PlayerListener implements Listener {
     private QuickShop plugin;
 
-    /*
-     * Could be useful one day private LinkedList<String> getParents(Class<?>
-     * clazz){ LinkedList<String> classes = new LinkedList<String>();
-     *
-     * while(clazz != null){ classes.add("Extends " + ChatColor.GREEN +
-     * clazz.getCanonicalName()); for(Class<?> iface : clazz.getInterfaces()){
-     * classes.add("Implements " + ChatColor.RED + iface.getCanonicalName());
-     * classes.addAll(getParents(iface)); }
-     *
-     * clazz = clazz.getSuperclass(); } return classes; }
-     */
-
-    /*
-     * Handles players left clicking a chest. Left click a NORMAL chest with item :
-     * Send creation menu Left click a SHOP chest : Send purchase menu
-     */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
@@ -157,6 +141,7 @@ public class PlayerListener implements Listener {
                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                 p.sendMessage(
                         MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(e.getItem())));
+                e.setCancelled(true);
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                 && Util.isWallSign(e.getClickedBlock().getType())) {
@@ -186,8 +171,6 @@ public class PlayerListener implements Listener {
      * Waits for a player to move too far from a shop, then cancels the menu.
      */
     public void onMove(PlayerMoveEvent e) {
-        if (e.isCancelled())
-            return;
         Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
         if (info != null) {
             Player p = e.getPlayer();
