@@ -21,9 +21,8 @@ public class ChatListener implements Listener {
             Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
             return;
         }
-        if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
+        if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId()))
             return;
-        }
         plugin.log(e.getPlayer().getName() + "(" + e.getPlayer().getUniqueId().toString() + ") was " + plugin.getShopManager()
                 .getActions().get(e.getPlayer().getUniqueId()).getAction().name() + " the shop.");
         plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());
