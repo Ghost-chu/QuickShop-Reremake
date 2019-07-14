@@ -437,15 +437,11 @@ public class QuickShop extends JavaPlugin {
             UUID uuid = UUID.randomUUID();
             serverUUID = uuid.toString();
             getConfig().set("server-uuid", serverUUID);
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 1) {
             getConfig().set("disabled-metrics", false);
             getConfig().set("config-version", 2);
             selectedVersion = 2;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 2) {
             getConfig().set("protect.minecart", true);
@@ -456,36 +452,26 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("protect.hopper", true);
             getConfig().set("config-version", 3);
             selectedVersion = 3;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 3) {
             getConfig().set("shop.alternate-currency-symbol", '$');
             getConfig().set("config-version", 4);
             selectedVersion = 4;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 4) {
             getConfig().set("updater", true);
             getConfig().set("config-version", 5);
             selectedVersion = 5;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 5) {
             getConfig().set("shop.display-item-use-name", true);
             getConfig().set("config-version", 6);
             selectedVersion = 6;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 6) {
             getConfig().set("shop.sneak-to-control", false);
             getConfig().set("config-version", 7);
             selectedVersion = 7;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 7) {
             getConfig().set("database.prefix", "none");
@@ -493,8 +479,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("database.use-varchar", false);
             getConfig().set("config-version", 8);
             selectedVersion = 8;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 8) {
             getConfig().set("database.use-varchar", true);
@@ -505,22 +489,16 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.ignore-unlimited", false);
             getConfig().set("config-version", 9);
             selectedVersion = 9;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 9) {
             getConfig().set("shop.enable-enderchest", true);
             getConfig().set("config-version", 10);
             selectedVersion = 10;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 10) {
             getConfig().set("shop.pay-player-from-unlimited-shop-owner", null); //Removed
             getConfig().set("config-version", 11);
             selectedVersion = 11;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 11) {
             getConfig().set("shop.enable-enderchest", null); //Removed
@@ -530,8 +508,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop-blocks", shoppable);
             getConfig().set("config-version", 12);
             selectedVersion = 12;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 12) {
             getConfig().set("plugin.ProtocolLib", null); //Removed
@@ -544,24 +520,18 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.bypass-owner-check", null); //Removed
             getConfig().set("config-version", 13);
             selectedVersion = 13;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 13) {
             getConfig().set("plugin.AreaShop", false);
             getConfig().set("shop.special-region-only", false);
             getConfig().set("config-version", 14);
             selectedVersion = 14;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 14) {
             getConfig().set("plugin.AreaShop", null);
             getConfig().set("shop.special-region-only", null);
             getConfig().set("config-version", 15);
             selectedVersion = 15;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 15) {
             getConfig().set("ongoingfee", null);
@@ -570,58 +540,42 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.auto-fetch-shop-messages", true);
             getConfig().set("config-version", 16);
             selectedVersion = 16;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 16) {
             getConfig().set("ignore-cancel-chat-event", false);
             getConfig().set("config-version", 17);
             selectedVersion = 17;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 17) {
             getConfig().set("ignore-cancel-chat-event", false);
             getConfig().set("float", null);
             getConfig().set("config-version", 18);
             selectedVersion = 18;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 18) {
             getConfig().set("shop.disable-vault-format", false);
             getConfig().set("config-version", 19);
             selectedVersion = 19;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 19) {
             getConfig().set("shop.allow-shop-without-space-for-sign", true);
             getConfig().set("config-version", 20);
             selectedVersion = 20;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 20) {
             getConfig().set("shop.maximum-price", -1);
             getConfig().set("config-version", 21);
             selectedVersion = 21;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 21) {
             getConfig().set("shop.sign-material", "OAK_WALL_SIGN");
             getConfig().set("config-version", 22);
             selectedVersion = 22;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 22) {
             getConfig().set("include-offlineplayer-list", "false");
             getConfig().set("config-version", 23);
             selectedVersion = 23;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 23) {
             getConfig().set("lockette.enable", null);
@@ -635,15 +589,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.blacklist-world", blackListWorld);
             getConfig().set("config-version", 24);
             selectedVersion = 24;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 24) {
             getConfig().set("shop.strict-matches-check", false);
             getConfig().set("config-version", 25);
             selectedVersion = 25;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 25) {
             String language = getConfig().getString("language");
@@ -651,55 +601,38 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("language", "en");
             getConfig().set("config-version", 26);
             selectedVersion = 26;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 26) {
             getConfig().set("database.usessl", false);
             getConfig().set("config-version", 27);
             selectedVersion = 27;
-            saveConfig();
-            reloadConfig();
-
         }
         if (selectedVersion == 27) {
             getConfig().set("queue.enable", true);
             getConfig().set("queue.shops-per-tick", 20);
             getConfig().set("config-version", 28);
             selectedVersion = 28;
-            saveConfig();
-            reloadConfig();
-
         }
         if (selectedVersion == 28) {
             getConfig().set("database.queue", true);
             getConfig().set("config-version", 29);
             selectedVersion = 29;
-            saveConfig();
-            reloadConfig();
-
         }
         if (selectedVersion == 29) {
             getConfig().set("plugin.Multiverse-Core", null);
             getConfig().set("shop.protection-checking", true);
             getConfig().set("config-version", 30);
             selectedVersion = 30;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 30) {
             getConfig().set("auto-report-errors", true);
             getConfig().set("config-version", 31);
             selectedVersion = 31;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 31) {
             getConfig().set("shop.display-type", 0);
             getConfig().set("config-version", 32);
             selectedVersion = 32;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 32) {
             getConfig().set("effect.sound.ontabcomplete", true);
@@ -707,8 +640,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("effect.sound.ononclick", true);
             getConfig().set("config-version", 33);
             selectedVersion = 33;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 33) {
             getConfig().set("matcher.item.damage", true);
@@ -721,8 +652,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("matcher.item.custommodeldata", true);
             getConfig().set("config-version", 34);
             selectedVersion = 34;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 34) {
             getConfig().set("queue.enable", false); // Close it for everyone
@@ -730,29 +659,21 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("shop.display-items-check-ticks", 6000);
             getConfig().set("config-version", 35);
             selectedVersion = 35;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 35) {
             getConfig().set("queue", null); // Close it for everyone
             getConfig().set("config-version", 36);
             selectedVersion = 36;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 36) {
             getConfig().set("economy-type", 0); // Close it for everyone
             getConfig().set("config-version", 37);
             selectedVersion = 37;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 37) {
             getConfig().set("shop.ignore-cancel-chat-event", true);
             getConfig().set("config-version", 38);
             selectedVersion = 38;
-            saveConfig();
-            reloadConfig();
         }
         if (selectedVersion == 38) {
             getConfig().set("protect.inventorymove", true);
@@ -762,9 +683,14 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("protect.hopper", null);
             getConfig().set("config-version", 39);
             selectedVersion = 39;
-            saveConfig();
-            reloadConfig();
         }
+        if (selectedVersion == 39) {
+            getConfig().set("update-sign-when-inventory-moving", true);
+            getConfig().set("config-version", 40);
+            selectedVersion = 39;
+        }
+        saveConfig();
+        reloadConfig();
     }
 
     /** Reloads QuickShops config */
