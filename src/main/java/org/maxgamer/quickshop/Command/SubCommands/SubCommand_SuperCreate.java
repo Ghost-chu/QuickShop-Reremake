@@ -74,7 +74,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                                 p.sendMessage(
                                         MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(item)));
                             } else {
-                                plugin.getShopManager().handleChat(p, cmdArg[0]);
+                                plugin.getShopManager().handleChat(p, cmdArg[0], true);
                             }
                             return;
                         }

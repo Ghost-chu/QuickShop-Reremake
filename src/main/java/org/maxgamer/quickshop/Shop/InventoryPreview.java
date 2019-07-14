@@ -26,7 +26,6 @@ public class InventoryPreview implements Listener {
     private ItemStack itemStack;
     private Inventory inventory;
     private Player player;
-    public static List<Player> openedGuiPlayers = new ArrayList<>();
 
     /**
      * Create a preview item GUI for a player.
@@ -76,9 +75,6 @@ public class InventoryPreview implements Listener {
             inventory.setItem(i, itemStack);
         }
         player.openInventory(inventory);
-        if (!openedGuiPlayers.contains(player))
-            openedGuiPlayers.add(player);
-        // Total 9
     }
 
     public void close() {
@@ -88,7 +84,6 @@ public class InventoryPreview implements Listener {
             player.closeInventory();
         }
         inventory = null; // Destory
-        openedGuiPlayers.remove(player);
     }
 
     public static boolean isPreviewItem(@Nullable ItemStack stack) {
