@@ -53,7 +53,6 @@ public class BlockListener implements Listener {
     public void onBreak(BlockBreakEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
-        Util.debugLog("" + e.isCancelled());
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();

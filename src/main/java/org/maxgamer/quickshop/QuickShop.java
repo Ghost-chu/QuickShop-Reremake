@@ -210,10 +210,7 @@ public class QuickShop extends JavaPlugin {
         }
         /* Process the config */
         saveDefaultConfig();
-
-        reloadConfig(); //Plugin support reload, so need reload config here.
-        this.reloadConfig();
-
+        reloadConfig();
         getConfig().options().copyDefaults(true); // Load defaults.
 
         if (getConfig().getInt("config-version") == 0)
@@ -226,7 +223,6 @@ public class QuickShop extends JavaPlugin {
         metrics = new Metrics(this);
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
-
         // loadEcon();
 
         /* Load 3rd party supports */
