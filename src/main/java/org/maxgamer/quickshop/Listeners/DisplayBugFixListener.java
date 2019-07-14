@@ -19,7 +19,7 @@ public class DisplayBugFixListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void canBuild(BlockCanBuildEvent e) {
         if (!plugin.isDisplay())
             return;
