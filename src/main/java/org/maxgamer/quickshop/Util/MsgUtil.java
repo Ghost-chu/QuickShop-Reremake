@@ -55,7 +55,6 @@ public class MsgUtil {
         // Store it
         messagei18n = YamlConfiguration.loadConfiguration(messageFile);
         messagei18n.options().copyDefaults(true);
-
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
         messagei18n.setDefaults(messagei18nYAML);
