@@ -314,7 +314,8 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Registering BStats Mertics...");
         submitMeritcs();
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
-
+        /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -782,7 +783,6 @@ public class QuickShop extends JavaPlugin {
         try {
             //EconomyCore core = new Economy_Vault();
             EconomyCore core = null;
-
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
                     bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
