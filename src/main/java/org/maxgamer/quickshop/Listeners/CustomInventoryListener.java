@@ -5,7 +5,6 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
@@ -82,12 +81,5 @@ public class CustomInventoryListener implements Listener {
                 e.setCancelled(true);
             }
         }
-    }
-
-    @EventHandler
-    public void quitEvent(PlayerQuitEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        InventoryPreview.openedGuiPlayers.remove(e.getPlayer());
     }
 }
