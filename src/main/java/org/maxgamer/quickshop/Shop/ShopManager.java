@@ -316,7 +316,7 @@ public class ShopManager {
                     return false;
                 }
             }
-            if (!plugin.getPermissionChecker().canBuild(p, b, true)) {
+            if (!plugin.getPermissionChecker().canBuild(p, b, false)) {
                 Util.debugLog("PermissionChecker canceled shop creation");
                 return false;
             }
