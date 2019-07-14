@@ -31,7 +31,7 @@ public class SubCommand_Help implements CommandProcesser {
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null)
                 for (String requirePermission : requirePermissions) {
-                    if (!s.hasPermission(requirePermission)) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !s.hasPermission(requirePermission)) {
                         Util.debugLog("Sender " + s
                                 .getName() + " trying execute the command: " + commandLabel + ", but no permission " + requirePermission);
                         return;
