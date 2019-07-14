@@ -103,56 +103,61 @@ public class SentryErrorReporter {
      * @return Event Uniqud ID
      */
     private @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        if (tempDisable) {
-            Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
-            this.tempDisable = true;
-            return null;
-        }
-        if (disable) {
-            Util.debugLog("Ignore a throw, cause report now is disabled.");
-            this.disable = true;
-            return null;
-        }
-        Util.debugLog("Preparing for reporting errors...");
-        if (!enabled) {
-            Util.debugLog("Errors not sended, cause ErrorReport not enabled.");
-            return null;
-        }
-
-        if (!checkWasCauseByQS(throwable)) {
-            Util.debugLog("Errors not sended, cause it not throw by QuickShop");
-            return null;
-        }
-
-        if (!canReport(throwable)) {
-            Util.debugLog("This errors not sended, cause it disallow send.(Already sended?)");
-            return null;
-        }
-        if (ignoredException.contains(throwable.getClass())) {
-            Util.debugLog("Errors not sended, cause type is blocked.");
-            return null;
-        }
-        for (String record : context) {
-            this.context.recordBreadcrumb(new BreadcrumbBuilder().setMessage(record).build());
-        }
-        Paste paste = new Paste(plugin);
-        String pasteURL = "Failed to paste.";
         try {
-            pasteURL = paste.pasteTheText(paste.genNewPaste());
-        } catch (Throwable ex) {
-            //Ignore
+            if (tempDisable) {
+                Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
+                this.tempDisable = true;
+                return null;
+            }
+            if (disable) {
+                Util.debugLog("Ignore a throw, cause report now is disabled.");
+                this.disable = true;
+                return null;
+            }
+            Util.debugLog("Preparing for reporting errors...");
+            if (!enabled) {
+                Util.debugLog("Errors not sended, cause ErrorReport not enabled.");
+                return null;
+            }
+
+            if (!checkWasCauseByQS(throwable)) {
+                Util.debugLog("Errors not sended, cause it not throw by QuickShop");
+                return null;
+            }
+
+            if (!canReport(throwable)) {
+                Util.debugLog("This errors not sended, cause it disallow send.(Already sended?)");
+                return null;
+            }
+            if (ignoredException.contains(throwable.getClass())) {
+                Util.debugLog("Errors not sended, cause type is blocked.");
+                return null;
+            }
+            for (String record : context) {
+                this.context.recordBreadcrumb(new BreadcrumbBuilder().setMessage(record).build());
+            }
+            Paste paste = new Paste(plugin);
+            String pasteURL = "Failed to paste.";
+            try {
+                pasteURL = paste.pasteTheText(paste.genNewPaste());
+            } catch (Throwable ex) {
+                //Ignore
+            }
+            this.context.addTag("paste", pasteURL);
+            this.sentryClient.sendException(throwable);
+            this.context.clearBreadcrumbs();
+            plugin.getLogger()
+                    .warning("A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
+            plugin.getLogger().warning("Description: " + throwable.getMessage());
+            plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID().toString());
+            plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            return this.context.getLastEventId();
+        } catch (Throwable th) {
+            th.printStackTrace();
+            return null;
         }
-        this.context.addTag("paste", pasteURL);
-        this.sentryClient.sendException(throwable);
-        this.context.clearBreadcrumbs();
-        plugin.getLogger()
-                .warning("A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
-        plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-        plugin.getLogger().warning("Description: " + throwable.getMessage());
-        plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
-        plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID().toString());
-        plugin.getLogger().warning("====QuickShop Error Report E N D===");
-        return this.context.getLastEventId();
     }
 
     /**
