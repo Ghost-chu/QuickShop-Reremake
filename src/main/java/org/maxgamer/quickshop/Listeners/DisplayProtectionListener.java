@@ -176,7 +176,6 @@ public class DisplayProtectionListener implements Listener {
             if (DisplayItem.checkIsGuardItemStack(is)) {
                 //item.remove();
                 event.getHook().remove();
-                item.setItemStack(new ItemStack(Material.AIR));
                 //event.getCaught().remove();
                 event.setCancelled(true);
                 MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + event.getPlayer()
