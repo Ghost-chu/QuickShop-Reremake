@@ -78,7 +78,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .executor(new SubCommand_Update())
                 .build());
         registerCmd(CommandContainer.builder().prefix("find").permission("quickshop.find")
-                .executor(new SubCommand_Update())
+                .executor(new SubCommand_Find())
                 .build());
     }
 
