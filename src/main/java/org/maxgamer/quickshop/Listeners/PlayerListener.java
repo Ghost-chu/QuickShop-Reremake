@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import lombok.*;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +20,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
@@ -172,20 +176,26 @@ public class PlayerListener implements Listener {
      */
     public void onMove(PlayerMoveEvent e) {
         Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
-        if (info != null) {
-            Player p = e.getPlayer();
-            Location loc1 = info.getLocation();
-            Location loc2 = p.getLocation();
-            if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
-                if (info.getAction() == ShopAction.CREATE) {
-                    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-                } else if (info.getAction() == ShopAction.BUY) {
-                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+        if (info == null)
+            return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Player p = e.getPlayer();
+                Location loc1 = info.getLocation();
+                Location loc2 = p.getLocation();
+                if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
+                    if (info.getAction() == ShopAction.CREATE) {
+                        p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                    } else if (info.getAction() == ShopAction.BUY) {
+                        p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+                    }
+                    plugin.getShopManager().getActions().remove(p.getUniqueId());
+                    return;
                 }
-                plugin.getShopManager().getActions().remove(p.getUniqueId());
-                return;
             }
-        }
+        }.runTaskAsynchronously(plugin);
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -198,12 +208,12 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(QuickShop.instance, new Runnable() {
+            new BukkitRunnable() {
                 @Override
                 public void run() {
                     MsgUtil.flush(e.getPlayer());
                 }
-            }, 60);
+            }.runTaskAsynchronously(plugin);
         }
 
     }
@@ -218,20 +228,17 @@ public class PlayerListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent e) {
         try {
             Inventory inventory = e.getInventory();
-            if (inventory == null) {
+            if (inventory == null)
                 return;
-            }
             Location location = inventory.getLocation();
-            if (location == null) {
+            if (location == null)
                 return;
-            }
             Shop shop = plugin.getShopManager().getShop(location);
-            if (shop == null) {
+            if (shop == null)
                 return;
-            }
             shop.setSignText();
         } catch (Throwable t) {
-
+            //Ignore
         }
     }
 
