@@ -1,7 +1,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 39
+config-version: 40
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -191,7 +191,9 @@ shop:
     #Protection check
     protection-checking: true
 
-    #SetSignText for InventoryMoveEvent
+    #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
+    #Disable it if you feel it damage your server performance.
+    update-sign-when-inventory-moving: true
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
