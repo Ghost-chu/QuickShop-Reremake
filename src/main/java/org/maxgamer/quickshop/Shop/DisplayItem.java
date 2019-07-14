@@ -100,6 +100,7 @@ public interface DisplayItem {
     /**
      * Create a new itemStack with protect flag.
      * @param itemStack Old itemStack
+     * @param shop The shop
      * @return New itemStack with protect flag.
      */
     static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
