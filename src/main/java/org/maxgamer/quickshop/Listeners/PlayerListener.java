@@ -198,11 +198,10 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            Bukkit.getScheduler().runTaskLater(QuickShop.instance, new Runnable() {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(QuickShop.instance, new Runnable() {
                 @Override
                 public void run() {
                     MsgUtil.flush(e.getPlayer());
-                    Util.inventoryCheck(e.getPlayer().getInventory());
                 }
             }, 60);
         }
