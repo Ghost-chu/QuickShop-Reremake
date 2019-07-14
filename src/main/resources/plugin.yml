@@ -32,6 +32,9 @@ permissions:
     quickshop.create.cmd:
         description: Allow a player to use /qs create to create a shop
         default: op
+    quickshop.create.admin:
+        description: Allow a player use /qs supercreate to create a shop bypass all protection checks
+        default: op
     quickshop.use:
         description: Allows a player to buy/sell using other players shops
         default: true
