@@ -93,7 +93,6 @@ public class BlockListener implements Listener {
             shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
-            e.setCancelled(false);
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
                 Sign sign = (Sign) b;
