@@ -80,6 +80,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(CommandContainer.builder().prefix("find").permission("quickshop.find")
                 .executor(new SubCommand_Find())
                 .build());
+        registerCmd(CommandContainer.builder().prefix("supercreate").permission("quickshop.create.admin")
+                .executor(new SubCommand_SuperCreate())
+                .build());
     }
 
     private void registerCmd(CommandContainer container) {
@@ -105,10 +108,15 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         passthroughArgs = new String[cmdArg.length - 1];
         System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         for (CommandContainer container : cmds) {
-            if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
-                if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
-                        .getPermission()))
-                    return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
+            List<String> requirePermissions = container.getPermissions();
+            if (container.getPermissions() == null || requirePermissions.isEmpty())
+                continue;
+            for (String requirePermission : requirePermissions) {
+                if (!sender.hasPermission(requirePermission))
+                    return null;
+            }
+            return container.getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+
         }
         return null;
     }
@@ -138,16 +146,19 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
+
         for (CommandContainer container : cmds) {
-            if (container.getPrefix().equals(cmdArg[0].toLowerCase()))
-                if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
-                        .getPermission())) {
-                    container.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
-                    return true;
-                } else {
+            List<String> requirePermissions = container.getPermissions();
+            if (container.getPermissions() == null || requirePermissions.isEmpty())
+                continue;
+            for (String requirePermission : requirePermissions) {
+                if (!sender.hasPermission(requirePermission)) {
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
                     return true;
                 }
+            }
+            container.getExecutor().onCommand(sender, commandLabel, cmdArg);
+            return true;
         }
         rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         return true;
