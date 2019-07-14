@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -143,5 +144,18 @@ public class BlockListener implements Listener {
         if (b == null)
             return null;
         return plugin.getShopManager().getShop(b.getLocation());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onInventoryMove(InventoryMoveItemEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
+        Location loc = event.getDestination().getLocation();
+        if (loc == null)
+            return;
+        Shop shop = plugin.getShopManager().getShop(loc);
+        if (shop == null)
+            return;
+        shop.setSignText();
     }
 }
