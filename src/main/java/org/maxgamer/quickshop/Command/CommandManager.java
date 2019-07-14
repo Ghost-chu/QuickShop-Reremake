@@ -72,6 +72,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(CommandContainer.builder().prefix("staff").permission("quickshop.staff").executor(new SubCommand_Staff())
                 .build());
         registerCmd(CommandContainer.builder().prefix("create").permission("quickshop.create.cmd")
+                .permission("quickshop.create.sell")
                 .executor(new SubCommand_Create())
                 .build());
         registerCmd(CommandContainer.builder().prefix("update").hidden(true).permission("quickshop.alert")
@@ -81,6 +82,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .executor(new SubCommand_Find())
                 .build());
         registerCmd(CommandContainer.builder().prefix("supercreate").permission("quickshop.create.admin")
+                .permission("quickshop.create.sell")
                 .executor(new SubCommand_SuperCreate())
                 .build());
     }

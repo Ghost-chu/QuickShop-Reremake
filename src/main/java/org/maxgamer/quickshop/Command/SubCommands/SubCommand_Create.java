@@ -35,7 +35,6 @@ public class SubCommand_Create implements CommandProcesser {
             Player p = (Player) sender;
             ItemStack item = p.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
-                if (sender.hasPermission("quickshop.create.sell")) {
                     BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                     while (bIt.hasNext()) {
                         Block b = bIt.next();
@@ -86,10 +85,7 @@ public class SubCommand_Create implements CommandProcesser {
                             return;
                         }
                     }
-                    sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
-                } else {
-                    sender.sendMessage(MsgUtil.getMessage("no-permission"));
-                }
+
             } else {
                 sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand"));
             }
