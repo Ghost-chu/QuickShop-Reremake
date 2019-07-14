@@ -13,7 +13,8 @@ import org.maxgamer.quickshop.Shop.InventoryPreview;
 @AllArgsConstructor
 public class CustomInventoryListener implements Listener {
     private QuickShop plugin;
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
         Inventory inventory = e.getInventory();
         ItemStack[] stacks = inventory.getContents();
@@ -27,7 +28,7 @@ public class CustomInventoryListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
         if (InventoryPreview.isPreviewItem(e.getItem())) {
             e.setCancelled(true);
