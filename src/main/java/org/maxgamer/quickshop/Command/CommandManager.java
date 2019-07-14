@@ -14,6 +14,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
@@ -111,11 +112,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         for (CommandContainer container : cmds) {
             List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() == null || requirePermissions.isEmpty())
-                continue;
+            if (container.getPermissions() != null)
             for (String requirePermission : requirePermissions) {
-                if (!sender.hasPermission(requirePermission))
+                if (!sender.hasPermission(requirePermission)) {
+                    Util.debugLog("Sender " + sender.getName() + " trying tab-complete the command: " + commandLabel + " " + Util
+                            .array2String(cmdArg) + ", but no permission " + requirePermission);
                     return null;
+                }
             }
             return container.getExecutor().onTabComplete(sender, commandLabel, cmdArg);
 
@@ -151,10 +154,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
         for (CommandContainer container : cmds) {
             List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() == null || requirePermissions.isEmpty())
-                continue;
+            if (container.getPermissions() != null)
             for (String requirePermission : requirePermissions) {
                 if (!sender.hasPermission(requirePermission)) {
+                    Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
+                            .array2String(cmdArg) + ", but no permission " + requirePermission);
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
                     return true;
                 }
