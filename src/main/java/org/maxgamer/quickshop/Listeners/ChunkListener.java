@@ -21,6 +21,8 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         if (e.isNewChunk()) //Ignore it
             return;
         Chunk c = e.getChunk();
@@ -47,6 +49,8 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
         if (inChunk == null || inChunk.isEmpty())

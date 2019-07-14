@@ -30,6 +30,8 @@ public class BlockListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         BlockState bs = e.getBlock().getState();
         if (!(bs instanceof DoubleChest))
             return;
@@ -48,6 +50,9 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onBreak(BlockBreakEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        Util.debugLog("" + e.isCancelled());
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
@@ -120,6 +125,7 @@ public class BlockListener implements Listener {
             // Cancel the event so that the sign does not
             // drop.. TODO: Find a better way.
             //b.setType(Material.AIR);
+            Util.debugLog("Cannot break the sign.");
             e.setCancelled(true);
         }
     }
