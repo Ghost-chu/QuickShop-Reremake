@@ -13,6 +13,7 @@ import org.bukkit.event.server.ServiceUnregisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class Economy_Vault implements EconomyCore, Listener {
     @Getter
@@ -46,6 +47,8 @@ public class Economy_Vault implements EconomyCore, Listener {
         } else {
             plugin.getLogger().info("Using economy system: " + this.vault.getName());
         }
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        Util.debugLog("Economy service listener was registered.");
         return true;
     }
 
