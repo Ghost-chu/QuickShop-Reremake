@@ -85,6 +85,7 @@ public class PlayerListener implements Listener {
                 HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
                 Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
                 actions.put(p.getUniqueId(), info);
+                e.setCancelled(true);
                 return;
             }
             // Handles creating shops
@@ -143,8 +144,7 @@ public class PlayerListener implements Listener {
                         MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(e.getItem())));
                 e.setCancelled(true);
             }
-        } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                && Util.isWallSign(e.getClickedBlock().getType())) {
+        } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
             Block block;
             if (Util.isWallSign(e.getClickedBlock().getType())) {
                 block = Util.getAttached(e.getClickedBlock());
@@ -162,8 +162,8 @@ public class PlayerListener implements Listener {
                         plugin.getShopManager().getShop(block.getLocation()));
                 plugin.getShopManager().getShop(block.getLocation()).setSignText();
             }
+            e.setCancelled(true);
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -192,7 +192,6 @@ public class PlayerListener implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
         onMove(me);
-        Util.inventoryCheck(e.getPlayer().getInventory());
     }
 
     @EventHandler(ignoreCancelled = true)
