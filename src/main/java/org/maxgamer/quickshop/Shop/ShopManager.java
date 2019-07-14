@@ -336,6 +336,10 @@ public class ShopManager {
     }
 
     public void handleChat(@NotNull Player p, @NotNull String msg) {
+        handleChat(p, msg, false);
+    }
+
+    public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -361,7 +365,7 @@ public class ShopManager {
             // }
             switch (info.getAction()) {
                 case CREATE:
-                    actionCreate(p, actions, info, message);
+                    actionCreate(p, actions, info, message, bypassProtectionChecks);
                     break;
                 case BUY:
                     actionTrade(p, actions, info, message);
@@ -580,25 +584,25 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message) {
+    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, boolean bypassProtectionChecks) {
         Util.debugLog("actionCreate");
         try {
             // Checking the shop can be created
             Util.debugLog("Calling for protection check...");
             //Fix openInv compatiable issue
 
-            plugin.getCompatibilityTool().toggleInteractListeners(false);
-
-            if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), false)) {
-                p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
-                Util.debugLog("Failed to create shop: Protection check failed:");
-                for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
-                    Util.debugLog(belisteners.getPlugin().getName());
+            if (!bypassProtectionChecks) {
+                plugin.getCompatibilityTool().toggleInteractListeners(false);
+                if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), false)) {
+                    p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
+                    Util.debugLog("Failed to create shop: Protection check failed:");
+                    for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
+                        Util.debugLog(belisteners.getPlugin().getName());
+                    }
+                    return;
                 }
-                return;
+                plugin.getCompatibilityTool().toggleInteractListeners(true);
             }
-
-            plugin.getCompatibilityTool().toggleInteractListeners(true);
 
             if (plugin.getShopManager().getShop(info.getLocation()) != null) {
                 p.sendMessage(MsgUtil.getMessage("shop-already-owned"));
