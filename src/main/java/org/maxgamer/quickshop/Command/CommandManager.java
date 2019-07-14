@@ -114,7 +114,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null)
             for (String requirePermission : requirePermissions) {
-                if (!sender.hasPermission(requirePermission)) {
+                if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
                     Util.debugLog("Sender " + sender.getName() + " trying tab-complete the command: " + commandLabel + " " + Util
                             .array2String(cmdArg) + ", but no permission " + requirePermission);
                     return null;
@@ -156,7 +156,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null)
             for (String requirePermission : requirePermissions) {
-                if (!sender.hasPermission(requirePermission)) {
+                if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
                     Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
                             .array2String(cmdArg) + ", but no permission " + requirePermission);
                     sender.sendMessage(MsgUtil.getMessage("no-permission"));
