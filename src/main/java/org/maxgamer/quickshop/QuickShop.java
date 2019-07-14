@@ -23,8 +23,8 @@ import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
-import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Timer;
+import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
@@ -225,11 +225,7 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
         sentryErrorReporter = new SentryErrorReporter(this);
 
-        /* Process the Economy system. */
-        if (!loadEcon()) {
-            bootError = BuiltInSolution.econError();
-            return;
-        }
+        // loadEcon();
 
         /* Load 3rd party supports */
         load3rdParty();
@@ -314,6 +310,13 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Registering BStats Mertics...");
         submitMeritcs();
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                loadEcon();
+            }
+        }.runTaskLater(this, 1);
     }
 
     private void submitMeritcs() {
