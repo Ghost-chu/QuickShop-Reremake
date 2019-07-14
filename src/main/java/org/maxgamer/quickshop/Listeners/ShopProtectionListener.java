@@ -28,6 +28,8 @@ public class ShopProtectionListener implements Listener {
     //Protect Minecart steal shop
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!plugin.getConfig().getBoolean("protect.inventorymove"))
             return;
         Location loc = event.getSource().getLocation();
@@ -42,6 +44,8 @@ public class ShopProtectionListener implements Listener {
     //Protect Entity pickup shop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobChangeBlock(EntityChangeBlockEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
         if (shop == null)
             return;
@@ -54,6 +58,8 @@ public class ShopProtectionListener implements Listener {
     //Protect Redstone active shop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!plugin.getConfig().getBoolean("protect.redstone"))
             return;
         Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
@@ -66,6 +72,8 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!plugin.getConfig().getBoolean("protect.structuregrow"))
             return;
         for (BlockState blockstate : event.getBlocks()) {
@@ -84,6 +92,8 @@ public class ShopProtectionListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -98,6 +108,8 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
@@ -112,6 +124,8 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         Block newBlock = e.getNewState().getBlock();
         Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
         Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
@@ -123,6 +137,8 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         if (!plugin.getConfig().getBoolean("protect.fromto"))
             return;
         Shop shop = plugin.getShopManager().getShop(e.getToBlock().getLocation());

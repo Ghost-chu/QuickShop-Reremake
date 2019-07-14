@@ -21,6 +21,8 @@ public class DisplayBugFixListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void canBuild(BlockCanBuildEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         if (!plugin.isDisplay())
             return;
         if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND)

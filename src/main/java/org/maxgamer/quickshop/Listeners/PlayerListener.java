@@ -37,6 +37,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
             if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
@@ -89,7 +91,6 @@ public class PlayerListener implements Listener {
                 HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
                 Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
                 actions.put(p.getUniqueId(), info);
-                e.setCancelled(true);
                 return;
             }
             // Handles creating shops
@@ -146,7 +147,6 @@ public class PlayerListener implements Listener {
                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                 p.sendMessage(
                         MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(e.getItem())));
-                e.setCancelled(true);
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
             Block block;
@@ -166,7 +166,6 @@ public class PlayerListener implements Listener {
                         plugin.getShopManager().getShop(block.getLocation()));
                 plugin.getShopManager().getShop(block.getLocation()).setSignText();
             }
-            e.setCancelled(true);
         }
     }
 
@@ -175,6 +174,8 @@ public class PlayerListener implements Listener {
      * Waits for a player to move too far from a shop, then cancels the menu.
      */
     public void onMove(PlayerMoveEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
         if (info == null)
             return;
@@ -200,12 +201,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
         onMove(me);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             new BukkitRunnable() {
@@ -220,12 +225,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         try {
             Inventory inventory = e.getInventory();
             if (inventory == null)

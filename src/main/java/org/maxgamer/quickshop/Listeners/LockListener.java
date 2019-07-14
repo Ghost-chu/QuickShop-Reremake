@@ -32,6 +32,8 @@ public class LockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         Block b = e.getClickedBlock();
         if (b == null)
             return;
@@ -65,6 +67,8 @@ public class LockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         Block b = e.getBlock();
         if (b.getType() != Material.HOPPER)
             return;
@@ -85,6 +89,7 @@ public class LockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
+        Util.debugLog("" + e.isCancelled());
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();

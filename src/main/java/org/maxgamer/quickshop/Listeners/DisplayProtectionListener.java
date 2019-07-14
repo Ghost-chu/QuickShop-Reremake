@@ -34,6 +34,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (event.getInventory() == null)
             return;
         if (event.getInventory().getStorageContents() == null)
@@ -54,6 +56,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void heldItem(PlayerItemHeldEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
             if (DisplayItem.checkIsGuardItemStack(stack)) {
@@ -74,6 +78,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityPickup(EntityPickupItemEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         ItemStack stack = e.getItem().getItemStack();
             if (DisplayItem.checkIsGuardItemStack(stack)) {
                 e.setCancelled(true);
@@ -93,6 +99,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerClick(PlayerInteractEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         ItemStack stack = e.getItem();
             if (DisplayItem.checkIsGuardItemStack(stack)) {
                 stack.setType(Material.AIR);
@@ -108,6 +116,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
             if (DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
                 event.setCancelled(true);
                 MsgUtil.sendGlobalAlert("[DisplayProtection] Inventory " + event.getClickedInventory()
@@ -121,6 +131,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryPickupItem(InventoryPickupItemEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
             ItemStack is = event.getItem().getItemStack();
             if (DisplayItem.checkIsGuardItemStack(is)) {
                 event.setCancelled(true);
@@ -135,6 +147,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         try {
             ItemStack is = event.getItem();
             if (DisplayItem.checkIsGuardItemStack(is)) {
@@ -151,6 +165,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onFishingItem(PlayerFishEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (event.getState() != State.CAUGHT_ENTITY)
             return;
         if (event.getCaught().getType() != EntityType.DROPPED_ITEM)
@@ -171,6 +187,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLiuqidFlowing(BlockFromToEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         Block targetBlock = event.getToBlock();
         Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
         Shop shop = plugin.getShopManager().getShop(shopBlock.getLocation());
@@ -183,6 +201,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
         Shop shop = plugin.getShopManager().getShop(block.getLocation());
         if (shop != null) {
@@ -207,6 +227,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPistonRetract(BlockPistonRetractEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
         Shop shop = plugin.getShopManager().getShop(block.getLocation());
         if (shop != null) {
@@ -231,6 +253,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
         Shop shop = plugin.getShopManager().getShop(waterBlock.getRelative(BlockFace.DOWN).getLocation());
         if (shop == null)
@@ -243,6 +267,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTryPickOrPlaceItemWithArmorStand(PlayerArmorStandManipulateEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!DisplayItem.checkIsGuardItemStack(event.getArmorStandItem()))
             return;
         event.setCancelled(true);
@@ -250,6 +276,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onActionTheArmorStand(EntityInteractEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!(event.getEntity() instanceof ArmorStand))
             return;
         if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
@@ -259,6 +287,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onArmorStandWasDamageing(EntityDamageEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!(event.getEntity() instanceof ArmorStand))
             return;
         if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
@@ -268,6 +298,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onArmorStandBreaked(EntityDeathEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         if (!(event.getEntity() instanceof ArmorStand))
             return;
         if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand()))
@@ -277,6 +309,8 @@ public class DisplayProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void itemDespawnEvent(ItemDespawnEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
         ItemStack itemStack = event.getEntity().getItemStack();
         if (!DisplayItem.checkIsGuardItemStack(itemStack))
             return; //We didn't care that

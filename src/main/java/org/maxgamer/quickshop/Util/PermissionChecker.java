@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
 
 public class PermissionChecker {
@@ -50,8 +51,9 @@ public class PermissionChecker {
         } else {
             beMainHand = new BlockBreakEvent(block, player);
         }
+        ListenerHelper.disableEvent(beMainHand.getClass());
         Bukkit.getPluginManager().callEvent(beMainHand);
-
+        ListenerHelper.enableEvent(beMainHand.getClass());
         if (((Cancellable) beMainHand).isCancelled())
             return false;
 
