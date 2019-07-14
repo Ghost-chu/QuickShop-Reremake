@@ -89,7 +89,6 @@ public class LockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
-        Util.debugLog("" + e.isCancelled());
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();

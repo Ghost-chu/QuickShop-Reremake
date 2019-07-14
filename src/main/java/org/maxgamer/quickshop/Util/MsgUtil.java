@@ -52,15 +52,11 @@ public class MsgUtil {
             plugin.getLogger().info("Creating messages.yml");
             plugin.getLanguage().saveFile(plugin.getConfig().getString("language"), "messages", "messages.yml");
         }
-        /* Ignore the throws */
-        plugin.getSentryErrorReporter().ignoreThrows();
         messagei18n = YamlConfiguration.loadConfiguration(messageFile);
         messagei18n.options().copyDefaults(true);
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
-        messagei18n.setDefaults(messagei18nYAML);
-        /* Re-enable it */
-        plugin.getSentryErrorReporter().resetIgnores();
+        messagei18n.setDefaults(messagei18nYAML); ;
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
