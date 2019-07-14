@@ -113,7 +113,7 @@ public class MsgUtil {
             messagei18n.set("controlpanel.remove-hover", "&eClick to remove this shop.");
             messagei18n.set("language-version", 2);
             selectedVersion = 2;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 2) {
             messagei18n.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
@@ -122,7 +122,7 @@ public class MsgUtil {
                     .set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
             messagei18n.set("language-version", 3);
             selectedVersion = 3;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 3) {
             messagei18n.set("signs.unlimited", "Unlimited");
@@ -140,21 +140,21 @@ public class MsgUtil {
             messagei18n.set("controlpanel.sign.refill.line4", "at first line");
             messagei18n.set("language-version", 4);
             selectedVersion = 4;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 4) {
             messagei18n.set("signs.unlimited", "Unlimited");
             messagei18n.set("controlpanel.sign", null);
             messagei18n.set("language-version", 5);
             selectedVersion = 5;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 5) {
             messagei18n.set("command.description.fetchmessage", "&eFetch unread shop message");
             messagei18n.set("nothing-to-flush", "&aYou had no new shop message.");
             messagei18n.set("language-version", 6);
             selectedVersion = 6;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 6) {
             messagei18n.set("command.description.info", "&eShow QuickShop Statistics");
@@ -166,13 +166,13 @@ public class MsgUtil {
             messagei18n.set("command.now-nolonger-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
             messagei18n.set("language-version", 7);
             selectedVersion = 7;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 7) {
             messagei18n.set("failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
             messagei18n.set("language-version", 8);
             selectedVersion = 8;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 8) {
             messagei18n
@@ -182,7 +182,7 @@ public class MsgUtil {
             messagei18n.set("command.description.paste", "&eAuto upload server data to Pastebin");
             messagei18n.set("language-version", 9);
             selectedVersion = 9;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 9) {
             messagei18n.set("controlpanel.commands.setowner", "/qs owner [Player]");
@@ -201,13 +201,13 @@ public class MsgUtil {
             messagei18n.set("booleanformat.failed", "&c✘");
             messagei18n.set("language-version", 10);
             selectedVersion = 10;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 10) {
             messagei18n.set("price-too-high", "&cShop price too high! You can't create price higher than {0} shop.");
             messagei18n.set("language-version", 11);
             selectedVersion = 11;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 11) {
             messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
@@ -219,7 +219,7 @@ public class MsgUtil {
             messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
             messagei18n.set("language-version", 12);
             selectedVersion = 12;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 12) {
             messagei18n.set("menu.commands.preview", "/qs silentpreview {0} {1} {2} {3}");
@@ -231,7 +231,7 @@ public class MsgUtil {
             messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
             messagei18n.set("language-version", 13);
             selectedVersion = 13;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 13) {
             messagei18n.set("no-permission-build", "&cYou can't build shop here.");
@@ -257,19 +257,19 @@ public class MsgUtil {
             messagei18n.set("updatenotify.list", notifylist);
             messagei18n.set("language-version", 14);
             selectedVersion = 14;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 14) {
             messagei18n.set("flush-finished", "&aSuccessfully flushed the messages.");
             messagei18n.set("language-version", 15);
             selectedVersion = 15;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 15) {
             messagei18n.set("purchase-failed", "&cPurchase failed: Internal Error, please contact the server administrator..");
             messagei18n.set("language-version", 16);
             selectedVersion = 16;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 16) {
             messagei18n.set("command.description.owner", "&eChanges who owns a shop");
@@ -280,14 +280,21 @@ public class MsgUtil {
             messagei18n.set("no-pending-action", "&cYou do not have any pending action");
             messagei18n.set("language-version", 17);
             selectedVersion = 17;
-            messagei18n.save(messageFile);
+
         }
         if (selectedVersion == 17) {
             messagei18n.set("updatenotify.onekeybuttontitle", "[OneKey Update]");
             messagei18n.set("language-version", 18);
             selectedVersion = 18;
-            messagei18n.save(messageFile);
+
         }
+        if (selectedVersion == 18) {
+            messagei18n.set("command.description.supercreate", "&eCreate a shop bypass all protection checks");
+            messagei18n.set("language-version", 19);
+            selectedVersion = 19;
+
+        }
+        messagei18n.save(messageFile);
 
     }
 
@@ -468,7 +475,8 @@ public class MsgUtil {
             if (localizedName != null)
                 lastItemName = localizedName;
             itemi18n.set("itemi18n." + itemName, lastItemName);
-            plugin.getLogger().info("Found new items/blocks [" + Util.prettifyText(lastItemName) + "] , adding it to the config...");
+            plugin.getLogger().info("Found new items/blocks [" + Util
+                    .prettifyText(lastItemName) + "] , adding it to the config...");
         }
         try {
             itemi18n.save(itemi18nFile);
@@ -596,11 +604,11 @@ public class MsgUtil {
     }
 
     /**
-     * @param player  The name of the player to message
-     * @param message The message to send them Sends the given player a message if
-     *                they're online. Else, if they're not online, queues it for
-     *                them in the database.
-     * @param isUnlimited  The shop is or unlimited
+     * @param player      The name of the player to message
+     * @param message     The message to send them Sends the given player a message if
+     *                    they're online. Else, if they're not online, queues it for
+     *                    them in the database.
+     * @param isUnlimited The shop is or unlimited
      */
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
@@ -819,7 +827,7 @@ public class MsgUtil {
     /**
      * getMessage in messages.yml
      *
-     * @param loc location
+     * @param loc  location
      * @param args args
      * @return message
      */
