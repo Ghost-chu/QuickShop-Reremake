@@ -108,6 +108,7 @@ public class QuickShop extends JavaPlugin {
     /** The error reporter to help devs report errors to Sentry.io **/
     private SentryErrorReporter sentryErrorReporter;
     private CommandManager commandManager;
+    private ShopProtectionListener shopProtectListener;
 
     /**
      * Get the Player's Shop limit.
@@ -278,6 +279,7 @@ public class QuickShop extends JavaPlugin {
         inventoryListener = new DisplayProtectionListener(this);
         customInventoryListener = new CustomInventoryListener(this);
         displayBugFixListener = new DisplayBugFixListener(this);
+        shopProtectListener = new ShopProtectionListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
@@ -286,6 +288,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
+        Bukkit.getServer().getPluginManager().registerEvents(shopProtectListener, this);
         getLogger().info("Registering DisplayCheck task....");
         if (display && displayItemCheckTicks > 0) {
             new BukkitRunnable() {
@@ -751,8 +754,18 @@ public class QuickShop extends JavaPlugin {
             saveConfig();
             reloadConfig();
         }
-
-
+        if (selectedVersion == 38) {
+            getConfig().set("protect.inventorymove", true);
+            getConfig().set("protect.spread", true);
+            getConfig().set("protect.fromto", true);
+            getConfig().set("protect.minecart", null);
+            getConfig().set("protect.hopper", null);
+            getConfig().set("protect.", null);
+            getConfig().set("config-version", 39);
+            selectedVersion = 39;
+            saveConfig();
+            reloadConfig();
+        }
     }
 
     /** Reloads QuickShops config */
