@@ -6,16 +6,19 @@ import lombok.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServiceRegisterEvent;
+import org.bukkit.event.server.ServiceUnregisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
-public class Economy_Vault implements EconomyCore {
+public class Economy_Vault implements EconomyCore, Listener {
     @Getter
     @Setter
     private Economy vault;
     private QuickShop plugin = QuickShop.instance;
-    final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     public Economy_Vault() {
         setupEconomy();
@@ -32,7 +35,38 @@ public class Economy_Vault implements EconomyCore {
         if (economyProvider != null) {
             this.vault = economyProvider.getProvider();
         }
-        return this.vault != null;
+        if (this.vault == null)
+            return false;
+
+        if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
+            plugin.getLogger()
+                    .warning("Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
+            plugin.getLogger()
+                    .warning("This is technical information, please send this to economy plugin author: " + "VaultEconomyProvider.getName() return a null or empty.");
+        } else {
+            plugin.getLogger().info("Using economy system: " + this.vault.getName());
+        }
+        return true;
+    }
+
+    public String getProviderName() {
+        if (this.vault == null)
+            return "Provider not found.";
+        return String.valueOf(this.vault.getName());
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (!(event.getProvider() instanceof Economy))
+            return;
+        setupEconomy();
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceUnregisterEvent event) {
+        if (!(event.getProvider() instanceof Economy))
+            return;
+        setupEconomy();
     }
 
     @Override
@@ -40,8 +74,20 @@ public class Economy_Vault implements EconomyCore {
         return this.vault != null;
     }
 
+    public boolean checkValid() {
+        if (this.vault == null) {
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            plugin.getLogger().severe("FATAL: Economy system not ready.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public String format(double balance) {
+        if (!checkValid())
+            return "Error";
         try {
             String formatedBalance = this.vault.format(balance);
             if (formatedBalance == null)//Stupid Ecosystem
@@ -54,8 +100,10 @@ public class Economy_Vault implements EconomyCore {
     }
 
     private String formatInternal(double balance) {
+        if (!checkValid())
+            return "Error";
         try {
-            return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
+            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
             return String.valueOf('$' + balance);
         }
@@ -63,32 +111,40 @@ public class Economy_Vault implements EconomyCore {
 
     @Override
     public boolean deposit(@NotNull UUID name, double amount) {
+        if (!checkValid())
+            return false;
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return this.vault.depositPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger()
+                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
             return false;
         }
     }
 
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
+        if (!checkValid())
+            return false;
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return this.vault.withdrawPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger()
+                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
             return false;
         }
     }
 
     @Override
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
+        if (!checkValid())
+            return false;
         OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
         OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
         try {
@@ -106,20 +162,24 @@ public class Economy_Vault implements EconomyCore {
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger()
+                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
             return false;
         }
     }
 
     @Override
     public double getBalance(@NotNull UUID name) {
+        if (!checkValid())
+            return 0.0;
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return this.vault.getBalance(p);
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger()
+                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
             return 0.0;
         }
     }
