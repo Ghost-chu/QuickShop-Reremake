@@ -154,8 +154,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
         for (CommandContainer container : cmds) {
-            if (!container.getPrefix().toLowerCase().equals(commandLabel.toLowerCase()))
+            if (!container.getPrefix().toLowerCase().equals(cmdArg[0]))
                 continue;
+
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null) {
                 for (String requirePermission : requirePermissions) {
