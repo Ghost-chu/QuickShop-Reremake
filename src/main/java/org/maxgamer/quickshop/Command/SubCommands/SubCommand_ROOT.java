@@ -8,6 +8,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.CommandContainer;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_ROOT implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
@@ -17,8 +18,15 @@ public class SubCommand_ROOT implements CommandProcesser {
         List<String> candidate = new ArrayList<>();
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             if (container.getPrefix().startsWith(strings[0]) || container.getPrefix().equals(strings[0])) {
-                if (container.getPermission() == null || container.getPermission().isEmpty() || sender.hasPermission(container
-                        .getPermission()))
+                List<String> requirePermissions = container.getPermissions();
+                if (requirePermissions != null)
+                    for (String requirePermission : requirePermissions) {
+                        if (!sender.hasPermission(requirePermission)) {
+                            Util.debugLog("Sender " + sender
+                                    .getName() + " trying tab-complete the command: " + commandLabel + ", but no permission " + requirePermission);
+                            return null;
+                        }
+                    }
                     if (!container.isHidden())
                         candidate.add(container.getPrefix());
             }
