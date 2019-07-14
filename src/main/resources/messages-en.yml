@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 18
+language-version: 19
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -146,6 +146,7 @@ command:
         amount: "&eExecute for your actions with amount(For chat plugin issue)"
         about: "&eShow QuickShop abouts"
         help: "&eShow QuickShop helps"
+        supercreate: "&eCreate a shop bypass all protection checks"
 
 signs:
     header: "&c{0}"
