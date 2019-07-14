@@ -760,7 +760,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("protect.fromto", true);
             getConfig().set("protect.minecart", null);
             getConfig().set("protect.hopper", null);
-            getConfig().set("protect.", null);
             getConfig().set("config-version", 39);
             selectedVersion = 39;
             saveConfig();
