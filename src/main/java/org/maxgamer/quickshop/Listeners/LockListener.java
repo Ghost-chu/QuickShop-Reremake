@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,8 +13,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.InventoryPreview;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -140,6 +148,51 @@ public class LockListener implements Listener {
                     if (shop != null)
                         e.blockList().remove(b); //Protect shop
                 }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void invEvent(InventoryMoveItemEvent e) {
+        if (!InventoryPreview.isPreviewItem(e.getItem()))
+            return;
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void invEvent(InventoryClickEvent e) {
+        if (InventoryPreview.isPreviewItem(e.getCursor())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+        if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+    }
+
+    @EventHandler
+    public void invEvent(InventoryDragEvent e) {
+        if (InventoryPreview.isPreviewItem(e.getCursor())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+        if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+
+    }
+
+    @EventHandler
+    public void invEvent(InventoryPickupItemEvent e) {
+        Inventory inventory = e.getInventory();
+        ItemStack[] stacks = inventory.getContents();
+        for (ItemStack itemStack : stacks) {
+            if (itemStack == null)
+                continue;
+            if (InventoryPreview.isPreviewItem(itemStack)) {
+                e.setCancelled(true);
             }
         }
     }

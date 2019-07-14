@@ -33,9 +33,9 @@ public class Economy_Vault implements EconomyCore, Listener {
             return false;
         }
 
-        if (economyProvider != null) {
+        if (economyProvider != null)
             this.vault = economyProvider.getProvider();
-        }
+
         if (this.vault == null)
             return false;
 
