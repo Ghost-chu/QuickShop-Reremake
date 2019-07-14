@@ -17,6 +17,8 @@ public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
         if (e.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancel-chat-event")) {
             Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
             return;
