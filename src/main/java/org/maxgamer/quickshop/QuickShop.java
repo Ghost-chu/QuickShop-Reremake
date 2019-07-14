@@ -20,7 +20,6 @@ import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.Listeners.*;
-import org.maxgamer.quickshop.Shop.InventoryPreview;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -758,9 +757,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
 
         Util.debugLog("Closing all GUIs...");
-        for (Player player : InventoryPreview.openedGuiPlayers) {
-            if (!player.isOnline())
-                continue;
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
 
