@@ -609,8 +609,11 @@ public class ContainerShop implements Shop {
             if (!isAttached(b)) {
                 continue;
             }
+            if (!(b.getState() instanceof Sign))
+                continue;
             org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
-            if (sign.getLine(0).contains(signHeader) || sign.getLine(0).contains(signHeader2)) {
+            String currentLine = sign.getLine(0);
+            if (currentLine.contains(signHeader) || currentLine.contains(signHeader2)) {
                 signs.add(sign);
             } else {
                 boolean text = false;
