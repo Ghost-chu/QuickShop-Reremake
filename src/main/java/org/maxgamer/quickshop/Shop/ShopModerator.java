@@ -87,10 +87,7 @@ public class ShopModerator {
      * @return Success
      */
     public boolean delStaff(@NotNull UUID player) {
-        if (!staffs.contains(player))
-            return false;
-        staffs.remove(player);
-        return true;
+        return staffs.remove(player);
     }
 
     /**
