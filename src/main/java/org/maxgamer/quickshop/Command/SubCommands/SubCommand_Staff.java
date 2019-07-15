@@ -17,6 +17,7 @@ import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_Staff implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
@@ -24,6 +25,7 @@ public class SubCommand_Staff implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> tabList = new ArrayList<>();
+        Util.debugLog(Util.array2String(cmdArg));
         if (cmdArg.length < 2) {
             if (cmdArg.length == 1) {
                 String prefix = cmdArg[0].toLowerCase();
@@ -83,8 +85,8 @@ public class SubCommand_Staff implements CommandProcesser {
                             return;
                         }
                         if (cmdArg[0].equals("clear")) {
-
                             shop.clearStaffs();
+                            shop.update();
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
                         }
                         if (cmdArg[0].equals("list")) {
@@ -92,8 +94,6 @@ public class SubCommand_Staff implements CommandProcesser {
                                 sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
                                         .getPlayer(uuid).getName());
                             }
-                            shop.clearStaffs();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
                         }
                         sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                         return;
