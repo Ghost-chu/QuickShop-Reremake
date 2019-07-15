@@ -93,7 +93,13 @@ public class SubCommand_Staff implements CommandProcesser {
                                     sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
                                     return;
                                 case "list":
-                                    for (UUID uuid : shop.getStaffs()) {
+                                    List<UUID> staffs = shop.getStaffs();
+                                    if (staffs.isEmpty()) {
+                                        sender.sendMessage(ChatColor.GREEN + MsgUtil
+                                                .getMessage("tableformat.left_begin") + "Empty");
+                                        return;
+                                    }
+                                    for (UUID uuid : staffs) {
                                         sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
                                                 .getOfflinePlayer(uuid).getName());
                                     }
