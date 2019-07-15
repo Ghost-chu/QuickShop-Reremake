@@ -64,7 +64,8 @@ public class SubCommand_Staff implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Player && sender.hasPermission("quickshop.staff")) {
+        Util.debugLog(Util.array2String(cmdArg));
+        if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
                 sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
@@ -111,14 +112,14 @@ public class SubCommand_Staff implements CommandProcesser {
                         // }
 
                         if (cmdArg[0].equals("add")) {
-
                             shop.addStaff(player.getUniqueId());
+                            shop.update();
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-added", cmdArg[1]));
                             return;
                         }
                         if (cmdArg[0].equals("del")) {
-
                             shop.delStaff(player.getUniqueId());
+                            shop.update();
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", cmdArg[1]));
                             return;
                         }
