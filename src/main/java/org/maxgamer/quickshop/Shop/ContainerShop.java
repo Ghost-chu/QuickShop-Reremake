@@ -72,12 +72,12 @@ public class ContainerShop implements Shop {
     /**
      * Adds a new shop.
      *
-     * @param loc   The location of the chest block
-     * @param price The cost per item
-     * @param item  The itemstack with the properties we want. This is .cloned, no
-     *              need to worry about references
+     * @param loc       The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no
+     *                  need to worry about references
      * @param moderator The modertators
-     * @param type The shop type
+     * @param type      The shop type
      * @param unlimited The unlimited
      */
     public ContainerShop(@NotNull Location loc, double price, @NotNull ItemStack item, @NotNull ShopModerator moderator, boolean unlimited, @NotNull ShopType type) {
@@ -110,7 +110,6 @@ public class ContainerShop implements Shop {
         } else {
             Util.debugLog("The display was disabled.");
         }
-
 
     }
 
@@ -600,15 +599,14 @@ public class ContainerShop implements Shop {
 
         for (Block b : blocks) {
             if (b == null) {
-                plugin.getLogger().warning("Null signs in the queue");
+                plugin.getLogger().warning("Null signs in the queue, skipping");
+                continue;
             }
             Material mat = b.getType();
-            if (!Util.isWallSign(mat)) {
+            if (!Util.isWallSign(mat))
                 continue;
-            }
-            if (!isAttached(b)) {
+            if (!isAttached(b))
                 continue;
-            }
             if (!(b.getState() instanceof Sign))
                 continue;
             org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
@@ -623,9 +621,8 @@ public class ContainerShop implements Shop {
                         break;
                     }
                 }
-                if (!text) {
+                if (!text)
                     signs.add(sign);
-                }
             }
         }
         return signs;
@@ -723,17 +720,10 @@ public class ContainerShop implements Shop {
             Util.debugLog("Dupe load request, canceled.");
             return;
         }
-
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
         Bukkit.getPluginManager().callEvent(shopLoadEvent);
-        if (shopLoadEvent.isCancelled()) {
+        if (shopLoadEvent.isCancelled())
             return;
-        }
-
-        // if (!Util.isLoaded(this.getLocation())) {
-        //     Util.debugLog("Shop " + this.getLocation().toString() + " skipped to load: Target location not loaded.");
-        //     return;
-        // }
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
@@ -763,19 +753,14 @@ public class ContainerShop implements Shop {
     }
 
     public String ownerName() {
-        if (this.isUnlimited()) {
+        if (this.isUnlimited())
             return MsgUtil.getMessage("admin-shop");
-        }
 
-        if (this.getOwner() == null) {
+        if (this.getOwner() == null)
             return MsgUtil.getMessage("unknown-owner");
-        }
-
-        final String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
-        if (name == null) {
+        String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
+        if (name == null || name.isEmpty())
             return MsgUtil.getMessage("unknown-owner");
-        }
-
         return name;
     }
 
@@ -829,10 +814,12 @@ public class ContainerShop implements Shop {
             this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
-            if (this.displayItem.checkDisplayNeedRegen())
+            if (this.displayItem.checkDisplayNeedRegen()) {
                 this.displayItem.fixDisplayNeedRegen();
-            if (this.displayItem.checkDisplayIsMoved())
-                this.displayItem.fixDisplayMoved();
+            } else {/* If display was regened, we didn't need check it moved, performance! */
+                if (this.displayItem.checkDisplayIsMoved())
+                    this.displayItem.fixDisplayMoved();
+            }
         }
         /* Dupe is always need check, if enabled display */
         if (plugin.isDisplay())

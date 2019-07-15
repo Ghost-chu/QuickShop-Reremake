@@ -20,11 +20,11 @@ import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.Listeners.*;
-import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Watcher.DisplayWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
@@ -109,6 +109,7 @@ public class QuickShop extends JavaPlugin {
     private SentryErrorReporter sentryErrorReporter;
     private CommandManager commandManager;
     private ShopProtectionListener shopProtectListener;
+    private DisplayWatcher displayWatcher;
 
     /**
      * Get the Player's Shop limit.
@@ -276,6 +277,7 @@ public class QuickShop extends JavaPlugin {
         customInventoryListener = new CustomInventoryListener(this);
         displayBugFixListener = new DisplayBugFixListener(this);
         shopProtectListener = new ShopProtectionListener(this);
+        displayWatcher = new DisplayWatcher(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
@@ -285,26 +287,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(shopProtectListener, this);
-        getLogger().info("Registering DisplayCheck task....");
-        if (display && displayItemCheckTicks > 0) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (getConfig().getInt("shop.display-items-check-ticks") < 3000)
-                        getLogger()
-                                .severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
-                    Iterator<Shop> it = getShopManager().getShopIterator();
-                    while (it.hasNext()) {
-                        Shop shop = it.next();
-                        if (shop == null)
-                            continue;
-                        if (!shop.isLoaded())
-                            continue;
-                        shop.checkDisplay();
-                    }
-                }
-            }.runTaskTimer(this, 1L, displayItemCheckTicks);
-        }
+
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
