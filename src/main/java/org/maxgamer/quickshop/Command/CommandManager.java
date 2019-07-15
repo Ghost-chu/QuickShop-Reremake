@@ -111,6 +111,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         passthroughArgs = new String[cmdArg.length - 1];
         System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         for (CommandContainer container : cmds) {
+            if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0]))
+                continue;
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null)
                 for (String requirePermission : requirePermissions) {
@@ -122,8 +124,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     }
                 }
             return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
-
         }
+
         return null;
     }
 
