@@ -62,6 +62,7 @@ public class SubCommand_Staff implements CommandProcesser {
         return tabList;
     }
 
+    @SuppressWarnings("DuplicateBranchesInSwitch")
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Util.debugLog(Util.array2String(cmdArg));
@@ -75,60 +76,51 @@ public class SubCommand_Staff implements CommandProcesser {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-                    if (cmdArg.length == 0) { // qs staff
-                        // Send
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return;
-                    }
-                    if (cmdArg.length == 1) { // qs staff [add|del|clear|others]
-                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del") && !cmdArg[0].equals("clear")) {
+                    switch (cmdArg.length) {
+                        case 0:
                             sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                             return;
-                        }
-                        if (cmdArg[0].equals("clear")) {
-                            shop.clearStaffs();
-                            shop.update();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
-                        }
-                        if (cmdArg[0].equals("list")) {
-                            for (UUID uuid : shop.getStaffs()) {
-                                sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
-                                        .getPlayer(uuid).getName());
+                        case 1:
+                            switch (cmdArg[0]) {
+                                case "add":
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                                    return;
+                                case "del":
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                                    return;
+                                case "clear":
+                                    shop.clearStaffs();
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared"));
+                                    return;
+                                case "list":
+                                    for (UUID uuid : shop.getStaffs()) {
+                                        sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin") + Bukkit
+                                                .getOfflinePlayer(uuid).getName());
+                                    }
+                                    return;
+                                default:
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                             }
-                        }
-                        sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                        return;
+                        case 2:
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(cmdArg[1]);
+                            String offlinePlayerName = offlinePlayer.getName();
+                            if (offlinePlayerName == null)
+                                offlinePlayerName = "null";
+                            switch (cmdArg[0]) {
+                                case "add":
+                                    shop.addStaff(offlinePlayer.getUniqueId());
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-added", offlinePlayerName));
+                                    return;
+                                case "del":
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", offlinePlayerName));
+                                    return;
+                                default:
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
+                            }
                     }
-                    if (cmdArg.length == 2) { // qs staff [add|del] [player]
-                        if (!cmdArg[0].equals("add") && !cmdArg[0].equals("del")) {
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
-                            return;
-                        }
-                        @SuppressWarnings("deprecation")
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(cmdArg[1]);
-                        // if (player == null) {
-                        //     sender.sendMessage(MsgUtil.getMessage("unknown-player"));
-                        //     return true;
-                        // }
 
-                        if (cmdArg[0].equals("add")) {
-                            shop.addStaff(player.getUniqueId());
-                            shop.update();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-added", cmdArg[1]));
-                            return;
-                        }
-                        if (cmdArg[0].equals("del")) {
-                            shop.delStaff(player.getUniqueId());
-                            shop.update();
-                            sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", cmdArg[1]));
-                            return;
-                        }
-                    }
-                    return;
                 }
             }
-            return;
         }
-        sender.sendMessage(MsgUtil.getMessage("no-permission"));
     }
 }
