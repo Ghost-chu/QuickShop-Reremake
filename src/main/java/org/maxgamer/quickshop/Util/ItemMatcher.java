@@ -42,11 +42,7 @@ public class ItemMatcher {
             return false; // One of them is null (Can't be both, see above)
 
         if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
-            if (stack1.equals(stack2))
-                return false;
-
-        if (stack1.hashCode() == stack2.hashCode())
-            return true;
+            return stack1.equals(stack2);
 
         if (!typeMatches(stack1, stack2)) {
             return false;
@@ -57,8 +53,7 @@ public class ItemMatcher {
         }
 
         if (stack1.hasItemMeta()) {
-            if (!itemMetaMatcher.matches(stack1, stack2))
-                return false;
+            return itemMetaMatcher.matches(stack1, stack2);
         }
         return true;
     }
@@ -89,6 +84,7 @@ public class ItemMatcher {
         }
 
         boolean matches(ItemStack stack1, ItemStack stack2) {
+            Util.debugLog("Begin the item matches checking...");
             if (stack1.hasItemMeta() != stack2.hasItemMeta())
                 return false;
             if (!stack1.hasItemMeta())
@@ -97,10 +93,10 @@ public class ItemMatcher {
             ItemMeta meta2 = stack2.getItemMeta();
             if ((meta1 == null) != (meta2 == null))
                 return false;
-            if (meta1 == null)
+            if (meta1 == null) {
+                Util.debugLog("Pass");
                 return true; //Both null...
-            if (rootMatches(meta1, meta2)) //Directly check itemMeta.
-                return true; // If not passed the check, it's okay, cause this is a strict check.
+            }
             if (!damageMatches(meta1, meta2))
                 return false;
             if (!displayMatches(meta1, meta2))
@@ -121,6 +117,7 @@ public class ItemMatcher {
             } catch (NoSuchMethodError err) {
                 //Ignore, for 1.13 compatibility
             }
+            Util.debugLog("Pass");
             return true;
         }
 
@@ -135,7 +132,7 @@ public class ItemMatcher {
                 return false;
 
             if (!(meta1 instanceof Damageable))
-                return false; //No damage need to check.
+                return true; //No damage need to check.
 
             Damageable damage1 = (Damageable) meta1;
             Damageable damage2 = (Damageable) meta2;
@@ -146,7 +143,7 @@ public class ItemMatcher {
             if (!damage1.hasDamage())
                 return true; //No damage need to check.
 
-            return (damage1.getDamage() == damage2.getDamage());
+            return damage1.getDamage() == damage2.getDamage();
 
         }
 
@@ -161,8 +158,10 @@ public class ItemMatcher {
         }
 
         private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
+            Util.debugLog("Lores checker");
             if (!this.lores)
                 return true;
+            Util.debugLog("Lores checking");
             if (meta1.hasLore() != meta2.hasLore())
                 return false;
             if (!meta1.hasLore())
