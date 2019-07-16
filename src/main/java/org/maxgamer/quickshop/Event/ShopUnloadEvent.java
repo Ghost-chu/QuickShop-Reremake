@@ -11,9 +11,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopUnloadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private @NonNull Shop shop;
+    private @NotNull Shop shop;
     /* Getting the unloading shop, Can't cancel. **/
-    public ShopUnloadEvent(@NonNull Shop shop) {
+    public ShopUnloadEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
 

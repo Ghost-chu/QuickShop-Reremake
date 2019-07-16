@@ -18,13 +18,13 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     @Getter
-    @NonNull
+    @NotNull
     private ItemStack itemStack;
     @Getter
-    @NonNull
+    @NotNull
     private DisplayType displayType;
 
     /**
@@ -33,7 +33,7 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
      * @param iStack Target itemstacck
      */
     @Deprecated
-    public ShopDisplayItemDespawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack) {
+    public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack) {
         this.shop = shop;
         this.itemStack = iStack;
         this.displayType = DisplayItem.getNowUsing();
@@ -45,7 +45,7 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
      * @param iStack Target itemstacck
      * @param displayType The displayType
      */
-    public ShopDisplayItemDespawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack, @NonNull DisplayType displayType) {
+    public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack, @NotNull DisplayType displayType) {
         this.shop = shop;
         this.itemStack = iStack;
         this.displayType = displayType;

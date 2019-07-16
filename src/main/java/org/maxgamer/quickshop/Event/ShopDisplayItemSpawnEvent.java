@@ -5,6 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -17,13 +18,13 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     @Getter
-    @NonNull
+    @NotNull
     private ItemStack itemStack;
     @Getter
-    @NonNull
+    @NotNull
     private DisplayType displayType;
 
     /**
@@ -32,7 +33,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
      * @param displayType The displayType
      * @param iStack Target ItemStack
      */
-    public ShopDisplayItemSpawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack, @NonNull DisplayType displayType) {
+    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack, @NotNull DisplayType displayType) {
         this.shop = shop;
         this.itemStack = iStack;
         this.displayType = displayType;
@@ -44,7 +45,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
      * @param displayType The displayType
      */
     @Deprecated
-    public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
+    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack) {
         this.shop = shop;
         this.itemStack = iStack;
         this.displayType = DisplayItem.getNowUsing();

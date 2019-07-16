@@ -12,10 +12,10 @@ import org.maxgamer.quickshop.Shop.ShopModerator;
 public class ShopModeratorChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     @Getter
-    @NonNull
+    @NotNull
     private ShopModerator moderator;
 
     /**
@@ -24,7 +24,7 @@ public class ShopModeratorChangedEvent extends Event {
      * @param shop          Target shop
      * @param shopModerator The shop moderator
      */
-    public ShopModeratorChangedEvent(@NonNull Shop shop, @NonNull ShopModerator shopModerator) {
+    public ShopModeratorChangedEvent(@NotNull Shop shop, @NotNull ShopModerator shopModerator) {
         this.shop = shop;
         this.moderator = shopModerator;
     }

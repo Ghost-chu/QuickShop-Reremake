@@ -12,10 +12,10 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopSignUpdatedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     @Getter
-    @NonNull
+    @NotNull
     private Sign sign;
 
     /**
@@ -24,7 +24,7 @@ public class ShopSignUpdatedEvent extends Event {
      * @param shop Target shop
      * @param sign updated sign
      */
-    public ShopSignUpdatedEvent(@NonNull Shop shop, @NonNull Sign sign) {
+    public ShopSignUpdatedEvent(@NotNull Shop shop, @NotNull Sign sign) {
         this.shop = shop;
         this.sign = sign;
     }
