@@ -2,7 +2,6 @@ package org.maxgamer.quickshop;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -790,11 +789,9 @@ public class QuickShop extends JavaPlugin {
      * @param s The string to log. It will be prefixed with the date and time.
      */
     public void log(@NotNull String s) {
-        if (this.logWatcher == null)
+        if (this.getLogWatcher() == null)
             return;
-        Date date = Calendar.getInstance().getTime();
-        Timestamp time = new Timestamp(date.getTime());
-        this.logWatcher.add("[" + time.toString() + "] " + s);
+        this.getLogWatcher().log(s);
     }
 
     /**
