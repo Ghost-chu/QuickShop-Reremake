@@ -13,14 +13,22 @@ import org.maxgamer.quickshop.QuickShop;
  * @author creatorfromhell
  */
 public class Economy_Reserve implements EconomyCore {
+    final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
+    private QuickShop plugin = QuickShop.instance;
     @Getter
     @Setter
     private EconomyAPI reserve = null;
-    private QuickShop plugin = QuickShop.instance;
-    final private String errorMsg = "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     public Economy_Reserve() {
         setup();
+    }
+
+    private String formatInternal(double balance) {
+        try {
+            return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
+        } catch (Exception e) {
+            return String.valueOf('$' + balance);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -59,14 +67,6 @@ public class Economy_Reserve implements EconomyCore {
             throwable.printStackTrace();
             plugin.getLogger().warning(this.errorMsg);
             return formatInternal(balance);
-        }
-    }
-
-    private String formatInternal(double balance) {
-        try {
-            return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
-        } catch (Exception e) {
-            return String.valueOf('$' + balance);
         }
     }
 

@@ -10,11 +10,11 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopPriceChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
+    @Getter private double newPrice;
+    @Getter private double oldPrice;
     @Getter
     @NotNull
     private Shop shop;
-    @Getter private double oldPrice;
-    @Getter private double newPrice;
 
     /**
      * Will call when shop price was changed.

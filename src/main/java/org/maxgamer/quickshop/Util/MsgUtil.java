@@ -32,18 +32,145 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
-    private static QuickShop plugin = QuickShop.instance;
-    private static YamlConfiguration itemi18n;
-    private static YamlConfiguration enchi18n;
-    private static YamlConfiguration potioni18n;
-    private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
-    private static boolean inited;
-    private static YamlConfiguration messagei18n;
-    private static File messageFile;
     public static String invaildMsg = "Invaild message";
+    private static YamlConfiguration enchi18n;
+    private static boolean inited;
+    private static YamlConfiguration itemi18n;
+    private static File messageFile;
+    private static YamlConfiguration messagei18n;
+    private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
+    private static QuickShop plugin = QuickShop.instance;
+    private static YamlConfiguration potioni18n;
 
-    public static YamlConfiguration getI18nYaml() {
-        return messagei18n;
+    /**
+     * Translate boolean value to String, the symbon is changeable by language file.
+     *
+     * @param bool The boolean value
+     * @return The result of translate.
+     */
+    public static String bool2String(boolean bool) {
+        if (bool) {
+            return MsgUtil.getMessage("booleanformat.success");
+        } else {
+            return MsgUtil.getMessage("booleanformat.failed");
+        }
+    }
+
+    /**
+     * Deletes any messages that are older than a week in the database, to save
+     * on space.
+     */
+    public static void clean() {
+        plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
+        // 604800,000 msec = 1 week.
+        long weekAgo = System.currentTimeMillis() - 604800000;
+        plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
+    }
+
+    /**
+     * Replace args in raw to args
+     *
+     * @param raw  text
+     * @param args args
+     * @return filled text
+     */
+    public static String fillArgs(@Nullable String raw, @Nullable String... args) {
+        if (raw == null)
+            return "Invalid message: null";
+        if (raw.isEmpty())
+            return "";
+        if (args == null)
+            return raw;
+        for (int i = 0; i < args.length; i++)
+            raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+        return raw;
+    }
+
+    /**
+     * Empties the queue of messages a player has and sends them to the player.
+     *
+     * @param p The player to message
+     * @return True if success, False if the player is offline or null
+     */
+    public static boolean flush(@NotNull OfflinePlayer p) {
+        if (p.isOnline()) {
+            UUID pName = p.getUniqueId();
+            LinkedList<String> msgs = player_messages.get(pName);
+            if (msgs != null) {
+                for (String msg : msgs) {
+                    if (p.getPlayer() != null)
+                        p.getPlayer().sendMessage(msg);
+                }
+                plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
+                msgs.clear();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Get Enchantment's i18n name.
+     *
+     * @param key The Enchantment.
+     * @return Enchantment's i18n name.
+     */
+    public static String getEnchi18n(@NotNull Enchantment key) {
+        String enchString = key.getKey().getKey();
+        if (enchString.isEmpty())
+            return "Enchantment key is empty";
+        String enchI18n = enchi18n.getString("enchi18n." + enchString);
+        if (enchI18n != null && !enchI18n.isEmpty())
+            return enchI18n;
+        return Util.prettifyText(enchString);
+    }
+
+    /**
+     * Get item's i18n name
+     *
+     * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
+     * @return String Item's i18n name.
+     */
+    public static String getItemi18n(@NotNull String itemBukkitName) {
+        if (itemBukkitName.isEmpty())
+            return "Item is empty";
+        String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
+        if (itemnameI18n != null && !itemnameI18n.isEmpty())
+            return itemnameI18n;
+        Material material = Material.matchMaterial(itemBukkitName);
+        if (material == null)
+            return "Material not exist";
+        return Util.prettifyText(material.name());
+    }
+
+    /**
+     * getMessage in messages.yml
+     *
+     * @param loc  location
+     * @param args args
+     * @return message
+     */
+    public static String getMessage(@NotNull String loc, @NotNull String... args) {
+        String raw = messagei18n.getString(loc);
+        if (raw == null)
+            return invaildMsg + ": " + loc;
+        return fillArgs(raw, args);
+    }
+
+    /**
+     * Get potion effect's i18n name.
+     *
+     * @param potion potionType
+     * @return Potion's i18n name.
+     */
+    public static String getPotioni18n(@NotNull PotionEffectType potion) {
+        String potionString = potion.getName().trim();
+        if (potionString.isEmpty())
+            return "Potion name is empty.";
+        String potionI18n = potioni18n.getString("potioni18n." + potionString);
+        if (potionI18n != null && !potionI18n.isEmpty())
+            return potionI18n;
+        return Util.prettifyText(potionString);
     }
 
     public static void loadCfgMessages(@NotNull String... reload) {
@@ -86,6 +213,480 @@ public class MsgUtil {
             e.printStackTrace();
             plugin.getLogger().log(Level.WARNING, "Could not load/save transaction from messages.yml. Skipping.");
         }
+    }
+
+    public static void loadEnchi18n() {
+        plugin.getLogger().info("Starting loading Enchantment i18n...");
+        File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
+        if (!enchi18nFile.exists()) {
+            plugin.getLogger().info("Creating enchi18n.yml");
+            plugin.saveResource("enchi18n.yml", true);
+        }
+        // Store it
+        enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
+        enchi18n.options().copyDefaults(true);
+        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.
+                getResource("enchi18n.yml")));
+        enchi18n.setDefaults(enchi18nYAML);
+        Util.parseColours(enchi18n);
+        Enchantment[] enchsi18n = Enchantment.values();
+        for (Enchantment ench : enchsi18n) {
+            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().toString().trim());
+            if (enchi18nString != null && !enchi18nString.isEmpty())
+                continue;
+            String enchName = ench.getKey().getKey();
+            enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
+            plugin.getLogger().info("Found new ench [" + Util.prettifyText(enchName) + "] , adding it to the config...");
+        }
+        try {
+            enchi18n.save(enchi18nFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
+        }
+        plugin.getLogger().info("Complete to load enchname i18n.");
+    }
+
+    /**
+     * Load Itemi18n fron file
+     */
+    public static void loadItemi18n() {
+        File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
+        if (!itemi18nFile.exists()) {
+            plugin.getLogger().info("Creating itemi18n.yml");
+            plugin.saveResource("itemi18n.yml", true);
+        }
+        // Store it
+        itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
+        itemi18n.options().copyDefaults(true);
+        YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
+                .getResource("itemi18n.yml")));
+        itemi18n.setDefaults(itemi18nYAML);
+        Util.parseColours(itemi18n);
+        Material[] itemsi18n = Material.values();
+        for (Material material : itemsi18n) {
+            String itemi18nString = itemi18n.getString("itemi18n." + material.name());
+            if (itemi18nString != null && !itemi18nString.isEmpty())
+                continue;
+            String itemName = material.name();
+            String lastItemName = Util.prettifyText(itemName);
+            String localizedName = Util.getLocalizedName(new ItemStack(material));
+            /* If have localizedName, use localizedName, not our processed name */
+            if (localizedName != null)
+                lastItemName = localizedName;
+            itemi18n.set("itemi18n." + itemName, lastItemName);
+            plugin.getLogger().info("Found new items/blocks [" + Util
+                    .prettifyText(lastItemName) + "] , adding it to the config...");
+        }
+        try {
+            itemi18n.save(itemi18nFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
+        }
+        plugin.getLogger().info("Complete to load Itemname i18n.");
+    }
+
+    public static void loadPotioni18n() {
+        plugin.getLogger().info("Starting loading Potion i18n...");
+        File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
+        if (!potioni18nFile.exists()) {
+            plugin.getLogger().info("Creating potioni18n.yml");
+            plugin.saveResource("potioni18n.yml", true);
+        }
+        // Store it
+        potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
+        potioni18n.options().copyDefaults(true);
+        YamlConfiguration potioni18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
+                .getResource("potioni18n.yml")));
+        potioni18n.setDefaults(potioni18nYAML);
+        Util.parseColours(potioni18n);
+        PotionEffectType[] potionsi18n = PotionEffectType.values();
+        for (PotionEffectType potion : potionsi18n) {
+            if (potion != null) {
+                String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
+                if (potionI18n != null && !potionI18n.isEmpty())
+                    continue;
+                String potionName = potion.getName();
+                plugin.getLogger().info("Found new potion [" + Util.prettifyText(potionName) + "] , adding it to the config...");
+                potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
+            }
+        }
+        try {
+            potioni18n.save(potioni18nFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
+        }
+        plugin.getLogger().info("Complete to load potionname i18n.");
+    }
+
+    /**
+     * loads all player purchase messages from the database.
+     */
+    public static void loadTransactionMessages() {
+        player_messages.clear(); // Delete old messages
+        try {
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
+            while (rs.next()) {
+                UUID owner = UUID.fromString(rs.getString("owner"));
+                String message = rs.getString("message");
+                LinkedList<String> msgs = player_messages.computeIfAbsent(owner, k -> new LinkedList<>());
+                msgs.add(message);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.");
+        }
+    }
+
+    /**
+     * @param player      The name of the player to message
+     * @param message     The message to send them Sends the given player a message if
+     *                    they're online. Else, if they're not online, queues it for
+     *                    them in the database.
+     * @param isUnlimited The shop is or unlimited
+     */
+    public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
+        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
+            return; //Ignore unlimited shops messages.
+        OfflinePlayer p = Bukkit.getOfflinePlayer(player);
+        if (!p.isOnline()) {
+            LinkedList<String> msgs = player_messages.get(player);
+            // msgs = new LinkedList<String>();
+            if (msgs == null)
+                msgs = new LinkedList<>();
+            player_messages.put(player, msgs);
+            msgs.add(message);
+            plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
+        } else {
+            if (p.getPlayer() != null)
+                p.getPlayer().sendMessage(message);
+        }
+    }
+
+    /**
+     * Send controlPanel infomation to sender
+     *
+     * @param sender Target sender
+     * @param shop   Target shop
+     */
+    public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
+        if (!sender.hasPermission("quickshop.use")) {
+            return;
+        }
+
+        if (plugin.getConfig().getBoolean("sneak-to-control"))
+            if (sender instanceof Player)
+                if (!((Player) sender).isSneaking())
+                    return;
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
+        chatSheetPrinter.printHeader();
+        chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation"));
+        // Owner
+        if (!sender.hasPermission("quickshop.setowner")) {
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
+        } else {
+            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", shop.ownerName()), MsgUtil
+                    .getMessage("controlpanel.setowner-hover"), MsgUtil.getMessage("controlpanel.commands.setowner"));
+        }
+
+        // Unlimited
+        if (sender.hasPermission("quickshop.unlimited")) {
+            String text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
+            String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
+            //String clickCommand = "/qs silentunlimited " + shop.getLocation().getWorld().getName() + " "
+            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+            //		+ shop.getLocation().getBlockZ();
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",
+                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    String.valueOf(shop.getLocation().getBlockX()),
+                    String.valueOf(shop.getLocation().getBlockY()),
+                    String.valueOf(shop.getLocation().getBlockZ()));
+            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+        }
+        // Buying/Selling Mode
+        if (sender.hasPermission("quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
+            if (shop.isSelling()) {
+                String text = MsgUtil.getMessage("controlpanel.mode-selling");
+                String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
+                //String clickCommand = "/qs silentbuy " + shop.getLocation().getWorld().getName() + " "
+                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+                //		+ shop.getLocation().getBlockZ();
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy",
+                        String.valueOf(shop.getLocation().getWorld().getName()),
+                        String.valueOf(shop.getLocation().getBlockX()),
+                        String.valueOf(shop.getLocation().getBlockY()),
+                        String.valueOf(shop.getLocation().getBlockZ()));
+                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+            } else if (shop.isBuying()) {
+                String text = MsgUtil.getMessage("controlpanel.mode-buying");
+                String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
+                //String clickCommand = "/qs silentsell " + shop.getLocation().getWorld().getName() + " "
+                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+                //		+ shop.getLocation().getBlockZ() ;
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell",
+                        String.valueOf(shop.getLocation().getWorld().getName()),
+                        String.valueOf(shop.getLocation().getBlockX()),
+                        String.valueOf(shop.getLocation().getBlockY()),
+                        String.valueOf(shop.getLocation().getBlockZ()));
+                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+            }
+        }
+        // Set Price
+        if (sender.hasPermission("quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+            String text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.price-hover");
+            //String clickCommand = "/qs price [New Price]";
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
+            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+        }
+        // Refill
+        if (sender.hasPermission("quickshop.refill")) {
+            String text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
+            //String clickCommand = "/qs refill [Amount]";
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill");
+            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+        }
+        // Refill
+        if (sender.hasPermission("quickshop.empty")) {
+            String text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
+            //String clickCommand = "/qs silentempty " + shop.getLocation().getWorld().getName() + " "
+            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+            //		+ shop.getLocation().getBlockZ();
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",
+                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    String.valueOf(shop.getLocation().getBlockX()),
+                    String.valueOf(shop.getLocation().getBlockY()),
+                    String.valueOf(shop.getLocation().getBlockZ()));
+            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+        }
+        // Remove
+        if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+            String text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
+            //String clickCommand = "/qs silentremove " + shop.getLocation().getWorld().getName() + " "
+            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
+            //		+ shop.getLocation().getBlockZ();
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",
+                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    String.valueOf(shop.getLocation().getBlockX()),
+                    String.valueOf(shop.getLocation().getBlockY()),
+                    String.valueOf(shop.getLocation().getBlockZ()));
+            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+        }
+
+        chatSheetPrinter.printFooter();
+    }
+
+    /**
+     * Send globalAlert to ops, console, log file.
+     *
+     * @param content The content to send.
+     */
+    public static void sendGlobalAlert(String content) {
+        sendMessageToOps(content);
+        plugin.getLogger().warning(content);
+        plugin.getLogWatcher().add(content);
+        Util.debugLog(content);
+    }
+
+    /**
+     * Send the ItemPreview chat msg by NMS.
+     *
+     * @param shop       Target shop
+     * @param itemStack  Target ItemStack
+     * @param player     Target player
+     * @param normalText The text you will see
+     */
+    public static void sendItemholochat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+        try {
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json == null)
+                return;
+            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
+            ComponentBuilder cBuilder = new ComponentBuilder(json);
+            if (player.hasPermission("quickshop.preview"))
+                normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
+                        .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
+                                .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
+                                .valueOf(shop.getLocation().getBlockZ()))));
+            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+            player.spigot().sendMessage(normalmessage);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    /**
+     * Send a message for all online Ops.
+     *
+     * @param message The message you want send
+     */
+    public static void sendMessageToOps(@NotNull String message) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.isOp() || player.hasPermission("quickshop.alert")) {
+                        player.sendMessage(message);
+                    }
+                }
+            }
+        }.runTaskAsynchronously(plugin);
+
+    }
+
+    /**
+     * Send a purchaseSuccess message for a player.
+     *
+     * @param p      Target player
+     * @param shop   Target shop
+     * @param amount Trading item amounts.
+     */
+    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+        chatSheetPrinter.printHeader();
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase"));
+        chatSheetPrinter.printLine(MsgUtil
+                .getMessage("menu.item-name-and-price", "" + amount, Util.getItemStackName(shop.getItem()), Util
+                        .format((amount * shop.getPrice()))));
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+            enchs = shop.getItem().getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
+            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
+            }
+        }
+        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
+            stor.getStoredEnchants();
+            enchs = stor.getStoredEnchants();
+            if (!enchs.isEmpty()) {
+                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
+                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
+                }
+            }
+        }
+        chatSheetPrinter.printFooter();
+    }
+
+    /**
+     * Send a sellSuccess message for a player.
+     *
+     * @param p      Target player
+     * @param shop   Target shop
+     * @param amount Trading item amounts.
+     */
+    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+        chatSheetPrinter.printHeader();
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold"));
+        chatSheetPrinter.printLine(MsgUtil
+                .getMessage("menu.item-name-and-price", "" + amount, Util.getItemStackName(shop.getItem()), Util
+                        .format((amount * shop.getPrice()))));
+        if (plugin.getConfig().getBoolean("show-tax")) {
+            double tax = plugin.getConfig().getDouble("tax");
+            double total = amount * shop.getPrice();
+            if (tax != 0) {
+                if (!p.getUniqueId().equals(shop.getOwner())) {
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax", Util.format((tax * total))));
+                } else {
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self"));
+                }
+            }
+        }
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+            enchs = shop.getItem().getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
+            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
+            }
+        }
+        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
+            stor.getStoredEnchants();
+            enchs = stor.getStoredEnchants();
+            if (!enchs.isEmpty()) {
+                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
+                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
+                }
+            }
+        }
+        chatSheetPrinter.printFooter();
+    }
+
+    /**
+     * Send a shop infomation to a player.
+     *
+     * @param p    Target player
+     * @param shop The shop
+     */
+    public static void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
+        // Potentially faster with an array?
+        ItemStack items = shop.getItem();
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+        chatSheetPrinter.printHeader();
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information"));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
+        //Enabled
+        sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
+                .getMessage("tableformat.left_begin") + " " + MsgUtil
+                .getMessage("menu.item", Util.getItemStackName(shop.getItem())));
+        if (Util.isTool(items.getType())) {
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
+        }
+        if (shop.isSelling()) {
+            if (shop.getRemainingStock() == -1) {
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", "" + MsgUtil.getMessage("signs.unlimited")));
+            } else {
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", "" + shop.getRemainingStock()));
+            }
+        } else {
+            if (shop.getRemainingSpace() == -1) {
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", "" + MsgUtil.getMessage("signs.unlimited")));
+            } else {
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", "" + shop.getRemainingSpace()));
+            }
+        }
+        chatSheetPrinter.printLine(MsgUtil
+                .getMessage("menu.price-per", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+        if (shop.isBuying()) {
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying"));
+        } else {
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling"));
+        }
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (items.hasItemMeta() && items.getItemMeta().hasEnchants())
+            enchs = items.getItemMeta().getEnchants();
+        if (!enchs.isEmpty()) {
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
+            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
+            }
+        }
+        if (items.getItemMeta() instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
+            stor.getStoredEnchants();
+            enchs = stor.getStoredEnchants();
+            if (!enchs.isEmpty()) {
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants") + MsgUtil
+                        .getMessage("tableformat.right_half_line"));
+                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries
+                            .getValue());
+                }
+            }
+        }
+        chatSheetPrinter.printFooter();
     }
 
     @SuppressWarnings("UnusedAssignment")
@@ -299,608 +900,8 @@ public class MsgUtil {
 
     }
 
-    /**
-     * Send a message for all online Ops.
-     *
-     * @param message The message you want send
-     */
-    public static void sendMessageToOps(@NotNull String message) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp() || player.hasPermission("quickshop.alert")) {
-                        player.sendMessage(message);
-                    }
-                }
-            }
-        }.runTaskAsynchronously(plugin);
-
-    }
-    /**
-     * Send controlPanel infomation to sender
-     *
-     * @param sender Target sender
-     * @param shop   Target shop
-     */
-    public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if (!sender.hasPermission("quickshop.use")) {
-            return;
-        }
-
-        if (plugin.getConfig().getBoolean("sneak-to-control"))
-            if (sender instanceof Player)
-                if (!((Player) sender).isSneaking())
-                    return;
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation"));
-        // Owner
-        if (!sender.hasPermission("quickshop.setowner")) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
-        } else {
-            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", shop.ownerName()), MsgUtil
-                    .getMessage("controlpanel.setowner-hover"), MsgUtil.getMessage("controlpanel.commands.setowner"));
-        }
-
-        // Unlimited
-        if (sender.hasPermission("quickshop.unlimited")) {
-            String text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
-            String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
-            //String clickCommand = "/qs silentunlimited " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
-                    String.valueOf(shop.getLocation().getBlockX()),
-                    String.valueOf(shop.getLocation().getBlockY()),
-                    String.valueOf(shop.getLocation().getBlockZ()));
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
-        }
-        // Buying/Selling Mode
-        if (sender.hasPermission("quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
-            if (shop.isSelling()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-selling");
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
-                //String clickCommand = "/qs silentbuy " + shop.getLocation().getWorld().getName() + " "
-                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-                //		+ shop.getLocation().getBlockZ();
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy",
-                        String.valueOf(shop.getLocation().getWorld().getName()),
-                        String.valueOf(shop.getLocation().getBlockX()),
-                        String.valueOf(shop.getLocation().getBlockY()),
-                        String.valueOf(shop.getLocation().getBlockZ()));
-                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
-            } else if (shop.isBuying()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-buying");
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
-                //String clickCommand = "/qs silentsell " + shop.getLocation().getWorld().getName() + " "
-                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-                //		+ shop.getLocation().getBlockZ() ;
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell",
-                        String.valueOf(shop.getLocation().getWorld().getName()),
-                        String.valueOf(shop.getLocation().getBlockX()),
-                        String.valueOf(shop.getLocation().getBlockY()),
-                        String.valueOf(shop.getLocation().getBlockZ()));
-                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
-            }
-        }
-        // Set Price
-        if (sender.hasPermission("quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.price-hover");
-            //String clickCommand = "/qs price [New Price]";
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
-        }
-        // Refill
-        if (sender.hasPermission("quickshop.refill")) {
-            String text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
-            //String clickCommand = "/qs refill [Amount]";
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill");
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
-        }
-        // Refill
-        if (sender.hasPermission("quickshop.empty")) {
-            String text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
-            //String clickCommand = "/qs silentempty " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
-                    String.valueOf(shop.getLocation().getBlockX()),
-                    String.valueOf(shop.getLocation().getBlockY()),
-                    String.valueOf(shop.getLocation().getBlockZ()));
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
-        }
-        // Remove
-        if (sender.hasPermission("quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
-            //String clickCommand = "/qs silentremove " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
-                    String.valueOf(shop.getLocation().getBlockX()),
-                    String.valueOf(shop.getLocation().getBlockY()),
-                    String.valueOf(shop.getLocation().getBlockZ()));
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
-        }
-
-        chatSheetPrinter.printFooter();
-    }
-
-    /**
-     * Translate boolean value to String, the symbon is changeable by language file.
-     *
-     * @param bool The boolean value
-     * @return The result of translate.
-     */
-    public static String bool2String(boolean bool) {
-        if (bool) {
-            return MsgUtil.getMessage("booleanformat.success");
-        } else {
-            return MsgUtil.getMessage("booleanformat.failed");
-        }
-    }
-
-    /**
-     * loads all player purchase messages from the database.
-     */
-    public static void loadTransactionMessages() {
-        player_messages.clear(); // Delete old messages
-        try {
-            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
-            while (rs.next()) {
-                UUID owner = UUID.fromString(rs.getString("owner"));
-                String message = rs.getString("message");
-                LinkedList<String> msgs = player_messages.computeIfAbsent(owner, k -> new LinkedList<>());
-                msgs.add(message);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.");
-        }
-    }
-
-    /**
-     * Load Itemi18n fron file
-     */
-    public static void loadItemi18n() {
-        File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
-        if (!itemi18nFile.exists()) {
-            plugin.getLogger().info("Creating itemi18n.yml");
-            plugin.saveResource("itemi18n.yml", true);
-        }
-        // Store it
-        itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
-        itemi18n.options().copyDefaults(true);
-        YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
-                .getResource("itemi18n.yml")));
-        itemi18n.setDefaults(itemi18nYAML);
-        Util.parseColours(itemi18n);
-        Material[] itemsi18n = Material.values();
-        for (Material material : itemsi18n) {
-            String itemi18nString = itemi18n.getString("itemi18n." + material.name());
-            if (itemi18nString != null && !itemi18nString.isEmpty())
-                continue;
-            String itemName = material.name();
-            String lastItemName = Util.prettifyText(itemName);
-            String localizedName = Util.getLocalizedName(new ItemStack(material));
-            /* If have localizedName, use localizedName, not our processed name */
-            if (localizedName != null)
-                lastItemName = localizedName;
-            itemi18n.set("itemi18n." + itemName, lastItemName);
-            plugin.getLogger().info("Found new items/blocks [" + Util
-                    .prettifyText(lastItemName) + "] , adding it to the config...");
-        }
-        try {
-            itemi18n.save(itemi18nFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
-        }
-        plugin.getLogger().info("Complete to load Itemname i18n.");
-    }
-
-    /**
-     * Get item's i18n name
-     *
-     * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
-     * @return String Item's i18n name.
-     */
-    public static String getItemi18n(@NotNull String itemBukkitName) {
-        if (itemBukkitName.isEmpty())
-            return "Item is empty";
-        String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
-        if (itemnameI18n != null && !itemnameI18n.isEmpty())
-            return itemnameI18n;
-        Material material = Material.matchMaterial(itemBukkitName);
-        if (material == null)
-            return "Material not exist";
-        return Util.prettifyText(material.name());
-    }
-
-    public static void loadEnchi18n() {
-        plugin.getLogger().info("Starting loading Enchantment i18n...");
-        File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
-        if (!enchi18nFile.exists()) {
-            plugin.getLogger().info("Creating enchi18n.yml");
-            plugin.saveResource("enchi18n.yml", true);
-        }
-        // Store it
-        enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
-        enchi18n.options().copyDefaults(true);
-        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.
-                getResource("enchi18n.yml")));
-        enchi18n.setDefaults(enchi18nYAML);
-        Util.parseColours(enchi18n);
-        Enchantment[] enchsi18n = Enchantment.values();
-        for (Enchantment ench : enchsi18n) {
-            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().toString().trim());
-            if (enchi18nString != null && !enchi18nString.isEmpty())
-                continue;
-            String enchName = ench.getKey().getKey();
-            enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
-            plugin.getLogger().info("Found new ench [" + Util.prettifyText(enchName) + "] , adding it to the config...");
-        }
-        try {
-            enchi18n.save(enchi18nFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
-        }
-        plugin.getLogger().info("Complete to load enchname i18n.");
-    }
-
-    /**
-     * Get Enchantment's i18n name.
-     *
-     * @param key The Enchantment.
-     * @return Enchantment's i18n name.
-     */
-    public static String getEnchi18n(@NotNull Enchantment key) {
-        String enchString = key.getKey().getKey();
-        if (enchString.isEmpty())
-            return "Enchantment key is empty";
-        String enchI18n = enchi18n.getString("enchi18n." + enchString);
-        if (enchI18n != null && !enchI18n.isEmpty())
-            return enchI18n;
-        return Util.prettifyText(enchString);
-    }
-
-    public static void loadPotioni18n() {
-        plugin.getLogger().info("Starting loading Potion i18n...");
-        File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
-        if (!potioni18nFile.exists()) {
-            plugin.getLogger().info("Creating potioni18n.yml");
-            plugin.saveResource("potioni18n.yml", true);
-        }
-        // Store it
-        potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
-        potioni18n.options().copyDefaults(true);
-        YamlConfiguration potioni18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
-                .getResource("potioni18n.yml")));
-        potioni18n.setDefaults(potioni18nYAML);
-        Util.parseColours(potioni18n);
-        PotionEffectType[] potionsi18n = PotionEffectType.values();
-        for (PotionEffectType potion : potionsi18n) {
-            if (potion != null) {
-                String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
-                if (potionI18n != null && !potionI18n.isEmpty())
-                    continue;
-                String potionName = potion.getName();
-                plugin.getLogger().info("Found new potion [" + Util.prettifyText(potionName) + "] , adding it to the config...");
-                potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
-            }
-        }
-        try {
-            potioni18n.save(potioni18nFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
-        }
-        plugin.getLogger().info("Complete to load potionname i18n.");
-    }
-
-    /**
-     * Get potion effect's i18n name.
-     *
-     * @param potion potionType
-     * @return Potion's i18n name.
-     */
-    public static String getPotioni18n(@NotNull PotionEffectType potion) {
-        String potionString = potion.getName().trim();
-        if (potionString.isEmpty())
-            return "Potion name is empty.";
-        String potionI18n = potioni18n.getString("potioni18n." + potionString);
-        if (potionI18n != null && !potionI18n.isEmpty())
-            return potionI18n;
-        return Util.prettifyText(potionString);
-    }
-
-    /**
-     * @param player      The name of the player to message
-     * @param message     The message to send them Sends the given player a message if
-     *                    they're online. Else, if they're not online, queues it for
-     *                    them in the database.
-     * @param isUnlimited The shop is or unlimited
-     */
-    public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
-        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
-            return; //Ignore unlimited shops messages.
-        OfflinePlayer p = Bukkit.getOfflinePlayer(player);
-        if (!p.isOnline()) {
-            LinkedList<String> msgs = player_messages.get(player);
-            // msgs = new LinkedList<String>();
-            if (msgs == null)
-                msgs = new LinkedList<>();
-            player_messages.put(player, msgs);
-            msgs.add(message);
-            plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
-        } else {
-            if (p.getPlayer() != null)
-                p.getPlayer().sendMessage(message);
-        }
-    }
-
-    /**
-     * Deletes any messages that are older than a week in the database, to save
-     * on space.
-     */
-    public static void clean() {
-        plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
-        // 604800,000 msec = 1 week.
-        long weekAgo = System.currentTimeMillis() - 604800000;
-        plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
-    }
-
-    /**
-     * Empties the queue of messages a player has and sends them to the player.
-     *
-     * @param p The player to message
-     * @return True if success, False if the player is offline or null
-     */
-    public static boolean flush(@NotNull OfflinePlayer p) {    //TODO Changed to UUID
-        if (p.isOnline()) {
-            UUID pName = p.getUniqueId();
-            LinkedList<String> msgs = player_messages.get(pName);
-            if (msgs != null) {
-                for (String msg : msgs) {
-                    if (p.getPlayer() != null)
-                        p.getPlayer().sendMessage(msg);
-                }
-                plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
-                msgs.clear();
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Send a shop infomation to a player.
-     *
-     * @param p    Target player
-     * @param shop The shop
-     */
-    public static void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
-        // Potentially faster with an array?
-        ItemStack items = shop.getItem();
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information"));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
-        //Enabled
-        sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
-                .getMessage("tableformat.left_begin") + " " + MsgUtil
-                .getMessage("menu.item", Util.getItemStackName(shop.getItem())));
-        if (Util.isTool(items.getType())) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining", Util.getToolPercentage(items)));
-        }
-        if (shop.isSelling()) {
-            if (shop.getRemainingStock() == -1) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", "" + MsgUtil.getMessage("signs.unlimited")));
-            } else {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", "" + shop.getRemainingStock()));
-            }
-        } else {
-            if (shop.getRemainingSpace() == -1) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", "" + MsgUtil.getMessage("signs.unlimited")));
-            } else {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", "" + shop.getRemainingSpace()));
-            }
-        }
-        chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.price-per", Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
-        if (shop.isBuying()) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying"));
-        } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling"));
-        }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (items.hasItemMeta() && items.getItemMeta().hasEnchants())
-            enchs = items.getItemMeta().getEnchants();
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
-            }
-        }
-        if (items.getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants") + MsgUtil
-                        .getMessage("tableformat.right_half_line"));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries
-                            .getValue());
-                }
-            }
-        }
-        chatSheetPrinter.printFooter();
-    }
-
-    /**
-     * Send a purchaseSuccess message for a player.
-     *
-     * @param p      Target player
-     * @param shop   Target shop
-     * @param amount Trading item amounts.
-     */
-    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase"));
-        chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.item-name-and-price", "" + amount, Util.getItemStackName(shop.getItem()), Util
-                        .format((amount * shop.getPrice()))));
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-            }
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-                }
-            }
-        }
-        chatSheetPrinter.printFooter();
-    }
-
-    /**
-     * Send globalAlert to ops, console, log file.
-     *
-     * @param content The content to send.
-     */
-    public static void sendGlobalAlert(String content) {
-        sendMessageToOps(content);
-        plugin.getLogger().warning(content);
-        plugin.getLogWatcher().add(content);
-        Util.debugLog(content);
-    }
-
-    /**
-     * Send a sellSuccess message for a player.
-     *
-     * @param p      Target player
-     * @param shop   Target shop
-     * @param amount Trading item amounts.
-     */
-    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold"));
-        chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.item-name-and-price", "" + amount, Util.getItemStackName(shop.getItem()), Util
-                        .format((amount * shop.getPrice()))));
-        if (plugin.getConfig().getBoolean("show-tax")) {
-            double tax = plugin.getConfig().getDouble("tax");
-            double total = amount * shop.getPrice();
-            if (tax != 0) {
-                if (!p.getUniqueId().equals(shop.getOwner())) {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax", Util.format((tax * total))));
-                } else {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self"));
-                }
-            }
-        }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-            }
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants"));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-                }
-            }
-        }
-        chatSheetPrinter.printFooter();
-    }
-
-    /**
-     * getMessage in messages.yml
-     *
-     * @param loc  location
-     * @param args args
-     * @return message
-     */
-    public static String getMessage(@NotNull String loc, @NotNull String... args) {
-        String raw = messagei18n.getString(loc);
-        if (raw == null)
-            return invaildMsg + ": " + loc;
-        return fillArgs(raw, args);
-    }
-
-    /**
-     * Replace args in raw to args
-     *
-     * @param raw  text
-     * @param args args
-     * @return filled text
-     */
-    public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (raw == null)
-            return "Invalid message: null";
-        if (raw.isEmpty())
-            return "";
-        if (args == null)
-            return raw;
-        for (int i = 0; i < args.length; i++)
-            raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
-        return raw;
-    }
-
-    /**
-     * Send the ItemPreview chat msg by NMS.
-     *
-     * @param shop       Target shop
-     * @param itemStack  Target ItemStack
-     * @param player     Target player
-     * @param normalText The text you will see
-     */
-    public static void sendItemholochat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
-        try {
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
-            if (json == null)
-                return;
-            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (player.hasPermission("quickshop.preview"))
-                normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
-                        .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
-                                .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
-                                .valueOf(shop.getLocation().getBlockZ()))));
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
-            player.spigot().sendMessage(normalmessage);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+    public static YamlConfiguration getI18nYaml() {
+        return messagei18n;
     }
 
     // /**

@@ -26,14 +26,13 @@ public class ShopLoadEvent extends Event implements Cancellable {
         this.shop = shop;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

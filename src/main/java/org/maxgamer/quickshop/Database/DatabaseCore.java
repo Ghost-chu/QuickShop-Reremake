@@ -3,11 +3,11 @@ package org.maxgamer.quickshop.Database;
 import java.sql.Connection;
 
 public interface DatabaseCore {
-    Connection getConnection();
-
-    void queue(BufferStatement bs);
+    void close();
 
     void flush();
 
-    void close();
+    void queue(BufferStatement bs);
+
+    Connection getConnection();
 }

@@ -17,6 +17,15 @@ public class Economy implements EconomyCore {
         this.core = core;
     }
 
+    @Override
+    public String toString() {
+        return core.getClass().getName().split("_")[1];
+    }
+
+    public EconomyType getNowUsing() {
+        return EconomyType.fromID(plugin.getConfig().getInt("economy-type"));
+    }
+
     /**
      * Checks that this economy is valid. Returns false if it is not valid.
      *
@@ -39,11 +48,6 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public String toString() {
-        return core.getClass().getName().split("_")[1];
-    }
-
-    @Override
     public boolean deposit(@NotNull UUID name, double amount) {
         return core.deposit(name, amount);
     }
@@ -61,9 +65,5 @@ public class Economy implements EconomyCore {
     @Override
     public double getBalance(@NotNull UUID name) {
         return core.getBalance(name);
-    }
-
-    public EconomyType getNowUsing() {
-        return EconomyType.fromID(plugin.getConfig().getInt("economy-type"));
     }
 }

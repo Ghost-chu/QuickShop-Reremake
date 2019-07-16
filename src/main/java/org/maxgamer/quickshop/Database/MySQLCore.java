@@ -10,11 +10,11 @@ import java.util.Properties;
 import org.jetbrains.annotations.*;
 
 public class MySQLCore implements DatabaseCore {
-    private String url;
-    /** The connection properties... user, pass, autoReconnect.. */
-    private Properties info;
     private static final int MAX_CONNECTIONS = 8;
     private static ArrayList<Connection> pool = new ArrayList<>();
+    /** The connection properties... user, pass, autoReconnect.. */
+    private Properties info;
+    private String url;
 
     public MySQLCore(@NotNull String host, @NotNull String user, @NotNull String pass, @NotNull String database, @NotNull String port, boolean useSSL) {
         info = new Properties();
@@ -27,6 +27,37 @@ public class MySQLCore implements DatabaseCore {
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
         for (int i = 0; i < MAX_CONNECTIONS; i++)
             pool.add(null);
+    }
+
+    @Override
+    public void close() {
+        // Nothing, because queries are executed immediately for MySQL
+    }
+
+    @Override
+    public void flush() {
+        // Nothing, because queries are executed immediately for MySQL
+    }
+
+    @Override
+    public void queue(@NotNull BufferStatement bs) {
+        try {
+            Connection con = this.getConnection();
+            while (con == null) {
+                try {
+                    Thread.sleep(15);
+                } catch (InterruptedException e) {
+                    //ignore
+                }
+                // Try again
+                con = this.getConnection();
+            }
+            PreparedStatement ps = bs.prepareStatement(con);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -53,36 +84,5 @@ public class MySQLCore implements DatabaseCore {
             }
         }
         return null;
-    }
-
-    @Override
-    public void queue(@NotNull BufferStatement bs) {
-        try {
-            Connection con = this.getConnection();
-            while (con == null) {
-                try {
-                    Thread.sleep(15);
-                } catch (InterruptedException e) {
-                    //ignore
-                }
-                // Try again
-                con = this.getConnection();
-            }
-            PreparedStatement ps = bs.prepareStatement(con);
-            ps.execute();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void close() {
-        // Nothing, because queries are executed immediately for MySQL
-    }
-
-    @Override
-    public void flush() {
-        // Nothing, because queries are executed immediately for MySQL
     }
 }

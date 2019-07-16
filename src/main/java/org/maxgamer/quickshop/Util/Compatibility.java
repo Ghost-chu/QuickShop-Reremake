@@ -10,16 +10,15 @@ import org.maxgamer.quickshop.QuickShop;
  * WIP
  */
 public class Compatibility {
-    private QuickShop plugin;
+    private final ArrayList<RegisteredListener> disabledListeners = new ArrayList<>();
     final private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
+    private QuickShop plugin;
 
     public Compatibility(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         knownIncompatiablePlugin.add("OpenInv");
         knownIncompatiablePlugin.add("LWC");
     }
-
-    private final ArrayList<RegisteredListener> disabledListeners = new ArrayList<>();
 
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin listener,

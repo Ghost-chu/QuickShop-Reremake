@@ -25,7 +25,7 @@ public class Updater {
      */
     public static UpdateInfomation checkUpdate() {
         if (!QuickShop.instance.getConfig().getBoolean("updater")) {
-            return new UpdateInfomation(null, false);
+            return new UpdateInfomation(false, null);
         }
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=62575")
@@ -37,45 +37,15 @@ public class Updater {
             String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
             if (spigotPluginVersion != null && !spigotPluginVersion.equals(localPluginVersion)) {
                 connection.disconnect();
-                return new UpdateInfomation(spigotPluginVersion, spigotPluginVersion.toLowerCase().contains("beta"));
+                return new UpdateInfomation(spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
             }
             connection.disconnect();
-            return new UpdateInfomation(spigotPluginVersion, false);
+            return new UpdateInfomation(false, spigotPluginVersion);
         } catch (IOException e) {
             Bukkit.getConsoleSender()
                     .sendMessage(ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
-            return new UpdateInfomation(null, false);
+            return new UpdateInfomation(false, null);
         }
-    }
-
-    public static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
-        File pluginFolder = new File("plugins");
-        if (!pluginFolder.exists())
-            throw new RuntimeException("Can't find the plugins folder.");
-        if (!pluginFolder.isDirectory())
-            throw new RuntimeException("Plugins not a folder.");
-        File[] plugins = pluginFolder.listFiles();
-        if (plugins == null)
-            throw new IOException("Can't get the files in plugins folder");
-        File quickshop = null;
-        for (File plugin : plugins) {
-            try {
-                PluginDescriptionFile desc = QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
-                if (!desc.getName().equals(QuickShop.instance.getDescription().getName()))
-                    continue;
-                Util.debugLog("Selected: " + plugin.getPath());
-                quickshop = plugin;
-                break;
-            } catch (InvalidDescriptionException e) { //Ignore }
-            }
-
-        }
-        if (quickshop == null)
-            throw new RuntimeException("Failed to get QuickShop Jar File.");
-        OutputStream outputStream = new FileOutputStream(quickshop, false);
-        outputStream.write(data);
-        outputStream.flush();
-        outputStream.close();
     }
 
     public static byte[] downloadUpdatedJar() throws IOException {
@@ -121,5 +91,35 @@ public class Updater {
         }
         Util.debugLog("Download complete.");
         return os.toByteArray();
+    }
+
+    public static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
+        File pluginFolder = new File("plugins");
+        if (!pluginFolder.exists())
+            throw new RuntimeException("Can't find the plugins folder.");
+        if (!pluginFolder.isDirectory())
+            throw new RuntimeException("Plugins not a folder.");
+        File[] plugins = pluginFolder.listFiles();
+        if (plugins == null)
+            throw new IOException("Can't get the files in plugins folder");
+        File quickshop = null;
+        for (File plugin : plugins) {
+            try {
+                PluginDescriptionFile desc = QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
+                if (!desc.getName().equals(QuickShop.instance.getDescription().getName()))
+                    continue;
+                Util.debugLog("Selected: " + plugin.getPath());
+                quickshop = plugin;
+                break;
+            } catch (InvalidDescriptionException e) { //Ignore }
+            }
+
+        }
+        if (quickshop == null)
+            throw new RuntimeException("Failed to get QuickShop Jar File.");
+        OutputStream outputStream = new FileOutputStream(quickshop, false);
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 }

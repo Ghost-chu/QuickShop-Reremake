@@ -87,50 +87,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
     }
 
-    private void registerCmd(CommandContainer container) {
-        if (!cmds.contains(container))
-            cmds.add(container);
-    }
-
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        //No args, it shouldn't happend
-        if (sender instanceof Player) {
-            if (QuickShop.instance.getConfig().getBoolean("effect.sound.ontabcomplete")) {
-                Player player = (Player) sender;
-                ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
-            }
-        }
-        if (cmdArg.length == 0 || cmdArg.length == 1) {
-            //No args
-            return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
-        }
-        //Main args/more args
-        String[] passthroughArgs;
-        passthroughArgs = new String[cmdArg.length - 1];
-        System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
-        for (CommandContainer container : cmds) {
-            Util.debugLog("Checking prefix with container: " + container.getPrefix() + " - " + cmdArg[0]);
-            if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0]))
-                continue;
-            Util.debugLog("Checking permission with container: " + container.getPrefix() + " - " + cmdArg[0]);
-            List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() != null)
-                for (String requirePermission : requirePermissions) {
-                    if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
-                        Util.debugLog("Sender " + sender
-                                .getName() + " trying tab-complete the command: " + commandLabel + " " + Util
-                                .array2String(cmdArg) + ", but no permission " + requirePermission);
-                        return null;
-                    }
-                }
-            Util.debugLog("Execute container: " + container.getPrefix());
-            return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
-        }
-
-        return null;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (QuickShop.instance.getBootError() != null) {
@@ -180,5 +136,49 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         Util.debugLog("All checks failed, print helps");
         rootContainer.getExecutor().onCommand(sender, commandLabel, passthroughArgs);
         return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        //No args, it shouldn't happend
+        if (sender instanceof Player) {
+            if (QuickShop.instance.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+                Player player = (Player) sender;
+                ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
+            }
+        }
+        if (cmdArg.length == 0 || cmdArg.length == 1) {
+            //No args
+            return getRootContainer().getExecutor().onTabComplete(sender, commandLabel, cmdArg);
+        }
+        //Main args/more args
+        String[] passthroughArgs;
+        passthroughArgs = new String[cmdArg.length - 1];
+        System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
+        for (CommandContainer container : cmds) {
+            Util.debugLog("Checking prefix with container: " + container.getPrefix() + " - " + cmdArg[0]);
+            if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0]))
+                continue;
+            Util.debugLog("Checking permission with container: " + container.getPrefix() + " - " + cmdArg[0]);
+            List<String> requirePermissions = container.getPermissions();
+            if (container.getPermissions() != null)
+                for (String requirePermission : requirePermissions) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !sender.hasPermission(requirePermission)) {
+                        Util.debugLog("Sender " + sender
+                                .getName() + " trying tab-complete the command: " + commandLabel + " " + Util
+                                .array2String(cmdArg) + ", but no permission " + requirePermission);
+                        return null;
+                    }
+                }
+            Util.debugLog("Execute container: " + container.getPrefix());
+            return container.getExecutor().onTabComplete(sender, commandLabel, passthroughArgs);
+        }
+
+        return null;
+    }
+
+    private void registerCmd(CommandContainer container) {
+        if (!cmds.contains(container))
+            cmds.add(container);
     }
 }

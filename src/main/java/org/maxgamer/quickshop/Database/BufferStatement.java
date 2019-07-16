@@ -10,8 +10,8 @@ import org.maxgamer.quickshop.Util.Util;
 
 
 public class BufferStatement {
-    private Object[] values;
     private String query;
+    private Object[] values;
 
     /**
      * Represents a PreparedStatement in a state before preparing it (E.g. No
