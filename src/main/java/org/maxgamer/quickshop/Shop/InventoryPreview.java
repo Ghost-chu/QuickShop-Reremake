@@ -23,8 +23,21 @@ import org.maxgamer.quickshop.Util.Util;
 @ToString
 public class InventoryPreview implements Listener {
 
-    private ItemStack itemStack;
+    public static boolean isPreviewItem(@Nullable ItemStack stack) {
+        if (stack == null)
+            return false;
+        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore())
+            return false;
+        List<String> lores = stack.getItemMeta().getLore();
+        for (String string : lores) {
+            if (string.equals("QuickShop GUI preview item")) {
+                return true;
+            }
+        }
+        return false;
+    }
     private Inventory inventory;
+    private ItemStack itemStack;
     private Player player;
 
     /**
@@ -51,6 +64,15 @@ public class InventoryPreview implements Listener {
         }
     }
 
+    public void close() {
+        if (inventory == null)
+            return;
+        for (HumanEntity player : inventory.getViewers()) {
+            player.closeInventory();
+        }
+        inventory = null; // Destory
+    }
+
     /**
      * Open the preview GUI for player.
      */
@@ -75,28 +97,5 @@ public class InventoryPreview implements Listener {
             inventory.setItem(i, itemStack);
         }
         player.openInventory(inventory);
-    }
-
-    public void close() {
-        if (inventory == null)
-            return;
-        for (HumanEntity player : inventory.getViewers()) {
-            player.closeInventory();
-        }
-        inventory = null; // Destory
-    }
-
-    public static boolean isPreviewItem(@Nullable ItemStack stack) {
-        if (stack == null)
-            return false;
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore())
-            return false;
-        List<String> lores = stack.getItemMeta().getLore();
-        for (String string : lores) {
-            if (string.equals("QuickShop GUI preview item")) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -34,84 +34,83 @@ import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 public class QuickShop extends JavaPlugin {
     /** The active instance of QuickShop */
     public static QuickShop instance;
-    /** The economy we hook into for transactions */
-    private Economy economy;
-    /** The Shop Manager used to store shops */
-    private ShopManager shopManager;
-    /**
-     * A set of players who have been warned ("Your shop isn't automatically
-     * locked")
-     */
-    private HashSet<String> warnings = new HashSet<>();
-    /** The database for storing all our data for persistence */
-    private Database database;
-    // Listeners - We decide which one to use at runtime
-    private ChatListener chatListener;
     // Listeners (These don't)
     private BlockListener blockListener;
-    private PlayerListener playerListener;
-    private DisplayProtectionListener inventoryListener;
+    /** The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs **/
+    private BootError bootError;
+    // Listeners - We decide which one to use at runtime
+    private ChatListener chatListener;
     private ChunkListener chunkListener;
-    private WorldListener worldListener;
-    //private BukkitTask itemWatcherTask;
-    private LogWatcher logWatcher;
-    private ItemMatcher itemMatcher;
+    private CommandManager commandManager;
+    private Tab commandTabCompleter;
+    /** WIP **/
+    private Compatibility compatibilityTool = new Compatibility(this);
+    private CustomInventoryListener customInventoryListener;
+    /** The database for storing all our data for persistence */
+    private Database database;
+    /** Contains all SQL tasks **/
+    private DatabaseHelper databaseHelper;
+    /** Queued database manager **/
+    private DatabaseManager databaseManager;
+    /** Default database prefix, can overwrite by config **/
+    private String dbPrefix = "";
+    /** Whether we should use display items or not */
+    private boolean display = true;
     private DisplayBugFixListener displayBugFixListener;
-    private LockListener lockListener;
 //	/** Whether players are required to sneak to create/buy from a shop */
 //	public boolean sneak;
 //	/** Whether players are required to sneak to create a shop */
 //	public boolean sneakCreate;
 //	/** Whether players are required to sneak to trade with a shop */
 //	public boolean sneakTrade;
-    /** Whether we should use display items or not */
-    private boolean display = true;
+// private Metrics metrics;
+private int displayItemCheckTicks;
+    private DisplayWatcher displayWatcher;
+    /** The economy we hook into for transactions */
+    private Economy economy;
+    private DisplayProtectionListener inventoryListener;
+    private ItemMatcher itemMatcher;
+    /** Language manager, to select which language will loaded. **/
+    private Language language;
+    /** Whether or not to limit players shop amounts */
+    private boolean limit = false;
+    /** The shop limites. **/
+    private HashMap<String, Integer> limits = new HashMap<>();
+    private LockListener lockListener;
+    //private BukkitTask itemWatcherTask;
+    private LogWatcher logWatcher;
+    /** bStats, good helper for metrics. **/
+    private Metrics metrics;
+    private boolean noopDisable;
+    /** The plugin OpenInv (null if not present) */
+    private Plugin openInvPlugin;
+    /** A util to call to check some actions permission **/
+    private PermissionChecker permissionChecker;
+    private PlayerListener playerListener;
     /**
      * Whether we players are charged a fee to change the price on their shop (To
      * help deter endless undercutting
      */
     private boolean priceChangeRequiresFee = false;
-    /** Whether or not to limit players shop amounts */
-    private boolean limit = false;
-
-    /** The plugin OpenInv (null if not present) */
-    private Plugin openInvPlugin;
-    /** The shop limites. **/
-    private HashMap<String, Integer> limits = new HashMap<>();
-    /** Use SpoutPlugin to get item / block names */
-    private boolean useSpout = false;
-    // private Metrics metrics;
-    private int displayItemCheckTicks;
-    private boolean noopDisable;
-    private boolean setupDBonEnableding = false;
-    /** Default database prefix, can overwrite by config **/
-    private String dbPrefix = "";
-    private Tab commandTabCompleter;
-    /** bStats, good helper for metrics. **/
-    private Metrics metrics;
-    /** Language manager, to select which language will loaded. **/
-    private Language language;
-    /** The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs **/
-    private BootError bootError;
-    private CustomInventoryListener customInventoryListener;
-    /** WIP **/
-    private Compatibility compatibilityTool = new Compatibility(this);
-    /** Rewrited shoploader, more faster. **/
-    private ShopLoader shopLoader;
-    /** Contains all SQL tasks **/
-    private DatabaseHelper databaseHelper;
-    /** Queued database manager **/
-    private DatabaseManager databaseManager;
-    /** A util to call to check some actions permission **/
-    private PermissionChecker permissionChecker;
-    /** The server UniqueID, use to the ErrorReporter **/
-    private UUID serverUniqueID;
     /** The error reporter to help devs report errors to Sentry.io **/
     private SentryErrorReporter sentryErrorReporter;
-    private CommandManager commandManager;
+    /** The server UniqueID, use to the ErrorReporter **/
+    private UUID serverUniqueID;
+    private boolean setupDBonEnableding = false;
+    /** Rewrited shoploader, more faster. **/
+    private ShopLoader shopLoader;
+    /** The Shop Manager used to store shops */
+    private ShopManager shopManager;
     private ShopProtectionListener shopProtectListener;
-    private DisplayWatcher displayWatcher;
     private SyncTaskWatcher syncTaskWatcher;
+    /** Use SpoutPlugin to get item / block names */
+    private boolean useSpout = false;
+    /**
+     * A set of players who have been warned ("Your shop isn't automatically
+     * locked")
+     */
+    private HashSet<String> warnings = new HashSet<>();
+    private WorldListener worldListener;
 
     /**
      * Get the Player's Shop limit.
@@ -129,45 +128,6 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
-     * Check the env plugin running.
-     *
-     * @throws RuntimeException The error message, use this to create a BootError.
-     */
-    private void runtimeCheck() throws RuntimeException {
-        try {
-            getServer().spigot();
-        } catch (Throwable e) {
-            getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
-            throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
-        }
-
-        if (getServer().getName().toLowerCase().contains("catserver")) {
-            // Send FATAL ERROR TO CatServer's users.
-            getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
-            throw new RuntimeException("QuickShop doen't support CatServer");
-        }
-
-        if (Util.isDevEdition()) {
-            getLogger().severe("WARNING: You are running QSRR in dev-mode");
-            getLogger().severe("WARNING: Keep backup and DO NOT run this in a production environment!");
-            getLogger().severe("WARNING: Test version may destroy everything!");
-            getLogger().severe(
-                    "WARNING: QSRR won't start without your confirmation, nothing will change before you turn on dev allowed.");
-            if (!getConfig().getBoolean("dev-mode")) {
-                getLogger().severe(
-                        "WARNING: Set dev-mode: true in config.yml to allow qs load in dev mode(You may need add this line to the config yourself).");
-                noopDisable = true;
-                throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
-            }
-        }
-        String nmsVersion = Util.getNMSVersion();
-        IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
-        getLogger().info("Running QuickShop-Reremake on Minecraft version " + nmsVersion);
-        if (incompatibleChecker.isIncompatible(nmsVersion))
-            throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
-    }
-
-    /**
      * Load 3rdParty plugin support module.
      */
     private void load3rdParty() {
@@ -181,12 +141,131 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
+     * Tries to load the economy and its core. If this fails, it will try to use
+     * vault. If that fails, it will return false.
+     *
+     * @return true if successful, false if the core is invalid or is not found, and
+     * vault cannot be used.
+     */
+    private boolean loadEcon() {
+        try {
+            //EconomyCore core = new Economy_Vault();
+            EconomyCore core = null;
+            switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
+                case UNKNOWN:
+                    bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
+                    return false;
+                case VAULT:
+                    core = new Economy_Vault();
+                    Util.debugLog("Now using the Vault economy system.");
+                    break;
+                case RESERVE:
+                    core = new Economy_Reserve();
+                    Util.debugLog("Now using the Reserve economy system.");
+                    break;
+            }
+            if (!core.isValid()) {
+                // getLogger().severe("Economy is not valid!");
+                bootError = BuiltInSolution.econError();
+                // if(econ.equals("Vault"))
+                // getLogger().severe("(Does Vault have an Economy to hook into?!)");
+                return false;
+            } else {
+                this.economy = new Economy(core);
+                return true;
+            }
+        } catch (Exception e) {
+            this.getSentryErrorReporter().ignoreThrow();
+            e.printStackTrace();
+            getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
+            getLogger().severe("QuickShop CANNOT start!");
+            bootError = BuiltInSolution.econError();
+            HandlerList.unregisterAll(this);
+            getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
+            return false;
+        }
+    }
+
+    /**
+     * Logs the given string to qs.log, if QuickShop is configured to do so.
+     *
+     * @param s The string to log. It will be prefixed with the date and time.
+     */
+    public void log(@NotNull String s) {
+        if (this.getLogWatcher() == null)
+            return;
+        this.getLogWatcher().log(s);
+    }
+
+    /** Reloads QuickShops config */
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        // Load quick variables
+        this.display = this.getConfig().getBoolean("shop.display-items");
+        this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
+        this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
+        language = new Language(this); //Init locale
+        if (this.getConfig().getBoolean("log-actions")) {
+            logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
+        } else {
+            logWatcher = null;
+        }
+        MsgUtil.loadCfgMessages();
+    }
+
+    /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
     @Override
     public void onLoad() {
         instance = this;
         bootError = null;
+    }
+
+    @Override
+    public void onDisable() {
+        if (noopDisable)
+            return;
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+
+        Util.debugLog("Closing all GUIs...");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.closeInventory();
+        }
+
+        Util.debugLog("Cleaning up database queues...");
+        if (this.getShopManager() != null)
+            this.getDatabaseManager().uninit();
+
+        Util.debugLog("Unregistering tasks...");
+        //if (itemWatcherTask != null)
+        //    itemWatcherTask.cancel();
+        if (logWatcher != null) {
+            logWatcher.close(); // Closes the file
+        }
+        /* Unload UpdateWatcher */
+        UpdateWatcher.uninit();
+        Util.debugLog("Cleaning up resources and unloading all shops...");
+        /* Remove all display items, and any dupes we can find */
+        if (shopManager != null)
+            shopManager.clear();
+        /* Empty the buffer */
+        if (databaseManager != null)
+            database.close();
+        /* Close Database */
+        if (database != null)
+            try {
+                this.database.getConnection().close();
+            } catch (SQLException e) {
+                if (getSentryErrorReporter() != null)
+                    this.getSentryErrorReporter().ignoreThrow();
+                e.printStackTrace();
+            }
+        if (warnings != null)
+            warnings.clear();
+        //this.reloadConfig();
+        Util.debugLog("All shutdown work is finished.");
     }
 
     @Override
@@ -309,56 +388,43 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
     }
 
-    private void submitMeritcs() {
-        if (!getConfig().getBoolean("disabled-metrics")) {
-            String serverVer = Bukkit.getVersion();
-            String bukkitVer = Bukkit.getBukkitVersion();
-            String serverName = Bukkit.getServer().getName();
-            String vaultVer;
-            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
-            if (vault != null) {
-                vaultVer = vault.getDescription().getVersion();
-            } else {
-                vaultVer = "Vault not found";
-            }
-            // Use internal Metric class not Maven for solve plugin name issues
-            String display_Items;
-            if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
-                // number items need disabled?
-                display_Items = "Enabled";
-            } else {
-                display_Items = "Disabled";
-            }
-            String locks;
-            if (getConfig().getBoolean("shop.lock")) {
-                locks = "Enabled";
-            } else {
-                locks = "Disabled";
-            }
-            String sneak_action;
-            if (getConfig().getBoolean("shop.sneak-to-create") || getConfig().getBoolean("shop.sneak-to-trade")) {
-                sneak_action = "Enabled";
-            } else {
-                sneak_action = "Disabled";
-            }
-            String shop_find_distance = getConfig().getString("shop.find-distance");
-            // Version
-            metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
-            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
-            metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
-            metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
-            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
-            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
-            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
-
-            // Exp for stats, maybe i need improve this, so i add this.
-            metrics.submitData(); // Submit now!
-            getLogger().info("Metrics submitted.");
-        } else {
-            getLogger().info("You have disabled mertics, Skipping...");
+    /**
+     * Check the env plugin running.
+     *
+     * @throws RuntimeException The error message, use this to create a BootError.
+     */
+    private void runtimeCheck() throws RuntimeException {
+        try {
+            getServer().spigot();
+        } catch (Throwable e) {
+            getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
+            throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
         }
 
+        if (getServer().getName().toLowerCase().contains("catserver")) {
+            // Send FATAL ERROR TO CatServer's users.
+            getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
+            throw new RuntimeException("QuickShop doen't support CatServer");
+        }
+
+        if (Util.isDevEdition()) {
+            getLogger().severe("WARNING: You are running QSRR in dev-mode");
+            getLogger().severe("WARNING: Keep backup and DO NOT run this in a production environment!");
+            getLogger().severe("WARNING: Test version may destroy everything!");
+            getLogger().severe(
+                    "WARNING: QSRR won't start without your confirmation, nothing will change before you turn on dev allowed.");
+            if (!getConfig().getBoolean("dev-mode")) {
+                getLogger().severe(
+                        "WARNING: Set dev-mode: true in config.yml to allow qs load in dev mode(You may need add this line to the config yourself).");
+                noopDisable = true;
+                throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
+            }
+        }
+        String nmsVersion = Util.getNMSVersion();
+        IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
+        getLogger().info("Running QuickShop-Reremake on Minecraft version " + nmsVersion);
+        if (incompatibleChecker.isIncompatible(nmsVersion))
+            throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
     }
 
     /**
@@ -410,6 +476,58 @@ public class QuickShop extends JavaPlugin {
             return false;
         }
         return true;
+    }
+
+    private void submitMeritcs() {
+        if (!getConfig().getBoolean("disabled-metrics")) {
+            String serverVer = Bukkit.getVersion();
+            String bukkitVer = Bukkit.getBukkitVersion();
+            String serverName = Bukkit.getServer().getName();
+            String vaultVer;
+            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
+            if (vault != null) {
+                vaultVer = vault.getDescription().getVersion();
+            } else {
+                vaultVer = "Vault not found";
+            }
+            // Use internal Metric class not Maven for solve plugin name issues
+            String display_Items;
+            if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
+                // number items need disabled?
+                display_Items = "Enabled";
+            } else {
+                display_Items = "Disabled";
+            }
+            String locks;
+            if (getConfig().getBoolean("shop.lock")) {
+                locks = "Enabled";
+            } else {
+                locks = "Disabled";
+            }
+            String sneak_action;
+            if (getConfig().getBoolean("shop.sneak-to-create") || getConfig().getBoolean("shop.sneak-to-trade")) {
+                sneak_action = "Enabled";
+            } else {
+                sneak_action = "Disabled";
+            }
+            String shop_find_distance = getConfig().getString("shop.find-distance");
+            // Version
+            metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
+            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+            metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
+            metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
+            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
+            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
+            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
+
+            // Exp for stats, maybe i need improve this, so i add this.
+            metrics.submitData(); // Submit now!
+            getLogger().info("Metrics submitted.");
+        } else {
+            getLogger().info("You have disabled mertics, Skipping...");
+        }
+
     }
 
     @SuppressWarnings("UnusedAssignment")
@@ -675,124 +793,12 @@ public class QuickShop extends JavaPlugin {
         reloadConfig();
     }
 
-    /** Reloads QuickShops config */
-    @Override
-    public void reloadConfig() {
-        super.reloadConfig();
-        // Load quick variables
-        this.display = this.getConfig().getBoolean("shop.display-items");
-        this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
-        this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
-        language = new Language(this); //Init locale
-        if (this.getConfig().getBoolean("log-actions")) {
-            logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
-        } else {
-            logWatcher = null;
-        }
-        MsgUtil.loadCfgMessages();
-    }
-
     /**
-     * Tries to load the economy and its core. If this fails, it will try to use
-     * vault. If that fails, it will return false.
+     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
      *
-     * @return true if successful, false if the core is invalid or is not found, and
-     * vault cannot be used.
+     * @return The fork name.
      */
-    private boolean loadEcon() {
-        try {
-            //EconomyCore core = new Economy_Vault();
-            EconomyCore core = null;
-            switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
-                case UNKNOWN:
-                    bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
-                    return false;
-                case VAULT:
-                    core = new Economy_Vault();
-                    Util.debugLog("Now using the Vault economy system.");
-                    break;
-                case RESERVE:
-                    core = new Economy_Reserve();
-                    Util.debugLog("Now using the Reserve economy system.");
-                    break;
-            }
-            if (!core.isValid()) {
-                // getLogger().severe("Economy is not valid!");
-                bootError = BuiltInSolution.econError();
-                // if(econ.equals("Vault"))
-                // getLogger().severe("(Does Vault have an Economy to hook into?!)");
-                return false;
-            } else {
-                this.economy = new Economy(core);
-                return true;
-            }
-        } catch (Exception e) {
-            this.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
-            getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
-            getLogger().severe("QuickShop CANNOT start!");
-            bootError = BuiltInSolution.econError();
-            HandlerList.unregisterAll(this);
-            getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
-            return false;
-        }
-    }
-
-    @Override
-    public void onDisable() {
-        if (noopDisable)
-            return;
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-
-        Util.debugLog("Closing all GUIs...");
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.closeInventory();
-        }
-
-        Util.debugLog("Cleaning up database queues...");
-        if (this.getShopManager() != null)
-            this.getDatabaseManager().uninit();
-
-        Util.debugLog("Unregistering tasks...");
-        //if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
-        if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
-        }
-        /* Unload UpdateWatcher */
-        UpdateWatcher.uninit();
-        Util.debugLog("Cleaning up resources and unloading all shops...");
-        /* Remove all display items, and any dupes we can find */
-        if (shopManager != null)
-            shopManager.clear();
-        /* Empty the buffer */
-        if (databaseManager != null)
-            database.close();
-        /* Close Database */
-        if (database != null)
-            try {
-                this.database.getConnection().close();
-            } catch (SQLException e) {
-                if (getSentryErrorReporter() != null)
-                    this.getSentryErrorReporter().ignoreThrow();
-                e.printStackTrace();
-            }
-        if (warnings != null)
-            warnings.clear();
-        //this.reloadConfig();
-        Util.debugLog("All shutdown work is finished.");
-    }
-
-    /**
-     * Logs the given string to qs.log, if QuickShop is configured to do so.
-     *
-     * @param s The string to log. It will be prefixed with the date and time.
-     */
-    public void log(@NotNull String s) {
-        if (this.getLogWatcher() == null)
-            return;
-        this.getLogWatcher().log(s);
-    }
+    public String getFork() { return "Reremake"; }
 
     /**
      * Returns QS version, this method only exist on QSRR forks If running other
@@ -804,12 +810,5 @@ public class QuickShop extends JavaPlugin {
     public static String getVersion() {
         return QuickShop.instance.getDescription().getVersion();
     }
-
-    /**
-     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
-     *
-     * @return The fork name.
-     */
-    public String getFork() { return "Reremake"; }
 
 }

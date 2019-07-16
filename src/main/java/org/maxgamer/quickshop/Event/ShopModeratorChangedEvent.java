@@ -13,10 +13,10 @@ public class ShopModeratorChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
     @NotNull
-    private Shop shop;
+    private ShopModerator moderator;
     @Getter
     @NotNull
-    private ShopModerator moderator;
+    private Shop shop;
 
     /**
      * Will call when shop price was changed.

@@ -21,10 +21,6 @@ public class BootError {
         }
     }
 
-    public String[] getErrors() {
-        return errors;
-    }
-
     /**
      * Print the errors.
      * #####################################################
@@ -44,6 +40,10 @@ public class BootError {
         //sender.sendMessage(ChatColor.YELLOW+" "+errors);
         sender.sendMessage(ChatColor.RED + "#####################################################");
 
+    }
+
+    public String[] getErrors() {
+        return errors;
     }
 
 }

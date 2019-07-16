@@ -7,9 +7,9 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-    private String shopLocation;
     private String itemStackString;
     private String mark = "QuickShop DisplayItem";
+    private String shopLocation;
 
     public ShopProtectionFlag(String shopLocation, String itemStackString) {
         this.shopLocation = shopLocation;

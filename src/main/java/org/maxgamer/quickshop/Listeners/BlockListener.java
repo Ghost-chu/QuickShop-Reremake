@@ -26,24 +26,18 @@ import org.maxgamer.quickshop.Util.Util;
 public class BlockListener implements Listener {
     private QuickShop plugin;
 
-    /*
-     * Listens for chest placement, so a doublechest shop can't be created.
+    /**
+     * Gets the shop a sign is attached to
+     *
+     * @param loc The location of the sign
+     * @return The shop
      */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlace(BlockPlaceEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        BlockState bs = e.getBlock().getState();
-        if (!(bs instanceof DoubleChest))
-            return;
-        Block b = e.getBlock();
-        Player p = e.getPlayer();
-        Block chest = Util.getSecondHalf(b);
-        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !p
-                .hasPermission("quickshop.create.double")) {
-            e.setCancelled(true);
-            p.sendMessage(MsgUtil.getMessage("no-double-chests"));
-        }
+    private Shop getShopNextTo(Location loc) {
+        Block b = Util.getAttached(loc.getBlock());
+        // Util.getAttached(b)
+        if (b == null)
+            return null;
+        return plugin.getShopManager().getShop(b.getLocation());
     }
 
     /*
@@ -130,21 +124,6 @@ public class BlockListener implements Listener {
         }
     }
 
-
-    /**
-     * Gets the shop a sign is attached to
-     *
-     * @param loc The location of the sign
-     * @return The shop
-     */
-    private Shop getShopNextTo(Location loc) {
-        Block b = Util.getAttached(loc.getBlock());
-        // Util.getAttached(b)
-        if (b == null)
-            return null;
-        return plugin.getShopManager().getShop(b.getLocation());
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
@@ -156,5 +135,25 @@ public class BlockListener implements Listener {
         if (shop == null)
             return;
         shop.setSignText();
+    }
+
+    /*
+     * Listens for chest placement, so a doublechest shop can't be created.
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void onPlace(BlockPlaceEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        BlockState bs = e.getBlock().getState();
+        if (!(bs instanceof DoubleChest))
+            return;
+        Block b = e.getBlock();
+        Player p = e.getPlayer();
+        Block chest = Util.getSecondHalf(b);
+        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !p
+                .hasPermission("quickshop.create.double")) {
+            e.setCancelled(true);
+            p.sendMessage(MsgUtil.getMessage("no-double-chests"));
+        }
     }
 }

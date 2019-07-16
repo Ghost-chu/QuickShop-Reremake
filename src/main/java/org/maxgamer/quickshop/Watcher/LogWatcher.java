@@ -13,8 +13,8 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
 public class LogWatcher implements Runnable {
-    private PrintStream ps;
     private Queue<String> logs = new LinkedList<>();
+    private PrintStream ps;
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
@@ -32,6 +32,27 @@ public class LogWatcher implements Runnable {
         }
     }
 
+    public void add(@NotNull String s) {
+        new BukkitRunnable() {
+            public void run() {
+                logs.add(s);
+            }
+        }.runTask(QuickShop.instance);
+
+    }
+
+    public void close() {
+        if (ps != null)
+            this.ps.close();
+        ps = null;
+    }
+
+    public void log(@NonNull String log) {
+        Date date = Calendar.getInstance().getTime();
+        Timestamp time = new Timestamp(date.getTime());
+        this.add("[" + time.toString() + "] " + log);
+    }
+
     @Override
     public void run() {
         new BukkitRunnable() {
@@ -45,25 +66,5 @@ public class LogWatcher implements Runnable {
 
             }
         }.runTask(QuickShop.instance);
-    }
-
-    public void add(@NotNull String s) {
-        new BukkitRunnable() {
-            public void run() {
-                logs.add(s);
-            }
-        }.runTask(QuickShop.instance);
-
-    }
-    public void close() {
-        if (ps != null)
-            this.ps.close();
-        ps = null;
-    }
-
-    public void log(@NonNull String log) {
-        Date date = Calendar.getInstance().getTime();
-        Timestamp time = new Timestamp(date.getTime());
-        this.add("[" + time.toString() + "] " + log);
     }
 }

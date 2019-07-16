@@ -18,11 +18,11 @@ import org.maxgamer.quickshop.Util.WarningSender;
  * Use queue to solve run SQL make server lagg issue.
  */
 public class DatabaseManager {
-    private QuickShop plugin;
     private Database database;
-    private boolean useQueue;
+    private QuickShop plugin;
     private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
     private BukkitTask task;
+    private boolean useQueue;
     private WarningSender warningSender;
 
     /**
@@ -48,13 +48,19 @@ public class DatabaseManager {
     }
 
     /**
-     * Unload the DatabaseManager, run at onDisable()
+     * Add preparedStatement to queue waiting flush to database,
+     * @param ps The ps you want add in queue.
      */
-    public void uninit() {
-        if (task != null && !task.isCancelled())
-            task.cancel();
-        plugin.getLogger().info("Please wait for the data to flush its data...");
-        runTask();
+    public void add(@NotNull PreparedStatement ps) {
+        if (useQueue) {
+            sqlQueue.offer(ps);
+        } else {
+            try {
+                ps.execute();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -98,18 +104,12 @@ public class DatabaseManager {
     }
 
     /**
-     * Add preparedStatement to queue waiting flush to database,
-     * @param ps The ps you want add in queue.
+     * Unload the DatabaseManager, run at onDisable()
      */
-    public void add(@NotNull PreparedStatement ps) {
-        if (useQueue) {
-            sqlQueue.offer(ps);
-        } else {
-            try {
-                ps.execute();
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            }
-        }
+    public void uninit() {
+        if (task != null && !task.isCancelled())
+            task.cancel();
+        plugin.getLogger().info("Please wait for the data to flush its data...");
+        runTask();
     }
 }

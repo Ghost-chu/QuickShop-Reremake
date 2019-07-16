@@ -12,10 +12,10 @@ import org.jetbrains.annotations.*;
 @EqualsAndHashCode
 @ToString
 public class Info {
-    private Location loc;
     private ShopAction action;
     private ItemStack item;
     private Block last;
+    private Location loc;
     private Shop shop;
 
     public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @Nullable Block last) {
@@ -63,11 +63,8 @@ public class Info {
         return this.action;
     }
 
-    /**
-     * @return Location loc, Get shop's location,
-     */
-    public Location getLocation() {
-        return this.loc;
+    public void setAction(ShopAction action) {
+        this.action = action;
     }
 
     /*
@@ -82,8 +79,11 @@ public class Info {
         return this.item;
     }
 
-    public void setAction(ShopAction action) {
-        this.action = action;
+    /**
+     * @return Location loc, Get shop's location,
+     */
+    public Location getLocation() {
+        return this.loc;
     }
 
     /**

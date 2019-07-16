@@ -10,10 +10,23 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
+class DisplayRunnable implements Runnable {
+    @Override
+    public void run() {
+        @SuppressWarnings("unchecked") ArrayList<Shop> pendingCheckDisplayCopy = (ArrayList<Shop>) QuickShop.instance
+                .getDisplayWatcher().getPendingCheckDisplay().clone();
+        for (Shop shop : pendingCheckDisplayCopy) {
+            shop.checkDisplay();
+        }
+        pendingCheckDisplayCopy.clear();
+        QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
+    }
+}
+
 @Data
 public class DisplayWatcher {
-    private QuickShop plugin;
     private ArrayList<Shop> pendingCheckDisplay = new ArrayList<>();
+    private QuickShop plugin;
 
     public DisplayWatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -46,17 +59,4 @@ public class DisplayWatcher {
         }
     }
 
-}
-
-class DisplayRunnable implements Runnable {
-    @Override
-    public void run() {
-        @SuppressWarnings("unchecked") ArrayList<Shop> pendingCheckDisplayCopy = (ArrayList<Shop>) QuickShop.instance
-                .getDisplayWatcher().getPendingCheckDisplay().clone();
-        for (Shop shop : pendingCheckDisplayCopy) {
-            shop.checkDisplay();
-        }
-        pendingCheckDisplayCopy.clear();
-        QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
-    }
 }

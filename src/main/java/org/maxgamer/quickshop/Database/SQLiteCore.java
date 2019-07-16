@@ -11,13 +11,48 @@ import java.util.LinkedList;
 import org.jetbrains.annotations.*;
 
 public class SQLiteCore implements DatabaseCore {
-    private Connection connection;
     private final File dbFile;
-    private volatile Thread watcher;
     private final LinkedList<BufferStatement> queue = new LinkedList<>();
+    private Connection connection;
+    private volatile Thread watcher;
 
     public SQLiteCore(@NotNull File dbFile) {
         this.dbFile = dbFile;
+    }
+
+    @Override
+    public void close() {
+        flush();
+    }
+
+    @Override
+    public void flush() {
+        while (!queue.isEmpty()) {
+            BufferStatement bs;
+            synchronized (queue) {
+                bs = queue.removeFirst();
+            }
+            synchronized (dbFile) {
+                try {
+                    PreparedStatement ps = bs.prepareStatement(getConnection());
+                    ps.execute();
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }
+    }
+
+    @Override
+    public void queue(@NotNull BufferStatement bs) {
+        synchronized (queue) {
+            queue.add(bs);
+        }
+        if (watcher == null || !watcher.isAlive()) {
+            startWatcher();
+        }
     }
 
     /**
@@ -57,41 +92,6 @@ public class SQLiteCore implements DatabaseCore {
                 return null;
             }
         }
-    }
-
-    @Override
-    public void queue(@NotNull BufferStatement bs) {
-        synchronized (queue) {
-            queue.add(bs);
-        }
-        if (watcher == null || !watcher.isAlive()) {
-            startWatcher();
-        }
-    }
-
-    @Override
-    public void flush() {
-        while (!queue.isEmpty()) {
-            BufferStatement bs;
-            synchronized (queue) {
-                bs = queue.removeFirst();
-            }
-            synchronized (dbFile) {
-                try {
-                    PreparedStatement ps = bs.prepareStatement(getConnection());
-                    ps.execute();
-                    ps.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-
-                }
-            }
-        }
-    }
-
-    @Override
-    public void close() {
-        flush();
     }
 
     private void startWatcher() {
