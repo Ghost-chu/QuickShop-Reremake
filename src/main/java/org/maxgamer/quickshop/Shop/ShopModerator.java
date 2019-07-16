@@ -12,6 +12,16 @@ import org.jetbrains.annotations.*;
  */
 @EqualsAndHashCode
 public class ShopModerator {
+    public static ShopModerator deserialize(@NotNull String serilized) {
+        //Use Gson deserialize data
+        Gson gson = new Gson();
+        return gson.fromJson(serilized, ShopModerator.class);
+    }
+
+    public static String serialize(@NotNull ShopModerator shopModerator) {
+        Gson gson = new Gson();
+        return gson.toJson(shopModerator); //Use Gson serialize this class
+    }
     private UUID owner;
     private ArrayList<UUID> staffs;
 
@@ -40,34 +50,6 @@ public class ShopModerator {
         this.staffs = new ArrayList<UUID>();
     }
 
-    public ShopModerator clone() {
-        return new ShopModerator(this);
-    }
-
-    /**
-     * Get moderators owner (Shop Owner).
-     * @return Owner's UUID
-     */
-    public UUID getOwner() {
-        return owner;
-    }
-
-    /**
-     * Set moderators owner (Shop Owner)
-     * @param player Owner's UUID
-     */
-    public void setOwner(@NotNull UUID player) {
-        this.owner = player;
-    }
-
-    /**
-     * Set moderators staffs
-     * @param players staffs list
-     */
-    public void setStaffs(@NotNull ArrayList<UUID> players) {
-        this.staffs = players;
-    }
-
     /**
      * Add moderators staff to staff list
      * @param player New staff
@@ -81,6 +63,22 @@ public class ShopModerator {
     }
 
     /**
+     * Remove all staffs
+     */
+    public void clearStaffs() {
+        staffs.clear();
+    }
+
+    public ShopModerator clone() {
+        return new ShopModerator(this);
+    }
+
+    @Override
+    public String toString() {
+        return serialize(this);
+    }
+
+    /**
      * Remove moderators staff from staff list
      * @param player Staff
      * @return Success
@@ -90,18 +88,14 @@ public class ShopModerator {
     }
 
     /**
-     * Remove all staffs
+     * Get a player is or not moderators
+     * @param player Player
+     * @return yes or no, return true when it is staff or owner
      */
-    public void clearStaffs() {
-        staffs.clear();
-    }
-
-    /**
-     * Get staffs list
-     * @return Staffs
-     */
-    public ArrayList<UUID> getStaffs() {
-        return staffs;
+    public boolean isModerator(@NotNull UUID player) {
+        if (isOwner(player))
+            return true;
+        return isStaff(player);
     }
 
     /**
@@ -123,29 +117,37 @@ public class ShopModerator {
     }
 
     /**
-     * Get a player is or not moderators
-     * @param player Player
-     * @return yes or no, return true when it is staff or owner
+     * Get moderators owner (Shop Owner).
+     * @return Owner's UUID
      */
-    public boolean isModerator(@NotNull UUID player) {
-        if (isOwner(player))
-            return true;
-        return isStaff(player);
+    public UUID getOwner() {
+        return owner;
     }
 
-    public static String serialize(@NotNull ShopModerator shopModerator) {
-        Gson gson = new Gson();
-        return gson.toJson(shopModerator); //Use Gson serialize this class
+    /**
+     * Set moderators owner (Shop Owner)
+     *
+     * @param player Owner's UUID
+     */
+    public void setOwner(@NotNull UUID player) {
+        this.owner = player;
     }
 
-    public static ShopModerator deserialize(@NotNull String serilized) {
-        //Use Gson deserialize data
-        Gson gson = new Gson();
-        return gson.fromJson(serilized, ShopModerator.class);
+    /**
+     * Get staffs list
+     *
+     * @return Staffs
+     */
+    public ArrayList<UUID> getStaffs() {
+        return staffs;
     }
 
-    @Override
-    public String toString() {
-        return serialize(this);
+    /**
+     * Set moderators staffs
+     *
+     * @param players staffs list
+     */
+    public void setStaffs(@NotNull ArrayList<UUID> players) {
+        this.staffs = players;
     }
 }

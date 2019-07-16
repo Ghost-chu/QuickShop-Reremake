@@ -17,8 +17,8 @@ import org.maxgamer.quickshop.QuickShop;
  * A util allow quickshop check item matches easy and quick.
  */
 public class ItemMatcher {
-    private QuickShop plugin;
     private ItemMetaMatcher itemMetaMatcher;
+    private QuickShop plugin;
 
     public ItemMatcher(QuickShop plugin) {
         this.plugin = plugin;
@@ -63,14 +63,14 @@ public class ItemMatcher {
     }
 
     class ItemMetaMatcher {
+        private boolean attributes;
+        private boolean custommodeldata;
         private boolean damage;
         private boolean displayname;
-        private boolean lores;
         private boolean enchs;
-        private boolean potions;
-        private boolean attributes;
         private boolean itemflags;
-        private boolean custommodeldata;
+        private boolean lores;
+        private boolean potions;
 
         public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
             this.damage = itemMatcherConfig.getBoolean("damage");
@@ -81,6 +81,108 @@ public class ItemMatcher {
             this.attributes = itemMatcherConfig.getBoolean("attributes");
             this.itemflags = itemMatcherConfig.getBoolean("itemflags");
             this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
+        }
+
+        private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.attributes)
+                return true;
+            if (meta1.hasAttributeModifiers() != meta2.hasAttributeModifiers())
+                return false;
+
+            if (!meta1.hasAttributeModifiers())
+                return true; //No attributeModifiers need to be checked.
+
+            return (meta1.getAttributeModifiers().hashCode() == meta2.getAttributeModifiers().hashCode());
+        }
+
+        private boolean customModelDataMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.custommodeldata)
+                return true;
+            if (meta1.hasCustomModelData() != meta2.hasCustomModelData())
+                return false;
+            if (!meta1.hasCustomModelData())
+                return true; //No customModelData needs to be checked.
+            return (meta1.getCustomModelData() == meta2.getCustomModelData());
+        }
+
+        private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.damage)
+                return true;
+            if ((meta1 instanceof Damageable) != (meta2 instanceof Damageable))
+                return false;
+
+            if (!(meta1 instanceof Damageable))
+                return true; //No damage need to check.
+
+            Damageable damage1 = (Damageable) meta1;
+            Damageable damage2 = (Damageable) meta2;
+
+            if (damage1.hasDamage() != damage2.hasDamage())
+                return false;
+
+            if (!damage1.hasDamage())
+                return true; //No damage need to check.
+
+            return damage1.getDamage() == damage2.getDamage();
+
+        }
+
+        private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.displayname)
+                return true;
+            if (meta1.hasDisplayName() != meta2.hasDisplayName())
+                return false;
+            if (!meta1.hasDisplayName())
+                return true; //Passed check. no display need to check
+            return (meta1.getDisplayName().equals(meta2.getDisplayName()));
+        }
+
+        private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.enchs)
+                return true;
+            if (meta1.hasEnchants() != meta2.hasEnchants())
+                return false;
+
+            if (meta1.hasEnchants()) {
+                Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
+                Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
+                if (!Util.mapDuoMatches(enchMap1, enchMap2))
+                    return false;
+            }
+            if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta)
+                return false;
+            if (meta1 instanceof EnchantmentStorageMeta) {
+                Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+                Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+                return Util.mapDuoMatches(stor1, stor2);
+            }
+            return true;
+        }
+
+        private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
+            if (!this.itemflags)
+                return true;
+            return (meta1.getItemFlags().hashCode() == meta2.getItemFlags().hashCode());
+        }
+
+        private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
+            Util.debugLog("Lores checker");
+            if (!this.lores)
+                return true;
+            Util.debugLog("Lores checking");
+            if (meta1.hasLore() != meta2.hasLore())
+                return false;
+            if (!meta1.hasLore())
+                return true; // No lores need to be checked.
+            List<String> lores1 = meta1.getLore();
+            List<String> lores2 = meta2.getLore();
+            if (lores1.size() != lores2.size())
+                return false;
+            for (int i = 0; i < lores1.size(); i++) {
+                if (!lores1.get(i).equals(lores2.get(i)))
+                    return false;
+            }
+            return (lores2.hashCode() == lores2.hashCode());
         }
 
         boolean matches(ItemStack stack1, ItemStack stack2) {
@@ -121,84 +223,6 @@ public class ItemMatcher {
             return true;
         }
 
-        private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
-            return (meta1.hashCode() == meta2.hashCode());
-        }
-
-        private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.damage)
-                return true;
-            if ((meta1 instanceof Damageable) != (meta2 instanceof Damageable))
-                return false;
-
-            if (!(meta1 instanceof Damageable))
-                return true; //No damage need to check.
-
-            Damageable damage1 = (Damageable) meta1;
-            Damageable damage2 = (Damageable) meta2;
-
-            if (damage1.hasDamage() != damage2.hasDamage())
-                return false;
-
-            if (!damage1.hasDamage())
-                return true; //No damage need to check.
-
-            return damage1.getDamage() == damage2.getDamage();
-
-        }
-
-        private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.displayname)
-                return true;
-            if (meta1.hasDisplayName() != meta2.hasDisplayName())
-                return false;
-            if (!meta1.hasDisplayName())
-                return true; //Passed check. no display need to check
-            return (meta1.getDisplayName().equals(meta2.getDisplayName()));
-        }
-
-        private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
-            Util.debugLog("Lores checker");
-            if (!this.lores)
-                return true;
-            Util.debugLog("Lores checking");
-            if (meta1.hasLore() != meta2.hasLore())
-                return false;
-            if (!meta1.hasLore())
-                return true; // No lores need to be checked.
-            List<String> lores1 = meta1.getLore();
-            List<String> lores2 = meta2.getLore();
-            if (lores1.size() != lores2.size())
-                return false;
-            for (int i = 0; i < lores1.size(); i++) {
-                if (!lores1.get(i).equals(lores2.get(i)))
-                    return false;
-            }
-            return (lores2.hashCode() == lores2.hashCode());
-        }
-
-        private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.enchs)
-                return true;
-            if (meta1.hasEnchants() != meta2.hasEnchants())
-                return false;
-
-            if (meta1.hasEnchants()) {
-                Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
-                Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-                if (!Util.mapDuoMatches(enchMap1, enchMap2))
-                    return false;
-            }
-            if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta)
-                return false;
-            if (meta1 instanceof EnchantmentStorageMeta) {
-                Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
-                Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-                return Util.mapDuoMatches(stor1, stor2);
-            }
-            return true;
-        }
-
         private boolean potionMatches(ItemMeta meta1, ItemMeta meta2) {
             if (!this.potions)
                 return true;
@@ -231,32 +255,8 @@ public class ItemMatcher {
             return true;
         }
 
-        private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.attributes)
-                return true;
-            if (meta1.hasAttributeModifiers() != meta2.hasAttributeModifiers())
-                return false;
-
-            if (!meta1.hasAttributeModifiers())
-                return true; //No attributeModifiers need to be checked.
-
-            return (meta1.getAttributeModifiers().hashCode() == meta2.getAttributeModifiers().hashCode());
-        }
-
-        private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.itemflags)
-                return true;
-            return (meta1.getItemFlags().hashCode() == meta2.getItemFlags().hashCode());
-        }
-
-        private boolean customModelDataMatches(ItemMeta meta1, ItemMeta meta2) {
-            if (!this.custommodeldata)
-                return true;
-            if (meta1.hasCustomModelData() != meta2.hasCustomModelData())
-                return false;
-            if (!meta1.hasCustomModelData())
-                return true; //No customModelData needs to be checked.
-            return (meta1.getCustomModelData() == meta2.getCustomModelData());
+        private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
+            return (meta1.hashCode() == meta2.hashCode());
         }
 
     }

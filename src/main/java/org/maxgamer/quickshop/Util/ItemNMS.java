@@ -12,8 +12,8 @@ import org.maxgamer.quickshop.QuickShop;
 @Getter
 public abstract class ItemNMS {
     private static Method craftItemStack_asNMSCopyMethod;
-    private static Class<?> nbtTagCompoundClass;
     private static Method itemStack_saveMethod;
+    private static Class<?> nbtTagCompoundClass;
 
     static {
         String name = Bukkit.getServer().getClass().getPackage().getName();

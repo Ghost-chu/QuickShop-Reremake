@@ -21,16 +21,27 @@ import org.maxgamer.quickshop.Util.Util;
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
-    private QuickShop plugin = QuickShop.instance;
-    private ItemStack originalItemStack;
-    private ItemStack guardedIstack;
+    private static boolean isTool(Material material) {
+        String nlc = material.name().toLowerCase();
+        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
+    }
     private ArmorStand armorStand;
+    private ItemStack guardedIstack;
+    private ItemStack originalItemStack;
+    private QuickShop plugin = QuickShop.instance;
     private Shop shop;
 
     ArmorStandDisplayItem(@NotNull Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
         this.originalItemStack.setAmount(1);
+    }
+
+    @Override
+    public boolean checkIsShopEntity(@NotNull Entity entity) {
+        if (!(entity instanceof ArmorStand))
+            return false;
+        return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
     }
 
     @Override
@@ -78,6 +89,30 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     @Override
+    public boolean removeDupe() {
+        if (this.armorStand == null) {
+            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
+            return false;
+        }
+        boolean removed = false;
+        for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
+            if (!(entity instanceof ArmorStand))
+                continue;
+            ArmorStand eArmorStand = (ArmorStand) entity;
+
+            if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
+                            .getLocation().toString());
+                    entity.remove();
+                    removed = true;
+                }
+            }
+        }
+        return removed;
+    }
+
+    @Override
     public void safeGuard(@NotNull Entity entity) {
         if (!(entity instanceof ArmorStand)) {
             Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a ArmorStand");
@@ -90,11 +125,15 @@ public class ArmorStandDisplayItem implements DisplayItem {
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
 
-    private void setPoseForArmorStand() {
-        if (this.originalItemStack.getType().isBlock())
-            this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
-        else
-            this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+    @Override
+    public void respawn() {
+        remove();
+        spawn();
+    }
+
+    @Override
+    public Entity getDisplay() {
+        return this.armorStand;
     }
 
     @Override
@@ -108,17 +147,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.guardedIstack = null;
         ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack, DisplayType.ARMORSTAND);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
-    }
-
-    @Override
-    public void respawn() {
-        remove();
-        spawn();
-    }
-
-    @Override
-    public Entity getDisplay() {
-        return this.armorStand;
     }
 
     @Override
@@ -182,6 +210,13 @@ public class ArmorStandDisplayItem implements DisplayItem {
         return asloc;
     }
 
+    private void setPoseForArmorStand() {
+        if (this.originalItemStack.getType().isBlock())
+            this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
+        else
+            this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+    }
+
     @Override
     public boolean checkDisplayIsMoved() {
         if (this.armorStand == null)
@@ -194,37 +229,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         if (this.armorStand == null)
             return false;
         return !this.armorStand.isValid() || this.armorStand.isDead();
-    }
-
-    @Override
-    public boolean checkIsShopEntity(@NotNull Entity entity) {
-        if (!(entity instanceof ArmorStand))
-            return false;
-        return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
-    }
-
-    @Override
-    public boolean removeDupe() {
-        if (this.armorStand == null) {
-            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
-            return false;
-        }
-        boolean removed = false;
-        for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
-            if (!(entity instanceof ArmorStand))
-                continue;
-            ArmorStand eArmorStand = (ArmorStand) entity;
-
-            if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
-                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
-                            .getLocation().toString());
-                    entity.remove();
-                    removed = true;
-                }
-            }
-        }
-        return removed;
     }
 
     @Override
@@ -252,10 +256,5 @@ public class ArmorStandDisplayItem implements DisplayItem {
         if (this.armorStand == null)
             return false;
         return this.armorStand.isValid();
-    }
-
-    private static boolean isTool(Material material) {
-        String nlc = material.name().toLowerCase();
-        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
     }
 }

@@ -19,10 +19,10 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
     private boolean cancelled;
     @Getter
     @NotNull
-    private Player player;
+    private Location location;
     @Getter
     @NotNull
-    private Location location;
+    private Player player;
 
     /**
      * Calling when shop pre-creating.

@@ -31,57 +31,48 @@ public class LockListener implements Listener {
     private QuickShop plugin;
 
     @EventHandler(ignoreCancelled = true)
-    public void onClick(PlayerInteractEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+    public void invEvent(InventoryMoveItemEvent e) {
+        if (!InventoryPreview.isPreviewItem(e.getItem()))
             return;
-        Block b = e.getClickedBlock();
-        if (b == null)
-            return;
-        if (!Util.canBeShop(b))
-            return;
-        Player p = e.getPlayer();
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
-            return; // Didn't right click it, we dont care.
-        Shop shop = plugin.getShopManager().getShop(b.getLocation());
-        // Make sure they're not using the non-shop half of a double chest.
-        if (shop == null) {
-            b = Util.getSecondHalf(b);
-            if (b == null)
-                return;
-            shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null)
-                return;
-        }
-        if (!shop.getModerator().isModerator(p.getUniqueId())) {
-            if (p.hasPermission("quickshop.other.open")) {
-                p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
-                return;
-            }
-            p.sendMessage(MsgUtil.getMessage("that-is-locked"));
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void invEvent(InventoryClickEvent e) {
+        if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+        if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
         }
     }
 
-    /*
-     * Handles hopper placement
-     */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onPlace(BlockPlaceEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        Block b = e.getBlock();
-        if (b.getType() != Material.HOPPER)
-            return;
-        Player p = e.getPlayer();
-        if (!Util.isOtherShopWithinHopperReach(b, p))
-            return;
-
-        if (p.hasPermission("quickshop.other.open")) {
-            p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
-            return;
+    @EventHandler
+    public void invEvent(InventoryDragEvent e) {
+        if (InventoryPreview.isPreviewItem(e.getCursor())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
         }
-        p.sendMessage(MsgUtil.getMessage("that-is-locked"));
-        e.setCancelled(true);
+        if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+
+    }
+
+    @EventHandler
+    public void invEvent(InventoryPickupItemEvent e) {
+        Inventory inventory = e.getInventory();
+        ItemStack[] stacks = inventory.getContents();
+        for (ItemStack itemStack : stacks) {
+            if (itemStack == null)
+                continue;
+            if (InventoryPreview.isPreviewItem(itemStack)) {
+                e.setCancelled(true);
+            }
+        }
     }
 
     /*
@@ -135,6 +126,38 @@ public class LockListener implements Listener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onClick(PlayerInteractEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        Block b = e.getClickedBlock();
+        if (b == null)
+            return;
+        if (!Util.canBeShop(b))
+            return;
+        Player p = e.getPlayer();
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return; // Didn't right click it, we dont care.
+        Shop shop = plugin.getShopManager().getShop(b.getLocation());
+        // Make sure they're not using the non-shop half of a double chest.
+        if (shop == null) {
+            b = Util.getSecondHalf(b);
+            if (b == null)
+                return;
+            shop = plugin.getShopManager().getShop(b.getLocation());
+            if (shop == null)
+                return;
+        }
+        if (!shop.getModerator().isModerator(p.getUniqueId())) {
+            if (p.hasPermission("quickshop.other.open")) {
+                p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
+                return;
+            }
+            p.sendMessage(MsgUtil.getMessage("that-is-locked"));
+            e.setCancelled(true);
+        }
+    }
+
     /*
      * Handles shops breaking through explosions
      */
@@ -156,48 +179,25 @@ public class LockListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void invEvent(InventoryMoveItemEvent e) {
-        if (!InventoryPreview.isPreviewItem(e.getItem()))
+    /*
+     * Handles hopper placement
+     */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlace(BlockPlaceEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
             return;
+        Block b = e.getBlock();
+        if (b.getType() != Material.HOPPER)
+            return;
+        Player p = e.getPlayer();
+        if (!Util.isOtherShopWithinHopperReach(b, p))
+            return;
+
+        if (p.hasPermission("quickshop.other.open")) {
+            p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
+            return;
+        }
+        p.sendMessage(MsgUtil.getMessage("that-is-locked"));
         e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void invEvent(InventoryClickEvent e) {
-        if (InventoryPreview.isPreviewItem(e.getCursor())) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-        if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-    }
-
-    @EventHandler
-    public void invEvent(InventoryDragEvent e) {
-        if (InventoryPreview.isPreviewItem(e.getCursor())) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-        if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
-            e.setCancelled(true);
-            e.setResult(Event.Result.DENY);
-        }
-
-    }
-
-    @EventHandler
-    public void invEvent(InventoryPickupItemEvent e) {
-        Inventory inventory = e.getInventory();
-        ItemStack[] stacks = inventory.getContents();
-        for (ItemStack itemStack : stacks) {
-            if (itemStack == null)
-                continue;
-            if (InventoryPreview.isPreviewItem(itemStack)) {
-                e.setCancelled(true);
-            }
-        }
     }
 }
