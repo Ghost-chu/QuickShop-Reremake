@@ -203,8 +203,7 @@ public class ContainerShop implements Shop {
      * @param price The new price of the shop.
      */
     public void setPrice(double price) {
-        Bukkit.getPluginManager().callEvent(ShopPriceChangedEvent.builder().oldPrice(this.price).newPrice(price).shop(this)
-                .build());
+        Bukkit.getPluginManager().callEvent(new ShopPriceChangedEvent(this, this.price, price));
         this.price = price;
         setSignText();
         update();
@@ -297,7 +296,7 @@ public class ContainerShop implements Shop {
         update();
         if (result == false)
             return result;
-        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         return result;
     }
 
@@ -307,14 +306,14 @@ public class ContainerShop implements Shop {
         update();
         if (result == false)
             return result;
-        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         return result;
     }
 
     @Override
     public void clearStaffs() {
         this.moderator.clearStaffs();
-        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         update();
     }
 
@@ -491,7 +490,7 @@ public class ContainerShop implements Shop {
      */
     public void setOwner(@NotNull UUID owner) {
         this.moderator.setOwner(owner);
-        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         this.setSignText();
         update();
     }
@@ -793,7 +792,7 @@ public class ContainerShop implements Shop {
     public void setModerator(ShopModerator shopModerator) {
         this.moderator = shopModerator.clone();
         update();
-        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 /** Calling when shop price was changed, Can't cancel **/
-@Builder
+
 public class ShopPriceChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter

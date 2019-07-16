@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
-@Builder
 public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
