@@ -846,6 +846,15 @@ public class Util {
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         return "[" + className + "-" + methodName + "] ";
     }
+
+    /**
+     * Return the Class name.
+     */
+    public static String getClassPrefix(Class c) {
+        String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+        String customClassName = c.getSimpleName();
+        return "[" + callClassName + "-" + customClassName + "] ";
+    }
     /**
      * Get how many shop in the target world.
      *
