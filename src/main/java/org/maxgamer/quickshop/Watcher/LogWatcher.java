@@ -1,8 +1,8 @@
 package org.maxgamer.quickshop.Watcher;
 
 import java.io.*;
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
@@ -10,7 +10,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public class LogWatcher implements Runnable {
     private PrintStream ps;
-    private Queue<String> logs = new LinkedBlockingQueue<>();
+    private Queue<String> logs = new LinkedList<>();
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
