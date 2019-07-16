@@ -208,7 +208,7 @@ public class DisplayProtectionListener implements Listener {
         event.getDrops().clear();
     }
 
-    @EventHandler(ignoreCancelled =, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityInteractEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
