@@ -8,6 +8,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
@@ -58,7 +59,7 @@ public class RealDisplayItem implements DisplayItem {
             return;
         }
 
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
@@ -96,6 +97,8 @@ public class RealDisplayItem implements DisplayItem {
         this.item.remove();
         this.item = null;
         this.guardedIstack = null;
+        ShopDisplayItemDespawnEvent shopDisplayItemDepawnEvent = new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+        Bukkit.getPluginManager().callEvent(shopDisplayItemDepawnEvent);
     }
 
     @Override
