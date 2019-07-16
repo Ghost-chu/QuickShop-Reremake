@@ -15,10 +15,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.inventory.ItemStack;
@@ -129,21 +126,6 @@ public class DisplayProtectionListener implements Listener {
             }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onInventoryPickupItem(InventoryPickupItemEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass()))
-            return;
-            ItemStack is = event.getItem().getItemStack();
-            if (DisplayItem.checkIsGuardItemStack(is)) {
-                event.setCancelled(true);
-//				plugin.getLogger().warning("[Exploit alert] Inventory "+event.getInventory().getName()+" at "+event.getItem().getLocation()+" picked up display item "+is);
-//				Util.sendMessageToOps(ChatColor.RED+"[QuickShop][Exploit alert] Inventory "+event.getView().getTitle()+" at "+event.getItem().getLocation()+" picked up display item "+is);
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Inventory " + event.getInventory()
-                        .toString() + " trying pickup displayItem, QuickShop already removed it.");
-                event.getItem().remove();
-                Util.inventoryCheck(event.getInventory());
-            }
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
@@ -318,9 +300,30 @@ public class DisplayProtectionListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void itemPickup(InventoryPickupItemEvent event) {
+    public void itemInventoryPickup(InventoryPickupItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
+        ItemStack itemStack = event.getItem().getItemStack();
+        if (!DisplayItem.checkIsGuardItemStack(itemStack))
+            return; //We didn't care that
+        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void itemInventoryPickup(InventoryDragEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
+        ItemStack itemStack;
+        itemStack = event.getCursor();
+        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+            event.setCancelled(true);
+            return;
+        }
+        itemStack = event.getOldCursor();
+        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+            event.setCancelled(true);
+            return;
+        }
     }
 }
 
