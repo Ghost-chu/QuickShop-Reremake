@@ -143,6 +143,7 @@ public class Util {
 
     /**
      * Check a material is possible become a shop
+     *
      * @param material Mat
      * @return Can or not
      */
@@ -419,6 +420,7 @@ public class Util {
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5
      * dollars.
+     *
      * @param n price
      * @return The formatted string.
      */
@@ -507,14 +509,14 @@ public class Util {
         int space = 0;
 
         ItemStack[] contents = inv.getStorageContents();
-            for (ItemStack iStack : contents) {
-                //noinspection ConstantConditions
-                if (iStack == null || iStack.getType() == Material.AIR) {
-                    space += item.getMaxStackSize();
-                } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                    space += item.getMaxStackSize() - iStack.getAmount();
-                }
+        for (ItemStack iStack : contents) {
+            //noinspection ConstantConditions
+            if (iStack == null || iStack.getType() == Material.AIR) {
+                space += item.getMaxStackSize();
+            } else if (plugin.getItemMatcher().matches(item, iStack)) {
+                space += item.getMaxStackSize() - iStack.getAmount();
             }
+        }
         return space;
     }
 
@@ -624,8 +626,6 @@ public class Util {
         }
     }
 
-
-
     /**
      * @param iStack itemstack
      * @return potion data, readable
@@ -638,11 +638,11 @@ public class Util {
         List<String> pEffects = new ArrayList<String>();
         PotionMeta pMeta = (PotionMeta) iStack.getItemMeta();
         //if (pMeta.getBasePotionData().getType() != null) {
-            if (!(pMeta.getBasePotionData().isUpgraded())) {
-                pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
-            } else {
-                pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()) + " II");
-            }
+        if (!(pMeta.getBasePotionData().isUpgraded())) {
+            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
+        } else {
+            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()) + " II");
+        }
 
         //}
         if (pMeta.hasCustomEffects()) {
@@ -669,7 +669,8 @@ public class Util {
      * With the trace.
      */
     public static void sendDeprecatedMethodWarn() {
-        QuickShop.instance.getLogger().warning("Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
+        QuickShop.instance.getLogger()
+                .warning("Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         for (StackTraceElement stackTraceElement : stackTraceElements) {
             QuickShop.instance.getLogger().warning("at " + stackTraceElement.getClassName() + "#" + stackTraceElement
@@ -695,6 +696,7 @@ public class Util {
 
     /**
      * Call this to check items in inventory and remove it.
+     *
      * @param inv inv
      */
     public static void inventoryCheck(@Nullable Inventory inv) {
@@ -726,8 +728,6 @@ public class Util {
                 }
             }
         }.runTaskAsynchronously(plugin);
-
-
     }
 
     public static String getItemStackName(@NotNull ItemStack itemStack) {
@@ -798,6 +798,7 @@ public class Util {
             return true;
         return isWallSign(mat);
     }
+
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -1036,6 +1037,7 @@ public class Util {
 
     /**
      * Get the plugin is under dev-mode(debug mode)
+     *
      * @return under dev-mode
      */
     public static boolean isDevMode() {

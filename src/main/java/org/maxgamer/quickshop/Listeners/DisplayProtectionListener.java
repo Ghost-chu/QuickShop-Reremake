@@ -37,18 +37,7 @@ public class DisplayProtectionListener implements Listener {
             return;
         if (event.getInventory().getStorageContents() == null)
             return;
-        for (ItemStack is : event.getInventory().getStorageContents()) {
-            if (is == null)
-                continue;
-            if (DisplayItem.checkIsGuardItemStack(is)) {
-                is.setType(Material.AIR);
-                is.setAmount(1);
-                event.getPlayer().closeInventory();
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Found displayItem in inventory " + event.getInventory()
-                        .toString() + ", QuickShop already removed it.");
-                //Util.inventoryCheck(event.getInventory());
-            }
-        }
+        Util.inventoryCheck(event.getInventory());
     }
 
     @EventHandler(ignoreCancelled = true)
