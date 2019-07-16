@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,11 +12,18 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * This event is called before the shop display item created
  */
+@Builder
 public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
+    @Getter
+    @NonNull
     private Shop shop;
-    private ItemStack iStack;
+    @Getter
+    @NonNull
+    private ItemStack itemStack;
+    @Getter
+    @NonNull
     private DisplayType displayType;
 
     /**
@@ -24,9 +32,9 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
      * @param displayType The displayType
      * @param iStack Target ItemStack
      */
-    public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack, DisplayType displayType) {
+    public ShopDisplayItemSpawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack, @NonNull DisplayType displayType) {
         this.shop = shop;
-        this.iStack = iStack;
+        this.itemStack = iStack;
         this.displayType = displayType;
     }
 
@@ -38,28 +46,12 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     @Deprecated
     public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
         this.shop = shop;
-        this.iStack = iStack;
+        this.itemStack = iStack;
         this.displayType = DisplayItem.getNowUsing();
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public DisplayType getDisplayType() {
-        return displayType;
-    }
-
-    public ItemStack getItemStack() {
-        return iStack;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,11 +13,18 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * This event is called after DisplayItem removed
  */
+@Builder
 public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
+    @Getter
+    @NonNull
     private Shop shop;
-    private ItemStack iStack;
+    @Getter
+    @NonNull
+    private ItemStack itemStack;
+    @Getter
+    @NonNull
     private DisplayType displayType;
 
     /**
@@ -25,9 +33,9 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
      * @param iStack Target itemstacck
      */
     @Deprecated
-    public ShopDisplayItemDespawnEvent(Shop shop, ItemStack iStack) {
+    public ShopDisplayItemDespawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack) {
         this.shop = shop;
-        this.iStack = iStack;
+        this.itemStack = iStack;
         this.displayType = DisplayItem.getNowUsing();
     }
 
@@ -37,31 +45,15 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
      * @param iStack Target itemstacck
      * @param displayType The displayType
      */
-    public ShopDisplayItemDespawnEvent(Shop shop, ItemStack iStack, DisplayType displayType) {
+    public ShopDisplayItemDespawnEvent(@NonNull Shop shop, @NonNull ItemStack iStack, @NonNull DisplayType displayType) {
         this.shop = shop;
-        this.iStack = iStack;
+        this.itemStack = iStack;
         this.displayType = displayType;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public DisplayType getDisplayType() {
-        return displayType;
-    }
-
-    public ItemStack getItemStack() {
-        return iStack;
     }
 
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

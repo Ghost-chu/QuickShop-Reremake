@@ -25,8 +25,6 @@ public class ChatListener implements Listener {
         }
         if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId()))
             return;
-        plugin.log(e.getPlayer().getName() + "(" + e.getPlayer().getUniqueId().toString() + ") was " + plugin.getShopManager()
-                .getActions().get(e.getPlayer().getUniqueId()).getAction().name() + " the shop.");
         plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());
         e.setCancelled(true);
     }
