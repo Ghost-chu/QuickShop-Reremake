@@ -11,7 +11,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopUpdateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private @NonNull Shop shop;
+    private @NotNull Shop shop;
     private boolean cancelled;
 
     /**
@@ -19,7 +19,7 @@ public class ShopUpdateEvent extends Event implements Cancellable {
      *
      * @param shop The shop bought from
      */
-    public ShopUpdateEvent(@NonNull Shop shop) {
+    public ShopUpdateEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
     @NotNull
