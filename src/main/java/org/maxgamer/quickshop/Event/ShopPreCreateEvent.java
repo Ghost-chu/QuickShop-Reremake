@@ -13,7 +13,7 @@ import org.jetbrains.annotations.*;
  * clicks a chest, this event is thrown, if successful, the player is asked how
  * much they wish to trade for.
  */
-@Builder
+
 public class ShopPreCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
