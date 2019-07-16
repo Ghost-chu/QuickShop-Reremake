@@ -830,6 +830,23 @@ public class Util {
     }
 
     /**
+     * Return the Class name.
+     */
+    public static String getClassPrefix() {
+
+        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        try {
+            Class c = Class.forName(className);
+            className = c.getSimpleName();
+            if (!c.getSimpleName().isEmpty())
+                className = c.getSimpleName();
+        } catch (ClassNotFoundException e) {
+            //Ignore
+        }
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        return "[" + className + "-" + methodName + "] ";
+    }
+    /**
      * Get how many shop in the target world.
      *
      * @param worldName Target world.
