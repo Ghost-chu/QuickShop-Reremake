@@ -8,7 +8,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopModerator;
 
 /** Calling when moderator was changed, Can't cancel **/
-@Builder
+
 public class ShopModeratorChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
