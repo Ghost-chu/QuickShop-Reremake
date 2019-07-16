@@ -630,16 +630,28 @@ public class Util {
      * @param message The message you want send
      */
     public static void sendMessageToOps(@NotNull String message) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isOp() || player.hasPermission("quickshop.alert")) {
-                player.sendMessage(message);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.isOp() || player.hasPermission("quickshop.alert")) {
+                        player.sendMessage(message);
+                    }
+                }
             }
-        }
+        }.runTaskAsynchronously(plugin);
+
     }
 
     public static void globalLogMessage(@NonNull String message) {
-        sendMessageToOps(message);
-        plugin.log(message);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                sendMessageToOps(message);
+                plugin.log(message);
+            }
+        }.runTaskAsynchronously(plugin);
+
     }
 
     /**
