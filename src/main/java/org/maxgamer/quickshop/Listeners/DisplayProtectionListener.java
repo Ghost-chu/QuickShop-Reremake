@@ -8,6 +8,7 @@ import org.bukkit.block.Furnace;
 import org.bukkit.entity.*;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
@@ -28,7 +29,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class DisplayProtectionListener implements Listener {
     private QuickShop plugin;
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockFromToEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -48,7 +49,7 @@ public class DisplayProtectionListener implements Listener {
                 .toString() + " trying flow to top of shop, QuickShop already cancel it.");
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockPistonExtendEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -74,7 +75,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockPistonRetractEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -100,7 +101,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BrewingStandFuelEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -113,7 +114,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceBurnEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -131,7 +132,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceSmeltEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -161,7 +162,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityPickupItemEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
@@ -184,7 +185,7 @@ public class DisplayProtectionListener implements Listener {
             Util.inventoryCheck(((InventoryHolder) entity).getInventory());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityDamageEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -195,7 +196,7 @@ public class DisplayProtectionListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityDeathEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -207,7 +208,7 @@ public class DisplayProtectionListener implements Listener {
         event.getDrops().clear();
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled =, priority = EventPriority.HIGHEST)
     public void entity(EntityInteractEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -223,14 +224,14 @@ public class DisplayProtectionListener implements Listener {
                 .name() + " trying interact the hold displayItem's entity.");
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
         Util.inventoryCheck(event.getInventory());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryClickEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -246,7 +247,7 @@ public class DisplayProtectionListener implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryMoveItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -264,7 +265,7 @@ public class DisplayProtectionListener implements Listener {
         } catch (Exception e) {}
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryPickupItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -277,7 +278,7 @@ public class DisplayProtectionListener implements Listener {
         Util.inventoryCheck(event.getInventory());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryDragEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -299,7 +300,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryCreativeEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -321,7 +322,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(PlayerItemHeldEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
@@ -345,7 +346,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -356,7 +357,7 @@ public class DisplayProtectionListener implements Listener {
         //Util.debugLog("We canceled an Item from despawning because they are our display item.");
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(CraftItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -379,7 +380,7 @@ public class DisplayProtectionListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerInteractEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
@@ -395,7 +396,7 @@ public class DisplayProtectionListener implements Listener {
         Util.inventoryCheck(e.getPlayer().getInventory());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerFishEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -417,7 +418,7 @@ public class DisplayProtectionListener implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerBucketEmptyEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
@@ -431,7 +432,7 @@ public class DisplayProtectionListener implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerArmorStandManipulateEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
