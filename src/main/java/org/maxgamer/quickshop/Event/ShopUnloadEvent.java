@@ -7,7 +7,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 /** Getting the unloading shop, Can't cancel. **/
-@Builder
+
 public class ShopUnloadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 /** Calling when shop sign update, Can't cancel **/
-@Builder
+
 public class ShopSignUpdatedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
