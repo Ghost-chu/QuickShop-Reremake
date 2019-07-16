@@ -11,7 +11,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopDeleteEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     private boolean cancelled;
     @Getter private boolean fromMemory;
@@ -23,7 +23,7 @@ public class ShopDeleteEvent extends Event implements Cancellable {
      * @param shop       Target shop
      * @param fromMemory Only delete from the memory? false = delete both in memory and database
      */
-    public ShopDeleteEvent(@NonNull Shop shop, boolean fromMemory) {
+    public ShopDeleteEvent(@NotNull Shop shop, boolean fromMemory) {
         this.shop = shop;
         this.fromMemory = fromMemory;
     }

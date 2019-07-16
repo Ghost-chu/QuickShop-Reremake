@@ -11,7 +11,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopPriceChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     @Getter private double oldPrice;
     @Getter private double newPrice;
@@ -23,7 +23,7 @@ public class ShopPriceChangedEvent extends Event {
      * @param oldPrice The old shop price
      * @param newPrice The new shop price
      */
-    public ShopPriceChangedEvent(@NonNull Shop shop, double oldPrice, double newPrice) {
+    public ShopPriceChangedEvent(@NotNull Shop shop, double oldPrice, double newPrice) {
         this.shop = shop;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;

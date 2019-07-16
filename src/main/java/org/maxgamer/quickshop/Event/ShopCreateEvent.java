@@ -12,11 +12,11 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Player player;
 
     /**
@@ -25,7 +25,7 @@ public class ShopCreateEvent extends Event implements Cancellable {
      * @param shop Target shop
      * @param p    The player creaing the shop
      */
-    public ShopCreateEvent(@NonNull Shop shop, @NonNull Player p) {
+    public ShopCreateEvent(@NotNull Shop shop, @NotNull Player p) {
         this.shop = shop;
         this.player = p;
     }

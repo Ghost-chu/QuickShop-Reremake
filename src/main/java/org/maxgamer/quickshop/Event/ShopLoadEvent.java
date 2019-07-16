@@ -14,7 +14,7 @@ public class ShopLoadEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Shop shop;
 
     /**
@@ -22,7 +22,7 @@ public class ShopLoadEvent extends Event implements Cancellable {
      *
      * @param shop Target shop
      */
-    public ShopLoadEvent(@NonNull Shop shop) {
+    public ShopLoadEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
 
