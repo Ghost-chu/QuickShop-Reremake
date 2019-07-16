@@ -169,6 +169,42 @@ public class PlayerListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryClose(InventoryCloseEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        try {
+            Inventory inventory = e.getInventory();
+            if (inventory == null)
+                return;
+            Location location = inventory.getLocation();
+            if (location == null)
+                return;
+            Shop shop = plugin.getShopManager().getShop(location);
+            if (shop == null)
+                return;
+            shop.setSignText();
+        } catch (Throwable t) {
+            //Ignore
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onJoin(PlayerJoinEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        // Notify the player any messages they were sent
+        if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    MsgUtil.flush(e.getPlayer());
+                }
+            }.runTaskAsynchronously(plugin);
+        }
+
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     /*
      * Waits for a player to move too far from a shop, then cancels the menu.
@@ -200,30 +236,6 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onTeleport(PlayerTeleportEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
-        onMove(me);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onJoin(PlayerJoinEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        // Notify the player any messages they were sent
-        if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    MsgUtil.flush(e.getPlayer());
-                }
-            }.runTaskAsynchronously(plugin);
-        }
-
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
@@ -231,24 +243,12 @@ public class PlayerListener implements Listener {
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onInventoryClose(InventoryCloseEvent e) {
+    @EventHandler(ignoreCancelled = true)
+    public void onTeleport(PlayerTeleportEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
-        try {
-            Inventory inventory = e.getInventory();
-            if (inventory == null)
-                return;
-            Location location = inventory.getLocation();
-            if (location == null)
-                return;
-            Shop shop = plugin.getShopManager().getShop(location);
-            if (shop == null)
-                return;
-            shop.setSignText();
-        } catch (Throwable t) {
-            //Ignore
-        }
+        PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
+        onMove(me);
     }
 
 }

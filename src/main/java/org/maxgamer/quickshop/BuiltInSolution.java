@@ -8,6 +8,16 @@ import org.bukkit.ChatColor;
  */
 class BuiltInSolution {
     private static QuickShop plugin = QuickShop.instance;
+
+    /**
+     * Call when failed load database, and use this to check the reason.
+     *
+     * @return The reason of error.
+     */
+    static BootError databaseError() {
+        return new BootError("Error connecting to the database", "Make sure your database service is running.", "Or check the configuration in your config.yml");
+    }
+
     /**
      * Call when failed load economy system, and use this to check the reason.
      *
@@ -30,14 +40,5 @@ class BuiltInSolution {
         }
 
         return new BootError("No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.", "Install an economy plugin to get Vault or Reserve working.");
-    }
-
-    /**
-     * Call when failed load database, and use this to check the reason.
-     *
-     * @return The reason of error.
-     */
-    static BootError databaseError() {
-        return new BootError("Error connecting to the database", "Make sure your database service is running.", "Or check the configuration in your config.yml");
     }
 }

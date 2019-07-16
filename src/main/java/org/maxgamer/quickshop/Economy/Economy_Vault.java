@@ -16,12 +16,46 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Economy_Vault implements EconomyCore, Listener {
+    private QuickShop plugin = QuickShop.instance;
     @Getter
     @Setter
     private Economy vault;
-    private QuickShop plugin = QuickShop.instance;
 
     public Economy_Vault() {
+        setupEconomy();
+    }
+
+    public boolean checkValid() {
+        if (this.vault == null) {
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            plugin.getLogger().severe("FATAL: Economy system not ready.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private String formatInternal(double balance) {
+        if (!checkValid())
+            return "Error";
+        try {
+            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
+        } catch (Exception e) {
+            return String.valueOf('$' + balance);
+        }
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (!(event.getProvider() instanceof Economy))
+            return;
+        setupEconomy();
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceUnregisterEvent event) {
+        if (!(event.getProvider() instanceof Economy))
+            return;
         setupEconomy();
     }
 
@@ -58,33 +92,9 @@ public class Economy_Vault implements EconomyCore, Listener {
         return String.valueOf(this.vault.getName());
     }
 
-    @EventHandler
-    public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!(event.getProvider() instanceof Economy))
-            return;
-        setupEconomy();
-    }
-
-    @EventHandler
-    public void onServiceRegister(ServiceUnregisterEvent event) {
-        if (!(event.getProvider() instanceof Economy))
-            return;
-        setupEconomy();
-    }
-
     @Override
     public boolean isValid() {
         return this.vault != null;
-    }
-
-    public boolean checkValid() {
-        if (this.vault == null) {
-            Bukkit.getPluginManager().disablePlugin(plugin);
-            plugin.getLogger().severe("FATAL: Economy system not ready.");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     @Override
@@ -100,16 +110,6 @@ public class Economy_Vault implements EconomyCore, Listener {
             return formatInternal(balance);
         }
 
-    }
-
-    private String formatInternal(double balance) {
-        if (!checkValid())
-            return "Error";
-        try {
-            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
-        } catch (Exception e) {
-            return String.valueOf('$' + balance);
-        }
     }
 
     @Override

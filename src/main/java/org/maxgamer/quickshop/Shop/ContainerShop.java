@@ -34,26 +34,15 @@ import org.maxgamer.quickshop.Util.Util;
 @EqualsAndHashCode
 @ToString
 public class ContainerShop implements Shop {
-    private Location loc;
-    private double price;
-    private ShopModerator moderator;
-    private ItemStack item;
     private DisplayItem displayItem;
-    private boolean unlimited;
-    private ShopType shopType;
-    private QuickShop plugin;
     @EqualsAndHashCode.Exclude private boolean isLoaded = false;
-
-    /**
-     * Returns a clone of this shop. References to the same display item,
-     * itemstack, location and owner as this shop does. Do not modify them or
-     * you will modify this shop.
-     * <p>
-     * **NOT A DEEP CLONE**
-     */
-    public ContainerShop clone() {
-        return new ContainerShop(this);
-    }
+    private ItemStack item;
+    private Location loc;
+    private ShopModerator moderator;
+    private QuickShop plugin;
+    private double price;
+    private ShopType shopType;
+    private boolean unlimited;
 
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
@@ -110,6 +99,16 @@ public class ContainerShop implements Shop {
 
     }
 
+    @Override
+    public boolean addStaff(@NotNull UUID player) {
+        boolean result = this.moderator.addStaff(player);
+        update();
+        if (result == false)
+            return result;
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        return result;
+    }
+
     /**
      * Returns the number of items this shop has in stock.
      *
@@ -143,47 +142,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Returns the shop that shares it's inventory with this one.
-     *
-     * @return the shop that shares it's inventory with this one. Will return
-     * null if this shop is not attached to another.
-     */
-    public ContainerShop getAttachedShop() {
-        Block c = Util.getSecondHalf(this.getLocation().getBlock());
-        if (c == null)
-            return null;
-        Shop shop = plugin.getShopManager().getShop(c.getLocation());
-        return shop == null ? null : (ContainerShop) shop;
-    }
-
-    /**
-     * Returns true if this shop is a double chest, and the other half is
-     * selling/buying the same as this is buying/selling.
-     *
-     * @return true if this shop is a double chest, and the other half is
-     * selling/buying the same as this is buying/selling.
-     */
-    public boolean isDoubleShop() {
-        ContainerShop nextTo = this.getAttachedShop();
-        if (nextTo == null) {
-            return false;
-        }
-        if (nextTo.matches(this.getItem())) {
-            // They're both trading the same item
-            if (this.getShopType() == nextTo.getShopType()) {
-                // They're both buying or both selling => Not a double shop,
-                // just two shops.
-                return false;
-            } else {
-                // One is buying, one is selling.
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * @return The location of the shops chest
      */
     public Location getLocation() {
@@ -207,13 +165,6 @@ public class ContainerShop implements Shop {
         this.price = price;
         setSignText();
         update();
-    }
-
-    /**
-     * @return The ItemStack type of this shop
-     */
-    public Material getMaterial() {
-        return this.item.getType();
     }
 
     /**
@@ -250,78 +201,10 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * @return The chest this shop is based on.
-     */
-    public Inventory getInventory() {
-        try {
-            if (loc.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
-                OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
-                return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
-                )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
-            }
-        } catch (Exception e) {
-            Util.debugLog(e.getMessage());
-            return null;
-        }
-        InventoryHolder container;
-        try {
-            container = (InventoryHolder) this.loc.getBlock().getState();
-            return container.getInventory();
-        } catch (Exception e) {
-            this.onUnload();
-            this.delete();
-            Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
-            return null;
-        }
-    }
-
-    /**
      * @return The name of the player who owns the shop.
      */
     public UUID getOwner() {
         return this.moderator.getOwner();
-    }
-
-    /**
-     * @return The list of players who can manage the shop.
-     */
-    @Override
-    public ArrayList<UUID> getStaffs() {
-        return this.moderator.getStaffs();
-    }
-
-    @Override
-    public boolean addStaff(@NotNull UUID player) {
-        boolean result = this.moderator.addStaff(player);
-        update();
-        if (result == false)
-            return result;
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        return result;
-    }
-
-    @Override
-    public boolean delStaff(@NotNull UUID player) {
-        boolean result = this.moderator.delStaff(player);
-        update();
-        if (result == false)
-            return result;
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        return result;
-    }
-
-    @Override
-    public void clearStaffs() {
-        this.moderator.clearStaffs();
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        update();
-    }
-
-    /**
-     * @return The enchantments the shop has on its items.
-     */
-    public Map<Enchantment, Integer> getEnchants() {
-        return this.item.getItemMeta().getEnchants();
     }
 
     /**
@@ -483,6 +366,56 @@ public class ContainerShop implements Shop {
         }
     }
 
+    @Override
+    public void checkDisplay() {
+        Util.debugLog("Checking the display...");
+        if (!plugin.isDisplay())
+            return;
+        if (!this.isLoaded) {
+            Util.debugLog("Shop not loaded, skipping...");
+            return;
+        }
+        if (this.displayItem == null) {
+            Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
+            Util.debugLog("Call from: " + Thread.currentThread().getStackTrace()[2].getClassName() + "#" + Thread.currentThread()
+                    .getStackTrace()[2].getMethodName() + "%" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            return;
+        }
+        if (!this.displayItem.isSpawned()) {
+            /* Not spawned yet. */
+            Util.debugLog("Target item not spawned, spawning...");
+            this.displayItem.spawn();
+        } else {
+            /* If not spawned, we didn't need check these, only check them when we need. */
+            if (this.displayItem.checkDisplayNeedRegen()) {
+                this.displayItem.fixDisplayNeedRegen();
+            } else {/* If display was regened, we didn't need check it moved, performance! */
+                if (this.displayItem.checkDisplayIsMoved())
+                    this.displayItem.fixDisplayMoved();
+            }
+        }
+        /* Dupe is always need check, if enabled display */
+        if (plugin.isDisplay())
+            this.displayItem.removeDupe();
+    }
+
+    @Override
+    public void clearStaffs() {
+        this.moderator.clearStaffs();
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        update();
+    }
+
+    @Override
+    public boolean delStaff(@NotNull UUID player) {
+        boolean result = this.moderator.delStaff(player);
+        update();
+        if (result == false)
+            return result;
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        return result;
+    }
+
     /**
      * Changes the owner of this shop to the given player.
      *
@@ -496,6 +429,52 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * @return The list of players who can manage the shop.
+     */
+    @Override
+    public ArrayList<UUID> getStaffs() {
+        return this.moderator.getStaffs();
+    }
+
+    /**
+     * Returns a clone of this shop. References to the same display item,
+     * itemstack, location and owner as this shop does. Do not modify them or
+     * you will modify this shop.
+     * <p>
+     * **NOT A DEEP CLONE**
+     */
+    public ContainerShop clone() {
+        return new ContainerShop(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ?
+                "unloaded world" :
+                loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+        sb.append(" Owner: " + this.ownerName() + " - " + getOwner().toString());
+        if (isUnlimited())
+            sb.append(" Unlimited: true");
+        sb.append(" Price: " + getPrice());
+        sb.append(" Item: " + getItem().toString());
+        return sb.toString();
+    }
+
+    /**
+     * Returns the shop that shares it's inventory with this one.
+     *
+     * @return the shop that shares it's inventory with this one. Will return
+     * null if this shop is not attached to another.
+     */
+    public ContainerShop getAttachedShop() {
+        Block c = Util.getSecondHalf(this.getLocation().getBlock());
+        if (c == null)
+            return null;
+        Shop shop = plugin.getShopManager().getShop(c.getLocation());
+        return shop == null ? null : (ContainerShop) shop;
+    }
+
+    /**
      * Returns the display item associated with this shop.
      *
      * @return The display item associated with this shop.
@@ -503,6 +482,77 @@ public class ContainerShop implements Shop {
     public DisplayItem getDisplayItem() {
         return this.displayItem;
     }
+
+    /**
+     * @return The enchantments the shop has on its items.
+     */
+    public Map<Enchantment, Integer> getEnchants() {
+        return this.item.getItemMeta().getEnchants();
+    }
+
+    /**
+     * @return The chest this shop is based on.
+     */
+    public Inventory getInventory() {
+        try {
+            if (loc.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
+                OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
+                return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
+                )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
+            }
+        } catch (Exception e) {
+            Util.debugLog(e.getMessage());
+            return null;
+        }
+        InventoryHolder container;
+        try {
+            container = (InventoryHolder) this.loc.getBlock().getState();
+            return container.getInventory();
+        } catch (Exception e) {
+            this.onUnload();
+            this.delete();
+            Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+            return null;
+        }
+    }
+
+    /**
+     * @return The ItemStack type of this shop
+     */
+    public Material getMaterial() {
+        return this.item.getType();
+    }
+
+    /**
+     * Returns true if this shop is a double chest, and the other half is
+     * selling/buying the same as this is buying/selling.
+     *
+     * @return true if this shop is a double chest, and the other half is
+     * selling/buying the same as this is buying/selling.
+     */
+    public boolean isDoubleShop() {
+        ContainerShop nextTo = this.getAttachedShop();
+        if (nextTo == null) {
+            return false;
+        }
+        if (nextTo.matches(this.getItem())) {
+            // They're both trading the same item
+            if (this.getShopType() == nextTo.getShopType()) {
+                // They're both buying or both selling => Not a double shop,
+                // just two shops.
+                return false;
+            } else {
+                // One is buying, one is selling.
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+
+
+
 
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
@@ -771,19 +821,6 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ?
-                "unloaded world" :
-                loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
-        sb.append(" Owner: " + this.ownerName() + " - " + getOwner().toString());
-        if (isUnlimited())
-            sb.append(" Unlimited: true");
-        sb.append(" Price: " + getPrice());
-        sb.append(" Item: " + getItem().toString());
-        return sb.toString();
-    }
-
-    @Override
     public ShopModerator getModerator() {
         return this.moderator.clone();
     }
@@ -800,36 +837,4 @@ public class ContainerShop implements Shop {
         return this.isLoaded;
     }
 
-    @Override
-    public void checkDisplay() {
-        Util.debugLog("Checking the display...");
-        if (!plugin.isDisplay())
-            return;
-        if (!this.isLoaded) {
-            Util.debugLog("Shop not loaded, skipping...");
-            return;
-        }
-        if (this.displayItem == null) {
-            Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
-            Util.debugLog("Call from: " + Thread.currentThread().getStackTrace()[2].getClassName() + "#" + Thread.currentThread()
-                    .getStackTrace()[2].getMethodName() + "%" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            return;
-        }
-        if (!this.displayItem.isSpawned()) {
-            /* Not spawned yet. */
-            Util.debugLog("Target item not spawned, spawning...");
-            this.displayItem.spawn();
-        } else {
-            /* If not spawned, we didn't need check these, only check them when we need. */
-            if (this.displayItem.checkDisplayNeedRegen()) {
-                this.displayItem.fixDisplayNeedRegen();
-            } else {/* If display was regened, we didn't need check it moved, performance! */
-                if (this.displayItem.checkDisplayIsMoved())
-                    this.displayItem.fixDisplayMoved();
-            }
-        }
-        /* Dupe is always need check, if enabled display */
-        if (plugin.isDisplay())
-            this.displayItem.removeDupe();
-    }
 }

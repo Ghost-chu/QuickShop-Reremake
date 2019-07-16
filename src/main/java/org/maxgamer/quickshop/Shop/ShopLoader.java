@@ -21,12 +21,12 @@ import org.maxgamer.quickshop.Util.Util;
  * A class allow plugin load shops fast and simply.
  */
 public class ShopLoader {
-    private QuickShop plugin;
-    private int errors;
     final private ArrayList<Long> loadTimes = new ArrayList<>();
-    private int totalLoaded = 0;
+    private int errors;
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
+    private QuickShop plugin;
+    private int totalLoaded = 0;
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -37,9 +37,41 @@ public class ShopLoader {
         this.plugin = plugin;
     }
 
-    public void loadShops() {
-        loadShops(null);
+    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
+        errors++;
+        Logger logger = plugin.getLogger();
+        logger.warning("##########FAILED TO LOAD SHOP##########");
+        logger.warning("  >> Error Info:");
+        logger.warning(ex.getMessage());
+        logger.warning("  >> Error Trace");
+        ex.printStackTrace();
+        logger.warning("  >> Target Location Info");
+        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warning("Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warning("  >> Database Info");
+        try {
+            logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("Connected: " + "FALSE - Failed to load status.");
+        }
+
+        try {
+            logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("Readonly: " + "FALSE - Failed to load status.");
+        }
+
+        try {
+            logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
+        }
+
+        logger.warning("#######################################");
+        if (errors > 10)
+            logger.severe("QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
     }
+
     /**
      * Load all shops
      * @param worldName The world name
@@ -105,6 +137,10 @@ public class ShopLoader {
         }
     }
 
+    public void loadShops() {
+        loadShops(null);
+    }
+
     private Long mean(Long[] m) {
         long sum = 0;
         for (Long aM : m) {
@@ -113,13 +149,6 @@ public class ShopLoader {
         if (m.length == 0)
             return sum;
         return sum / m.length;
-    }
-
-    private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
-        totalLoaded++;
-        long singleShopLoadTime = singleShopLoadTimer.endTimer();
-        loadTimes.add(singleShopLoadTime);
-        Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
 
     private boolean shopNullCheck(@Nullable Shop shop) {
@@ -150,85 +179,26 @@ public class ShopLoader {
         return false;
     }
 
-    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
-        errors++;
-        Logger logger = plugin.getLogger();
-        logger.warning("##########FAILED TO LOAD SHOP##########");
-        logger.warning("  >> Error Info:");
-        logger.warning(ex.getMessage());
-        logger.warning("  >> Error Trace");
-        ex.printStackTrace();
-        logger.warning("  >> Target Location Info");
-        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warning("Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
-        logger.warning("  >> Database Info");
-        try {
-            logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
-        } catch (SQLException | NullPointerException e) {
-            logger.warning("Connected: " + "FALSE - Failed to load status.");
-        }
-
-        try {
-            logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
-        } catch (SQLException | NullPointerException e) {
-            logger.warning("Readonly: " + "FALSE - Failed to load status.");
-        }
-
-        try {
-            logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
-        } catch (SQLException | NullPointerException e) {
-            logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
-        }
-
-        logger.warning("#######################################");
-        if (errors > 10)
-            logger.severe("QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
-    }
-
-    @Getter
-    @Setter
-    class ShopDatabaseInfoOrigin {
-        private int x;
-        private int y;
-        private int z;
-        private String world;
-        private String item;
-        private String moderators;
-        private double price;
-        private int type;
-        private boolean unlimited;
-
-        ShopDatabaseInfoOrigin(ResultSet rs) {
-            try {
-                this.x = rs.getInt("x");
-                this.y = rs.getInt("y");
-                this.z = rs.getInt("z");
-                this.world = rs.getString("world");
-                this.item = rs.getString("itemConfig");
-                this.moderators = rs.getString("owner");
-                this.price = rs.getDouble("price");
-                this.type = rs.getInt("type");
-                this.unlimited = rs.getBoolean("unlimited");
-            } catch (SQLException sqlex) {
-                exceptionHandler(sqlex, null);
-            }
-
-        }
+    private void singleShopLoaded(@NotNull Timer singleShopLoadTimer) {
+        totalLoaded++;
+        long singleShopLoadTime = singleShopLoadTimer.endTimer();
+        loadTimes.add(singleShopLoadTime);
+        Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
 
     @Getter
     @Setter
     class ShopDatabaseInfo {
+        private ItemStack item;
+        private Location location;
+        private ShopModerator moderators;
+        private double price;
+        private ShopType type;
+        private boolean unlimited;
+        private World world;
         private int x;
         private int y;
         private int z;
-        private double price;
-        private boolean unlimited;
-        private ShopType type;
-        private World world;
-        private ItemStack item;
-        private ShopModerator moderators;
-        private Location location;
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
@@ -280,6 +250,37 @@ public class ShopLoader {
                 shopModerator = ShopModerator.deserialize(moderatorJson);
             }
             return shopModerator;
+        }
+    }
+
+    @Getter
+    @Setter
+    class ShopDatabaseInfoOrigin {
+        private String item;
+        private String moderators;
+        private double price;
+        private int type;
+        private boolean unlimited;
+        private String world;
+        private int x;
+        private int y;
+        private int z;
+
+        ShopDatabaseInfoOrigin(ResultSet rs) {
+            try {
+                this.x = rs.getInt("x");
+                this.y = rs.getInt("y");
+                this.z = rs.getInt("z");
+                this.world = rs.getString("world");
+                this.item = rs.getString("itemConfig");
+                this.moderators = rs.getString("owner");
+                this.price = rs.getDouble("price");
+                this.type = rs.getInt("type");
+                this.unlimited = rs.getBoolean("unlimited");
+            } catch (SQLException sqlex) {
+                exceptionHandler(sqlex, null);
+            }
+
         }
     }
 }

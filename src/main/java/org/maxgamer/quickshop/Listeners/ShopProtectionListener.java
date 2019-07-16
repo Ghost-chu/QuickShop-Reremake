@@ -25,6 +25,81 @@ public class ShopProtectionListener implements Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockExplode(BlockExplodeEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        for (int i = 0; i < e.blockList().size(); i++) {
+            Block b = e.blockList().get(i);
+            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            if (shop != null) {
+                if (plugin.getConfig().getBoolean("protect.explode"))
+                    e.setCancelled(true);
+                else
+                    shop.delete();
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockFromTo(BlockFromToEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        if (!plugin.getConfig().getBoolean("protect.fromto"))
+            return;
+        Shop shop = plugin.getShopManager().getShop(e.getToBlock().getLocation());
+        if (shop == null)
+            return;
+        e.setCancelled(true);
+    }
+
+    //Protect Redstone active shop
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockRedstoneChange(BlockRedstoneEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
+        if (!plugin.getConfig().getBoolean("protect.redstone"))
+            return;
+        Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
+        if (shop == null)
+            return;
+        event.setNewCurrent(event.getOldCurrent());
+        //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
+        //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockSpread(BlockSpreadEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        Block newBlock = e.getNewState().getBlock();
+        Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
+        Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
+        if (thisBlockShop == null && underBlockShop == null)
+            return;
+        if (plugin.getConfig().getBoolean("protect.spread"))
+            e.setCancelled(true);
+    }
+
+    /*
+     * Handles shops breaking through explosions
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onExplode(EntityExplodeEvent e) {
+        if (ListenerHelper.isDisabled(e.getClass()))
+            return;
+        for (int i = 0; i < e.blockList().size(); i++) {
+            Block b = e.blockList().get(i);
+            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            if (shop != null) {
+                if (plugin.getConfig().getBoolean("protect.explode"))
+                    e.setCancelled(true);
+                else
+                    shop.delete();
+            }
+        }
+    }
+
     //Protect Minecart steal shop
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
@@ -55,21 +130,6 @@ public class ShopProtectionListener implements Listener {
             shop.delete();
     }
 
-    //Protect Redstone active shop
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockRedstoneChange(BlockRedstoneEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass()))
-            return;
-        if (!plugin.getConfig().getBoolean("protect.redstone"))
-            return;
-        Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
-        if (shop == null)
-            return;
-        event.setNewCurrent(event.getOldCurrent());
-        //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
-        //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
@@ -85,65 +145,5 @@ public class ShopProtectionListener implements Listener {
             //plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
             //Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
         }
-    }
-
-    /*
-     * Handles shops breaking through explosions
-     */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onExplode(EntityExplodeEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        for (int i = 0; i < e.blockList().size(); i++) {
-            Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                if (plugin.getConfig().getBoolean("protect.explode"))
-                    e.setCancelled(true);
-                else
-                    shop.delete();
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockExplode(BlockExplodeEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        for (int i = 0; i < e.blockList().size(); i++) {
-            Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                if (plugin.getConfig().getBoolean("protect.explode"))
-                    e.setCancelled(true);
-                else
-                    shop.delete();
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockSpread(BlockSpreadEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        Block newBlock = e.getNewState().getBlock();
-        Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
-        Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
-        if (thisBlockShop == null && underBlockShop == null)
-            return;
-        if (plugin.getConfig().getBoolean("protect.spread"))
-            e.setCancelled(true);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockFromTo(BlockFromToEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
-            return;
-        if (!plugin.getConfig().getBoolean("protect.fromto"))
-            return;
-        Shop shop = plugin.getShopManager().getShop(e.getToBlock().getLocation());
-        if (shop == null)
-            return;
-        e.setCancelled(true);
     }
 }

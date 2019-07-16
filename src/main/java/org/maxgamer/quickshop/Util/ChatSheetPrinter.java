@@ -16,9 +16,26 @@ import org.jetbrains.annotations.*;
   A utils for print sheet on chat.
  */
 public class ChatSheetPrinter {
+    final ChatColor chatColor = ChatColor.DARK_PURPLE;
     //StringBuffer buffer = new StringBuffer();
     private CommandSender p;
-    final ChatColor chatColor = ChatColor.DARK_PURPLE;
+
+    public void printCenterLine(@NotNull String text) {
+        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_half_line") + text + MsgUtil
+                .getMessage("tableformat.right_half_line"));
+    }
+
+    public void printExecuteableCmdLine(@NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
+        TextComponent message = new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin") + text);
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
+        message.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+        p.spigot().sendMessage(message);
+    }
+
+    public void printFooter() {
+        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line"));
+    }
 
     public void printHeader() {
         p.sendMessage("");
@@ -28,23 +45,6 @@ public class ChatSheetPrinter {
 
     public void printLine(@NotNull String text) {
         p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_begin") + " " + text);
-    }
-
-    public void printCenterLine(@NotNull String text) {
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_half_line") + text + MsgUtil
-                .getMessage("tableformat.right_half_line"));
-    }
-
-    public void printFooter() {
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line"));
-    }
-
-    public void printExecuteableCmdLine(@NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
-        TextComponent message = new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin") + text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
-        message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
-        p.spigot().sendMessage(message);
     }
 
     public void printSuggestableCmdLine(@NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {

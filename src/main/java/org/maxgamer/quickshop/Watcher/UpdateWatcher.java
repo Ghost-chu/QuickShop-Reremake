@@ -23,6 +23,12 @@ public class UpdateWatcher implements Listener {
     private static boolean hasNewUpdate = false;
     private static UpdateInfomation info = null;
 
+    public static String fixVer(@NotNull String originalVer) {
+        originalVer = originalVer.replaceAll("Reremake", "");
+        originalVer = originalVer.trim();
+        return originalVer;
+    }
+
     public static void init() {
         cronTask = new BukkitRunnable() {
 
@@ -126,12 +132,6 @@ public class UpdateWatcher implements Listener {
 
             }
         }.runTaskLater(QuickShop.instance, 80);
-    }
-
-    public static String fixVer(@NotNull String originalVer) {
-        originalVer = originalVer.replaceAll("Reremake", "");
-        originalVer = originalVer.trim();
-        return originalVer;
     }
 
 }

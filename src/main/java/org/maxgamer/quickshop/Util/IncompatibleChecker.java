@@ -27,6 +27,22 @@ public class IncompatibleChecker {
         return incompatibleVersionList.contains(version);
     }
 
+    private void mc1_10() {
+        incompatibleVersionList.add("v1_10_R1");
+    }
+
+    private void mc1_11() {
+        incompatibleVersionList.add("v1_11_R1");
+    }
+
+    private void mc1_12() {
+        incompatibleVersionList.add("v1_12_R1");
+    }
+
+    private void mc1_13() {
+        incompatibleVersionList.add("v1_13_R1"); //1.13.0-1.13.1 no Tag feature.
+    }
+
     private void mc1_5() {
         incompatibleVersionList.add("v1_5_R1");
         incompatibleVersionList.add("v1_5_R2");
@@ -55,21 +71,5 @@ public class IncompatibleChecker {
     private void mc1_9() {
         incompatibleVersionList.add("v1_9_R1");
         incompatibleVersionList.add("v1_9_R2");
-    }
-
-    private void mc1_10() {
-        incompatibleVersionList.add("v1_10_R1");
-    }
-
-    private void mc1_11() {
-        incompatibleVersionList.add("v1_11_R1");
-    }
-
-    private void mc1_12() {
-        incompatibleVersionList.add("v1_12_R1");
-    }
-
-    private void mc1_13() {
-        incompatibleVersionList.add("v1_13_R1"); //1.13.0-1.13.1 no Tag feature.
     }
 }
