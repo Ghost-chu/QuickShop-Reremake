@@ -14,10 +14,10 @@ public class ShopInventoryPreviewEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Player player;
     @Getter
-    @NonNull
+    @NotNull
     private ItemStack itemStack;
 
     /**
@@ -26,7 +26,7 @@ public class ShopInventoryPreviewEvent extends Event implements Cancellable {
      * @param p         Target plugin
      * @param itemStack The preview item, with preview flag.
      */
-    public ShopInventoryPreviewEvent(@NonNull Player p, @NonNull ItemStack itemStack) {
+    public ShopInventoryPreviewEvent(@NotNull Player p, @NotNull ItemStack itemStack) {
         this.player = p;
         this.itemStack = itemStack;
     }
