@@ -52,7 +52,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack);
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog("Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
@@ -106,7 +106,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         this.armorStand.remove();
         this.armorStand = null;
         this.guardedIstack = null;
-        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack);
+        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack, DisplayType.ARMORSTAND);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
