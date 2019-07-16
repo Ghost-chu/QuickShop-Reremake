@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.*;
 
-@Builder
 public class ShopInventoryPreviewEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();

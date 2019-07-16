@@ -13,7 +13,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * This event is called after DisplayItem removed
  */
-@Builder
+
 public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
