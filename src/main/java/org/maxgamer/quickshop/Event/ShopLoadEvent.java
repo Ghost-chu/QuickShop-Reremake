@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -8,19 +9,23 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 /** Call when loading shop **/
 @SuppressWarnings("WeakerAccess")
+@Builder
 public class ShopLoadEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
+    @Getter
+    @NonNull
     private Shop shop;
 
-
-    public ShopLoadEvent(Shop shop) {
+    /**
+     * Calling when shop loading
+     *
+     * @param shop Target shop
+     */
+    public ShopLoadEvent(@NonNull Shop shop) {
         this.shop = shop;
     }
 
-    public Shop getShop() {
-        return shop;
-    }
 
     @NotNull
     @Override

@@ -1,14 +1,17 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
+@Builder
 public class ShopUpdateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private Shop shop;
+    @Getter
+    private @NonNull Shop shop;
     private boolean cancelled;
 
     /**
@@ -16,19 +19,9 @@ public class ShopUpdateEvent extends Event implements Cancellable {
      *
      * @param shop The shop bought from
      */
-    public ShopUpdateEvent(Shop shop) {
+    public ShopUpdateEvent(@NonNull Shop shop) {
         this.shop = shop;
     }
-
-    /**
-     * The shop used in this event
-     *
-     * @return The shop used in this event
-     */
-    public Shop getShop() {
-        return this.shop;
-    }
-
     @NotNull
     @Override
     public HandlerList getHandlers() {

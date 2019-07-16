@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -7,11 +8,16 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
+@Builder
 public class ShopPurchaseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    @Getter
+    @NonNull
     private Shop shop;
-    private Player p;
-    private int amount;
+    @Getter
+    @NonNull
+    private Player player;
+    @Getter private int amount;
     private boolean cancelled;
 
     /**
@@ -22,37 +28,10 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
      * @param p      The player buying
      * @param amount The amount they're buying
      */
-    public ShopPurchaseEvent(Shop shop, Player p, int amount) {
+    public ShopPurchaseEvent(@NonNull Shop shop, @NonNull Player p, int amount) {
         this.shop = shop;
-        this.p = p;
+        this.player = p;
         this.amount = amount;
-    }
-
-    /**
-     * The shop used in this event
-     *
-     * @return The shop used in this event
-     */
-    public Shop getShop() {
-        return this.shop;
-    }
-
-    /**
-     * The player trading with the shop
-     *
-     * @return The player trading with the shop
-     */
-    public Player getPlayer() {
-        return this.p;
-    }
-
-    /**
-     * The amount the purchase was for
-     *
-     * @return The amount the purchase was for
-     */
-    public int getAmount() {
-        return this.amount;
     }
 
     @NotNull
