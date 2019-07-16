@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Watcher.DisplayWatcher;
 import org.maxgamer.quickshop.Watcher.LogWatcher;
+import org.maxgamer.quickshop.Watcher.SyncTaskWatcher;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 //import com.griefcraft.lwc.LWCPlugin;
@@ -111,6 +112,7 @@ public class QuickShop extends JavaPlugin {
     private CommandManager commandManager;
     private ShopProtectionListener shopProtectListener;
     private DisplayWatcher displayWatcher;
+    private SyncTaskWatcher syncTaskWatcher;
 
     /**
      * Get the Player's Shop limit.
@@ -279,6 +281,7 @@ public class QuickShop extends JavaPlugin {
         displayBugFixListener = new DisplayBugFixListener(this);
         shopProtectListener = new ShopProtectionListener(this);
         displayWatcher = new DisplayWatcher(this);
+        syncTaskWatcher = new SyncTaskWatcher(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
