@@ -18,8 +18,11 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private ItemStack iStack;
     private DisplayType displayType;
 
-    /*
+    /**
      * This event is called before the shop display item created
+     * @param shop Target shop
+     * @param displayType The displayType
+     * @param iStack Target ItemStack
      */
     public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack, DisplayType displayType) {
         this.shop = shop;
@@ -27,9 +30,12 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
         this.displayType = displayType;
     }
 
-    /*
+    /**
      * This event is called before the shop display item created
+     * @param shop Target shop
+     * @param displayType The displayType
      */
+    @Deprecated
     public ShopDisplayItemSpawnEvent(Shop shop, ItemStack iStack) {
         this.shop = shop;
         this.iStack = iStack;
