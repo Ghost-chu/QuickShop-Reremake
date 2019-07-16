@@ -11,7 +11,6 @@ import org.jetbrains.annotations.*;
  * Contains shop's moderators infomations, owner, staffs etc.
  */
 @EqualsAndHashCode
-@ToString
 public class ShopModerator {
     private UUID owner;
     private ArrayList<UUID> staffs;
@@ -143,5 +142,10 @@ public class ShopModerator {
         //Use Gson deserialize data
         Gson gson = new Gson();
         return gson.fromJson(serilized, ShopModerator.class);
+    }
+
+    @Override
+    public String toString() {
+        return serialize(this);
     }
 }

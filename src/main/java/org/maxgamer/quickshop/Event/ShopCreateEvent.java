@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -7,33 +8,26 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
+@Builder
 public class ShopCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    @Getter
+    @NonNull
     private Shop shop;
     private boolean cancelled;
-    private Player p;
+    @Getter
+    @NonNull
+    private Player player;
 
-    public ShopCreateEvent(Shop shop, Player p) {
+    /**
+     * Call when have a new shop was createing.
+     *
+     * @param shop Target shop
+     * @param p    The player creaing the shop
+     */
+    public ShopCreateEvent(@NonNull Shop shop, @NonNull Player p) {
         this.shop = shop;
-        this.p = p;
-    }
-
-    /**
-     * The shop to be created
-     *
-     * @return The shop to be created
-     */
-    public Shop getShop() {
-        return this.shop;
-    }
-
-    /**
-     * The player who is creating this shop
-     *
-     * @return The player who is creating this shop
-     */
-    public Player getPlayer() {
-        return p;
+        this.player = p;
     }
 
     @NotNull
@@ -42,17 +36,13 @@ public class ShopCreateEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
     @Override
     public boolean isCancelled() {
-        return this.cancelled;
+        return cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 }
