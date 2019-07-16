@@ -624,35 +624,7 @@ public class Util {
         }
     }
 
-    /**
-     * Send a message for all online Ops.
-     *
-     * @param message The message you want send
-     */
-    public static void sendMessageToOps(@NotNull String message) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp() || player.hasPermission("quickshop.alert")) {
-                        player.sendMessage(message);
-                    }
-                }
-            }
-        }.runTaskAsynchronously(plugin);
 
-    }
-
-    public static void globalLogMessage(@NonNull String message) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                sendMessageToOps(message);
-                plugin.log(message);
-            }
-        }.runTaskAsynchronously(plugin);
-
-    }
 
     /**
      * @param iStack itemstack
@@ -745,7 +717,7 @@ public class Util {
                             Location location = inv.getLocation();
                             if (location != null)
                                 locationS = location.toString();
-                            Util.globalLogMessage("[InventoryCheck] Found displayItem in inventory at " + locationS + ", Item is " + itemStack
+                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + locationS + ", Item is " + itemStack
                                     .getType().name());
                         }
                     }
