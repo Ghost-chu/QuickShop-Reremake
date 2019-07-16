@@ -491,7 +491,6 @@ public class ShopManager {
         MsgUtil.sendSellSuccess(p, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
         Bukkit.getPluginManager().callEvent(se);
-        plugin.log(p.getName() + " sold " + amount + " for " + (shop.getPrice() * amount) + " to " + shop.toString());
         shop.setSignText(); // Update the signs count
     }
 
@@ -580,7 +579,6 @@ public class ShopManager {
         MsgUtil.sendPurchaseSuccess(p, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
         Bukkit.getPluginManager().callEvent(se);
-        plugin.log(p.getName() + " bought " + amount + " for " + (shop.getPrice() * amount) + " from " + shop.toString());
     }
 
     @SuppressWarnings("deprecation")
@@ -697,8 +695,6 @@ public class ShopManager {
             /* The shop has hereforth been successfully created */
             createShop(shop, info);
             Location loc = shop.getLocation();
-            plugin.log(p.getName() + " created a " + Util.getItemStackName(shop.getItem()) + " shop at ("
-                    + loc.getWorld().getName() + " - " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ")");
             if (!plugin.getConfig().getBoolean("shop.lock")) {
                 // Warn them if they haven't been warned since
                 // reboot

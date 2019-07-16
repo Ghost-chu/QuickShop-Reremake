@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
+import lombok.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -12,33 +13,26 @@ import org.jetbrains.annotations.*;
  * clicks a chest, this event is thrown, if successful, the player is asked how
  * much they wish to trade for.
  */
+@Builder
 public class ShopPreCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private Player p;
-    private Location loc;
-
-    public ShopPreCreateEvent(Player p, Location loc) {
-        this.loc = loc;
-        this.p = p;
-    }
-
-    /**
-     * The location of the shop that will be created.
-     *
-     * @return The location of the shop that will be created.
-     */
-    public Location getLocation() {
-        return loc;
-    }
+    @Getter
+    @NonNull
+    private Player player;
+    @Getter
+    @NonNull
+    private Location location;
 
     /**
-     * The player who is creating this shop
-     *
-     * @return The player who is creating this shop
+     * Calling when shop pre-creating.
+     * Shop won't one-percent will create after this event, if you want get the shop created event, please use ShopCreateEvent
+     * @param p Target player
+     * @param loc The location will create be shop
      */
-    public Player getPlayer() {
-        return p;
+    public ShopPreCreateEvent(@NonNull Player p, @NonNull Location loc) {
+        this.location = loc;
+        this.player = p;
     }
 
     @NotNull
@@ -47,9 +41,6 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
 
     @Override
     public boolean isCancelled() {

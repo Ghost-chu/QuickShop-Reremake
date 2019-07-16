@@ -23,10 +23,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Event.ShopDeleteEvent;
-import org.maxgamer.quickshop.Event.ShopLoadEvent;
-import org.maxgamer.quickshop.Event.ShopUnloadEvent;
-import org.maxgamer.quickshop.Event.ShopUpdateEvent;
+import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -206,6 +203,8 @@ public class ContainerShop implements Shop {
      * @param price The new price of the shop.
      */
     public void setPrice(double price) {
+        Bukkit.getPluginManager().callEvent(ShopPriceChangedEvent.builder().oldPrice(this.price).newPrice(price).shop(this)
+                .build());
         this.price = price;
         setSignText();
         update();
@@ -296,6 +295,9 @@ public class ContainerShop implements Shop {
     public boolean addStaff(@NotNull UUID player) {
         boolean result = this.moderator.addStaff(player);
         update();
+        if (result == false)
+            return result;
+        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
         return result;
     }
 
@@ -303,12 +305,16 @@ public class ContainerShop implements Shop {
     public boolean delStaff(@NotNull UUID player) {
         boolean result = this.moderator.delStaff(player);
         update();
+        if (result == false)
+            return result;
+        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
         return result;
     }
 
     @Override
     public void clearStaffs() {
         this.moderator.clearStaffs();
+        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
         update();
     }
 
@@ -485,6 +491,7 @@ public class ContainerShop implements Shop {
      */
     public void setOwner(@NotNull UUID owner) {
         this.moderator.setOwner(owner);
+        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
         this.setSignText();
         update();
     }
@@ -786,6 +793,7 @@ public class ContainerShop implements Shop {
     public void setModerator(ShopModerator shopModerator) {
         this.moderator = shopModerator.clone();
         update();
+        Bukkit.getPluginManager().callEvent(ShopModeratorChangedEvent.builder().shop(this).moderator(this.moderator).build());
     }
 
     @Override
