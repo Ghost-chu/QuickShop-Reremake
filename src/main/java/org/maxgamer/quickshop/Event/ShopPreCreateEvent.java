@@ -18,10 +18,10 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Getter
-    @NonNull
+    @NotNull
     private Player player;
     @Getter
-    @NonNull
+    @NotNull
     private Location location;
 
     /**
@@ -30,7 +30,7 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
      * @param p Target player
      * @param loc The location will create be shop
      */
-    public ShopPreCreateEvent(@NonNull Player p, @NonNull Location loc) {
+    public ShopPreCreateEvent(@NotNull Player p, @NotNull Location loc) {
         this.location = loc;
         this.player = p;
     }
