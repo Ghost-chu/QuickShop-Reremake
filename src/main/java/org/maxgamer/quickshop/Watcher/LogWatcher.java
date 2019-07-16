@@ -1,9 +1,13 @@
 package org.maxgamer.quickshop.Watcher;
 
 import java.io.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import lombok.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
@@ -55,5 +59,11 @@ public class LogWatcher implements Runnable {
         if (ps != null)
             this.ps.close();
         ps = null;
+    }
+
+    public void log(@NonNull String log) {
+        Date date = Calendar.getInstance().getTime();
+        Timestamp time = new Timestamp(date.getTime());
+        this.add("[" + time.toString() + "] " + log);
     }
 }
