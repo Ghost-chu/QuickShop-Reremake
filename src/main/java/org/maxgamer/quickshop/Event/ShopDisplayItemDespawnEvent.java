@@ -19,17 +19,23 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
     private ItemStack iStack;
     private DisplayType displayType;
 
-    /*
+    /**
      * This event is called before the shop display item created
+     * @param shop Target shop
+     * @param iStack Target itemstacck
      */
+    @Deprecated
     public ShopDisplayItemDespawnEvent(Shop shop, ItemStack iStack) {
         this.shop = shop;
         this.iStack = iStack;
         this.displayType = DisplayItem.getNowUsing();
     }
 
-    /*
+    /**
      * This event is called before the shop display item created
+     * @param shop Target shop
+     * @param iStack Target itemstacck
+     * @param displayType The displayType
      */
     public ShopDisplayItemDespawnEvent(Shop shop, ItemStack iStack, DisplayType displayType) {
         this.shop = shop;
