@@ -316,5 +316,11 @@ public class DisplayProtectionListener implements Listener {
         event.setCancelled(true);
         //Util.debugLog("We canceled an Item from despawning because they are our display item.");
     }
-    
+
+    @EventHandler(ignoreCancelled = true)
+    public void itemPickup(InventoryPickupItemEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()))
+            return;
+    }
 }
+
