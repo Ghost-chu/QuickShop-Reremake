@@ -33,10 +33,6 @@ public class DisplayProtectionListener implements Listener {
     public void onInventoryOpen(InventoryOpenEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
-        if (event.getInventory() == null)
-            return;
-        if (event.getInventory().getStorageContents() == null)
-            return;
         Util.inventoryCheck(event.getInventory());
     }
 
@@ -46,20 +42,22 @@ public class DisplayProtectionListener implements Listener {
             return;
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
-            if (DisplayItem.checkIsGuardItemStack(stack)) {
-                e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + e.getPlayer()
-                        .getName() + " held the displayItem, QuickShop already removed it.");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
-            if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
-                e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
-                // You shouldn't be able to pick up that...
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + e.getPlayer()
-                        .getName() + " held the displayItem, QuickShop already removed it.");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
+        if (DisplayItem.checkIsGuardItemStack(stack)) {
+            e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
+            // You shouldn't be able to pick up that...
+            MsgUtil.sendGlobalAlert(Util.getClassPrefix() + "Player " + e.getPlayer()
+                    .getName() + " helded the displayItem, QuickShop already cancelled and removed it.");
+            e.setCancelled(true);
+            Util.inventoryCheck(e.getPlayer().getInventory());
+        }
+        if (DisplayItem.checkIsGuardItemStack(stackOffHand)) {
+            e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
+            // You shouldn't be able to pick up that...
+            MsgUtil.sendGlobalAlert(Util.getClassPrefix() + "Player " + e.getPlayer()
+                    .getName() + " helded the displayItem, QuickShop already cancelled and removed it.");
+            e.setCancelled(true);
+            Util.inventoryCheck(e.getPlayer().getInventory());
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -67,20 +65,19 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
         ItemStack stack = e.getItem().getItemStack();
-            if (DisplayItem.checkIsGuardItemStack(stack)) {
-                e.setCancelled(true);
-                // You shouldn't be able to pick up that...
-                e.getItem().remove();
-                if (e.getEntityType() != EntityType.PLAYER) {
-                    e.getEntity().setCanPickupItems(false);
-                    MsgUtil.sendGlobalAlert("[DisplayProtection] Entity " + e.getEntity()
-                            .toString() + " pickedup the displayItem, QuickShop already removed it.");
-                } else {
-                    MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + e
-                            .getEntity().getType().name() + " pickedup the displayItem, QuickShop already removed it.");
-                }
-
-            }
+        if (!DisplayItem.checkIsGuardItemStack(stack))
+            return;
+        e.setCancelled(true);
+        // You shouldn't be able to pick up that...
+        e.getItem().remove();
+        if (e.getEntityType() != EntityType.PLAYER) {
+            e.getEntity().setCanPickupItems(false);
+            MsgUtil.sendGlobalAlert(Util.getClassPrefix() + "Entity " + e.getEntity()
+                    .getType().name() + " pickedup the displayItem, QuickShop already removed it.");
+        } else {
+            MsgUtil.sendGlobalAlert(Util.getClassPrefix() + "Player " + e
+                    .getEntity().getType().name() + " pickedup the displayItem, QuickShop already removed it.");
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -88,33 +85,33 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass()))
             return;
         ItemStack stack = e.getItem();
-            if (DisplayItem.checkIsGuardItemStack(stack)) {
-                stack.setType(Material.AIR);
-                // You shouldn't be able to pick up that...
-                e.setCancelled(true);
-                e.getItem().setType(Material.AIR);
-                e.getItem().setAmount(0);
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + ((Player) e)
-                        .getName() + " using the displayItem, QuickShop already removed it.");
-                Util.inventoryCheck(e.getPlayer().getInventory());
-            }
+        if (!DisplayItem.checkIsGuardItemStack(stack))
+            return;
+        stack.setType(Material.AIR);
+        // You shouldn't be able to pick up that...
+        e.setCancelled(true);
+        e.getItem().setType(Material.AIR);
+        e.getItem().setAmount(0);
+        MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + ((Player) e)
+                .getName() + " using the displayItem, QuickShop already removed it.");
+        Util.inventoryCheck(e.getPlayer().getInventory());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()))
             return;
-            if (DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
-                event.setCancelled(true);
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Inventory " + event.getClickedInventory()
-                        .toString() + " was clicked the displayItem, QuickShop already removed it.");
-                event.getCurrentItem().setAmount(0);
-                event.getCurrentItem().setType(Material.AIR);
-                event.setResult(Result.DENY);
-                Util.inventoryCheck(event.getInventory());
-            }
-    }
+        if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem()))
+            return;
+        event.setCancelled(true);
+        MsgUtil.sendGlobalAlert("[DisplayProtection] Inventory " + event.getClickedInventory()
+                .toString() + " was clicked the displayItem, QuickShop already removed it.");
+        event.getCurrentItem().setAmount(0);
+        event.getCurrentItem().setType(Material.AIR);
+        event.setResult(Result.DENY);
+        Util.inventoryCheck(event.getInventory());
 
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryMoveItem(InventoryMoveItemEvent event) {
@@ -142,17 +139,18 @@ public class DisplayProtectionListener implements Listener {
             return;
         if (event.getCaught().getType() != EntityType.DROPPED_ITEM)
             return;
-            Item item = (Item) event.getCaught();
-            ItemStack is = item.getItemStack();
-            if (DisplayItem.checkIsGuardItemStack(is)) {
-                //item.remove();
-                event.getHook().remove();
-                //event.getCaught().remove();
-                event.setCancelled(true);
-                MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + event.getPlayer()
-                        .getName() + " trying hook item use Fishing Rod, QuickShop already removed it.");
-                Util.inventoryCheck(event.getPlayer().getInventory());
-            }
+        Item item = (Item) event.getCaught();
+        ItemStack is = item.getItemStack();
+        if (!DisplayItem.checkIsGuardItemStack(is))
+            return;
+        //item.remove();
+        event.getHook().remove();
+        //event.getCaught().remove();
+        event.setCancelled(true);
+        MsgUtil.sendGlobalAlert("[DisplayProtection] Player " + event.getPlayer()
+                .getName() + " trying hook item use Fishing Rod, QuickShop already removed it.");
+        Util.inventoryCheck(event.getPlayer().getInventory());
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -162,6 +160,12 @@ public class DisplayProtectionListener implements Listener {
         Block targetBlock = event.getToBlock();
         Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
         Shop shop = plugin.getShopManager().getShop(shopBlock.getLocation());
+        if (shop == null)
+            return;
+        Block anotherBlock = Util.getAttached(shopBlock);
+        if (anotherBlock == null)
+            return;
+        shop = plugin.getShopManager().getShop(anotherBlock.getLocation());
         if (shop == null)
             return;
         event.setCancelled(true);
