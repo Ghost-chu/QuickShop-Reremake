@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -298,6 +299,24 @@ public class MsgUtil {
 
     }
 
+    /**
+     * Send a message for all online Ops.
+     *
+     * @param message The message you want send
+     */
+    public static void sendMessageToOps(@NotNull String message) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.isOp() || player.hasPermission("quickshop.alert")) {
+                        player.sendMessage(message);
+                    }
+                }
+            }
+        }.runTaskAsynchronously(plugin);
+
+    }
     /**
      * Send controlPanel infomation to sender
      *
@@ -770,7 +789,7 @@ public class MsgUtil {
      * @param content The content to send.
      */
     public static void sendGlobalAlert(String content) {
-        Util.sendMessageToOps(content);
+        sendMessageToOps(content);
         plugin.getLogger().warning(content);
         plugin.getLogWatcher().add(content);
         Util.debugLog(content);
