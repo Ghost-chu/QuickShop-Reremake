@@ -11,10 +11,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 
 public class SyncTaskWatcher {
-    private QuickShop plugin;
     @Getter private Queue<Entity> entityRemoveQueue = new LinkedList<>();
-    @Getter private Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
     @Getter private Queue<InventoryEditContainer> inventoryEditQueue = new LinkedList<>();
+    @Getter private Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
+    private QuickShop plugin;
 
     /**
      * SyncTaskWatcher is a loop task runner, it can be add from async thread and run in Bukkit main thread.

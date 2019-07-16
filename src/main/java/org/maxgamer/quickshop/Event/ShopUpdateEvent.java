@@ -9,9 +9,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopUpdateEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    private boolean cancelled;
     @Getter
     private @NotNull Shop shop;
-    private boolean cancelled;
 
     /**
      * Call when shop is trying updated to database
@@ -21,13 +21,14 @@ public class ShopUpdateEvent extends Event implements Cancellable {
     public ShopUpdateEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 

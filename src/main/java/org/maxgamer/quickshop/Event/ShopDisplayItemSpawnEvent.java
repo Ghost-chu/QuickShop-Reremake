@@ -19,13 +19,13 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     private boolean cancelled;
     @Getter
     @NotNull
-    private Shop shop;
+    private DisplayType displayType;
     @Getter
     @NotNull
     private ItemStack itemStack;
     @Getter
     @NotNull
-    private DisplayType displayType;
+    private Shop shop;
 
     /**
      * This event is called before the shop display item created

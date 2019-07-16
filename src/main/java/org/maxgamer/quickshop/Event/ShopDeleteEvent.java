@@ -9,11 +9,11 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopDeleteEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    private boolean cancelled;
+    @Getter private boolean fromMemory;
     @Getter
     @NotNull
     private Shop shop;
-    private boolean cancelled;
-    @Getter private boolean fromMemory;
 
     /**
      * Call the event when shop is deleteing.

@@ -14,10 +14,10 @@ public class ShopInventoryPreviewEvent extends Event implements Cancellable {
     private boolean cancelled;
     @Getter
     @NotNull
-    private Player player;
+    private ItemStack itemStack;
     @Getter
     @NotNull
-    private ItemStack itemStack;
+    private Player player;
 
     /**
      * Build a event when player using GUI preview

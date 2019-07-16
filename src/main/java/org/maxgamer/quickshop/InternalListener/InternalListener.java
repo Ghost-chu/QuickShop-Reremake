@@ -20,10 +20,9 @@ public class InternalListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopPurchase(ShopSuccessPurchaseEvent event) {
-        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop item x" + event
-                .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
-                .format(event.getTax()) + " tax).");
+    public void shopModeratorChanges(ShopModeratorChangedEvent event) {
+        plugin.log("Shop at location " + event.getShop().getLocation() + " moderator was changed to " + event.getModerator()
+                .toString());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -33,9 +32,10 @@ public class InternalListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopModeratorChanges(ShopModeratorChangedEvent event) {
-        plugin.log("Shop at location " + event.getShop().getLocation() + " moderator was changed to " + event.getModerator()
-                .toString());
+    public void shopPurchase(ShopSuccessPurchaseEvent event) {
+        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop item x" + event
+                .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
+                .format(event.getTax()) + " tax).");
     }
 
 }

@@ -27,16 +27,16 @@ import org.maxgamer.quickshop.QuickShop;
  * Auto report errors to qs's sentry.
  */
 public class SentryErrorReporter {
-    private Context context;
     private final String dsn = "https://6a7881aa07164412bcb84a0f76253ae9@sentry.io/1473041?" + "stacktrace.app.packages=org.maxgamer.quickshop";
+    private final ArrayList<String> reported = new ArrayList<>();
+    private Context context;
+    private boolean disable;
+    private boolean enabled;
+    private List<Class> ignoredException = new ArrayList<>();
+    private QuickShop plugin;
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
-    private boolean enabled;
-    private final ArrayList<String> reported = new ArrayList<>();
-    private QuickShop plugin;
     private boolean tempDisable;
-    private boolean disable;
-    private List<Class> ignoredException = new ArrayList<>();
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -80,19 +80,71 @@ public class SentryErrorReporter {
     }
 
     /**
-     * Unload Sentry error reporter
+     * Dupe report check
+     * @param throwable Throws
+     * @return dupecated
      */
-    private void unit() {
-        enabled = false;
+    private boolean canReport(@NotNull Throwable throwable) {
+        if (!enabled) {
+            return false;
+        }
+        StackTraceElement stackTraceElement;
+        if (throwable.getStackTrace().length < 3) {
+            stackTraceElement = throwable.getStackTrace()[1];
+        } else {
+            stackTraceElement = throwable.getStackTrace()[2];
+        }
+        String text = stackTraceElement.getClassName() + "#" + stackTraceElement.getMethodName() + "#" + stackTraceElement
+                .getLineNumber();
+        if (!reported.contains(text)) {
+            reported.add(text);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
-    private String getPluginInfo() {
-        StringBuilder buffer = new StringBuilder();
-        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
-            buffer.append("\t").append(bplugin.getName()).append("@").append(bplugin.isEnabled() ? "Enabled" : "Disabled")
-                    .append("\n");
+    /**
+     * Check a throw is cause by QS
+     * @param throwable Throws
+     * @return Cause or not
+     */
+    private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
+        if (throwable == null)
+            return false;
+        while (throwable.getCause() != null) {
+            throwable = throwable.getCause();
         }
-        return buffer.toString();
+        long element = Arrays.stream(throwable.getStackTrace())
+                .limit(10)
+                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
+                .count();
+        return element > 0;
+    }
+
+    /**
+     * Set ignore throw.
+     * It will unlocked after accept a throw
+     */
+    public void ignoreThrow() {
+        tempDisable = true;
+    }
+
+    /**
+     * Set ignore throws.
+     * It will unlocked after called method resetIgnores.
+     */
+    public void ignoreThrows() {
+        disable = true;
+    }
+
+    /**
+     * Reset ignore throw(s).
+     */
+    public void resetIgnores() {
+        tempDisable = false;
+        disable = false;
     }
 
     /**
@@ -161,71 +213,19 @@ public class SentryErrorReporter {
     }
 
     /**
-     * Check a throw is cause by QS
-     * @param throwable Throws
-     * @return Cause or not
+     * Unload Sentry error reporter
      */
-    private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
-        if (throwable == null)
-            return false;
-        while (throwable.getCause() != null) {
-            throwable = throwable.getCause();
-        }
-        long element = Arrays.stream(throwable.getStackTrace())
-                .limit(10)
-                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
-                .count();
-        return element > 0;
+    private void unit() {
+        enabled = false;
     }
 
-    /**
-     * Dupe report check
-     * @param throwable Throws
-     * @return dupecated
-     */
-    private boolean canReport(@NotNull Throwable throwable) {
-        if (!enabled) {
-            return false;
+    private String getPluginInfo() {
+        StringBuilder buffer = new StringBuilder();
+        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
+            buffer.append("\t").append(bplugin.getName()).append("@").append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append("\n");
         }
-        StackTraceElement stackTraceElement;
-        if (throwable.getStackTrace().length < 3) {
-            stackTraceElement = throwable.getStackTrace()[1];
-        } else {
-            stackTraceElement = throwable.getStackTrace()[2];
-        }
-        String text = stackTraceElement.getClassName() + "#" + stackTraceElement.getMethodName() + "#" + stackTraceElement
-                .getLineNumber();
-        if (!reported.contains(text)) {
-            reported.add(text);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    class QuickShopExceptionFilter implements Filter {
-
-        /**
-         * Check if a given log record should be published.
-         *
-         * @param record a LogRecord
-         * @return true if the log record should be published.
-         */
-        @Override
-        public boolean isLoggable(@NotNull LogRecord record) {
-            if (!enabled)
-                return true;
-            Level level = record.getLevel();
-            if (level != Level.WARNING && level != Level.SEVERE)
-                return true;
-            if (Util.isDevMode()) {
-                sendError(record.getThrown(), record.getMessage());
-                return true;
-            } else {
-                return sendError(record.getThrown(), record.getMessage()) == null;
-            }
-        }
+        return buffer.toString();
     }
 
     class GlobalExceptionFilter implements Filter {
@@ -252,28 +252,28 @@ public class SentryErrorReporter {
         }
     }
 
-    /**
-     * Set ignore throw.
-     * It will unlocked after accept a throw
-     */
-    public void ignoreThrow() {
-        tempDisable = true;
-    }
+    class QuickShopExceptionFilter implements Filter {
 
-    /**
-     * Set ignore throws.
-     * It will unlocked after called method resetIgnores.
-     */
-    public void ignoreThrows() {
-        disable = true;
-    }
-
-    /**
-     * Reset ignore throw(s).
-     */
-    public void resetIgnores() {
-        tempDisable = false;
-        disable = false;
+        /**
+         * Check if a given log record should be published.
+         *
+         * @param record a LogRecord
+         * @return true if the log record should be published.
+         */
+        @Override
+        public boolean isLoggable(@NotNull LogRecord record) {
+            if (!enabled)
+                return true;
+            Level level = record.getLevel();
+            if (level != Level.WARNING && level != Level.SEVERE)
+                return true;
+            if (Util.isDevMode()) {
+                sendError(record.getThrown(), record.getMessage());
+                return true;
+            } else {
+                return sendError(record.getThrown(), record.getMessage()) == null;
+            }
+        }
     }
 
 }
