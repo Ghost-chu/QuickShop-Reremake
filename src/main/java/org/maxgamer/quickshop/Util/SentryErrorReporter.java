@@ -117,7 +117,7 @@ public class SentryErrorReporter {
             throwable = throwable.getCause();
         }
         long element = Arrays.stream(throwable.getStackTrace())
-                .limit(10)
+                .limit(5)
                 .filter(stackTraceElement -> stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
                 .count();
         return element > 0;
