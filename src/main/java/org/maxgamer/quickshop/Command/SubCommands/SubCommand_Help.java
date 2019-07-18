@@ -10,7 +10,6 @@ import org.maxgamer.quickshop.Command.CommandContainer;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_Help implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
@@ -29,14 +28,16 @@ public class SubCommand_Help implements CommandProcesser {
         s.sendMessage(MsgUtil.getMessage("command.description.title"));
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             List<String> requirePermissions = container.getPermissions();
-            if (container.getPermissions() != null)
-                for (String requirePermission : requirePermissions) {
-                    if (requirePermission != null && !requirePermission.isEmpty() && !s.hasPermission(requirePermission)) {
-                        Util.debugLog("Sender " + s
-                                .getName() + " trying execute the command: " + commandLabel + ", but no permission " + requirePermission);
-                        return;
+            if (requirePermissions != null) {
+                if (!requirePermissions.isEmpty()) {
+                    for (String requirePermission : requirePermissions) {
+                        if (requirePermission != null && !requirePermission.isEmpty() && !s.hasPermission(requirePermission)) {
+                            //noinspection UnnecessaryContinue
+                            continue;
+                        }
                     }
                 }
+            }
             if (!container.isHidden())
                 s.sendMessage(ChatColor.GREEN + "/" + commandLabel + " " + container
                         .getPrefix() + ChatColor.YELLOW + " - "
