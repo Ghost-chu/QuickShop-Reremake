@@ -789,6 +789,11 @@ private int displayItemCheckTicks;
             getConfig().set("config-version", 40);
             selectedVersion = 39;
         }
+        if (selectedVersion == 40) {
+            getConfig().set("allow-economy-loan", true);
+            getConfig().set("config-version", 41);
+            selectedVersion = 41;
+        }
         saveConfig();
         reloadConfig();
     }

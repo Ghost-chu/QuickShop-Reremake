@@ -99,6 +99,9 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public boolean withdraw(UUID name, double amount) {
         try {
+            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan"))
+                if (getBalance(name) < amount)
+                    return false;
             return reserve.removeHoldings(name, new BigDecimal(amount));
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
