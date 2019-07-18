@@ -22,8 +22,9 @@ public class ShopModerator {
         Gson gson = new Gson();
         return gson.toJson(shopModerator); //Use Gson serialize this class
     }
-    private UUID owner;
-    private ArrayList<UUID> staffs;
+
+    @NonNull private UUID owner;
+    @NonNull private ArrayList<UUID> staffs;
 
     private ShopModerator(@NotNull ShopModerator shopModerator) {
         this.owner = shopModerator.owner;
@@ -37,7 +38,7 @@ public class ShopModerator {
      */
     public ShopModerator(@NotNull UUID owner) {
         this.owner = owner;
-        this.staffs = new ArrayList<UUID>();
+        this.staffs = new ArrayList<>();
     }
 
     /**
@@ -47,7 +48,7 @@ public class ShopModerator {
      */
     public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
         this.owner = owner;
-        this.staffs = new ArrayList<UUID>();
+        this.staffs = new ArrayList<>();
     }
 
     /**
@@ -69,8 +70,9 @@ public class ShopModerator {
         staffs.clear();
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public ShopModerator clone() {
-        return new ShopModerator(this);
+        return new ShopModerator(this.owner, this.staffs);
     }
 
     @Override
