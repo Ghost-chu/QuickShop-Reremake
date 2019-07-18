@@ -1,11 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import com.lishid.openinv.OpenInv;
@@ -32,7 +29,6 @@ import org.maxgamer.quickshop.Util.Util;
  * ChestShop core
  */
 @EqualsAndHashCode
-@ToString
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude private boolean isLoaded = false;
@@ -53,6 +49,7 @@ public class ContainerShop implements Shop {
         this.unlimited = s.unlimited;
         this.moderator = s.moderator;
         this.price = s.price;
+        this.isLoaded = s.isLoaded;
     }
 
     /**
@@ -99,14 +96,25 @@ public class ContainerShop implements Shop {
 
     }
 
-    @Override
-    public boolean addStaff(@NotNull UUID player) {
-        boolean result = this.moderator.addStaff(player);
-        update();
-        if (result == false)
-            return result;
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        return result;
+    /**
+     * Add an item to shops chest.
+     *
+     * @param item   The itemstack. The amount does not matter, just everything
+     *               else
+     * @param amount The amount to add to the shop.
+     */
+    public void add(@NotNull ItemStack item, int amount) {
+        if (this.unlimited)
+            return;
+        Inventory inv = this.getInventory();
+        int remains = amount;
+        while (remains > 0) {
+            int stackSize = Math.min(remains, item.getMaxStackSize());
+            item.setAmount(stackSize);
+            inv.addItem(item);
+            remains = remains - stackSize;
+        }
+        this.setSignText();
     }
 
     /**
@@ -214,98 +222,13 @@ public class ContainerShop implements Shop {
         return item;
     }
 
-    /**
-     * Removes an item from the shop.
-     *
-     * @param item   The itemstack. The amount does not matter, just everything
-     *               else
-     * @param amount The amount to remove from the shop.
-     */
-    public void remove(@NotNull ItemStack item, @NotNull int amount) {
-        if (this.unlimited)
-            return;
-        Inventory inv = this.getInventory();
-        int remains = amount;
-        while (remains > 0) {
-            int stackSize = Math.min(remains, item.getMaxStackSize());
-            item.setAmount(stackSize);
-            inv.removeItem(item);
-            remains = remains - stackSize;
-        }
-        this.setSignText();
-    }
-
-    /**
-     * Add an item to shops chest.
-     *
-     * @param item   The itemstack. The amount does not matter, just everything
-     *               else
-     * @param amount The amount to add to the shop.
-     */
-    public void add(@NotNull ItemStack item, @NotNull int amount) {
-        if (this.unlimited)
-            return;
-        Inventory inv = this.getInventory();
-        int remains = amount;
-        while (remains > 0) {
-            int stackSize = Math.min(remains, item.getMaxStackSize());
-            item.setAmount(stackSize);
-            inv.addItem(item);
-            remains = remains - stackSize;
-        }
-        this.setSignText();
-    }
-
-    /**
-     * Sells amount of item to Player p. Does NOT check our inventory, or
-     * balances
-     *
-     * @param p      The player to sell to
-     * @param amount The amount to sell
-     */
-    public void sell(@NotNull Player p, @NotNull int amount) {
-        if (amount < 0)
-            this.buy(p, -amount);
-        // Items to drop on floor
-        ArrayList<ItemStack> floor = new ArrayList<ItemStack>(5);
-        Inventory pInv = p.getInventory();
-        if (this.isUnlimited()) {
-            ItemStack item = this.item.clone();
-            while (amount > 0) {
-                int stackSize = Math.min(amount, this.item.getMaxStackSize());
-                item.setAmount(stackSize);
-                pInv.addItem(item);
-                amount -= stackSize;
-            }
-        } else {
-            ItemStack[] chestContents = this.getInventory().getContents();
-            for (int i = 0; amount > 0 && i < chestContents.length; i++) {
-                // Can't clone it here, it could be null
-                ItemStack item = chestContents[i];
-                if (item != null && this.matches(item)) {
-                    // Copy it, we don't want to interfere
-                    item = item.clone();
-                    // Amount = total, item.getAmount() = how many items in the
-                    // stack
-                    int stackSize = Math.min(amount, item.getAmount());
-                    // If Amount is item.getAmount(), then this sets the amount
-                    // to 0
-                    // Else it sets it to the remainder
-                    chestContents[i].setAmount(chestContents[i].getAmount() - stackSize);
-                    // We can modify this, it is a copy.
-                    item.setAmount(stackSize);
-                    // Add the items to the players inventory
-                    floor.addAll(pInv.addItem(item).values());
-                    amount -= stackSize;
-                }
-            }
-            // We now have to update the chests inventory manually.
-            this.getInventory().setContents(chestContents);
-            this.setSignText();
-        }
-        for (int i = 0; i < floor.size(); i++) {
-            p.getWorld().dropItem(p.getLocation(), floor.get(i));
-        }
+    @Override
+    public boolean addStaff(@NotNull UUID player) {
+        boolean result = this.moderator.addStaff(player);
+        update();
+        if (result)
+            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        return result;
     }
 
     /**
@@ -315,7 +238,7 @@ public class ContainerShop implements Shop {
      * @param p      The player to buy from
      * @param amount The amount to buy
      */
-    public void buy(@NotNull Player p, @NotNull int amount) {
+    public void buy(@NotNull Player p, int amount) {
         if (amount < 0)
             this.sell(p, -amount);
         if (this.isUnlimited()) {
@@ -367,6 +290,62 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public boolean delStaff(@NotNull UUID player) {
+        boolean result = this.moderator.delStaff(player);
+        update();
+        if (result)
+            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        return result;
+    }
+
+    /**
+     * Deletes the shop from the list of shops and queues it for database
+     * deletion
+     *
+     * @param fromMemory True if you are *NOT* iterating over this currently, *false if
+     *                   you are iterating*
+     */
+    public void delete(boolean fromMemory) {
+        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
+        Bukkit.getPluginManager().callEvent(shopDeleteEvent);
+        if (shopDeleteEvent.isCancelled()) {
+            Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
+            return;
+        }
+        // Unload the shop
+        if (isLoaded)
+            this.onUnload();
+        // Delete the display item
+        if (this.getDisplayItem() != null) {
+            this.getDisplayItem().remove();
+        }
+        // Delete the signs around it
+        for (Sign s : this.getSigns()) {
+            s.getBlock().setType(Material.AIR);
+        }
+        // Delete it from the database
+        int x = this.getLocation().getBlockX();
+        int y = this.getLocation().getBlockY();
+        int z = this.getLocation().getBlockZ();
+        String world = this.getLocation().getWorld().getName();
+        // Refund if necessary
+        if (plugin.getConfig().getBoolean("shop.refund")) {
+            plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
+        }
+        if (fromMemory) {
+            // Delete it from memory
+            plugin.getShopManager().removeShop(this);
+        } else {
+            try {
+                plugin.getShopManager().removeShop(this);
+                plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), x, y, z, world);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void checkDisplay() {
         Util.debugLog("Checking the display...");
         if (!plugin.isDisplay())
@@ -406,14 +385,25 @@ public class ContainerShop implements Shop {
         update();
     }
 
-    @Override
-    public boolean delStaff(@NotNull UUID player) {
-        boolean result = this.moderator.delStaff(player);
-        update();
-        if (result == false)
-            return result;
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        return result;
+    /**
+     * Removes an item from the shop.
+     *
+     * @param item   The itemstack. The amount does not matter, just everything
+     *               else
+     * @param amount The amount to remove from the shop.
+     */
+    public void remove(@NotNull ItemStack item, int amount) {
+        if (this.unlimited)
+            return;
+        Inventory inv = this.getInventory();
+        int remains = amount;
+        while (remains > 0) {
+            int stackSize = Math.min(remains, item.getMaxStackSize());
+            item.setAmount(stackSize);
+            inv.removeItem(item);
+            remains = remains - stackSize;
+        }
+        this.setSignText();
     }
 
     /**
@@ -447,17 +437,56 @@ public class ContainerShop implements Shop {
         return new ContainerShop(this);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ?
-                "unloaded world" :
-                loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
-        sb.append(" Owner: " + this.ownerName() + " - " + getOwner().toString());
-        if (isUnlimited())
-            sb.append(" Unlimited: true");
-        sb.append(" Price: " + getPrice());
-        sb.append(" Item: " + getItem().toString());
-        return sb.toString();
+    /**
+     * Sells amount of item to Player p. Does NOT check our inventory, or
+     * balances
+     *
+     * @param p      The player to sell to
+     * @param amount The amount to sell
+     */
+    public void sell(@NotNull Player p, int amount) {
+        if (amount < 0)
+            this.buy(p, -amount);
+        // Items to drop on floor
+        ArrayList<ItemStack> floor = new ArrayList<ItemStack>(5);
+        Inventory pInv = p.getInventory();
+        if (this.isUnlimited()) {
+            ItemStack item = this.item.clone();
+            while (amount > 0) {
+                int stackSize = Math.min(amount, this.item.getMaxStackSize());
+                item.setAmount(stackSize);
+                pInv.addItem(item);
+                amount -= stackSize;
+            }
+        } else {
+            ItemStack[] chestContents = this.getInventory().getContents();
+            for (int i = 0; amount > 0 && i < chestContents.length; i++) {
+                // Can't clone it here, it could be null
+                ItemStack item = chestContents[i];
+                if (item != null && this.matches(item)) {
+                    // Copy it, we don't want to interfere
+                    item = item.clone();
+                    // Amount = total, item.getAmount() = how many items in the
+                    // stack
+                    int stackSize = Math.min(amount, item.getAmount());
+                    // If Amount is item.getAmount(), then this sets the amount
+                    // to 0
+                    // Else it sets it to the remainder
+                    chestContents[i].setAmount(chestContents[i].getAmount() - stackSize);
+                    // We can modify this, it is a copy.
+                    item.setAmount(stackSize);
+                    // Add the items to the players inventory
+                    floor.addAll(pInv.addItem(item).values());
+                    amount -= stackSize;
+                }
+            }
+            // We now have to update the chests inventory manually.
+            this.getInventory().setContents(chestContents);
+            this.setSignText();
+        }
+        for (ItemStack stack : floor) {
+            p.getWorld().dropItem(p.getLocation(), stack);
+        }
     }
 
     /**
@@ -524,29 +553,20 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Returns true if this shop is a double chest, and the other half is
-     * selling/buying the same as this is buying/selling.
+     * Changes all lines of text on a sign near the shop
      *
-     * @return true if this shop is a double chest, and the other half is
-     * selling/buying the same as this is buying/selling.
+     * @param lines The array of lines to change. Index is line number.
      */
-    public boolean isDoubleShop() {
-        ContainerShop nextTo = this.getAttachedShop();
-        if (nextTo == null) {
-            return false;
-        }
-        if (nextTo.matches(this.getItem())) {
-            // They're both trading the same item
-            if (this.getShopType() == nextTo.getShopType()) {
-                // They're both buying or both selling => Not a double shop,
-                // just two shops.
-                return false;
-            } else {
-                // One is buying, one is selling.
-                return true;
+    public void setSignText(@NotNull String[] lines) {
+        for (Sign sign : this.getSigns()) {
+            if (Arrays.equals(sign.getLines(), lines)) {
+                Util.debugLog("Skipped new sign text setup: Same content");
+                continue;
             }
-        } else {
-            return false;
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+            sign.update(true);
         }
     }
 
@@ -616,22 +636,17 @@ public class ContainerShop implements Shop {
         this.setSignText(lines);
     }
 
-    /**
-     * Changes all lines of text on a sign near the shop
-     *
-     * @param lines The array of lines to change. Index is line number.
-     */
-    public void setSignText(@NotNull String[] lines) {
-        for (Sign sign : this.getSigns()) {
-            if (sign.getLines().equals(lines)) {
-                Util.debugLog("Skipped new sign text setup: Same content");
-                continue;
-            }
-            for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i]);
-            }
-            sign.update(true);
-        }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ?
+                "unloaded world" :
+                loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
+        if (isUnlimited())
+            sb.append(" Unlimited: true");
+        sb.append(" Price: ").append(getPrice());
+        sb.append(" Item: ").append(getItem().toString());
+        return sb.toString();
     }
 
     /**
@@ -696,49 +711,25 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Deletes the shop from the list of shops and queues it for database
-     * deletion
+     * Returns true if this shop is a double chest, and the other half is
+     * selling/buying the same as this is buying/selling.
      *
-     * @param fromMemory True if you are *NOT* iterating over this currently, *false if
-     *                   you are iterating*
+     * @return true if this shop is a double chest, and the other half is
+     * selling/buying the same as this is buying/selling.
      */
-    public void delete(boolean fromMemory) {
-        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
-        Bukkit.getPluginManager().callEvent(shopDeleteEvent);
-        if (shopDeleteEvent.isCancelled()) {
-            Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
-            return;
+    public boolean isDoubleShop() {
+        ContainerShop nextTo = this.getAttachedShop();
+        if (nextTo == null) {
+            return false;
         }
-        // Unload the shop
-        if (isLoaded)
-            this.onUnload();
-        // Delete the display item
-        if (this.getDisplayItem() != null) {
-            this.getDisplayItem().remove();
-        }
-        // Delete the signs around it
-        for (Sign s : this.getSigns()) {
-            s.getBlock().setType(Material.AIR);
-        }
-        // Delete it from the database
-        int x = this.getLocation().getBlockX();
-        int y = this.getLocation().getBlockY();
-        int z = this.getLocation().getBlockZ();
-        String world = this.getLocation().getWorld().getName();
-        // Refund if necessary
-        if (plugin.getConfig().getBoolean("shop.refund")) {
-            plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
-        }
-        if (fromMemory) {
-            // Delete it from memory
-            plugin.getShopManager().removeShop(this);
+        if (nextTo.matches(this.getItem())) {
+            // They're both trading the same item
+            // They're both buying or both selling => Not a double shop,
+            // just two shops.
+            // One is buying, one is selling.
+            return this.getShopType() != nextTo.getShopType();
         } else {
-            try {
-                plugin.getShopManager().removeShop(this);
-                plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), x, y, z, world); ;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            return false;
         }
     }
 
