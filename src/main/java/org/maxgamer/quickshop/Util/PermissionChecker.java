@@ -51,12 +51,16 @@ public class PermissionChecker {
         ListenerHelper.disableEvent(beMainHand.getClass());
         Bukkit.getPluginManager().callEvent(beMainHand);
         ListenerHelper.enableEvent(beMainHand.getClass());
-        Util.debugLog("HandlerList: ");
-        for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
-            Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
+        boolean canBuild = !((Cancellable) beMainHand).isCancelled();
+
+        if (!canBuild) {
+            Util.debugLog("Somethings say build check failed, there is HandlerList to help you debug: ");
+            for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
+                Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
+            }
         }
 
-        return !((Cancellable) beMainHand).isCancelled();
+        return canBuild;
         // if (beMainHand instanceof BlockPlaceEvent)
         //     return ((BlockPlaceEvent) beMainHand).canBuild();
 
