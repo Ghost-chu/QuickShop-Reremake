@@ -134,6 +134,9 @@ public class Economy_Vault implements EconomyCore, Listener {
             return false;
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
+            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan"))
+                if (getBalance(name) < amount)
+                    return false;
             return this.vault.withdrawPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
