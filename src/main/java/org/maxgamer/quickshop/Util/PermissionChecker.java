@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
@@ -45,22 +44,22 @@ public class PermissionChecker {
         if (!usePermissionChecker)
             return true;
         BlockEvent beMainHand;
-        if (place) {
-            beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0), player.getInventory()
-                    .getItemInMainHand(), player, true, EquipmentSlot.HAND);
-        } else {
-            beMainHand = new BlockBreakEvent(block, player);
-        }
+        // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0), player.getInventory()
+        //getItemInMainHand(), player, true, EquipmentSlot.HAND);
+
+        beMainHand = new BlockBreakEvent(block, player);
         ListenerHelper.disableEvent(beMainHand.getClass());
         Bukkit.getPluginManager().callEvent(beMainHand);
         ListenerHelper.enableEvent(beMainHand.getClass());
-        if (((Cancellable) beMainHand).isCancelled())
-            return false;
+        Util.debugLog("HandlerList: ");
+        for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
+            Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
+        }
 
-        if (beMainHand instanceof BlockPlaceEvent)
-            return ((BlockPlaceEvent) beMainHand).canBuild();
+        return !((Cancellable) beMainHand).isCancelled();
+        // if (beMainHand instanceof BlockPlaceEvent)
+        //     return ((BlockPlaceEvent) beMainHand).canBuild();
 
-        return true;
     }
 
 }
