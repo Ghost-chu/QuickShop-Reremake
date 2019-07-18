@@ -44,17 +44,15 @@ public class ItemMatcher {
         if (plugin.getConfig().getBoolean("shop.strict-matches-check"))
             return stack1.equals(stack2);
 
-        if (!typeMatches(stack1, stack2)) {
+        if (!typeMatches(stack1, stack2))
             return false;
-        }
 
-        if (stack1.hasItemMeta() != stack2.hasItemMeta()) {
+        if (stack1.hasItemMeta() != stack2.hasItemMeta())
             return false;
-        }
 
-        if (stack1.hasItemMeta()) {
+        if (stack1.hasItemMeta())
             return itemMetaMatcher.matches(stack1, stack2);
-        }
+
         return true;
     }
 
