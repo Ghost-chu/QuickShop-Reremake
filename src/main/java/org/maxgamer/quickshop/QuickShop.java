@@ -794,6 +794,12 @@ private int displayItemCheckTicks;
             getConfig().set("config-version", 41);
             selectedVersion = 41;
         }
+        if (selectedVersion == 41) {
+            getConfig().set("send-display-item-protection-alert", true);
+            getConfig().set("config-version", 42);
+            selectedVersion = 42;
+        }
+
         saveConfig();
         reloadConfig();
     }
