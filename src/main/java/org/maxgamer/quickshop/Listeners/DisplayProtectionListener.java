@@ -46,7 +46,7 @@ public class DisplayProtectionListener implements Listener {
         if (shop == null)
             return;
         event.setCancelled(true);
-        sendAlert(Util.getClassPrefix() + "Liuqid " + targetBlock
+        sendAlert(Util.getClassPrefix() + "Liuqid " + targetBlock.getLocation()
                 .toString() + " trying flow to top of shop, QuickShop already cancel it.");
     }
 
@@ -58,7 +58,7 @@ public class DisplayProtectionListener implements Listener {
         Shop shop = plugin.getShopManager().getShop(block.getLocation());
         if (shop != null) {
             event.setCancelled(true);
-            sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock()
+            sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
                     .toString() + " trying push somethings on the shop top, QuickShop already cancel it.");
             return;
         }
@@ -68,7 +68,7 @@ public class DisplayProtectionListener implements Listener {
                 shop = plugin.getShopManager().getShop(otherBlock.getLocation());
                 if (shop != null) {
                     event.setCancelled(true);
-                    sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock()
+                    sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
                             .toString() + " trying push somethings on the shop top, QuickShop already cancel it.");
                     return;
                 }
@@ -84,7 +84,7 @@ public class DisplayProtectionListener implements Listener {
         Shop shop = plugin.getShopManager().getShop(block.getLocation());
         if (shop != null) {
             event.setCancelled(true);
-            sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock()
+            sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
                     .toString() + " trying pull somethings on the shop top, QuickShop already cancel it.");
             return;
         }
@@ -94,7 +94,7 @@ public class DisplayProtectionListener implements Listener {
                 shop = plugin.getShopManager().getShop(otherBlock.getLocation());
                 if (shop != null) {
                     event.setCancelled(true);
-                    sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock()
+                    sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
                             .toString() + " trying push somethings on the shop top, QuickShop already cancel it.");
                     return;
                 }
@@ -176,10 +176,12 @@ public class DisplayProtectionListener implements Listener {
         if (e.getEntityType() != EntityType.PLAYER) {
             e.getEntity().setCanPickupItems(false);
             sendAlert(Util.getClassPrefix() + "Entity " + e.getEntity()
-                    .getType().name() + " pickedup the displayItem, QuickShop already removed it.");
+                    .getType().name() + " # " + e.getEntity().getLocation()
+                    .toString() + " pickedup the displayItem, QuickShop already removed it.");
         } else {
             sendAlert(Util.getClassPrefix() + "Player " + e
-                    .getEntity().getType().name() + " pickedup the displayItem, QuickShop already removed it.");
+                    .getEntity().getType().name() + " # " + e.getEntity().getLocation()
+                    .toString() + " pickedup the displayItem, QuickShop already removed it.");
         }
         Entity entity = e.getEntity();
         if (entity instanceof InventoryHolder)
@@ -222,7 +224,7 @@ public class DisplayProtectionListener implements Listener {
         if (entity instanceof InventoryHolder)
             Util.inventoryCheck(((InventoryHolder) entity).getInventory());
         sendAlert(Util.getClassPrefix() + "Entity  " + event.getEntityType()
-                .name() + " trying interact the hold displayItem's entity.");
+                .name() + " # " + event.getEntity().getLocation().toString() + " trying interact the hold displayItem's entity.");
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -239,7 +241,7 @@ public class DisplayProtectionListener implements Listener {
         if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem()))
             return;
         event.setCancelled(true);
-        sendAlert(Util.getClassPrefix() + "Inventory " + event.getClickedInventory()
+        sendAlert(Util.getClassPrefix() + "Inventory " + event.getClickedInventory().getLocation()
                 .toString() + " was clicked the displayItem, QuickShop already removed it.");
         event.getCurrentItem().setAmount(0);
         event.getCurrentItem().setType(Material.AIR);
@@ -257,7 +259,7 @@ public class DisplayProtectionListener implements Listener {
             if (DisplayItem.checkIsGuardItemStack(is)) {
                 event.setCancelled(true); ;
                 sendAlert(Util.getClassPrefix() + "Inventory " + event.getInitiator()
-                        .toString() + " trying moving displayItem, QuickShop already removed it.");
+                        .getLocation().toString() + " trying moving displayItem, QuickShop already removed it.");
                 event.setItem(new ItemStack(Material.AIR));
                 Util.inventoryCheck(event.getDestination());
                 Util.inventoryCheck(event.getInitiator());
