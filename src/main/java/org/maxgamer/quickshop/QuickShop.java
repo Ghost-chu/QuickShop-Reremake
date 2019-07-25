@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javafx.scene.control.Tab;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,7 +41,6 @@ public class QuickShop extends JavaPlugin {
     private ChatListener chatListener;
     private ChunkListener chunkListener;
     private CommandManager commandManager;
-    private Tab commandTabCompleter;
     /** WIP **/
     private Compatibility compatibilityTool = new Compatibility(this);
     private CustomInventoryListener customInventoryListener;
