@@ -14,7 +14,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
-import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.QuickShop;
@@ -58,20 +57,19 @@ public class Paste {
         }
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
-        JSONObject serverData = plugin.getMetrics().getServerData();
-        finalReport.append("\tOS: ").append(serverData.get("osName")).append("\n");
-        finalReport.append("\tArch: ").append(serverData.get("osArch")).append("\n");
-        finalReport.append("\tVersion: ").append(serverData.get("osVersion")).append("\n");
-        finalReport.append("\tCores: ").append(serverData.get("coreCount")).append("\n");
+        finalReport.append("\tOS: ").append(System.getProperty("os.name")).append("\n");
+        finalReport.append("\tArch: ").append(System.getProperty("os.arch")).append("\n");
+        finalReport.append("\tVersion: ").append(System.getProperty("os.version")).append("\n");
+        finalReport.append("\tCores: ").append(Runtime.getRuntime().availableProcessors()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
         finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
-        finalReport.append("\tJava: ").append(serverData.get("javaVersion")).append("\n");
-        finalReport.append("\tPlayers: ").append(serverData.get("playerAmount")).append("/").append(Bukkit
+        finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
+        finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit
                 .getOfflinePlayers().length).append("\n");
-        finalReport.append("\tOnlineMode: ").append(serverData.get("onlineMode")).append("\n");
-        finalReport.append("\tBukkitVersion: ").append(serverData.get("bukkitVersion")).append("\n");
+        finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
+        finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
         finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer().toString()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
