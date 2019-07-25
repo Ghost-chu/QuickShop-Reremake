@@ -18,7 +18,7 @@ public class ShopUnloadEvent extends Event {
     }
 
     @NotNull
-    public HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {return handlers;}
 
     @NotNull
     @Override
