@@ -16,7 +16,8 @@ class DisplayRunnable implements Runnable {
         @SuppressWarnings("unchecked") ArrayList<Shop> pendingCheckDisplayCopy = (ArrayList<Shop>) QuickShop.instance
                 .getDisplayWatcher().getPendingCheckDisplay().clone();
         for (Shop shop : pendingCheckDisplayCopy) {
-            shop.checkDisplay();
+            if (shop != null)
+                shop.checkDisplay();
         }
         pendingCheckDisplayCopy.clear();
         QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
