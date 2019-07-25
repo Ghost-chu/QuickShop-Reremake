@@ -39,9 +39,9 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+    @NotNull
+    public HandlerList getHandlerList() {return handlers;}
+
 
     @Override
     public boolean isCancelled() {

@@ -29,6 +29,8 @@ public class ShopModeratorChangedEvent extends Event {
         this.moderator = shopModerator;
     }
 
+    @NotNull
+    public HandlerList getHandlerList() {return handlers;}
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
