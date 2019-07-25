@@ -66,8 +66,8 @@ public class Paste {
         finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
         finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
-        finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit
-                .getOfflinePlayers().length).append("\n");
+        finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit.getMaxPlayers())
+                .append("\n");
         finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
         finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
         finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer().toString()).append("\n");
