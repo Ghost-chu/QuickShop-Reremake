@@ -252,7 +252,7 @@ public class Util {
             } else {
                 return formated;
             }
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             Util.debugLog("format", e.getMessage());
             Util.debugLog("format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
