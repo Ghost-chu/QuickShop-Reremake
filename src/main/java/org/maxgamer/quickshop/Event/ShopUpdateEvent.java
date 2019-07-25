@@ -23,7 +23,7 @@ public class ShopUpdateEvent extends Event implements Cancellable {
     }
 
     @NotNull
-    public HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {return handlers;}
 
     @NotNull
     @Override
