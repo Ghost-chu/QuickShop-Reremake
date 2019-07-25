@@ -20,7 +20,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
-import org.json.simple.JSONObject;
 import org.maxgamer.quickshop.QuickShop;
 
 /**
@@ -45,18 +44,16 @@ public class SentryErrorReporter {
         sentryClient = SentryClientFactory.sentryClient(this.dsn);
         context = sentryClient.getContext();
         Util.debugLog("Setting basic report data...");
-        JSONObject serverData = plugin.getMetrics().getPluginData();
         //context.addTag("plugin_version", QuickShop.getVersion());
-        context.addTag("system_os", String.valueOf(serverData.get("osName")));
-        context.addTag("system_arch", String.valueOf(serverData.get("osArch")));
-        context.addTag("system_version", String.valueOf(serverData.get("osVersion")));
-        context.addTag("system_cores", String.valueOf(serverData.get("coreCount")));
-        context.addTag("server_build", String.valueOf(Bukkit.getServer().getVersion()));
-        context.addTag("server_java", String.valueOf(serverData.get("javaVersion")));
-        context.addTag("server_players", String
-                .valueOf(serverData.get("playerAmount") + "/" + Bukkit.getOfflinePlayers().length));
-        context.addTag("server_onlinemode", String.valueOf(serverData.get("onlineMode")));
-        context.addTag("server_bukkitversion", String.valueOf(serverData.get("bukkitVersion")));
+        context.addTag("system_os", System.getProperty("os.name"));
+        context.addTag("system_arch", System.getProperty("os.arch"));
+        context.addTag("system_version", System.getProperty("os.version"));
+        context.addTag("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
+        context.addTag("server_build", Bukkit.getServer().getVersion());
+        context.addTag("server_java", String.valueOf(System.getProperty("java.version")));
+        context.addTag("server_players", Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
+        context.addTag("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
+        context.addTag("server_bukkitversion", Bukkit.getVersion());
         context.addTag("server_plugins", getPluginInfo());
         context.setUser(new UserBuilder().setId(plugin.getServerUniqueID().toString()).build());
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
