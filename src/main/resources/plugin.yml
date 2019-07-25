@@ -27,7 +27,7 @@ permissions:
         description: Allows a player to create a double shop
         default: op
     quickshop.create.changeprice:
-        description: Allow a player to change their shop's price
+        description: Allow a player to chyange their shop's price
         default: op
     quickshop.create.cmd:
         description: Allow a player to use /qs create to create a shop
