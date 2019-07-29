@@ -59,9 +59,6 @@ permissions:
     quickshop.staff:
         description: Allow a shop owner to add staff to the shop
         default: op
-    quickshio.areashop.bypass:
-        description: If you enable a special zone only and the player has this permission, the special zone will only ignore your limit.
-        default: op
     quickshop.find:
         description: Allows a player to locate the nearest shop that has a specific item type. Works in a 3 chunk radius.
         default: true
