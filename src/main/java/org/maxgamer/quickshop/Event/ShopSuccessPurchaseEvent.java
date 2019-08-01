@@ -56,7 +56,6 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      */
     public double getBalanceWithoutTax() {return this.total;}
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
 
     @NotNull

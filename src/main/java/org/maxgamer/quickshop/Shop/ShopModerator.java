@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import lombok.*;
 import org.jetbrains.annotations.*;
 
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.*;
  */
 @EqualsAndHashCode
 public class ShopModerator {
-    public static ShopModerator deserialize(@NotNull String serilized) {
+    public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         //Use Gson deserialize data
         Gson gson = new Gson();
         return gson.fromJson(serilized, ShopModerator.class);

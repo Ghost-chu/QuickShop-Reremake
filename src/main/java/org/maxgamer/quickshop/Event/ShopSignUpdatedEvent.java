@@ -29,7 +29,6 @@ public class ShopSignUpdatedEvent extends Event {
         this.sign = sign;
     }
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
     @Override
     public @NotNull HandlerList getHandlers() {
