@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import com.google.gson.JsonSyntaxException;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -120,6 +121,7 @@ public class ShopLoader {
                         continue;
                     }
                     shop.onLoad();
+                    shop.update();
 
                 } else {
                     loadAfterChunkLoaded++;
@@ -247,7 +249,13 @@ public class ShopLoader {
                 Util.debugLog("Updating old shop data...");
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); //New one
             } else {
-                shopModerator = ShopModerator.deserialize(moderatorJson);
+                try {
+                    shopModerator = ShopModerator.deserialize(moderatorJson);
+                } catch (JsonSyntaxException ex) {
+                    Util.debugLog("Updating old shop data...");
+                    moderatorJson = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId().toString();
+                    shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); //New one
+                }
             }
             return shopModerator;
         }

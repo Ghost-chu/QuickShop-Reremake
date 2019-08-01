@@ -29,8 +29,8 @@ public class ShopPriceChangedEvent extends Event {
         this.newPrice = newPrice;
     }
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;

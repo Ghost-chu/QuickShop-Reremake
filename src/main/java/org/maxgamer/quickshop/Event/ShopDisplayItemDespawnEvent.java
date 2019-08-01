@@ -57,8 +57,8 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
+
     @Override
     public boolean isCancelled() {
         return this.cancelled;
