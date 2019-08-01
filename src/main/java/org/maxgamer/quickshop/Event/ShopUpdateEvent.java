@@ -22,7 +22,6 @@ public class ShopUpdateEvent extends Event implements Cancellable {
         this.shop = shop;
     }
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
 
     @NotNull
