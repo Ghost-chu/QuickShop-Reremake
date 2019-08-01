@@ -329,9 +329,15 @@ public class MsgUtil {
         try {
             ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
             while (rs.next()) {
-                UUID owner = UUID.fromString(rs.getString("owner"));
+                String owner = rs.getString("owner");
+                UUID ownerUUID;
+                if (Util.isUUID(owner)) {
+                    ownerUUID = UUID.fromString(owner);
+                } else {
+                    ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
+                }
                 String message = rs.getString("message");
-                LinkedList<String> msgs = player_messages.computeIfAbsent(owner, k -> new LinkedList<>());
+                LinkedList<String> msgs = player_messages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
