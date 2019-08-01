@@ -17,7 +17,6 @@ public class ShopUnloadEvent extends Event {
         this.shop = shop;
     }
 
-    @NotNull
     public static HandlerList getHandlerList() {return handlers;}
 
     @NotNull
