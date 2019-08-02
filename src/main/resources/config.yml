@@ -199,7 +199,7 @@ shop:
     update-sign-when-inventory-moving: true
 
     #Allow player loan (Require economy plugin support)
-    allow-economy-loan: true
+    allow-economy-loan: false
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
