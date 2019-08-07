@@ -367,6 +367,8 @@ private int displayItemCheckTicks;
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(shopProtectListener, this);
+        if (Bukkit.getPluginManager().getPlugin("ClearLag") != null)
+            Bukkit.getServer().getPluginManager().registerEvents(new ClearLaggListener(), this);
 
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
