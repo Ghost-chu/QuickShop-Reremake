@@ -209,6 +209,12 @@
             <artifactId>github-api</artifactId>
             <version>1.95</version>
         </dependency>
-
+        <dependency>
+            <groupId>me.minebuilders</groupId>
+            <artifactId>clearlag</artifactId>
+            <version>3.0.6</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Clearlag (2).jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
