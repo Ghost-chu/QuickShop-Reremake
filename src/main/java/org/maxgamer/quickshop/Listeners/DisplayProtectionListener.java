@@ -1,5 +1,8 @@
 package org.maxgamer.quickshop.Listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -451,6 +454,24 @@ public class DisplayProtectionListener implements Listener {
         if (!plugin.getConfig().getBoolean("send-display-item-protection-alert"))
             return;
         MsgUtil.sendGlobalAlert(msg);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    public void plugin(me.minebuilders.clearlag.events.EntityRemoveEvent clearlaggEvent) {
+        if (ListenerHelper.isDisabled(clearlaggEvent.getClass()))
+            return;
+        List<Entity> entities = clearlaggEvent.getEntityList();
+        List<Entity> pendingExclude = new ArrayList<>();
+        for (Entity entity : entities) {
+            if (!(entity instanceof Item))
+                continue;
+            Item item = (Item) entity;
+            if (!DisplayItem.checkIsGuardItemStack(item.getItemStack()))
+                continue;
+            pendingExclude.add(item);
+        }
+        pendingExclude.forEach((entity) -> clearlaggEvent.removeEntity(entity));
+        Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
 }
 
