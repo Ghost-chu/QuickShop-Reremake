@@ -9,15 +9,17 @@ config-version: 42
 
 #Available languages:
 #en - English
+#da - Danish
 #sv - Swedish
 #fr - France
 #de - German
 #ko - Korean
 #ru - Russian
 #pl - Polish
-#zh_TW - Chinese Traditional
-#da - Danish
 #fi - Finnish
+#zh_CN - Chinese Modern
+#zh_TW - Chinese Traditional
+
 language: en
 
 #This enables developer mode, Do not touch this if you not know what it does
