@@ -15,6 +15,7 @@ after_success:
 - rm -f ./devbukkit/*-javadoc.jar
 - rm -f ./devbukkit/*-shaded.jar
 - rm -f ./devbukkit/*-sources.jar
+- rm -f ./target/original-*.jar
 - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
     skip_cleanup: true
