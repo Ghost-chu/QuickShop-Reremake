@@ -111,6 +111,7 @@ public class BlockListener implements Listener {
                 //Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool"));
+                    shop.delete();
                     return;
                 }
                 e.setCancelled(true);
