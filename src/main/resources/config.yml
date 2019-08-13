@@ -25,7 +25,7 @@ language: en
 #Download LangUtils:
 #For 1.13, you can download this: https://github.com/NyaaCat/LanguageUtils/releases/download/v2.1.17-mc1.13.1/LangUtils-v2.1.17-mc1.13.1.jar
 #For 1.14, you can download this: https://cdn.discordapp.com/attachments/600693887715115019/610811190448226313/LangUtils-mc1.14-2.2.x.jar
-#If links nolonger can use, you can join our discord server to get a copy.
+#If links broken, you can join our discord server to get a copy.
 # ==================
 #If had LangUtils installed, quickshop can create the itemi18n, enchi18n and potioni18n by LangUtils.
 #Available language you can found here -> https://github.com/NyaaCat/LanguageUtils/blob/1.14/src/main/java/com/meowj/langutils/lang/convert/EnumLang.java
