@@ -799,6 +799,12 @@ public class ContainerShop implements Shop {
     }
 
     public void onClick() {
+        ShopClickEvent event = new ShopClickEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            Util.debugLog("Ignore shop click, because some plugin cancel it.");
+            return;
+        }
         this.setSignText();
         this.checkDisplay();
     }
