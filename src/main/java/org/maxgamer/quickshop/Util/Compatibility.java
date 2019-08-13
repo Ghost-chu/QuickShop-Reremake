@@ -2,6 +2,9 @@ package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
 
+import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
@@ -11,13 +14,25 @@ import org.maxgamer.quickshop.QuickShop;
  */
 public class Compatibility {
     private final ArrayList<RegisteredListener> disabledListeners = new ArrayList<>();
-    final private ArrayList<String> knownIncompatiablePlugin = new ArrayList<>();
     private QuickShop plugin;
 
     public Compatibility(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        knownIncompatiablePlugin.add("OpenInv");
-        knownIncompatiablePlugin.add("LWC");
+    }
+
+    private void disableListeners(@NotNull Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+            Util.debugLog("Calling NoCheatPlus ignore " + player
+                    .getName() + " cheats detection until we finished permission checks.");
+            NCPExemptionManager.exemptPermanently(player);
+        }
+    }
+
+    private void enableListeners(@NotNull Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+            Util.debugLog("Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
+            NCPExemptionManager.unexempt(player);
+        }
     }
 
     /**
@@ -27,30 +42,10 @@ public class Compatibility {
      *
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
      */
-    public void toggleInteractListeners(boolean status) {
-        // if (status) {
-        //     disabledListeners.clear();
-        //     for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-        //         for (String pluginName : knownIncompatiablePlugin) {
-        //             Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-        //             if (plugin != null) {
-        //                 if (listener.getPlugin() == plugin) {
-        //                     Util.debugLog("Disabled plugin " + pluginName + "'s listener " + listener.getListener().getClass()
-        //                             .getName());
-        //                     //PlayerInteractEvent.getHandlerList().unregister(plugin);
-        //                     PlayerInteractEvent.getHandlerList().unregister(listener);
-        //                     disabledListeners.add(listener);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // } else {
-        //    try{
-        //        PlayerInteractEvent.getHandlerList().registerAll(disabledListeners);
-        //        disabledListeners.clear();
-        //    }catch (Throwable e){
-        //        //Ignore
-        //    }
-        // }
+    public void toggleProtectionListeners(boolean status, @NotNull Player player) {
+        if (status)
+            enableListeners(player);
+        else
+            disableListeners(player);
     }
 }
