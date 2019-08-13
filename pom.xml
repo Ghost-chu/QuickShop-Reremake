@@ -143,6 +143,10 @@
             <id>md_5-releases</id>
             <url>https://repo.md-5.net/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>lang-utils-repo</id>
+            <url>https://ci.nyaacat.com/maven/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -232,6 +236,12 @@
             <version>3.0.6</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/Clearlag (2).jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.meowj</groupId>
+            <artifactId>LangUtils</artifactId>
+            <!--Please check the latest version -->
+            <version>2.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

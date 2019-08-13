@@ -1,7 +1,8 @@
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 42
+config-version: 43
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -19,8 +20,18 @@ config-version: 42
 #fi - Finnish
 #zh_CN - Chinese Modern
 #zh_TW - Chinese Traditional
-
 language: en
+
+#Download LangUtils:
+#For 1.13, you can download this: https://github.com/NyaaCat/LanguageUtils/releases/download/v2.1.17-mc1.13.1/LangUtils-v2.1.17-mc1.13.1.jar
+#For 1.14, you can download this: https://cdn.discordapp.com/attachments/600693887715115019/610811190448226313/LangUtils-mc1.14-2.2.x.jar
+#If links nolonger can use, you can join our discord server to get a copy.
+# ==================
+#If had LangUtils installed, quickshop can create the itemi18n, enchi18n and potioni18n by LangUtils.
+#Available language you can found here -> https://github.com/NyaaCat/LanguageUtils/blob/1.14/src/main/java/com/meowj/langutils/lang/convert/EnumLang.java
+#You need fill the low case at there
+#E.g EN_US("en_us", new HashMap<>()), you need fill there with en_us
+langutils-language: en_us
 
 #This enables developer mode, Do not touch this if you not know what it does
 dev-mode: false
@@ -188,7 +199,7 @@ shop:
     sign-material: OAK_WALL_SIGN
 
     blacklist-world:
-    - disabled_world_name
+        - disabled_world_name
 
     #Enable a stricter itemstack check
     strict-matches-check: false
