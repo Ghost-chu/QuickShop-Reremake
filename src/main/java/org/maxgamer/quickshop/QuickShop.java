@@ -231,6 +231,11 @@ private int displayItemCheckTicks;
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
+        Util.debugLog("Unloading all shops...");
+        try {
+        } catch (Throwable th) {
+            //ignore
+        }
 
         Util.debugLog("Cleaning up database queues...");
         if (this.getShopManager() != null)
