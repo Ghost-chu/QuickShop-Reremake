@@ -225,8 +225,11 @@ public class ShopManager {
                     return;
                 }
                 try {
-                    plugin.getEconomy().deposit(
-                            Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account")).getUniqueId(), createCost);
+                    String taxAccount = plugin.getConfig().getString("tax-account");
+                    if (taxAccount != null) {
+                        plugin.getEconomy().deposit(
+                                Bukkit.getOfflinePlayer(taxAccount).getUniqueId(), createCost);
+                    }
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     plugin.getLogger().log(Level.WARNING,
@@ -268,7 +271,6 @@ public class ShopManager {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (!Util.canBeShop(info.getLocation().getBlock())) {
             p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
