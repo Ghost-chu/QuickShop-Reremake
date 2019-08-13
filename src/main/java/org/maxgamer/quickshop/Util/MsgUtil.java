@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import com.meowj.langutils.lang.LanguageHelper;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -231,12 +232,18 @@ public class MsgUtil {
         Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
-            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().toString().trim());
+            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
             if (enchi18nString != null && !enchi18nString.isEmpty())
                 continue;
-            String enchName = ench.getKey().getKey();
-            enchi18n.set("enchi18n." + enchName, Util.prettifyText(enchName));
-            plugin.getLogger().info("Found new ench [" + Util.prettifyText(enchName) + "] , adding it to the config...");
+            String enchName;
+            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
+                //noinspection ConstantConditions
+                enchName = LanguageHelper.getEnchantmentName(ench, plugin.getConfig().getString("langutils-language", "en_us"));
+            } else {
+                enchName = Util.prettifyText(ench.getKey().getKey());
+            }
+            enchi18n.set("enchi18n." + ench.getKey().getKey(), enchName);
+            plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
         }
         try {
             enchi18n.save(enchi18nFile);
@@ -268,15 +275,16 @@ public class MsgUtil {
             String itemi18nString = itemi18n.getString("itemi18n." + material.name());
             if (itemi18nString != null && !itemi18nString.isEmpty())
                 continue;
-            String itemName = material.name();
-            String lastItemName = Util.prettifyText(itemName);
-            String localizedName = Util.getLocalizedName(new ItemStack(material));
-            /* If have localizedName, use localizedName, not our processed name */
-            if (localizedName != null)
-                lastItemName = localizedName;
-            itemi18n.set("itemi18n." + itemName, lastItemName);
-            plugin.getLogger().info("Found new items/blocks [" + Util
-                    .prettifyText(lastItemName) + "] , adding it to the config...");
+            String itemName;
+            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
+                //noinspection ConstantConditions
+                itemName = LanguageHelper.getItemName(new ItemStack(material), plugin.getConfig()
+                        .getString("langutils-language", "en_us"));
+            } else {
+                itemName = Util.prettifyText(material.name());
+            }
+            itemi18n.set("itemi18n." + material.name(), itemName);
+            plugin.getLogger().info("Found new items/blocks [" + itemName + "] , adding it to the config...");
         }
         try {
             itemi18n.save(itemi18nFile);
