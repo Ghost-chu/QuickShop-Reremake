@@ -19,6 +19,7 @@ import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.Timer;
@@ -233,8 +234,9 @@ private int displayItemCheckTicks;
         }
         Util.debugLog("Unloading all shops...");
         try {
+            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
         } catch (Throwable th) {
-            //ignore
+            //ignore, we didn't care that
         }
 
         Util.debugLog("Cleaning up database queues...");
