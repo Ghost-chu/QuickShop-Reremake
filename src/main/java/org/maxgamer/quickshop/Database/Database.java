@@ -58,6 +58,7 @@ public class Database {
      * @param db The database to copy data to
      * @throws SQLException if an error occurs.
      */
+    @Deprecated /* Buggy, owner pls use Database Tools to migrate */
     public void copyTo(@NotNull Database db) throws SQLException {
         ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         List<String> tables = new LinkedList<String>();
