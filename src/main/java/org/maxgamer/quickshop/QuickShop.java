@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -811,9 +813,20 @@ private int displayItemCheckTicks;
             getConfig().set("config-version", 42);
             selectedVersion = 42;
         }
-
+        if (selectedVersion == 42) {
+            getConfig().set("langutils-language", "en_us");
+            getConfig().set("config-version", 43);
+            selectedVersion = 43;
+        }
         saveConfig();
         reloadConfig();
+        File file = new File(getDataFolder(), "example.config.yml");
+        file.delete();
+        try {
+            Files.copy(getResource("config.yml"), file.toPath());
+        } catch (IOException ioe) {
+            getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
+        }
     }
 
     /**
