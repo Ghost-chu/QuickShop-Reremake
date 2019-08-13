@@ -224,8 +224,10 @@ public class PlayerListener implements Listener {
                 if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
                     if (info.getAction() == ShopAction.CREATE) {
                         p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                        Util.debugLog(p.getName() + " too far with the shop location.");
                     } else if (info.getAction() == ShopAction.BUY) {
                         p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+                        Util.debugLog(p.getName() + " too far with the shop location.");
                     }
                     plugin.getShopManager().getActions().remove(p.getUniqueId());
                     return;
