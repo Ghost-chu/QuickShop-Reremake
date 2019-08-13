@@ -10,6 +10,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
@@ -160,6 +161,10 @@ public class ShopLoader {
         }
         if (shop.getItem() == null) {
             Util.debugLog("Shop ItemStack is null");
+            return true;
+        }
+        if (shop.getItem().getType() == Material.AIR) {
+            Util.debugLog("Shop ItemStack type can't be AIR");
             return true;
         }
         if (shop.getLocation() == null) {
