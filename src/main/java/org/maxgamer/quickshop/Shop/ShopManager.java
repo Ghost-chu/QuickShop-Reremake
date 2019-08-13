@@ -746,7 +746,11 @@ public class ShopManager {
         private Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
         public ShopIterator() {
-            worlds = getShops().values().iterator();
+            //noinspection unchecked
+            HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops()
+                    .clone();
+            worlds = worldsMap.values().iterator();
+
         }
 
         /**
