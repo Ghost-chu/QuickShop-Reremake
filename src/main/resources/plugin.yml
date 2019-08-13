@@ -6,7 +6,7 @@ authors: [BukkitCommonsStudio,Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
 #Now we only need Vault.
-softdepend: [Vault, Reserve]
+softdepend: [Vault, Reserve, NoCheatPlus]
 
 api-version: 1.13
 
