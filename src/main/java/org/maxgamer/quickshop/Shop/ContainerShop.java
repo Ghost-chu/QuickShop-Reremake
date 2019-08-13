@@ -742,6 +742,17 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Check the container still there and we can keep use it.
+     */
+    public void checkContainer() {
+        if (!Util.canBeShop(this.getLocation().getBlock())) {
+            Util.debugLog("Shop at " + this.getLocation().toString() + " container was missing, remove...");
+            this.onUnload();
+            this.delete();
+        }
+    }
+
+    /**
      * Load ContainerShop.
      */
     public void onLoad() {
@@ -757,11 +768,7 @@ public class ContainerShop implements Shop {
         this.isLoaded = true;
         plugin.getShopManager().getLoadedShops().add(this);
 
-        if (!Util.canBeShop(this.getLocation().getBlock())) {
-            this.onUnload();
-            this.delete();
-            return;
-        }
+        checkContainer();
 
         // check price restriction
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
