@@ -138,7 +138,7 @@ public class ShopManager {
             //Fix openInv compatiable issue
 
             if (!bypassProtectionChecks) {
-                plugin.getCompatibilityTool().toggleInteractListeners(false);
+                plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
                 if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), false)) {
                     p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
                     Util.debugLog("Failed to create shop: Protection check failed:");
@@ -147,7 +147,7 @@ public class ShopManager {
                     }
                     return;
                 }
-                plugin.getCompatibilityTool().toggleInteractListeners(true);
+                plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
             }
 
             if (plugin.getShopManager().getShop(info.getLocation()) != null) {
@@ -437,7 +437,7 @@ public class ShopManager {
         // 		}
         // 	}
         try {
-            plugin.getCompatibilityTool().toggleInteractListeners(false);
+            plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
 
             if (plugin.isLimit()) {
                 int owned = 0;
@@ -480,7 +480,7 @@ public class ShopManager {
             // if (plugin.openInvPlugin != null && openInvRegisteredListener != null) {
             // 	PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
             // }
-            plugin.getCompatibilityTool().toggleInteractListeners(true);
+            plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
         }
 
         return true;
