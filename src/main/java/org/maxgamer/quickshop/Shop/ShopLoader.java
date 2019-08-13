@@ -170,6 +170,10 @@ public class ShopLoader {
             Util.debugLog("Shop World is null");
             return true;
         }
+        if (shop.getOwner() == null) {
+            Util.debugLog("Shop Owner is null");
+            return true;
+        }
         // if (shop.getLocation().getChunk() == null) {
         //     Util.debugLog("Shop Chunk is null");
         //     return true;
