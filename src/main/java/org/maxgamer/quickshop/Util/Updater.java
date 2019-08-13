@@ -62,6 +62,8 @@ public class Updater {
                 continue;
             if (asset.getName().contains("-sources"))
                 continue;
+            if (asset.getName().contains("-shaded"))
+                continue;
             uurl = asset.getBrowserDownloadUrl();
             uurlSize = asset.getSize();
         }
