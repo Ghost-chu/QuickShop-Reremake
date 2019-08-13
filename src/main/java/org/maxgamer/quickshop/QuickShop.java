@@ -289,7 +289,7 @@ private int displayItemCheckTicks;
         getLogger().info("Let's start loading the plugin");
         /* Check the running envs is support or not. */
         try {
-            runtimeCheck();
+            runtimeCheck(this);
         } catch (RuntimeException e) {
             bootError = new BootError(e.getMessage());
             return;
@@ -400,7 +400,12 @@ private int displayItemCheckTicks;
      *
      * @throws RuntimeException The error message, use this to create a BootError.
      */
-    private void runtimeCheck() throws RuntimeException {
+    private void runtimeCheck(QuickShop shop) throws RuntimeException {
+        if (!Util.isClassAvailable("org.apache.http.impl.client.HttpClients")) {
+            getLogger()
+                    .severe("FATAL: Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
+            throw new RuntimeException("Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
+        }
         try {
             getServer().spigot();
         } catch (Throwable e) {
