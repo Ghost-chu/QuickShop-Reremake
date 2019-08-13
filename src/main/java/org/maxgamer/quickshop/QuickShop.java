@@ -240,7 +240,7 @@ private int displayItemCheckTicks;
         }
 
         Util.debugLog("Cleaning up database queues...");
-        if (this.getShopManager() != null)
+        if (this.getDatabaseManager() != null)
             this.getDatabaseManager().uninit();
 
         Util.debugLog("Unregistering tasks...");
