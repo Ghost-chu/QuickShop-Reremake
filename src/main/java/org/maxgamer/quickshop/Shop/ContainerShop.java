@@ -792,6 +792,7 @@ public class ContainerShop implements Shop {
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
         }
+        update();
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
