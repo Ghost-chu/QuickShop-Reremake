@@ -197,17 +197,20 @@
             <groupId>org.apache.clerezza.ext</groupId>
             <artifactId>org.json.simple</artifactId>
             <version>0.4</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.8</version>
+            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
         <dependency>
             <groupId>org.kohsuke</groupId>
             <artifactId>github-api</artifactId>
             <version>1.95</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.minebuilders</groupId>
