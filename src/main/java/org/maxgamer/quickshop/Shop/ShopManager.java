@@ -267,6 +267,7 @@ public class ShopManager {
             }
         } catch (NumberFormatException ex) {
             //No number input
+            Util.debugLog(ex.getMessage());
             p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
         }
     }
