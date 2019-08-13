@@ -1,11 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.*;
@@ -37,6 +34,7 @@ public class ShopManager {
     private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
     private QuickShop plugin;
     private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
+    private Set<Shop> loadedShops = new HashSet<>();
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -363,6 +361,7 @@ public class ShopManager {
             amount = Integer.parseInt(message);
         } catch (NumberFormatException e) {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+            Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
             return;
         }
         // Get the shop they interacted with
@@ -791,5 +790,14 @@ public class ShopManager {
             current = shops.next();
             return current;
         }
+    }
+
+    /**
+     * Get all loaded shops.
+     *
+     * @return All loaded shops.
+     */
+    public Set<Shop> getLoadedShops() {
+        return this.loadedShops;
     }
 }

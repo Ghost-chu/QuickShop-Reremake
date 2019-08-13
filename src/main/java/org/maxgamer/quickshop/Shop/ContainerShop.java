@@ -190,9 +190,7 @@ public class ContainerShop implements Shop {
         int z = this.getLocation().getBlockZ();
         String world = this.getLocation().getWorld().getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
-        //String q = "UPDATE shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ?";
         try {
-            //plugin.getDB().execute(q, this.getOwner().toString(), Util.serialize(this.getItem()), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
             plugin.getDatabaseHelper().updateShop(plugin.getDatabase(), ShopModerator.serialize(this.moderator.clone()), this
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
@@ -744,22 +742,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Unload ContainerShop.
-     */
-    public void onUnload() {
-        if (!this.isLoaded) {
-            Util.debugLog("Dupe unload request, canceled.");
-            return;
-        }
-        if (this.getDisplayItem() != null) {
-            this.getDisplayItem().remove();
-        }
-        this.isLoaded = false;
-        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
-        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
-    }
-
-    /**
      * Load ContainerShop.
      */
     public void onLoad() {
@@ -771,6 +753,9 @@ public class ContainerShop implements Shop {
         Bukkit.getPluginManager().callEvent(shopLoadEvent);
         if (shopLoadEvent.isCancelled())
             return;
+
+        this.isLoaded = true;
+        plugin.getShopManager().getLoadedShops().add(this);
 
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             this.onUnload();
@@ -790,8 +775,24 @@ public class ContainerShop implements Shop {
                 this.update();
             }
         }
-        this.isLoaded = true;
         checkDisplay();
+    }
+
+    /**
+     * Unload ContainerShop.
+     */
+    public void onUnload() {
+        if (!this.isLoaded) {
+            Util.debugLog("Dupe unload request, canceled.");
+            return;
+        }
+        if (this.getDisplayItem() != null) {
+            this.getDisplayItem().remove();
+        }
+        this.isLoaded = false;
+        plugin.getShopManager().getLoadedShops().remove(this);
+        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
+        Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }
 
     public void onClick() {

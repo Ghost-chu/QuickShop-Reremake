@@ -98,14 +98,13 @@ public class Util {
      */
     public static boolean canBeShop(@NotNull Block b) {
         BlockState bs = b.getState();
-        if ((!(bs instanceof InventoryHolder)) && b.getType() != Material.ENDER_CHEST) {
-            return false;
-        }
         if (b.getType() == Material.ENDER_CHEST) {
             if (plugin.getOpenInvPlugin() == null) {
                 return false;
             }
         }
+        if (!(bs instanceof InventoryHolder))
+            return false;
         if (!isShoppables(b.getType()))
             return false;
         //noinspection RedundantIfStatement
