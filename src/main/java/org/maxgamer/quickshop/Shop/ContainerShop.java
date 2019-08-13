@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.Util.Util;
 /**
  * ChestShop core
  */
-@EqualsAndHashCode
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude private boolean isLoaded = false;
