@@ -68,10 +68,10 @@ public class SentryErrorReporter {
         ignoredException.add(ProtocolException.class);
         ignoredException.add(InvalidPluginException.class);
 
-        Util.debugLog("Enabled!");
+        Util.debugLog("Sentry error reporter success loaded.");
         enabled = true;
         if (!plugin.getConfig().getBoolean("auto-report-errors")) {
-            Util.debugLog("Disabled!'");
+            Util.debugLog("Sentry error report was disabled, unloading...");
             unit();
         }
     }
