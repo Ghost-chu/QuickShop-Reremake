@@ -86,7 +86,7 @@ public class ShopManager {
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
                 .isUnlimited());
         if (shouldPayOwner) {
-            boolean successA = eco.withdraw(shop.getOwner(), total * (1 - tax)); //Withdraw owner's money
+            boolean successA = eco.withdraw(shop.getOwner(), total); //Withdraw owner's money
             if (!successA) {
                 p.sendMessage(MsgUtil
                         .getMessage("the-owner-cant-afford-to-buy-from-you", format(total), format(eco
@@ -94,12 +94,12 @@ public class ShopManager {
                 return;
             }
         }
-        boolean successB = eco.deposit(p.getUniqueId(), total);//Deposit player's money
+        boolean successB = eco.deposit(p.getUniqueId(), total * (1 - tax));//Deposit player's money
         if (!successB) {
             plugin.getLogger().warning("Failed to deposit the money to player " + e.getPlayer().getName());
             /* Rollback the trade */
             if (shouldPayOwner) {
-                if (!eco.deposit(shop.getOwner(), total * (1 - tax))) {
+                if (!eco.deposit(shop.getOwner(), total)) {
                     plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit
                             .getOfflinePlayer(shop.getOwner()).getName());
                 }
