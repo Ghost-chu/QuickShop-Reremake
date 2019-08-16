@@ -24,30 +24,37 @@ public interface DisplayItem {
      * @return Contains protect flag.
      */
     static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
-        if (itemStack == null)
+        if (itemStack == null) {
             return false;
+        }
         itemStack = itemStack.clone();
         itemStack.setAmount(1);
-        if (!itemStack.hasItemMeta())
+        if (!itemStack.hasItemMeta()) {
             return false;
+        }
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta.hasDisplayName()) {
-            if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem"))
+            if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem")) {
                 return true;
+            }
         }
-        if (!iMeta.hasLore())
+        if (!iMeta.hasLore()) {
             return false;
+        }
             List<String> lores = iMeta.getLore();
         Gson gson = new Gson();
             for (String lore : lores) {
                 try {
                     ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                    if (shopProtectionFlag == null)
+                    if (shopProtectionFlag == null) {
                         continue;
-                    if (shopProtectionFlag.getMark() == null)
+                    }
+                    if (shopProtectionFlag.getMark() == null) {
                         continue;
-                    if (shopProtectionFlag.getMark().equals("QuickShop DisplayItem"))
+                    }
+                    if ("QuickShop DisplayItem".equals(shopProtectionFlag.getMark())) {
                         return true;
+                    }
                 } catch (JsonSyntaxException e) {
                     //Ignore
                 }
@@ -65,22 +72,27 @@ public interface DisplayItem {
     static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         itemStack.setAmount(1);
-        if (!itemStack.hasItemMeta())
+        if (!itemStack.hasItemMeta()) {
             return false;
+        }
         ItemMeta iMeta = itemStack.getItemMeta();
-        if (!iMeta.hasLore())
+        if (!iMeta.hasLore()) {
             return false;
+        }
         List<String> lores = iMeta.getLore();
         Gson gson = new Gson();
         for (String lore : lores) {
             try {
                 ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null)
+                if (shopProtectionFlag == null) {
                     continue;
-                if (shopProtectionFlag.getMark() == null)
+                }
+                if (shopProtectionFlag.getMark() == null) {
                     continue;
-                if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString()))
+                }
+                if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
                     return true;
+                }
             } catch (JsonSyntaxException e) {
                 //Ignore
             }

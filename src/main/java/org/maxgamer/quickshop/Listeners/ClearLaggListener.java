@@ -15,16 +15,19 @@ public class ClearLaggListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void plugin(me.minebuilders.clearlag.events.EntityRemoveEvent clearlaggEvent) {
-        if (ListenerHelper.isDisabled(clearlaggEvent.getClass()))
+        if (ListenerHelper.isDisabled(clearlaggEvent.getClass())) {
             return;
+        }
         List<Entity> entities = clearlaggEvent.getEntityList();
         List<Entity> pendingExclude = new ArrayList<>();
         for (Entity entity : entities) {
-            if (!(entity instanceof Item))
+            if (!(entity instanceof Item)) {
                 continue;
+            }
             Item item = (Item) entity;
-            if (!DisplayItem.checkIsGuardItemStack(item.getItemStack()))
+            if (!DisplayItem.checkIsGuardItemStack(item.getItemStack())) {
                 continue;
+            }
             pendingExclude.add(item);
         }
         pendingExclude.forEach(clearlaggEvent::removeEntity);

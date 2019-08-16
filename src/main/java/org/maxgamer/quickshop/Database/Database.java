@@ -70,8 +70,9 @@ public class Database {
         // For each table
         String prefix = plugin.getConfig().getString("database.prefix");
         for (String table : tables) {
-            if (table.contains("schedule"))
+            if (table.contains("schedule")) {
                 return; // go way!
+            }
             String finalTable;
             if (table.startsWith(prefix)) {
                 finalTable = table;
@@ -80,8 +81,9 @@ public class Database {
                 plugin.getLogger().info("CovertHelper: Fixed table name from SQLite " + table + " to MySQL " + finalTable);
             }
 
-            if (table.toLowerCase().startsWith("sqlite_autoindex_"))
+            if (table.toLowerCase().startsWith("sqlite_autoindex_")) {
                 continue;
+            }
             plugin.getLogger().log(Level.WARNING, "Copying " + table + " to " + finalTable);
             // Wipe the old records
             db.getConnection().prepareStatement("DELETE FROM " + finalTable).execute();
@@ -141,15 +143,17 @@ public class Database {
      * @throws SQLException If the database isn't connected
      */
     public boolean hasColumn(@NotNull String table, @NotNull String column) throws SQLException {
-        if (!hasTable(table))
+        if (!hasTable(table)) {
             return false;
+        }
         String query = "SELECT * FROM " + table + " LIMIT 0,1";
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                if (rs.getString(column) != null)
+                if (rs.getString(column) != null) {
                     return true;
+                }
             }
         } catch (SQLException e) {
             return false;

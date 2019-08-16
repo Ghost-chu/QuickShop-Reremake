@@ -60,6 +60,7 @@ public class SQLiteCore implements DatabaseCore {
      *
      * @return The database connection
      */
+    @Override
     public Connection getConnection() {
         try {
             // If we have a current connection, fetch it

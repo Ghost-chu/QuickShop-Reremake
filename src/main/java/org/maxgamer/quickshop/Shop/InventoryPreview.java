@@ -24,13 +24,15 @@ import org.maxgamer.quickshop.Util.Util;
 public class InventoryPreview implements Listener {
 
     public static boolean isPreviewItem(@Nullable ItemStack stack) {
-        if (stack == null)
+        if (stack == null) {
             return false;
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore())
+        }
+        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
+        }
         List<String> lores = stack.getItemMeta().getLore();
         for (String string : lores) {
-            if (string.equals("QuickShop GUI preview item")) {
+            if ("QuickShop GUI preview item".equals(string)) {
                 return true;
             }
         }
@@ -65,8 +67,9 @@ public class InventoryPreview implements Listener {
     }
 
     public void close() {
-        if (inventory == null)
+        if (inventory == null) {
             return;
+        }
         for (HumanEntity player : inventory.getViewers()) {
             player.closeInventory();
         }
@@ -78,13 +81,21 @@ public class InventoryPreview implements Listener {
      */
     public void show() {
         if (inventory != null) // Not inited
+        {
             close();
+        }
         if (itemStack == null) // Null pointer exception
+        {
             return;
+        }
         if (player == null) // Null pointer exception
+        {
             return;
+        }
         if (player.isSleeping()) // Bed bug
+        {
             return;
+        }
         ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
         Bukkit.getPluginManager().callEvent(shopInventoryPreview);
         if (shopInventoryPreview.isCancelled()) {

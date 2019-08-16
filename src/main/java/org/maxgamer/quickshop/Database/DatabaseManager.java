@@ -37,8 +37,9 @@ public class DatabaseManager {
         this.warningSender = new WarningSender(plugin, 600000);
         this.database = db;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
-        if (!useQueue)
+        if (!useQueue) {
             return;
+        }
         task = new BukkitRunnable() {
             @Override
             public void run() {
@@ -80,8 +81,9 @@ public class DatabaseManager {
                 sqle.printStackTrace();
             }
             PreparedStatement statement = sqlQueue.poll();
-            if (statement == null)
+            if (statement == null) {
                 break;
+            }
             try {
                 Util.debugLog("Executing the SQL task: " + statement.toString());
                 statement.execute();
@@ -97,9 +99,10 @@ public class DatabaseManager {
                 sqle.printStackTrace();
             }
             long tookTime = timer.endTimer();
-            if (tookTime > 1500)
+            if (tookTime > 1500) {
                 warningSender
                         .sendWarn("Database performance warning: It took too long time (" + tookTime + "ms) to execute the task, change to a better MySQL server or switch to a local SQLite database!");
+            }
         }
     }
 
@@ -107,8 +110,9 @@ public class DatabaseManager {
      * Unload the DatabaseManager, run at onDisable()
      */
     public void uninit() {
-        if (task != null && !task.isCancelled())
+        if (task != null && !task.isCancelled()) {
             task.cancel();
+        }
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
     }

@@ -56,8 +56,9 @@ public class UpdateWatcher implements Listener {
                             List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
                             Random random = new Random();
                             int notifyNum = -1;
-                            if (notifys.size() > 1)
+                            if (notifys.size() > 1) {
                                 notifyNum = random.nextInt(notifys.size());
+                            }
                             String notify;
                             if (notifyNum > 0) { //Translate bug.
                                 notify = notifys.get(notifyNum);

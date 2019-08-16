@@ -21,19 +21,24 @@ public class DisplayBugFixListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void canBuild(BlockCanBuildEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
-        if (!plugin.isDisplay())
+        }
+        if (!plugin.isDisplay()) {
             return;
-        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND)
+        }
+        if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
             return;
-        if (e.isBuildable())
+        }
+        if (e.isBuildable()) {
             return;
+        }
         Collection<Entity> entities = e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 1.0, 1, 1.0);
         for (Entity entity : entities) {
             Util.debugLog("Found entity: " + entity.getType().name() + " at " + entity.getLocation());
-            if (!(entity instanceof ArmorStand))
+            if (!(entity instanceof ArmorStand)) {
                 continue;
+            }
             ArmorStand armorStand = (ArmorStand) entity;
             if (DisplayItem.checkIsGuardItemStack(armorStand.getItemInHand())) {
                 e.setBuildable(true);
