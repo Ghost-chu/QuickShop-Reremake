@@ -17,7 +17,6 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
-@EqualsAndHashCode
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
@@ -39,8 +38,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkIsShopEntity(@NotNull Entity entity) {
-        if (!(entity instanceof ArmorStand))
+        if (!(entity instanceof ArmorStand)) {
             return false;
+        }
         return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
     }
 
@@ -96,8 +96,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         boolean removed = false;
         for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
-            if (!(entity instanceof ArmorStand))
+            if (!(entity instanceof ArmorStand)) {
                 continue;
+            }
             ArmorStand eArmorStand = (ArmorStand) entity;
 
             if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
@@ -211,31 +212,35 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     private void setPoseForArmorStand() {
-        if (this.originalItemStack.getType().isBlock())
+        if (this.originalItemStack.getType().isBlock()) {
             this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
-        else
+        } else {
             this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+        }
     }
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return !this.armorStand.getLocation().equals(getDisplayLocation());
     }
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return !this.armorStand.isValid() || this.armorStand.isDead();
     }
 
     @Override
     public void fixDisplayMoved() {
         for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
-            if (!(entity instanceof ArmorStand))
+            if (!(entity instanceof ArmorStand)) {
                 continue;
+            }
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
                 Util.debugLog("Fixing moved ArmorStand displayItem " + eArmorStand.getUniqueId().toString() + " at " + eArmorStand
@@ -253,8 +258,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public boolean isSpawned() {
-        if (this.armorStand == null)
+        if (this.armorStand == null) {
             return false;
+        }
         return this.armorStand.isValid();
     }
 }

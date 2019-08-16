@@ -108,8 +108,9 @@ public class SentryErrorReporter {
      * @return Cause or not
      */
     private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
-        if (throwable == null)
+        if (throwable == null) {
             return false;
+        }
         while (throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
@@ -235,11 +236,13 @@ public class SentryErrorReporter {
          */
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
-            if (!enabled)
+            if (!enabled) {
                 return true;
+            }
             Level level = record.getLevel();
-            if (level != Level.WARNING && level != Level.SEVERE)
+            if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
+            }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
                 return true;
@@ -259,11 +262,13 @@ public class SentryErrorReporter {
          */
         @Override
         public boolean isLoggable(@NotNull LogRecord record) {
-            if (!enabled)
+            if (!enabled) {
                 return true;
+            }
             Level level = record.getLevel();
-            if (level != Level.WARNING && level != Level.SEVERE)
+            if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
+            }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
                 return true;

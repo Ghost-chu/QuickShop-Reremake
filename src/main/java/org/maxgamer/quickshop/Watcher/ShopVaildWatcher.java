@@ -26,13 +26,15 @@ public class ShopVaildWatcher implements Runnable {
         this.plugin = plugin;
     }
 
+    @Override
     public void run() {
         List<Shop> toRemove = new ArrayList<>();
         for (Entry<String, HashMap<ShopChunk, HashMap<Location, Shop>>> inWorld : plugin.getShopManager().getShops().entrySet()) {
             // This world
             World world = Bukkit.getWorld(inWorld.getKey());
-            if (world == null)
+            if (world == null) {
                 continue; // world not loaded.
+            }
             for (Entry<ShopChunk, HashMap<Location, Shop>> inChunk : inWorld.getValue().entrySet()) {
                 if (!world.isChunkLoaded(inChunk.getKey().getX(), inChunk.getKey().getZ())) {
                     // If the chunk is not loaded, next chunk!

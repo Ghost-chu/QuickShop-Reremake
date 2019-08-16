@@ -22,18 +22,21 @@ public class Info {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        if (item != null)
+        if (item != null) {
             this.item = item.clone();
+        }
     }
 
     public Info(@NotNull Location loc, @NotNull ShopAction action, @Nullable ItemStack item, @Nullable Block last, @Nullable Shop shop) {
         this.loc = loc;
         this.action = action;
         this.last = last;
-        if (item != null)
+        if (item != null) {
             this.item = item.clone();
-        if (shop != null)
+        }
+        if (shop != null) {
             this.shop = shop.clone();
+        }
     }
 
     /**
@@ -43,16 +46,21 @@ public class Info {
      * @return hasChanged
      */
     boolean hasChanged(@NotNull Shop shop) {
-        if (this.shop.isUnlimited() != shop.isUnlimited())
+        if (this.shop.isUnlimited() != shop.isUnlimited()) {
             return true;
-        if (this.shop.getShopType() != shop.getShopType())
+        }
+        if (this.shop.getShopType() != shop.getShopType()) {
             return true;
-        if (!this.shop.getOwner().equals(shop.getOwner()))
+        }
+        if (!this.shop.getOwner().equals(shop.getOwner())) {
             return true;
-        if (this.shop.getPrice() != shop.getPrice())
+        }
+        if (this.shop.getPrice() != shop.getPrice()) {
             return true;
-        if (!this.shop.getLocation().equals(shop.getLocation()))
+        }
+        if (!this.shop.getLocation().equals(shop.getLocation())) {
             return true;
+        }
         return !this.shop.matches(shop.getItem());
     }
 

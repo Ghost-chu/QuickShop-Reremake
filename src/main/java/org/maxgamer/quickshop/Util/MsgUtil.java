@@ -76,14 +76,18 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (raw == null)
+        if (raw == null) {
             return "Invalid message: null";
-        if (raw.isEmpty())
+        }
+        if (raw.isEmpty()) {
             return "";
-        if (args == null)
+        }
+        if (args == null) {
             return raw;
-        for (int i = 0; i < args.length; i++)
+        }
+        for (int i = 0; i < args.length; i++) {
             raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+        }
         return raw;
     }
 
@@ -99,8 +103,9 @@ public class MsgUtil {
             LinkedList<String> msgs = player_messages.get(pName);
             if (msgs != null) {
                 for (String msg : msgs) {
-                    if (p.getPlayer() != null)
+                    if (p.getPlayer() != null) {
                         p.getPlayer().sendMessage(msg);
+                    }
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
                 msgs.clear();
@@ -118,11 +123,13 @@ public class MsgUtil {
      */
     public static String getEnchi18n(@NotNull Enchantment key) {
         String enchString = key.getKey().getKey();
-        if (enchString.isEmpty())
+        if (enchString.isEmpty()) {
             return "Enchantment key is empty";
+        }
         String enchI18n = enchi18n.getString("enchi18n." + enchString);
-        if (enchI18n != null && !enchI18n.isEmpty())
+        if (enchI18n != null && !enchI18n.isEmpty()) {
             return enchI18n;
+        }
         return Util.prettifyText(enchString);
     }
 
@@ -133,14 +140,17 @@ public class MsgUtil {
      * @return String Item's i18n name.
      */
     public static String getItemi18n(@NotNull String itemBukkitName) {
-        if (itemBukkitName.isEmpty())
+        if (itemBukkitName.isEmpty()) {
             return "Item is empty";
+        }
         String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
-        if (itemnameI18n != null && !itemnameI18n.isEmpty())
+        if (itemnameI18n != null && !itemnameI18n.isEmpty()) {
             return itemnameI18n;
+        }
         Material material = Material.matchMaterial(itemBukkitName);
-        if (material == null)
+        if (material == null) {
             return "Material not exist";
+        }
         return Util.prettifyText(material.name());
     }
 
@@ -153,8 +163,9 @@ public class MsgUtil {
      */
     public static String getMessage(@NotNull String loc, @NotNull String... args) {
         String raw = messagei18n.getString(loc);
-        if (raw == null)
+        if (raw == null) {
             return invaildMsg + ": " + loc;
+        }
         return fillArgs(raw, args);
     }
 
@@ -166,11 +177,13 @@ public class MsgUtil {
      */
     public static String getPotioni18n(@NotNull PotionEffectType potion) {
         String potionString = potion.getName().trim();
-        if (potionString.isEmpty())
+        if (potionString.isEmpty()) {
             return "Potion name is empty.";
+        }
         String potionI18n = potioni18n.getString("potioni18n." + potionString);
-        if (potionI18n != null && !potionI18n.isEmpty())
+        if (potionI18n != null && !potionI18n.isEmpty()) {
             return potionI18n;
+        }
         return Util.prettifyText(potionString);
     }
 
@@ -190,12 +203,13 @@ public class MsgUtil {
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
         }
-        if (reload.length == 0)
+        if (reload.length == 0) {
             try {
                 updateMessages(messagei18n.getInt("language-version"));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        }
 
         Util.parseColours(messagei18n);
 
@@ -233,8 +247,9 @@ public class MsgUtil {
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
             String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
-            if (enchi18nString != null && !enchi18nString.isEmpty())
+            if (enchi18nString != null && !enchi18nString.isEmpty()) {
                 continue;
+            }
             String enchName;
             if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
                 //noinspection ConstantConditions
@@ -273,8 +288,9 @@ public class MsgUtil {
         Material[] itemsi18n = Material.values();
         for (Material material : itemsi18n) {
             String itemi18nString = itemi18n.getString("itemi18n." + material.name());
-            if (itemi18nString != null && !itemi18nString.isEmpty())
+            if (itemi18nString != null && !itemi18nString.isEmpty()) {
                 continue;
+            }
             String itemName;
             if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
                 //noinspection ConstantConditions
@@ -313,8 +329,9 @@ public class MsgUtil {
         for (PotionEffectType potion : potionsi18n) {
             if (potion != null) {
                 String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
-                if (potionI18n != null && !potionI18n.isEmpty())
+                if (potionI18n != null && !potionI18n.isEmpty()) {
                     continue;
+                }
                 String potionName = potion.getName();
                 plugin.getLogger().info("Found new potion [" + Util.prettifyText(potionName) + "] , adding it to the config...");
                 potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
@@ -362,20 +379,23 @@ public class MsgUtil {
      * @param isUnlimited The shop is or unlimited
      */
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
-        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited)
+        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited) {
             return; //Ignore unlimited shops messages.
+        }
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
             // msgs = new LinkedList<String>();
-            if (msgs == null)
+            if (msgs == null) {
                 msgs = new LinkedList<>();
+            }
             player_messages.put(player, msgs);
             msgs.add(message);
             plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
         } else {
-            if (p.getPlayer() != null)
+            if (p.getPlayer() != null) {
                 p.getPlayer().sendMessage(message);
+            }
         }
     }
 
@@ -390,10 +410,13 @@ public class MsgUtil {
             return;
         }
 
-        if (plugin.getConfig().getBoolean("sneak-to-control"))
-            if (sender instanceof Player)
-                if (!((Player) sender).isSneaking())
+        if (plugin.getConfig().getBoolean("sneak-to-control")) {
+            if (sender instanceof Player) {
+                if (!((Player) sender).isSneaking()) {
                     return;
+                }
+            }
+        }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation"));
@@ -518,15 +541,17 @@ public class MsgUtil {
     public static void sendItemholochat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
         try {
             String json = ItemNMS.saveJsonfromNMS(itemStack);
-            if (json == null)
+            if (json == null) {
                 return;
+            }
             TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (player.hasPermission("quickshop.preview"))
+            if (player.hasPermission("quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
                         .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
                                 .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
                                 .valueOf(shop.getLocation().getBlockZ()))));
+            }
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
             player.spigot().sendMessage(normalmessage);
         } catch (Throwable t) {
@@ -568,8 +593,9 @@ public class MsgUtil {
                 .getMessage("menu.item-name-and-price", "" + amount, Util.getItemStackName(shop.getItem()), Util
                         .format((amount * shop.getPrice()))));
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
+        }
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
@@ -616,8 +642,9 @@ public class MsgUtil {
             }
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants())
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
+        }
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
@@ -679,8 +706,9 @@ public class MsgUtil {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling"));
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (items.hasItemMeta() && items.getItemMeta().hasEnchants())
+        if (items.hasItemMeta() && items.getItemMeta().hasEnchants()) {
             enchs = items.getItemMeta().getEnchants();
+        }
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants"));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {

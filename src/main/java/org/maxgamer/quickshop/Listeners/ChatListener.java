@@ -17,14 +17,16 @@ public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         if (e.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancel-chat-event")) {
             Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
             return;
         }
-        if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId()))
+        if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
             return;
+        }
         plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());
         e.setCancelled(true);
     }

@@ -29,14 +29,18 @@ public class SubCommand_Staff implements CommandProcesser {
         if (cmdArg.length < 2) {
             if (cmdArg.length == 1) {
                 String prefix = cmdArg[0].toLowerCase();
-                if ("add".startsWith(prefix) || "add".equals(prefix))
+                if ("add".startsWith(prefix) || "add".equals(prefix)) {
                     tabList.add("add");
-                if ("del".startsWith(prefix) || "del".equals(prefix))
+                }
+                if ("del".startsWith(prefix) || "del".equals(prefix)) {
                     tabList.add("del");
-                if ("list".startsWith(prefix) || "list".equals(prefix))
+                }
+                if ("list".startsWith(prefix) || "list".equals(prefix)) {
                     tabList.add("list");
-                if ("clear".startsWith(prefix) || "clear".equals(prefix))
+                }
+                if ("clear".startsWith(prefix) || "clear".equals(prefix)) {
                     tabList.add("clear");
+                }
             } else {
                 tabList.add("add");
                 tabList.add("del");
@@ -46,7 +50,7 @@ public class SubCommand_Staff implements CommandProcesser {
 
             return tabList;
         }
-        if (cmdArg[0].equals("add") || cmdArg[0].equals("del")) {
+        if ("add".equals(cmdArg[0]) || "del".equals(cmdArg[0])) {
             if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
                 //Include
                 for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
@@ -110,8 +114,9 @@ public class SubCommand_Staff implements CommandProcesser {
                         case 2:
                             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(cmdArg[1]);
                             String offlinePlayerName = offlinePlayer.getName();
-                            if (offlinePlayerName == null)
+                            if (offlinePlayerName == null) {
                                 offlinePlayerName = "null";
+                            }
                             switch (cmdArg[0]) {
                                 case "add":
                                     shop.addStaff(offlinePlayer.getUniqueId());
@@ -123,6 +128,9 @@ public class SubCommand_Staff implements CommandProcesser {
                                 default:
                                     sender.sendMessage(MsgUtil.getMessage("command.wrong-args"));
                             }
+                        default:
+                            Util.debugLog("No any args matched");
+                            break;
                     }
 
                 }

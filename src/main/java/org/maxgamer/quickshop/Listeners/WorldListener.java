@@ -37,8 +37,9 @@ public class WorldListener implements Listener {
         HashMap<ShopChunk, HashMap<Location, Shop>> oldInWorld = plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
         // update.
-        if (oldInWorld == null)
+        if (oldInWorld == null) {
             return;
+        }
         for (Entry<ShopChunk, HashMap<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
             HashMap<Location, Shop> inChunk = new HashMap<Location, Shop>(1);
             // Put the new chunk were the old chunk was
@@ -56,8 +57,9 @@ public class WorldListener implements Listener {
         // So manually tell all of these shops they're loaded.
         for (Chunk chunk : world.getLoadedChunks()) {
             HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null || inChunk.isEmpty())
+            if (inChunk == null || inChunk.isEmpty()) {
                 continue;
+            }
             for (Shop shop : inChunk.values()) {
                 shop.onLoad();
             }
@@ -74,8 +76,9 @@ public class WorldListener implements Listener {
         // So manually tell all of these shops they're unloaded.
         for (Chunk chunk : e.getWorld().getLoadedChunks()) {
             HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null || inChunk.isEmpty())
+            if (inChunk == null || inChunk.isEmpty()) {
                 continue;
+            }
             for (Shop shop : inChunk.values()) {
                 shop.onUnload();
             }

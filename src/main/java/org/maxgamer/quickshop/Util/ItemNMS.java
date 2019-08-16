@@ -43,8 +43,9 @@ public abstract class ItemNMS {
      * @throws Throwable throws
      */
     public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
-        if (bStack.getType() == Material.AIR)
+        if (bStack.getType() == Material.AIR) {
             return null;
+        }
         Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
         Object nbtTagCompound = nbtTagCompoundClass.newInstance();
 

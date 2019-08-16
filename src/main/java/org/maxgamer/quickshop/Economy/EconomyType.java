@@ -3,6 +3,11 @@ package org.maxgamer.quickshop.Economy;
 import org.jetbrains.annotations.*;
 
 public enum EconomyType {
+    /*
+    * UNKNOWN = FALLBACK TO VAULT
+    * VAULT = USE VAULT API
+    * RESERVE = USE RESERVE API
+    * */
     UNKNOWN(-1), VAULT(0), RESERVE(1);
     public static EconomyType fromID(int id) {
         for (EconomyType type : EconomyType.values()) {
