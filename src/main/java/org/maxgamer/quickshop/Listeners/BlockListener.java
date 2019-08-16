@@ -80,7 +80,7 @@ public class BlockListener implements Listener {
                 return;
             }
 
-            if (!shop.getModerator().isOwner(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
+            if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
                 return;
@@ -160,8 +160,7 @@ public class BlockListener implements Listener {
         Block b = e.getBlock();
         Player p = e.getPlayer();
         Block chest = Util.getSecondHalf(b);
-        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !p
-                .hasPermission("quickshop.create.double")) {
+        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
             e.setCancelled(true);
             p.sendMessage(MsgUtil.getMessage("no-double-chests"));
         }
