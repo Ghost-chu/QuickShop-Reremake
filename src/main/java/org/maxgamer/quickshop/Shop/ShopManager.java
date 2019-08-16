@@ -160,7 +160,7 @@ public class ShopManager {
                 return;
             }
             if (Util.getSecondHalf(info.getLocation().getBlock()) != null
-                    && !p.hasPermission("quickshop.create.double")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
                 p.sendMessage(MsgUtil.getMessage("no-double-chests"));
                 return;
             }
@@ -169,7 +169,7 @@ public class ShopManager {
                 return;
             }
             if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) {
-                if (!p.hasPermission("quickshop.create.enderchest")) {
+                if (!QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.enderchest")) {
                     return;
                 }
             }

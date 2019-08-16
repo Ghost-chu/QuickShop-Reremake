@@ -72,7 +72,7 @@ public class PlayerListener implements Listener {
                 }
             }
             // Purchase handling
-            if (shop != null && p.hasPermission("quickshop.use")) {
+            if (shop != null && QuickShop.getPermissionManager().hasPermission(p,"quickshop.use")) {
                 if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
                     return;
                 }
@@ -98,7 +98,7 @@ public class PlayerListener implements Listener {
             // Handles creating shops
 
             else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && p.hasPermission("quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
+                    && QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
                 if (e.useInteractedBlock() == Result.DENY) {
                     return;
                 }
@@ -111,17 +111,17 @@ public class PlayerListener implements Listener {
                     // So telling them a message would cause spam etc.
                     return;
                 }
-                if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
+                if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
                     p.sendMessage(MsgUtil.getMessage("no-double-chests"));
                     return;
                 }
                 if (Util.isBlacklisted(item.getType())
-                        && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
+                        && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
                     p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
                     return;
                 }
                 if (b.getType() == Material.ENDER_CHEST) {
-                    if (!p.hasPermission("quickshop.create.enderchest")) {
+                    if (!QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.enderchest")) {
                         return;
                     }
                 }
