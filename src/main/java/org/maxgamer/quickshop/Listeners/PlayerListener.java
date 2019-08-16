@@ -37,8 +37,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
             if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
@@ -72,8 +73,9 @@ public class PlayerListener implements Listener {
             }
             // Purchase handling
             if (shop != null && p.hasPermission("quickshop.use")) {
-                if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking())
+                if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
                     return;
+                }
                 shop.onClick();
                 if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
@@ -97,10 +99,12 @@ public class PlayerListener implements Listener {
 
             else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
                     && p.hasPermission("quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
-                if (e.useInteractedBlock() == Result.DENY)
+                if (e.useInteractedBlock() == Result.DENY) {
                     return;
-                if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking())
+                }
+                if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()) {
                     return;
+                }
                 if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                     // As of the new checking system, most plugins will tell the
                     // player why they can't create a shop there.
@@ -138,8 +142,9 @@ public class PlayerListener implements Listener {
                 BlockIterator bIt = new BlockIterator(from, 0, 7);
                 while (bIt.hasNext()) {
                     Block n = bIt.next();
-                    if (n.equals(b))
+                    if (n.equals(b)) {
                         break;
+                    }
                     last = n;
                 }
                 // Send creation menu.
@@ -157,8 +162,9 @@ public class PlayerListener implements Listener {
             }
             if (plugin.getShopManager().getShop(block.getLocation()) != null && plugin.getShopManager().getShop(block
                     .getLocation()).getOwner().equals(e.getPlayer().getUniqueId())) {
-                if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking())
+                if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                     return;
+                }
                 if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
                 }
@@ -171,18 +177,22 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         try {
             Inventory inventory = e.getInventory();
-            if (inventory == null)
+            if (inventory == null) {
                 return;
+            }
             Location location = inventory.getLocation();
-            if (location == null)
+            if (location == null) {
                 return;
+            }
             Shop shop = plugin.getShopManager().getShop(location);
-            if (shop == null)
+            if (shop == null) {
                 return;
+            }
             shop.setSignText();
         } catch (Throwable t) {
             //Ignore
@@ -191,8 +201,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             new BukkitRunnable() {
@@ -210,11 +221,13 @@ public class PlayerListener implements Listener {
      * Waits for a player to move too far from a shop, then cancels the menu.
      */
     public void onMove(PlayerMoveEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
-        if (info == null)
+        if (info == null) {
             return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -239,16 +252,18 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
         onMove(me);
     }

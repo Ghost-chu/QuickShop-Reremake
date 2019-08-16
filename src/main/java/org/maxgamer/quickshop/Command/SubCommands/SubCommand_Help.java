@@ -38,10 +38,11 @@ public class SubCommand_Help implements CommandProcesser {
                     }
                 }
             }
-            if (!container.isHidden())
+            if (!container.isHidden()) {
                 s.sendMessage(ChatColor.GREEN + "/" + commandLabel + " " + container
                         .getPrefix() + ChatColor.YELLOW + " - "
                         + MsgUtil.getMessage("command.description." + container.getPrefix()));
+            }
         }
     }
 }

@@ -70,8 +70,9 @@ public class ShopLoader {
         }
 
         logger.warning("#######################################");
-        if (errors > 10)
+        if (errors > 10) {
             logger.severe("QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+        }
     }
 
     /**
@@ -149,8 +150,9 @@ public class ShopLoader {
         for (Long aM : m) {
             sum += aM;
         }
-        if (m.length == 0)
+        if (m.length == 0) {
             return sum;
+        }
         return sum / m.length;
     }
 

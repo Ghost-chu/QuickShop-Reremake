@@ -56,20 +56,25 @@ public class Updater {
         String uurl = null;
         long uurlSize = 0;
         for (GHAsset asset : assets) {
-            if (asset.getName().contains("original-"))
+            if (asset.getName().contains("original-")) {
                 continue;
-            if (asset.getName().contains("-javadoc"))
+            }
+            if (asset.getName().contains("-javadoc")) {
                 continue;
-            if (asset.getName().contains("-sources"))
+            }
+            if (asset.getName().contains("-sources")) {
                 continue;
-            if (asset.getName().contains("-shaded"))
+            }
+            if (asset.getName().contains("-shaded")) {
                 continue;
+            }
             uurl = asset.getBrowserDownloadUrl();
             uurlSize = asset.getSize();
         }
 
-        if (uurl == null)
+        if (uurl == null) {
             throw new IOException("Failed read the URL, cause it is empty.");
+        }
         Util.debugLog("Downloading from " + uurl);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(uurl);
@@ -97,19 +102,23 @@ public class Updater {
 
     public static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
         File pluginFolder = new File("plugins");
-        if (!pluginFolder.exists())
+        if (!pluginFolder.exists()) {
             throw new RuntimeException("Can't find the plugins folder.");
-        if (!pluginFolder.isDirectory())
+        }
+        if (!pluginFolder.isDirectory()) {
             throw new RuntimeException("Plugins not a folder.");
+        }
         File[] plugins = pluginFolder.listFiles();
-        if (plugins == null)
+        if (plugins == null) {
             throw new IOException("Can't get the files in plugins folder");
+        }
         File quickshop = null;
         for (File plugin : plugins) {
             try {
                 PluginDescriptionFile desc = QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
-                if (!desc.getName().equals(QuickShop.instance.getDescription().getName()))
+                if (!desc.getName().equals(QuickShop.instance.getDescription().getName())) {
                     continue;
+                }
                 Util.debugLog("Selected: " + plugin.getPath());
                 quickshop = plugin;
                 break;
@@ -117,8 +126,9 @@ public class Updater {
             }
 
         }
-        if (quickshop == null)
+        if (quickshop == null) {
             throw new RuntimeException("Failed to get QuickShop Jar File.");
+        }
         OutputStream outputStream = new FileOutputStream(quickshop, false);
         outputStream.write(data);
         outputStream.flush();

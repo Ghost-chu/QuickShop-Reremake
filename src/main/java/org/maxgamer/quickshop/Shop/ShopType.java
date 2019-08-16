@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.Shop;
 import org.jetbrains.annotations.*;
 
 public enum ShopType {
+    //SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0), BUYING(1);
     public static ShopType fromID(int id) {
         for (ShopType type : ShopType.values()) {

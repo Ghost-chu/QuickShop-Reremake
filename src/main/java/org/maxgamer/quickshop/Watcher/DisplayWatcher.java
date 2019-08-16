@@ -16,8 +16,9 @@ class DisplayRunnable implements Runnable {
         @SuppressWarnings("unchecked") ArrayList<Shop> pendingCheckDisplayCopy = (ArrayList<Shop>) QuickShop.instance
                 .getDisplayWatcher().getPendingCheckDisplay().clone();
         for (Shop shop : pendingCheckDisplayCopy) {
-            if (shop != null)
+            if (shop != null) {
                 shop.checkDisplay();
+            }
         }
         pendingCheckDisplayCopy.clear();
         QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
@@ -40,18 +41,22 @@ public class DisplayWatcher {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (plugin.getConfig().getInt("shop.display-items-check-ticks") < 3000)
+                    if (plugin.getConfig().getInt("shop.display-items-check-ticks") < 3000) {
                         plugin.getLogger()
                                 .severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+                    }
                     Iterator<Shop> it = plugin.getShopManager().getShopIterator();
                     while (it.hasNext()) {
                         Shop shop = it.next();
-                        if (shop == null)
+                        if (shop == null) {
                             continue;
-                        if (!shop.isLoaded())
+                        }
+                        if (!shop.isLoaded()) {
                             continue;
-                        if (!Util.isLoaded(shop.getLocation()))
+                        }
+                        if (!Util.isLoaded(shop.getLocation())) {
                             continue;
+                        }
                         pendingCheckDisplay.add(shop);
                     }
                     Bukkit.getScheduler().runTask(plugin, new DisplayRunnable());

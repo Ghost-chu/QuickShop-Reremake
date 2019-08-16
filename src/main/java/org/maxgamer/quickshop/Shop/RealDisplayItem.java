@@ -37,34 +37,39 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.item == null)
+        if (this.item == null) {
             return false;
+        }
         //return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
-        if (!this.item.getLocation().getWorld().equals(getDisplayLocation().getWorld()))
+        if (!this.item.getLocation().getWorld().equals(getDisplayLocation().getWorld())) {
             return true;
+        }
         return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
     }
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.item == null)
+        if (this.item == null) {
             return false;
+        }
         return !this.item.isValid() || this.item.isDead();
     }
 
     @Override
     public boolean checkIsShopEntity(@NotNull Entity entity) {
-        if (!(entity instanceof Item))
+        if (!(entity instanceof Item)) {
             return false;
+        }
         return DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack());
     }
 
     @Override
     public void fixDisplayMoved() {
         for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
-            if (!(entity instanceof Item))
+            if (!(entity instanceof Item)) {
                 continue;
+            }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
                 Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId().toString() + " at " + eItem
@@ -102,8 +107,9 @@ public class RealDisplayItem implements DisplayItem {
         boolean removed = false;
         //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
-            if (!(entity instanceof Item))
+            if (!(entity instanceof Item)) {
                 continue;
+            }
             Item eItem = (Item) entity;
             if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
                 Util.debugLog(Util
@@ -195,8 +201,9 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean isSpawned() {
-        if (this.item == null)
+        if (this.item == null) {
             return false;
+        }
         return this.item.isValid();
     }
 }

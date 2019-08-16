@@ -26,8 +26,9 @@ public class SyncTaskWatcher {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (entityRemoveQueue.isEmpty())
+                if (entityRemoveQueue.isEmpty()) {
                     return;
+                }
                 Entity entity = entityRemoveQueue.poll();
                 while (entity != null) {
                     entity.remove();
@@ -38,8 +39,9 @@ public class SyncTaskWatcher {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (itemStackRemoveQueue.isEmpty())
+                if (itemStackRemoveQueue.isEmpty()) {
                     return;
+                }
                 ItemStack itemStack = itemStackRemoveQueue.poll();
                 while (itemStack != null) {
                     itemStack.setAmount(0);
@@ -52,8 +54,9 @@ public class SyncTaskWatcher {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (inventoryEditQueue.isEmpty())
+                if (inventoryEditQueue.isEmpty()) {
                     return;
+                }
                 InventoryEditContainer container = inventoryEditQueue.poll();
                 while (container != null) {
                     container.getInventory().setItem(container.getSlot(), container.getNewItemStack());

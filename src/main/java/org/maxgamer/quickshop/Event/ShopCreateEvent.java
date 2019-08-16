@@ -9,7 +9,7 @@ import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopCreateEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private boolean cancelled;
     @Getter
     @NotNull
@@ -32,10 +32,10 @@ public class ShopCreateEvent extends Event implements Cancellable {
     @NotNull
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {return HANDLERS;}
 
     @Override
     public boolean isCancelled() {

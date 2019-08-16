@@ -34,6 +34,7 @@ public class LogWatcher implements Runnable {
 
     public void add(@NotNull String s) {
         new BukkitRunnable() {
+            @Override
             public void run() {
                 logs.add(s);
             }
@@ -42,8 +43,9 @@ public class LogWatcher implements Runnable {
     }
 
     public void close() {
-        if (ps != null)
+        if (ps != null) {
             this.ps.close();
+        }
         ps = null;
     }
 
@@ -56,10 +58,12 @@ public class LogWatcher implements Runnable {
     @Override
     public void run() {
         new BukkitRunnable() {
+            @Override
             public void run() {
                 for (String log : logs) {
-                    if (ps == null)
+                    if (ps == null) {
                         continue;
+                    }
                     ps.print(log + "\n");
                 }
                 logs.clear();

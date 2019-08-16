@@ -35,8 +35,9 @@ public class BlockListener implements Listener {
     private Shop getShopNextTo(Location loc) {
         Block b = Util.getAttached(loc.getBlock());
         // Util.getAttached(b)
-        if (b == null)
+        if (b == null) {
             return null;
+        }
         return plugin.getShopManager().getShop(b.getLocation());
     }
 
@@ -45,8 +46,9 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onBreak(BlockBreakEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Block b = e.getBlock();
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
@@ -63,8 +65,9 @@ public class BlockListener implements Listener {
         // If the shop was a chest
         if (Util.canBeShop(b)) {
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null)
+            if (shop == null) {
                 return;
+            }
             // If they're either survival or the owner, they can break it
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 //Check SuperTool
@@ -103,8 +106,9 @@ public class BlockListener implements Listener {
                 }
             }
             Shop shop = getShopNextTo(b.getLocation());
-            if (shop == null)
+            if (shop == null) {
                 return;
+            }
             // If they're in creative and not the owner, don't let them
             // (accidents happen)
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
@@ -127,14 +131,17 @@ public class BlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass()))
+        if (ListenerHelper.isDisabled(event.getClass())) {
             return;
+        }
         Location loc = event.getDestination().getLocation();
-        if (loc == null)
+        if (loc == null) {
             return;
+        }
         Shop shop = plugin.getShopManager().getShop(loc);
-        if (shop == null)
+        if (shop == null) {
             return;
+        }
         shop.setSignText();
     }
 
@@ -143,11 +150,13 @@ public class BlockListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         BlockState bs = e.getBlock().getState();
-        if (!(bs instanceof DoubleChest))
+        if (!(bs instanceof DoubleChest)) {
             return;
+        }
         Block b = e.getBlock();
         Player p = e.getPlayer();
         Block chest = Util.getSecondHalf(b);

@@ -29,8 +29,9 @@ public class Language {
             language = "en";
             Util.debugLog("Using the default language (EN) cause language is null.");
         }
-        if (type == null || type.isEmpty())
+        if (type == null || type.isEmpty()) {
             throw new IllegalArgumentException("Type cannot be null or empty");
+        }
         InputStream inputStream = plugin.getResource(type + "-" + language + ".yml");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");

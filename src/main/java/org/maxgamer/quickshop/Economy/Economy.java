@@ -31,6 +31,7 @@ public class Economy implements EconomyCore {
      *
      * @return True if this economy will work, false if it will not.
      */
+    @Override
     public boolean isValid() {
         return core.isValid();
     }
@@ -42,6 +43,7 @@ public class Economy implements EconomyCore {
      * @param balance The given number
      * @return The balance in human readable text.
      */
+    @Override
     public String format(double balance) {
         return Util.parseColours(core.format(balance));
         //Fix color issue from some stupid economy plugin....
