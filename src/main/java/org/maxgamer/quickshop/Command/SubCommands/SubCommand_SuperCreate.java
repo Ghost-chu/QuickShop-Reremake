@@ -55,12 +55,12 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                                 return;
                             }
 
-                            if (Util.getSecondHalf(b) != null && !p.hasPermission("quickshop.create.double")) {
+                            if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(sender,"quickshop.create.double")) {
                                 p.sendMessage(MsgUtil.getMessage("no-double-chests"));
                                 return;
                             }
                             if (Util.isBlacklisted(item.getType())
-                                    && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
+                                    && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
                                 p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
                                 return;
                             }

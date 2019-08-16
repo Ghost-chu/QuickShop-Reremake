@@ -31,7 +31,7 @@ public class SubCommand_Help implements CommandProcesser {
             if (requirePermissions != null) {
                 if (!requirePermissions.isEmpty()) {
                     for (String requirePermission : requirePermissions) {
-                        if (requirePermission != null && !requirePermission.isEmpty() && !s.hasPermission(requirePermission)) {
+                        if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(s,requirePermission)) {
                             //noinspection UnnecessaryContinue
                             continue;
                         }

@@ -52,7 +52,7 @@ public class UpdateWatcher implements Listener {
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        if (player.hasPermission("quickshop.alert")) {
+                        if (QuickShop.getPermissionManager().hasPermission(player,"quickshop.alert")) {
                             List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
                             Random random = new Random();
                             int notifyNum = -1;
@@ -103,7 +103,7 @@ public class UpdateWatcher implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (hasNewUpdate && e.getPlayer().hasPermission("quickshop.alert")) {
+                if (hasNewUpdate && QuickShop.getPermissionManager().hasPermission(e.getPlayer(),"quickshop.alert")) {
                     if (!info.isBeta()) {
                         List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
                         Random random = new Random();

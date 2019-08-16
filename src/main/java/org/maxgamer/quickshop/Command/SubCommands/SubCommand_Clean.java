@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Command.CommandProcesser;
@@ -22,8 +23,11 @@ public class SubCommand_Clean implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender.hasPermission("quickshop.clean")) {
-            sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
+        if(sender instanceof Server){
+            sender.sendMessage("Can't run this command by Console");
+            return;
+        }
+        sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
             Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
             int i = 0;
             java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
@@ -54,8 +58,6 @@ public class SubCommand_Clean implements CommandProcesser {
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
             return;
-        }
-        sender.sendMessage("Can't run this command by Console");
-        return;
+
     }
 }
