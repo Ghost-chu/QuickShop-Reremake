@@ -888,6 +888,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 43);
             selectedVersion = 43;
         }
+        if (selectedVersion == 43) {
+            getConfig().set("permission-type", 0);
+            getConfig().set("config-version", 44);
+            selectedVersion = 44;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
