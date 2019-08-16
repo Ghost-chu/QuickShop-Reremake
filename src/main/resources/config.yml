@@ -2,7 +2,7 @@
 #Default config: https://github.com/Ghost-chu/QuickShop-Reremake/blob/master/src/main/resources/config.yml
 
 #Do not touch if you not clear know about this
-config-version: 43
+config-version: 44
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -75,6 +75,15 @@ include-offlineplayer-list: false
 #0=Vault
 #1=Reserve
 economy-type: 0
+
+#What permission provider you want use?
+#0=Bukkit
+#1=Vault
+#2=LuckPerms
+#3=PermissionEx
+#4=GroupManager
+#If you enter a number not in list or target provider not usable, plugin will fallback to Bukkit Permission Provider.
+permission-type: 0
 
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true

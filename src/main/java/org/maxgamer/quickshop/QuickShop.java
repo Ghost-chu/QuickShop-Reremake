@@ -21,6 +21,7 @@ import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -152,6 +153,10 @@ public class QuickShop extends JavaPlugin {
      */
     private HashSet<String> warnings = new HashSet<>();
     private WorldListener worldListener;
+    /**
+     * The manager to check permissions.
+     */
+    private static PermissionManager permissionManager;
 
     /**
      * Get the Player's Shop limit.
@@ -162,7 +167,7 @@ public class QuickShop extends JavaPlugin {
     public int getShopLimit(@NotNull Player p) {
         int max = getConfig().getInt("limits.default");
         for (Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && p.hasPermission(entry.getKey())) {
+            if (entry.getValue() > max && getPermissionManager().hasPermission(p,entry.getKey())) {
                 max = entry.getValue();
             }
         }
@@ -387,6 +392,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Initalize the tools */
         // Create the shop manager.
+        this.permissionManager = new PermissionManager(this);
         this.shopManager = new ShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
@@ -913,4 +919,11 @@ public class QuickShop extends JavaPlugin {
         return QuickShop.instance.getDescription().getVersion();
     }
 
+    /**
+     * Get the permissionManager as static
+     * @return the permission Manager.
+     */
+    public static PermissionManager getPermissionManager(){
+        return permissionManager;
+    }
 }
