@@ -51,8 +51,9 @@ public class ShopManager {
             return;
         }
         int space = shop.getRemainingSpace();
-        if (space == -1)
+        if (space == -1) {
             space = 10000;
+        }
         if (space < amount) {
             p.sendMessage(MsgUtil
                     .getMessage("shop-has-no-space", "" + space, Util.getItemStackName(shop.getItem())));
@@ -71,16 +72,19 @@ public class ShopManager {
         }
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
         Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled())
+        if (e.isCancelled()) {
             return; // Cancelled
+        }
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
 
-        if (tax < 0)
+        if (tax < 0) {
             tax = 0; //Tax was disabled.
-        if (shop.getModerator().isModerator(p.getUniqueId()))
+        }
+        if (shop.getModerator().isModerator(p.getUniqueId())) {
             tax = 0; //Is staff or owner, so we won't will take them tax
+        }
 
         Economy eco = plugin.getEconomy();
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
@@ -118,9 +122,10 @@ public class ShopManager {
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p.getName(), String.valueOf(amount), Util
                 .getItemStackName(shop.getItem()));
 
-        if (space == amount)
+        if (space == amount) {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-space", "" + shop.getLocation().getBlockX(), "" + shop.getLocation()
                     .getBlockY(), "" + shop.getLocation().getBlockZ());
+        }
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
@@ -164,8 +169,9 @@ public class ShopManager {
                 return;
             }
             if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) {
-                if (!p.hasPermission("quickshop.create.enderchest"))
+                if (!p.hasPermission("quickshop.create.enderchest")) {
                     return;
+                }
             }
 
             // allow-shop-without-space-for-sign check
@@ -282,8 +288,9 @@ public class ShopManager {
             return;
         }
         int stock = shop.getRemainingStock();
-        if (stock == -1)
+        if (stock == -1) {
             stock = 10000;
+        }
         if (stock < amount) {
             p.sendMessage(MsgUtil
                     .getMessage("shop-stock-too-low", "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
@@ -301,16 +308,19 @@ public class ShopManager {
         }
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
         Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled())
+        if (e.isCancelled()) {
             return; // Cancelled
+        }
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
 
-        if (tax < 0)
+        if (tax < 0) {
             tax = 0; //Tax was disabled.
-        if (shop.getModerator().isModerator(p.getUniqueId()))
+        }
+        if (shop.getModerator().isModerator(p.getUniqueId())) {
             tax = 0; //Is staff or owner, so we won't will take them tax
+        }
 
         Economy eco = plugin.getEconomy();
 
@@ -346,10 +356,11 @@ public class ShopManager {
                     .getItemStackName(shop.getItem()));
         }
         // Transfers the item from A to B
-        if (stock == amount)
+        if (stock == amount) {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", "" + shop.getLocation().getBlockX(), "" + shop
                     .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), Util
                     .getItemStackName(shop.getItem()));
+        }
 
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.sell(p, amount);
@@ -495,8 +506,9 @@ public class ShopManager {
             for (World world : Bukkit.getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
                     HashMap<Location, Shop> inChunk = this.getShops(chunk);
-                    if (inChunk == null || inChunk.isEmpty())
+                    if (inChunk == null || inChunk.isEmpty()) {
                         continue;
+                    }
                     for (Shop shop : inChunk.values()) {
                         shop.onUnload();
                     }
@@ -553,8 +565,9 @@ public class ShopManager {
                 return;
             }
             boolean isWaterLogged = false;
-            if (info.getSignBlock().getType() == Material.WATER)
+            if (info.getSignBlock().getType() == Material.WATER) {
                 isWaterLogged = true;
+            }
 
             info.getSignBlock().setType(Util.getSignMaterial());
             BlockState bs = info.getSignBlock().getState();
@@ -652,8 +665,9 @@ public class ShopManager {
             HashMap<UUID, Info> actions = getActions();
             // They wanted to do something.
             Info info = actions.remove(p.getUniqueId());
-            if (info == null)
+            if (info == null) {
                 return; // multithreaded means this can happen
+            }
             if (info.getLocation().getWorld() != p.getLocation().getWorld()) {
                 p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
                 return;
@@ -709,8 +723,9 @@ public class ShopManager {
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         ShopChunk shopChunk = new ShopChunk(world, x, z);
         HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
-        if (inChunk == null)
+        if (inChunk == null) {
             return;
+        }
         inChunk.remove(loc);
         // shop.onUnload();
     }
@@ -792,8 +807,9 @@ public class ShopManager {
                 }
                 shops = chunks.next().values().iterator();
             }
-            if (!shops.hasNext())
+            if (!shops.hasNext()) {
                 return this.next(); // Skip to the next one (Empty iterator?)
+            }
             current = shops.next();
             return current;
         }

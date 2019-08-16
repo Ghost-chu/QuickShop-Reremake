@@ -35,8 +35,9 @@ public class SubCommand_Clean implements CommandProcesser {
                     if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0
                             && shop instanceof ContainerShop) {
                         ContainerShop cs = (ContainerShop) shop;
-                        if (cs.isDoubleShop())
+                        if (cs.isDoubleShop()) {
                             continue;
+                        }
                         pendingRemoval.add(shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
                         // Can be deleted safely.
                         i++;
@@ -46,8 +47,9 @@ public class SubCommand_Clean implements CommandProcesser {
                 }
             }
 
-            for (Shop shop : pendingRemoval)
+            for (Shop shop : pendingRemoval) {
                 shop.delete();
+            }
 
             MsgUtil.clean();
             sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));

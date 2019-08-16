@@ -19,7 +19,7 @@ public class SubCommand_ROOT implements CommandProcesser {
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             if (container.getPrefix().startsWith(strings[0]) || container.getPrefix().equals(strings[0])) {
                 List<String> requirePermissions = container.getPermissions();
-                if (requirePermissions != null)
+                if (requirePermissions != null) {
                     for (String requirePermission : requirePermissions) {
                         if (requirePermission != null && !requirePermission.isEmpty() && !sender
                                 .hasPermission(requirePermission)) {
@@ -28,8 +28,10 @@ public class SubCommand_ROOT implements CommandProcesser {
                             return null;
                         }
                     }
-                    if (!container.isHidden())
+                }
+                    if (!container.isHidden()) {
                         candidate.add(container.getPrefix());
+                    }
             }
         }
         return candidate;

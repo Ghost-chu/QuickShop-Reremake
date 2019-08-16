@@ -58,8 +58,9 @@ public class ShopModerator {
      * @return Success
      */
     public boolean addStaff(@NotNull UUID player) {
-        if (staffs.contains(player))
+        if (staffs.contains(player)) {
             return false;
+        }
         staffs.add(player);
         return true;
     }
@@ -71,6 +72,7 @@ public class ShopModerator {
         staffs.clear();
     }
 
+    @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     public ShopModerator clone() {
         return new ShopModerator(this.owner, this.staffs);
@@ -96,8 +98,9 @@ public class ShopModerator {
      * @return yes or no, return true when it is staff or owner
      */
     public boolean isModerator(@NotNull UUID player) {
-        if (isOwner(player))
+        if (isOwner(player)) {
             return true;
+        }
         return isStaff(player);
     }
 

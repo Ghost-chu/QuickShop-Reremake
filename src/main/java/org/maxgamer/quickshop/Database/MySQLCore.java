@@ -25,8 +25,9 @@ public class MySQLCore implements DatabaseCore {
         info.setProperty("characterEncoding", "utf8");
         info.setProperty("useSSL", String.valueOf(useSSL));
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
-        for (int i = 0; i < MAX_CONNECTIONS; i++)
+        for (int i = 0; i < MAX_CONNECTIONS; i++) {
             pool.add(null);
+        }
     }
 
     @Override
@@ -65,6 +66,7 @@ public class MySQLCore implements DatabaseCore {
      *
      * @return The database connection
      */
+    @Override
     public Connection getConnection() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             Connection connection = pool.get(i);

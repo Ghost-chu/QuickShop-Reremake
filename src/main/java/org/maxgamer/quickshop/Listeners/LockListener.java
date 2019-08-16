@@ -32,8 +32,9 @@ public class LockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-        if (!InventoryPreview.isPreviewItem(e.getItem()))
+        if (!InventoryPreview.isPreviewItem(e.getItem())) {
             return;
+        }
         e.setCancelled(true);
     }
 
@@ -67,8 +68,9 @@ public class LockListener implements Listener {
         Inventory inventory = e.getInventory();
         ItemStack[] stacks = inventory.getContents();
         for (ItemStack itemStack : stacks) {
-            if (itemStack == null)
+            if (itemStack == null) {
                 continue;
+            }
             if (InventoryPreview.isPreviewItem(itemStack)) {
                 e.setCancelled(true);
             }
@@ -94,8 +96,9 @@ public class LockListener implements Listener {
         // If the chest was a chest
         if (Util.canBeShop(b)) {
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null)
+            if (shop == null) {
                 return; // Wasn't a shop
+            }
             // If they owned it or have bypass perms, they can destroy it
             if (!shop.getOwner().equals(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
                 e.setCancelled(true);
@@ -112,11 +115,13 @@ public class LockListener implements Listener {
                 }
             }
             b = Util.getAttached(b);
-            if (b == null)
+            if (b == null) {
                 return;
+            }
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null)
+            if (shop == null) {
                 return;
+            }
             // If they're the shop owner or have bypass perms, they can destroy
             // it.
             if (!shop.getOwner().equals(p.getUniqueId()) && !p.hasPermission("quickshop.other.destroy")) {
@@ -128,25 +133,31 @@ public class LockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Block b = e.getClickedBlock();
-        if (b == null)
+        if (b == null) {
             return;
-        if (!Util.canBeShop(b))
+        }
+        if (!Util.canBeShop(b)) {
             return;
+        }
         Player p = e.getPlayer();
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return; // Didn't right click it, we dont care.
+        }
         Shop shop = plugin.getShopManager().getShop(b.getLocation());
         // Make sure they're not using the non-shop half of a double chest.
         if (shop == null) {
             b = Util.getSecondHalf(b);
-            if (b == null)
+            if (b == null) {
                 return;
+            }
             shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null)
+            if (shop == null) {
                 return;
+            }
         }
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (p.hasPermission("quickshop.other.open")) {
@@ -166,14 +177,16 @@ public class LockListener implements Listener {
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null)
+            if (shop != null) {
                 e.blockList().remove(b); //Protect shop
+            }
             if (Util.isWallSign(b.getType())) {
                 Block block = Util.getAttached(b);
                 if (block != null) {
                     shop = plugin.getShopManager().getShop(block.getLocation());
-                    if (shop != null)
+                    if (shop != null) {
                         e.blockList().remove(b); //Protect shop
+                    }
                 }
             }
         }
@@ -184,14 +197,17 @@ public class LockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Block b = e.getBlock();
-        if (b.getType() != Material.HOPPER)
+        if (b.getType() != Material.HOPPER) {
             return;
+        }
         Player p = e.getPlayer();
-        if (!Util.isOtherShopWithinHopperReach(b, p))
+        if (!Util.isOtherShopWithinHopperReach(b, p)) {
             return;
+        }
 
         if (p.hasPermission("quickshop.other.open")) {
             p.sendMessage(MsgUtil.getMessage("bypassing-lock"));

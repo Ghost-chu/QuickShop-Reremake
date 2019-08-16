@@ -53,8 +53,9 @@ public class SubCommand_Price implements CommandProcesser {
                 }
             }
             double fee = 0;
-            if (plugin.isPriceChangeRequiresFee())
+            if (plugin.isPriceChangeRequiresFee()) {
                 fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
+            }
             // if (fee > 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < fee) {
             //     sender.sendMessage(
             //             MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEconomy().format(fee)));

@@ -41,8 +41,9 @@ public class PermissionChecker {
      * @return Success
      */
     public boolean canBuild(@NotNull Player player, @NotNull Block block, boolean place) {
-        if (!usePermissionChecker)
+        if (!usePermissionChecker) {
             return true;
+        }
         BlockEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0), player.getInventory()
         //getItemInMainHand(), player, true, EquipmentSlot.HAND);

@@ -34,58 +34,88 @@ import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 //import com.griefcraft.lwc.LWCPlugin;
 @Getter
 public class QuickShop extends JavaPlugin {
-    /** The active instance of QuickShop */
+    /**
+     * The active instance of QuickShop
+     */
     public static QuickShop instance;
     // Listeners (These don't)
     private BlockListener blockListener;
-    /** The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs **/
+    /**
+     * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
+     **/
     private BootError bootError;
     // Listeners - We decide which one to use at runtime
     private ChatListener chatListener;
     private ChunkListener chunkListener;
     private CommandManager commandManager;
-    /** WIP **/
+    /**
+     * WIP
+     **/
     private Compatibility compatibilityTool = new Compatibility(this);
     private CustomInventoryListener customInventoryListener;
-    /** The database for storing all our data for persistence */
+    /**
+     * The database for storing all our data for persistence
+     */
     private Database database;
-    /** Contains all SQL tasks **/
+    /**
+     * Contains all SQL tasks
+     **/
     private DatabaseHelper databaseHelper;
-    /** Queued database manager **/
+    /**
+     * Queued database manager
+     **/
     private DatabaseManager databaseManager;
-    /** Default database prefix, can overwrite by config **/
+    /**
+     * Default database prefix, can overwrite by config
+     **/
     private String dbPrefix = "";
-    /** Whether we should use display items or not */
+    /**
+     * Whether we should use display items or not
+     */
     private boolean display = true;
     private DisplayBugFixListener displayBugFixListener;
-//	/** Whether players are required to sneak to create/buy from a shop */
+    //	/** Whether players are required to sneak to create/buy from a shop */
 //	public boolean sneak;
 //	/** Whether players are required to sneak to create a shop */
 //	public boolean sneakCreate;
 //	/** Whether players are required to sneak to trade with a shop */
 //	public boolean sneakTrade;
 // private Metrics metrics;
-private int displayItemCheckTicks;
+    private int displayItemCheckTicks;
     private DisplayWatcher displayWatcher;
-    /** The economy we hook into for transactions */
+    /**
+     * The economy we hook into for transactions
+     */
     private Economy economy;
     private DisplayProtectionListener inventoryListener;
     private ItemMatcher itemMatcher;
-    /** Language manager, to select which language will loaded. **/
+    /**
+     * Language manager, to select which language will loaded.
+     **/
     private Language language;
-    /** Whether or not to limit players shop amounts */
+    /**
+     * Whether or not to limit players shop amounts
+     */
     private boolean limit = false;
-    /** The shop limites. **/
+    /**
+     * The shop limites.
+     **/
     private HashMap<String, Integer> limits = new HashMap<>();
     private LockListener lockListener;
     //private BukkitTask itemWatcherTask;
     private LogWatcher logWatcher;
-    /** bStats, good helper for metrics. **/
+    /**
+     * bStats, good helper for metrics.
+     **/
     private Metrics metrics;
     private boolean noopDisable;
-    /** The plugin OpenInv (null if not present) */
+    /**
+     * The plugin OpenInv (null if not present)
+     */
     private Plugin openInvPlugin;
-    /** A util to call to check some actions permission **/
+    /**
+     * A util to call to check some actions permission
+     **/
     private PermissionChecker permissionChecker;
     private PlayerListener playerListener;
     /**
@@ -93,18 +123,28 @@ private int displayItemCheckTicks;
      * help deter endless undercutting
      */
     private boolean priceChangeRequiresFee = false;
-    /** The error reporter to help devs report errors to Sentry.io **/
+    /**
+     * The error reporter to help devs report errors to Sentry.io
+     **/
     private SentryErrorReporter sentryErrorReporter;
-    /** The server UniqueID, use to the ErrorReporter **/
+    /**
+     * The server UniqueID, use to the ErrorReporter
+     **/
     private UUID serverUniqueID;
     private boolean setupDBonEnableding = false;
-    /** Rewrited shoploader, more faster. **/
+    /**
+     * Rewrited shoploader, more faster.
+     **/
     private ShopLoader shopLoader;
-    /** The Shop Manager used to store shops */
+    /**
+     * The Shop Manager used to store shops
+     */
     private ShopManager shopManager;
     private ShopProtectionListener shopProtectListener;
     private SyncTaskWatcher syncTaskWatcher;
-    /** Use SpoutPlugin to get item / block names */
+    /**
+     * Use SpoutPlugin to get item / block names
+     */
     private boolean useSpout = false;
     /**
      * A set of players who have been warned ("Your shop isn't automatically
@@ -122,8 +162,9 @@ private int displayItemCheckTicks;
     public int getShopLimit(@NotNull Player p) {
         int max = getConfig().getInt("limits.default");
         for (Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && p.hasPermission(entry.getKey()))
+            if (entry.getValue() > max && p.hasPermission(entry.getKey())) {
                 max = entry.getValue();
+            }
         }
         return max;
     }
@@ -136,8 +177,9 @@ private int displayItemCheckTicks;
         // https://github.com/KaiKikuchi/QuickShop/issues/139
         if (getConfig().getBoolean("plugin.OpenInv")) {
             this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-            if (this.openInvPlugin != null)
+            if (this.openInvPlugin != null) {
                 getLogger().info("Successfully loaded OpenInv support!");
+            }
         }
     }
 
@@ -163,6 +205,10 @@ private int displayItemCheckTicks;
                 case RESERVE:
                     core = new Economy_Reserve();
                     Util.debugLog("Now using the Reserve economy system.");
+                    break;
+
+                default:
+                    Util.debugLog("No any economy provider selected.");
                     break;
             }
             if (!core.isValid()) {
@@ -193,12 +239,15 @@ private int displayItemCheckTicks;
      * @param s The string to log. It will be prefixed with the date and time.
      */
     public void log(@NotNull String s) {
-        if (this.getLogWatcher() == null)
+        if (this.getLogWatcher() == null) {
             return;
+        }
         this.getLogWatcher().log(s);
     }
 
-    /** Reloads QuickShops config */
+    /**
+     * Reloads QuickShops config
+     */
     @Override
     public void reloadConfig() {
         super.reloadConfig();
@@ -226,8 +275,9 @@ private int displayItemCheckTicks;
 
     @Override
     public void onDisable() {
-        if (noopDisable)
+        if (noopDisable) {
             return;
+        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
 
         Util.debugLog("Closing all GUIs...");
@@ -242,8 +292,9 @@ private int displayItemCheckTicks;
         }
 
         Util.debugLog("Cleaning up database queues...");
-        if (this.getDatabaseManager() != null)
+        if (this.getDatabaseManager() != null) {
             this.getDatabaseManager().uninit();
+        }
 
         Util.debugLog("Unregistering tasks...");
         //if (itemWatcherTask != null)
@@ -255,22 +306,27 @@ private int displayItemCheckTicks;
         UpdateWatcher.uninit();
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
-        if (shopManager != null)
+        if (shopManager != null) {
             shopManager.clear();
+        }
         /* Empty the buffer */
-        if (databaseManager != null)
+        if (databaseManager != null) {
             database.close();
+        }
         /* Close Database */
-        if (database != null)
+        if (database != null) {
             try {
                 this.database.getConnection().close();
             } catch (SQLException e) {
-                if (getSentryErrorReporter() != null)
+                if (getSentryErrorReporter() != null) {
                     this.getSentryErrorReporter().ignoreThrow();
+                }
                 e.printStackTrace();
             }
-        if (warnings != null)
+        }
+        if (warnings != null) {
             warnings.clear();
+        }
         //this.reloadConfig();
         Util.debugLog("All shutdown work is finished.");
     }
@@ -301,8 +357,9 @@ private int displayItemCheckTicks;
         reloadConfig();
         getConfig().options().copyDefaults(true); // Load defaults.
 
-        if (getConfig().getInt("config-version") == 0)
+        if (getConfig().getInt("config-version") == 0) {
             getConfig().set("config-version", 1);
+        }
 
         updateConfig(getConfig().getInt("config-version"));
         /* It will generate a new UUID above updateConfig */
@@ -337,14 +394,16 @@ private int displayItemCheckTicks;
 
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
         if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false); ;
+            this.limit = limitCfg.getBoolean("use", false);
+            ;
             limitCfg = limitCfg.getConfigurationSection("ranks");
             for (String key : limitCfg.getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        if (getConfig().getInt("shop.find-distance") > 100)
+        if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+        }
 
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
@@ -376,8 +435,9 @@ private int displayItemCheckTicks;
         Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(shopProtectListener, this);
-        if (Bukkit.getPluginManager().getPlugin("ClearLag") != null)
+        if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
             Bukkit.getServer().getPluginManager().registerEvents(new ClearLaggListener(), this);
+        }
 
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
@@ -437,8 +497,9 @@ private int displayItemCheckTicks;
         String nmsVersion = Util.getNMSVersion();
         IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
         getLogger().info("Running QuickShop-Reremake on Minecraft version " + nmsVersion);
-        if (incompatibleChecker.isIncompatible(nmsVersion))
+        if (incompatibleChecker.isIncompatible(nmsVersion)) {
             throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
+        }
     }
 
     /**
@@ -453,8 +514,9 @@ private int displayItemCheckTicks;
             if (dbCfg.getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
-                if (dbPrefix == null || dbPrefix.equals("none"))
+                if (dbPrefix == null || "none".equals(dbPrefix)) {
                     dbPrefix = "";
+                }
                 String user = dbCfg.getString("user");
                 String pass = dbCfg.getString("password");
                 String host = dbCfg.getString("host");
@@ -711,8 +773,9 @@ private int displayItemCheckTicks;
         }
         if (selectedVersion == 25) {
             String language = getConfig().getString("language");
-            if (language == null || language.isEmpty() || language.equals("default"))
+            if (language == null || language.isEmpty() || "default".equals(language)) {
                 getConfig().set("language", "en");
+            }
             getConfig().set("config-version", 26);
             selectedVersion = 26;
         }
@@ -769,8 +832,9 @@ private int displayItemCheckTicks;
         }
         if (selectedVersion == 34) {
             getConfig().set("queue.enable", false); // Close it for everyone
-            if (getConfig().getInt("shop.display-items-check-ticks") == 1200)
+            if (getConfig().getInt("shop.display-items-check-ticks") == 1200) {
                 getConfig().set("shop.display-items-check-ticks", 6000);
+            }
             getConfig().set("config-version", 35);
             selectedVersion = 35;
         }
@@ -834,7 +898,9 @@ private int displayItemCheckTicks;
      *
      * @return The fork name.
      */
-    public String getFork() { return "Reremake"; }
+    public String getFork() {
+        return "Reremake";
+    }
 
     /**
      * Returns QS version, this method only exist on QSRR forks If running other

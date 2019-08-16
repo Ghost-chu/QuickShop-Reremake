@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.Util.Util;
 /**
  * ChestShop core
  */
+@EqualsAndHashCode
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude private boolean isLoaded = false;
@@ -102,9 +103,11 @@ public class ContainerShop implements Shop {
      *               else
      * @param amount The amount to add to the shop.
      */
+    @Override
     public void add(@NotNull ItemStack item, int amount) {
-        if (this.unlimited)
+        if (this.unlimited) {
             return;
+        }
         Inventory inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
@@ -121,9 +124,11 @@ public class ContainerShop implements Shop {
      *
      * @return The number of items available for purchase.
      */
+    @Override
     public int getRemainingStock() {
-        if (this.unlimited)
+        if (this.unlimited) {
             return -1;
+        }
         return Util.countItems(this.getInventory(), this.getItem());
     }
 
@@ -132,9 +137,11 @@ public class ContainerShop implements Shop {
      *
      * @return remaining space
      */
+    @Override
     public int getRemainingSpace() {
-        if (this.unlimited)
+        if (this.unlimited) {
             return -1;
+        }
         return Util.countSpace(this.getInventory(), this.getItem());
     }
 
@@ -144,6 +151,7 @@ public class ContainerShop implements Shop {
      * @param item The ItemStack
      * @return True if the ItemStack is the same (Excludes amounts)
      */
+    @Override
     public boolean matches(@Nullable ItemStack item) {
         return plugin.getItemMatcher().matches(this.item, item);
     }
@@ -151,6 +159,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The location of the shops chest
      */
+    @Override
     public Location getLocation() {
         return this.loc;
     }
@@ -158,6 +167,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The price per item this shop is selling
      */
+    @Override
     public double getPrice() {
         return this.price;
     }
@@ -167,6 +177,7 @@ public class ContainerShop implements Shop {
      *
      * @param price The new price of the shop.
      */
+    @Override
     public void setPrice(double price) {
         Bukkit.getPluginManager().callEvent(new ShopPriceChangedEvent(this, this.price, price));
         this.price = price;
@@ -177,6 +188,7 @@ public class ContainerShop implements Shop {
     /**
      * Upates the shop into the database.
      */
+    @Override
     public void update() {
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (shopUpdateEvent.isCancelled()) {
@@ -201,6 +213,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The durability of the item
      */
+    @Override
     public short getDurability() {
         return (short) ((Damageable) this.item.getItemMeta()).getDamage();
     }
@@ -208,6 +221,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The name of the player who owns the shop.
      */
+    @Override
     public UUID getOwner() {
         return this.moderator.getOwner();
     }
@@ -215,6 +229,7 @@ public class ContainerShop implements Shop {
     /**
      * @return Returns a dummy itemstack of the item this shop is selling.
      */
+    @Override
     public ItemStack getItem() {
         return item;
     }
@@ -223,8 +238,9 @@ public class ContainerShop implements Shop {
     public boolean addStaff(@NotNull UUID player) {
         boolean result = this.moderator.addStaff(player);
         update();
-        if (result)
+        if (result) {
             Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        }
         return result;
     }
 
@@ -235,15 +251,18 @@ public class ContainerShop implements Shop {
      * @param p      The player to buy from
      * @param amount The amount to buy
      */
+    @Override
     public void buy(@NotNull Player p, int amount) {
-        if (amount < 0)
+        if (amount < 0) {
             this.sell(p, -amount);
+        }
         if (this.isUnlimited()) {
             ItemStack[] contents = p.getInventory().getContents();
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
-                if (stack == null)
+                if (stack == null) {
                     continue; // No item
+                }
                 if (matches(stack)) {
                     int stackSize = Math.min(amount, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
@@ -290,8 +309,9 @@ public class ContainerShop implements Shop {
     public boolean delStaff(@NotNull UUID player) {
         boolean result = this.moderator.delStaff(player);
         update();
-        if (result)
+        if (result) {
             Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        }
         return result;
     }
 
@@ -302,6 +322,7 @@ public class ContainerShop implements Shop {
      * @param fromMemory True if you are *NOT* iterating over this currently, *false if
      *                   you are iterating*
      */
+    @Override
     public void delete(boolean fromMemory) {
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
         Bukkit.getPluginManager().callEvent(shopDeleteEvent);
@@ -310,8 +331,9 @@ public class ContainerShop implements Shop {
             return;
         }
         // Unload the shop
-        if (isLoaded)
+        if (isLoaded) {
             this.onUnload();
+        }
         // Delete the display item
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
@@ -345,8 +367,9 @@ public class ContainerShop implements Shop {
     @Override
     public void checkDisplay() {
         Util.debugLog("Checking the display...");
-        if (!plugin.isDisplay())
+        if (!plugin.isDisplay()) {
             return;
+        }
         if (!this.isLoaded) {
             Util.debugLog("Shop not loaded, skipping...");
             return;
@@ -366,13 +389,15 @@ public class ContainerShop implements Shop {
             if (this.displayItem.checkDisplayNeedRegen()) {
                 this.displayItem.fixDisplayNeedRegen();
             } else {/* If display was regened, we didn't need check it moved, performance! */
-                if (this.displayItem.checkDisplayIsMoved())
+                if (this.displayItem.checkDisplayIsMoved()) {
                     this.displayItem.fixDisplayMoved();
+                }
             }
         }
         /* Dupe is always need check, if enabled display */
-        if (plugin.isDisplay())
+        if (plugin.isDisplay()) {
             this.displayItem.removeDupe();
+        }
     }
 
     @Override
@@ -389,9 +414,11 @@ public class ContainerShop implements Shop {
      *               else
      * @param amount The amount to remove from the shop.
      */
+    @Override
     public void remove(@NotNull ItemStack item, int amount) {
-        if (this.unlimited)
+        if (this.unlimited) {
             return;
+        }
         Inventory inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
@@ -408,6 +435,7 @@ public class ContainerShop implements Shop {
      *
      * @param owner the new owner
      */
+    @Override
     public void setOwner(@NotNull UUID owner) {
         this.moderator.setOwner(owner);
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
@@ -430,6 +458,7 @@ public class ContainerShop implements Shop {
      * <p>
      * **NOT A DEEP CLONE**
      */
+    @Override
     public ContainerShop clone() {
         return new ContainerShop(this);
     }
@@ -441,9 +470,11 @@ public class ContainerShop implements Shop {
      * @param p      The player to sell to
      * @param amount The amount to sell
      */
+    @Override
     public void sell(@NotNull Player p, int amount) {
-        if (amount < 0)
+        if (amount < 0) {
             this.buy(p, -amount);
+        }
         // Items to drop on floor
         ArrayList<ItemStack> floor = new ArrayList<ItemStack>(5);
         Inventory pInv = p.getInventory();
@@ -494,8 +525,9 @@ public class ContainerShop implements Shop {
      */
     public ContainerShop getAttachedShop() {
         Block c = Util.getSecondHalf(this.getLocation().getBlock());
-        if (c == null)
+        if (c == null) {
             return null;
+        }
         Shop shop = plugin.getShopManager().getShop(c.getLocation());
         return shop == null ? null : (ContainerShop) shop;
     }
@@ -554,6 +586,7 @@ public class ContainerShop implements Shop {
      *
      * @param lines The array of lines to change. Index is line number.
      */
+    @Override
     public void setSignText(@NotNull String[] lines) {
         for (Sign sign : this.getSigns()) {
             if (Arrays.equals(sign.getLines(), lines)) {
@@ -567,24 +600,29 @@ public class ContainerShop implements Shop {
         }
     }
 
+    @Override
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
         this.setSignText();
         update();
     }
 
+    @Override
     public boolean isUnlimited() {
         return this.unlimited;
     }
 
+    @Override
     public ShopType getShopType() {
         return this.shopType;
     }
 
+    @Override
     public boolean isBuying() {
         return this.shopType == ShopType.BUYING;
     }
 
+    @Override
     public boolean isSelling() {
         return this.shopType == ShopType.SELLING;
     }
@@ -594,6 +632,7 @@ public class ContainerShop implements Shop {
      *
      * @param shopType The new type (ShopType.BUYING or ShopType.SELLING)
      */
+    @Override
     public void setShopType(@NotNull ShopType shopType) {
         this.shopType = shopType;
         this.setSignText();
@@ -603,9 +642,11 @@ public class ContainerShop implements Shop {
     /**
      * Updates signs attached to the shop
      */
+    @Override
     public void setSignText() {
-        if (!Util.isLoaded(this.getLocation()))
+        if (!Util.isLoaded(this.getLocation())) {
             return;
+        }
         String[] lines = new String[4];
         lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
         if (this.isSelling()) {
@@ -635,8 +676,9 @@ public class ContainerShop implements Shop {
                 "unloaded world" :
                 loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
         sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
-        if (isUnlimited())
+        if (isUnlimited()) {
             sb.append(" Unlimited: true");
+        }
         sb.append(" Price: ").append(getPrice());
         sb.append(" Item: ").append(getItem().toString());
         return sb.toString();
@@ -649,10 +691,12 @@ public class ContainerShop implements Shop {
      * @return a list of signs that are attached to this shop (QuickShop and
      * blank signs only)
      */
+    @Override
     public List<Sign> getSigns() {
         List<Sign> signs = new ArrayList<Sign>(1);
-        if (this.getLocation().getWorld() == null)
+        if (this.getLocation().getWorld() == null) {
             return signs;
+        }
         Block[] blocks = new Block[4];
         blocks[0] = loc.getBlock().getRelative(BlockFace.EAST);
         blocks[1] = loc.getBlock().getRelative(BlockFace.NORTH);
@@ -667,12 +711,15 @@ public class ContainerShop implements Shop {
                 continue;
             }
             Material mat = b.getType();
-            if (!Util.isWallSign(mat))
+            if (!Util.isWallSign(mat)) {
                 continue;
-            if (!isAttached(b))
+            }
+            if (!isAttached(b)) {
                 continue;
-            if (!(b.getState() instanceof Sign))
+            }
+            if (!(b.getState() instanceof Sign)) {
                 continue;
+            }
             org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
             String currentLine = sign.getLine(0);
             if (currentLine.contains(signHeader) || currentLine.contains(signHeader2)) {
@@ -685,13 +732,15 @@ public class ContainerShop implements Shop {
                         break;
                     }
                 }
-                if (!text)
+                if (!text) {
                     signs.add(sign);
+                }
             }
         }
         return signs;
     }
 
+    @Override
     public boolean isAttached(@NotNull Block b) {
         return this.getLocation().getBlock().equals(Util.getAttached(b));
     }
@@ -699,6 +748,7 @@ public class ContainerShop implements Shop {
     /**
      * Deletes the shop from the list of shops and queues it for database
      */
+    @Override
     public void delete() {
         delete(false);
     }
@@ -731,6 +781,7 @@ public class ContainerShop implements Shop {
      *
      * @return isValid
      */
+    @Override
     public boolean isValid() {
         checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
@@ -750,6 +801,7 @@ public class ContainerShop implements Shop {
     /**
      * Load ContainerShop.
      */
+    @Override
     public void onLoad() {
         if (this.isLoaded) {
             Util.debugLog("Dupe load request, canceled.");
@@ -757,8 +809,9 @@ public class ContainerShop implements Shop {
         }
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
         Bukkit.getPluginManager().callEvent(shopLoadEvent);
-        if (shopLoadEvent.isCancelled())
+        if (shopLoadEvent.isCancelled()) {
             return;
+        }
 
         this.isLoaded = true;
         plugin.getShopManager().getLoadedShops().add(this);
@@ -783,6 +836,7 @@ public class ContainerShop implements Shop {
     /**
      * Unload ContainerShop.
      */
+    @Override
     public void onUnload() {
         if (!this.isLoaded) {
             Util.debugLog("Dupe unload request, canceled.");
@@ -798,6 +852,7 @@ public class ContainerShop implements Shop {
         Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }
 
+    @Override
     public void onClick() {
         ShopClickEvent event = new ShopClickEvent(this);
         Bukkit.getPluginManager().callEvent(event);
@@ -809,15 +864,19 @@ public class ContainerShop implements Shop {
         this.checkDisplay();
     }
 
+    @Override
     public String ownerName() {
-        if (this.isUnlimited())
+        if (this.isUnlimited()) {
             return MsgUtil.getMessage("admin-shop");
+        }
 
-        if (this.getOwner() == null)
+        if (this.getOwner() == null) {
             return MsgUtil.getMessage("unknown-owner");
+        }
         String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
-        if (name == null || name.isEmpty())
+        if (name == null || name.isEmpty()) {
             return MsgUtil.getMessage("unknown-owner");
+        }
         return name;
     }
 

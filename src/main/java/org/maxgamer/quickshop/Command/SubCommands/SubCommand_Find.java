@@ -47,14 +47,17 @@ public class SubCommand_Find implements CommandProcesser {
                 for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
                     Chunk d = c.getWorld().getChunkAt(x, z);
                     HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(d);
-                    if (inChunk == null)
+                    if (inChunk == null) {
                         continue;
+                    }
                     for (Shop shop : inChunk.values()) {
-                        if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor))
+                        if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
                             continue;
+                        }
 
-                        if (!(shop.getLocation().distanceSquared(loc) < minDistanceSquared))
+                        if (!(shop.getLocation().distanceSquared(loc) < minDistanceSquared)) {
                             continue;
+                        }
                         closest = shop;
                         minDistanceSquared = shop.getLocation().distanceSquared(loc);
                     }
