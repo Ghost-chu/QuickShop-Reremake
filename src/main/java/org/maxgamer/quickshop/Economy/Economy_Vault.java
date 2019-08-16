@@ -36,8 +36,9 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     private String formatInternal(double balance) {
-        if (!checkValid())
+        if (!checkValid()) {
             return "Error";
+        }
         try {
             return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
@@ -47,15 +48,17 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @EventHandler
     public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!(event.getProvider() instanceof Economy))
+        if (!(event.getProvider() instanceof Economy)) {
             return;
+        }
         setupEconomy();
     }
 
     @EventHandler
     public void onServiceRegister(ServiceUnregisterEvent event) {
-        if (!(event.getProvider() instanceof Economy))
+        if (!(event.getProvider() instanceof Economy)) {
             return;
+        }
         setupEconomy();
     }
 
@@ -67,11 +70,13 @@ public class Economy_Vault implements EconomyCore, Listener {
             return false;
         }
 
-        if (economyProvider != null)
+        if (economyProvider != null) {
             this.vault = economyProvider.getProvider();
+        }
 
-        if (this.vault == null)
+        if (this.vault == null) {
             return false;
+        }
 
         if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
             plugin.getLogger()
@@ -87,8 +92,9 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     public String getProviderName() {
-        if (this.vault == null)
+        if (this.vault == null) {
             return "Provider not found.";
+        }
         return String.valueOf(this.vault.getName());
     }
 
@@ -99,12 +105,15 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @Override
     public String format(double balance) {
-        if (!checkValid())
+        if (!checkValid()) {
             return "Error";
+        }
         try {
             String formatedBalance = this.vault.format(balance);
             if (formatedBalance == null)//Stupid Ecosystem
+            {
                 return formatInternal(balance);
+            }
             return formatedBalance;
         } catch (Exception e) {
             return formatInternal(balance);
@@ -114,8 +123,9 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @Override
     public boolean deposit(@NotNull UUID name, double amount) {
-        if (!checkValid())
+        if (!checkValid()) {
             return false;
+        }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return this.vault.depositPlayer(p, amount).transactionSuccess();
@@ -130,13 +140,16 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
-        if (!checkValid())
+        if (!checkValid()) {
             return false;
+        }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
-            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan"))
-                if (getBalance(name) < amount)
+            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan")) {
+                if (getBalance(name) < amount) {
                     return false;
+                }
+            }
             return this.vault.withdrawPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
@@ -149,8 +162,9 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @Override
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
-        if (!checkValid())
+        if (!checkValid()) {
             return false;
+        }
         OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
         OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
         try {
@@ -176,8 +190,9 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @Override
     public double getBalance(@NotNull UUID name) {
-        if (!checkValid())
+        if (!checkValid()) {
             return 0.0;
+        }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return this.vault.getBalance(p);

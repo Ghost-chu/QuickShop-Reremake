@@ -16,13 +16,15 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Inventory inventory = e.getInventory();
         ItemStack[] stacks = inventory.getContents();
         for (ItemStack itemStack : stacks) {
-            if (itemStack == null)
+            if (itemStack == null) {
                 continue;
+            }
             if (InventoryPreview.isPreviewItem(itemStack)) {
                 e.setCancelled(true);
                 e.setResult(Result.DENY);
@@ -32,8 +34,9 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         if (InventoryPreview.isPreviewItem(e.getItem())) {
             e.setCancelled(true);
         }
@@ -41,8 +44,9 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler
     public void invEvent(InventoryClickEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
@@ -55,8 +59,9 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler
     public void invEvent(InventoryDragEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
@@ -70,13 +75,15 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler
     public void invEvent(InventoryPickupItemEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Inventory inventory = e.getInventory();
         ItemStack[] stacks = inventory.getContents();
         for (ItemStack itemStack : stacks) {
-            if (itemStack == null)
+            if (itemStack == null) {
                 continue;
+            }
             if (InventoryPreview.isPreviewItem(itemStack)) {
                 e.setCancelled(true);
             }

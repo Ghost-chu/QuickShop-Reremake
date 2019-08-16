@@ -21,19 +21,20 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
-        if (e.isNewChunk()) //Ignore it
+        }
+        if (e.isNewChunk()) {
             return;
+        }
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
-        if (inChunk == null || inChunk.isEmpty())
+        if (inChunk == null || inChunk.isEmpty()) {
             return;
+        }
         HashMap<Location, Shop> inChunkClone = new HashMap<>();
-        Iterator<Location> locationIterator = inChunk.keySet().iterator();
-        /** Clone HashMap to fix ConcurrentModificationException **/
-        while (locationIterator.hasNext()) {
-            Location key = locationIterator.next();
+        /* Clone HashMap to fix ConcurrentModificationException */
+        for (Location key : inChunk.keySet()) {
             inChunkClone.put(key, inChunk.get(key));
         }
 
@@ -43,18 +44,21 @@ public class ChunkListener implements Listener {
                 for (Shop shop : inChunkClone.values()) {
                     shop.onLoad();
                 }
+                //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
             }
-        }.runTaskLater(plugin, 1); //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
+        }.runTaskLater(plugin, 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass()))
+        if (ListenerHelper.isDisabled(e.getClass())) {
             return;
+        }
         Chunk c = e.getChunk();
         HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
-        if (inChunk == null || inChunk.isEmpty())
+        if (inChunk == null || inChunk.isEmpty()) {
             return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {

@@ -3,6 +3,12 @@ package org.maxgamer.quickshop.Shop;
 import org.jetbrains.annotations.*;
 
 public enum DisplayType {
+    /*
+    * UNKNOWN = FALLBACK TO REALITEM
+    * REALITEM = USE REAL DROPPED ITEM
+    * ARMORSTAND = USE ARMORSTAND DISPLAY
+    * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
+    * */
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
     public static DisplayType fromID(int id) {
         for (DisplayType type : DisplayType.values()) {
@@ -18,10 +24,12 @@ public enum DisplayType {
     }
 
     public static DisplayType typeIs(@Nullable DisplayItem displayItem) {
-        if (displayItem instanceof RealDisplayItem)
+        if (displayItem instanceof RealDisplayItem) {
             return REALITEM;
-        if (displayItem instanceof ArmorStandDisplayItem)
+        }
+        if (displayItem instanceof ArmorStandDisplayItem) {
             return ARMORSTAND;
+        }
         return UNKNOWN;
     }
 

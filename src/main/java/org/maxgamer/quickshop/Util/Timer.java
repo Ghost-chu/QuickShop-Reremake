@@ -19,8 +19,9 @@ public class Timer {
      * @param autoSet Auto set the timer
      */
     public Timer(boolean autoSet) {
-        if (autoSet)
+        if (autoSet) {
             startTime = System.currentTimeMillis();
+        }
     }
 
     /**

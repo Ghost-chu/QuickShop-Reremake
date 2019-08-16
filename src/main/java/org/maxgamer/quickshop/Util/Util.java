@@ -58,8 +58,9 @@ public class Util {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strArray.length; i++) {
             builder.append(strArray[i]);
-            if (i + 1 != strArray.length)
+            if (i + 1 != strArray.length) {
                 builder.append(", ");
+            }
         }
         return builder.toString();
     }
@@ -70,8 +71,9 @@ public class Util {
      * @return The result for backup
      */
     public static boolean backupDatabase() {
-        if (plugin.getDatabase().getCore() instanceof MySQLCore)
+        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
             return true; //Backup and logs by MySQL
+        }
         File dataFolder = plugin.getDataFolder();
         File sqlfile = new File(dataFolder, "shop.db");
         if (!sqlfile.exists()) {
@@ -103,13 +105,16 @@ public class Util {
                 return false;
             }
         }
-        if (!(bs instanceof InventoryHolder))
+        if (!(bs instanceof InventoryHolder)) {
             return false;
-        if (!isShoppables(b.getType()))
+        }
+        if (!isShoppables(b.getType())) {
             return false;
+        }
         //noinspection RedundantIfStatement
-        if (isBlacklistWorld(b.getWorld()))
+        if (isBlacklistWorld(b.getWorld())) {
             return false;
+        }
         return true;
 
     }
@@ -123,13 +128,15 @@ public class Util {
      * @return The number of items that match in this inventory.
      */
     public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
-        if (inv == null)
+        if (inv == null) {
             return 0;
+        }
         int items = 0;
         for (ItemStack iStack : inv.getStorageContents()) {
             //noinspection ConstantConditions
-            if (iStack == null)
+            if (iStack == null) {
                 continue;
+            }
             if (plugin.getItemMatcher().matches(item, iStack)) {
                 items += iStack.getAmount();
             }
@@ -146,8 +153,9 @@ public class Util {
      * @return The number of items that can be given to the inventory safely.
      */
     public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
-        if (inv == null)
+        if (inv == null) {
             return 0;
+        }
         int space = 0;
 
         ItemStack[] contents = inv.getStorageContents();
@@ -173,8 +181,9 @@ public class Util {
         try {
             Class c = Class.forName(className);
             className = c.getSimpleName();
-            if (!c.getSimpleName().isEmpty())
+            if (!c.getSimpleName().isEmpty()) {
                 className = c.getSimpleName();
+            }
         } catch (ClassNotFoundException e) {
             //Ignore
         }
@@ -184,10 +193,12 @@ public class Util {
         for (String log : logs) {
             String text = "[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log;
             debugLogs.add(text);
-            if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */
+            if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
                 debugLogs.remove(0);
-            if (!devMode)
+            }
+            if (!devMode) {
                 return;
+            }
             plugin.getLogger().info(text);
         }
     }
@@ -289,8 +300,9 @@ public class Util {
     }
 
     public static String getItemStackName(@NotNull ItemStack itemStack) {
-        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
             return itemStack.getItemMeta().getDisplayName();
+        }
         return MsgUtil.getItemi18n(itemStack.getType().name());
     }
 
@@ -302,16 +314,19 @@ public class Util {
      */
     public static String getLocalizedName(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null)
+        if (itemMeta == null) {
             return null;
-        if (!itemMeta.hasLocalizedName())
+        }
+        if (!itemMeta.hasLocalizedName()) {
             return null;
+        }
         return itemMeta.getLocalizedName();
     }
 
     public static Class<?> getNMSClass(@Nullable String className) {
-        if (className == null)
+        if (className == null) {
             className = "MinecraftServer";
+        }
         String name = Bukkit.getServer().getClass().getPackage().getName();
         String version = name.substring(name.lastIndexOf('.') + 1);
         try {
@@ -417,8 +432,9 @@ public class Util {
     public static Block getSecondHalf_old(@NotNull Block b) {
         // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
         //         //     return null;
-        if (!isDoubleChest(b))
+        if (!isDoubleChest(b)) {
             return null;
+        }
         Block[] blocks = new Block[4];
         blocks[0] = b.getRelative(1, 0, 0);
         blocks[1] = b.getRelative(-1, 0, 0);
@@ -581,16 +597,18 @@ public class Util {
      * @param inv inv
      */
     public static void inventoryCheck(@Nullable Inventory inv) {
-        if (inv == null)
+        if (inv == null) {
             return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
                     for (int i = 0; i < inv.getSize(); i++) {
                         ItemStack itemStack = inv.getItem(i);
-                        if (itemStack == null)
+                        if (itemStack == null) {
                             continue;
+                        }
                         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
                             // Found Item and remove it.
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
@@ -598,8 +616,9 @@ public class Util {
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
                             String locationS = "Unknown (Plugin GUI?)";
                             Location location = inv.getLocation();
-                            if (location != null)
+                            if (location != null) {
                                 locationS = location.toString();
+                            }
                             MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + locationS + ", Item is " + itemStack
                                     .getType().name());
                         }
@@ -612,14 +631,17 @@ public class Util {
     }
 
     public static boolean isAir(@NotNull Material mat) {
-        if (mat == Material.AIR)
+        if (mat == Material.AIR) {
             return true;
+        }
         /* For 1.13 new AIR */
         try {
-            if (mat == Material.CAVE_AIR)
+            if (mat == Material.CAVE_AIR) {
                 return true;
-            if (mat == Material.VOID_AIR)
+            }
+            if (mat == Material.VOID_AIR) {
                 return true;
+            }
         } catch (Throwable t) {
             //ignore
         }
@@ -654,8 +676,9 @@ public class Util {
     }
 
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
-        if (isAir(mat))
+        if (isAir(mat)) {
             return true;
+        }
         return isWallSign(mat);
     }
 
@@ -747,8 +770,9 @@ public class Util {
      * @return is UUID
      */
     public static boolean isUUID(@NotNull String string) {
-        if (string.length() != 36 && string.length() != 32)
+        if (string.length() != 36 && string.length() != 32) {
             return false;
+        }
         Util.debugLog("Run an extra uuid check for " + string + ". Length: " + string.length());
         try {
             //noinspection ResultOfMethodCallIgnored
@@ -766,12 +790,13 @@ public class Util {
      * @return is or not a wall_sign
      */
     public static boolean isWallSign(@Nullable Material material) {
-        if (material == null)
+        if (material == null) {
             return false;
+        }
         try {
             return Tag.WALL_SIGNS.isTagged(material);
         } catch (NoSuchFieldError e) {
-            return material.name().equals("WALL_SIGN");
+            return "WALL_SIGN".equals(material.name());
         }
     }
 
@@ -786,8 +811,9 @@ public class Util {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strList.size(); i++) {
             builder.append(strList.get(i));
-            if (i + 1 != strList.size())
+            if (i + 1 != strList.size()) {
                 builder.append(", ");
+            }
         }
         return builder.toString();
     }
@@ -839,8 +865,9 @@ public class Util {
      */
     public static boolean mapDuoMatches(@NotNull Map map1, @NotNull Map map2) {
         boolean result = mapMatches(map1, map2);
-        if (!result)
+        if (!result) {
             return false;
+        }
         return mapMatches(map2, map1);
     }
 
@@ -853,10 +880,12 @@ public class Util {
      */
     public static boolean mapMatches(@NotNull Map map1, @NotNull Map map2) {
         for (Object obj : map1.keySet()) {
-            if (!map2.containsKey(obj))
+            if (!map2.containsKey(obj)) {
                 return false;
-            if (map1.get(obj) != map2.get(obj))
+            }
+            if (map1.get(obj) != map2.get(obj)) {
                 return false;
+            }
         }
         return true;
     }
@@ -870,8 +899,9 @@ public class Util {
         Set<String> keys = config.getKeys(true);
         for (String key : keys) {
             String filtered = config.getString(key);
-            if (filtered == null)
+            if (filtered == null) {
                 continue;
+            }
             if (filtered.startsWith("MemorySection")) {
                 continue;
             }
@@ -905,8 +935,9 @@ public class Util {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < nameParts.length; i++) {
             sb.append(firstUppercase(nameParts[i]));
-            if (i + 1 != nameParts.length)
+            if (i + 1 != nameParts.length) {
                 sb.append(" ");
+            }
 
         }
         return sb.toString();
@@ -984,8 +1015,9 @@ public class Util {
         try {
             Class c = Class.forName(className);
             className = c.getSimpleName();
-            if (!c.getSimpleName().isEmpty())
+            if (!c.getSimpleName().isEmpty()) {
                 className = c.getSimpleName();
+            }
         } catch (ClassNotFoundException e) {
             //Ignore
         }
