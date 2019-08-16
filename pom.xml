@@ -149,6 +149,7 @@
             <id>lang-utils-repo</id>
             <url>https://ci.nyaacat.com/maven/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -244,6 +245,27 @@
             <artifactId>LangUtils</artifactId>
             <!--Please check the latest version -->
             <version>2.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko.luckperms</groupId>
+            <artifactId>luckperms-api</artifactId>
+            <version>4.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.tehkode</groupId>
+            <artifactId>PermissionsEx</artifactId>
+            <version>1.23.4</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/PermissionsEx-1.23.4.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>net.mc-ess</groupId>
+            <artifactId>GroupManager</artifactId>
+            <version>0.2.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/GroupManager.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

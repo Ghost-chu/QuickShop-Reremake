@@ -38,8 +38,7 @@ public class SubCommand_Remove implements CommandProcesser {
             Block b = bIt.next();
             Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
-                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || sender
-                        .hasPermission("quickshop.other.destroy")) {
+                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
                     shop.onUnload();
                     shop.delete();
                 } else {
