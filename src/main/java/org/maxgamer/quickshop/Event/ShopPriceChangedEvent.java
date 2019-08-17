@@ -29,10 +29,10 @@ public class ShopPriceChangedEvent extends Event {
         this.newPrice = newPrice;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {return HANDLERS;}
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 }
