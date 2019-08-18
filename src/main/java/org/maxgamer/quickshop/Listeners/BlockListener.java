@@ -101,7 +101,6 @@ public class BlockListener implements Listener {
                 if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) || sign.getLine(0).equals(plugin
                         .getConfig().getString("lockette.more_users"))) {
                     //Ignore break lockette sign
-                    plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette)");
                     return;
                 }
             }

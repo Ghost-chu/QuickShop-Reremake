@@ -37,15 +37,7 @@ public class DisplayProtectionListener implements Listener {
         }
         Block targetBlock = event.getToBlock();
         Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShop(shopBlock.getLocation());
-        if (shop == null) {
-            return;
-        }
-        Block anotherBlock = Util.getAttached(shopBlock);
-        if (anotherBlock == null) {
-            return;
-        }
-        shop = plugin.getShopManager().getShop(anotherBlock.getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(shopBlock.getLocation());
         if (shop == null) {
             return;
         }
@@ -60,7 +52,7 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShop(block.getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
@@ -70,7 +62,7 @@ public class DisplayProtectionListener implements Listener {
         for (Block oBlock : event.getBlocks()) {
             Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShop(otherBlock.getLocation());
+                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
@@ -87,7 +79,7 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShop(block.getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()
@@ -97,7 +89,7 @@ public class DisplayProtectionListener implements Listener {
         for (Block oBlock : event.getBlocks()) {
             Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShop(otherBlock.getLocation());
+                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(Util.getClassPrefix() + "Piston  " + event.getBlock().getLocation()

@@ -32,7 +32,7 @@ public class ShopProtectionListener implements Listener {
         }
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
@@ -51,7 +51,7 @@ public class ShopProtectionListener implements Listener {
         if (!plugin.getConfig().getBoolean("protect.fromto")) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(e.getToBlock().getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(e.getToBlock().getLocation());
         if (shop == null) {
             return;
         }
@@ -67,7 +67,7 @@ public class ShopProtectionListener implements Listener {
         if (!plugin.getConfig().getBoolean("protect.redstone")) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
         if (shop == null) {
             return;
         }
@@ -82,8 +82,8 @@ public class ShopProtectionListener implements Listener {
             return;
         }
         Block newBlock = e.getNewState().getBlock();
-        Shop thisBlockShop = plugin.getShopManager().getShop(newBlock.getLocation());
-        Shop underBlockShop = plugin.getShopManager().getShop(newBlock.getRelative(BlockFace.DOWN).getLocation());
+        Shop thisBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getLocation());
+        Shop underBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getRelative(BlockFace.DOWN).getLocation());
         if (thisBlockShop == null && underBlockShop == null) {
             return;
         }
@@ -102,7 +102,7 @@ public class ShopProtectionListener implements Listener {
         }
         for (int i = 0; i < e.blockList().size(); i++) {
             Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
@@ -126,7 +126,7 @@ public class ShopProtectionListener implements Listener {
         if (loc == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(loc);
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
         if (shop == null) {
             return;
         }
@@ -139,7 +139,7 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(event.getBlock().getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
         if (shop == null) {
             return;
         }
@@ -159,7 +159,7 @@ public class ShopProtectionListener implements Listener {
             return;
         }
         for (BlockState blockstate : event.getBlocks()) {
-            Shop shop = plugin.getShopManager().getShop(blockstate.getLocation());
+            Shop shop = plugin.getShopManager().getShopIncludeAttached(blockstate.getLocation());
             if (shop == null) {
                 continue;
             }
