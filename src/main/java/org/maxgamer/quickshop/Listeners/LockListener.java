@@ -168,29 +168,28 @@ public class LockListener implements Listener {
             e.setCancelled(true);
         }
     }
-
-    /*
-     * Handles shops breaking through explosions
-     */
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onExplode(EntityExplodeEvent e) {
-        for (int i = 0; i < e.blockList().size(); i++) {
-            Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                e.blockList().remove(b); //Protect shop
-            }
-            if (Util.isWallSign(b.getType())) {
-                Block block = Util.getAttached(b);
-                if (block != null) {
-                    shop = plugin.getShopManager().getShop(block.getLocation());
-                    if (shop != null) {
-                        e.blockList().remove(b); //Protect shop
-                    }
-                }
-            }
-        }
-    }
+/* Moved to ShopProtectionListener */
+//    /*
+//     * Handles shops breaking through explosions
+//     */
+//    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+//    public void onExplode(EntityExplodeEvent e) {
+//        for (int i = 0; i < e.blockList().size(); i++) {
+//            Block b = e.blockList().get(i);
+//            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+//            if (shop != null) {
+//                e.blockList().remove(b); //Protect shop
+//            }
+//            if (Util.isWallSign(b.getType())) {
+//                Block block = Util.getAttached(b);
+//                if (block != null) {
+//                    shop = plugin.getShopManager().getShop(block.getLocation());
+//                    if (shop != null) {
+//                        e.blockList().remove(b); //Protect shop
+//                }
+//            }
+//        }
+//    }
 
     /*
      * Handles hopper placement
