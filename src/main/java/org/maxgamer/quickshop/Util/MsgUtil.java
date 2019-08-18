@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 import com.meowj.langutils.lang.LanguageHelper;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -523,7 +524,12 @@ public class MsgUtil {
      *
      * @param content The content to send.
      */
-    public static void sendGlobalAlert(String content) {
+    public static void sendGlobalAlert(@Nullable String content) {
+        if(content == null){
+            Util.debugLog("Content is null");
+            Throwable throwable = new Throwable("Known issue: Global Alert accepted null string, what the fuck");
+            plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
+        }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
         plugin.getLogWatcher().add(content);
