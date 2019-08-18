@@ -68,7 +68,7 @@ public class ContainerShop implements Shop {
         this.price = price;
         this.moderator = moderator;
         this.item = item.clone();
-        this.plugin = (QuickShop) Bukkit.getPluginManager().getPlugin("QuickShop");
+        this.plugin = QuickShop.instance;
         this.item.setAmount(1);
         this.shopType = type;
         this.unlimited = unlimited;
