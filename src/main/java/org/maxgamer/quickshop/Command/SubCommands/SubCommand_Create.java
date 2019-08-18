@@ -40,7 +40,7 @@ public class SubCommand_Create implements CommandProcesser {
                         Block b = bIt.next();
                         if (Util.canBeShop(b)) {
                             if (p.isOnline()) {
-                                if (!plugin.getPermissionChecker().canBuild(p, b, false)) {
+                                if (!plugin.getPermissionChecker().canBuild(p, b)) {
                                     Util.debugLog("Failed permission build check, canceled");
                                     return;
                                 }
