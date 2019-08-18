@@ -9,6 +9,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.*;
+import org.maxgamer.quickshop.Event.ProtectionCheckStatus;
+import org.maxgamer.quickshop.Event.ShopProtectionCheckEvent;
 import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -26,21 +28,19 @@ public class PermissionChecker {
      *
      * @param player   Target player
      * @param location Target location
-     * @param place    Place block (false = break block)
      * @return Success
      */
-    public boolean canBuild(@NotNull Player player, @NotNull Location location, boolean place) {
-        return canBuild(player, location.getBlock(), place);
+    public boolean canBuild(@NotNull Player player, @NotNull Location location) {
+        return canBuild(player, location.getBlock());
     }
 
     /**
      * Check player can build in target block
      * @param player Target player
      * @param block Target block
-     * @param place Place block (false = break block)
      * @return Success
      */
-    public boolean canBuild(@NotNull Player player, @NotNull Block block, boolean place) {
+    public boolean canBuild(@NotNull Player player, @NotNull Block block) {
         if (!usePermissionChecker) {
             return true;
         }
@@ -49,9 +49,13 @@ public class PermissionChecker {
         //getItemInMainHand(), player, true, EquipmentSlot.HAND);
 
         beMainHand = new BlockBreakEvent(block, player);
+        //Call for event for protection check start
+        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.BEGIN,beMainHand));
         ListenerHelper.disableEvent(beMainHand.getClass());
         Bukkit.getPluginManager().callEvent(beMainHand);
         ListenerHelper.enableEvent(beMainHand.getClass());
+        //Call for event for protection check end
+        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.END,beMainHand));
         boolean canBuild = !((Cancellable) beMainHand).isCancelled();
 
         if (!canBuild) {
