@@ -469,6 +469,10 @@ public class QuickShop extends JavaPlugin {
      * @throws RuntimeException The error message, use this to create a BootError.
      */
     private void runtimeCheck(QuickShop shop) throws RuntimeException {
+        if(Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")){
+            getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
+            throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
+        }
         if (!Util.isClassAvailable("org.apache.http.impl.client.HttpClients")) {
             getLogger()
                     .severe("FATAL: Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");

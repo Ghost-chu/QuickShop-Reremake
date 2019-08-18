@@ -8,10 +8,10 @@ import lombok.*;
 @Setter
 @ToString
 public class IncompatibleChecker {
-    private final ArrayList<String> incompatibleVersionList = new ArrayList<>();
+    private ArrayList<String> incompatibleVersionList;
 
     public IncompatibleChecker() {
-        incompatibleVersionList.clear();
+        incompatibleVersionList = new ArrayList<>();
         mc1_5();
         mc1_6();
         mc1_7();
