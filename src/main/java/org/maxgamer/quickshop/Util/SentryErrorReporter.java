@@ -81,7 +81,7 @@ public class SentryErrorReporter {
      * @param throwable Throws
      * @return dupecated
      */
-    private boolean canReport(@NotNull Throwable throwable) {
+    public boolean canReport(@NotNull Throwable throwable) {
         if (!enabled) {
             return false;
         }
@@ -107,7 +107,7 @@ public class SentryErrorReporter {
      * @param throwable Throws
      * @return Cause or not
      */
-    private boolean checkWasCauseByQS(@Nullable Throwable throwable) {
+    public boolean checkWasCauseByQS(@Nullable Throwable throwable) {
         if (throwable == null) {
             return false;
         }
@@ -152,7 +152,7 @@ public class SentryErrorReporter {
      * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
-    private @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
+    public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         try {
             if (tempDisable) {
                 Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
