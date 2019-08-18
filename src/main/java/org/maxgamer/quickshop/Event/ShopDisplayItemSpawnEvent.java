@@ -42,7 +42,7 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     /**
      * This event is called before the shop display item created
      * @param shop Target shop
-     * @param displayType The displayType
+     * @param iStack The ItemStack for spawning the displayItem
      */
     @Deprecated
     public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack) {
