@@ -27,7 +27,8 @@ public class ChatListener implements Listener {
         if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
             return;
         }
-        plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage());
+        //Fix stupid chat plugin will add a weird space before or after the number we want.
+        plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage().trim());
         e.setCancelled(true);
     }
 }
