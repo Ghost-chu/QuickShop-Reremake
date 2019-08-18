@@ -160,7 +160,7 @@ public class ShopManager {
                 return;
             }
             if (Util.getSecondHalf(info.getLocation().getBlock()) != null
-                    && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 p.sendMessage(MsgUtil.getMessage("no-double-chests"));
                 return;
             }
@@ -169,7 +169,7 @@ public class ShopManager {
                 return;
             }
             if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) {
-                if (!QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.enderchest")) {
+                if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                     return;
                 }
             }
@@ -617,6 +617,28 @@ public class ShopManager {
         // We can do this because WorldListener updates the world reference so
         // the world in loc is the same as world in inChunk.get(loc)
         return inChunk.get(loc);
+    }
+
+    /**
+     * Gets a shop in a specific location
+     * Include the attached shop, e.g DoubleChest shop.
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    public Shop getShopIncludeAttached(@NotNull Location loc) {
+        HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        if (inChunk == null) {
+            return null;
+        }
+        if (inChunk.get(loc) != null) {
+            return inChunk.get(loc);
+        }
+        Block block = Util.getAttached(loc.getBlock());
+        if (block != null) {
+            return inChunk.get(block.getLocation());
+        }
+        return null;
     }
 
     /**
