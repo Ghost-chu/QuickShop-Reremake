@@ -42,6 +42,10 @@ public class ShopManager {
 
     @SuppressWarnings("deprecation")
     private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+        if(plugin.getEconomy() == null){
+            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
+            return;
+        }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
             p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
             return;
@@ -136,6 +140,10 @@ public class ShopManager {
 
     @SuppressWarnings("deprecation")
     private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, boolean bypassProtectionChecks) {
+        if(plugin.getEconomy() == null){
+            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
+            return;
+        }
         Util.debugLog("actionCreate");
         try {
             // Checking the shop can be created
@@ -144,7 +152,7 @@ public class ShopManager {
 
             if (!bypassProtectionChecks) {
                 plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
-                if (!plugin.getPermissionChecker().canBuild(p, info.getLocation(), false)) {
+                if (!plugin.getPermissionChecker().canBuild(p, info.getLocation())) {
                     p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
                     Util.debugLog("Failed to create shop: Protection check failed:");
                     for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
@@ -279,6 +287,10 @@ public class ShopManager {
     }
 
     private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+        if(plugin.getEconomy() == null){
+            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
+            return;
+        }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
             p.sendMessage(MsgUtil.getMessage("chest-was-removed"));
             return;
@@ -370,6 +382,10 @@ public class ShopManager {
     }
 
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
+        if(plugin.getEconomy() == null){
+            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
+            return;
+        }
         int amount;
         try {
             amount = Integer.parseInt(message);
@@ -478,7 +494,7 @@ public class ShopManager {
                     return false;
                 }
             }
-            if (!plugin.getPermissionChecker().canBuild(p, b, false)) {
+            if (!plugin.getPermissionChecker().canBuild(p, b)) {
                 Util.debugLog("PermissionChecker canceled shop creation");
                 return false;
             }
