@@ -889,7 +889,21 @@ public class Util {
         }
         return true;
     }
-
+    /**
+     * Match the list1 and list2
+     *
+     * @param list1 requireList
+     * @param list2 givenList
+     * @return Map1 match Map2
+     */
+    public static boolean listMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
+        for (Object obj : list1){
+            if(!list2.contains(obj)){
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * Parse colors for the YamlConfiguration.
      *
