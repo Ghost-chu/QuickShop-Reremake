@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
+import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -26,6 +27,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
@@ -43,6 +45,8 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
+
+
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -190,6 +194,29 @@ public class MsgUtil {
 
     public static void loadCfgMessages(@NotNull String... reload) {
         /* Check & Load & Create default messages.yml */
+        // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
+        try{
+            //Load LangUtils support, before MsgUtil init.
+            //Cause we maybe will use them all.
+            String languageCode = plugin.getConfig()
+                    .getString("langutils-language", "en_us");
+            Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
+            if(langUtilsPlugin != null){
+                LangUtils langUtils = (LangUtils)langUtilsPlugin;
+                List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
+                if(!langLanguages.contains(languageCode)){
+                    langLanguages.add(languageCode);
+                    langUtilsPlugin.getConfig().set("LoadLanguage",langLanguages);
+                    langUtilsPlugin.saveConfig();
+                    langUtilsPlugin.reloadConfig();
+                    langUtilsPlugin.onDisable();
+                    langUtilsPlugin.onEnable();
+                }
+            }
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messageFile.exists()) {
             plugin.getLogger().info("Creating messages.yml");
