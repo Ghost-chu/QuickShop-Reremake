@@ -153,7 +153,7 @@ public class ShopManager {
             if (!bypassProtectionChecks) {
                 plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
                 if (!plugin.getPermissionChecker().canBuild(p, info.getLocation())) {
-                    p.sendMessage(MsgUtil.getMessage("no-permission") + ": BUILD CHECK");
+                    p.sendMessage(MsgUtil.getMessage("no-permission") + ": Some 3rd party plugin denied the permission checks, did you have permission built in there?");
                     Util.debugLog("Failed to create shop: Protection check failed:");
                     for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
                         Util.debugLog(belisteners.getPlugin().getName());
