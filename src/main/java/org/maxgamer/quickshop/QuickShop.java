@@ -897,6 +897,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 44);
             selectedVersion = 44;
         }
+        if (selectedVersion == 44) {
+            getConfig().set("matcher.item.repaircost", false);
+            getConfig().set("config-version", 45);
+            selectedVersion = 45;
+        }
+
+
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
