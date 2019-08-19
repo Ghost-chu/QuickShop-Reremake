@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,11 @@ public class ItemMatcher {
             Util.debugLog("Match failed: A stack is null: " + "requireStack["+String.valueOf(requireStack)+"] givenStack["+givenStack+"]");
             return false; // One of them is null (Can't be both, see above)
         }
+
+        requireStack = requireStack.clone();
+        requireStack.setAmount(1);
+        givenStack = givenStack.clone();
+        givenStack.setAmount(1);
 
         if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
             Util.debugLog("Execute strict match check...");
@@ -218,15 +224,7 @@ public class ItemMatcher {
             }
             List<String> lores1 = meta1.getLore();
             List<String> lores2 = meta2.getLore();
-            if (lores1.size() != lores2.size()) {
-                return false;
-            }
-            for (int i = 0; i < lores1.size(); i++) {
-                if (!lores1.get(i).equals(lores2.get(i))) {
-                    return false;
-                }
-            }
-            return true;
+            return !Arrays.deepEquals(lores1.toArray(), lores2.toArray());
         }
 
         boolean matches(ItemStack requireStack, ItemStack givenStack) {
@@ -330,9 +328,12 @@ public class ItemMatcher {
                if(!potion2.hasCustomEffects()){
                    return false;
                }
-                if (!Util.listMatches(potion1.getCustomEffects(),potion2.getCustomEffects())) {
-                    return false;
+                if(!Arrays.deepEquals(potion1.getCustomEffects().toArray(),potion2.getCustomEffects().toArray())){
+                   return false;
                 }
+//                if (!Util.listMatches(potion1.getCustomEffects(),potion2.getCustomEffects())) {
+//                    return false;
+//                }
             }
             PotionData data1 = potion1.getBasePotionData();
             PotionData data2 = potion2.getBasePotionData();
