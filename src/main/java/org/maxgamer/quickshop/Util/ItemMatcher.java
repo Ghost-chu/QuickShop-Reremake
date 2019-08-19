@@ -7,15 +7,10 @@ import java.util.Map;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
-
-import javax.rmi.CORBA.UtilDelegate;
 
 /**
  * A util allow quickshop check item matches easy and quick.
@@ -79,6 +74,7 @@ public class ItemMatcher {
     }
 
     class ItemMetaMatcher {
+        private boolean repaircost;
         private boolean attributes;
         private boolean custommodeldata;
         private boolean damage;
@@ -90,6 +86,7 @@ public class ItemMatcher {
 
         public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
             this.damage = itemMatcherConfig.getBoolean("damage");
+            this.repaircost = itemMatcherConfig.getBoolean("repaircost");
             this.displayname = itemMatcherConfig.getBoolean("displayname");
             this.lores = itemMatcherConfig.getBoolean("lores");
             this.enchs = itemMatcherConfig.getBoolean("enchs");
@@ -134,20 +131,21 @@ public class ItemMatcher {
             if (!this.damage) {
                 return true;
             }
-            //This is special, we must check them damageable.
-            if ((meta1 instanceof Damageable) != (meta2 instanceof Damageable)) {
-                return false;
+//            if (!(meta1 instanceof Damageable)) {
+//                return true; //No damage need to check.
+//            }
+//            if(!(meta2 instanceof Damageable)){
+//                return false;
+//            }
+            try {
+                Damageable damage1 = (Damageable) meta1;
+                Damageable damage2 = (Damageable) meta2;
+                //Check them damages, if givenDamage >= requireDamage, allow it.
+                return damage2.getDamage() >= damage1.getDamage();
+            }catch (Throwable th){
+                th.printStackTrace();
+                return true;
             }
-
-            if (!(meta1 instanceof Damageable)) {
-                return true; //No damage need to check.
-            }
-
-            Damageable damage1 = (Damageable) meta1;
-            Damageable damage2 = (Damageable) meta2;
-            //Check them damages, if givenDamage >= requireDamage, allow it.
-            return damage2.getDamage() >= damage1.getDamage();
-
         }
 
         private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
@@ -251,6 +249,9 @@ public class ItemMatcher {
             if (!damageMatches(meta1, meta2)) {
                 return false;
             }
+            if (!repaircostMatches(meta1, meta2)) {
+                return false;
+            }
             if (!displayMatches(meta1, meta2)) {
                 return false;
             }
@@ -277,6 +278,27 @@ public class ItemMatcher {
                 //Ignore, for 1.13 compatibility
             }
             Util.debugLog("Pass");
+            return true;
+        }
+
+        private boolean repaircostMatches(ItemMeta meta1, ItemMeta meta2) {
+            if(!this.repaircost){
+                return true;
+            }
+            if(!(meta1 instanceof Repairable)){
+                return true;
+            }
+            if(!(meta2 instanceof Repairable)){
+                return false;
+            }
+            Repairable repairable1 = (Repairable)meta1;
+            Repairable repairable2 = (Repairable)meta2;
+            if(repairable1.hasRepairCost() != repairable2.hasRepairCost()){
+                return false;
+            }
+            if(repairable1.hasRepairCost()){
+                return repairable2.getRepairCost() <= repairable1.getRepairCost();
+            }
             return true;
         }
 
