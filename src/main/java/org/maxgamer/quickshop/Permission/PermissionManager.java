@@ -69,6 +69,7 @@ public class PermissionManager {
             if(Util.isDevMode()){
                 try{
                     PermissionInfomationContainer container = provider.getDebugInfo(sender, permission);
+                    Util.debugLog("Result: "+result);
                     Util.debugLog("Sender: "+container.getSender().getName());
                     Util.debugLog("Permission Node: "+container.getPermission());
                     Util.debugLog("Primary Group: "+container.getGroupName());
