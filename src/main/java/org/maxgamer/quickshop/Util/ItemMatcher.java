@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
@@ -206,7 +207,7 @@ public class ItemMatcher {
                 if(meta2.getItemFlags().isEmpty()){
                     return false;
                 }
-                return Util.listMatches(new ArrayList<>(meta1.getItemFlags()),new ArrayList<>(meta2.getItemFlags()));
+                return Arrays.deepEquals(meta1.getItemFlags().toArray(),meta2.getItemFlags().toArray());
             }
         }
         //We didn't touch the loresMatches because many plugin use this check item.
