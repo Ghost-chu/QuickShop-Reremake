@@ -15,6 +15,8 @@ import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
+import javax.rmi.CORBA.UtilDelegate;
+
 /**
  * A util allow quickshop check item matches easy and quick.
  */
@@ -42,22 +44,30 @@ public class ItemMatcher {
         }
 
         if (requireStack == null || givenStack == null) {
+            Util.debugLog("Match failed: A stack is null: " + "requireStack["+String.valueOf(requireStack)+"] givenStack["+givenStack+"]");
             return false; // One of them is null (Can't be both, see above)
         }
 
         if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
+            Util.debugLog("Execute strict match check...");
             return requireStack.equals(givenStack);
         }
 
         if (!typeMatches(requireStack, givenStack)) {
+            Util.debugLog("Type not match.");
             return false;
         }
 
-        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
-            return false;
-        }
+//        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
+//            Util.debugLog("Meta not matched");
+//            return false;
+//        }
 
         if (requireStack.hasItemMeta()) {
+            if(!givenStack.hasItemMeta()){
+                Util.debugLog("Meta not match.");
+                return false;
+            }
             return itemMetaMatcher.matches(requireStack, givenStack);
         }
 
