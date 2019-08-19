@@ -145,11 +145,12 @@ class ItemMetaMatcher {
 //            if(!(meta2 instanceof Damageable)){
 //                return false;
 //            }
+        Util.debugLog("Checking damage");
         try {
             Damageable damage1 = (Damageable) meta1;
             Damageable damage2 = (Damageable) meta2;
             //Check them damages, if givenDamage >= requireDamage, allow it.
-            return damage2.getDamage() >= damage1.getDamage();
+            return damage2.getDamage() <= damage1.getDamage();
         } catch (Throwable th) {
             th.printStackTrace();
             return true;
@@ -160,6 +161,7 @@ class ItemMetaMatcher {
         if (!this.displayname) {
             return true;
         }
+        Util.debugLog("Checking displayname");
         if (!meta1.hasDisplayName()) {
             return true;
         } else {
@@ -174,6 +176,7 @@ class ItemMetaMatcher {
         if (!this.enchs) {
             return true;
         }
+        Util.debugLog("Checking enchantments");
         if (!meta1.hasEnchants()) {
             return true;
         } else {
@@ -202,6 +205,7 @@ class ItemMetaMatcher {
         if (!this.itemflags) {
             return true;
         }
+        Util.debugLog("Checking itemflags");
         if (meta1.getItemFlags().isEmpty()) {
             return true;
         } else {
@@ -214,11 +218,10 @@ class ItemMetaMatcher {
 
     //We didn't touch the loresMatches because many plugin use this check item.
     private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
-        Util.debugLog("Lores checker");
         if (!this.lores) {
             return true;
         }
-        Util.debugLog("Lores checking");
+        Util.debugLog("Checking lores");
         if (meta1.hasLore() != meta2.hasLore()) {
             return false;
         }
@@ -286,6 +289,7 @@ class ItemMetaMatcher {
         if (!this.repaircost) {
             return true;
         }
+        Util.debugLog("Checking the reportcost");
         if (!(meta1 instanceof Repairable)) {
             return true;
         }
@@ -307,6 +311,7 @@ class ItemMetaMatcher {
         if (!this.potions) {
             return true;
         }
+        Util.debugLog("Checking potion effects");
         if ((meta1 instanceof PotionMeta) != (meta2 instanceof PotionMeta)) {
             return false;
         }
