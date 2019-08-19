@@ -108,9 +108,25 @@ public class Paste {
                     .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
+            finalReport.append("\titemi18n.yml:\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\tenchi18n.yml:\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\tpotioni18n.yml:\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
             finalReport.append("\t\t\n").append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n")).append("\n");
             finalReport.append("\t*********************************\n");
+
         } catch (Throwable th) {
             finalReport.append("\tFailed to get data\n");
         }
