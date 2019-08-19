@@ -72,7 +72,7 @@ public class PlayerListener implements Listener {
                 }
             }
             // Purchase handling
-            if (shop != null && QuickShop.getPermissionManager().hasPermission(p,"quickshop.use")) {
+            if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
                 if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
                     return;
                 }
@@ -98,7 +98,7 @@ public class PlayerListener implements Listener {
             // Handles creating shops
 
             else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
+                    && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
                 if (e.useInteractedBlock() == Result.DENY) {
                     return;
                 }
@@ -111,17 +111,17 @@ public class PlayerListener implements Listener {
                     // So telling them a message would cause spam etc.
                     return;
                 }
-                if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
+                if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                     p.sendMessage(MsgUtil.getMessage("no-double-chests"));
                     return;
                 }
                 if (Util.isBlacklisted(item.getType())
-                        && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
+                        && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
                     p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
                     return;
                 }
                 if (b.getType() == Material.ENDER_CHEST) {
-                    if (!QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.enderchest")) {
+                    if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                         return;
                     }
                 }
@@ -228,26 +228,19 @@ public class PlayerListener implements Listener {
         if (info == null) {
             return;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Player p = e.getPlayer();
-                Location loc1 = info.getLocation();
-                Location loc2 = p.getLocation();
-                if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
-                    if (info.getAction() == ShopAction.CREATE) {
-                        p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
-                        Util.debugLog(p.getName() + " too far with the shop location.");
-                    } else if (info.getAction() == ShopAction.BUY) {
-                        p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
-                        Util.debugLog(p.getName() + " too far with the shop location.");
-                    }
-                    plugin.getShopManager().getActions().remove(p.getUniqueId());
-                    return;
-                }
+        Player p = e.getPlayer();
+        Location loc1 = info.getLocation();
+        Location loc2 = p.getLocation();
+        if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
+            if (info.getAction() == ShopAction.CREATE) {
+                p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
+                Util.debugLog(p.getName() + " too far with the shop location.");
+            } else if (info.getAction() == ShopAction.BUY) {
+                p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled"));
+                Util.debugLog(p.getName() + " too far with the shop location.");
             }
-        }.runTaskAsynchronously(plugin);
-
+            plugin.getShopManager().getActions().remove(p.getUniqueId());
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
