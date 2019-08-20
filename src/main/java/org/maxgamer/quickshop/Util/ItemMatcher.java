@@ -1,13 +1,11 @@
 package org.maxgamer.quickshop.Util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
@@ -230,7 +228,7 @@ class ItemMetaMatcher {
         }
         List<String> lores1 = meta1.getLore();
         List<String> lores2 = meta2.getLore();
-        return !Arrays.deepEquals(lores1.toArray(), lores2.toArray());
+        return Arrays.deepEquals(lores1.toArray(), lores2.toArray());
     }
 
     boolean matches(ItemStack requireStack, ItemStack givenStack) {
