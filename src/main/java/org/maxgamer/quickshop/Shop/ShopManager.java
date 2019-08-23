@@ -652,7 +652,7 @@ public class ShopManager {
         }
         Block block = Util.getAttached(loc.getBlock());
         if (block != null) {
-            return inChunk.get(block.getLocation());
+            return getShops(block.getLocation().getChunk()).get(block.getLocation());
         }
         return null;
     }

@@ -1,9 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,8 +13,10 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Util.Util;
 
 public class ShopProtectionListener implements Listener {
     private QuickShop plugin;
@@ -114,12 +114,13 @@ public class ShopProtectionListener implements Listener {
     }
 
     //Protect Minecart steal shop
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
         if (!plugin.getConfig().getBoolean("protect.inventorymove")) {
+            Util.debugLog("Not enabled in config");
             return;
         }
         Location loc = event.getSource().getLocation();
