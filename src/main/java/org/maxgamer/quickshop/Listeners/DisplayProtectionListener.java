@@ -267,24 +267,24 @@ public class DisplayProtectionListener implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void inventory(InventoryMoveItemEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass())) {
-            return;
-        }
-        try {
-            ItemStack is = event.getItem();
-            if (DisplayItem.checkIsGuardItemStack(is)) {
-                event.setCancelled(true); ;
-                sendAlert(Util.getClassPrefix() + "Inventory " + event.getInitiator()
-                        .getLocation().toString() + " trying moving displayItem, QuickShop already removed it.");
-                event.setItem(new ItemStack(Material.AIR));
-                Util.inventoryCheck(event.getDestination());
-                Util.inventoryCheck(event.getInitiator());
-                Util.inventoryCheck(event.getSource());
-            }
-        } catch (Exception e) {}
-    }
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+//    public void inventory(InventoryMoveItemEvent event) {
+//        if (ListenerHelper.isDisabled(event.getClass())) {
+//            return;
+//        }
+//        try {
+//            ItemStack is = event.getItem();
+//            if (DisplayItem.checkIsGuardItemStack(is)) {
+//                event.setCancelled(true); ;
+//                sendAlert(Util.getClassPrefix() + "Inventory " + event.getInitiator()
+//                        .getLocation().toString() + " trying moving displayItem, QuickShop already removed it.");
+//                event.setItem(new ItemStack(Material.AIR));
+//                Util.inventoryCheck(event.getDestination());
+//                Util.inventoryCheck(event.getInitiator());
+//                Util.inventoryCheck(event.getSource());
+//            }
+//        } catch (Exception e) {}
+//    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryPickupItemEvent event) {
