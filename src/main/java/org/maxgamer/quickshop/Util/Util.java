@@ -38,7 +38,8 @@ import org.maxgamer.quickshop.Watcher.InventoryEditContainer;
 @SuppressWarnings("WeakerAccess")
 public class Util {
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-    @Getter private static List<String> debugLogs = new ArrayList<>();
+    @Getter
+    private static List<String> debugLogs = new ArrayList<>();
     private static boolean devMode;
     private static QuickShop plugin;
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
@@ -276,17 +277,11 @@ public class Util {
      * @return The block the sign is attached to
      */
     public static Block getAttached(@NotNull Block b) {
-        try {
-            if (b.getBlockData() instanceof Directional) {
-                Directional directional = (Directional) b.getBlockData();
-                return b.getRelative(directional.getFacing().getOppositeFace());
-            } else {
-                return null;
-            }
-            // sometimes??
-        } catch (NullPointerException | ClassCastException e) {
-            Util.debugLog("Exception caughted: " + e.getMessage());
-            return null; // /Not sure what causes this.
+        if (b.getBlockData() instanceof Directional) {
+            Directional directional = (Directional) b.getBlockData();
+            return b.getRelative(directional.getFacing().getOppositeFace());
+        } else {
+            return null;
         }
     }
 
@@ -889,6 +884,7 @@ public class Util {
         }
         return true;
     }
+
     /**
      * Match the list1 and list2
      *
@@ -897,13 +893,14 @@ public class Util {
      * @return Map1 match Map2
      */
     public static boolean listMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
-        for (Object obj : list1){
-            if(!list2.contains(obj)){
+        for (Object obj : list1) {
+            if (!list2.contains(obj)) {
                 return false;
             }
         }
         return true;
     }
+
     /**
      * Parse colors for the YamlConfiguration.
      *
