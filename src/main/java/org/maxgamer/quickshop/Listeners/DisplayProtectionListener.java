@@ -257,6 +257,12 @@ public class DisplayProtectionListener implements Listener {
         if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
             return;
         }
+        if(event.getClickedInventory() == null){
+            return;
+        }
+        if(event.getClickedInventory().getLocation() == null){
+            return;
+        }
         event.setCancelled(true);
         sendAlert(Util.getClassPrefix() + "Inventory " + event.getClickedInventory().getLocation()
                 .toString() + " was clicked the displayItem, QuickShop already removed it.");
