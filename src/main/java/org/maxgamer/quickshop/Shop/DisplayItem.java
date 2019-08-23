@@ -36,13 +36,15 @@ public interface DisplayItem {
         if (iMeta.hasDisplayName()) {
             if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem")) {
                 return true;
+            }else{
+                return false;
             }
         }
         if (!iMeta.hasLore()) {
             return false;
         }
             List<String> lores = iMeta.getLore();
-        Gson gson = new Gson();
+            Gson gson = new Gson();
             for (String lore : lores) {
                 try {
                     ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
