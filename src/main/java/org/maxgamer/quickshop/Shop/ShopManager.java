@@ -642,7 +642,10 @@ public class ShopManager {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
-    public Shop getShopIncludeAttached(@NotNull Location loc) {
+    public Shop getShopIncludeAttached(@Nullable Location loc) {
+        if(loc == null){
+            return null;
+        }
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
