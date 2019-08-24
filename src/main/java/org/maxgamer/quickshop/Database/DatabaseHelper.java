@@ -101,6 +101,7 @@ public class DatabaseHelper {
 
     public void createShop(@NotNull Database db, @NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z)
             throws SQLException {
+        removeShop(db,x,y,z,world); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + QuickShop.instance
                 .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
