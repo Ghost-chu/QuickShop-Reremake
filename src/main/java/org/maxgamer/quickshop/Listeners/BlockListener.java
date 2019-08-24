@@ -79,7 +79,10 @@ public class BlockListener implements Listener {
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
-
+            if(e.isCancelled()){
+                p.sendMessage(MsgUtil.getMessage("no-permission"));
+                return;
+            }
             if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
@@ -91,7 +94,6 @@ public class BlockListener implements Listener {
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
-
             shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop"));
