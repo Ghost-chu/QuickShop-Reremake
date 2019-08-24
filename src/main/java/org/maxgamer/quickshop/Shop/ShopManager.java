@@ -655,7 +655,24 @@ public class ShopManager {
         }
         Block block = Util.getAttached(loc.getBlock());
         if (block != null) {
-            return getShops(block.getLocation().getChunk()).get(block.getLocation());
+            try {
+                Location location = block.getLocation();
+                if (location == null) {
+                    return null;
+                }
+                Chunk chunk = location.getChunk();
+                if (chunk == null) {
+                    return null;
+                }
+                if (chunk == loc.getChunk()) {
+                    return inChunk.get(location);
+                }
+                HashMap<Location, Shop> inChunkB = getShops(location.getChunk());
+                return inChunkB.get(block.getLocation());
+            }catch (NullPointerException e){
+                plugin.getSentryErrorReporter().sendError(e,"Known issue");
+                return null;
+            }
         }
         return null;
     }
