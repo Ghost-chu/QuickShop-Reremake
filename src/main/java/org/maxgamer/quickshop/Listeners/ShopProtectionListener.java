@@ -127,11 +127,22 @@ public class ShopProtectionListener implements Listener {
         if (loc == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
+        Shop shop;
+        shop = plugin.getShopManager().getShop(loc);
+        Block block = loc.getBlock();
         if (shop == null) {
-            return;
+            block = loc.getBlock();
+            block = Util.getAttached(block);
+            if(block == null){
+                return;
+            }
+            shop = plugin.getShopManager().getShop(block.getLocation());
+            if(shop == null){
+                return;
+            }
         }
         event.setCancelled(true);
+        block.breakNaturally();
     }
 
     //Protect Entity pickup shop
