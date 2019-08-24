@@ -32,7 +32,8 @@ public class SubCommand_Info implements CommandProcesser {
             worlds++;
             for (HashMap<Location, Shop> inChunk : inWorld.values()) {
                 chunks++;
-                for (Shop shop : inChunk.values()) {
+                //noinspection unchecked
+                for (Shop shop : (ArrayList<Shop>)new ArrayList<>(inChunk.values()).clone()) {
                     if (shop.isBuying()) {
                         buying++;
                     } else if (shop.isSelling()) {
