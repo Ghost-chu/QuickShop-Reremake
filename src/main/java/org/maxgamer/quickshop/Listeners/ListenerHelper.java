@@ -1,18 +1,21 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.LinkedList;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ListenerHelper {
-    private static LinkedList<Class> disabledListener = new LinkedList<>();
+    private static Set<Class> disabledListener = new HashSet<>();
 
-    public static void disableEvent(Class eventClass) {
+    public static void disableEvent(@NotNull Class eventClass) {
         if (disabledListener.contains(eventClass)) {
             return;
         }
         disabledListener.add(eventClass);
     }
 
-    public static void enableEvent(Class eventClass) {
+    public static void enableEvent(@NotNull Class eventClass) {
         if (!disabledListener.contains(eventClass)) {
             return;
         }
