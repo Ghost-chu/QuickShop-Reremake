@@ -3,7 +3,9 @@ package org.maxgamer.quickshop.Util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +13,8 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
+
+import javax.naming.directory.AttributeInUseException;
 
 /**
  * A util allow quickshop check item matches easy and quick.
@@ -114,7 +118,16 @@ class ItemMetaMatcher {
             if (!meta2.hasAttributeModifiers()) {
                 return false;
             }
-            return Util.mapMatches(meta1.getAttributeModifiers().asMap(), meta2.getAttributeModifiers().asMap());
+            Set<Attribute> set1 = meta1.getAttributeModifiers().keySet();
+            Set<Attribute> set2 = meta2.getAttributeModifiers().keySet();
+            for (Attribute att : set1){
+                if(!set2.contains(att)){
+                    return false;
+                }else if(!meta1.getAttributeModifiers().get(att).equals(meta2.getAttributeModifiers().get(att))){
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
