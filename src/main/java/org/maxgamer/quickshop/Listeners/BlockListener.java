@@ -126,9 +126,6 @@ public class BlockListener implements Listener {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
-            // Cancel the event so that the sign does not
-            // drop.. TODO: Find a better way.
-            //b.setType(Material.AIR);
             Util.debugLog("Cannot break the sign.");
             e.setCancelled(true);
         }

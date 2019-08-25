@@ -160,7 +160,7 @@ public class ContainerShop implements Shop {
      * @return The location of the shops chest
      */
     @Override
-    public Location getLocation() {
+    public @NotNull Location getLocation() {
         return this.loc;
     }
 
@@ -222,7 +222,7 @@ public class ContainerShop implements Shop {
      * @return The name of the player who owns the shop.
      */
     @Override
-    public UUID getOwner() {
+    public @NotNull UUID getOwner() {
         return this.moderator.getOwner();
     }
 
@@ -230,7 +230,7 @@ public class ContainerShop implements Shop {
      * @return Returns a dummy itemstack of the item this shop is selling.
      */
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return item;
     }
 
@@ -459,7 +459,7 @@ public class ContainerShop implements Shop {
      * **NOT A DEEP CLONE**
      */
     @Override
-    public ContainerShop clone() {
+    public @NotNull ContainerShop clone() {
         return new ContainerShop(this);
     }
 
@@ -523,7 +523,7 @@ public class ContainerShop implements Shop {
      * @return the shop that shares it's inventory with this one. Will return
      * null if this shop is not attached to another.
      */
-    public ContainerShop getAttachedShop() {
+    public @Nullable ContainerShop getAttachedShop() {
         Block c = Util.getSecondHalf(this.getLocation().getBlock());
         if (c == null) {
             return null;
@@ -537,21 +537,21 @@ public class ContainerShop implements Shop {
      *
      * @return The display item associated with this shop.
      */
-    public DisplayItem getDisplayItem() {
+    public @Nullable DisplayItem getDisplayItem() {
         return this.displayItem;
     }
 
     /**
      * @return The enchantments the shop has on its items.
      */
-    public Map<Enchantment, Integer> getEnchants() {
+    public @NotNull Map<Enchantment, Integer> getEnchants() {
         return this.item.getItemMeta().getEnchants();
     }
 
     /**
      * @return The chest this shop is based on.
      */
-    public Inventory getInventory() {
+    public @Nullable Inventory getInventory() {
         try {
             if (loc.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
@@ -577,7 +577,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The ItemStack type of this shop
      */
-    public Material getMaterial() {
+    public @NotNull Material getMaterial() {
         return this.item.getType();
     }
 
@@ -613,7 +613,7 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public ShopType getShopType() {
+    public @NotNull ShopType getShopType() {
         return this.shopType;
     }
 
@@ -692,7 +692,7 @@ public class ContainerShop implements Shop {
      * blank signs only)
      */
     @Override
-    public List<Sign> getSigns() {
+    public @NotNull List<Sign> getSigns() {
         List<Sign> signs = new ArrayList<Sign>(1);
         if (this.getLocation().getWorld() == null) {
             return signs;
@@ -865,13 +865,9 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public String ownerName() {
+    public @NotNull String ownerName() {
         if (this.isUnlimited()) {
             return MsgUtil.getMessage("admin-shop");
-        }
-
-        if (this.getOwner() == null) {
-            return MsgUtil.getMessage("unknown-owner");
         }
         String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
         if (name == null || name.isEmpty()) {
@@ -881,7 +877,7 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public ShopModerator getModerator() {
+    public @NotNull ShopModerator getModerator() {
         return this.moderator.clone();
     }
 

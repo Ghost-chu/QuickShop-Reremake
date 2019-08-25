@@ -10,7 +10,7 @@ public enum DisplayType {
     * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
     * */
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
-    public static DisplayType fromID(int id) {
+    public static @NotNull DisplayType fromID(int id) {
         for (DisplayType type : DisplayType.values()) {
             if (type.id == id) {
                 return type;

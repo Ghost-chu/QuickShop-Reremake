@@ -133,7 +133,6 @@ public class ShopProtectionListener implements Listener {
         }
         Shop shop;
         shop = plugin.getShopManager().getShop(loc);
-        plugin.getShopManager().getShops(event.getSource().getLocation().getChunk()).forEach((aLoc,aShop)->Util.debugLog("#"+aLoc.toString()+" / "+aShop.getLocation()));
         Util.debugLog("The shop at source is "+(shop != null));
         Block block = loc.getBlock();
         if (shop == null) {

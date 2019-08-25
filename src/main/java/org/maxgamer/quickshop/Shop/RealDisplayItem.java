@@ -190,12 +190,12 @@ public class RealDisplayItem implements DisplayItem {
     }
 
     @Override
-    public Entity getDisplay() {
+    public @Nullable Entity getDisplay() {
         return this.item;
     }
 
     @Override
-    public Location getDisplayLocation() {
+    public @Nullable Location getDisplayLocation() {
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
