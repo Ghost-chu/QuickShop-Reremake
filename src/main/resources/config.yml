@@ -73,6 +73,7 @@ include-offlineplayer-list: false
 #What economy provider you want let QuickShop use?
 #0=Vault
 #1=Reserve
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
 economy-type: 0
 
 #What permission provider you want use?
@@ -82,12 +83,15 @@ economy-type: 0
 #3=PermissionEx
 #4=GroupManager
 #If you enter a number not in list or target provider not usable, plugin will fallback to Bukkit Permission Provider.
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN AND EVERYTHING IS WORKS FINE.
 permission-type: 0
 
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true
 
+#MySQL database settings.
 database:
+    # false = use local SQLite database, true = use local/remote MySQL database.
     mysql: false
     host: localhost
     port: 3306
@@ -206,6 +210,7 @@ shop:
     #SPRUCE_WALL_SIGN
     sign-material: OAK_WALL_SIGN
 
+    #The worlds name for you didn't want create new shop.
     blacklist-world:
         - disabled_world_name
 
