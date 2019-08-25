@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -74,12 +75,12 @@ public class ShopModerator {
 
     @Override
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public ShopModerator clone() {
+    public @NotNull ShopModerator clone() {
         return new ShopModerator(this.owner, this.staffs);
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return serialize(this);
     }
 
@@ -126,7 +127,7 @@ public class ShopModerator {
      * Get moderators owner (Shop Owner).
      * @return Owner's UUID
      */
-    public UUID getOwner() {
+    public @NotNull UUID getOwner() {
         return owner;
     }
 
@@ -144,7 +145,7 @@ public class ShopModerator {
      *
      * @return Staffs
      */
-    public ArrayList<UUID> getStaffs() {
+    public @NotNull ArrayList<UUID> getStaffs() {
         return staffs;
     }
 

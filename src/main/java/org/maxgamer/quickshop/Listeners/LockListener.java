@@ -43,6 +43,7 @@ public class LockListener implements Listener {
         if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
+            return;
         }
         if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
             e.setCancelled(true);
@@ -55,6 +56,7 @@ public class LockListener implements Listener {
         if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
+            return;
         }
         if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
             e.setCancelled(true);
@@ -73,6 +75,7 @@ public class LockListener implements Listener {
             }
             if (InventoryPreview.isPreviewItem(itemStack)) {
                 e.setCancelled(true);
+                return;
             }
         }
     }
@@ -127,6 +130,7 @@ public class LockListener implements Listener {
             if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
+                return;
             }
         }
     }
@@ -166,6 +170,7 @@ public class LockListener implements Listener {
             }
             p.sendMessage(MsgUtil.getMessage("that-is-locked"));
             e.setCancelled(true);
+            return;
         }
     }
 /* Moved to ShopProtectionListener */
@@ -214,5 +219,6 @@ public class LockListener implements Listener {
         }
         p.sendMessage(MsgUtil.getMessage("that-is-locked"));
         e.setCancelled(true);
+        return;
     }
 }
