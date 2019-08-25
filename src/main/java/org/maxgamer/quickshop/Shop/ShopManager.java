@@ -542,7 +542,11 @@ public class ShopManager {
      * @param info The info object
      */
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
-        ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, Bukkit.getPlayer(shop.getOwner()));
+        Player player = Bukkit.getPlayer(shop.getOwner());
+        if(player == null) {
+            throw new IllegalStateException("The owner creating the shop is offline or not exist");
+        }
+        ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
         Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
         if (ssShopCreateEvent.isCancelled()) {
             return;
@@ -554,7 +558,7 @@ public class ShopManager {
             plugin.getDatabaseHelper().createShop(plugin.getDatabase(), ShopModerator.serialize(shop.getModerator()), shop
                     .getPrice(), item, (shop.isUnlimited() ?
                     1 :
-                    0), shop.getShopType().toID(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+                    0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             // Add it to the world
             addShop(loc.getWorld().getName(), shop);
         } catch (SQLException error) {
@@ -630,6 +634,11 @@ public class ShopManager {
         if (inChunk == null) {
             return null;
         }
+        loc = loc.clone();
+        //Fix double chest XYZ issue
+        loc.setX(loc.getBlockX());
+        loc.setY(loc.getBlockY());
+        loc.setZ(loc.getBlockZ());
         // We can do this because WorldListener updates the world reference so
         // the world in loc is the same as world in inChunk.get(loc)
         return inChunk.get(loc);
@@ -653,26 +662,10 @@ public class ShopManager {
         if (inChunk.get(loc) != null) {
             return inChunk.get(loc);
         }
-        Block block = Util.getAttached(loc.getBlock());
-        if (block != null) {
-            try {
-                Location location = block.getLocation();
-                if (location == null) {
-                    return null;
-                }
-                Chunk chunk = location.getChunk();
-                if (chunk == null) {
-                    return null;
-                }
-                if (chunk == loc.getChunk()) {
-                    return inChunk.get(location);
-                }
-                HashMap<Location, Shop> inChunkB = getShops(location.getChunk());
-                return inChunkB.get(block.getLocation());
-            }catch (NullPointerException e){
-                plugin.getSentryErrorReporter().sendError(e,"Known issue");
-                return null;
-            }
+        Block attachedBlock = Util.getAttached(loc.getBlock());
+        if (attachedBlock != null) {
+            HashMap<Location, Shop> inChunkB = getShops(attachedBlock.getLocation().getChunk());
+            return inChunkB.get(attachedBlock.getLocation());
         }
         return null;
     }
@@ -775,7 +768,7 @@ public class ShopManager {
     public void removeShop(@NotNull Shop shop) {
         // shop.onUnload();
         Location loc = shop.getLocation();
-        String world = loc.getWorld().getName();
+        String world = Objects.requireNonNull(loc.getWorld()).getName();
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
         int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
@@ -817,7 +810,6 @@ public class ShopManager {
 
     public class ShopIterator implements Iterator<Shop> {
         private Iterator<HashMap<Location, Shop>> chunks;
-        private Shop current;
         private Iterator<Shop> shops;
         private Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
@@ -868,8 +860,7 @@ public class ShopManager {
             if (!shops.hasNext()) {
                 return this.next(); // Skip to the next one (Empty iterator?)
             }
-            current = shops.next();
-            return current;
+            return shops.next();
         }
     }
 

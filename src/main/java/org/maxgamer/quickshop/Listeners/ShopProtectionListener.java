@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.maxgamer.quickshop.QuickShop;
@@ -112,10 +113,13 @@ public class ShopProtectionListener implements Listener {
             }
         }
     }
-
     //Protect Minecart steal shop
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
+        Util.debugLog("InventoryMoveItemEvent: ");
+        Util.debugLog("Destination: " +event.getDestination().getLocation());
+        Util.debugLog("Source: " +event.getSource().getLocation());
+        Util.debugLog("Initaor: " +event.getInitiator().getLocation());
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
@@ -129,6 +133,8 @@ public class ShopProtectionListener implements Listener {
         }
         Shop shop;
         shop = plugin.getShopManager().getShop(loc);
+        plugin.getShopManager().getShops(event.getSource().getLocation().getChunk()).forEach((aLoc,aShop)->Util.debugLog("#"+aLoc.toString()+" / "+aShop.getLocation()));
+        Util.debugLog("The shop at source is "+(shop != null));
         Block block = loc.getBlock();
         if (shop == null) {
             block = loc.getBlock();
@@ -142,7 +148,10 @@ public class ShopProtectionListener implements Listener {
             }
         }
         event.setCancelled(true);
-        block.breakNaturally();
+        Location location = event.getInitiator().getLocation();
+        if(location != null){
+            location.getBlock().breakNaturally();
+        }
     }
 
     //Protect Entity pickup shop
