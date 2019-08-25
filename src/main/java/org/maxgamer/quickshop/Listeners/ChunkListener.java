@@ -27,21 +27,16 @@ public class ChunkListener implements Listener {
         if (e.isNewChunk()) {
             return;
         }
-        Chunk c = e.getChunk();
-        HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(c);
+        HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
         if (inChunk == null || inChunk.isEmpty()) {
             return;
-        }
-        HashMap<Location, Shop> inChunkClone = new HashMap<>();
-        /* Clone HashMap to fix ConcurrentModificationException */
-        for (Location key : inChunk.keySet()) {
-            inChunkClone.put(key, inChunk.get(key));
         }
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Shop shop : inChunkClone.values()) {
+                //noinspection unchecked
+                for (Shop shop : ((HashMap<Location,Shop>)inChunk.clone()).values()) {
                     shop.onLoad();
                 }
                 //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
@@ -62,7 +57,8 @@ public class ChunkListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Shop shop : inChunk.values()) {
+                //noinspection unchecked
+                for (Shop shop : ((HashMap<Location,Shop>)inChunk.clone()).values()) {
                     shop.onUnload();
                 }
             }

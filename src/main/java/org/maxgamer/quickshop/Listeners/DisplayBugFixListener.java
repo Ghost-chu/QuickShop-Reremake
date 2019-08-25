@@ -35,7 +35,6 @@ public class DisplayBugFixListener implements Listener {
         }
         Collection<Entity> entities = e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 1.0, 1, 1.0);
         for (Entity entity : entities) {
-            Util.debugLog("Found entity: " + entity.getType().name() + " at " + entity.getLocation());
             if (!(entity instanceof ArmorStand)) {
                 continue;
             }
