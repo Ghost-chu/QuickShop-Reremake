@@ -15,7 +15,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class ChatListener implements Listener {
     private QuickShop plugin;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
