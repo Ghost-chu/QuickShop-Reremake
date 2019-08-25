@@ -145,7 +145,7 @@ public class ShopLoader {
         loadShops(null);
     }
 
-    private Long mean(Long[] m) {
+    private @NotNull Long mean(Long[] m) {
         long sum = 0;
         for (Long aM : m) {
             sum += aM;
@@ -230,7 +230,7 @@ public class ShopLoader {
             }
         }
 
-        private ItemStack deserializeItem(@NotNull String itemConfig) {
+        private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
             try {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
@@ -241,7 +241,7 @@ public class ShopLoader {
             }
         }
 
-        private ShopModerator deserializeModerator(@NotNull String moderatorJson) {
+        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson) {
             // try {
             //     UUID.fromString(moderators);
             //     if (!isBackuped) {

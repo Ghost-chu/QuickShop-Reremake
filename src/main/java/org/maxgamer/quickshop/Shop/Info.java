@@ -67,7 +67,7 @@ public class Info {
     /**
      * @return ShopAction action, Get shop action.
      */
-    public ShopAction getAction() {
+    public @NotNull ShopAction getAction() {
         return this.action;
     }
 
@@ -83,21 +83,21 @@ public class Info {
     /**
      * @return ItemStack iStack, Get Shop's selling/buying item's ItemStack.
      */
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return this.item;
     }
 
     /**
      * @return Location loc, Get shop's location,
      */
-    public Location getLocation() {
+    public @NotNull Location getLocation() {
         return this.loc;
     }
 
     /**
      * @return Block signBlock, Get block of shop's sign, may return the null.
      */
-    Block getSignBlock() {
+    public @Nullable Block getSignBlock() {
         return this.last;
     }
 }
