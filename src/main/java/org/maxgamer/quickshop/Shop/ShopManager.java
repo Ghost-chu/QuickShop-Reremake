@@ -619,7 +619,7 @@ public class ShopManager {
      * @param d price
      * @return formated price
      */
-    public String format(double d) {
+    public @Nullable String format(double d) {
         return plugin.getEconomy().format(d);
     }
 
@@ -629,7 +629,7 @@ public class ShopManager {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
-    public Shop getShop(@NotNull Location loc) {
+    public @Nullable Shop getShop(@NotNull Location loc) {
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
@@ -651,7 +651,7 @@ public class ShopManager {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
-    public Shop getShopIncludeAttached(@Nullable Location loc) {
+    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
         if(loc == null){
             return null;
         }
@@ -677,7 +677,7 @@ public class ShopManager {
      *              shops from
      * @return a hashmap of Chunk - Shop
      */
-    public HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
+    public @Nullable HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
         return this.shops.get(world);
     }
 
@@ -688,7 +688,7 @@ public class ShopManager {
      *          coordinates and world are used.
      * @return Shops
      */
-    public HashMap<Location, Shop> getShops(@NotNull Chunk c) {
+    public @Nullable HashMap<Location, Shop> getShops(@NotNull Chunk c) {
         // long start = System.nanoTime();
         return getShops(c.getWorld().getName(), c.getX(), c.getZ());
         // long end = System.nanoTime();
@@ -696,7 +696,7 @@ public class ShopManager {
         // "ms.");
     }
 
-    public HashMap<Location, Shop> getShops(String world, int chunkX, int chunkZ) {
+    public @Nullable HashMap<Location, Shop> getShops(String world, int chunkX, int chunkZ) {
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
@@ -804,7 +804,7 @@ public class ShopManager {
      *
      * @return a hashmap of World - Chunk - Shop
      */
-    public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
+    public @Nullable HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
         return this.shops;
     }
 
@@ -847,7 +847,7 @@ public class ShopManager {
          * more shops.
          */
         @Override
-        public Shop next() {
+        public @NotNull Shop next() {
             if (shops == null || !shops.hasNext()) {
                 if (chunks == null || !chunks.hasNext()) {
                     if (!worlds.hasNext()) {
@@ -869,7 +869,7 @@ public class ShopManager {
      *
      * @return All loaded shops.
      */
-    public Set<Shop> getLoadedShops() {
+    public @Nullable Set<Shop> getLoadedShops() {
         return this.loadedShops;
     }
 }
