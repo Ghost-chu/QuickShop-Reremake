@@ -20,7 +20,7 @@ import org.maxgamer.quickshop.Shop.ShopChunk;
 public class WorldListener implements Listener {
     private QuickShop plugin;
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
         /* *************************************
          * This listener fixes any broken world references. Such as hashmap
