@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
 import lombok.*;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -264,7 +265,8 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        sendAlert(Util.getClassPrefix() + "Inventory " + event.getClickedInventory().getLocation()
+
+        sendAlert(Util.getClassPrefix() + "Inventory "+event.getClickedInventory().getHolder()+" at" + event.getClickedInventory().getLocation()
                 .toString() + " was clicked the displayItem, QuickShop already removed it.");
         event.getCurrentItem().setAmount(0);
         event.getCurrentItem().setType(Material.AIR);
@@ -301,9 +303,10 @@ public class DisplayProtectionListener implements Listener {
         if (!DisplayItem.checkIsGuardItemStack(itemStack)) {
             return; //We didn't care that
         }
+        @Nullable Location loc = event.getInventory().getLocation();
+        @Nullable InventoryHolder holder = event.getInventory().getHolder();
         event.setCancelled(true);
-        sendAlert(Util.getClassPrefix() + "Something  " + event.getInventory().getHolder()
-                .toString() + " trying pickup the DisplayItem.");
+        sendAlert(Util.getClassPrefix() + "Something  " + holder +" at "+ loc + " trying pickup the DisplayItem,  you should teleport to that location and to check detail..");
         Util.inventoryCheck(event.getInventory());
     }
 
@@ -414,24 +417,24 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
     }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void player(PlayerInteractEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass())) {
-            return;
-        }
-        ItemStack stack = e.getItem();
-        if (!DisplayItem.checkIsGuardItemStack(stack)) {
-            return;
-        }
-        stack.setType(Material.AIR);
-        stack.setAmount(0);
-        // You shouldn't be able to pick up that...
-        e.setCancelled(true);
-        sendAlert(Util.getClassPrefix() + "Player " + ((Player) e)
-                .getName() + " using the displayItem, QuickShop already removed it.");
-        Util.inventoryCheck(e.getPlayer().getInventory());
-    }
+//Player can't interact the item entity... of course
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+//    public void player(PlayerInteractEvent e) {
+//        if (ListenerHelper.isDisabled(e.getClass())) {
+//            return;
+//        }
+//        ItemStack stack = e.getItem();
+//        if (!DisplayItem.checkIsGuardItemStack(stack)) {
+//            return;
+//        }
+//        stack.setType(Material.AIR);
+//        stack.setAmount(0);
+//        // You shouldn't be able to pick up that...
+//        e.setCancelled(true);
+//        sendAlert(Util.getClassPrefix() + "Player " + ((Player) e)
+//                .getName() + " using the displayItem, QuickShop already removed it.");
+//        Util.inventoryCheck(e.getPlayer().getInventory());
+//    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerFishEvent event) {
@@ -439,6 +442,9 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         if (event.getState() != State.CAUGHT_ENTITY) {
+            return;
+        }
+        if(event.getCaught() == null){
             return;
         }
         if (event.getCaught().getType() != EntityType.DROPPED_ITEM) {
