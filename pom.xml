@@ -23,7 +23,6 @@
         <system>GitHub Issues</system>
     </issueManagement>
 
-
     <scm>
         <url>https://github.com/${developer}/${version}</url>
         <connection>scm:git:git://github.com/${developer}/${version}.git</connection>

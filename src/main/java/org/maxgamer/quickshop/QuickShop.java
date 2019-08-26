@@ -75,13 +75,6 @@ public class QuickShop extends JavaPlugin {
      */
     private boolean display = true;
     private DisplayBugFixListener displayBugFixListener;
-    //	/** Whether players are required to sneak to create/buy from a shop */
-//	public boolean sneak;
-//	/** Whether players are required to sneak to create a shop */
-//	public boolean sneakCreate;
-//	/** Whether players are required to sneak to trade with a shop */
-//	public boolean sneakTrade;
-// private Metrics metrics;
     private int displayItemCheckTicks;
     private DisplayWatcher displayWatcher;
     /**
