@@ -17,6 +17,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.HashMap;
@@ -140,6 +141,7 @@ public class ShopProtectionListener implements Listener {
         Location location = event.getInitiator().getLocation();
         if(location != null){
             location.getBlock().breakNaturally();
+            MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at "+location +" try steal the items for shop "+loc);
         }
     }
 
