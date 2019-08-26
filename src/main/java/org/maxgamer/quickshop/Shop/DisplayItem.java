@@ -95,11 +95,14 @@ public interface DisplayItem {
         Gson gson = new Gson();
         for (String lore : lores) {
             try {
+                if (!lore.startsWith("{")) {
+                    continue;
+                }
                 ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
                 if (shopProtectionFlag == null) {
                     continue;
                 }
-                if (shopProtectionFlag.getMark() == null) {
+                if (!shopProtectionFlag.getMark().equals(ShopProtectionFlag.getDefaultMark())) {
                     continue;
                 }
                 if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
