@@ -665,6 +665,9 @@ public class ShopManager {
         Block attachedBlock = Util.getAttached(loc.getBlock());
         if (attachedBlock != null) {
             HashMap<Location, Shop> inChunkB = getShops(attachedBlock.getLocation().getChunk());
+            if(inChunkB == null){
+                return null;
+            }
             return inChunkB.get(attachedBlock.getLocation());
         }
         return null;
