@@ -19,6 +19,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.HashMap;
+
 public class ShopProtectionListener implements Listener {
     private QuickShop plugin;
 
@@ -116,10 +118,6 @@ public class ShopProtectionListener implements Listener {
     //Protect Minecart steal shop
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        Util.debugLog("InventoryMoveItemEvent: ");
-        Util.debugLog("Destination: " +event.getDestination().getLocation());
-        Util.debugLog("Source: " +event.getSource().getLocation());
-        Util.debugLog("Initaor: " +event.getInitiator().getLocation());
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
@@ -131,20 +129,12 @@ public class ShopProtectionListener implements Listener {
         if (loc == null) {
             return;
         }
-        Shop shop;
-        shop = plugin.getShopManager().getShop(loc);
-        Util.debugLog("The shop at source is "+(shop != null));
-        Block block = loc.getBlock();
-        if (shop == null) {
-            block = loc.getBlock();
-            block = Util.getAttached(block);
-            if(block == null){
-                return;
-            }
-            shop = plugin.getShopManager().getShop(block.getLocation());
-            if(shop == null){
-                return;
-            }
+        HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
+        if(shopsInChunk == null || shopsInChunk.isEmpty()){
+            return;
+        }
+        if(shopsInChunk.get(loc) == null){
+            return;
         }
         event.setCancelled(true);
         Location location = event.getInitiator().getLocation();
