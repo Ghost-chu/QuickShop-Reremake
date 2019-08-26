@@ -245,6 +245,7 @@
             <artifactId>LangUtils</artifactId>
             <!--Please check the latest version -->
             <version>2.2-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
