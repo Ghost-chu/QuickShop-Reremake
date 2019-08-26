@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -18,8 +19,10 @@ import org.maxgamer.quickshop.Util.Util;
  * cannot be interacted with.
  */
 public interface DisplayItem {
+
     /**
      * Check the itemStack is contains protect flag.
+     *
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
@@ -36,31 +39,35 @@ public interface DisplayItem {
         if (iMeta.hasDisplayName()) {
             if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem")) {
                 return true;
-            }else{
-                return false;
             }
         }
         if (!iMeta.hasLore()) {
             return false;
         }
-            List<String> lores = iMeta.getLore();
-            Gson gson = new Gson();
-            for (String lore : lores) {
-                try {
-                    ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                    if (shopProtectionFlag == null) {
-                        continue;
-                    }
-                    if (shopProtectionFlag.getMark() == null) {
-                        continue;
-                    }
-                    if ("QuickShop DisplayItem".equals(shopProtectionFlag.getMark())) {
-                        return true;
-                    }
-                } catch (JsonSyntaxException e) {
-                    //Ignore
+        List<String> lores = iMeta.getLore();
+        Gson gson = new Gson();
+        for (String lore : lores) {
+            try {
+                if (!lore.startsWith("{")) {
+                    continue;
                 }
+                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                if (shopProtectionFlag == null) {
+                    continue;
+                }
+                if (ShopProtectionFlag.getDefaultMark().equals(shopProtectionFlag.getMark())) {
+                    return true;
+                }
+                if(shopProtectionFlag.getShopLocation()!= null){
+                    return true;
+                }
+                if(shopProtectionFlag.getItemStackString() != null){
+                    return true;
+                }
+            } catch (JsonSyntaxException e) {
+                //Ignore
             }
+        }
         return false;
     }
 
@@ -78,6 +85,9 @@ public interface DisplayItem {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
+        if (iMeta == null) {
+            return false;
+        }
         if (!iMeta.hasLore()) {
             return false;
         }
@@ -207,6 +217,7 @@ public interface DisplayItem {
 
     /**
      * Get plugin now is using which one DisplayType
+     *
      * @return Using displayType.
      */
     static DisplayType getNowUsing() {
