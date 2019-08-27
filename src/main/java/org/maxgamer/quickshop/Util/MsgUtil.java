@@ -35,7 +35,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
-    private static YamlConfiguration builtInLanguage;
     private static YamlConfiguration builtInDefaultLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(QuickShop.instance.getLanguage()
             .getFile("en", "messages")));
     public static String invaildMsg = "Invaild message";
@@ -47,7 +46,7 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
-    
+
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
      *
@@ -70,7 +69,7 @@ public class MsgUtil {
         plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         long weekAgo = System.currentTimeMillis() - 604800000;
-        plugin.getDatabaseHelper().cleanMessage( weekAgo);
+        plugin.getDatabaseHelper().cleanMessage(weekAgo);
     }
 
     /**
@@ -195,25 +194,25 @@ public class MsgUtil {
     public static void loadCfgMessages(@NotNull String... reload) {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
-        try{
+        try {
             //Load LangUtils support, before MsgUtil init.
             //Cause we maybe will use them all.
             String languageCode = plugin.getConfig()
                     .getString("langutils-language", "en_us");
             Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
-            if(langUtilsPlugin != null){
-                LangUtils langUtils = (LangUtils)langUtilsPlugin;
+            if (langUtilsPlugin != null) {
+                LangUtils langUtils = (LangUtils) langUtilsPlugin;
                 List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
-                if(!langLanguages.contains(languageCode)){
+                if (!langLanguages.contains(languageCode)) {
                     langLanguages.add(languageCode);
-                    langUtilsPlugin.getConfig().set("LoadLanguage",langLanguages);
+                    langUtilsPlugin.getConfig().set("LoadLanguage", langLanguages);
                     langUtilsPlugin.saveConfig();
                     langUtilsPlugin.reloadConfig();
                     langUtilsPlugin.onDisable();
                     langUtilsPlugin.onEnable();
                 }
             }
-        }catch (Throwable throwable){
+        } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
 
@@ -226,7 +225,6 @@ public class MsgUtil {
         messagei18n.options().copyDefaults(true);
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
-        builtInLanguage = messagei18nYAML;
         messagei18n.setDefaults(messagei18nYAML);
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
@@ -434,7 +432,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if (!QuickShop.getPermissionManager().hasPermission(sender,"quickshop.use")) {
+        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
@@ -448,14 +446,14 @@ public class MsgUtil {
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation"));
         // Owner
-        if (!QuickShop.getPermissionManager().hasPermission(sender,"quickshop.setowner")) {
+        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
         } else {
             chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", shop.ownerName()), MsgUtil
                     .getMessage("controlpanel.setowner-hover"), MsgUtil.getMessage("controlpanel.commands.setowner"));
         }
         // Unlimited
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.unlimited")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             String text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
             String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",
@@ -466,7 +464,7 @@ public class MsgUtil {
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Buying/Selling Mode
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
             if (shop.isSelling()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-selling");
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
@@ -488,21 +486,21 @@ public class MsgUtil {
             }
         }
         // Set Price
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover");
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.refill")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
             String text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill");
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.empty")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
             String text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",
@@ -513,7 +511,7 @@ public class MsgUtil {
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",
@@ -533,7 +531,7 @@ public class MsgUtil {
      * @param content The content to send.
      */
     public static void sendGlobalAlert(@Nullable String content) {
-        if(content == null){
+        if (content == null) {
             Util.debugLog("Content is null");
             Throwable throwable = new Throwable("Known issue: Global Alert accepted null string, what the fuck");
             plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
@@ -561,7 +559,7 @@ public class MsgUtil {
             }
             TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (QuickShop.getPermissionManager().hasPermission(player,"quickshop.preview")) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
                         .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
                                 .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
@@ -584,7 +582,7 @@ public class MsgUtil {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp() || QuickShop.getPermissionManager().hasPermission(player,"quickshop.alert")) {
+                    if (player.isOp() || QuickShop.getPermissionManager().hasPermission(player, "quickshop.alert")) {
                         player.sendMessage(message);
                     }
                 }
@@ -748,7 +746,7 @@ public class MsgUtil {
 
     @SuppressWarnings("UnusedAssignment")
     private static void updateMessages(int selectedVersion) throws IOException {
-        
+
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
             setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
@@ -963,19 +961,18 @@ public class MsgUtil {
         messagei18n.save(messageFile);
 
     }
-    public static void setAndUpdate(@NotNull String path, @Nullable Object object){
-        if(object == null){
+
+    public static void setAndUpdate(@NotNull String path, @Nullable Object object) {
+        if (object == null) {
             messagei18n.set(path, null); //Removal
         }
-        Object objFromBuiltIn = builtInLanguage.get(path); //Apply target language default
-        if(objFromBuiltIn == null){
-           objFromBuiltIn =  builtInDefaultLanguage.get(path); //Apply english default
-            if(objFromBuiltIn == null){
+            Object objFromBuiltIn = builtInDefaultLanguage.get(path); //Apply english default
+            if (objFromBuiltIn == null) {
                 objFromBuiltIn = object; //Apply hard-code default, maybe a language file i forgotten update??
             }
-        }
         messagei18n.set(path, objFromBuiltIn);
-    } 
+    }
+
     public static YamlConfiguration getI18nYaml() {
         return messagei18n;
     }
