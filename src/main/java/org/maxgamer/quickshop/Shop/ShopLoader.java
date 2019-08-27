@@ -85,7 +85,7 @@ public class ShopLoader {
         try {
             this.plugin.getLogger().info("Loading shops from the database...");
             Timer fetchTimer = new Timer(true);
-            ResultSet rs = plugin.getDatabaseHelper().selectAllShops(this.plugin.getDatabase());
+            ResultSet rs = plugin.getDatabaseHelper().selectAllShops();
             this.plugin.getLogger().info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 Timer singleShopLoadTimer = new Timer(true);
@@ -116,7 +116,7 @@ public class ShopLoader {
                         Util.debugLog("Target block can't be a shop, removing it from the database...");
                         //shop.delete();
                         plugin.getShopManager().removeShop(shop);
-                        plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), shop.getLocation().getBlockX(), shop
+                        plugin.getDatabaseHelper().removeShop(shop.getLocation().getBlockX(), shop
                                 .getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld()
                                 .getName());
                         singleShopLoaded(singleShopLoadTimer);
