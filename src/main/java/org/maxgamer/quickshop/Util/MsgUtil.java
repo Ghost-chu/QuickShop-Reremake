@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import java.util.stream.Stream;
 
 import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
@@ -36,6 +35,8 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
+    private static YamlConfiguration builtInDefaultLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(QuickShop.instance.getLanguage()
+            .getFile("en", "messages")));
     public static String invaildMsg = "Invaild message";
     private static YamlConfiguration enchi18n;
     private static boolean inited;
@@ -45,8 +46,6 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
-
-
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -70,7 +69,7 @@ public class MsgUtil {
         plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         long weekAgo = System.currentTimeMillis() - 604800000;
-        plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
+        plugin.getDatabaseHelper().cleanMessage(weekAgo);
     }
 
     /**
@@ -112,7 +111,7 @@ public class MsgUtil {
                         p.getPlayer().sendMessage(msg);
                     }
                 }
-                plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
+                plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
             }
             return true;
@@ -195,25 +194,25 @@ public class MsgUtil {
     public static void loadCfgMessages(@NotNull String... reload) {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
-        try{
+        try {
             //Load LangUtils support, before MsgUtil init.
             //Cause we maybe will use them all.
             String languageCode = plugin.getConfig()
                     .getString("langutils-language", "en_us");
             Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
-            if(langUtilsPlugin != null){
-                LangUtils langUtils = (LangUtils)langUtilsPlugin;
+            if (langUtilsPlugin != null) {
+                LangUtils langUtils = (LangUtils) langUtilsPlugin;
                 List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
-                if(!langLanguages.contains(languageCode)){
+                if (!langLanguages.contains(languageCode)) {
                     langLanguages.add(languageCode);
-                    langUtilsPlugin.getConfig().set("LoadLanguage",langLanguages);
+                    langUtilsPlugin.getConfig().set("LoadLanguage", langLanguages);
                     langUtilsPlugin.saveConfig();
                     langUtilsPlugin.reloadConfig();
                     langUtilsPlugin.onDisable();
                     langUtilsPlugin.onEnable();
                 }
             }
-        }catch (Throwable throwable){
+        } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
 
@@ -226,7 +225,7 @@ public class MsgUtil {
         messagei18n.options().copyDefaults(true);
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
-        messagei18n.setDefaults(messagei18nYAML); ;
+        messagei18n.setDefaults(messagei18nYAML);
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
@@ -380,7 +379,7 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
-            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
@@ -413,13 +412,12 @@ public class MsgUtil {
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
-            // msgs = new LinkedList<String>();
             if (msgs == null) {
                 msgs = new LinkedList<>();
             }
             player_messages.put(player, msgs);
             msgs.add(message);
-            plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
+            plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
                 p.getPlayer().sendMessage(message);
@@ -434,10 +432,9 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if (!QuickShop.getPermissionManager().hasPermission(sender,"quickshop.use")) {
+        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
-
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
             if (sender instanceof Player) {
                 if (!((Player) sender).isSneaking()) {
@@ -449,37 +446,30 @@ public class MsgUtil {
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation"));
         // Owner
-        if (!QuickShop.getPermissionManager().hasPermission(sender,"quickshop.setowner")) {
+        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", shop.ownerName()));
         } else {
             chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", shop.ownerName()), MsgUtil
                     .getMessage("controlpanel.setowner-hover"), MsgUtil.getMessage("controlpanel.commands.setowner"));
         }
-
         // Unlimited
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.unlimited")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             String text = MsgUtil.getMessage("controlpanel.unlimited", bool2String(shop.isUnlimited()));
             String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover");
-            //String clickCommand = "/qs silentunlimited " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Buying/Selling Mode
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
             if (shop.isSelling()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-selling");
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover");
-                //String clickCommand = "/qs silentbuy " + shop.getLocation().getWorld().getName() + " "
-                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-                //		+ shop.getLocation().getBlockZ();
                 String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy",
-                        String.valueOf(shop.getLocation().getWorld().getName()),
+                        shop.getLocation().getWorld().getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
                         String.valueOf(shop.getLocation().getBlockZ()));
@@ -487,11 +477,8 @@ public class MsgUtil {
             } else if (shop.isBuying()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-buying");
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover");
-                //String clickCommand = "/qs silentsell " + shop.getLocation().getWorld().getName() + " "
-                //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-                //		+ shop.getLocation().getBlockZ() ;
                 String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell",
-                        String.valueOf(shop.getLocation().getWorld().getName()),
+                        shop.getLocation().getWorld().getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
                         String.valueOf(shop.getLocation().getBlockZ()));
@@ -499,44 +486,36 @@ public class MsgUtil {
             }
         }
         // Set Price
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.price", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover");
-            //String clickCommand = "/qs price [New Price]";
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price");
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.refill")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
             String text = MsgUtil.getMessage("controlpanel.refill", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.refill-hover");
-            //String clickCommand = "/qs refill [Amount]";
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill");
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.empty")) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
             String text = MsgUtil.getMessage("controlpanel.empty", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.empty-hover");
-            //String clickCommand = "/qs silentempty " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.remove", String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover");
-            //String clickCommand = "/qs silentremove " + shop.getLocation().getWorld().getName() + " "
-            //		+ shop.getLocation().getBlockX() + " " + shop.getLocation().getBlockY() + " "
-            //		+ shop.getLocation().getBlockZ();
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",
-                    String.valueOf(shop.getLocation().getWorld().getName()),
+                    shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
@@ -552,10 +531,11 @@ public class MsgUtil {
      * @param content The content to send.
      */
     public static void sendGlobalAlert(@Nullable String content) {
-        if(content == null){
+        if (content == null) {
             Util.debugLog("Content is null");
             Throwable throwable = new Throwable("Known issue: Global Alert accepted null string, what the fuck");
             plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
+            return;
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
@@ -579,7 +559,7 @@ public class MsgUtil {
             }
             TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (QuickShop.getPermissionManager().hasPermission(player,"quickshop.preview")) {
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
                         .getMessage("menu.commands.preview", shop.getLocation().getWorld().getName(), String
                                 .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
@@ -602,7 +582,7 @@ public class MsgUtil {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp() || QuickShop.getPermissionManager().hasPermission(player,"quickshop.alert")) {
+                    if (player.isOp() || QuickShop.getPermissionManager().hasPermission(player, "quickshop.alert")) {
                         player.sendMessage(message);
                     }
                 }
@@ -766,88 +746,89 @@ public class MsgUtil {
 
     @SuppressWarnings("UnusedAssignment")
     private static void updateMessages(int selectedVersion) throws IOException {
+
         if (selectedVersion == 1) {
-            messagei18n.set("shop-not-exist", "&cThere had no shop.");
-            messagei18n.set("controlpanel.infomation", "&aShop Control Panel:");
-            messagei18n.set("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
-            messagei18n.set("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
-            messagei18n.set("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
+            setAndUpdate("shop-not-exist", "&cThere had no shop.");
+            setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
+            setAndUpdate("controlpanel.setowner", "&aOwner: &b{0} &e[&d&lChange&e]");
+            setAndUpdate("controlpanel.setowner-hover", "&eLooking you want changing shop and click to switch owner.");
+            setAndUpdate("controlpanel.unlimited", "&aUnlimited: {0} &e[&d&lSwitch&e]");
             messagei18n
                     .set("controlpanel.unlimited-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-            messagei18n.set("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
+            setAndUpdate("controlpanel.mode-selling", "&aShop mode: &bSelling &e[&d&lSwitch&e]");
             messagei18n
                     .set("controlpanel.mode-selling-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-            messagei18n.set("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
+            setAndUpdate("controlpanel.mode-buying", "&aShop mode: &bBuying &e[&d&lSwitch&e]");
             messagei18n
                     .set("controlpanel.mode-buying-hover", "&eLooking you want changing shop and click to switch enabled or disabled.");
-            messagei18n.set("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
-            messagei18n.set("controlpanel.price-hover", "&eLooking you want changing shop and click to set new price.");
-            messagei18n.set("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
-            messagei18n.set("controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
-            messagei18n.set("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
-            messagei18n.set("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
-            messagei18n.set("controlpanel.remove", "&c&l[Remove Shop]");
-            messagei18n.set("controlpanel.remove-hover", "&eClick to remove this shop.");
-            messagei18n.set("language-version", 2);
+            setAndUpdate("controlpanel.price", "&aPrice: &b{0} &e[&d&lSet&e]");
+            setAndUpdate("controlpanel.price-hover", "&eLooking you want changing shop and click to set new price.");
+            setAndUpdate("controlpanel.refill", "&aRefill: Refill the shop items &e[&d&lOK&e]");
+            setAndUpdate("controlpanel.refill-hover", "&eLooking you want changing shop and click to refill.");
+            setAndUpdate("controlpanel.empty", "&aEmpty: Remove shop all items &e[&d&lOK&e]");
+            setAndUpdate("controlpanel.empty-hover", "&eLooking you want changing shop and click to clear.");
+            setAndUpdate("controlpanel.remove", "&c&l[Remove Shop]");
+            setAndUpdate("controlpanel.remove-hover", "&eClick to remove this shop.");
+            setAndUpdate("language-version", 2);
             selectedVersion = 2;
 
         }
         if (selectedVersion == 2) {
-            messagei18n.set("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
-            messagei18n.set("command.description.debug", "&ePrint debug infomation");
+            setAndUpdate("command.no-target-given", "&cUsage: /qs export mysql|sqlite");
+            setAndUpdate("command.description.debug", "&ePrint debug infomation");
             messagei18n
                     .set("no-permission-remove-shop", "&cYou do not have permission to use that command. Try break the shop instead?");
-            messagei18n.set("language-version", 3);
+            setAndUpdate("language-version", 3);
             selectedVersion = 3;
 
         }
         if (selectedVersion == 3) {
-            messagei18n.set("signs.unlimited", "Unlimited");
-            messagei18n.set("controlpanel.sign.owner.line1", "");
-            messagei18n.set("controlpanel.sign.owner.line2", "Enter");
-            messagei18n.set("controlpanel.sign.owner.line3", "new owner name");
-            messagei18n.set("controlpanel.sign.owner.line4", "at first line");
-            messagei18n.set("controlpanel.sign.price.line1", "");
-            messagei18n.set("controlpanel.sign.price.line2", "Enter");
-            messagei18n.set("controlpanel.sign.price.line3", "new shop price");
-            messagei18n.set("controlpanel.sign.price.line4", "at first line");
-            messagei18n.set("controlpanel.sign.refill.line1", "");
-            messagei18n.set("controlpanel.sign.refill.line2", "Enter amount");
-            messagei18n.set("controlpanel.sign.refill.line3", "you want fill");
-            messagei18n.set("controlpanel.sign.refill.line4", "at first line");
-            messagei18n.set("language-version", 4);
+            setAndUpdate("signs.unlimited", "Unlimited");
+            setAndUpdate("controlpanel.sign.owner.line1", "");
+            setAndUpdate("controlpanel.sign.owner.line2", "Enter");
+            setAndUpdate("controlpanel.sign.owner.line3", "new owner name");
+            setAndUpdate("controlpanel.sign.owner.line4", "at first line");
+            setAndUpdate("controlpanel.sign.price.line1", "");
+            setAndUpdate("controlpanel.sign.price.line2", "Enter");
+            setAndUpdate("controlpanel.sign.price.line3", "new shop price");
+            setAndUpdate("controlpanel.sign.price.line4", "at first line");
+            setAndUpdate("controlpanel.sign.refill.line1", "");
+            setAndUpdate("controlpanel.sign.refill.line2", "Enter amount");
+            setAndUpdate("controlpanel.sign.refill.line3", "you want fill");
+            setAndUpdate("controlpanel.sign.refill.line4", "at first line");
+            setAndUpdate("language-version", 4);
             selectedVersion = 4;
 
         }
         if (selectedVersion == 4) {
-            messagei18n.set("signs.unlimited", "Unlimited");
-            messagei18n.set("controlpanel.sign", null);
-            messagei18n.set("language-version", 5);
+            setAndUpdate("signs.unlimited", "Unlimited");
+            setAndUpdate("controlpanel.sign", null);
+            setAndUpdate("language-version", 5);
             selectedVersion = 5;
 
         }
         if (selectedVersion == 5) {
-            messagei18n.set("command.description.fetchmessage", "&eFetch unread shop message");
-            messagei18n.set("nothing-to-flush", "&aYou had no new shop message.");
-            messagei18n.set("language-version", 6);
+            setAndUpdate("command.description.fetchmessage", "&eFetch unread shop message");
+            setAndUpdate("nothing-to-flush", "&aYou had no new shop message.");
+            setAndUpdate("language-version", 6);
             selectedVersion = 6;
 
         }
         if (selectedVersion == 6) {
-            messagei18n.set("command.description.info", "&eShow QuickShop Statistics");
-            messagei18n.set("command.description.debug", "&eSwitch to developer mode");
-            messagei18n.set("break-shop-use-supertool", "&eYou break the shop by use SuperTool.");
+            setAndUpdate("command.description.info", "&eShow QuickShop Statistics");
+            setAndUpdate("command.description.debug", "&eSwitch to developer mode");
+            setAndUpdate("break-shop-use-supertool", "&eYou break the shop by use SuperTool.");
             messagei18n
                     .set("no-creative-break", "&cYou cannot break other players shops in creative mode.  Use survival instead or use SuperTool ({0}).");
-            messagei18n.set("command.now-debuging", "&aSuccessfully switch to developer mode, Reloading QuickShop...");
-            messagei18n.set("command.now-nolonger-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
-            messagei18n.set("language-version", 7);
+            setAndUpdate("command.now-debuging", "&aSuccessfully switch to developer mode, Reloading QuickShop...");
+            setAndUpdate("command.now-nolonger-debuging", "&aSuccessfully switch to production mode, Reloading QuickShop...");
+            setAndUpdate("language-version", 7);
             selectedVersion = 7;
 
         }
         if (selectedVersion == 7) {
-            messagei18n.set("failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
-            messagei18n.set("language-version", 8);
+            setAndUpdate("failed-to-put-sign", "&cNo enough space around the shop to place infomation sign.");
+            setAndUpdate("language-version", 8);
             selectedVersion = 8;
 
         }
@@ -856,64 +837,64 @@ public class MsgUtil {
                     .set("failed-to-paste", "&cFailed upload data to Pastebin, Check the internet and try again. (See console for details)");
             messagei18n
                     .set("warn-to-paste", "&eCollecting data and upload to Pastebin, this may need a while. &c&lWarning&c, The data is keep public one week, it may leak your server configuration, make sure you only send it to your &ltrusted staff/developer.");
-            messagei18n.set("command.description.paste", "&eAuto upload server data to Pastebin");
-            messagei18n.set("language-version", 9);
+            setAndUpdate("command.description.paste", "&eAuto upload server data to Pastebin");
+            setAndUpdate("language-version", 9);
             selectedVersion = 9;
 
         }
         if (selectedVersion == 9) {
-            messagei18n.set("controlpanel.commands.setowner", "/qs owner [Player]");
-            messagei18n.set("controlpanel.commands.unlimited", "/qs slientunlimited {0} {1} {2} {3}");
-            messagei18n.set("controlpanel.commands.buy", "/qs silentbuy {0} {1} {2} {3}");
-            messagei18n.set("controlpanel.commands.sell", "/qs silentsell {0} {1} {2} {3}");
-            messagei18n.set("controlpanel.commands.price", "/qs price [New Price]");
-            messagei18n.set("controlpanel.commands.refill", "/qs refill [Amount]");
-            messagei18n.set("controlpanel.commands.empty", "/qs silentempty {0} {1} {2} {3}");
-            messagei18n.set("controlpanel.commands.remove", "/qs silentremove {0} {1} {2} {3}");
-            messagei18n.set("tableformat.full_line", "+---------------------------------------------------+");
-            messagei18n.set("tableformat.left_half_line", "+--------------------");
-            messagei18n.set("tableformat.right_half_line", "--------------------+");
-            messagei18n.set("tableformat.left_begin", "| ");
-            messagei18n.set("booleanformat.success", "&a✔");
-            messagei18n.set("booleanformat.failed", "&c✘");
-            messagei18n.set("language-version", 10);
+            setAndUpdate("controlpanel.commands.setowner", "/qs owner [Player]");
+            setAndUpdate("controlpanel.commands.unlimited", "/qs slientunlimited {0} {1} {2} {3}");
+            setAndUpdate("controlpanel.commands.buy", "/qs silentbuy {0} {1} {2} {3}");
+            setAndUpdate("controlpanel.commands.sell", "/qs silentsell {0} {1} {2} {3}");
+            setAndUpdate("controlpanel.commands.price", "/qs price [New Price]");
+            setAndUpdate("controlpanel.commands.refill", "/qs refill [Amount]");
+            setAndUpdate("controlpanel.commands.empty", "/qs silentempty {0} {1} {2} {3}");
+            setAndUpdate("controlpanel.commands.remove", "/qs silentremove {0} {1} {2} {3}");
+            setAndUpdate("tableformat.full_line", "+---------------------------------------------------+");
+            setAndUpdate("tableformat.left_half_line", "+--------------------");
+            setAndUpdate("tableformat.right_half_line", "--------------------+");
+            setAndUpdate("tableformat.left_begin", "| ");
+            setAndUpdate("booleanformat.success", "&a✔");
+            setAndUpdate("booleanformat.failed", "&c✘");
+            setAndUpdate("language-version", 10);
             selectedVersion = 10;
 
         }
         if (selectedVersion == 10) {
-            messagei18n.set("price-too-high", "&cShop price too high! You can't create price higher than {0} shop.");
-            messagei18n.set("language-version", 11);
+            setAndUpdate("price-too-high", "&cShop price too high! You can't create price higher than {0} shop.");
+            setAndUpdate("language-version", 11);
             selectedVersion = 11;
 
         }
         if (selectedVersion == 11) {
-            messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
-            messagei18n.set("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
-            messagei18n.set("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
-            messagei18n.set("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
-            messagei18n.set("command.wrong-args", "&cParameters not matched, use /qs help to check help");
-            messagei18n.set("command.description.staff", "&eManage your shop staffs.");
-            messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
-            messagei18n.set("language-version", 12);
+            setAndUpdate("unknown-player", "&cTarget player not exist, please check username your typed.");
+            setAndUpdate("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
+            setAndUpdate("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
+            setAndUpdate("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
+            setAndUpdate("command.wrong-args", "&cParameters not matched, use /qs help to check help");
+            setAndUpdate("command.description.staff", "&eManage your shop staffs.");
+            setAndUpdate("unknown-player", "&cTarget player not exist, please check username your typed.");
+            setAndUpdate("language-version", 12);
             selectedVersion = 12;
 
         }
         if (selectedVersion == 12) {
-            messagei18n.set("menu.commands.preview", "/qs silentpreview {0} {1} {2} {3}");
-            messagei18n.set("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
-            messagei18n.set("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
-            messagei18n.set("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
-            messagei18n.set("command.wrong-args", "&cParameters not matched, use /qs help to check help");
-            messagei18n.set("command.description.staff", "&eManage your shop staffs.");
-            messagei18n.set("unknown-player", "&cTarget player not exist, please check username your typed.");
-            messagei18n.set("language-version", 13);
+            setAndUpdate("menu.commands.preview", "/qs silentpreview {0} {1} {2} {3}");
+            setAndUpdate("shop-staff-cleared", "&aSuccessfully remove all staff for your shop.");
+            setAndUpdate("shop-staff-added", "&aSuccessfully add {0} to your shop staffs.");
+            setAndUpdate("shop-staff-deleted", "&aSuccessfully remove {0} to your shop staffs.");
+            setAndUpdate("command.wrong-args", "&cParameters not matched, use /qs help to check help");
+            setAndUpdate("command.description.staff", "&eManage your shop staffs.");
+            setAndUpdate("unknown-player", "&cTarget player not exist, please check username your typed.");
+            setAndUpdate("language-version", 13);
             selectedVersion = 13;
 
         }
         if (selectedVersion == 13) {
-            messagei18n.set("no-permission-build", "&cYou can't build shop here.");
-            messagei18n.set("success-change-owner-to-server", "&aSuccessfully set shop owner to Server.");
-            messagei18n.set("updatenotify.buttontitle", "[Update Now]");
+            setAndUpdate("no-permission-build", "&cYou can't build shop here.");
+            setAndUpdate("success-change-owner-to-server", "&aSuccessfully set shop owner to Server.");
+            setAndUpdate("updatenotify.buttontitle", "[Update Now]");
             List<String> notifylist = new ArrayList<>();
             notifylist.add("{0} is released, You still using {1}!");
             notifylist.add("Boom! New update {0} incoming, Update!");
@@ -931,135 +912,69 @@ public class MsgUtil {
             notifylist.add("Look me style---{0} updated, you still {1}");
             notifylist.add("Ahhhhhhh! New update {0}! Update!");
             notifylist.add("What U thinking? {0} released! Update!");
-            messagei18n.set("updatenotify.list", notifylist);
-            messagei18n.set("language-version", 14);
+            setAndUpdate("updatenotify.list", notifylist);
+            setAndUpdate("language-version", 14);
             selectedVersion = 14;
 
         }
         if (selectedVersion == 14) {
-            messagei18n.set("flush-finished", "&aSuccessfully flushed the messages.");
-            messagei18n.set("language-version", 15);
+            setAndUpdate("flush-finished", "&aSuccessfully flushed the messages.");
+            setAndUpdate("language-version", 15);
             selectedVersion = 15;
 
         }
         if (selectedVersion == 15) {
-            messagei18n.set("purchase-failed", "&cPurchase failed: Internal Error, please contact the server administrator..");
-            messagei18n.set("language-version", 16);
+            setAndUpdate("purchase-failed", "&cPurchase failed: Internal Error, please contact the server administrator..");
+            setAndUpdate("language-version", 16);
             selectedVersion = 16;
 
         }
         if (selectedVersion == 16) {
-            messagei18n.set("command.description.owner", "&eChanges who owns a shop");
-            messagei18n.set("command.description.remove", "&eRemove your looking the shop");
-            messagei18n.set("command.description.amount", "&eExecute for your actions with amount(For chat plugin issue)");
-            messagei18n.set("command.description.about", "&eShow QuickShop abouts");
-            messagei18n.set("command.description.help", "&eShow QuickShop helps");
-            messagei18n.set("no-pending-action", "&cYou do not have any pending action");
-            messagei18n.set("language-version", 17);
+            setAndUpdate("command.description.owner", "&eChanges who owns a shop");
+            setAndUpdate("command.description.remove", "&eRemove your looking the shop");
+            setAndUpdate("command.description.amount", "&eExecute for your actions with amount(For chat plugin issue)");
+            setAndUpdate("command.description.about", "&eShow QuickShop abouts");
+            setAndUpdate("command.description.help", "&eShow QuickShop helps");
+            setAndUpdate("no-pending-action", "&cYou do not have any pending action");
+            setAndUpdate("language-version", 17);
             selectedVersion = 17;
 
         }
         if (selectedVersion == 17) {
-            messagei18n.set("updatenotify.onekeybuttontitle", "[OneKey Update]");
-            messagei18n.set("language-version", 18);
+            setAndUpdate("updatenotify.onekeybuttontitle", "[OneKey Update]");
+            setAndUpdate("language-version", 18);
             selectedVersion = 18;
 
         }
         if (selectedVersion == 18) {
-            messagei18n.set("command.description.supercreate", "&eCreate a shop bypass all protection checks");
-            messagei18n.set("language-version", 19);
+            setAndUpdate("command.description.supercreate", "&eCreate a shop bypass all protection checks");
+            setAndUpdate("language-version", 19);
             selectedVersion = 19;
 
+        }
+        if (selectedVersion == 19) {
+            setAndUpdate("permission-denied-3rd-party", "&cPermission denied: 3rd party plugin [{0}].");
+            setAndUpdate("updatenotify.remote-disable-warning", "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.");
+            setAndUpdate("language-version", 20);
+            selectedVersion = 20;
         }
         messagei18n.save(messageFile);
 
     }
 
+    public static void setAndUpdate(@NotNull String path, @Nullable Object object) {
+        if (object == null) {
+            messagei18n.set(path, null); //Removal
+        }
+            Object objFromBuiltIn = builtInDefaultLanguage.get(path); //Apply english default
+            if (objFromBuiltIn == null) {
+                objFromBuiltIn = object; //Apply hard-code default, maybe a language file i forgotten update??
+            }
+        messagei18n.set(path, objFromBuiltIn);
+    }
+
     public static YamlConfiguration getI18nYaml() {
         return messagei18n;
     }
-
-    // /**
-    //  * Send the ItemPreview chat msg by Bukkit API.
-    //  * More worst than NMS mode.
-    //  * *STILL WIP*
-    //  *
-    //  * @param itemStack  Target ItemStack
-    //  * @param player     Target player
-    //  * @param normalText The text you will see
-    //  */
-    // // Without NMS
-    // private static void sendItemholochatAsNormaly(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
-    //     try {
-    //         String Itemname = null;
-    //         List<String> Itemlore = new ArrayList<>();
-    //         String finalItemdata = null;
-    //         Map<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
-    //         Map<String, Integer> Itemenchs = new HashMap<String, Integer>();
-    //         if (itemStack.hasItemMeta()) {
-    //             ItemMeta iMeta = itemStack.getItemMeta();
-    //             if (iMeta.hasDisplayName()) {
-    //                 Itemname = iMeta.getDisplayName();
-    //             } else {
-    //                 Itemname = Util.getItemStackName(itemStack);
-    //             }
-    //             if (iMeta.hasLore()) {
-    //                 Itemlore = iMeta.getLore();
-    //             } else {
-    //                 Itemlore = new ArrayList<String>();
-    //             }
-    //             if (iMeta.hasEnchants()) {
-    //                 enchs = iMeta.getEnchants();
-    //                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-    //                     String i18n = MsgUtil.getEnchi18n(entries.getKey());
-    //                     if (i18n != null) {
-    //                         Itemenchs.put(i18n, entries.getValue());
-    //                     } else {
-    //                         Itemenchs = null;
-    //                     }
-    //                 }
-    //             }
-    //         } else {
-    //             Itemname =Util.getItemStackName(itemStack);
-    //             Itemlore = null;
-    //             Itemenchs = null;
-    //         }
-    //         if (Itemname != MsgUtil.getItemi18n(itemStack.getType().name())) {
-    //             finalItemdata = Itemname + " " + ChatColor.GRAY + "(" + MsgUtil.getItemi18n(itemStack.getType()
-    //                     .name()) + ChatColor.GRAY + ")";
-    //         } else {
-    //             finalItemdata = Itemname;
-    //         }
-    //
-    //         finalItemdata += "\n";
-    //         List<String> a = new ArrayList<>();
-    //         List<Integer> b = new ArrayList<>();
-    //         a.addAll(Itemenchs.keySet());
-    //         b.addAll(Itemenchs.values());
-    //         for (int i = 0; i < a.size(); i++) {
-    //             finalItemdata += ChatColor.GRAY + a.get(i) + " " + RomanNumber.toRoman(b.get(i)) + "\n";
-    //         }
-    //
-    //         String potionResult = Util.getPotiondata(itemStack);
-    //         if (potionResult != null) {
-    //             finalItemdata += potionResult;
-    //         }
-    //
-    //         if (Itemlore != null) {
-    //             for (String string : Itemlore) {
-    //                 finalItemdata += ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + string + "\n";
-    //             }
-    //         }
-    //         TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview"));
-    //         ComponentBuilder cBuilder = new ComponentBuilder(finalItemdata);
-    //         HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, cBuilder.create());
-    //         normalmessage.setHoverEvent(he);
-    //         player.spigot().sendMessage(normalmessage);
-    //     } catch (Exception e) {
-    //         player.sendMessage(normalText);
-    //         QuickShop.instance.getLogger()
-    //                 .severe("QuickShop cannot send Advanced chat message, Are you using CraftBukkit? Please use Spigot or a Spigot fork.");
-    //     }
-    // }
 
 }

@@ -161,7 +161,6 @@ public class Util {
 
         ItemStack[] contents = inv.getStorageContents();
         for (ItemStack iStack : contents) {
-            //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += item.getMaxStackSize();
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
@@ -340,7 +339,7 @@ public class Util {
                 .getType() != Material.SPLASH_POTION)) {
             return null;
         }
-        List<String> pEffects = new ArrayList<String>();
+        List<String> pEffects = new ArrayList<>();
         PotionMeta pMeta = (PotionMeta) iStack.getItemMeta();
         //if (pMeta.getBasePotionData().getType() != null) {
         if (!(pMeta.getBasePotionData().isUpgraded())) {
@@ -1010,7 +1009,7 @@ public class Util {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024 * 4];
-        int n = 0;
+        int n;
         while ((n = in.read(buffer)) != -1) {
             out.write(buffer, 0, n);
         }
