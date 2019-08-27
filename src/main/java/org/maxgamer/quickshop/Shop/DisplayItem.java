@@ -129,6 +129,9 @@ public interface DisplayItem {
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
             iMeta.setDisplayName("QuickShop DisplayItem");
         }
+        else {
+            iMeta.setDisplayName(null);
+        }
         java.util.List<String> lore = new ArrayList<String>();
         Gson gson = new Gson();
         ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
