@@ -25,12 +25,12 @@ public class DatabaseHelper {
         this.db = db;
         this.plugin = plugin;
         if (!db.hasTable(QuickShop.instance.getDbPrefix() + "shops")) {
-            createShopsTable(db);
+            createShopsTable();
         }
         if (!db.hasTable(QuickShop.instance.getDbPrefix() + "messages")) {
-            createMessagesTable(db);
+            createMessagesTable();
         }
-        checkColumns(db);
+        checkColumns();
 
 
     }

@@ -555,7 +555,7 @@ public class ShopManager {
         ItemStack item = shop.getItem();
         try {
             // Write it to the database
-            plugin.getDatabaseHelper().createShop(plugin.getDatabase(), ShopModerator.serialize(shop.getModerator()), shop
+            plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop
                     .getPrice(), item, (shop.isUnlimited() ?
                     1 :
                     0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
@@ -566,7 +566,7 @@ public class ShopManager {
             boolean backupSuccess = Util.backupDatabase();
             try {
                 if (backupSuccess) {
-                    plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), loc.getBlockX(), loc.getBlockY(), loc
+                    plugin.getDatabaseHelper().removeShop(loc.getBlockX(), loc.getBlockY(), loc
                             .getBlockZ(), loc.getWorld().getName());
                 } else {
                     plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
