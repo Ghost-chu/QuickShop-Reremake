@@ -131,7 +131,7 @@ public interface DisplayItem {
         }
         else {
             iMeta.setDisplayName(null);
-        }
+        } 
         java.util.List<String> lore = new ArrayList<String>();
         Gson gson = new Gson();
         ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
