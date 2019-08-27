@@ -971,6 +971,13 @@ public class MsgUtil {
             selectedVersion = 19;
 
         }
+        if (selectedVersion == 19) {
+            messagei18n.set("permission-denied-3rd-party", "&cPermission denied: 3rd party plugin [{0}].");
+            messagei18n.set("updatenotify.remote-disable-warning", "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.");
+            messagei18n.set("language-version", 20);
+            selectedVersion = 20;
+        }
+
         messagei18n.save(messageFile);
 
     }
