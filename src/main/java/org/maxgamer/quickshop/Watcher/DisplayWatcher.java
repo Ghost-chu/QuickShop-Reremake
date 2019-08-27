@@ -20,7 +20,6 @@ class DisplayRunnable implements Runnable {
                 shop.checkDisplay();
             }
         }
-        pendingCheckDisplayCopy.clear();
         QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
     }
 }
