@@ -27,7 +27,6 @@ import org.json.simple.JSONObject;
  * <p>
  * Edit by QSRR, Don't removed, we customed somethings!
  */
-@SuppressWarnings("unchecked")
 public class Metrics {
 
     // The version of this bStats class

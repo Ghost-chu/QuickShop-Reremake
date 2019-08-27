@@ -11,7 +11,7 @@ public enum ShopType {
                 return type;
             }
         }
-        return null;
+        return SELLING;
     }
 
     public static int toID(@NotNull ShopType shopType) {

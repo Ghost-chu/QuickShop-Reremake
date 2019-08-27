@@ -59,7 +59,7 @@ public class InventoryPreview implements Listener {
             this.itemStack.setItemMeta(itemMeta);
         } else {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
-            List<String> lores = new ArrayList<String>();
+            List<String> lores = new ArrayList<>();
             lores.add("QuickShop GUI preview item");
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);

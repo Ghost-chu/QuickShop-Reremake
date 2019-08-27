@@ -56,7 +56,7 @@ public class PexPermissionProvider implements PermissionProvider {
         if (user == null) {
             return new PermissionInfomationContainer(sender, permission, null, "User not exist.");
         } else {
-            return new PermissionInfomationContainer(sender, permission, Util.array2String(user.getGroupNames()), null);
+            return new PermissionInfomationContainer(sender, permission, Util.array2String(user.getGroupsNames()), null);
         }
     }
 }

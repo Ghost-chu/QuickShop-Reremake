@@ -14,8 +14,6 @@ import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 
-import javax.naming.directory.AttributeInUseException;
-
 /**
  * A util allow quickshop check item matches easy and quick.
  */
@@ -43,7 +41,7 @@ public class ItemMatcher {
         }
 
         if (requireStack == null || givenStack == null) {
-            Util.debugLog("Match failed: A stack is null: " + "requireStack[" + String.valueOf(requireStack) + "] givenStack[" + givenStack + "]");
+            Util.debugLog("Match failed: A stack is null: " + "requireStack[" + requireStack + "] givenStack[" + givenStack + "]");
             return false; // One of them is null (Can't be both, see above)
         }
 
@@ -65,7 +63,6 @@ public class ItemMatcher {
 //        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
 //            Util.debugLog("Meta not matched");
 //            return false;
-//        }
 
         if (requireStack.hasItemMeta()) {
             if (!givenStack.hasItemMeta()) {
