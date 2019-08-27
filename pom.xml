@@ -34,17 +34,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
@@ -60,7 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <!--<aggregate>true</aggregate>
@@ -84,7 +85,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -254,13 +255,18 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/PermissionsEx-1.23.4.jar</systemPath>
         </dependency>
-
         <dependency>
             <groupId>net.mc-ess</groupId>
             <artifactId>GroupManager</artifactId>
             <version>0.2.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/GroupManager.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
+        <dependency>
+        <groupId>org.apache.clerezza.ext</groupId>
+        <artifactId>org.json.simple</artifactId>
+        <version>0.4</version><scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
