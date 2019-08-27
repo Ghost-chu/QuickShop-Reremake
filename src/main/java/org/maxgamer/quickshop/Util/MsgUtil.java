@@ -70,7 +70,7 @@ public class MsgUtil {
         plugin.getLogger().info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         long weekAgo = System.currentTimeMillis() - 604800000;
-        plugin.getDatabaseHelper().cleanMessage(plugin.getDatabase(), weekAgo);
+        plugin.getDatabaseHelper().cleanMessage( weekAgo);
     }
 
     /**
@@ -112,7 +112,7 @@ public class MsgUtil {
                         p.getPlayer().sendMessage(msg);
                     }
                 }
-                plugin.getDatabaseHelper().cleanMessageForPlayer(plugin.getDatabase(), pName);
+                plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
             }
             return true;
@@ -381,7 +381,7 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
-            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages(plugin.getDatabase());
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
@@ -419,7 +419,7 @@ public class MsgUtil {
             }
             player_messages.put(player, msgs);
             msgs.add(message);
-            plugin.getDatabaseHelper().sendMessage(plugin.getDatabase(), player, message, System.currentTimeMillis());
+            plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
                 p.getPlayer().sendMessage(message);
