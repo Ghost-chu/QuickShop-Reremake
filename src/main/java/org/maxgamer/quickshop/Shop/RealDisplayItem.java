@@ -185,6 +185,7 @@ public class RealDisplayItem implements DisplayItem {
         this.item.setSilent(true);
         this.item.setPortalCooldown(Integer.MAX_VALUE);
         this.item.setVelocity(new Vector(0, 0.1, 0));
+        this.item.setCustomNameVisible(false);
         safeGuard(this.item);
         Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation().toString());
     }
