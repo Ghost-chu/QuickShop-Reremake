@@ -28,8 +28,8 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
             Util.debugLog("Exception on command, cancel.");
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.valueOf(cmdArg[1]),
-                Integer.valueOf(cmdArg[2]), Integer.valueOf(cmdArg[3])));
+        Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
+                Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
         if (shop != null) {
             if (shop instanceof ContainerShop) {
                 ContainerShop cs = (ContainerShop) shop;

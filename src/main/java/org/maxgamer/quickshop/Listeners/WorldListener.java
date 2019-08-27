@@ -32,7 +32,7 @@ public class WorldListener implements Listener {
         World world = e.getWorld();
         plugin.getShopLoader().loadShops(world.getName());
         // New world data
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<ShopChunk, HashMap<Location, Shop>>(1);
+        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<>(1);
         // Old world data
         HashMap<ShopChunk, HashMap<Location, Shop>> oldInWorld = plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
@@ -41,7 +41,7 @@ public class WorldListener implements Listener {
             return;
         }
         for (Entry<ShopChunk, HashMap<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
-            HashMap<Location, Shop> inChunk = new HashMap<Location, Shop>(1);
+            HashMap<Location, Shop> inChunk = new HashMap<>(1);
             // Put the new chunk were the old chunk was
             inWorld.put(oldInChunk.getKey(), inChunk);
             for (Entry<Location, Shop> entry : oldInChunk.getValue().entrySet()) {

@@ -61,7 +61,7 @@ public class Database {
     @Deprecated /* Buggy, owner pls use Database Tools to migrate */
     public void copyTo(@NotNull Database db) throws SQLException {
         ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
-        List<String> tables = new LinkedList<String>();
+        List<String> tables = new LinkedList<>();
         while (rs.next()) {
             tables.add(rs.getString("TABLE_NAME"));
         }

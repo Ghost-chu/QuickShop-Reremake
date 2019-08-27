@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
     final private static ItemStack AIR = new ItemStack(Material.AIR);
-    private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
+    private HashMap<UUID, Info> actions = new HashMap<>();
     private QuickShop plugin;
     private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
     private Set<Shop> loadedShops = new HashSet<>();
@@ -552,11 +552,10 @@ public class ShopManager {
             return;
         }
         Location loc = shop.getLocation();
-        ItemStack item = shop.getItem();
         try {
             // Write it to the database
-            plugin.getDatabaseHelper().createShop(plugin.getDatabase(), ShopModerator.serialize(shop.getModerator()), shop
-                    .getPrice(), item, (shop.isUnlimited() ?
+            plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop
+                    .getPrice(), shop.getItem(), (shop.isUnlimited() ?
                     1 :
                     0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             // Add it to the world
@@ -566,7 +565,7 @@ public class ShopManager {
             boolean backupSuccess = Util.backupDatabase();
             try {
                 if (backupSuccess) {
-                    plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), loc.getBlockX(), loc.getBlockY(), loc
+                    plugin.getDatabaseHelper().removeShop(loc.getBlockX(), loc.getBlockY(), loc
                             .getBlockZ(), loc.getWorld().getName());
                 } else {
                     plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
@@ -574,9 +573,9 @@ public class ShopManager {
             } catch (SQLException error2) {
                 //Failed removing
                 plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
-                error.printStackTrace();
                 error2.printStackTrace();
             }
+            error.printStackTrace();
         }
         //Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
@@ -732,13 +731,6 @@ public class ShopManager {
                 p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
                 return;
             }
-            /* Creation handling */
-            // if (info.getAction() == ShopAction.CREATE) {
-            //     actionCreate(p, actions, info, message);
-            //     /* Purchase Handling */
-            // } else if (info.getAction() == ShopAction.BUY) {
-            //     actionTrade(p, actions, info, message);
-            // }
             switch (info.getAction()) {
                 case CREATE:
                     actionCreate(p, actions, info, message, bypassProtectionChecks);

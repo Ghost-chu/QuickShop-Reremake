@@ -3,11 +3,9 @@ package org.maxgamer.quickshop.Event;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopProtectionCheckEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
