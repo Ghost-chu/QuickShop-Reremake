@@ -37,7 +37,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class MsgUtil {
     private static YamlConfiguration builtInLanguage;
     private static YamlConfiguration builtInDefaultLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(QuickShop.instance.getLanguage()
-            .getFile("en", "messages")));;
+            .getFile("en", "messages")));
     public static String invaildMsg = "Invaild message";
     private static YamlConfiguration enchi18n;
     private static boolean inited;
@@ -227,7 +227,7 @@ public class MsgUtil {
         YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
                 .getFile(plugin.getConfig().getString("language"), "messages")));
         builtInLanguage = messagei18nYAML;
-        messagei18n.setDefaults(messagei18nYAML); ;
+        messagei18n.setDefaults(messagei18nYAML);
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);

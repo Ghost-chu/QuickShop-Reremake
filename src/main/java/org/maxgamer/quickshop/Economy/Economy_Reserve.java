@@ -25,7 +25,7 @@ public class Economy_Reserve implements EconomyCore {
 
     private String formatInternal(double balance) {
         try {
-            return String.valueOf(QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance);
+            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
             return String.valueOf('$' + balance);
         }

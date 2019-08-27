@@ -52,19 +52,19 @@ public class ShopLoader {
         logger.warning("Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
         logger.warning("  >> Database Info");
         try {
-            logger.warning("Connected: " + String.valueOf(plugin.getDatabase().getConnection().isClosed()));
+            logger.warning("Connected: " + plugin.getDatabase().getConnection().isClosed());
         } catch (SQLException | NullPointerException e) {
             logger.warning("Connected: " + "FALSE - Failed to load status.");
         }
 
         try {
-            logger.warning("Readonly: " + String.valueOf(plugin.getDatabase().getConnection().isReadOnly()));
+            logger.warning("Readonly: " + plugin.getDatabase().getConnection().isReadOnly());
         } catch (SQLException | NullPointerException e) {
             logger.warning("Readonly: " + "FALSE - Failed to load status.");
         }
 
         try {
-            logger.warning("ClientInfo: " + String.valueOf(plugin.getDatabase().getConnection().getClientInfo().toString()));
+            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo().toString());
         } catch (SQLException | NullPointerException e) {
             logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
         }
