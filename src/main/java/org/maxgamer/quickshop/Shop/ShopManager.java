@@ -552,11 +552,10 @@ public class ShopManager {
             return;
         }
         Location loc = shop.getLocation();
-        ItemStack item = shop.getItem();
         try {
             // Write it to the database
             plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop
-                    .getPrice(), item, (shop.isUnlimited() ?
+                    .getPrice(), shop.getItem(), (shop.isUnlimited() ?
                     1 :
                     0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             // Add it to the world
@@ -574,9 +573,9 @@ public class ShopManager {
             } catch (SQLException error2) {
                 //Failed removing
                 plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
-                error.printStackTrace();
                 error2.printStackTrace();
             }
+            error.printStackTrace();
         }
         //Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
@@ -732,13 +731,6 @@ public class ShopManager {
                 p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled"));
                 return;
             }
-            /* Creation handling */
-            // if (info.getAction() == ShopAction.CREATE) {
-            //     actionCreate(p, actions, info, message);
-            //     /* Purchase Handling */
-            // } else if (info.getAction() == ShopAction.BUY) {
-            //     actionTrade(p, actions, info, message);
-            // }
             switch (info.getAction()) {
                 case CREATE:
                     actionCreate(p, actions, info, message, bypassProtectionChecks);
