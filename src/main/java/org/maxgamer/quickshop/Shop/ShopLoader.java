@@ -181,14 +181,6 @@ public class ShopLoader {
             Util.debugLog("Shop Owner is null");
             return true;
         }
-        // if (shop.getLocation().getChunk() == null) {
-        //     Util.debugLog("Shop Chunk is null");
-        //     return true;
-        // }
-        // if (shop.getLocation().getBlock() == null) {
-        //     Util.debugLog("Shop Block is null");
-        //     return true;
-        // }
         return false;
     }
 
@@ -242,19 +234,6 @@ public class ShopLoader {
         }
 
         private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson) {
-            // try {
-            //     UUID.fromString(moderators);
-            //     if (!isBackuped) {
-            //         isBackuped = Util.backupDatabase();
-            //     }
-            //
-            //
-            //     moderators = ShopModerator.serialize(shopModerator); //Serialize
-            // } catch (IllegalArgumentException ex) {
-            //     //This expcetion is normal, cause i need check that is or not a UUID.
-            //     shopModerator = ShopModerator.deserialize(moderators);
-            // }
-            //
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data...");
