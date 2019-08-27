@@ -44,7 +44,7 @@ public class PermissionChecker {
         if (!usePermissionChecker) {
             return true;
         }
-        BlockEvent beMainHand;
+        BlockBreakEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0), player.getInventory()
         //getItemInMainHand(), player, true, EquipmentSlot.HAND);
 
@@ -53,6 +53,8 @@ public class PermissionChecker {
         Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.BEGIN,beMainHand));
         ListenerHelper.disableEvent(beMainHand.getClass());
         //Bukkit.getPluginManager().callEvent(beMainHand);
+        beMainHand.setDropItems(false);
+        beMainHand.setExpToDrop(-1);
         Plugin cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
         //Use our custom event caller.
         ListenerHelper.enableEvent(beMainHand.getClass());
