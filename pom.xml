@@ -175,7 +175,7 @@
             <groupId>net.tnemc</groupId>
             <artifactId>Reserve</artifactId>
             <version>0.1.0.12</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.github</groupId>
@@ -200,19 +200,13 @@
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
             <version>1.7.16</version>
+            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
-        <dependency>
-            <groupId>org.apache.clerezza.ext</groupId>
-            <artifactId>org.json.simple</artifactId>
-            <version>0.4</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>fr.neatmonster</groupId>
