@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import java.util.stream.Stream;
 
 import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -539,6 +537,7 @@ public class MsgUtil {
             Util.debugLog("Content is null");
             Throwable throwable = new Throwable("Known issue: Global Alert accepted null string, what the fuck");
             plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
+            return;
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
@@ -964,7 +963,10 @@ public class MsgUtil {
         messagei18n.save(messageFile);
 
     }
-    public static void setAndUpdate(@NotNull String path, @NotNull Object object){
+    public static void setAndUpdate(@NotNull String path, @Nullable Object object){
+        if(object == null){
+            messagei18n.set(path, null); //Removal
+        }
         Object objFromBuiltIn = builtInLanguage.get(path); //Apply target language default
         if(objFromBuiltIn == null){
            objFromBuiltIn =  builtInDefaultLanguage.get(path); //Apply english default
