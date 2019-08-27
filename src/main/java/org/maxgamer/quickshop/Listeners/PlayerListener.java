@@ -55,7 +55,7 @@ public class PlayerListener implements Listener {
             Shop shop = plugin.getShopManager().getShop(loc);
             // If that wasn't a shop, search nearby shops
             if (shop == null) {
-                Block attached = null;
+                Block attached;
                 if (Util.isWallSign(b.getType())) {
                     attached = Util.getAttached(b);
                     if (attached != null) {
@@ -171,7 +171,7 @@ public class PlayerListener implements Listener {
                 if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
                 }
-                MsgUtil.sendControlPanelInfo((CommandSender) e.getPlayer(),
+                MsgUtil.sendControlPanelInfo(e.getPlayer(),
                         plugin.getShopManager().getShop(block.getLocation()));
                 plugin.getShopManager().getShop(block.getLocation()).setSignText();
             }
