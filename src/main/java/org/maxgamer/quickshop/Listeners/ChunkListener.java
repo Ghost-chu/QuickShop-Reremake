@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import lombok.*;
 import org.bukkit.Chunk;

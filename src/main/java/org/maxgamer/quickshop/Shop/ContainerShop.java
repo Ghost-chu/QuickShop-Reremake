@@ -202,7 +202,7 @@ public class ContainerShop implements Shop {
         String world = this.getLocation().getWorld().getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper().updateShop(plugin.getDatabase(), ShopModerator.serialize(this.moderator.clone()), this
+            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
             e.printStackTrace();
@@ -357,7 +357,7 @@ public class ContainerShop implements Shop {
         } else {
             try {
                 plugin.getShopManager().removeShop(this);
-                plugin.getDatabaseHelper().removeShop(plugin.getDatabase(), x, y, z, world);
+                plugin.getDatabaseHelper().removeShop(x, y, z, world);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -476,7 +476,7 @@ public class ContainerShop implements Shop {
             this.buy(p, -amount);
         }
         // Items to drop on floor
-        ArrayList<ItemStack> floor = new ArrayList<ItemStack>(5);
+        ArrayList<ItemStack> floor = new ArrayList<>(5);
         Inventory pInv = p.getInventory();
         if (this.isUnlimited()) {
             ItemStack item = this.item.clone();
@@ -693,7 +693,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull List<Sign> getSigns() {
-        List<Sign> signs = new ArrayList<Sign>(1);
+        List<Sign> signs = new ArrayList<>(1);
         if (this.getLocation().getWorld() == null) {
             return signs;
         }

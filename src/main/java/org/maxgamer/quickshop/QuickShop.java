@@ -363,7 +363,6 @@ public class QuickShop extends JavaPlugin {
 
         updateConfig(getConfig().getInt("config-version"));
         /* It will generate a new UUID above updateConfig */
-        //noinspection ConstantConditions
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
@@ -397,7 +396,6 @@ public class QuickShop extends JavaPlugin {
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
         if (limitCfg != null) {
             this.limit = limitCfg.getBoolean("use", false);
-            ;
             limitCfg = limitCfg.getConfigurationSection("ranks");
             for (String key : limitCfg.getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));

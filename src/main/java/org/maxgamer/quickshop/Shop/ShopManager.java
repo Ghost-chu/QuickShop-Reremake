@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
     final private static ItemStack AIR = new ItemStack(Material.AIR);
-    private HashMap<UUID, Info> actions = new HashMap<UUID, Info>();
+    private HashMap<UUID, Info> actions = new HashMap<>();
     private QuickShop plugin;
     private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
     private Set<Shop> loadedShops = new HashSet<>();
