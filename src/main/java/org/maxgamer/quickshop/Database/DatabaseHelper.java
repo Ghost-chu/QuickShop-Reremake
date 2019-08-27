@@ -22,23 +22,23 @@ public class DatabaseHelper {
     private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
 
     public DatabaseHelper(QuickShop plugin, Database db) throws SQLException {
-        if (!db.hasTable(QuickShop.instance.getDbPrefix() + "shops")) {
-            createShopsTable(db);
-        }
-        if (!db.hasTable(QuickShop.instance.getDbPrefix() + "messages")) {
-            createMessagesTable(db);
-        }
-        checkColumns(db);
         this.db = db;
         this.plugin = plugin;
+        if (!db.hasTable(QuickShop.instance.getDbPrefix() + "shops")) {
+            createShopsTable();
+        }
+        if (!db.hasTable(QuickShop.instance.getDbPrefix() + "messages")) {
+            createMessagesTable();
+        }
+        checkColumns();
+
 
     }
 
     /**
      * Verifies that all required columns exist.
-     * @param db The database you want to check
      */
-    private void checkColumns(@NotNull Database db) {
+    private void checkColumns() {
         PreparedStatement ps;
         try {
             // V3.4.2
@@ -60,7 +60,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void cleanMessage(@NotNull Database db, long weekAgo) {
+    public void cleanMessage(long weekAgo) {
         try {
             //QuickShop.instance.getDB().execute("DELETE FROM " + QuickShop.instance
             //        .getDbPrefix() + "messages WHERE time < ?", weekAgo);
@@ -74,7 +74,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void cleanMessageForPlayer(@NotNull Database db, @NotNull UUID player) {
+    public void cleanMessageForPlayer(@NotNull UUID player) {
         try {
             String sqlString = "DELETE FROM " + QuickShop.instance.getDbPrefix() + "messages WHERE owner = ?";
             PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
@@ -88,20 +88,19 @@ public class DatabaseHelper {
     /**
      * Creates the database table 'messages'
      *
-     * @param db The database you want create at.
      * @return Create failed or successed.
      * @throws SQLException If the connection is invalid
      */
-    private boolean createMessagesTable(@NotNull Database db) throws SQLException {
+    private boolean createMessagesTable() throws SQLException {
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
                 + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
         return st.execute(createTable);
     }
 
-    public void createShop(@NotNull Database db, @NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z)
+    public void createShop(@NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z)
             throws SQLException {
-        removeShop(db,x,y,z,world); //First purge old exist shop before create new shop.
+        removeShop(x,y,z,world); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + QuickShop.instance
                 .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
@@ -121,17 +120,16 @@ public class DatabaseHelper {
     /**
      * Creates the database table 'shops'.
      *
-     * @param db The database you want create at.
      * @throws SQLException If the connection is invalid.
      */
-    private void createShopsTable(@NotNull Database db) throws SQLException {
+    private void createShopsTable() throws SQLException {
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance
                 .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
         st.execute(createTable);
     }
 
-    public boolean removeShop(@NotNull Database db, int x, int y, int z, @NotNull String worldName) throws SQLException {
+    public boolean removeShop(int x, int y, int z, @NotNull String worldName) throws SQLException {
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
 //						+ " AND z = " + z + " AND world = \"" + worldName + "\""
@@ -149,19 +147,19 @@ public class DatabaseHelper {
         return ps.execute();
     }
 
-    public ResultSet selectAllMessages(Database db) throws SQLException {
+    public ResultSet selectAllMessages() throws SQLException {
         Statement st = db.getConnection().createStatement();
         String selectAllShops = "SELECT * FROM " + QuickShop.instance.getDbPrefix() + "messages";
         return st.executeQuery(selectAllShops);
     }
 
-    public ResultSet selectAllShops(Database db) throws SQLException {
+    public ResultSet selectAllShops() throws SQLException {
         Statement st = db.getConnection().createStatement();
         String selectAllShops = "SELECT * FROM " + QuickShop.instance.getDbPrefix() + "shops";
         return st.executeQuery(selectAllShops);
     }
 
-    public void sendMessage(@NotNull Database db, @NotNull UUID player, @NotNull String message, long time) {
+    public void sendMessage(@NotNull UUID player, @NotNull String message, long time) {
         try {
             String sqlString = "INSERT INTO " + QuickShop.instance
                     .getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
@@ -176,7 +174,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void updateOwner2UUID(@NotNull Database db, @NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName)
+    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName)
             throws SQLException {
         //QuickShop.instance.getDB().getConnection().createStatement()
         //         .executeUpdate("UPDATE " + QuickShop.instance.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
@@ -194,7 +192,7 @@ public class DatabaseHelper {
         plugin.getDatabaseManager().add(ps);
     }
 
-    public void updateShop(@NotNull Database db, @NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
+    public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, String world) {
         try {
             String sqlString = "UPDATE " + QuickShop.instance

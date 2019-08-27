@@ -146,6 +146,8 @@ public class QuickShop extends JavaPlugin {
      */
     private HashSet<String> warnings = new HashSet<>();
     private WorldListener worldListener;
+    /** QuickShop custom event manager */
+    private QSEventManager qsEventManager;
     /**
      * The manager to check permissions.
      */
@@ -361,7 +363,6 @@ public class QuickShop extends JavaPlugin {
 
         updateConfig(getConfig().getInt("config-version"));
         /* It will generate a new UUID above updateConfig */
-        //noinspection ConstantConditions
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
@@ -385,7 +386,8 @@ public class QuickShop extends JavaPlugin {
 
         /* Initalize the tools */
         // Create the shop manager.
-        this.permissionManager = new PermissionManager(this);
+        permissionManager = new PermissionManager(this);
+        this.qsEventManager = new QSEventManager(this);
         this.shopManager = new ShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
@@ -394,7 +396,6 @@ public class QuickShop extends JavaPlugin {
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
         if (limitCfg != null) {
             this.limit = limitCfg.getBoolean("use", false);
-            ;
             limitCfg = limitCfg.getConfigurationSection("ranks");
             for (String key : limitCfg.getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
@@ -895,7 +896,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 45);
             selectedVersion = 45;
         }
-
+        if (selectedVersion == 45) {
+            getConfig().set("shop.display-item-use-name", true);
+            getConfig().set("shop.protection-checking-filter", new ArrayList<>());
+            getConfig().set("config-version", 46);
+            selectedVersion = 46;
+        }
 
         saveConfig();
         reloadConfig();

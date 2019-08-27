@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Permission;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

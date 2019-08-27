@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
-import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.Event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.Event.ShopProtectionCheckEvent;
@@ -44,7 +44,7 @@ public class PermissionChecker {
         if (!usePermissionChecker) {
             return true;
         }
-        BlockEvent beMainHand;
+        BlockBreakEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0), player.getInventory()
         //getItemInMainHand(), player, true, EquipmentSlot.HAND);
 
@@ -52,16 +52,25 @@ public class PermissionChecker {
         //Call for event for protection check start
         Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.BEGIN,beMainHand));
         ListenerHelper.disableEvent(beMainHand.getClass());
-        Bukkit.getPluginManager().callEvent(beMainHand);
+        //Bukkit.getPluginManager().callEvent(beMainHand);
+        beMainHand.setDropItems(false);
+        beMainHand.setExpToDrop(-1);
+        Plugin cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
+        //Use our custom event caller.
         ListenerHelper.enableEvent(beMainHand.getClass());
         //Call for event for protection check end
         Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.END,beMainHand));
         boolean canBuild = !((Cancellable) beMainHand).isCancelled();
 
         if (!canBuild) {
-            Util.debugLog("Somethings say build check failed, there is HandlerList to help you debug: ");
-            for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
-                Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
+//            Util.debugLog("Somethings say build check failed, there is HandlerList to help you debug: ");
+//            for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
+//                Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
+//            }
+            if(cancelPlugin != null) {
+                Util.debugLog("Plugin " + cancelPlugin.getName() + " cancelled this build create action.");
+            }else{
+                Util.debugLog("Internal server error.");
             }
         }
 
