@@ -393,7 +393,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        ItemStack itemStack = event.getRecipe().getResult();
+        ItemStack itemStack;
         itemStack = event.getCurrentItem();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);

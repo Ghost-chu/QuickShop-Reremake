@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -129,7 +128,7 @@ public interface DisplayItem {
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
             iMeta.setDisplayName("QuickShop DisplayItem");
         }
-        java.util.List<String> lore = new ArrayList<String>();
+        java.util.List<String> lore = new ArrayList<>();
         Gson gson = new Gson();
         ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
         String protectFlag = gson.toJson(shopProtectionFlag);
