@@ -39,7 +39,8 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <!--Use this comments args when compiler is NullPointerException-->
+                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
                 </configuration>
             </plugin>
             <plugin>
