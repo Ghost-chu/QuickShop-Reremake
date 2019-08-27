@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 45
+config-version: 46
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -219,6 +219,15 @@ shop:
 
     #Protection check
     protection-checking: true
+
+    #Protection advanced event calling filter
+    #Advance users only.
+    protection-checking-filter: []
+    #    - PLUGIN NAME##LISTENER##EVENT
+    #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
+
+    #Add display name to the spawned DisplayItem entity?
+    display-item-use-name: true
 
     #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
     #Disable it if you feel it damage your server performance.

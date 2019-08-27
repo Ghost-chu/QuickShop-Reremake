@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 19
+language-version: 20
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -75,7 +75,7 @@ success-change-owner-to-server: "&aSuccessfully set the shop owner to Server."
 flush-finished: "&aSuccessfully flushed the messages."
 purchase-failed: "&cPurchase failed: Internal Error, please contact the server administrator."
 no-pending-action: "&cYou do not have any pending action"
-
+permission-denied-3rd-party: "&cPermission denied: 3rd party plugin [{0}]."
 menu:
     successful-purchase: "&aSuccessfully Purchased:"
     successfully-sold: "&aSuccessfully Sold:"
@@ -218,3 +218,4 @@ updatenotify:
     - "Look me style---{0} updated, your still using {1}"
     - "Ahhhhhhh! New update {0}! Update!"
     - "What U thinking? {0} has been released! Update!"
+    remote-disable-warning: "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running."
