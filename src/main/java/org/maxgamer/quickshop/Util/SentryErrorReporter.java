@@ -269,6 +269,10 @@ public class SentryErrorReporter {
             if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
             }
+            if(record.getThrown() == null){
+                Util.debugLog("Error not sended cause thrown is null");
+                return true;
+            }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
                 return true;
