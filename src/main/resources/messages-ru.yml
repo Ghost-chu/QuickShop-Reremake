@@ -8,7 +8,7 @@ command:
         amount: "&eExecute for your actions with amount(For chat plugin issue)"
         about: "&eО QuickShop"
         help: "&eПоказать подсказку QuickShop"
-        supercreate: "&eCreate a shop bypass all protection checks"
+        supercreate: "&eСоздать магазин и обойти все ограничения"
         title: "&aQuickShop справка"
         unlimited: "&eСделать магазин бесконечным"
         setowner: "&eСменить владельца магазина"
@@ -40,7 +40,8 @@ command:
     now-nolonger-debuging: "&aУспешно переключены в обычный режим. Перезагружаю QuickShop..."
     wrong-args: "&cПараметры не совпадают, введите /qs help для получения справки"
 updatenotify:
-    onekeybuttontitle: "[OneKey Update]"
+    onekeybuttontitle: "[Обновление в один клик]"
+    remote-disable-warning: "&cЭта версия QS была отключена сервером, это означает что у неё есть серьезные проблемы, подробнее SpigotMC : {0}. Это сообщение будет появляться пока вы не отключите или обновите плагин."
     buttontitle: "[Обновить сейчас]"
     list:
         - "{0} уже вышел, Вы используете {1}!"
@@ -59,6 +60,7 @@ updatenotify:
         - "Посмотрите---{0} обновлен, вы используете {1}"
         - "Аххххх! Новое обновление {0}! Обновитесь!"
         - "Чего тут думать? {0} вышел! Обновитесь!"
+permission-denied-3rd-party: "&cДоступ запрещен: Сторонний плагин [{0}]."
 translation-author: "&c&lПереводчики: &b&lBront, Nukert"
 translation-contributors: "&c&lContributors: &b&l"
 translation-version: "&c&lSupport Version: &b&lReremake"
