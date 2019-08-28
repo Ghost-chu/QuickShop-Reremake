@@ -74,6 +74,10 @@ include-offlineplayer-list: false
 #0=Vault
 #1=Reserve
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN
 economy-type: 0
 
 #What permission provider you want use?
@@ -83,7 +87,11 @@ economy-type: 0
 #3=PermissionEx
 #4=GroupManager
 #If you enter a number not in list or target provider not usable, plugin will fallback to Bukkit Permission Provider.
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN AND EVERYTHING IS WORKS FINE.
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
+#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 permission-type: 0
 
 #Allow plugin send alert when something trying make a displayItem exploit
@@ -223,7 +231,7 @@ shop:
     #Protection advanced event calling filter
     #Advance users only.
     protection-checking-filter: []
-    #    - PLUGIN NAME##LISTENER##EVENT
+    #    - PLUGIN##LISTENER##EVENT
     #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
 
     #Add display name to the spawned DisplayItem entity?
