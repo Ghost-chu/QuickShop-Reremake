@@ -21,7 +21,7 @@ deploy:
     skip_cleanup: true
     provider: releases
     api_key:
-        secure: $github
+        secure: $Github_token
     file:
     - ./push/*
     file_glob: true
