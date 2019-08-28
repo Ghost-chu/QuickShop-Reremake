@@ -19,6 +19,7 @@ config-version: 46
 #fi - Finnish
 #zh_CN - Chinese Modern
 #zh_TW - Chinese Traditional
+#es - Spanish (Latin America)
 language: en
 
 #Download LangUtils:
