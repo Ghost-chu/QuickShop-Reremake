@@ -76,6 +76,7 @@ public class QSEventManager {
             }
             Set<PluginEventFilterContainer> containers = containerSet.get(registration.getPlugin().getName());
             if (containers == null) {
+                Util.debugLog("Container is null, skipping...");
                 continue;
             }
             for (PluginEventFilterContainer container : containers) {
