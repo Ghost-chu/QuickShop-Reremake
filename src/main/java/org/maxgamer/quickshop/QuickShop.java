@@ -27,10 +27,7 @@ import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.*;
-import org.maxgamer.quickshop.Watcher.DisplayWatcher;
-import org.maxgamer.quickshop.Watcher.LogWatcher;
-import org.maxgamer.quickshop.Watcher.SyncTaskWatcher;
-import org.maxgamer.quickshop.Watcher.UpdateWatcher;
+import org.maxgamer.quickshop.Watcher.*;
 
 //import com.griefcraft.lwc.LWCPlugin;
 @Getter
@@ -136,6 +133,7 @@ public class QuickShop extends JavaPlugin {
     private ShopManager shopManager;
     private ShopProtectionListener shopProtectListener;
     private SyncTaskWatcher syncTaskWatcher;
+    private ShopVaildWatcher shopVaildWatcher;
     /**
      * Use SpoutPlugin to get item / block names
      */
@@ -426,6 +424,7 @@ public class QuickShop extends JavaPlugin {
         shopProtectListener = new ShopProtectionListener(this);
         displayWatcher = new DisplayWatcher(this);
         syncTaskWatcher = new SyncTaskWatcher(this);
+        shopVaildWatcher = new ShopVaildWatcher(this);
         Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
@@ -449,12 +448,15 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Util.debugLog("Loading economy system...");
         new BukkitRunnable() {
             @Override
             public void run() {
                 loadEcon();
             }
         }.runTaskLater(this, 1);
+        Util.debugLog("Registering shop watcher...");
+        shopVaildWatcher.runTaskTimer(this,0,20*60);
     }
 
     /**
@@ -904,6 +906,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 46) {
             getConfig().set("shop.use-protection-checking-filter", true);
+            getConfig().set("shop.max-shops-checks-in-once",100);
             getConfig().set("config-version", 47);
             selectedVersion = 47;
         }
