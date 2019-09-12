@@ -1,17 +1,13 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopChunk;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Check the shops after server booted up, make sure shop can correct self-deleted when container lost.

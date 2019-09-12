@@ -1,8 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.HashMap;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -13,6 +11,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import java.util.HashMap;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {

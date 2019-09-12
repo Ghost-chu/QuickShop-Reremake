@@ -1,7 +1,8 @@
 package org.maxgamer.quickshop.Util;
 
-import lombok.*;
-import org.jetbrains.annotations.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
 @EqualsAndHashCode

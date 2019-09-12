@@ -1,20 +1,21 @@
 package org.maxgamer.quickshop.Command;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lombok.*;
+import lombok.Data;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {

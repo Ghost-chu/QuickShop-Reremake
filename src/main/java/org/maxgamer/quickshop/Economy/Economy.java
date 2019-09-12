@@ -1,11 +1,12 @@
 package org.maxgamer.quickshop.Economy;
 
-import java.util.UUID;
-
-import lombok.*;
-import org.jetbrains.annotations.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.UUID;
 
 public class Economy implements EconomyCore {
     @Getter

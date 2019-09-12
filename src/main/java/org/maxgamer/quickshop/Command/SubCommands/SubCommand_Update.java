@@ -1,16 +1,17 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
+
+import java.io.IOException;
+import java.util.List;
 
 public class SubCommand_Update implements CommandProcesser {
     QuickShop plugin = QuickShop.instance;

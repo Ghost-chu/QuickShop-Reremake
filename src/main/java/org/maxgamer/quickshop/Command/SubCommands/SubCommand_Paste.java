@@ -1,14 +1,15 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Paste;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubCommand_Paste implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;

@@ -1,12 +1,13 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import lombok.*;
-import org.jetbrains.annotations.*;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
