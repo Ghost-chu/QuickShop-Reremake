@@ -1,14 +1,14 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import lombok.*;
+import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 class DisplayRunnable implements Runnable {
     @Override

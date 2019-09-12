@@ -1,10 +1,10 @@
 package org.maxgamer.quickshop.Event;
 
-import lombok.*;
+import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopDeleteEvent extends Event implements Cancellable {

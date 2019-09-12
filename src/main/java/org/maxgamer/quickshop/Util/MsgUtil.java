@@ -1,14 +1,5 @@
 package org.maxgamer.quickshop.Util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-
 import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -29,9 +20,19 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {

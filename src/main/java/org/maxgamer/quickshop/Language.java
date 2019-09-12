@@ -1,12 +1,13 @@
 package org.maxgamer.quickshop;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Util.Util;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Util.Util;
 
 public class Language {
     private QuickShop plugin;

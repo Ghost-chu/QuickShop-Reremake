@@ -1,6 +1,9 @@
 package org.maxgamer.quickshop.Watcher;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

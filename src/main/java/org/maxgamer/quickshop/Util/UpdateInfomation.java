@@ -1,7 +1,10 @@
 package org.maxgamer.quickshop.Util;
 
-import lombok.*;
-import org.jetbrains.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.jetbrains.annotations.Nullable;
 
 @AllArgsConstructor
 @ToString

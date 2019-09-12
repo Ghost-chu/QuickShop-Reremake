@@ -1,10 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.sql.SQLException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,7 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Event.ShopCreateEvent;
 import org.maxgamer.quickshop.Event.ShopPreCreateEvent;
@@ -24,6 +20,11 @@ import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 /**
  * Manage a lot of shops.
