@@ -409,10 +409,7 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering Listeners...");
         // Register events
-        if (getConfig().getBoolean("shop.lock")) {
-            LockListener lockListener = new LockListener(this);
-            Bukkit.getServer().getPluginManager().registerEvents(lockListener, this);
-        }
+
         blockListener = new BlockListener(this);
         playerListener = new PlayerListener(this);
         worldListener = new WorldListener(this);
@@ -425,15 +422,19 @@ public class QuickShop extends JavaPlugin {
         displayWatcher = new DisplayWatcher(this);
         syncTaskWatcher = new SyncTaskWatcher(this);
         shopVaildWatcher = new ShopVaildWatcher(this);
-        Bukkit.getServer().getPluginManager().registerEvents(blockListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(playerListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(chatListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(inventoryListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(chunkListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(worldListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(customInventoryListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(displayBugFixListener, this);
-        Bukkit.getServer().getPluginManager().registerEvents(shopProtectListener, this);
+        lockListener = new LockListener(this);
+        Bukkit.getPluginManager().registerEvents(blockListener, this);
+        Bukkit.getPluginManager().registerEvents(playerListener, this);
+        Bukkit.getPluginManager().registerEvents(chatListener, this);
+        Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+        Bukkit.getPluginManager().registerEvents(chunkListener, this);
+        Bukkit.getPluginManager().registerEvents(worldListener, this);
+        Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
+        Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
+        Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
+        if(getConfig().getBoolean("shop.lock")){
+            Bukkit.getPluginManager().registerEvents(lockListener,this);
+        }
         if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
             Bukkit.getServer().getPluginManager().registerEvents(new ClearLaggListener(), this);
         }
