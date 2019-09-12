@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Shop;
 
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 public enum ShopType {
     //SELLING = SELLMODE BUYING = BUY MODE

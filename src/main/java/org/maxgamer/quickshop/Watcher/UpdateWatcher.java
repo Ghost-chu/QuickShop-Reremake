@@ -1,8 +1,5 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.List;
-import java.util.Random;
-
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -12,11 +9,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
+
+import java.util.List;
+import java.util.Random;
 
 public class UpdateWatcher implements Listener {
     private static BukkitTask cronTask = null;

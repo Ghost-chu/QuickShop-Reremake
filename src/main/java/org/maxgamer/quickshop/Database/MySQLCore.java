@@ -1,13 +1,13 @@
 package org.maxgamer.quickshop.Database;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import org.jetbrains.annotations.*;
 
 public class MySQLCore implements DatabaseCore {
     private static final int MAX_CONNECTIONS = 8;

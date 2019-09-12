@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;

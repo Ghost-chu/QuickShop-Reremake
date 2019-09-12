@@ -1,17 +1,17 @@
 package org.maxgamer.quickshop.Database;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Util.WarningSender;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Queued database manager.

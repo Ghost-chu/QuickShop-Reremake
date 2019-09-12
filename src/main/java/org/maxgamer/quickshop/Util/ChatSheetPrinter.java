@@ -1,13 +1,15 @@
 package org.maxgamer.quickshop.Util;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 @Getter

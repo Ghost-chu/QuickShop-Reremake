@@ -1,9 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -11,10 +9,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class to create a GUI item preview quickly
