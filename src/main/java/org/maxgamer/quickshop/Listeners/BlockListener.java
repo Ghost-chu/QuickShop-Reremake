@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;

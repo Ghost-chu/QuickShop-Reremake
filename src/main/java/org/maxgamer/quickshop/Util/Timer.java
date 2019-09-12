@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Util;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode
 @ToString

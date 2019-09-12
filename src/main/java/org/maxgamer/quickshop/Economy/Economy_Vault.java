@@ -1,8 +1,7 @@
 package org.maxgamer.quickshop.Economy;
 
-import java.util.UUID;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -11,9 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.event.server.ServiceUnregisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.UUID;
 
 public class Economy_Vault implements EconomyCore, Listener {
     private QuickShop plugin = QuickShop.instance;

@@ -1,10 +1,5 @@
 package org.maxgamer.quickshop.Util;
 
-import java.io.*;
-import java.net.URL;
-import java.util.List;
-import javax.net.ssl.HttpsURLConnection;
-
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -16,6 +11,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.kohsuke.github.GHAsset;
 import org.kohsuke.github.GitHub;
 import org.maxgamer.quickshop.QuickShop;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
+import java.net.URL;
+import java.util.List;
 
 public class Updater {
     /**

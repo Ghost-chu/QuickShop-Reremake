@@ -1,8 +1,10 @@
 package org.maxgamer.quickshop.Util;
 
-import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.*;
+import java.util.ArrayList;
 
 @Getter
 @Setter

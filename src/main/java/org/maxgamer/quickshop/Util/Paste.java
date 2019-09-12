@@ -1,5 +1,15 @@
 package org.maxgamer.quickshop.Util;
 
+import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Economy.EconomyCore;
+import org.maxgamer.quickshop.Economy.Economy_Vault;
+import org.maxgamer.quickshop.QuickShop;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -7,16 +17,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-
-import lombok.*;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Economy.EconomyCore;
-import org.maxgamer.quickshop.Economy.Economy_Vault;
-import org.maxgamer.quickshop.QuickShop;
 
 /**
  * A util to generate a paste report and upload it to Ubuntu Paste

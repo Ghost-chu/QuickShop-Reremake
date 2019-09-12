@@ -1,13 +1,14 @@
 package org.maxgamer.quickshop.Economy;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * @author creatorfromhell

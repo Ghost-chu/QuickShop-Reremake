@@ -1,8 +1,10 @@
 package org.maxgamer.quickshop.Command;
 
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Singular;
 
-import lombok.*;
+import java.util.List;
 
 @Data
 @Builder

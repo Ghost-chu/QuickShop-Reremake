@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.Collection;
-
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -11,6 +9,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.Collection;
 
 public class DisplayBugFixListener implements Listener {
     private QuickShop plugin;
