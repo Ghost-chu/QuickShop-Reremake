@@ -79,13 +79,19 @@ public class QSEventManager {
                 Util.debugLog("Container is null, skipping...");
                 continue;
             }
-            for (PluginEventFilterContainer container : containers) {
-                if (container.getListener().equals(registration.getListener().getClass().getName())) {
-                    if (container.getEvent().equals(event.getClass().getName())) {
+            boolean cancelPluginCalling = false;
+            for (PluginEventFilterContainer disabledContainer : containers) {
+                if (disabledContainer.getListener().equals(registration.getListener().getClass().getName())) {
+                    if (disabledContainer.getEvent().equals(event.getClass().getName())) {
                         Util.debugLog("Skipping event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
-                        continue;
+                        cancelPluginCalling = true;
+                        break;
                     }
                 }
+            }
+            if(cancelPluginCalling) {
+                continue; //Skip this listener calling+
+            }
                 Util.debugLog("Calling event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
                 try {
                     registration.callEvent(event);
@@ -111,7 +117,6 @@ public class QSEventManager {
                     plugin.getLogger().info("A plugin throw an error when checking protection permission, you should check them, DO NOT REPORT THIS TO QUICKSHOP.");
                 }
             }
-        }
         return null;
     }
 }
