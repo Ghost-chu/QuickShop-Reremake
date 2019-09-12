@@ -1,56 +1,44 @@
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
+import org.maxgamer.quickshop.Util.Util;
 
 /**
- * @author Netherfoam Maintains the display items, restoring them when needed.
- * Also deletes invalid items.
+ * Check the shops after server booted up, make sure shop can correct self-deleted when container lost.
  */
-@Deprecated
-public class ShopVaildWatcher implements Runnable {
+public class ShopVaildWatcher extends BukkitRunnable {
     private QuickShop plugin;
+    private Queue<Shop> checkQueue = new LinkedList<>();
 
-    @Deprecated
     public ShopVaildWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void run() {
-        List<Shop> toRemove = new ArrayList<>();
-        for (Entry<String, HashMap<ShopChunk, HashMap<Location, Shop>>> inWorld : plugin.getShopManager().getShops().entrySet()) {
-            // This world
-            World world = Bukkit.getWorld(inWorld.getKey());
-            if (world == null) {
-                continue; // world not loaded.
+        int checkedShops = 0;
+        int maxCheckShops = plugin.getConfig().getInt("shop.max-shops-checks-in-once");
+        Shop shop = checkQueue.poll();
+        while (shop != null){
+            if(shop.isLoaded() && !shop.isValid()){
+                shop.delete();
+                Util.debugLog("Removed shop at "+shop.getLocation()+" cause the container is missing or not a usable container.");
             }
-            for (Entry<ShopChunk, HashMap<Location, Shop>> inChunk : inWorld.getValue().entrySet()) {
-                if (!world.isChunkLoaded(inChunk.getKey().getX(), inChunk.getKey().getZ())) {
-                    // If the chunk is not loaded, next chunk!
-                    continue;
-                }
-                for (Shop shop : inChunk.getValue().values()) {
-                    // Validate the shop.
-                    if (!shop.isValid()) {
-                        toRemove.add(shop);
-                    }
-                }
+            checkedShops ++;
+            if(checkedShops >= maxCheckShops){
+                Util.debugLog("Shop check reached the limit, force exit and wait next check window.");
             }
-        }
-        // Now we can remove it.
-        for (Shop shop : toRemove) {
-            shop.delete();
+            shop = checkQueue.poll();
         }
     }
 }
