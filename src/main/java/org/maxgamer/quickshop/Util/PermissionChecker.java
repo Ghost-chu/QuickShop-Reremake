@@ -55,7 +55,12 @@ public class PermissionChecker {
         //Bukkit.getPluginManager().callEvent(beMainHand);
         beMainHand.setDropItems(false);
         beMainHand.setExpToDrop(-1);
-        Plugin cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
+        Plugin cancelPlugin = null;
+        if(plugin.getConfig().getBoolean("shop.use-protection-checking-filter")){
+            cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
+        }else{
+            Bukkit.getPluginManager().callEvent(beMainHand);
+        }
         //Use our custom event caller.
         ListenerHelper.enableEvent(beMainHand.getClass());
         //Call for event for protection check end
@@ -69,8 +74,6 @@ public class PermissionChecker {
 //            }
             if(cancelPlugin != null) {
                 Util.debugLog("Plugin " + cancelPlugin.getName() + " cancelled this build create action.");
-            }else{
-                Util.debugLog("Internal server error.");
             }
         }
 
