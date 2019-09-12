@@ -436,9 +436,8 @@ public class QuickShop extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(lockListener,this);
         }
         if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-            Bukkit.getServer().getPluginManager().registerEvents(new ClearLaggListener(), this);
+            Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
         }
-
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
