@@ -1,5 +1,17 @@
 package org.maxgamer.quickshop.Util;
 
+import io.sentry.SentryClient;
+import io.sentry.SentryClientFactory;
+import io.sentry.context.Context;
+import io.sentry.event.BreadcrumbBuilder;
+import io.sentry.event.UserBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
+
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -10,17 +22,6 @@ import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import io.sentry.SentryClient;
-import io.sentry.SentryClientFactory;
-import io.sentry.context.Context;
-import io.sentry.event.BreadcrumbBuilder;
-import io.sentry.event.UserBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.QuickShop;
 
 /**
  * Auto report errors to qs's sentry.

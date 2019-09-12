@@ -1,15 +1,11 @@
 package org.maxgamer.quickshop.Listeners;
 
-import java.util.HashMap;
-import java.util.UUID;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -28,6 +24,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 //import com.griefcraft.lwc.LWC;
 //import com.griefcraft.lwc.LWCPlugin;

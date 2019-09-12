@@ -1,12 +1,12 @@
 package org.maxgamer.quickshop.Event;
 
-import lombok.*;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is called before the shop creation request is sent. E.g. A player

@@ -1,10 +1,12 @@
 package org.maxgamer.quickshop.Shop;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A class contains shop's infomations

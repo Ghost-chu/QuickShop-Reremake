@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

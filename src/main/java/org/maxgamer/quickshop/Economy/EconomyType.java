@@ -1,6 +1,6 @@
 package org.maxgamer.quickshop.Economy;
 
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 public enum EconomyType {
     /*

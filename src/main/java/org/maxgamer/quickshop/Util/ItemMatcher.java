@@ -1,18 +1,18 @@
 package org.maxgamer.quickshop.Util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A util allow quickshop check item matches easy and quick.

@@ -1,12 +1,12 @@
 package org.maxgamer.quickshop.Database;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Util.Util;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
-
-import org.jetbrains.annotations.*;
-import org.maxgamer.quickshop.Util.Util;
 
 
 public class BufferStatement {

@@ -1,9 +1,10 @@
 package org.maxgamer.quickshop;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
