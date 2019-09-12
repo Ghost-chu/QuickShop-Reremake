@@ -236,6 +236,9 @@ shop:
     #    - PLUGIN##LISTENER##EVENT
     #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
 
+    #How many shops can be checked in once? (Container exists check)
+    max-shops-checks-in-once: 100
+
     #Add display name to the spawned DisplayItem entity?
     display-item-use-name: true
 
