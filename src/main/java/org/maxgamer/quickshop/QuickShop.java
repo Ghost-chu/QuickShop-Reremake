@@ -902,7 +902,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 46);
             selectedVersion = 46;
         }
-
+        if (selectedVersion == 46) {
+            getConfig().set("shop.use-protection-checking-filter", false);
+            getConfig().set("config-version", 47);
+            selectedVersion = 47;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
