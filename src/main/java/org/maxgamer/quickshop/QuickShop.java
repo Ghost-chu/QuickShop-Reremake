@@ -903,7 +903,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 46;
         }
         if (selectedVersion == 46) {
-            getConfig().set("shop.use-protection-checking-filter", false);
+            getConfig().set("shop.use-protection-checking-filter", true);
             getConfig().set("config-version", 47);
             selectedVersion = 47;
         }
