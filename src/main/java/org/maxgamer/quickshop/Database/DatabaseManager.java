@@ -45,7 +45,7 @@ public class DatabaseManager {
             public void run() {
                 plugin.getDatabaseManager().runTask();
             }
-        }.runTaskTimer(plugin, 1, 200);
+        }.runTaskTimerAsynchronously(plugin, 1, 200);
     }
 
     /**
