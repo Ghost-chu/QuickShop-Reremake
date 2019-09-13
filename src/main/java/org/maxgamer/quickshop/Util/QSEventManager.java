@@ -77,7 +77,7 @@ public class QSEventManager {
             Set<PluginEventFilterContainer> containers = filterSet.get(registration.getPlugin().getName());
             if (containers == null) {
                 Util.debugLog("Container is null, direct call events...");
-            }else{
+            } else {
                 Util.debugLog("Detected the filter for this plugin, checking...");
                 boolean cancelPluginCalling = false;
                 for (PluginEventFilterContainer disabledContainer : containers) {
@@ -89,35 +89,35 @@ public class QSEventManager {
                         }
                     }
                 }
-                if(cancelPluginCalling) {
+                if (cancelPluginCalling) {
                     continue; //Skip this listener calling+
                 }
             }
-                Util.debugLog("Calling event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
-                try {
-                    registration.callEvent(event);
-                    if (event instanceof Cancellable) {
-                        if (((Cancellable) event).isCancelled()) {
-                            Util.debugLog("Plugin " + registration.getPlugin() + " cancelled the check event, stop checking.");
-                            return registration.getPlugin();
-                        }
+            Util.debugLog("Calling event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
+            try {
+                registration.callEvent(event);
+                if (event instanceof Cancellable) {
+                    if (((Cancellable) event).isCancelled()) {
+                        Util.debugLog("Plugin " + registration.getPlugin() + " cancelled the check event, stop checking.");
+                        return registration.getPlugin();
                     }
-                } catch (AuthorNagException ex) {
-                    Plugin plugin = registration.getPlugin();
-                    if (plugin.isNaggable()) {
-                        plugin.setNaggable(false);
-                        Bukkit.getServer().getLogger().log(Level.SEVERE, String.format(
-                                "Nag author(s): '%s' of '%s' about the following: %s",
-                                plugin.getDescription().getAuthors(),
-                                plugin.getDescription().getFullName(),
-                                ex.getMessage()
-                        ));
-                    }
-                } catch (Throwable ex) {
-                    Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName(), ex);
-                    plugin.getLogger().info("A plugin throw an error when checking protection permission, you should check them, DO NOT REPORT THIS TO QUICKSHOP.");
                 }
+            } catch (AuthorNagException ex) {
+                Plugin plugin = registration.getPlugin();
+                if (plugin.isNaggable()) {
+                    plugin.setNaggable(false);
+                    Bukkit.getServer().getLogger().log(Level.SEVERE, String.format(
+                            "Nag author(s): '%s' of '%s' about the following: %s",
+                            plugin.getDescription().getAuthors(),
+                            plugin.getDescription().getFullName(),
+                            ex.getMessage()
+                    ));
+                }
+            } catch (Throwable ex) {
+                Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName(), ex);
+                plugin.getLogger().info("A plugin throw an error when checking protection permission, you should check them, DO NOT REPORT THIS TO QUICKSHOP.");
             }
+        }
         return null;
     }
 }
