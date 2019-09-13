@@ -23,7 +23,7 @@ import java.util.logging.Level;
  * The EventManager for QuickShop protection caller.
  */
 public class QSEventManager {
-    private HashMap<String, Set<PluginEventFilterContainer>> containerSet = new HashMap<>();
+    private HashMap<String, Set<PluginEventFilterContainer>> filterSet = new HashMap<>();
     private QuickShop plugin;
 
     public QSEventManager(@NotNull QuickShop plugin) {
@@ -50,13 +50,13 @@ public class QSEventManager {
                 plugin.getLogger().warning("Event filter: " + filterString + " plugin name invalid.");
                 continue;
             }
-            containerSet.putIfAbsent(cPlugin, new HashSet<>());
-            Set<PluginEventFilterContainer> containers = containerSet.get(cPlugin);
+            filterSet.putIfAbsent(cPlugin, new HashSet<>());
+            Set<PluginEventFilterContainer> containers = filterSet.get(cPlugin);
             boolean result = containers.add(new PluginEventFilterContainer(cListener, cEvent));
             if (!result) {
                 plugin.getLogger().warning("Event filter: " + filterString + " duplicated.");
             } else {
-                containerSet.put(cPlugin, containers);
+                filterSet.put(cPlugin, containers);
             }
         }
     }
@@ -74,23 +74,24 @@ public class QSEventManager {
                 Util.debugLog("Skipping " + registration.getPlugin().getName() + " cause plugin is unloaded.");
                 continue;
             }
-            Set<PluginEventFilterContainer> containers = containerSet.get(registration.getPlugin().getName());
+            Set<PluginEventFilterContainer> containers = filterSet.get(registration.getPlugin().getName());
             if (containers == null) {
-                Util.debugLog("Container is null, skipping...");
-                continue;
-            }
-            boolean cancelPluginCalling = false;
-            for (PluginEventFilterContainer disabledContainer : containers) {
-                if (disabledContainer.getListener().equals(registration.getListener().getClass().getName())) {
-                    if (disabledContainer.getEvent().equals(event.getClass().getName())) {
-                        Util.debugLog("Skipping event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
-                        cancelPluginCalling = true;
-                        break;
+                Util.debugLog("Container is null, direct call events...");
+            }else{
+                Util.debugLog("Detected the filter for this plugin, checking...");
+                boolean cancelPluginCalling = false;
+                for (PluginEventFilterContainer disabledContainer : containers) {
+                    if (disabledContainer.getListener().equals(registration.getListener().getClass().getName())) {
+                        if (disabledContainer.getEvent().equals(event.getClass().getName())) {
+                            Util.debugLog("Skipping event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
+                            cancelPluginCalling = true;
+                            break;
+                        }
                     }
                 }
-            }
-            if(cancelPluginCalling) {
-                continue; //Skip this listener calling+
+                if(cancelPluginCalling) {
+                    continue; //Skip this listener calling+
+                }
             }
                 Util.debugLog("Calling event " + event.getClass().getName() + " calling for plugin " + registration.getPlugin().getName() + "'s listener " + registration.getListener().getClass().getName());
                 try {
