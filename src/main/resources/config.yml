@@ -231,7 +231,7 @@ shop:
 
     #Protection advanced event calling filter
     #Advance users only.
-    use-protection-checking-filter: true
+    use-protection-checking-filter: false
     protection-checking-filter: []
     #    - PLUGIN##LISTENER##EVENT
     #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
