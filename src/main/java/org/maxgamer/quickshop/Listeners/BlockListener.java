@@ -79,18 +79,18 @@ public class BlockListener implements Listener {
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
-            if(e.isCancelled()){
+            if (e.isCancelled()) {
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
                 return;
             }
-            if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
+            if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
                 return;
-            }else if (!shop.getModerator().isOwner(p.getUniqueId())){
-                    e.setCancelled(true);
-                    p.sendMessage(MsgUtil.getMessage("no-permission"));
-                    return;
+            } else if (!shop.getModerator().isOwner(p.getUniqueId())) {
+                e.setCancelled(true);
+                p.sendMessage(MsgUtil.getMessage("no-permission"));
+                return;
             }
 
             // Cancel their current menu... Doesnt cancel other's menu's.
@@ -162,7 +162,7 @@ public class BlockListener implements Listener {
         Block b = e.getBlock();
         Player p = e.getPlayer();
         Block chest = Util.getSecondHalf(b);
-        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.create.double")) {
+        if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             e.setCancelled(true);
             p.sendMessage(MsgUtil.getMessage("no-double-chests"));
         }

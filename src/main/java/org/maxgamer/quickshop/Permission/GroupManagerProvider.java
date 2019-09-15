@@ -75,18 +75,18 @@ public class GroupManagerProvider implements PermissionProvider {
     @Override
     public @NotNull PermissionInfomationContainer getDebugInfo(@NotNull CommandSender sender, @NotNull String permission) {
         if (sender instanceof Server) {
-            return new PermissionInfomationContainer(sender,permission,null,"This user is Console.");
+            return new PermissionInfomationContainer(sender, permission, null, "This user is Console.");
         }
         if (!((OfflinePlayer) sender).isOnline()) {
-            return new PermissionInfomationContainer(sender,permission,null,"GroupManager doesn't support OfflinePlayer permissions checking.");
-        }else{
+            return new PermissionInfomationContainer(sender, permission, null, "GroupManager doesn't support OfflinePlayer permissions checking.");
+        } else {
             AnjoPermissionsHandler handler = groupManager.getWorldsHolder().getWorldPermissions((Player) sender);
             if (handler == null) {
-                return new PermissionInfomationContainer(sender,permission,null,"Permission Handler is empty");
+                return new PermissionInfomationContainer(sender, permission, null, "Permission Handler is empty");
             }
             StringBuilder permissionBuilder = new StringBuilder();
-            handler.getAllPlayersPermissions(sender.getName(),true).forEach((node)->permissionBuilder.append(node).append("\n"));
-            return new PermissionInfomationContainer(sender,permission,handler.getPrimaryGroup(sender.getName()),"This player have permissions: \n"+permissionBuilder.toString()+"\nWARNING: GroupManager doesn't have support, don't report to us if you got any troubles.");
+            handler.getAllPlayersPermissions(sender.getName(), true).forEach((node) -> permissionBuilder.append(node).append("\n"));
+            return new PermissionInfomationContainer(sender, permission, handler.getPrimaryGroup(sender.getName()), "This player have permissions: \n" + permissionBuilder.toString() + "\nWARNING: GroupManager doesn't have support, don't report to us if you got any troubles.");
         }
     }
 }

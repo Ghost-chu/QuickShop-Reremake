@@ -10,7 +10,8 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    @Getter private int amount;
+    @Getter
+    private int amount;
     private boolean cancelled;
     @Getter
     @NotNull
@@ -18,7 +19,8 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
     @Getter
     @NotNull
     private Shop shop;
-    @Getter private double tax;
+    @Getter
+    private double tax;
     private double total;
 
     /**
@@ -28,8 +30,8 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      * @param shop   The shop bought from
      * @param p      The player buying
      * @param amount The amount they're buying
-     * @param tax The tax in this purchase
-     * @param total The money in this purchase
+     * @param tax    The tax in this purchase
+     * @param total  The money in this purchase
      */
     public ShopSuccessPurchaseEvent(@NotNull Shop shop, @NotNull Player p, int amount, double total, double tax) {
         this.shop = shop;
@@ -46,7 +48,9 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      *
      * @return the total money with calculate tax
      */
-    public double getBalance() {return this.total * (1 - tax);}
+    public double getBalance() {
+        return this.total * (1 - tax);
+    }
 
     /**
      * The total money changes in this purchase.
@@ -54,9 +58,13 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
      *
      * @return the total money without calculate tax
      */
-    public double getBalanceWithoutTax() {return this.total;}
+    public double getBalanceWithoutTax() {
+        return this.total;
+    }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @NotNull
     @Override

@@ -1,32 +1,32 @@
 language: java
 jdk:
-- openjdk8
+  - openjdk8
 install: true
 script:
-- mvn clean
-- mvn install
+  - mvn clean
+  - mvn install
 after_success:
-- rm -rf push
-- mkdir push
-- cp ./target/*.jar ./push/
-- mkdir devbukkit
-- cp ./target/*.jar ./devbukkit/
-- rm -f ./devbukkit/original-*.jar
-- rm -f ./devbukkit/*-javadoc.jar
-- rm -f ./devbukkit/*-shaded.jar
-- rm -f ./devbukkit/*-sources.jar
-- rm -f ./target/original-*.jar
-- ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+  - rm -rf push
+  - mkdir push
+  - cp ./target/*.jar ./push/
+  - mkdir devbukkit
+  - cp ./target/*.jar ./devbukkit/
+  - rm -f ./devbukkit/original-*.jar
+  - rm -f ./devbukkit/*-javadoc.jar
+  - rm -f ./devbukkit/*-shaded.jar
+  - rm -f ./devbukkit/*-sources.jar
+  - rm -f ./target/original-*.jar
+  - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
-    skip_cleanup: true
-    provider: releases
-    api_key:
-        secure: $Github_token
-    file:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: $Github_token
+  file:
     - ./push/*
-    file_glob: true
-    on:
-        tags: true
+  file_glob: true
+  on:
+    tags: true
 after_deploy:
-- chmod +x deploy.sh
-- ./deploy.sh $Curse_token
+  - chmod +x deploy.sh
+  - ./deploy.sh $Curse_token

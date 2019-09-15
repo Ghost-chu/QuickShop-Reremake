@@ -12,7 +12,9 @@ import java.util.Properties;
 public class MySQLCore implements DatabaseCore {
     private static final int MAX_CONNECTIONS = 8;
     private static ArrayList<Connection> pool = new ArrayList<>();
-    /** The connection properties... user, pass, autoReconnect.. */
+    /**
+     * The connection properties... user, pass, autoReconnect..
+     */
     private Properties info;
     private String url;
 

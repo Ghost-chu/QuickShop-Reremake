@@ -6,7 +6,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Economy.*;
+import org.maxgamer.quickshop.Economy.Economy;
+import org.maxgamer.quickshop.Economy.EconomyCore;
+import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.io.BufferedReader;
@@ -45,7 +47,7 @@ public class Paste {
         finalReport.append("\tEconomy System: ");
         EconomyCore economyCore = plugin.getEconomy().getCore();
         if (economyCore != null) {
-            switch (Economy.getNowUsing()){
+            switch (Economy.getNowUsing()) {
                 case VAULT:
                     finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
                     break;
@@ -135,7 +137,7 @@ public class Paste {
                 finalReport.append("\t\t\n").append(new String(Util
                         .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
                 finalReport.append("\t*********************************\n");
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tlatest.log:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -147,7 +149,7 @@ public class Paste {
                 finalReport.append("\t\t\n").append(new String(Util
                         .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath()))).append("\n");
                 finalReport.append("\t*********************************\n");
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -159,7 +161,7 @@ public class Paste {
                 finalReport.append("\t\t\n").append(new String(Util
                         .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath()))).append("\n");
                 finalReport.append("\t*********************************\n");
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -171,7 +173,7 @@ public class Paste {
                 finalReport.append("\t\t\n").append(new String(Util
                         .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath()))).append("\n");
                 finalReport.append("\t*********************************\n");
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");

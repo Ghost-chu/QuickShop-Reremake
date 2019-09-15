@@ -30,7 +30,7 @@ public class DatabaseManager {
      * Use queue to solve run SQL make server lagg issue.
      *
      * @param plugin plugin main class
-     * @param db database
+     * @param db     database
      */
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
         this.plugin = plugin;
@@ -50,6 +50,7 @@ public class DatabaseManager {
 
     /**
      * Add preparedStatement to queue waiting flush to database,
+     *
      * @param ps The ps you want add in queue.
      */
     public void add(@NotNull PreparedStatement ps) {

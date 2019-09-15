@@ -79,6 +79,7 @@ public class SentryErrorReporter {
 
     /**
      * Dupe report check
+     *
      * @param throwable Throws
      * @return dupecated
      */
@@ -105,6 +106,7 @@ public class SentryErrorReporter {
 
     /**
      * Check a throw is cause by QS
+     *
      * @param throwable Throws
      * @return Cause or not
      */
@@ -270,7 +272,7 @@ public class SentryErrorReporter {
             if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
             }
-            if(record.getThrown() == null){
+            if (record.getThrown() == null) {
                 Util.debugLog("Error not sended cause thrown is null");
                 return true;
             }
