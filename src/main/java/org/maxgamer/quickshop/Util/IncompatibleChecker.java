@@ -5,15 +5,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 public class IncompatibleChecker {
-    private ArrayList<String> incompatibleVersionList;
+    private Set<String> incompatibleVersionList;
 
     public IncompatibleChecker() {
-        incompatibleVersionList = new ArrayList<>();
+        incompatibleVersionList = new HashSet<>();
         mc1_5();
         mc1_6();
         mc1_7();
