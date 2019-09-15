@@ -288,7 +288,7 @@ public class Util {
     /**
      * Return the Class name.
      */
-    public static String getClassPrefix(Class c) {
+    public static String getClassPrefix(@NotNull Class c) {
         String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
