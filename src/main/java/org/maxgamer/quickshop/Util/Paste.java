@@ -6,8 +6,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Economy.EconomyCore;
-import org.maxgamer.quickshop.Economy.Economy_Vault;
+import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.io.BufferedReader;
@@ -46,10 +45,16 @@ public class Paste {
         finalReport.append("\tEconomy System: ");
         EconomyCore economyCore = plugin.getEconomy().getCore();
         if (economyCore != null) {
-            if (economyCore instanceof Economy_Vault) {
-                finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
-            } else {
-                finalReport.append("Reserve");
+            switch (Economy.getNowUsing()){
+                case VAULT:
+                    finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
+                    break;
+                case RESERVE:
+                    finalReport.append("Reserve").append("%").append("No details");
+                    break;
+                case UNKNOWN:
+                    finalReport.append("Unknown").append("%").append("Unknown error");
+                    break;
             }
             finalReport.append("\n");
         } else {
@@ -167,7 +172,7 @@ public class Paste {
         String builder = "poster=" +
                 "QuickShop Paster" +
                 "&syntax=text" +
-                "&expiration=week" +
+                "&expiration=month" +
                 "&content=" +
                 URLEncoder.encode(text, "UTF-8");
         out.print(builder);
