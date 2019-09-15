@@ -265,9 +265,10 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
-        <groupId>org.apache.clerezza.ext</groupId>
-        <artifactId>org.json.simple</artifactId>
-        <version>0.4</version><scope>compile</scope>
+            <groupId>org.apache.clerezza.ext</groupId>
+            <artifactId>org.json.simple</artifactId>
+            <version>0.4</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

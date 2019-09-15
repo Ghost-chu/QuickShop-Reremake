@@ -11,9 +11,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SyncTaskWatcher {
-    @Getter private Queue<Entity> entityRemoveQueue = new LinkedList<>();
-    @Getter private Queue<InventoryEditContainer> inventoryEditQueue = new LinkedList<>();
-    @Getter private Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
+    @Getter
+    private Queue<Entity> entityRemoveQueue = new LinkedList<>();
+    @Getter
+    private Queue<InventoryEditContainer> inventoryEditQueue = new LinkedList<>();
+    @Getter
+    private Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
     private QuickShop plugin;
 
     /**

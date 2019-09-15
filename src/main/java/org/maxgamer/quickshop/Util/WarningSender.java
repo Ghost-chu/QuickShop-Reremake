@@ -10,7 +10,8 @@ import org.maxgamer.quickshop.QuickShop;
 public class WarningSender {
     private long cooldown;
     private long lastSend = 0;
-    @ToString.Exclude private QuickShop plugin;
+    @ToString.Exclude
+    private QuickShop plugin;
 
     /**
      * Create a warning sender

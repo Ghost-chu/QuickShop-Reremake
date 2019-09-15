@@ -7,7 +7,9 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-/** Calling when shop sign update, Can't cancel **/
+/**
+ * Calling when shop sign update, Can't cancel
+ **/
 
 public class ShopSignUpdatedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -29,7 +31,10 @@ public class ShopSignUpdatedEvent extends Event {
         this.sign = sign;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;

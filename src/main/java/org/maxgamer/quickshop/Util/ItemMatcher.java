@@ -117,10 +117,10 @@ class ItemMetaMatcher {
             }
             Set<Attribute> set1 = meta1.getAttributeModifiers().keySet();
             Set<Attribute> set2 = meta2.getAttributeModifiers().keySet();
-            for (Attribute att : set1){
-                if(!set2.contains(att)){
+            for (Attribute att : set1) {
+                if (!set2.contains(att)) {
                     return false;
-                }else if(!meta1.getAttributeModifiers().get(att).equals(meta2.getAttributeModifiers().get(att))){
+                } else if (!meta1.getAttributeModifiers().get(att).equals(meta2.getAttributeModifiers().get(att))) {
                     return false;
                 }
             }

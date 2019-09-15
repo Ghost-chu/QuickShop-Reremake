@@ -41,7 +41,7 @@ public class PlayerListener implements Listener {
         }
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
-            if(b == null){
+            if (b == null) {
                 return;
             }
             if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {

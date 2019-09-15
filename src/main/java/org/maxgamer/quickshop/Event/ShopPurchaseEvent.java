@@ -16,7 +16,8 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
     @Getter
     @NotNull
     private Player player;
-    @Getter private int amount;
+    @Getter
+    private int amount;
     private boolean cancelled;
 
     /**
@@ -39,7 +40,9 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
 
     @Override

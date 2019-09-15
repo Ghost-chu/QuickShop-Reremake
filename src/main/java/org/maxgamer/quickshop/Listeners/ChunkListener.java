@@ -35,7 +35,7 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 //noinspection unchecked
-                for (Shop shop : ((HashMap<Location,Shop>)inChunk.clone()).values()) {
+                for (Shop shop : ((HashMap<Location, Shop>) inChunk.clone()).values()) {
                     shop.onLoad();
                 }
                 //Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
@@ -57,7 +57,7 @@ public class ChunkListener implements Listener {
             @Override
             public void run() {
                 //noinspection unchecked
-                for (Shop shop : ((HashMap<Location,Shop>)inChunk.clone()).values()) {
+                for (Shop shop : ((HashMap<Location, Shop>) inChunk.clone()).values()) {
                     shop.onUnload();
                 }
             }

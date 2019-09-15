@@ -25,13 +25,13 @@ public class ShopVaildWatcher extends BukkitRunnable {
         int checkedShops = 0;
         int maxCheckShops = plugin.getConfig().getInt("shop.max-shops-checks-in-once");
         Shop shop = checkQueue.poll();
-        while (shop != null){
-            if(shop.isLoaded() && !shop.isValid()){
+        while (shop != null) {
+            if (shop.isLoaded() && !shop.isValid()) {
                 shop.delete();
-                Util.debugLog("Removed shop at "+shop.getLocation()+" cause the container is missing or not a usable container.");
+                Util.debugLog("Removed shop at " + shop.getLocation() + " cause the container is missing or not a usable container.");
             }
-            checkedShops ++;
-            if(checkedShops >= maxCheckShops){
+            checkedShops++;
+            if (checkedShops >= maxCheckShops) {
                 Util.debugLog("Shop check reached the limit, force exit and wait next check window.");
             }
             shop = checkQueue.poll();

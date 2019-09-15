@@ -5,12 +5,13 @@ import org.jetbrains.annotations.Nullable;
 
 public enum DisplayType {
     /*
-    * UNKNOWN = FALLBACK TO REALITEM
-    * REALITEM = USE REAL DROPPED ITEM
-    * ARMORSTAND = USE ARMORSTAND DISPLAY
-    * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
-    * */
+     * UNKNOWN = FALLBACK TO REALITEM
+     * REALITEM = USE REAL DROPPED ITEM
+     * ARMORSTAND = USE ARMORSTAND DISPLAY
+     * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
+     * */
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
+
     public static @NotNull DisplayType fromID(int id) {
         for (DisplayType type : DisplayType.values()) {
             if (type.id == id) {

@@ -13,6 +13,7 @@ import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -124,7 +125,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             if (container.getPermissions() != null) {
                 for (String requirePermission : requirePermissions) {
 
-                    if (requirePermission != null && !requirePermission.isEmpty() && ! QuickShop.getPermissionManager().hasPermission(sender,requirePermission)) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
                                 .array2String(cmdArg) + ", but no permission " + requirePermission);
                         sender.sendMessage(MsgUtil.getMessage("no-permission"));
@@ -167,7 +168,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null) {
                 for (String requirePermission : requirePermissions) {
-                    if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(sender,requirePermission)) {
+                    if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog("Sender " + sender
                                 .getName() + " trying tab-complete the command: " + commandLabel + " " + Util
                                 .array2String(cmdArg) + ", but no permission " + requirePermission);

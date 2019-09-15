@@ -25,8 +25,10 @@ public class ShopModerator {
         return gson.toJson(shopModerator); //Use Gson serialize this class
     }
 
-    @NonNull private UUID owner;
-    @NonNull private ArrayList<UUID> staffs;
+    @NonNull
+    private UUID owner;
+    @NonNull
+    private ArrayList<UUID> staffs;
 
     private ShopModerator(@NotNull ShopModerator shopModerator) {
         this.owner = shopModerator.owner;
@@ -45,7 +47,8 @@ public class ShopModerator {
 
     /**
      * Shop moderators, inlucding owner, staffs.
-     * @param owner The owner
+     *
+     * @param owner  The owner
      * @param staffs The staffs
      */
     public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
@@ -55,6 +58,7 @@ public class ShopModerator {
 
     /**
      * Add moderators staff to staff list
+     *
      * @param player New staff
      * @return Success
      */
@@ -86,6 +90,7 @@ public class ShopModerator {
 
     /**
      * Remove moderators staff from staff list
+     *
      * @param player Staff
      * @return Success
      */
@@ -95,6 +100,7 @@ public class ShopModerator {
 
     /**
      * Get a player is or not moderators
+     *
      * @param player Player
      * @return yes or no, return true when it is staff or owner
      */
@@ -107,6 +113,7 @@ public class ShopModerator {
 
     /**
      * Get a player is or not moderators owner
+     *
      * @param player Player
      * @return yes or no
      */
@@ -116,6 +123,7 @@ public class ShopModerator {
 
     /**
      * Get a player is or not moderators a staff
+     *
      * @param player Player
      * @return yes or no
      */
@@ -125,6 +133,7 @@ public class ShopModerator {
 
     /**
      * Get moderators owner (Shop Owner).
+     *
      * @return Owner's UUID
      */
     public @NotNull UUID getOwner() {
