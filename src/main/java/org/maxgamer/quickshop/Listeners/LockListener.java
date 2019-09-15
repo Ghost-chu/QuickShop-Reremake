@@ -150,17 +150,10 @@ public class LockListener implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return; // Didn't right click it, we dont care.
         }
-        Shop shop = plugin.getShopManager().getShop(b.getLocation());
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
         // Make sure they're not using the non-shop half of a double chest.
         if (shop == null) {
-            b = Util.getSecondHalf(b);
-            if (b == null) {
-                return;
-            }
-            shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null) {
-                return;
-            }
+           return;
         }
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.open")) {
