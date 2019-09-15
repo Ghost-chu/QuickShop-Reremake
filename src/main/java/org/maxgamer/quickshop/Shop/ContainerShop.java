@@ -879,12 +879,12 @@ public class ContainerShop implements Shop {
 
     @Override
     public @NotNull ShopModerator getModerator() {
-        return this.moderator.clone();
+        return this.moderator;
     }
 
     @Override
     public void setModerator(ShopModerator shopModerator) {
-        this.moderator = shopModerator.clone();
+        this.moderator = shopModerator;
         update();
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
