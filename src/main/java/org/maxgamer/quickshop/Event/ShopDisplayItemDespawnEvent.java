@@ -29,7 +29,8 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
 
     /**
      * This event is called before the shop display item created
-     * @param shop Target shop
+     *
+     * @param shop   Target shop
      * @param iStack Target itemstacck
      */
     @Deprecated
@@ -41,8 +42,9 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
 
     /**
      * This event is called before the shop display item created
-     * @param shop Target shop
-     * @param iStack Target itemstacck
+     *
+     * @param shop        Target shop
+     * @param iStack      Target itemstacck
      * @param displayType The displayType
      */
     public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack, @NotNull DisplayType displayType) {
@@ -57,7 +59,9 @@ public class ShopDisplayItemDespawnEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @Override
     public boolean isCancelled() {

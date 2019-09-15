@@ -27,7 +27,8 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
     /**
      * Calling when shop pre-creating.
      * Shop won't one-percent will create after this event, if you want get the shop created event, please use ShopCreateEvent
-     * @param p Target player
+     *
+     * @param p   Target player
      * @param loc The location will create be shop
      */
     public ShopPreCreateEvent(@NotNull Player p, @NotNull Location loc) {
@@ -41,7 +42,9 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @Override
     public boolean isCancelled() {

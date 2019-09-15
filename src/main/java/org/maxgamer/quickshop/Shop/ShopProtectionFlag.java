@@ -18,7 +18,8 @@ public class ShopProtectionFlag {
         this.shopLocation = shopLocation;
         this.itemStackString = itemStackString;
     }
-    public static String getDefaultMark(){
+
+    public static String getDefaultMark() {
         return "QuickShop DisplayItem";
     }
 }

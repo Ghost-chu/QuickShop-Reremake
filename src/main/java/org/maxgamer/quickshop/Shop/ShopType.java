@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public enum ShopType {
     //SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0), BUYING(1);
+
     public static @NotNull ShopType fromID(int id) {
         for (ShopType type : ShopType.values()) {
             if (type.id == id) {

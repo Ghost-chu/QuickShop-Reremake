@@ -71,7 +71,7 @@ public class SubCommand_Price implements CommandProcesser {
             while (bIt.hasNext()) {
                 Block b = bIt.next();
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
-                if (shop != null && (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.price"))) {
+                if (shop != null && (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price"))) {
                     if (shop.getPrice() == price) {
                         // Stop here if there isn't a price change
                         sender.sendMessage(MsgUtil.getMessage("no-price-change"));

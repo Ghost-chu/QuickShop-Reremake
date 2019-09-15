@@ -116,6 +116,7 @@ public class ShopProtectionListener implements Listener {
             }
         }
     }
+
     //Protect Minecart steal shop
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInventoryMove(InventoryMoveItemEvent event) {
@@ -131,17 +132,17 @@ public class ShopProtectionListener implements Listener {
             return;
         }
         HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
-        if(shopsInChunk == null || shopsInChunk.isEmpty()){
+        if (shopsInChunk == null || shopsInChunk.isEmpty()) {
             return;
         }
-        if(shopsInChunk.get(loc) == null){
+        if (shopsInChunk.get(loc) == null) {
             return;
         }
         event.setCancelled(true);
         Location location = event.getInitiator().getLocation();
-        if(location != null){
+        if (location != null) {
             location.getBlock().breakNaturally();
-            MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at "+location +" try steal the items for shop "+loc);
+            MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at " + location + " try steal the items for shop " + loc);
         }
     }
 

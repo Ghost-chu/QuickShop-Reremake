@@ -37,7 +37,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
             return;
         }
-        if (shop.getModerator().isModerator(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender,"quickshop.other.destroy")) {
+        if (shop.getModerator().isModerator(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
             shop.onUnload();
             shop.delete();
         } else {

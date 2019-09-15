@@ -32,7 +32,8 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
-    @EqualsAndHashCode.Exclude private boolean isLoaded = false;
+    @EqualsAndHashCode.Exclude
+    private boolean isLoaded = false;
     private ItemStack item;
     private Location loc;
     private ShopModerator moderator;

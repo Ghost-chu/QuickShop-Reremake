@@ -17,6 +17,7 @@ public class Timer {
 
     /**
      * Create a empty time, auto start if autoSet is true
+     *
      * @param autoSet Auto set the timer
      */
     public Timer(boolean autoSet) {

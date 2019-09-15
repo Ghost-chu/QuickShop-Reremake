@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 @EqualsAndHashCode
 public class UpdateInfomation {
     private boolean isBeta;
-    @Nullable private String version;
+    @Nullable
+    private String version;
 
 }

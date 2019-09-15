@@ -6,18 +6,23 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-/** Getting the unloading shop, Can't cancel. **/
+/**
+ * Getting the unloading shop, Can't cancel.
+ **/
 
 public class ShopUnloadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
     private @NotNull Shop shop;
+
     /* Getting the unloading shop, Can't cancel. **/
     public ShopUnloadEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @NotNull
     @Override

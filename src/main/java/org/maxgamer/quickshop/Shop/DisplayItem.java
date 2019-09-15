@@ -58,10 +58,10 @@ public interface DisplayItem {
                 if (ShopProtectionFlag.getDefaultMark().equals(shopProtectionFlag.getMark())) {
                     return true;
                 }
-                if(shopProtectionFlag.getShopLocation()!= null){
+                if (shopProtectionFlag.getShopLocation() != null) {
                     return true;
                 }
-                if(shopProtectionFlag.getItemStackString() != null){
+                if (shopProtectionFlag.getItemStackString() != null) {
                     return true;
                 }
             } catch (JsonSyntaxException e) {
@@ -128,10 +128,9 @@ public interface DisplayItem {
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
             iMeta.setDisplayName("QuickShop DisplayItem");
-        }
-        else {
+        } else {
             iMeta.setDisplayName(null);
-        } 
+        }
         java.util.List<String> lore = new ArrayList<String>();
         Gson gson = new Gson();
         ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
