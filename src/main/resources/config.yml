@@ -100,33 +100,33 @@ send-display-item-protection-alert: true
 
 #MySQL database settings.
 database:
-    # false = use local SQLite database, true = use local/remote MySQL database.
-    mysql: false
-    host: localhost
-    port: 3306
-    database: quickshop
-    user: root
-    password: passwd
-    # Set prefix to "none" to remove prefix
-    prefix: none
-    usessl: false
-    queue: true
+  # false = use local SQLite database, true = use local/remote MySQL database.
+  mysql: false
+  host: localhost
+  port: 3306
+  database: quickshop
+  user: root
+  password: passwd
+  # Set prefix to "none" to remove prefix
+  prefix: none
+  usessl: false
+  queue: true
 
 #Limits the number of shops a person can create and own at a single time.
 limits:
-    #Disable these if you're not using them! If this is false, the rest of this section is ignored
-    use: false
+  #Disable these if you're not using them! If this is false, the rest of this section is ignored
+  use: false
 
-    #The default number of shops players can make
-    default: 10
+  #The default number of shops players can make
+  default: 10
 
-    #Use old algorithm to calc unlimited shops into limits.
-    old-algorithm: false
+  #Use old algorithm to calc unlimited shops into limits.
+  old-algorithm: false
 
-    #Players with these permissions can create these amounts of shops.
-    ranks:
-        #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
-        quickshop.vip: 20 #Players with quickshop.vip can make 20 shops.
+  #Players with these permissions can create these amounts of shops.
+  ranks:
+    #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
+    quickshop.vip: 20 #Players with quickshop.vip can make 20 shops.
 
 #A list of block (materials) which can be used to create shops.
 #By default, chests are added to this list.
@@ -137,172 +137,172 @@ limits:
 #allow players to put whatever item they want in all 3 slots and
 #dispenser shops aren't protected from redstone... Etc.
 shop-blocks:
-- CHEST
-- TRAPPED_CHEST
-- ENDER_CHEST
+  - CHEST
+  - TRAPPED_CHEST
+  - ENDER_CHEST
 shop:
-    #Cost to make a shop
-    cost: 10
-    #Should we refund the player when their shops are deleted/removed/broken?
-    refund: false
+  #Cost to make a shop
+  cost: 10
+  #Should we refund the player when their shops are deleted/removed/broken?
+  refund: false
 
-    #Is there a fee for changing prices on a shop (Help deter endless undercutting)
-    price-change-requires-fee: true
-    #If price changes require a fee, how much is the fee
-    fee-for-price-change: 50
+  #Is there a fee for changing prices on a shop (Help deter endless undercutting)
+  price-change-requires-fee: true
+  #If price changes require a fee, how much is the fee
+  fee-for-price-change: 50
 
-    #Should we try and lock their shops from other players, so people can't steal from them?
-    lock: true
+  #Should we try and lock their shops from other players, so people can't steal from them?
+  lock: true
 
-    #Should we require players be sneaking to create and use shops?
-    sneak-to-create: false
-    sneak-to-trade: false
-    sneak-to-control: false
+  #Should we require players be sneaking to create and use shops?
+  sneak-to-create: false
+  sneak-to-trade: false
+  sneak-to-control: false
 
-    #Should we automatically create the sign for the chest?
-    auto-sign: true
+  #Should we automatically create the sign for the chest?
+  auto-sign: true
 
-    #Should we pay/take money to/from unlimited shops owner?
-    pay-unlimited-shop-owners: false
+  #Should we pay/take money to/from unlimited shops owner?
+  pay-unlimited-shop-owners: false
 
-    #Should we place display items on the chests? This may cause duped items, especially for modded servers.
-    display-items: true
+  #Should we place display items on the chests? This may cause duped items, especially for modded servers.
+  display-items: true
 
-    #The plugin will check if the display item is in a valid position every specified amount of ticks. 0 to disable.
-    display-items-check-ticks: 6000
+  #The plugin will check if the display item is in a valid position every specified amount of ticks. 0 to disable.
+  display-items-check-ticks: 6000
 
-    #The display type you want use.
-    #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Dropped Item
-    display-type: 0
+  #The display type you want use.
+  #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Dropped Item
+  display-type: 0
 
-    #When someone uses /qs find <item>, how far should we search in blocks?
-    #This command lets users shop quickly without wasting time searching
-    #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
-    find-distance: 45
+  #When someone uses /qs find <item>, how far should we search in blocks?
+  #This command lets users shop quickly without wasting time searching
+  #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
+  find-distance: 45
 
-    #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
-    alternate-currency-symbol: '$'
+  #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
+  alternate-currency-symbol: '$'
 
-    #It should fix Vault or an economy plugin that is not correctly processing the price and returns a "0" result problem.
-    #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
-    disable-vault-format: false
+  #It should fix Vault or an economy plugin that is not correctly processing the price and returns a "0" result problem.
+  #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
+  disable-vault-format: false
 
-    #Ignore trade messages if the shop is unlimited
-    ignore-unlimited-shop-messages: false
+  #Ignore trade messages if the shop is unlimited
+  ignore-unlimited-shop-messages: false
 
-    #Enable this if you only want players to create shops in a special region
-    #When you enable this, you only can create shop in the AreaShop's area
-    special-region-only: false
+  #Enable this if you only want players to create shops in a special region
+  #When you enable this, you only can create shop in the AreaShop's area
+  special-region-only: false
 
-    #Allow auto fetching player shops, if you disable this, players need to use /qs fetchmessage to fetch the shops history messages. (Disabling it may cause database issues.)
-    auto-fetch-shop-messages: true
+  #Allow auto fetching player shops, if you disable this, players need to use /qs fetchmessage to fetch the shops history messages. (Disabling it may cause database issues.)
+  auto-fetch-shop-messages: true
 
-    #Ignore cancel chat event, can improve compatibility with other chat plugin in some cases.
-    ignore-cancel-chat-event: false
+  #Ignore cancel chat event, can improve compatibility with other chat plugin in some cases.
+  ignore-cancel-chat-event: false
 
-    #Allow shops to be created in a place where a sign cannot placed 
-    #(e.g There is blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
-    allow-shop-without-space-for-sign: false
+  #Allow shops to be created in a place where a sign cannot placed
+  #(e.g There is blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
+  allow-shop-without-space-for-sign: false
 
-    #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
-    maximum-price: -1
+  #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
+  maximum-price: -1
 
-    #The wall sign material.
-    #In 1.13 and legacy versions, only WALL_SIGN is available.
-    #
-    #For 1.14, you can use these:
-    #ACACIA_WALL_SIGN
-    #BIRCH_WALL_SIGN
-    #DARK_OAK_WALL_SIGN
-    #JUNGLE_WALL_SIGN
-    #OAK_WALL_SIGN
-    #SPRUCE_WALL_SIGN
-    sign-material: OAK_WALL_SIGN
+  #The wall sign material.
+  #In 1.13 and legacy versions, only WALL_SIGN is available.
+  #
+  #For 1.14, you can use these:
+  #ACACIA_WALL_SIGN
+  #BIRCH_WALL_SIGN
+  #DARK_OAK_WALL_SIGN
+  #JUNGLE_WALL_SIGN
+  #OAK_WALL_SIGN
+  #SPRUCE_WALL_SIGN
+  sign-material: OAK_WALL_SIGN
 
-    #The worlds name for you didn't want create new shop.
-    blacklist-world:
-        - disabled_world_name
+  #The worlds name for you didn't want create new shop.
+  blacklist-world:
+    - disabled_world_name
 
-    #Enable a stricter itemstack check
-    strict-matches-check: false
+  #Enable a stricter itemstack check
+  strict-matches-check: false
 
-    #Protection check
-    protection-checking: true
+  #Protection check
+  protection-checking: true
 
-    #Protection advanced event calling filter
-    #Advance users only.
-    use-protection-checking-filter: false
-    protection-checking-filter: []
-    #    - PLUGIN##LISTENER##EVENT
-    #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
+  #Protection advanced event calling filter
+  #Advance users only.
+  use-protection-checking-filter: false
+  protection-checking-filter: []
+  #    - PLUGIN##LISTENER##EVENT
+  #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
 
-    #How many shops can be checked in once? (Container exists check)
-    max-shops-checks-in-once: 100
+  #How many shops can be checked in once? (Container exists check)
+  max-shops-checks-in-once: 100
 
-    #Add display name to the spawned DisplayItem entity?
-    display-item-use-name: true
+  #Add display name to the spawned DisplayItem entity?
+  display-item-use-name: true
 
-    #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
-    #Disable it if you feel it damage your server performance.
-    update-sign-when-inventory-moving: true
+  #Update the signs when Hopper or somethings trigged InventoryMoveItemEvent.
+  #Disable it if you feel it damage your server performance.
+  update-sign-when-inventory-moving: true
 
-    #Allow player loan (Require economy plugin support)
-    allow-economy-loan: false
+  #Allow player loan (Require economy plugin support)
+  allow-economy-loan: false
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
-- Bedrock
+  - Bedrock
 
 protect:
-    #Protected shop blocks if InventoryMoveEvent called. (e.g Hopper, HopperMinecart)
-    inventorymove: true
-    #Protected shop blocks if BlockSpreadEvent called. (e.g vines)
-    spread: true
-    #Protected shop items if BlockFromToEvent called. (e.g water,lava and )
-    fromto: true
-    #Protected shop blocks can or cannot be picked up by an entity (Will remove Entity)
-    entity: true
-    #Protected shop blocks can or cannot be activated by Redstone
-    redstone: true
-    #Protected shop blocks can or cannot be broken by a plant growing
-    structuregrow: true
-    #Protected shop blocks can or cannot be broken by an Entity and or a Block explosion
-    explode: true
+  #Protected shop blocks if InventoryMoveEvent called. (e.g Hopper, HopperMinecart)
+  inventorymove: true
+  #Protected shop blocks if BlockSpreadEvent called. (e.g vines)
+  spread: true
+  #Protected shop items if BlockFromToEvent called. (e.g water,lava and )
+  fromto: true
+  #Protected shop blocks can or cannot be picked up by an entity (Will remove Entity)
+  entity: true
+  #Protected shop blocks can or cannot be activated by Redstone
+  redstone: true
+  #Protected shop blocks can or cannot be broken by a plant growing
+  structuregrow: true
+  #Protected shop blocks can or cannot be broken by an Entity and or a Block explosion
+  explode: true
 lockette:
-    #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest)\
-    enable: true
-    private: "[Private]"
-    more_users: "[More Users]"
+  #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest)\
+  enable: true
+  private: "[Private]"
+  more_users: "[More Users]"
 # Enable or disable plugin support.
 plugin:
-    #If you have Multiverse-Core, QSRR will try load world when shop's world don't exist and will throw an exception and auto repair the shops.
-    Multiverse-Core: true
-    #If you have OpenInv, QSRR will enable EnderChest feature.
-    OpenInv: true
+  #If you have Multiverse-Core, QSRR will try load world when shop's world don't exist and will throw an exception and auto repair the shops.
+  Multiverse-Core: true
+  #If you have OpenInv, QSRR will enable EnderChest feature.
+  OpenInv: true
 effect:
-    sound:
-        ontabcomplete: true
-        oncommand: true
-        onclick: true
+  sound:
+    ontabcomplete: true
+    oncommand: true
+    onclick: true
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
-    #For Item
-    item:
-        #Plugin should check the item damage?
-        damage: true
-        #Plugin should check the item repair cost?
-        repaircost: false
-        #Plugin should check the item display name?
-        displayname: true
-        #Plugin should check the item lores?
-        lores: true
-        #Plugin should check the item enchs?
-        enchs: true
-        #Plugin should check the item potions?
-        potions: true
-        #Plugin should check the item attributes?
-        attributes: true
-        #Plugin should check the item itemflags?
-        itemflags: true
-        #Plugin should check the item custommodeldata?
-        custommodeldata: true
+  #For Item
+  item:
+    #Plugin should check the item damage?
+    damage: true
+    #Plugin should check the item repair cost?
+    repaircost: false
+    #Plugin should check the item display name?
+    displayname: true
+    #Plugin should check the item lores?
+    lores: true
+    #Plugin should check the item enchs?
+    enchs: true
+    #Plugin should check the item potions?
+    potions: true
+    #Plugin should check the item attributes?
+    attributes: true
+    #Plugin should check the item itemflags?
+    itemflags: true
+    #Plugin should check the item custommodeldata?
+    custommodeldata: true

@@ -24,41 +24,41 @@ public class SubCommand_Clean implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if(sender instanceof Server){
+        if (sender instanceof Server) {
             sender.sendMessage("Can't run this command by Console");
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
-            Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
-            int i = 0;
-            java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
+        Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
+        int i = 0;
+        java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
 
-            while (shIt.hasNext()) {
-                Shop shop = shIt.next();
+        while (shIt.hasNext()) {
+            Shop shop = shIt.next();
 
-                try {
-                    if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0
-                            && shop instanceof ContainerShop) {
-                        ContainerShop cs = (ContainerShop) shop;
-                        if (cs.isDoubleShop()) {
-                            continue;
-                        }
-                        pendingRemoval.add(shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
-                        // Can be deleted safely.
-                        i++;
+            try {
+                if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0
+                        && shop instanceof ContainerShop) {
+                    ContainerShop cs = (ContainerShop) shop;
+                    if (cs.isDoubleShop()) {
+                        continue;
                     }
-                } catch (IllegalStateException e) {
-                    pendingRemoval.add(shop); // The shop is not there anymore, remove it
+                    pendingRemoval.add(shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
+                    // Can be deleted safely.
+                    i++;
                 }
+            } catch (IllegalStateException e) {
+                pendingRemoval.add(shop); // The shop is not there anymore, remove it
             }
+        }
 
-            for (Shop shop : pendingRemoval) {
-                shop.delete();
-            }
+        for (Shop shop : pendingRemoval) {
+            shop.delete();
+        }
 
-            MsgUtil.clean();
-            sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
-            return;
+        MsgUtil.clean();
+        sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
+        return;
 
     }
 }

@@ -10,7 +10,8 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopDeleteEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    @Getter private boolean fromMemory;
+    @Getter
+    private boolean fromMemory;
     @Getter
     @NotNull
     private Shop shop;
@@ -33,7 +34,9 @@ public class ShopDeleteEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @Override
     public boolean isCancelled() {

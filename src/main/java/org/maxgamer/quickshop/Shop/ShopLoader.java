@@ -79,6 +79,7 @@ public class ShopLoader {
 
     /**
      * Load all shops
+     *
      * @param worldName The world name
      */
     public void loadShops(@Nullable String worldName) {

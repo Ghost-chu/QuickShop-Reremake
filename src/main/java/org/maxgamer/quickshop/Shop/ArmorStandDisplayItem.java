@@ -24,6 +24,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         String nlc = material.name().toLowerCase();
         return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
     }
+
     private ArmorStand armorStand;
     private ItemStack guardedIstack;
     private ItemStack originalItemStack;

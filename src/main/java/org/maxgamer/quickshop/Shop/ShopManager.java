@@ -43,7 +43,7 @@ public class ShopManager {
 
     @SuppressWarnings("deprecation")
     private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
-        if(plugin.getEconomy() == null){
+        if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
@@ -141,7 +141,7 @@ public class ShopManager {
 
     @SuppressWarnings("deprecation")
     private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, boolean bypassProtectionChecks) {
-        if(plugin.getEconomy() == null){
+        if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
@@ -288,7 +288,7 @@ public class ShopManager {
     }
 
     private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
-        if(plugin.getEconomy() == null){
+        if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
@@ -383,7 +383,7 @@ public class ShopManager {
     }
 
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
-        if(plugin.getEconomy() == null){
+        if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
@@ -544,7 +544,7 @@ public class ShopManager {
      */
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
         Player player = Bukkit.getPlayer(shop.getOwner());
-        if(player == null) {
+        if (player == null) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
@@ -652,7 +652,7 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
-        if(loc == null){
+        if (loc == null) {
             return null;
         }
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
@@ -664,9 +664,9 @@ public class ShopManager {
         }
         Block attachedBlock = Util.getAttached(loc.getBlock());
         if (attachedBlock != null) {
-            if(!attachedBlock.getChunk().equals(loc.getChunk())){
+            if (!attachedBlock.getChunk().equals(loc.getChunk())) {
                 HashMap<Location, Shop> inChunkB = getShops(attachedBlock.getLocation().getChunk());
-                if(inChunkB == null){
+                if (inChunkB == null) {
                     return null;
                 }
                 return inChunkB.get(attachedBlock.getLocation());

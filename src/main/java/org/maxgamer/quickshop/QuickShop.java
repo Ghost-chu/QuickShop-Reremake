@@ -144,7 +144,9 @@ public class QuickShop extends JavaPlugin {
      */
     private HashSet<String> warnings = new HashSet<>();
     private WorldListener worldListener;
-    /** QuickShop custom event manager */
+    /**
+     * QuickShop custom event manager
+     */
     private QSEventManager qsEventManager;
     /**
      * The manager to check permissions.
@@ -160,7 +162,7 @@ public class QuickShop extends JavaPlugin {
     public int getShopLimit(@NotNull Player p) {
         int max = getConfig().getInt("limits.default");
         for (Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && getPermissionManager().hasPermission(p,entry.getKey())) {
+            if (entry.getValue() > max && getPermissionManager().hasPermission(p, entry.getKey())) {
                 max = entry.getValue();
             }
         }
@@ -432,8 +434,8 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
-        if(getConfig().getBoolean("shop.lock")){
-            Bukkit.getPluginManager().registerEvents(lockListener,this);
+        if (getConfig().getBoolean("shop.lock")) {
+            Bukkit.getPluginManager().registerEvents(lockListener, this);
         }
         if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
             Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
@@ -456,7 +458,7 @@ public class QuickShop extends JavaPlugin {
             }
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
-        shopVaildWatcher.runTaskTimer(this,0,20*60);
+        shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
     }
 
     /**
@@ -465,7 +467,7 @@ public class QuickShop extends JavaPlugin {
      * @throws RuntimeException The error message, use this to create a BootError.
      */
     private void runtimeCheck(QuickShop shop) throws RuntimeException {
-        if(Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")){
+        if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
             getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
@@ -906,7 +908,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 46) {
             getConfig().set("shop.use-protection-checking-filter", true);
-            getConfig().set("shop.max-shops-checks-in-once",100);
+            getConfig().set("shop.max-shops-checks-in-once", 100);
             getConfig().set("config-version", 47);
             selectedVersion = 47;
         }
@@ -948,9 +950,10 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * Get the permissionManager as static
+     *
      * @return the permission Manager.
      */
-    public static PermissionManager getPermissionManager(){
+    public static PermissionManager getPermissionManager() {
         return permissionManager;
     }
 }

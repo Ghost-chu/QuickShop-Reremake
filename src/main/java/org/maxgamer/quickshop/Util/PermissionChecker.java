@@ -35,8 +35,9 @@ public class PermissionChecker {
 
     /**
      * Check player can build in target block
+     *
      * @param player Target player
-     * @param block Target block
+     * @param block  Target block
      * @return Success
      */
     public boolean canBuild(@NotNull Player player, @NotNull Block block) {
@@ -49,21 +50,21 @@ public class PermissionChecker {
 
         beMainHand = new BlockBreakEvent(block, player);
         //Call for event for protection check start
-        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.BEGIN,beMainHand));
+        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
         ListenerHelper.disableEvent(beMainHand.getClass());
         //Bukkit.getPluginManager().callEvent(beMainHand);
         beMainHand.setDropItems(false);
         beMainHand.setExpToDrop(-1);
         Plugin cancelPlugin = null;
-        if(plugin.getConfig().getBoolean("shop.use-protection-checking-filter")){
+        if (plugin.getConfig().getBoolean("shop.use-protection-checking-filter")) {
             cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
-        }else{
+        } else {
             Bukkit.getPluginManager().callEvent(beMainHand);
         }
         //Use our custom event caller.
         ListenerHelper.enableEvent(beMainHand.getClass());
         //Call for event for protection check end
-        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(),player, ProtectionCheckStatus.END,beMainHand));
+        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
         boolean canBuild = !((Cancellable) beMainHand).isCancelled();
 
         if (!canBuild) {
@@ -71,7 +72,7 @@ public class PermissionChecker {
 //            for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
 //                Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
 //            }
-            if(cancelPlugin != null) {
+            if (cancelPlugin != null) {
                 Util.debugLog("Plugin " + cancelPlugin.getName() + " cancelled this build create action.");
             }
         }

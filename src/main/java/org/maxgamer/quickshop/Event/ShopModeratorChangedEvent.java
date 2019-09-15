@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopModerator;
 
-/** Calling when moderator was changed, Can't cancel **/
+/**
+ * Calling when moderator was changed, Can't cancel
+ **/
 
 public class ShopModeratorChangedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -29,7 +31,9 @@ public class ShopModeratorChangedEvent extends Event {
         this.moderator = shopModerator;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @Override
     public @NotNull HandlerList getHandlers() {

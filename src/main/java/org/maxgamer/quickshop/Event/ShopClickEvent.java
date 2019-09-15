@@ -22,7 +22,9 @@ public class ShopClickEvent extends Event implements Cancellable {
         this.shop = shop;
     }
 
-    public static HandlerList getHandlerList() {return HANDLERS;}
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 
     @NotNull
     @Override
