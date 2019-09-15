@@ -13,13 +13,13 @@ import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
-    private List<CommandContainer> cmds = new ArrayList<>();
+    private Set<CommandContainer> cmds = new HashSet<>();
     private CommandContainer rootContainer = CommandContainer.builder().prefix(null).permission(null)
             .executor(new SubCommand_ROOT()).build();
 
@@ -183,8 +183,6 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     }
 
     private void registerCmd(CommandContainer container) {
-        if (!cmds.contains(container)) {
-            cmds.add(container);
-        }
+        cmds.add(container);
     }
 }
