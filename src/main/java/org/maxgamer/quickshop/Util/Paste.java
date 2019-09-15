@@ -68,8 +68,11 @@ public class Paste {
         finalReport.append("\tCores: ").append(Runtime.getRuntime().availableProcessors()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Server:\n");
+        finalReport.append("\tName: ").append(Bukkit.getName()).append("\n");
+        finalReport.append("\tServer Name: ").append(Bukkit.getServer().getName()).append("\n");
         finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
+        finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
         finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
         finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit.getMaxPlayers())
                 .append("\n");
@@ -108,11 +111,6 @@ public class Paste {
                     .inputStream2ByteArray(plugin.getDataFolder().toString() + "/messages.yml"))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
-            finalReport.append("\tlatest.log:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
-            finalReport.append("\t*********************************\n");
-            finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Util
                     .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
@@ -131,6 +129,47 @@ public class Paste {
             finalReport.append("\tInternal Debug Log:\n");
             finalReport.append("\t\t\n").append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n")).append("\n");
             finalReport.append("\t*********************************\n");
+            finalReport.append("\t*********************************\n");
+            finalReport.append("\tlatest.log:\n");
+            finalReport.append("\t\t\n").append(new String(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t*********************************\n");
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tbukkit.yml:\n");
+                finalReport.append("\t\t\n").append(new String(Util
+                        .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath()))).append("\n");
+                finalReport.append("\t*********************************\n");
+            }catch (Throwable th){
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tbukkit.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+                finalReport.append("\t*********************************\n");
+            }
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tspigot.yml:\n");
+                finalReport.append("\t\t\n").append(new String(Util
+                        .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath()))).append("\n");
+                finalReport.append("\t*********************************\n");
+            }catch (Throwable th){
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tspigot.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+                finalReport.append("\t*********************************\n");
+            }
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tpaper.yml:\n");
+                finalReport.append("\t\t\n").append(new String(Util
+                        .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath()))).append("\n");
+                finalReport.append("\t*********************************\n");
+            }catch (Throwable th){
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\tpaper.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+                finalReport.append("\t*********************************\n");
+            }
 
         } catch (Throwable th) {
             finalReport.append("\tFailed to get data\n");
