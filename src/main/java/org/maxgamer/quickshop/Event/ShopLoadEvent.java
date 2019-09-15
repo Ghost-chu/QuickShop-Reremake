@@ -7,7 +7,9 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-/** Call when loading shop **/
+/**
+ * Call when loading shop
+ **/
 
 public class ShopLoadEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
@@ -31,7 +33,9 @@ public class ShopLoadEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {return handlers;}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     @Override
     public boolean isCancelled() {

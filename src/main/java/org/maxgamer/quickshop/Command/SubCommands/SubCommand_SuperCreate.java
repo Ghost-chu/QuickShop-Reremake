@@ -36,51 +36,51 @@ public class SubCommand_SuperCreate implements CommandProcesser {
             Player p = (Player) sender;
             ItemStack item = p.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
-                    BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-                    while (bIt.hasNext()) {
-                        Block b = bIt.next();
-                        if (Util.canBeShop(b)) {
-                            BlockFace blockFace;
-                            try {
-                                blockFace = p.getFacing();
-                            } catch (Throwable throwable) {
-                                blockFace = Util.getYawFace(p.getLocation().getYaw());
-                            }
+                BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+                while (bIt.hasNext()) {
+                    Block b = bIt.next();
+                    if (Util.canBeShop(b)) {
+                        BlockFace blockFace;
+                        try {
+                            blockFace = p.getFacing();
+                        } catch (Throwable throwable) {
+                            blockFace = Util.getYawFace(p.getLocation().getYaw());
+                        }
 
-                            if (!plugin.getShopManager().canBuildShop(p, b,
-                                    blockFace)) {
-                                // As of the new checking system, most plugins will tell the
-                                // player why they can't create a shop there.
-                                // So telling them a message would cause spam etc.
-                                Util.debugLog("Util report you can't build shop there.");
-                                return;
-                            }
-
-                            if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(sender,"quickshop.create.double")) {
-                                p.sendMessage(MsgUtil.getMessage("no-double-chests"));
-                                return;
-                            }
-                            if (Util.isBlacklisted(item.getType())
-                                    && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
-                                p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
-                                return;
-                            }
-
-                            if (cmdArg.length < 1) {
-                                // Send creation menu.
-                                Info info = new Info(b.getLocation(), ShopAction.CREATE,
-                                        p.getInventory().getItemInMainHand(),
-                                        b.getRelative(p.getFacing().getOppositeFace()));
-                                plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-                                p.sendMessage(
-                                        MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(item)));
-                            } else {
-                                plugin.getShopManager().handleChat(p, cmdArg[0], true);
-                            }
+                        if (!plugin.getShopManager().canBuildShop(p, b,
+                                blockFace)) {
+                            // As of the new checking system, most plugins will tell the
+                            // player why they can't create a shop there.
+                            // So telling them a message would cause spam etc.
+                            Util.debugLog("Util report you can't build shop there.");
                             return;
                         }
+
+                        if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
+                            p.sendMessage(MsgUtil.getMessage("no-double-chests"));
+                            return;
+                        }
+                        if (Util.isBlacklisted(item.getType())
+                                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
+                            p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
+                            return;
+                        }
+
+                        if (cmdArg.length < 1) {
+                            // Send creation menu.
+                            Info info = new Info(b.getLocation(), ShopAction.CREATE,
+                                    p.getInventory().getItemInMainHand(),
+                                    b.getRelative(p.getFacing().getOppositeFace()));
+                            plugin.getShopManager().getActions().put(p.getUniqueId(), info);
+                            p.sendMessage(
+                                    MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(item)));
+                        } else {
+                            plugin.getShopManager().handleChat(p, cmdArg[0], true);
+                        }
+                        return;
                     }
-                    sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                }
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
             } else {
                 sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand"));
             }

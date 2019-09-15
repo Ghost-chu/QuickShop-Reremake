@@ -38,7 +38,6 @@ public class BufferStatement {
      * @param con The connection to prepare this on using
      *            con.prepareStatement(..)
      * @return The prepared statement, ready for execution.
-     *
      * @throws SQLException Throw exception when failed to execute something in SQL
      */
     PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {

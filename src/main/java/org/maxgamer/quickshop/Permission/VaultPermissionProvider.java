@@ -10,13 +10,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class VaultPermissionProvider implements PermissionProvider {
     private Permission api;
-    public VaultPermissionProvider(){
+
+    public VaultPermissionProvider() {
         RegisteredServiceProvider<Permission> rsp = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
-        if(rsp == null){
+        if (rsp == null) {
             throw new ProviderIsEmptyException(getName());
         }
         api = rsp.getProvider();
     }
+
     /**
      * Test the sender has special permission
      *
@@ -26,7 +28,7 @@ public class VaultPermissionProvider implements PermissionProvider {
      */
     @Override
     public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
-        return api.has(sender,permission);
+        return api.has(sender, permission);
     }
 
     /**
@@ -48,10 +50,10 @@ public class VaultPermissionProvider implements PermissionProvider {
      */
     @Override
     public @NotNull PermissionInfomationContainer getDebugInfo(@NotNull CommandSender sender, @NotNull String permission) {
-        if(sender instanceof Server){
-            return new PermissionInfomationContainer(sender,permission,null,"User is Console");
+        if (sender instanceof Server) {
+            return new PermissionInfomationContainer(sender, permission, null, "User is Console");
         }
         OfflinePlayer offlinePlayer = (OfflinePlayer) sender;
-        return new PermissionInfomationContainer(sender,permission,api.getPrimaryGroup(null,offlinePlayer),null);
+        return new PermissionInfomationContainer(sender, permission, api.getPrimaryGroup(null, offlinePlayer), null);
     }
 }

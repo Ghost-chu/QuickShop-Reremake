@@ -14,6 +14,7 @@ public class BukkitPermsProvider implements PermissionProvider {
     public @NotNull String getName() {
         return "Bukkit";
     }
+
     /**
      * Get the debug infos in provider
      *
@@ -23,6 +24,6 @@ public class BukkitPermsProvider implements PermissionProvider {
      */
     @Override
     public @NotNull PermissionInfomationContainer getDebugInfo(@NotNull CommandSender sender, @NotNull String permission) {
-        return new PermissionInfomationContainer(sender, permission,null,null);
+        return new PermissionInfomationContainer(sender, permission, null, null);
     }
 }

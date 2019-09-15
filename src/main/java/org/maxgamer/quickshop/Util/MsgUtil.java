@@ -967,10 +967,10 @@ public class MsgUtil {
         if (object == null) {
             messagei18n.set(path, null); //Removal
         }
-            Object objFromBuiltIn = builtInDefaultLanguage.get(path); //Apply english default
-            if (objFromBuiltIn == null) {
-                objFromBuiltIn = object; //Apply hard-code default, maybe a language file i forgotten update??
-            }
+        Object objFromBuiltIn = builtInDefaultLanguage.get(path); //Apply english default
+        if (objFromBuiltIn == null) {
+            objFromBuiltIn = object; //Apply hard-code default, maybe a language file i forgotten update??
+        }
         messagei18n.set(path, objFromBuiltIn);
     }
 

@@ -11,84 +11,84 @@ softdepend: [Vault, Reserve, LangUtils, NoCheatPlus, LuckPerms, PermissionEx, Gr
 api-version: 1.13
 
 commands:
-    qs:
-        description: QuickShop command
-        usage: /qs
-        aliases: [shop,qsshop,qshop,quickshop,chestshop,cshop]
+  qs:
+    description: QuickShop command
+    usage: /qs
+    aliases: [shop,qsshop,qshop,quickshop,chestshop,cshop]
 
 permissions:
-    quickshop.create.sell:
-        description: Allows a player to sell from a shop
-        default: op
-    quickshop.create.buy:
-        description: Allows a player to buy from a shop
-        default: op
-    quickshop.create.double:
-        description: Allows a player to create a double shop
-        default: op
-    quickshop.create.changeprice:
-        description: Allow a player to chyange their shop's price
-        default: op
-    quickshop.create.cmd:
-        description: Allow a player to use /qs create to create a shop
-        default: op
-    quickshop.create.admin:
-        description: Allow a player use /qs supercreate to create a shop bypass all protection checks
-        default: op
-    quickshop.use:
-        description: Allows a player to buy/sell using other players shops
-        default: true
-    quickshop.unlimited:
-        description: Allows a Staff Member to use /qs unlimited and make a shop infinite
-        default: op
-    quickshop.bypass.<itemID>:
-        description: Allows a player to sell <itemID>, even if its blacklisted
-        default: op
-    quickshop.other.destroy:
-        description: Allows a Staff Member to destroy other players shops if they are locked in the config
-        default: op
-    quickshop.other.open:
-        description: Allows a Staff Member to open someone elses shop if they are locked in the config
-        default: op
-    quickshop.other.price:
-        description: Allows a Staff Member to change the price of someone elses shop
-        default: op
-    quickshop.setowner:
-        description: Allows a Staff Member to change the owner of any shop
-        default: op
-    quickshop.staff:
-        description: Allow a shop owner to add staff to the shop
-        default: op
-    quickshop.find:
-        description: Allows a player to locate the nearest shop that has a specific item type. Works in a 3 chunk radius.
-        default: true
-    quickshop.refill:
-        description: Allows a Staff Member to refill the shop theyre looking at with the given number of items.
-        default: op
-    quickshop.empty:
-        description: Allows a Staff Member to empty the shop theyre looking at of all items.
-        default: op
-    quickshop.debug:
-        description: Switch to or from developer mode
-        default: op
-    quickshop.export:
-        description: Allows exporting the database to mysql or sqlite
-        default: op
-    quickshop.alerts:
-        description: Alert the player when someone tries to cheat with the display item
-        default: op
-    quickshop.about:
-        description: Show QuickShop about message
-        default: true
-    quickshop.info:
-        description: Show QuickShop Statistics.
-        default: op
-    quickshop.fetchmessage:
-        description: Use command /qs fetchmessage to manual fetch shop message from database. Will not effect auto fetch if you have it on...
-        default: true
-    quickshop.paste:
-        description: Command to upload server information to Pastebin. !WARNING, This will upload your data and it may leak your server configuration and other sensitive information.
-        default: op
-    quickshop.preview:
-        description: Permission for preview item to use a GUI
-        default: true
+  quickshop.create.sell:
+    description: Allows a player to sell from a shop
+    default: op
+  quickshop.create.buy:
+    description: Allows a player to buy from a shop
+    default: op
+  quickshop.create.double:
+    description: Allows a player to create a double shop
+    default: op
+  quickshop.create.changeprice:
+    description: Allow a player to chyange their shop's price
+    default: op
+  quickshop.create.cmd:
+    description: Allow a player to use /qs create to create a shop
+    default: op
+  quickshop.create.admin:
+    description: Allow a player use /qs supercreate to create a shop bypass all protection checks
+    default: op
+  quickshop.use:
+    description: Allows a player to buy/sell using other players shops
+    default: true
+  quickshop.unlimited:
+    description: Allows a Staff Member to use /qs unlimited and make a shop infinite
+    default: op
+  quickshop.bypass.<itemID>:
+    description: Allows a player to sell <itemID>, even if its blacklisted
+    default: op
+  quickshop.other.destroy:
+    description: Allows a Staff Member to destroy other players shops if they are locked in the config
+    default: op
+  quickshop.other.open:
+    description: Allows a Staff Member to open someone elses shop if they are locked in the config
+    default: op
+  quickshop.other.price:
+    description: Allows a Staff Member to change the price of someone elses shop
+    default: op
+  quickshop.setowner:
+    description: Allows a Staff Member to change the owner of any shop
+    default: op
+  quickshop.staff:
+    description: Allow a shop owner to add staff to the shop
+    default: op
+  quickshop.find:
+    description: Allows a player to locate the nearest shop that has a specific item type. Works in a 3 chunk radius.
+    default: true
+  quickshop.refill:
+    description: Allows a Staff Member to refill the shop theyre looking at with the given number of items.
+    default: op
+  quickshop.empty:
+    description: Allows a Staff Member to empty the shop theyre looking at of all items.
+    default: op
+  quickshop.debug:
+    description: Switch to or from developer mode
+    default: op
+  quickshop.export:
+    description: Allows exporting the database to mysql or sqlite
+    default: op
+  quickshop.alerts:
+    description: Alert the player when someone tries to cheat with the display item
+    default: op
+  quickshop.about:
+    description: Show QuickShop about message
+    default: true
+  quickshop.info:
+    description: Show QuickShop Statistics.
+    default: op
+  quickshop.fetchmessage:
+    description: Use command /qs fetchmessage to manual fetch shop message from database. Will not effect auto fetch if you have it on...
+    default: true
+  quickshop.paste:
+    description: Command to upload server information to Pastebin. !WARNING, This will upload your data and it may leak your server configuration and other sensitive information.
+    default: op
+  quickshop.preview:
+    description: Permission for preview item to use a GUI
+    default: true

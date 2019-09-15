@@ -102,7 +102,7 @@ public class LockListener implements Listener {
                 return; // Wasn't a shop
             }
             // If they owned it or have bypass perms, they can destroy it
-            if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
+            if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
             }
@@ -126,7 +126,7 @@ public class LockListener implements Listener {
             }
             // If they're the shop owner or have bypass perms, they can destroy
             // it.
-            if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.destroy")) {
+            if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
                 return;
@@ -153,10 +153,10 @@ public class LockListener implements Listener {
         Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
         // Make sure they're not using the non-shop half of a double chest.
         if (shop == null) {
-           return;
+            return;
         }
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
-            if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.open")) {
+            if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
                 p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
                 return;
             }
@@ -165,7 +165,7 @@ public class LockListener implements Listener {
             return;
         }
     }
-/* Moved to ShopProtectionListener */
+    /* Moved to ShopProtectionListener */
 //    /*
 //     * Handles shops breaking through explosions
 //     */
@@ -205,7 +205,7 @@ public class LockListener implements Listener {
             return;
         }
 
-        if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.other.open")) {
+        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
             p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
             return;
         }

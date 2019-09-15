@@ -55,6 +55,7 @@ public interface Shop {
 
     /**
      * Remove a staff from moderators
+     *
      * @param player Staff
      * @return Success
      */
@@ -67,6 +68,7 @@ public interface Shop {
 
     /**
      * Delete shop from ram or ram and database
+     *
      * @param paramBoolean true = only delete from ram, false = delete from both ram and database
      */
     void delete(boolean paramBoolean);
@@ -81,6 +83,7 @@ public interface Shop {
 
     /**
      * Check the target ItemStack is matches with this shop's item.
+     *
      * @param paramItemStack Target ItemStack.
      * @return Matches
      */
@@ -103,21 +106,24 @@ public interface Shop {
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
      * @return owner name
      */
     String ownerName();
 
     /**
      * Remove x ItemStack from the shop inventory
+     *
      * @param paramItemStack Want removed ItemStack
-     * @param paramInt Want remove how many
+     * @param paramInt       Want remove how many
      */
     void remove(ItemStack paramItemStack, int paramInt);
 
     /**
      * Execute sell action for player with x items.
+     *
      * @param paramPlayer Target player
-     * @param paramInt How many sold?
+     * @param paramInt    How many sold?
      */
     void sell(Player paramPlayer, int paramInt);
 
@@ -133,12 +139,14 @@ public interface Shop {
 
     /**
      * Set new shop type for this shop
+     *
      * @param paramShopType New shop type
      */
     void setShopType(ShopType paramShopType);
 
     /**
      * Get shop's item durability, if have.
+     *
      * @return Shop's item durability
      */
     short getDurability();
@@ -152,24 +160,28 @@ public interface Shop {
 
     /**
      * Set texts on shop's sign
+     *
      * @param paramArrayOfString The texts you want set
      */
     void setSignText(String[] paramArrayOfString);
 
     /**
      * Get shop's location
+     *
      * @return Shop's location
      */
     Location getLocation();
 
     /**
      * Return this shop's moderators
+     *
      * @return Shop moderators
      */
     ShopModerator getModerator();
 
     /**
      * Set new shop's moderators
+     *
      * @param shopModerator New moderators team you want set
      */
     void setModerator(ShopModerator shopModerator);
@@ -197,24 +209,28 @@ public interface Shop {
 
     /**
      * Set shop's new price
+     *
      * @param paramDouble New price
      */
     void setPrice(double paramDouble);
 
     /**
      * Get shop remaining space.
+     *
      * @return Remaining space.
      */
     int getRemainingSpace();
 
     /**
      * Get shop remaining stock.
+     *
      * @return Remaining stock.
      */
     int getRemainingStock();
 
     /**
      * Get shop type
+     *
      * @return shop type
      */
     ShopType getShopType();
@@ -226,11 +242,12 @@ public interface Shop {
      */
     List<Sign> getSigns();
 
-     /**
+    /**
      * Directly get all staffs.
+     *
      * @return staffs
-      */
-     ArrayList<UUID> getStaffs();
+     */
+    ArrayList<UUID> getStaffs();
 
     /**
      * Get shop is or not in buying mode
