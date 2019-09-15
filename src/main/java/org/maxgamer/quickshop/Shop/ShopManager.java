@@ -670,6 +670,8 @@ public class ShopManager {
                     return null;
                 }
                 return inChunkB.get(attachedBlock.getLocation());
+            }else{
+                return inChunk.get(attachedBlock.getLocation());
             }
         }
         return null;
