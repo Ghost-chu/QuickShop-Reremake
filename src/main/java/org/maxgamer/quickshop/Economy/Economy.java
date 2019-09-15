@@ -23,8 +23,8 @@ public class Economy implements EconomyCore {
         return core.getClass().getName().split("_")[1];
     }
 
-    public EconomyType getNowUsing() {
-        return EconomyType.fromID(plugin.getConfig().getInt("economy-type"));
+    public static EconomyType getNowUsing() {
+        return EconomyType.fromID(QuickShop.instance.getConfig().getInt("economy-type"));
     }
 
     /**
