@@ -653,26 +653,59 @@ public class ShopManager {
      */
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
         if (loc == null) {
+            Util.debugLog("Location is null.");
             return null;
         }
-        HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
-        if (inChunk == null) {
+        Util.debugLog("Start searching the shops...");
+        @Nullable Shop shop;
+        //Get location's chunk all shops
+        @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        //Found some shops in this chunk.
+        if(inChunk != null){
+            shop = inChunk.get(loc);
+            if(shop != null){
+                //Okay, shop was founded.
+                return shop;
+            }
+            //Ooops, not founded that shop in this chunk.
+        }
+        @Nullable Block secondHalfShop =  Util.getSecondHalf(loc.getBlock());
+        if(secondHalfShop != null){
+            inChunk = getShops(secondHalfShop.getChunk());
+            if(inChunk != null){
+                shop = inChunk.get(secondHalfShop.getLocation());
+                if(shop!=null){
+                    //Okay, shop was founded.
+                    return shop;
+                }
+                //Oooops, no any shops matched.
+            }
+        }
+        //If that chunk nothing we founded, we should check it is attached.
+        @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+        //Check is attached on some block.
+        if(attachedBlock == null){
+            //Nope
+            Util.debugLog("No attached block.");
             return null;
+        }else{
+            //Okay we know it on some blocks.
+            //We need set new location and chunk.
+            inChunk = getShops(attachedBlock.getChunk());
+            //Found some shops in this chunk
+            if(inChunk != null){
+                shop = inChunk.get(attachedBlock.getLocation());
+                if(shop!=null){
+                    //Okay, shop was founded.
+                    return shop;
+                }
+                //Oooops, no any shops matched.
+            }
         }
-        Shop shopInChunk = inChunk.get(loc);
-        if (shopInChunk != null) {
-            return shopInChunk;
-        }
-        Block attachedBlock = Util.getAttached(loc.getBlock());
-        if (attachedBlock == null) {
-            return null;
-        }
-        HashMap<Location, Shop> inChunkAttached = getShops(attachedBlock.getChunk());
-        if (inChunkAttached == null) {
-            return null;
-        }
-        shopInChunk = inChunkAttached.get(attachedBlock.getLocation());
-        return shopInChunk;
+
+        Util.debugLog("Not found shops use the attached util.");
+
+        return null;
     }
 
     /**
