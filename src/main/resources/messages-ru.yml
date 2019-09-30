@@ -8,7 +8,7 @@ command:
     amount: "&eExecute for your actions with amount(For chat plugin issue)"
     about: "&eО QuickShop"
     help: "&eПоказать подсказку QuickShop"
-    supercreate: "&eСоздать магазин и обойти все ограничения"
+    supercreate: "&eCreate a shop bypass all protection checks"
     title: "&aQuickShop справка"
     unlimited: "&eСделать магазин бесконечным"
     setowner: "&eСменить владельца магазина"
