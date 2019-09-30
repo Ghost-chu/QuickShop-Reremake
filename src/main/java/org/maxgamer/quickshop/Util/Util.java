@@ -1130,7 +1130,7 @@ public class Util {
      * @param material The material
      * @return yes or not
      */
-    public static boolean isDyes(Material material){
+    public static boolean isDyes(@NotNull Material material){
         return material.name().toUpperCase().endsWith("_DYE");
     }
 }

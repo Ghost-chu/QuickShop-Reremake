@@ -265,6 +265,9 @@ public class PlayerListener implements Listener {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK){
             return;
         }
+        if(e.getItem() == null){
+            return;
+        }
         if(!Util.isDyes(e.getItem().getType())){
             return;
         }
