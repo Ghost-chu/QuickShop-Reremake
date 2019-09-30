@@ -50,37 +50,15 @@ public class PermissionChecker {
 
         beMainHand = new BlockBreakEvent(block, player);
         //Call for event for protection check start
-        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
         ListenerHelper.disableEvent(beMainHand.getClass());
-        //Bukkit.getPluginManager().callEvent(beMainHand);
+        Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
         beMainHand.setDropItems(false);
         beMainHand.setExpToDrop(-1);
-        Plugin cancelPlugin = null;
-        if (plugin.getConfig().getBoolean("shop.use-protection-checking-filter")) {
-            cancelPlugin = plugin.getQsEventManager().fireEvent(beMainHand);
-        } else {
-            Bukkit.getPluginManager().callEvent(beMainHand);
-        }
-        //Use our custom event caller.
-        ListenerHelper.enableEvent(beMainHand.getClass());
+        Bukkit.getPluginManager().callEvent(beMainHand);
         //Call for event for protection check end
         Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
-        boolean canBuild = !((Cancellable) beMainHand).isCancelled();
-
-        if (!canBuild) {
-//            Util.debugLog("Somethings say build check failed, there is HandlerList to help you debug: ");
-//            for (RegisteredListener listener : beMainHand.getHandlers().getRegisteredListeners()) {
-//                Util.debugLog("- " + listener.getPlugin().getName() + " : " + listener.getListener().getClass().getSimpleName());
-//            }
-            if (cancelPlugin != null) {
-                Util.debugLog("Plugin " + cancelPlugin.getName() + " cancelled this build create action.");
-            }
-        }
-
-        return canBuild;
-        // if (beMainHand instanceof BlockPlaceEvent)
-        //     return ((BlockPlaceEvent) beMainHand).canBuild();
-
+        ListenerHelper.enableEvent(beMainHand.getClass());
+        return beMainHand.isCancelled();
     }
 
 }

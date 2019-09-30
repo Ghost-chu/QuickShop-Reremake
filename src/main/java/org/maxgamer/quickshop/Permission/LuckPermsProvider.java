@@ -11,10 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
 @Getter
+@Deprecated
 public class LuckPermsProvider implements PermissionProvider {
     private PermissionManager manager;
     private LuckPermsApi api;
-
+    @Deprecated
     public LuckPermsProvider(PermissionManager manager) throws ProviderIsEmptyException {
         this.manager = manager;
         try {

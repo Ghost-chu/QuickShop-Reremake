@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
-
+@Deprecated
 public class PexPermissionProvider implements PermissionProvider {
     /**
      * Test the sender has special permission
