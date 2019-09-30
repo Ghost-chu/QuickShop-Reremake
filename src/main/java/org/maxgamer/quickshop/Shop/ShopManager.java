@@ -659,22 +659,20 @@ public class ShopManager {
         if (inChunk == null) {
             return null;
         }
-        if (inChunk.get(loc) != null) {
-            return inChunk.get(loc);
+        Shop shopInChunk = inChunk.get(loc);
+        if (shopInChunk != null) {
+            return shopInChunk;
         }
         Block attachedBlock = Util.getAttached(loc.getBlock());
-        if (attachedBlock != null) {
-            if (!attachedBlock.getChunk().equals(loc.getChunk())) {
-                HashMap<Location, Shop> inChunkB = getShops(attachedBlock.getLocation().getChunk());
-                if (inChunkB == null) {
-                    return null;
-                }
-                return inChunkB.get(attachedBlock.getLocation());
-            }else{
-                return inChunk.get(attachedBlock.getLocation());
-            }
+        if (attachedBlock == null) {
+            return null;
         }
-        return null;
+        HashMap<Location, Shop> inChunkAttached = getShops(attachedBlock.getChunk());
+        if (inChunkAttached == null) {
+            return null;
+        }
+        shopInChunk = inChunkAttached.get(attachedBlock.getLocation());
+        return shopInChunk;
     }
 
     /**
