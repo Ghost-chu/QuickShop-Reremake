@@ -81,20 +81,6 @@ include-offlineplayer-list: false
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 economy-type: 0
 
-#What permission provider you want use? [W.I.P, Some provider may not working]
-#0=Bukkit
-#1=Vault # Use /vault-info before set to vault, make sure you have perms plugin hook in the Vault
-#2=LuckPerms
-#3=PermissionEx
-#4=GroupManager
-#If you enter a number not in list or target provider not usable, plugin will fallback to Bukkit Permission Provider.
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-permission-type: 0
-
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true
 
@@ -228,13 +214,6 @@ shop:
 
   #Protection check
   protection-checking: true
-
-  #Protection advanced event calling filter
-  #Advance users only.
-  use-protection-checking-filter: false
-  protection-checking-filter: []
-  #    - PLUGIN##LISTENER##EVENT
-  #Example: - QuickShop##org.maxgamer.Listeners.BlockListener##org.bukkit.event.block.BlockPlaceEvent
 
   #How many shops can be checked in once? (Container exists check)
   max-shops-checks-in-once: 100
