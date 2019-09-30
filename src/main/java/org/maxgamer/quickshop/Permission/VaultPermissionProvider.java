@@ -7,10 +7,10 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
-
+@Deprecated
 public class VaultPermissionProvider implements PermissionProvider {
     private Permission api;
-
+    @Deprecated
     public VaultPermissionProvider() {
         RegisteredServiceProvider<Permission> rsp = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp == null) {
