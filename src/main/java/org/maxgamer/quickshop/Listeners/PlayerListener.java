@@ -1,10 +1,7 @@
 package org.maxgamer.quickshop.Listeners;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -263,5 +260,29 @@ public class PlayerListener implements Listener {
         PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
         onMove(me);
     }
-
+    @EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
+    public void onDyeing(PlayerInteractEvent e){
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK){
+            return;
+        }
+        if(!Util.isDyes(e.getItem().getType())){
+            return;
+        }
+        Block block = e.getClickedBlock();
+        if(block == null){
+            return;
+        }
+        if(!Util.isWallSign(block.getType())){
+            return;
+        }
+        Block attachedBlock = Util.getAttached(block);
+        if(attachedBlock == null){
+            return;
+        }
+        if(plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null){
+            return;
+        }
+        e.setCancelled(true);
+        Util.debugLog("Disallow "+e.getPlayer().getName()+" dye the shop sign.");
+    }
 }
