@@ -97,7 +97,7 @@ public class LockListener implements Listener {
         Player p = e.getPlayer();
         // If the chest was a chest
         if (Util.canBeShop(b)) {
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
             if (shop == null) {
                 return; // Wasn't a shop
             }
