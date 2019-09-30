@@ -1124,4 +1124,13 @@ public class Util {
     public static boolean isDevMode() {
         return devMode;
     }
+
+    /**
+     * Get a material is a dye
+     * @param material The material
+     * @return yes or not
+     */
+    public static boolean isDyes(Material material){
+        return material.name().toUpperCase().endsWith("_DYE");
+    }
 }
