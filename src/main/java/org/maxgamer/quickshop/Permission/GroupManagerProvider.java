@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-
+@Deprecated
 public class GroupManagerProvider implements PermissionProvider {
     private GroupManager groupManager;
-
+    @Deprecated
     public GroupManagerProvider() throws ProviderIsEmptyException {
         Plugin gmPlugin = Bukkit.getPluginManager().getPlugin("GroupManager");
         if (gmPlugin == null || !gmPlugin.isEnabled()) {
