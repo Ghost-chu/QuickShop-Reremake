@@ -661,20 +661,20 @@ public class ShopManager {
         //Get location's chunk all shops
         @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         //Found some shops in this chunk.
-        if(inChunk != null){
+        if (inChunk != null) {
             shop = inChunk.get(loc);
-            if(shop != null){
+            if (shop != null) {
                 //Okay, shop was founded.
                 return shop;
             }
             //Ooops, not founded that shop in this chunk.
         }
-        @Nullable Block secondHalfShop =  Util.getSecondHalf(loc.getBlock());
-        if(secondHalfShop != null){
+        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
+        if (secondHalfShop != null) {
             inChunk = getShops(secondHalfShop.getChunk());
-            if(inChunk != null){
+            if (inChunk != null) {
                 shop = inChunk.get(secondHalfShop.getLocation());
-                if(shop!=null){
+                if (shop != null) {
                     //Okay, shop was founded.
                     return shop;
                 }
@@ -684,18 +684,18 @@ public class ShopManager {
         //If that chunk nothing we founded, we should check it is attached.
         @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
         //Check is attached on some block.
-        if(attachedBlock == null){
+        if (attachedBlock == null) {
             //Nope
             Util.debugLog("No attached block.");
             return null;
-        }else{
+        } else {
             //Okay we know it on some blocks.
             //We need set new location and chunk.
             inChunk = getShops(attachedBlock.getChunk());
             //Found some shops in this chunk
-            if(inChunk != null){
+            if (inChunk != null) {
                 shop = inChunk.get(attachedBlock.getLocation());
-                if(shop!=null){
+                if (shop != null) {
                     //Okay, shop was founded.
                     return shop;
                 }
