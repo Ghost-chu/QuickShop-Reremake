@@ -58,7 +58,7 @@ public class PermissionChecker {
         //Call for event for protection check end
         Bukkit.getPluginManager().callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
         ListenerHelper.enableEvent(beMainHand.getClass());
-        return beMainHand.isCancelled();
+        return !beMainHand.isCancelled();
     }
 
 }
