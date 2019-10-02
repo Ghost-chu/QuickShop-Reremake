@@ -480,9 +480,10 @@ public class Util {
 
     /**
      * Use yaw to calc the BlockFace
-     * @deprecated Use Bukkit util not this one.
+     *
      * @param yaw Yaw (Player.getLocation().getYaw())
      * @return BlockFace blockFace
+     * @deprecated Use Bukkit util not this one.
      */
     @Deprecated
     public static BlockFace getYawFace(float yaw) {
@@ -608,13 +609,13 @@ public class Util {
                         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
                             // Found Item and remove it.
                             Location location = inv.getLocation();
-                            if(location == null){
+                            if (location == null) {
                                 return; //Virtual GUI
                             }
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
                                     .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
-                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " +location.toString()+ ", Item is " + itemStack
+                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location.toString() + ", Item is " + itemStack
                                     .getType().name());
                         }
                     }
@@ -1127,10 +1128,11 @@ public class Util {
 
     /**
      * Get a material is a dye
+     *
      * @param material The material
      * @return yes or not
      */
-    public static boolean isDyes(@NotNull Material material){
+    public static boolean isDyes(@NotNull Material material) {
         return material.name().toUpperCase().endsWith("_DYE");
     }
 }
