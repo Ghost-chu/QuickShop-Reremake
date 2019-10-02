@@ -12,7 +12,6 @@ public class Economy implements EconomyCore {
     @Getter
     @Setter
     private EconomyCore core;
-    private QuickShop plugin = QuickShop.instance;
 
     public Economy(EconomyCore core) {
         this.core = core;
