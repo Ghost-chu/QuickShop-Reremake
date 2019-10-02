@@ -31,8 +31,6 @@ public class DatabaseHelper {
             createMessagesTable();
         }
         checkColumns();
-
-
     }
 
     /**
