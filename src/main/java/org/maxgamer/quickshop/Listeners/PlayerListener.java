@@ -1,7 +1,10 @@
 package org.maxgamer.quickshop.Listeners;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
