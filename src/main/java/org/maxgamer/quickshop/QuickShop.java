@@ -145,10 +145,6 @@ public class QuickShop extends JavaPlugin {
     private HashSet<String> warnings = new HashSet<>();
     private WorldListener worldListener;
     /**
-     * QuickShop custom event manager
-     */
-    private QSEventManager qsEventManager;
-    /**
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
@@ -387,7 +383,6 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
-        this.qsEventManager = new QSEventManager(this);
         this.shopManager = new ShopManager(this);
         this.databaseManager = new DatabaseManager(this, database);
         this.permissionChecker = new PermissionChecker(this);
