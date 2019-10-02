@@ -1,11 +1,9 @@
 package org.maxgamer.quickshop.Shop;
 
-import com.google.common.collect.BiMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
