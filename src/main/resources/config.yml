@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 47
+config-version: 51
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -158,8 +158,14 @@ shop:
   display-items-check-ticks: 6000
 
   #The display type you want use.
-  #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Dropped Item
+  #0=Normal Dropped Item, 1=ArmorStand
   display-type: 0
+
+  #Use enhance display protect
+  enchance-display-protect: false
+
+  #Use enhance shop protect
+  enchance-shop-protect: false
 
   #When someone uses /qs find <item>, how far should we search in blocks?
   #This command lets users shop quickly without wasting time searching
@@ -232,21 +238,6 @@ shop:
 blacklist:
   - Bedrock
 
-protect:
-  #Protected shop blocks if InventoryMoveEvent called. (e.g Hopper, HopperMinecart)
-  inventorymove: true
-  #Protected shop blocks if BlockSpreadEvent called. (e.g vines)
-  spread: true
-  #Protected shop items if BlockFromToEvent called. (e.g water,lava and )
-  fromto: true
-  #Protected shop blocks can or cannot be picked up by an entity (Will remove Entity)
-  entity: true
-  #Protected shop blocks can or cannot be activated by Redstone
-  redstone: true
-  #Protected shop blocks can or cannot be broken by a plant growing
-  structuregrow: true
-  #Protected shop blocks can or cannot be broken by an Entity and or a Block explosion
-  explode: true
 lockette:
   #Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest)\
   enable: true
