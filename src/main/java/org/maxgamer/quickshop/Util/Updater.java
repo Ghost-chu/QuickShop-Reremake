@@ -91,7 +91,6 @@ public class Updater {
             downloaded += len;
             Util.debugLog("File Downloader:  " + downloaded + "/" + size + " bytes.");
         }
-        //@TODO There have somethings need to test
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
         if (downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");
