@@ -24,9 +24,11 @@ import java.util.HashMap;
 
 public class ShopProtectionListener implements Listener {
     private QuickShop plugin;
+    private boolean useEnhanceProtection;
 
     public ShopProtectionListener(QuickShop plugin) {
         this.plugin = plugin;
+        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -52,7 +54,7 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        if (!plugin.getConfig().getBoolean("protect.fromto")) {
+        if (!useEnhanceProtection) {
             return;
         }
         Shop shop = plugin.getShopManager().getShopIncludeAttached(e.getToBlock().getLocation());
@@ -68,7 +70,7 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if (!plugin.getConfig().getBoolean("protect.redstone")) {
+        if (!useEnhanceProtection) {
             return;
         }
         Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
@@ -85,15 +87,16 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+        if (!useEnhanceProtection) {
+            return;
+        }
         Block newBlock = e.getNewState().getBlock();
         Shop thisBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getLocation());
         Shop underBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getRelative(BlockFace.DOWN).getLocation());
         if (thisBlockShop == null && underBlockShop == null) {
             return;
         }
-        if (plugin.getConfig().getBoolean("protect.spread")) {
-            e.setCancelled(true);
-        }
+        e.setCancelled(true);
     }
 
     /*
@@ -123,10 +126,6 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if (!plugin.getConfig().getBoolean("protect.inventorymove")) {
-            Util.debugLog("Not enabled in config");
-            return;
-        }
         Location loc = event.getSource().getLocation();
         if (loc == null) {
             return;
@@ -152,6 +151,9 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if (!useEnhanceProtection) {
+            return;
+        }
         Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
         if (shop == null) {
             return;
@@ -168,7 +170,7 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if (!plugin.getConfig().getBoolean("protect.structuregrow")) {
+        if (!useEnhanceProtection) {
             return;
         }
         for (BlockState blockstate : event.getBlocks()) {
