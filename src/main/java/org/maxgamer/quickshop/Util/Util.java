@@ -480,10 +480,11 @@ public class Util {
 
     /**
      * Use yaw to calc the BlockFace
-     *
+     * @deprecated Use Bukkit util not this one.
      * @param yaw Yaw (Player.getLocation().getYaw())
      * @return BlockFace blockFace
      */
+    @Deprecated
     public static BlockFace getYawFace(float yaw) {
         if (yaw > 315 && yaw <= 45) {
             return BlockFace.NORTH;
@@ -606,15 +607,14 @@ public class Util {
                         }
                         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
                             // Found Item and remove it.
+                            Location location = inv.getLocation();
+                            if(location == null){
+                                return; //Virtual GUI
+                            }
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
                                     .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
-                            String locationS = "Unknown (Plugin GUI?)";
-                            Location location = inv.getLocation();
-                            if (location != null) {
-                                locationS = location.toString();
-                            }
-                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + locationS + ", Item is " + itemStack
+                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " +location.toString()+ ", Item is " + itemStack
                                     .getType().name());
                         }
                     }
