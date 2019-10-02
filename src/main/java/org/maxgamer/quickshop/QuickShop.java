@@ -919,6 +919,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 49);
             selectedVersion = 49;
         }
+        if(selectedVersion == 49 || selectedVersion == 50){
+            getConfig().set("shop.enchance-display-protect", false);
+            getConfig().set("shop.enchance-shop-protect", false);
+            getConfig().set("protect", null);
+            getConfig().set("config-version", 51);
+            selectedVersion = 51;
+        }
 
         saveConfig();
         reloadConfig();

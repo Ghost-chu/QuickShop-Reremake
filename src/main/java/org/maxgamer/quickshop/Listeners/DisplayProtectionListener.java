@@ -34,13 +34,22 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-@AllArgsConstructor
+
 public class DisplayProtectionListener implements Listener {
     private QuickShop plugin;
+    private boolean useEnhanceProtection;
+
+    public DisplayProtectionListener(QuickShop plugin){
+        this.plugin = plugin;
+        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
+    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockFromToEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         Block targetBlock = event.getToBlock();
@@ -57,6 +66,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(BlockPistonExtendEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
@@ -86,6 +98,9 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if(!useEnhanceProtection){
+            return;
+        }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
         Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
         if (shop != null) {
@@ -113,6 +128,9 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if(!useEnhanceProtection){
+            return;
+        }
         ItemStack itemStack = event.getFuel();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -125,6 +143,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceBurnEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         ItemStack itemStack = event.getFuel();
@@ -144,6 +165,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void block(FurnaceSmeltEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         ItemStack itemStack = event.getSource();
@@ -175,6 +199,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void entity(EntityPickupItemEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         ItemStack stack = e.getItem().getItemStack();
@@ -256,6 +283,9 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if(!useEnhanceProtection){
+            return;
+        }
         if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
             return;
         }
@@ -316,6 +346,9 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if(!useEnhanceProtection){
+            return;
+        }
         ItemStack itemStack = event.getCursor();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -339,6 +372,9 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
+        if(!useEnhanceProtection){
+            return;
+        }
         ItemStack itemStack = event.getCursor();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
@@ -360,6 +396,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(PlayerItemHeldEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
@@ -398,6 +437,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(CraftItemEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         ItemStack itemStack;
@@ -469,6 +511,9 @@ public class DisplayProtectionListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void player(PlayerBucketEmptyEvent event) {
         if (ListenerHelper.isDisabled(event.getClass())) {
+            return;
+        }
+        if(!useEnhanceProtection){
             return;
         }
         Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
