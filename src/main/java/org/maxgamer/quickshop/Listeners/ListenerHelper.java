@@ -9,16 +9,10 @@ public class ListenerHelper {
     private static Set<Class> disabledListener = new HashSet<>();
 
     public static void disableEvent(@NotNull Class eventClass) {
-        if (disabledListener.contains(eventClass)) {
-            return;
-        }
         disabledListener.add(eventClass);
     }
 
     public static void enableEvent(@NotNull Class eventClass) {
-        if (!disabledListener.contains(eventClass)) {
-            return;
-        }
         disabledListener.remove(eventClass);
     }
 
