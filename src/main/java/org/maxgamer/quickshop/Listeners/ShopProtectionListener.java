@@ -18,10 +18,10 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Util;
 
 import java.util.HashMap;
 
+@SuppressWarnings("DuplicatedCode")
 public class ShopProtectionListener implements Listener {
     private QuickShop plugin;
     private boolean useEnhanceProtection;
