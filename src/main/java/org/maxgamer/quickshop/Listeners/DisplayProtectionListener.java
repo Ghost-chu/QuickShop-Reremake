@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,6 +34,7 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 
+@SuppressWarnings("DuplicatedCode")
 public class DisplayProtectionListener implements Listener {
     private QuickShop plugin;
     private boolean useEnhanceProtection;
@@ -136,7 +136,6 @@ public class DisplayProtectionListener implements Listener {
             event.setCancelled(true);
             sendAlert(Util.getClassPrefix() + "Block  " + event.getBlock().getLocation().toString()
                     + " trying fuel the BrewingStand with DisplayItem.");
-            return;
         }
     }
 
@@ -158,7 +157,6 @@ public class DisplayProtectionListener implements Listener {
                         + " trying burn with DisplayItem.");
                 Util.inventoryCheck(furnace1.getInventory());
             }
-            return;
         }
     }
 
@@ -192,7 +190,6 @@ public class DisplayProtectionListener implements Listener {
                         + " trying smelt with DisplayItem.");
                 Util.inventoryCheck(furnace1.getInventory());
             }
-            return;
         }
     }
 
@@ -363,7 +360,6 @@ public class DisplayProtectionListener implements Listener {
             Util.inventoryCheck(event.getInventory());
             sendAlert(Util.getClassPrefix() + "Player  " + event.getWhoClicked()
                     .getName() + " trying use DisplayItem crafting.");
-            return;
         }
     }
 
@@ -389,7 +385,6 @@ public class DisplayProtectionListener implements Listener {
             Util.inventoryCheck(event.getInventory());
             sendAlert(Util.getClassPrefix() + "Player  " + event.getWhoClicked()
                     .getName() + " trying use DisplayItem crafting.");
-            return;
         }
     }
 
@@ -457,7 +452,6 @@ public class DisplayProtectionListener implements Listener {
             Util.inventoryCheck(event.getInventory());
             sendAlert(Util.getClassPrefix() + "Player  " + event.getWhoClicked()
                     .getName() + " trying use DisplayItem crafting.");
-            return;
         }
     }
 //Player can't interact the item entity... of course
