@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -24,9 +24,10 @@ public interface DisplayItem {
      * Check the itemStack is contains protect flag.
      *
      * @param itemStack Target ItemStack
+     * @param shop The shop you want check the this guarded item is that shop or not.
      * @return Contains protect flag.
      */
-    static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+    static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack, @Nullable Shop shop) {
         if (itemStack == null) {
             return false;
         }
@@ -44,13 +45,13 @@ public interface DisplayItem {
         if (!iMeta.hasLore()) {
             return false;
         }
-        List<String> lores = iMeta.getLore();
-        Gson gson = new Gson();
-        for (String lore : lores) {
+        for (String lore :  iMeta.getLore()) {
             try {
+                lore = ChatColor.stripColor(lore);
                 if (!lore.startsWith("{")) {
                     continue;
                 }
+                Gson gson = new Gson();
                 ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
                 if (shopProtectionFlag == null) {
                     continue;
@@ -58,8 +59,14 @@ public interface DisplayItem {
                 if (ShopProtectionFlag.getDefaultMark().equals(shopProtectionFlag.getMark())) {
                     return true;
                 }
-                if (shopProtectionFlag.getShopLocation() != null) {
-                    return true;
+                if(shop == null){
+                    if (shopProtectionFlag.getShopLocation() != null) {
+                        return true;
+                    }
+                }else{
+                    if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
+                        return true;
+                    }
                 }
                 if (shopProtectionFlag.getItemStackString() != null) {
                     return true;
@@ -70,7 +77,15 @@ public interface DisplayItem {
         }
         return false;
     }
-
+    /**
+     * Check the itemStack is contains protect flag.
+     *
+     * @param itemStack Target ItemStack
+     * @return Contains protect flag.
+     */
+    static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+        return checkIsGuardItemStack(itemStack,null);
+    }
     /**
      * Check the itemStack is target shop's display
      *
@@ -79,40 +94,7 @@ public interface DisplayItem {
      * @return Is target shop's display
      */
     static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-        itemStack = itemStack.clone();
-        itemStack.setAmount(1);
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta iMeta = itemStack.getItemMeta();
-        if (iMeta == null) {
-            return false;
-        }
-        if (!iMeta.hasLore()) {
-            return false;
-        }
-        List<String> lores = iMeta.getLore();
-        Gson gson = new Gson();
-        for (String lore : lores) {
-            try {
-                if (!lore.startsWith("{")) {
-                    continue;
-                }
-                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null) {
-                    continue;
-                }
-                if (!shopProtectionFlag.getMark().equals(ShopProtectionFlag.getDefaultMark())) {
-                    continue;
-                }
-                if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
-                    return true;
-                }
-            } catch (JsonSyntaxException e) {
-                //Ignore
-            }
-        }
-        return false;
+        return checkIsGuardItemStack(itemStack,shop);
     }
 
     /**
