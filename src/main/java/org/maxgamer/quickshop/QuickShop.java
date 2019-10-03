@@ -926,6 +926,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 51);
             selectedVersion = 51;
         }
+        if(selectedVersion == 51){
+            getConfig().set("shop.update-sign-when-inventory-moving",getConfig().getBoolean("update-sign-when-inventory-moving"));
+            getConfig().set("update-sign-when-inventory-moving",null);
+            getConfig().set("config-version", 52);
+            selectedVersion = 52;
+        }
 
         saveConfig();
         reloadConfig();
