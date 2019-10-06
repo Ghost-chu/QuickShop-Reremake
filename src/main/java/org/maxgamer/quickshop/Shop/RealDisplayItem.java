@@ -168,6 +168,7 @@ public class RealDisplayItem implements DisplayItem {
             for (StackTraceElement trace : traces) {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
+
             remove();
         }
         if (!Util.isDisplayAllowBlock(getDisplayLocation().getBlock().getType())) {
