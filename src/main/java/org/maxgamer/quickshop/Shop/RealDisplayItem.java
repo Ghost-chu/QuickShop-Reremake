@@ -165,7 +165,7 @@ public class RealDisplayItem implements DisplayItem {
             Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
-        removeDupe();
+
         if (item != null && item.isValid() && !item.isDead()) {
             Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
