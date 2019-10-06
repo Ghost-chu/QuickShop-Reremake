@@ -38,7 +38,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.item == null) {
+        if (plugin.isDisplay() && this.item == null) {
             return false;
         }
         //return !this.item.getLocation().equals(getDisplayLocation());
@@ -51,8 +51,11 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.item == null) {
+        if (!plugin.isDisplay()) {
             return false;
+        }
+        if(this.item == null){
+            return true;
         }
         return !this.item.isValid() || this.item.isDead();
     }
