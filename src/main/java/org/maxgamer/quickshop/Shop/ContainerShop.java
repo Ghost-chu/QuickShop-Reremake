@@ -386,15 +386,17 @@ public class ContainerShop implements Shop {
             /* Not spawned yet. */
             Util.debugLog("Target item not spawned, spawning...");
             this.displayItem.spawn();
-        }
-        /* If not spawned, we didn't need check these, only check them when we need. */
-        if (this.displayItem.checkDisplayNeedRegen()) {
-            this.displayItem.fixDisplayNeedRegen();
-        } else {/* If display was regened, we didn't need check it moved, performance! */
-            if (this.displayItem.checkDisplayIsMoved()) {
-                this.displayItem.fixDisplayMoved();
+        }else{
+            /* If not spawned, we didn't need check these, only check them when we need. */
+            if (this.displayItem.checkDisplayNeedRegen()) {
+                this.displayItem.fixDisplayNeedRegen();
+            } else {/* If display was regened, we didn't need check it moved, performance! */
+                if (this.displayItem.checkDisplayIsMoved()) {
+                    this.displayItem.fixDisplayMoved();
+                }
             }
         }
+
         /* Dupe is always need check, if enabled display */
         if (plugin.isDisplay()) {
             this.displayItem.removeDupe();
