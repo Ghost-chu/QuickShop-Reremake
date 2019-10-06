@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -44,17 +42,6 @@ public interface DisplayItem {
                 return true;
             }
         }
-        try{
-            DisplayItemMarker marker = iMeta.getPersistentDataContainer().get(new NamespacedKey(QuickShop.instance, "QuickShopDisplay"),DisplayItemMarkerDataType.INSTANCE);
-            if(marker == null){
-                return false;
-            }
-            if(shop == null){
-                return true;
-            }else{
-                return marker.getShop().equals(shop);
-            }
-        }catch (Throwable ignore){} //1.14 new api
         if (!iMeta.hasLore()) {
             return false;
         }
@@ -134,10 +121,6 @@ public interface DisplayItem {
             lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
-        try{
-            PersistentDataContainer container = iMeta.getPersistentDataContainer();
-            container.set(new NamespacedKey(QuickShop.instance, "QuickShopDisplay"),DisplayItemMarkerDataType.INSTANCE,new DisplayItemMarker(shop));
-        }catch (Throwable ignore){}//1.14 data api
         itemStack.setItemMeta(iMeta);
         return itemStack;
     }

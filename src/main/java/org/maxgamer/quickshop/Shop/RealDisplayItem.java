@@ -38,7 +38,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (plugin.isDisplay() && this.item == null) {
+        if (this.item == null) {
             return false;
         }
         //return !this.item.getLocation().equals(getDisplayLocation());
@@ -51,9 +51,6 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (!plugin.isDisplay()) {
-            return false;
-        }
         if(this.item == null){
             return true;
         }
@@ -70,18 +67,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
-        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
-            if (!(entity instanceof Item)) {
-                continue;
-            }
-            Item eItem = (Item) entity;
-            if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId().toString() + " at " + eItem
-                        .getLocation().toString());
-                eItem.teleport(getDisplayLocation());
-                return;
-            }
-        }
+        respawn();
     }
 
     @Override
