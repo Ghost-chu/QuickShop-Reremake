@@ -386,7 +386,7 @@ public class ContainerShop implements Shop {
             /* Not spawned yet. */
             Util.debugLog("Target item not spawned, spawning...");
             this.displayItem.spawn();
-        } else {
+        }else{
             /* If not spawned, we didn't need check these, only check them when we need. */
             if (this.displayItem.checkDisplayNeedRegen()) {
                 this.displayItem.fixDisplayNeedRegen();
@@ -396,6 +396,7 @@ public class ContainerShop implements Shop {
                 }
             }
         }
+
         /* Dupe is always need check, if enabled display */
         if (plugin.isDisplay()) {
             this.displayItem.removeDupe();

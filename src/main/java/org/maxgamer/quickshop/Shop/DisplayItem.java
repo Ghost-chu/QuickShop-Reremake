@@ -8,6 +8,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -76,7 +77,7 @@ public interface DisplayItem {
                         return true;
                     }
                 }else{
-                    if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
+                    if (shopProtectionFlag.getShopLocation() != null&&shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
                         return true;
                     }
                 }
@@ -133,6 +134,10 @@ public interface DisplayItem {
             lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
+        try{
+            PersistentDataContainer container = iMeta.getPersistentDataContainer();
+            container.set(new NamespacedKey(QuickShop.instance, "QuickShopDisplay"),DisplayItemMarkerDataType.INSTANCE,new DisplayItemMarker(shop));
+        }catch (Throwable ignore){}//1.14 data api
         itemStack.setItemMeta(iMeta);
         return itemStack;
     }

@@ -38,7 +38,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
-        if (this.item == null) {
+        if (plugin.isDisplay() && this.item == null) {
             return false;
         }
         //return !this.item.getLocation().equals(getDisplayLocation());
@@ -51,8 +51,11 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public boolean checkDisplayNeedRegen() {
-        if (this.item == null) {
+        if (!plugin.isDisplay()) {
             return false;
+        }
+        if(this.item == null){
+            return true;
         }
         return !this.item.isValid() || this.item.isDead();
     }
@@ -162,18 +165,20 @@ public class RealDisplayItem implements DisplayItem {
             Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
+
         if (item != null && item.isValid() && !item.isDead()) {
             Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
             for (StackTraceElement trace : traces) {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
+            remove();
         }
+
         if (!Util.isDisplayAllowBlock(getDisplayLocation().getBlock().getType())) {
             Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
-
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {

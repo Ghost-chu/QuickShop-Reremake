@@ -30,7 +30,6 @@ public class ChunkListener implements Listener {
         if (inChunk == null || inChunk.isEmpty()) {
             return;
         }
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -53,6 +52,7 @@ public class ChunkListener implements Listener {
         if (inChunk == null || inChunk.isEmpty()) {
             return;
         }
+
         new BukkitRunnable() {
             @Override
             public void run() {

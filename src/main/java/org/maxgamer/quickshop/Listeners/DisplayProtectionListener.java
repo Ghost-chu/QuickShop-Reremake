@@ -335,6 +335,11 @@ public class DisplayProtectionListener implements Listener {
         @Nullable InventoryHolder holder = event.getInventory().getHolder();
         event.setCancelled(true);
         sendAlert(Util.getClassPrefix() + "Something  " + holder + " at " + loc + " trying pickup the DisplayItem,  you should teleport to that location and to check detail..");
+        if(holder instanceof Block){
+            ((Block) holder).breakNaturally();
+            sendAlert(Util.getClassPrefix() + "Block  " + holder + " at " + loc + " breaked by QuickShop cause try pick up display.");
+        }
+
         Util.inventoryCheck(event.getInventory());
     }
 
