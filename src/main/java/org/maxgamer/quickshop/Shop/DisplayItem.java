@@ -64,7 +64,7 @@ public interface DisplayItem {
                         return true;
                     }
                 }else{
-                    if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
+                    if (shopProtectionFlag.getShopLocation() != null&&shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
                         return true;
                     }
                 }
