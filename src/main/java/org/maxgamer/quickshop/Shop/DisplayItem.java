@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,6 +43,17 @@ public interface DisplayItem {
                 return true;
             }
         }
+        try{
+            DisplayItemMarker marker = iMeta.getPersistentDataContainer().get(new NamespacedKey(QuickShop.instance, "QuickShopDisplay"),DisplayItemMarkerDataType.INSTANCE);
+            if(marker == null){
+                return false;
+            }
+            if(shop == null){
+                return true;
+            }else{
+                return marker.getShop().equals(shop);
+            }
+        }catch (Throwable ignore){} //1.14 new api
         if (!iMeta.hasLore()) {
             return false;
         }
