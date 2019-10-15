@@ -155,7 +155,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        return plugin.getItemMatcher().matches(this.item, item);
+        return plugin.getItemMatcher().matches(item, this.item);
     }
 
     /**
