@@ -81,6 +81,7 @@ public class BlockListener implements Listener {
             }
             if (e.isCancelled()) {
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
+                Util.debugLog("The action was cancelled by other plugin");
                 return;
             }
             if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
