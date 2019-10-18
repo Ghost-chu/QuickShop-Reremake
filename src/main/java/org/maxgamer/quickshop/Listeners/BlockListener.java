@@ -87,12 +87,7 @@ public class BlockListener implements Listener {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission"));
                 return;
-            } else if (!shop.getModerator().isOwner(p.getUniqueId())) {
-                e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-permission"));
-                return;
             }
-
             // Cancel their current menu... Doesnt cancel other's menu's.
             Info action = plugin.getShopManager().getActions().get(p.getUniqueId());
             if (action != null) {
