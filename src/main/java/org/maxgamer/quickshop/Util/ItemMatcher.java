@@ -170,14 +170,13 @@ class ItemMetaMatcher {
             return true;
         }
         Util.debugLog("Checking displayname");
-        if (!meta1.hasDisplayName()) {
-            return true;
-        } else {
-            if (!meta2.hasDisplayName()) {
+        if(meta1.hasDisplayName()){
+            if(!meta2.hasDisplayName()){
                 return false;
             }
-            return meta1.getDisplayName().equals(meta2.getDisplayName());
+            return  meta2.getDisplayName().equals(meta1.getDisplayName());
         }
+        return true;
     }
 
     private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
