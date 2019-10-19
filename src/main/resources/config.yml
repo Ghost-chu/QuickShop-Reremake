@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 51
+config-version: 60
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -256,6 +256,8 @@ effect:
     onclick: true
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
+  #Maybe have better performance and more stable, only use when you have trouble use QuickShop ItemMatcher
+  use-bukkit-matcher: false
   #For Item
   item:
     #Plugin should check the item damage?
