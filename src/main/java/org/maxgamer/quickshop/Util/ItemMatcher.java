@@ -35,16 +35,16 @@ public class ItemMatcher {
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
     public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
-
         if (requireStack == givenStack) {
             return true; // Referring to the same thing, or both are null.
         }
-
         if (requireStack == null || givenStack == null) {
             Util.debugLog("Match failed: A stack is null: " + "requireStack[" + requireStack + "] givenStack[" + givenStack + "]");
             return false; // One of them is null (Can't be both, see above)
         }
-
+        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
+            return givenStack.isSimilar(requireStack);
+        }
         requireStack = requireStack.clone();
         requireStack.setAmount(1);
         givenStack = givenStack.clone();
