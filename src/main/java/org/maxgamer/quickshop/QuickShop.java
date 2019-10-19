@@ -926,6 +926,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 51);
             selectedVersion = 51;
         }
+        if(selectedVersion < 60){ //Ahhh fuck versions
+            getConfig().set("matcher.use-bukkit-matcher", false);
+            getConfig().set("config-version", 60);
+            selectedVersion = 60;
+        }
 
         saveConfig();
         reloadConfig();
