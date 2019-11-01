@@ -50,12 +50,18 @@ public class ItemMatcher {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
 
-        if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
-            Util.debugLog("Execute strict match check...");
-            return requireStack.equals(givenStack);
-        }
-        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
-            return givenStack.isSimilar(requireStack);
+//        if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
+//            Util.debugLog("Execute strict match check...");
+//            return requireStack.equals(givenStack);
+//        }
+//        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
+//            return givenStack.isSimilar(requireStack);
+//        }
+        switch (plugin.getConfig().getInt("matcher.work-type")){
+            case 1:
+                return requireStack.isSimilar(givenStack);
+            case 2:
+                return requireStack.equals(givenStack);
         }
 
         if (!typeMatches(requireStack, givenStack)) {
