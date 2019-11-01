@@ -224,9 +224,6 @@ shop:
   blacklist-world:
     - disabled_world_name
 
-  #Enable a stricter itemstack check
-  strict-matches-check: false
-
   #Protection check
   protection-checking: true
 
@@ -265,8 +262,11 @@ effect:
     onclick: true
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
-  #Maybe have better performance and more stable, only use when you have trouble use QuickShop ItemMatcher
-  use-bukkit-matcher: false
+  #Matcher type
+  #0=QuickShop user-friendly matcher.
+  #1=Bukkit standard item matcher.
+  #2=Java equals matcher.
+  work-type: 0
   #For Item
   item:
     #Plugin should check the item damage?
