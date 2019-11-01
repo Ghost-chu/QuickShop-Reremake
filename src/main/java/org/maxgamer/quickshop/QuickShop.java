@@ -969,7 +969,8 @@ public class QuickShop extends JavaPlugin {
         }
         if(selectedVersion == 60){ //Ahhh fuck versions
             getConfig().set("matcher.use-bukkit-matcher", null);
-            getConfig().set("matcher.match-mode", 0);
+            getConfig().set("shop.strict-matches-check", null);
+            getConfig().set("matcher.work-type", 0);
             getConfig().set("shop.display-auto-despawn", true);
             getConfig().set("shop.display-despawn-range", 10);
             getConfig().set("shop.display-check-time", 10);
