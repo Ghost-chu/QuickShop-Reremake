@@ -155,7 +155,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        return plugin.getItemMatcher().matches(item, this.item);
+        return plugin.getItemMatcher().matches(this.item, item);
     }
 
     /**
@@ -448,6 +448,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The list of players who can manage the shop.
      */
+    @NotNull
     @Override
     public ArrayList<UUID> getStaffs() {
         return this.moderator.getStaffs();
@@ -787,6 +788,11 @@ public class ContainerShop implements Shop {
     public boolean isValid() {
         checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
+    }
+
+    @Override
+    public @Nullable DisplayItem getDisplay() {
+        return this.displayItem;
     }
 
     /**
