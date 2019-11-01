@@ -35,16 +35,16 @@ public class ItemMatcher {
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
     public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
+
         if (requireStack == givenStack) {
             return true; // Referring to the same thing, or both are null.
         }
+
         if (requireStack == null || givenStack == null) {
             Util.debugLog("Match failed: A stack is null: " + "requireStack[" + requireStack + "] givenStack[" + givenStack + "]");
             return false; // One of them is null (Can't be both, see above)
         }
-        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
-            return givenStack.isSimilar(requireStack);
-        }
+
         requireStack = requireStack.clone();
         requireStack.setAmount(1);
         givenStack = givenStack.clone();
@@ -53,6 +53,9 @@ public class ItemMatcher {
         if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
             Util.debugLog("Execute strict match check...");
             return requireStack.equals(givenStack);
+        }
+        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
+            return givenStack.isSimilar(requireStack);
         }
 
         if (!typeMatches(requireStack, givenStack)) {
@@ -170,13 +173,14 @@ class ItemMetaMatcher {
             return true;
         }
         Util.debugLog("Checking displayname");
-        if(meta1.hasDisplayName()){
-            if(!meta2.hasDisplayName()){
+        if (!meta1.hasDisplayName()) {
+            return true;
+        } else {
+            if (!meta2.hasDisplayName()) {
                 return false;
             }
-            return  meta2.getDisplayName().equals(meta1.getDisplayName());
+            return meta1.getDisplayName().equals(meta2.getDisplayName());
         }
-        return true;
     }
 
     private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
