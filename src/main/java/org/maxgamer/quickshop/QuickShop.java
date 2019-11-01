@@ -454,6 +454,42 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
+        if(this.display){
+            if(getConfig().getBoolean("shop.display-auto-despawn")){
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        if(getShopManager().getLoadedShops() == null){
+                            return;
+                        }
+                        getShopManager().getLoadedShops().parallelStream().forEach(shop->{
+                            //Check the range has player?
+                            int range = getConfig().getInt("shop.display-despawn-range");
+                            boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
+                                    .parallelStream()
+                                    .filter(player->player.getWorld().equals(shop.getLocation().getWorld()))
+                                    .anyMatch(player-> player.getLocation().distance(shop.getLocation()) < range);
+                            new BukkitRunnable(){
+                                @Override
+                                public void run() {
+                                    if(anyPlayerInRegion){
+                                        if(!shop.getDisplay().isSpawned()){
+                                            Util.debugLog("Respawning the shop "+shop.toString()+" the display, cause it was despawned and a player close it");
+                                            shop.checkDisplay();
+                                        }
+                                    }else{
+                                        if(shop.getDisplay().isSpawned()){
+                                            Util.debugLog("Removing the shop "+shop.toString()+" the display, cause nobody can see it");
+                                            shop.getDisplay().remove();
+                                        }
+                                    }
+                                }
+                            }.runTask(QuickShop.instance);
+                        });
+                    }
+                }.runTaskTimerAsynchronously(this,0,getConfig().getInt("shop.display-check-time" ));
+            }
+        }
     }
 
     /**
@@ -930,6 +966,15 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("matcher.use-bukkit-matcher", false);
             getConfig().set("config-version", 60);
             selectedVersion = 60;
+        }
+        if(selectedVersion == 60){ //Ahhh fuck versions
+            getConfig().set("matcher.use-bukkit-matcher", null);
+            getConfig().set("matcher.match-mode", 0);
+            getConfig().set("shop.display-auto-despawn", true);
+            getConfig().set("shop.display-despawn-range", 10);
+            getConfig().set("shop.display-check-time", 10);
+            getConfig().set("config-version", 61);
+            selectedVersion = 61;
         }
 
         saveConfig();
