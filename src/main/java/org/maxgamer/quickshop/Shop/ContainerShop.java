@@ -181,7 +181,12 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setPrice(double price) {
-        Bukkit.getPluginManager().callEvent(new ShopPriceChangedEvent(this, this.price, price));
+        ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()){
+            Util.debugLog("A plugin cancelled the price change event.");
+            return;
+        }
         this.price = price;
         setSignText();
         update();

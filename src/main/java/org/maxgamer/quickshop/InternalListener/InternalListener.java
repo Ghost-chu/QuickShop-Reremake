@@ -26,7 +26,7 @@ public class InternalListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopPriceChanges(ShopPriceChangedEvent event) {
+    public void shopPriceChanges(ShopPriceChangeEvent event) {
         plugin.log("Shop at location " + event.getShop().getLocation() + " price was changed from " + event
                 .getOldPrice() + " to " + event.getNewPrice());
     }
