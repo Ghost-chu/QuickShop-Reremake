@@ -5,6 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ public interface Shop {
      *
      * @return New shop object
      */
-    Shop clone();
+    @NotNull Shop clone();
 
     /**
      * Remove a staff from moderators
@@ -109,7 +111,7 @@ public interface Shop {
      *
      * @return owner name
      */
-    String ownerName();
+    @NotNull String ownerName();
 
     /**
      * Remove x ItemStack from the shop inventory
@@ -156,7 +158,7 @@ public interface Shop {
      *
      * @return The shop's ItemStack
      */
-    ItemStack getItem();
+    @NotNull ItemStack getItem();
 
     /**
      * Set texts on shop's sign
@@ -170,14 +172,14 @@ public interface Shop {
      *
      * @return Shop's location
      */
-    Location getLocation();
+    @NotNull Location getLocation();
 
     /**
      * Return this shop's moderators
      *
      * @return Shop moderators
      */
-    ShopModerator getModerator();
+    @NotNull ShopModerator getModerator();
 
     /**
      * Set new shop's moderators
@@ -191,7 +193,7 @@ public interface Shop {
      *
      * @return Shop's owner UUID, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
      */
-    UUID getOwner();
+    @NotNull UUID getOwner();
 
     /**
      * Set new owner to the shop's owner
@@ -233,21 +235,21 @@ public interface Shop {
      *
      * @return shop type
      */
-    ShopType getShopType();
+    @NotNull ShopType getShopType();
 
     /**
      * Get shop signs, may have multi signs
      *
      * @return Signs for the shop
      */
-    List<Sign> getSigns();
+    @NotNull List<Sign> getSigns();
 
     /**
      * Directly get all staffs.
      *
      * @return staffs
      */
-    ArrayList<UUID> getStaffs();
+    @NotNull ArrayList<UUID> getStaffs();
 
     /**
      * Get shop is or not in buying mode
@@ -291,5 +293,10 @@ public interface Shop {
      */
     boolean isValid();
 
+    /**
+     * Get the shop display entity
+     * @return The entity for shop display.
+     */
+    @Nullable DisplayItem getDisplay();
 
 }
