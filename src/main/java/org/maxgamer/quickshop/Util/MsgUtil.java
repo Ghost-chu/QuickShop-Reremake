@@ -205,8 +205,10 @@ public class MsgUtil {
         }
         String filled = fillArgs(raw, args);
         if (player != null) {
-            filled = PlaceholderAPI.setPlaceholders(player, filled);
-            Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+            if(plugin.getPlaceHolderAPI() != null) {
+                filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+                Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+            }
         }
         return filled;
     }
