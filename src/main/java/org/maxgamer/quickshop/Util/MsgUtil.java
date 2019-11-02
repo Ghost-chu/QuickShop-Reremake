@@ -483,6 +483,9 @@ public class MsgUtil {
         if (json == null) {
             return;
         }
+        Util.debugLog(left);
+        Util.debugLog(itemStack.toString());
+        Util.debugLog(right);
         TextComponent centerItem = new TextComponent(left+Util.getItemStackName(itemStack)+right);
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
