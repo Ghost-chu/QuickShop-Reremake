@@ -185,7 +185,7 @@ public class MsgUtil {
         }
         String filled = fillArgs(raw, args);
         if (player instanceof OfflinePlayer) {
-            if(plugin.getPlaceHolderAPI() != null) {
+            if(plugin.getPlaceHolderAPI() != null&& plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                 Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
@@ -207,7 +207,7 @@ public class MsgUtil {
         }
         String filled = fillArgs(raw, args);
         if (player != null) {
-            if(plugin.getPlaceHolderAPI() != null) {
+            if(plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                 Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
