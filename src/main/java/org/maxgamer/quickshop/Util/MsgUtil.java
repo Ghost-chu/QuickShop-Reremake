@@ -112,6 +112,7 @@ public class MsgUtil {
             if (msgs != null) {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
+                        Util.debugLog("Accepted the msg for player "+p.getName()+" : "+msg);
                        String[] msgData = msg.split("##########");
                         try {
                             sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
@@ -450,6 +451,7 @@ public class MsgUtil {
         if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited) {
             return; //Ignore unlimited shops messages.
         }
+        Util.debugLog(message);
         String[] msgData  = message.split("##########");
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
@@ -465,8 +467,10 @@ public class MsgUtil {
                 try {
                     sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
                 } catch (InvalidConfigurationException e) {
+                    Util.debugLog("Unknown error, send by plain text.");
                     p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
-                }catch (ArrayIndexOutOfBoundsException e2){
+                } catch (ArrayIndexOutOfBoundsException e2){
+                    Util.debugLog("Message is legacy format, send as plain message...");
                     p.getPlayer().sendMessage(message);
                 }
             }
@@ -479,14 +483,10 @@ public class MsgUtil {
         if (json == null) {
             return;
         }
-        TextComponent leftMsg = new TextComponent(left);
-        TextComponent centerItem = new TextComponent(Util.getItemStackName(itemStack));
-        TextComponent rightMsg = new TextComponent(right);
+        TextComponent centerItem = new TextComponent(left+Util.getItemStackName(itemStack)+right);
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
-        leftMsg.addExtra(centerItem);
-        leftMsg.addExtra(rightMsg);
-        player.spigot().sendMessage(rightMsg);
+        player.spigot().sendMessage(centerItem);
     }
 
     public static @NotNull String getSubString(@NotNull String text, @NotNull String left, @NotNull String right) {
