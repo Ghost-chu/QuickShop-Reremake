@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -111,13 +112,13 @@ public class MsgUtil {
             if (msgs != null) {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
-                        String msgLeft = StringUtils.substringBefore(msg, "$#!$#");
-                        String msgRight = StringUtils.substringAfter(msg, "#$!#$");
-                        String itemMsg = getSubString(msg, "$#!$#", "#$!#$");
+                       String[] msgData = msg.split("##########");
                         try {
-                            sendItemholochat(p.getPlayer(), msgLeft, Util.deserialize(itemMsg), msgRight);
-                        } catch (Exception e) {
-                            p.getPlayer().sendMessage(msgLeft + itemMsg + msgRight);
+                            sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
+                        } catch (InvalidConfigurationException e) {
+                            p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
+                        }catch (ArrayIndexOutOfBoundsException e2){
+                            p.getPlayer().sendMessage(msg);
                         }
                     } else {
                         return false;
@@ -446,12 +447,10 @@ public class MsgUtil {
      * @param isUnlimited The shop is or unlimited
      */
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
-        if (plugin.getConfig().getBoolean("shop.ignore-unlimited -shop-messages") && isUnlimited) {
+        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited) {
             return; //Ignore unlimited shops messages.
         }
-        String msgLeft = StringUtils.substringBefore(message, "$#!$#");
-        String msgRight = StringUtils.substringAfter(message, "#$!#$");
-        String itemMsg = getSubString(message, "$#!$#", "#$!#$");
+        String[] msgData  = message.split("##########");
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
@@ -464,9 +463,11 @@ public class MsgUtil {
         } else {
             if (p.getPlayer() != null) {
                 try {
-                    sendItemholochat(p.getPlayer(), msgLeft, Util.deserialize(itemMsg), msgRight);
-                } catch (Exception e) {
-                    p.getPlayer().sendMessage(msgLeft + itemMsg + msgRight);
+                    sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
+                } catch (InvalidConfigurationException e) {
+                    p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
+                }catch (ArrayIndexOutOfBoundsException e2){
+                    p.getPlayer().sendMessage(message);
                 }
             }
         }
