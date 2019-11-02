@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -656,25 +657,26 @@ public class ContainerShop implements Shop {
             return;
         }
         String[] lines = new String[4];
-        lines[0] = MsgUtil.getMessage("signs.header", this.ownerName());
+        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header",player, this.ownerName());
         if (this.isSelling()) {
             if (this.getRemainingStock() == -1) {
-                lines[1] = MsgUtil.getMessage("signs.selling", "" + MsgUtil.getMessage("signs.unlimited"));
+                lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling",player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited",player));
             } else {
-                lines[1] = MsgUtil.getMessage("signs.selling", "" + this.getRemainingStock());
+                lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling",player, "" + this.getRemainingStock());
             }
 
         } else if (this.isBuying()) {
             if (this.getRemainingSpace() == -1) {
-                lines[1] = MsgUtil.getMessage("signs.buying", "" + MsgUtil.getMessage("signs.unlimited"));
+                lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying",player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited",player));
 
             } else {
-                lines[1] = MsgUtil.getMessage("signs.buying", "" + this.getRemainingSpace());
+                lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying",player, "" + this.getRemainingSpace());
             }
 
         }
-        lines[2] = MsgUtil.getMessage("signs.item", Util.getItemStackName(this.getItem()));
-        lines[3] = MsgUtil.getMessage("signs.price", Util.format(this.getPrice()));
+        lines[2] = MsgUtil.getMessageOfflinePlayer("signs.item",player, Util.getItemStackName(this.getItem()));
+        lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price",player, Util.format(this.getPrice()));
         this.setSignText(lines);
     }
 
@@ -710,8 +712,9 @@ public class ContainerShop implements Shop {
         blocks[1] = loc.getBlock().getRelative(BlockFace.NORTH);
         blocks[2] = loc.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = loc.getBlock().getRelative(BlockFace.WEST);
-        final String signHeader = MsgUtil.getMessage("signs.header", "");
-        final String signHeader2 = MsgUtil.getMessage("sign.header", this.ownerName());
+        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        final String signHeader = MsgUtil.getMessageOfflinePlayer("signs.header",player, "");
+        final String signHeader2 = MsgUtil.getMessageOfflinePlayer("sign.header",player, this.ownerName());
 
         for (Block b : blocks) {
             if (b == null) {
@@ -880,11 +883,11 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull String ownerName() {
         if (this.isUnlimited()) {
-            return MsgUtil.getMessage("admin-shop");
+            return MsgUtil.getMessageOfflinePlayer("admin-shop",Bukkit.getOfflinePlayer(this.getOwner()));
         }
         String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
         if (name == null || name.isEmpty()) {
-            return MsgUtil.getMessage("unknown-owner");
+            return MsgUtil.getMessageOfflinePlayer("unknown-owner",Bukkit.getOfflinePlayer(this.getOwner()));
         }
         return name;
     }

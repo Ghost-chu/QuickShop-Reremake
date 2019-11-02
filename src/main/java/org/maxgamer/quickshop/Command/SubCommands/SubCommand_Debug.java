@@ -60,13 +60,13 @@ public class SubCommand_Debug implements CommandProcesser {
             plugin.saveConfig();
             Bukkit.getPluginManager().disablePlugin(plugin);
             Bukkit.getPluginManager().enablePlugin(plugin);
-            sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging"));
+            sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging",sender));
         } else {
             plugin.getConfig().set("dev-mode", true);
             plugin.saveConfig();
             Bukkit.getPluginManager().disablePlugin(plugin);
             Bukkit.getPluginManager().enablePlugin(plugin);
-            sender.sendMessage(MsgUtil.getMessage("command.now-debuging"));
+            sender.sendMessage(MsgUtil.getMessage("command.now-debuging",sender));
         }
     }
 

@@ -28,7 +28,7 @@ public class SubCommand_Clean implements CommandProcesser {
             sender.sendMessage("Can't run this command by Console");
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("command.cleaning"));
+        sender.sendMessage(MsgUtil.getMessage("command.cleaning",sender));
         Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
         int i = 0;
         java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
@@ -57,7 +57,7 @@ public class SubCommand_Clean implements CommandProcesser {
         }
 
         MsgUtil.clean();
-        sender.sendMessage(MsgUtil.getMessage("command.cleaned", "" + i));
+        sender.sendMessage(MsgUtil.getMessage("command.cleaned",sender, "" + i));
         return;
 
     }
