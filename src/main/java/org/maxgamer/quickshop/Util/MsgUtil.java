@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.Util;
 
 import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
+import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -55,11 +56,11 @@ public class MsgUtil {
      * @param bool The boolean value
      * @return The result of translate.
      */
-    public static String bool2String( boolean bool) {
+    public static String bool2String(boolean bool) {
         if (bool) {
-            return MsgUtil.getMessage("booleanformat.success",null);
+            return MsgUtil.getMessage("booleanformat.success", null);
         } else {
-            return MsgUtil.getMessage("booleanformat.failed",null);
+            return MsgUtil.getMessage("booleanformat.failed", null);
         }
     }
 
@@ -110,13 +111,21 @@ public class MsgUtil {
             if (msgs != null) {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
-                        p.getPlayer().sendMessage(msg);
+                        String msgLeft = StringUtils.substringBefore(msg, "$#!$#");
+                        String msgRight = StringUtils.substringAfter(msg, "#$!#$");
+                        String itemMsg = getSubString(msg, "$#!$#", "#$!#$");
+                        try {
+                            sendItemholochat(p.getPlayer(), msgLeft, Util.deserialize(itemMsg), msgRight);
+                        } catch (Exception e) {
+                            p.getPlayer().sendMessage(msgLeft + itemMsg + msgRight);
+                        }
+                    } else {
+                        return false;
                     }
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
             }
-            return true;
         }
         return false;
     }
@@ -172,13 +181,16 @@ public class MsgUtil {
         if (raw == null) {
             return invaildMsg + ": " + loc;
         }
-        String filled =  fillArgs(raw, args);
-        if(player instanceof OfflinePlayer){
-            filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player,filled);
-            Util.debugLog("Processed message "+filled +" by PlaceHolderAPI.");
+        String filled = fillArgs(raw, args);
+        if (player instanceof OfflinePlayer) {
+            if(plugin.getPlaceHolderAPI() != null) {
+                filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+                Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+            }
         }
         return filled;
     }
+
     /**
      * getMessage in messages.yml
      *
@@ -191,10 +203,10 @@ public class MsgUtil {
         if (raw == null) {
             return invaildMsg + ": " + loc;
         }
-        String filled =  fillArgs(raw, args);
-        if(player != null){
-            filled = PlaceholderAPI.setPlaceholders(player,filled);
-            Util.debugLog("Processed message "+filled +" by PlaceHolderAPI.");
+        String filled = fillArgs(raw, args);
+        if (player != null) {
+            filled = PlaceholderAPI.setPlaceholders(player, filled);
+            Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
         }
         return filled;
     }
@@ -268,9 +280,9 @@ public class MsgUtil {
 
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
-            plugin.getLogger().info(getMessage("translation-author",null));
-            plugin.getLogger().info(getMessage("translation-contributors",null));
-            plugin.getLogger().info(getMessage("translation-country",null));
+            plugin.getLogger().info(getMessage("translation-author", null));
+            plugin.getLogger().info(getMessage("translation-contributors", null));
+            plugin.getLogger().info(getMessage("translation-country", null));
             //plugin.getLogger().info(getMessage("translation-version"));
             inited = true;
         }
@@ -432,9 +444,12 @@ public class MsgUtil {
      * @param isUnlimited The shop is or unlimited
      */
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
-        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited) {
+        if (plugin.getConfig().getBoolean("shop.ignore-unlimited -shop-messages") && isUnlimited) {
             return; //Ignore unlimited shops messages.
         }
+        String msgLeft = StringUtils.substringBefore(message, "$#!$#");
+        String msgRight = StringUtils.substringAfter(message, "#$!#$");
+        String itemMsg = getSubString(message, "$#!$#", "#$!#$");
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
@@ -446,9 +461,50 @@ public class MsgUtil {
             plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
-                p.getPlayer().sendMessage(message);
+                try {
+                    sendItemholochat(p.getPlayer(), msgLeft, Util.deserialize(itemMsg), msgRight);
+                } catch (Exception e) {
+                    p.getPlayer().sendMessage(msgLeft + itemMsg + msgRight);
+                }
             }
         }
+    }
+
+    @SneakyThrows
+    public static void sendItemholochat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
+        String json = ItemNMS.saveJsonfromNMS(itemStack);
+        if (json == null) {
+            return;
+        }
+        TextComponent leftMsg = new TextComponent(left);
+        TextComponent centerItem = new TextComponent(Util.getItemStackName(itemStack));
+        TextComponent rightMsg = new TextComponent(right);
+        ComponentBuilder cBuilder = new ComponentBuilder(json);
+        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+        leftMsg.addExtra(centerItem);
+        leftMsg.addExtra(rightMsg);
+        player.spigot().sendMessage(rightMsg);
+    }
+
+    public static @NotNull String getSubString(@NotNull String text, @NotNull String left, @NotNull String right) {
+        String result = "";
+        int zLen;
+        if (left.isEmpty()) {
+            zLen = 0;
+        } else {
+            zLen = text.indexOf(left);
+            if (zLen > -1) {
+                zLen += left.length();
+            } else {
+                zLen = 0;
+            }
+        }
+        int yLen = text.indexOf(right, zLen);
+        if (yLen < 0 || right.isEmpty()) {
+            yLen = text.length();
+        }
+        result = text.substring(zLen, yLen);
+        return result;
     }
 
     /**
@@ -470,19 +526,19 @@ public class MsgUtil {
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation",sender));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation", sender));
         // Owner
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner",sender, shop.ownerName()));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", sender, shop.ownerName()));
         } else {
-            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner",sender, shop.ownerName()), MsgUtil
-                    .getMessage("controlpanel.setowner-hover",sender), MsgUtil.getMessage("controlpanel.commands.setowner",sender));
+            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName()), MsgUtil
+                    .getMessage("controlpanel.setowner-hover", sender), MsgUtil.getMessage("controlpanel.commands.setowner", sender));
         }
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
-            String text = MsgUtil.getMessage("controlpanel.unlimited",sender, bool2String(shop.isUnlimited()));
-            String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover",sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited",sender,
+            String text = MsgUtil.getMessage("controlpanel.unlimited", sender, bool2String(shop.isUnlimited()));
+            String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited", sender,
                     shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
@@ -492,18 +548,18 @@ public class MsgUtil {
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy") && sender.hasPermission("quickshop.create.sell")) {
             if (shop.isSelling()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-selling",sender);
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover",sender);
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy",sender,
+                String text = MsgUtil.getMessage("controlpanel.mode-selling", sender);
+                String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy", sender,
                         shop.getLocation().getWorld().getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
                         String.valueOf(shop.getLocation().getBlockZ()));
                 chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
-                String text = MsgUtil.getMessage("controlpanel.mode-buying",sender);
-                String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover",sender);
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell",sender,
+                String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
+                String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell", sender,
                         shop.getLocation().getWorld().getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
@@ -513,23 +569,23 @@ public class MsgUtil {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.price",sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.price-hover",sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price",sender);
+            String text = MsgUtil.getMessage("controlpanel.price", sender, String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
-            String text = MsgUtil.getMessage("controlpanel.refill",sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.refill-hover",sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill",sender);
+            String text = MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         // Refill
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-            String text = MsgUtil.getMessage("controlpanel.empty",sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.empty-hover",sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty",sender,
+            String text = MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty", sender,
                     shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
@@ -538,9 +594,9 @@ public class MsgUtil {
         }
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.remove",sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.remove-hover",sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove",sender,
+            String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
+            String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove", sender,
                     shop.getLocation().getWorld().getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
@@ -583,11 +639,11 @@ public class MsgUtil {
             if (json == null) {
                 return;
             }
-            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview",player));
+            TextComponent normalmessage = new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview", player));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
-                        .getMessage("menu.commands.preview",player, shop.getLocation().getWorld().getName(), String
+                        .getMessage("menu.commands.preview", player, shop.getLocation().getWorld().getName(), String
                                 .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
                                 .valueOf(shop.getLocation().getBlockZ()))));
             }
@@ -627,16 +683,16 @@ public class MsgUtil {
     public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase",p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", p));
         chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.item-name-and-price",p, "" + amount, Util.getItemStackName(shop.getItem()), Util
+                .getMessage("menu.item-name-and-price", p, "" + amount, Util.getItemStackName(shop.getItem()), Util
                         .format((amount * shop.getPrice()))));
         Map<Enchantment, Integer> enchs = new HashMap<>();
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants",p));
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
             }
@@ -646,7 +702,7 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants",p));
+                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
                 }
@@ -665,18 +721,18 @@ public class MsgUtil {
     public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold",p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", p));
         chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.item-name-and-price",p, "" + amount, Util.getItemStackName(shop.getItem()), Util
+                .getMessage("menu.item-name-and-price", p, "" + amount, Util.getItemStackName(shop.getItem()), Util
                         .format((amount * shop.getPrice()))));
         if (plugin.getConfig().getBoolean("show-tax")) {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!p.getUniqueId().equals(shop.getOwner())) {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax",p, Util.format((tax * total))));
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax", p, Util.format((tax * total))));
                 } else {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self",p));
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", p));
                 }
             }
         }
@@ -685,7 +741,7 @@ public class MsgUtil {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants",p));
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
             }
@@ -695,7 +751,7 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants",p));
+                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
                 }
@@ -715,41 +771,41 @@ public class MsgUtil {
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information",p));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner",p, shop.ownerName()));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         //Enabled
         sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
-                .getMessage("tableformat.left_begin",p) + " " + MsgUtil
-                .getMessage("menu.item",p, Util.getItemStackName(shop.getItem())));
+                .getMessage("tableformat.left_begin", p) + " " + MsgUtil
+                .getMessage("menu.item", p, Util.getItemStackName(shop.getItem())));
         if (Util.isTool(items.getType())) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining",p, Util.getToolPercentage(items)));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
         }
         if (shop.isSelling()) {
             if (shop.getRemainingStock() == -1) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock",p, "" + MsgUtil.getMessage("signs.unlimited",p)));
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", p, "" + MsgUtil.getMessage("signs.unlimited", p)));
             } else {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock",p, "" + shop.getRemainingStock()));
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stock", p, "" + shop.getRemainingStock()));
             }
         } else {
             if (shop.getRemainingSpace() == -1) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space",p, "" + MsgUtil.getMessage("signs.unlimited",p)));
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", p, "" + MsgUtil.getMessage("signs.unlimited", p)));
             } else {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space",p, "" + shop.getRemainingSpace()));
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.space", p, "" + shop.getRemainingSpace()));
             }
         }
         chatSheetPrinter.printLine(MsgUtil
-                .getMessage("menu.price-per",p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+                .getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
         if (shop.isBuying()) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying",p));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling",p));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling", p));
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
         if (items.hasItemMeta() && items.getItemMeta().hasEnchants()) {
             enchs = items.getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants",p));
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
             }
@@ -759,8 +815,8 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants",p) + MsgUtil
-                        .getMessage("tableformat.right_half_line",p));
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants", p) + MsgUtil
+                        .getMessage("tableformat.right_half_line", p));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries
                             .getValue());
