@@ -151,7 +151,10 @@
             <id>lang-utils-repo</id>
             <url>https://ci.nyaacat.com/maven/</url>
         </repository>
-
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -269,6 +272,12 @@
             <artifactId>org.json.simple</artifactId>
             <version>0.4</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

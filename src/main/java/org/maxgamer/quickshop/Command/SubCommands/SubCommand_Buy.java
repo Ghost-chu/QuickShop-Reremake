@@ -30,7 +30,7 @@ public class SubCommand_Buy implements CommandProcesser {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -41,13 +41,13 @@ public class SubCommand_Buy implements CommandProcesser {
                     //shop.setSignText();
                     shop.update();
                     sender.sendMessage(MsgUtil
-                            .getMessage("command.now-buying", Util.getItemStackName(shop.getItem())));
+                            .getMessage("command.now-buying",sender, Util.getItemStackName(shop.getItem())));
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("Can't run command by Console"));
+        sender.sendMessage(MsgUtil.getMessage("Can't run command by Console",sender));
     }
 }
