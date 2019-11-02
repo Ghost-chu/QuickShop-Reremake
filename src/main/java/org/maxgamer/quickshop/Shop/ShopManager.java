@@ -124,8 +124,7 @@ public class ShopManager {
             }
         }
         // Notify the owner of the purchase.
-        String msg = MsgUtil.getMessage("player-sold-to-your-store",p, p.getName(), String.valueOf(amount), Util
-                .getItemStackName(shop.getItem()));
+        String msg = MsgUtil.getMessage("player-sold-to-your-store",p, p.getName(), String.valueOf(amount), "$#!$#" +Util.serialize(shop.getItem())+"#$!#$");
 
         if (space == amount) {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-space",p, "" + shop.getLocation().getBlockX(), "" + shop.getLocation()
@@ -362,11 +361,9 @@ public class ShopManager {
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax",p, p.getName(), "" + amount, Util
-                    .getItemStackName(shop.getItem()), Util.format((tax * total)));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax",p, p.getName(), "" + amount,"$#!$#" +Util.serialize(shop.getItem())+"#$!#$", Util.format((tax * total)));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store",p, p.getName(), "" + amount, Util
-                    .getItemStackName(shop.getItem()));
+            msg = MsgUtil.getMessage("player-bought-from-your-store",p, p.getName(), "" + amount, "$#!$#" +Util.serialize(shop.getItem())+"#$!#$");
         }
         // Transfers the item from A to B
         if (stock == amount) {
