@@ -368,8 +368,8 @@ public class ShopManager {
         // Transfers the item from A to B
         if (stock == amount) {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-stock",p, "" + shop.getLocation().getBlockX(), "" + shop
-                    .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), "##########"+Util
-                    .getItemStackName(shop.getItem())+"##########");
+                    .getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), Util
+                    .getItemStackName(shop.getItem()));
         }
 
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
