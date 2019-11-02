@@ -26,7 +26,7 @@ public class SubCommand_Help implements CommandProcesser {
     }
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
-        s.sendMessage(MsgUtil.getMessage("command.description.title"));
+        s.sendMessage(MsgUtil.getMessage("command.description.title",s));
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             List<String> requirePermissions = container.getPermissions();
             if (requirePermissions != null) {
@@ -42,7 +42,7 @@ public class SubCommand_Help implements CommandProcesser {
             if (!container.isHidden()) {
                 s.sendMessage(ChatColor.GREEN + "/" + commandLabel + " " + container
                         .getPrefix() + ChatColor.YELLOW + " - "
-                        + MsgUtil.getMessage("command.description." + container.getPrefix()));
+                        + MsgUtil.getMessage("command.description." + container.getPrefix(),s));
             }
         }
     }
