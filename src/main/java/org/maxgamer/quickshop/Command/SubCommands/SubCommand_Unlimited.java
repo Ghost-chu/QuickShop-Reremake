@@ -27,7 +27,7 @@ public class SubCommand_Unlimited implements CommandProcesser {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((Player) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -37,12 +37,12 @@ public class SubCommand_Unlimited implements CommandProcesser {
                     shop.setUnlimited(!shop.isUnlimited());
                     //shop.setSignText();
                     shop.update();
-                    sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",
+                    sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited",sender,
                             (shop.isUnlimited() ? "unlimited" : "limited")));
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
         } else {
             sender.sendMessage("Only player can run this command.");
         }

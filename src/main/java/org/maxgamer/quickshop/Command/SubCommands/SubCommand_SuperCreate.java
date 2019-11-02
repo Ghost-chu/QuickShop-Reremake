@@ -26,7 +26,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount"));
+        list.add(MsgUtil.getMessage("tabcomplete.amount",sender));
         return list;
     }
 
@@ -57,12 +57,12 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                         }
 
                         if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
-                            p.sendMessage(MsgUtil.getMessage("no-double-chests"));
+                            p.sendMessage(MsgUtil.getMessage("no-double-chests",sender));
                             return;
                         }
                         if (Util.isBlacklisted(item.getType())
                                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                            p.sendMessage(MsgUtil.getMessage("blacklisted-item"));
+                            p.sendMessage(MsgUtil.getMessage("blacklisted-item",sender));
                             return;
                         }
 
@@ -73,16 +73,17 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                                     b.getRelative(p.getFacing().getOppositeFace()));
                             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                             p.sendMessage(
-                                    MsgUtil.getMessage("how-much-to-trade-for", Util.getItemStackName(item)));
+                                    MsgUtil.getMessage("how-much-to-trade-for",sender, Util.getItemStackName(item)));
                         } else {
                             plugin.getShopManager().handleChat(p, cmdArg[0], true);
                         }
                         return;
                     }
                 }
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
             } else {
-                sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand"));
+                sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand",sender
+                ));
             }
         } else {
             sender.sendMessage("This command can't be run by console");

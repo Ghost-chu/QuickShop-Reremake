@@ -105,6 +105,10 @@ public class QuickShop extends JavaPlugin {
      */
     private Plugin openInvPlugin;
     /**
+     * The plugin PlaceHolderAPI(null if not present)
+     */
+    private Plugin placeHolderAPI;
+    /**
      * A util to call to check some actions permission
      **/
     private PermissionChecker permissionChecker;
@@ -175,6 +179,12 @@ public class QuickShop extends JavaPlugin {
             this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
             if (this.openInvPlugin != null) {
                 getLogger().info("Successfully loaded OpenInv support!");
+            }
+        }
+        if(getConfig().getBoolean("plugin.PlaceHolderAPI")){
+            this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+            if (this.placeHolderAPI != null) {
+                getLogger().info("Successfully loaded PlaceHolderAPI support!");
             }
         }
     }
@@ -977,6 +987,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 61);
             selectedVersion = 61;
         }
+        if(selectedVersion == 61){ //Ahhh fuck versions
+            getConfig().set("shop.word-for-sell-all-items", "all");
+            getConfig().set("plugin.PlaceHolderAPI", true);
+            getConfig().set("config-version", 62);
+            selectedVersion = 62;
+        }
+
 
         saveConfig();
         reloadConfig();

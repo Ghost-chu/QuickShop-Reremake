@@ -104,7 +104,7 @@ public class LockListener implements Listener {
             // If they owned it or have bypass perms, they can destroy it
             if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-permission"));
+                p.sendMessage(MsgUtil.getMessage("no-permission",p));
             }
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
@@ -128,7 +128,7 @@ public class LockListener implements Listener {
             // it.
             if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-permission"));
+                p.sendMessage(MsgUtil.getMessage("no-permission",p));
                 return;
             }
         }
@@ -157,10 +157,10 @@ public class LockListener implements Listener {
         }
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-                p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
+                p.sendMessage(MsgUtil.getMessage("bypassing-lock",p));
                 return;
             }
-            p.sendMessage(MsgUtil.getMessage("that-is-locked"));
+            p.sendMessage(MsgUtil.getMessage("that-is-locked",p));
             e.setCancelled(true);
             return;
         }
@@ -206,10 +206,10 @@ public class LockListener implements Listener {
         }
 
         if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-            p.sendMessage(MsgUtil.getMessage("bypassing-lock"));
+            p.sendMessage(MsgUtil.getMessage("bypassing-lock",p));
             return;
         }
-        p.sendMessage(MsgUtil.getMessage("that-is-locked"));
+        p.sendMessage(MsgUtil.getMessage("that-is-locked",p));
         e.setCancelled(true);
         return;
     }
