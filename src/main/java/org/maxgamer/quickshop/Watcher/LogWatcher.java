@@ -69,6 +69,6 @@ public class LogWatcher implements Runnable {
                 logs.clear();
 
             }
-        }.runTask(QuickShop.instance);
+        }.runTaskAsynchronously(QuickShop.instance);
     }
 }
