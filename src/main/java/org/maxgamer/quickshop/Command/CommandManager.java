@@ -128,7 +128,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog("Sender " + sender.getName() + " trying execute the command: " + commandLabel + " " + Util
                                 .array2String(cmdArg) + ", but no permission " + requirePermission);
-                        sender.sendMessage(MsgUtil.getMessage("no-permission"));
+                        sender.sendMessage(MsgUtil.getMessage("no-permission",sender));
                         return true;
                     }
                 }

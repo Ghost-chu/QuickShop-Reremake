@@ -28,12 +28,12 @@ public class SubCommand_SetOwner implements CommandProcesser {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
-                sender.sendMessage(MsgUtil.getMessage("command.no-owner-given"));
+                sender.sendMessage(MsgUtil.getMessage("command.no-owner-given",sender));
                 return;
             }
             BlockIterator bIt = new BlockIterator((Player) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -45,14 +45,14 @@ public class SubCommand_SetOwner implements CommandProcesser {
                     shop.setOwner(p.getUniqueId());
                     //shop.setSignText();
                     shop.update();
-                    sender.sendMessage(MsgUtil.getMessage("command.new-owner",
+                    sender.sendMessage(MsgUtil.getMessage("command.new-owner",sender,
                             Bukkit.getOfflinePlayer(shop.getOwner()).getName()));
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop"));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
         } else {
-            sender.sendMessage(MsgUtil.getMessage("Only player can run this command"));
+            sender.sendMessage(MsgUtil.getMessage("Only player can run this command",sender));
         }
     }
 
