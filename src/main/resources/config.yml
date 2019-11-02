@@ -20,6 +20,8 @@ config-version: 62
 #zh_CN - Chinese Modern
 #zh_TW - Chinese Traditional
 #es - Spanish (Latin America)
+#ja - Japanese
+
 language: en
 
 #Download LangUtils:
