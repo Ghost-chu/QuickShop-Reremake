@@ -399,25 +399,35 @@ public class ShopManager {
             return;
         }
         int amount;
-        try {
-            amount = Integer.parseInt(message);
-        } catch (NumberFormatException e) {
-            if(message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-sell-all-items","all"))){
-                amount = Util.countItems(p.getInventory(),shop.getItem());
-            }else{
-                p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled",p));
-                Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
-                return;
-            }
-
-        }
         if (info.hasChanged(shop)) {
             p.sendMessage(MsgUtil.getMessage("shop-has-changed",p));
             return;
         }
         if (shop.isBuying()) {
+            try {
+                amount = Integer.parseInt(message);
+            } catch (NumberFormatException e) {
+                if(message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items","all"))){
+                    amount = Util.countSpace(((ContainerShop) shop).getInventory(),shop.getItem());
+                }else{
+                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled",p));
+                    Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
+                    return;
+                }
+            }
             actionBuy(p, actions, info, message, shop, amount);
         } else if (shop.isSelling()) {
+            try {
+                amount = Integer.parseInt(message);
+            } catch (NumberFormatException e) {
+                if(message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items","all"))){
+                    amount = Util.countSpace(p.getInventory(),shop.getItem());
+                }else{
+                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled",p));
+                    Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
+                    return;
+                }
+            }
             actionSell(p, actions, info, message, shop, amount);
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled",p));

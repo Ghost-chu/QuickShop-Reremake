@@ -997,6 +997,8 @@ public class QuickShop extends JavaPlugin {
         }
         if(selectedVersion == 62){ //Ahhh fuck versions
             getConfig().set("shop.display-auto-despawn", false);
+            getConfig().set("shop.word-for-trade-all-items", getConfig().getString("shop.word-for-sell-all-items"));
+
             getConfig().set("config-version", 63);
             selectedVersion = 63;
         }
