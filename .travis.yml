@@ -17,7 +17,7 @@ after_success:
   - rm -f ./devbukkit/*-sources.jar
   - rm -f ./target/original-*.jar
   - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
-  - git clone https://github.com/Ghost-chu/BinaryRepository.git
+  - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
   - mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER
   - mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
   - cp ./target/* ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
