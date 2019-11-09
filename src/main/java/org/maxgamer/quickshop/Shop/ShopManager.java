@@ -105,9 +105,10 @@ public class ShopManager {
                 return;
             }
         }
-        boolean successB = eco.deposit(p.getUniqueId(), total * (1 - tax));//Deposit player's money
+        double depositMoney = total * (1 - tax);
+        boolean successB = eco.deposit(p.getUniqueId(), depositMoney);//Deposit player's money
         if (!successB) {
-            plugin.getLogger().warning("Failed to deposit the money to player " + e.getPlayer().getName());
+            plugin.getLogger().warning("Failed to deposit the money " +  depositMoney +" to player " + e.getPlayer().getName());
             /* Rollback the trade */
             if (shouldPayOwner) {
                 if (!eco.deposit(shop.getOwner(), total)) {
@@ -350,11 +351,12 @@ public class ShopManager {
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
                 .isUnlimited());
         if (shouldPayOwner) {
-            boolean successB = eco.deposit(shop.getOwner(), total * (1 - tax));
+            double depositMoney = total * (1 - tax);
+            boolean successB = eco.deposit(shop.getOwner(), depositMoney);
             if (!successB) {
-                plugin.getLogger().warning("Failed to deposit the money for player " + Bukkit.getPlayer(shop.getOwner()));
+                plugin.getLogger().warning("Failed to deposit the money for player " + Bukkit.getOfflinePlayer(shop.getOwner()));
                 /* Rollback the trade */
-                if (!eco.deposit(p.getUniqueId(), total * (1 - tax))) {
+                if (!eco.deposit(p.getUniqueId(), depositMoney)) {
                     plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit
                             .getOfflinePlayer(shop.getOwner()).getName());
                 }
