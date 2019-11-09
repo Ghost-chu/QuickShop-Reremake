@@ -68,6 +68,7 @@ public class SentryErrorReporter {
         ignoredException.add(OutOfMemoryError.class);
         ignoredException.add(ProtocolException.class);
         ignoredException.add(InvalidPluginException.class);
+        ignoredException.add(UnsupportedClassVersionError.class);
 
         Util.debugLog("Sentry error reporter success loaded.");
         enabled = true;
