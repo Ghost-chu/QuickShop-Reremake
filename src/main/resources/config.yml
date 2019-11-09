@@ -242,8 +242,8 @@ shop:
   #Allow player loan (Require economy plugin support)
   allow-economy-loan: false
 
-  #The word to sell all items in player inventory
-  word-for-sell-all-items: "all"
+  #The word to trade all items in player inventory
+  word-for-trade-all-items: "all"
 
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
 blacklist:
