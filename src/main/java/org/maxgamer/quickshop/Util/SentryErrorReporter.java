@@ -62,6 +62,7 @@ public class SentryErrorReporter {
         sentryClient.setEnvironment(Util.isDevEdition() ? "development" : "production");
         plugin.getLogger().setFilter(new QuickShopExceptionFilter()); //Redirect log request passthrough our error catcher.
         Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+        Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
         Logger.getGlobal().setFilter(new GlobalExceptionFilter());
         /* Ignore we won't report errors */
         ignoredException.add(IOException.class);
