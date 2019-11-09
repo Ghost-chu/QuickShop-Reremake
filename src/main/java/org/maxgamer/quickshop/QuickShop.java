@@ -995,7 +995,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 62);
             selectedVersion = 62;
         }
-
+        if(selectedVersion == 62){ //Ahhh fuck versions
+            getConfig().set("shop.display-auto-despawn", false);
+            getConfig().set("config-version", 63);
+            selectedVersion = 63;
+        }
 
         saveConfig();
         reloadConfig();
