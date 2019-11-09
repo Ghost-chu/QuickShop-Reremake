@@ -6,7 +6,7 @@ script:
   - git clone https://$Github_token@github.com/Ghost-chu/QuickShop-Reremake.git
   - cd QuickShop-Reremake
   - mvn clean
-  - mvn install
+  - mvn -T 4 install
 after_success:
   - rm -rf push
   - mkdir push
@@ -34,7 +34,7 @@ deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: $Github_token
+    secure: $Deploy_token
   file:
     - ./push/*
   file_glob: true
