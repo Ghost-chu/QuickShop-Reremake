@@ -1046,6 +1046,12 @@ public class MsgUtil {
             setAndUpdate("language-version", 20);
             selectedVersion = 20;
         }
+        if (selectedVersion == 20) {
+            setAndUpdate("how-many-buy", "&aEnter how many you wish to &bBUY&a in chat. Enter &ball&a to buy them all.");
+            setAndUpdate("how-many-sell", "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all.");
+            setAndUpdate("language-version", 21);
+            selectedVersion = 21;
+        }
         messagei18n.save(messageFile);
 
     }
