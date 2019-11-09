@@ -17,6 +17,15 @@ after_success:
   - rm -f ./devbukkit/*-sources.jar
   - rm -f ./target/original-*.jar
   - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+  - git clone https://github.com/Ghost-chu/BinaryRepository.git
+  - mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER
+  - mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
+  - cp ./target/* ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
+  - echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [TRAVIS_COMMIT_MESSAGE]"
+  - cd BinaryRepository
+  - git add .
+  - git commit -m "Auto update by Bot"
+  - git push --force
 deploy:
   skip_cleanup: true
   provider: releases
