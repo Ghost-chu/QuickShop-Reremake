@@ -83,7 +83,10 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-
+        if(p.hasPermission("quickshop.tax")){
+            tax = 0;
+            Util.debugLog("Disable the Tax for player "+p.getName()+" cause they have permission quickshop.tax");
+        }
         if (tax < 0) {
             tax = 0; //Tax was disabled.
         }
@@ -326,7 +329,10 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-
+        if(p.hasPermission("quickshop.tax")){
+            tax = 0;
+            Util.debugLog("Disable the Tax for player "+p.getName()+" cause they have permission quickshop.tax");
+        }
         if (tax < 0) {
             tax = 0; //Tax was disabled.
         }
