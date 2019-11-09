@@ -1049,6 +1049,13 @@ public class MsgUtil {
         if (selectedVersion == 20) {
             setAndUpdate("how-many-buy", "&aEnter how many you wish to &bBUY&a in chat. Enter &ball&a to buy them all.");
             setAndUpdate("how-many-sell", "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all.");
+            setAndUpdate("updatenotify.label.unstable","[Unstable]");
+            setAndUpdate("updatenotify.label.stable","[Stable]");
+            setAndUpdate("updatenotify.label.lts","[LTS]");
+            setAndUpdate("updatenotify.label.qualityverifyed","[Quality]");
+            setAndUpdate("updatenotify.label.github","[Github]");
+            setAndUpdate("updatenotify.label.spigotmc","[SpigotMC]");
+            setAndUpdate("updatenotify.label.bukkitdev","[BukkitDev]");
             setAndUpdate("language-version", 21);
             selectedVersion = 21;
         }
