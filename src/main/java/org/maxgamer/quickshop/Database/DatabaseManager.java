@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.Database;
 
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -40,12 +41,17 @@ public class DatabaseManager {
         if (!useQueue) {
             return;
         }
-        task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                plugin.getDatabaseManager().runTask();
-            }
-        }.runTaskTimerAsynchronously(plugin, 1, 200);
+        try {
+            task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    plugin.getDatabaseManager().runTask();
+                }
+            }.runTaskTimerAsynchronously(plugin, 1, 200);
+        }catch (IllegalPluginAccessException e){
+            Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
+            plugin.getDatabaseManager().runTask();
+        }
     }
 
     /**
