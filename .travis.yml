@@ -27,6 +27,7 @@ after_success:
   - git commit -m "Auto update by Bot"
   - git push --force
   - cd ..
+  - echo "done"
 deploy:
   skip_cleanup: true
   provider: releases
