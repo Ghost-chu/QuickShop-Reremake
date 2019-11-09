@@ -8,7 +8,6 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +23,7 @@ import org.maxgamer.quickshop.Util.Util;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 
 /**
@@ -31,11 +31,10 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
-    final private static ItemStack AIR = new ItemStack(Material.AIR);
     private HashMap<UUID, Info> actions = new HashMap<>();
     private QuickShop plugin;
     private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
-    private Set<Shop> loadedShops = new HashSet<>();
+    private Set<Shop> loadedShops = new CopyOnWriteArraySet<>();
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
