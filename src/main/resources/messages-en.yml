@@ -219,3 +219,11 @@ updatenotify:
     - "Ahhhhhhh! New update {0}! Update!"
     - "What U thinking? {0} has been released! Update!"
   remote-disable-warning: "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running."
+  label:
+    unstable: "[Unstable]"
+    stable: "[Stable]"
+    lts: "[LTS]"
+    qualityverifyed: "[Quality]"
+    github: "[Github]"
+    spigotmc: "[SpigotMC]"
+    bukkitdev: "[BukkitDev]"
