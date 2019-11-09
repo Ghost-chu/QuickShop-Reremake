@@ -37,10 +37,13 @@ deploy:
   provider: releases
   api_key:
     secure: e+gUx17WYL9z0iHrC+KWpXXYtcoy+/YNO3AC23r10Fs3un/K6szY39b+1C/23p6hGtdgGVRxmcl9fwkCq0/IHQba8gYxIqCLRx0j/+CqxYpKvZ3+GFD3auQpSdAEBM5q6mo4PSim/0lO+5ZiRkbYy7efidTxOLw++yUny4kEr0JndQAvDYvYKDRK50ut5IMX+jN8X+tVvYkwKRtI8XLGC5NNCQ4/kVUFTJw3YfQ863lj+6d0gyJVwgcaKSc+o9AwJPaQBbHxCIGj4Ib2KaiSw+rdFmgQ8mj07tWTX3OE6bAWJUraTQeiJL+muEADT1te60F2wlM/uQ/ZvoWzheDVshuGeXsoaflCR9Qm3ed1O8lTyBNY227Ay5S5qhZ2r03d0pALyBuaMwvbt1nINpMvKiJKMG3Z9EqqhupX0X5E6VKTOMMHSY1gtxip+zh1xR0WHxkMjAVlc1lfa3B907uSy6VUkw+6baa1aCDEuzKHMntbVWkiBglI66ECC7ocOb2rzGMrbLHrylBVeRw4ymZKfjG4opMpHQiTe1jC4SGJUSCGRBT1I6fgP73MmWo4XpMq2u5/f9OMOezllMTHhhCfjeyeg6elENJqGJ6Miu0BFoXTYmAQKyS5c1HoRfIHF4Ng3HIQm7PnzW7RCv3grjYl6ulo+vGxKbhQBzRNpcieZkc=
-  file: "./push/*"
+  file:
+   - ./push/*
+  file_glob: true
   on:
     repo: Ghost-chu/QuickShop-Reremake
     tags: true
+  overwrite: true
 after_deploy:
 - chmod +x deploy.sh
 - "./deploy.sh $Curse_token"
