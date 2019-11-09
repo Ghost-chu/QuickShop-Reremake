@@ -474,7 +474,7 @@ public class QuickShop extends JavaPlugin {
                         }
 
                         //noinspection unchecked
-                        ((HashSet<Shop>)((HashSet<Shop>)getShopManager().getLoadedShops()).clone()).parallelStream().forEach(shop->{
+                        (getShopManager().getLoadedShops().parallelStream().forEach(shop->{
                             //Check the range has player?
                             int range = getConfig().getInt("shop.display-despawn-range");
                             boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
