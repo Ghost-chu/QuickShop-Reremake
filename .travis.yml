@@ -1,8 +1,10 @@
 language: java
 jdk:
   - openjdk8
-install: true
+install: false
 script:
+  - git clone https://$Github_token@github.com/Ghost-chu/QuickShop-Reremake.git
+  - cd QuickShop-Reremake
   - mvn clean
   - mvn install
 after_success:
