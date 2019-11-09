@@ -92,3 +92,6 @@ permissions:
   quickshop.preview:
     description: Permission for preview item to use a GUI
     default: true
+  quickshop.tax:
+    description: Permission to bypass Tax
+    default: op
