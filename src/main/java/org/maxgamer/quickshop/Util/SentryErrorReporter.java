@@ -69,6 +69,7 @@ public class SentryErrorReporter {
         ignoredException.add(ProtocolException.class);
         ignoredException.add(InvalidPluginException.class);
         ignoredException.add(UnsupportedClassVersionError.class);
+        ignoredException.add(LinkageError.class);
 
         Util.debugLog("Sentry error reporter success loaded.");
         enabled = true;
