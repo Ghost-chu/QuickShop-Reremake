@@ -850,6 +850,24 @@ public class ShopManager {
     }
 
     /**
+     * Returns all shops in the whole database, include unloaded.
+     *
+     * Make sure you have caching this, because this need a while to get all shops
+     * @return All shop in the database
+     */
+    public Collection<Shop> getAllShops(){
+        //noinspection unchecked
+        HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops()
+                .clone();
+        Collection<Shop> shops = new ArrayList<>();
+        for (HashMap<ShopChunk, HashMap<Location, Shop>> shopMapData : worldsMap.values()){
+           for (HashMap<Location, Shop> shopData : shopMapData.values()){
+               shops.addAll(shopData.values());
+           }
+        }
+        return shops;
+    }
+    /**
      * Returns a hashmap of World - Chunk - Shop
      *
      * @return a hashmap of World - Chunk - Shop
