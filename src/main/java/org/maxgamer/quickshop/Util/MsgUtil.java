@@ -470,13 +470,17 @@ public class MsgUtil {
                     Util.debugLog("Unknown error, send by plain text.");
                     p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
                 } catch (ArrayIndexOutOfBoundsException e2){
-                    Util.debugLog("Message is legacy format, send as plain message...");
-                    p.getPlayer().sendMessage(message);
+                    try{
+                        sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]),"");
+                    }catch (Exception any){
+                        //Normal msg
+                        p.getPlayer().sendMessage(message);
+                    }
+
                 }
             }
         }
     }
-
     @SneakyThrows
     public static void sendItemholochat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
         String json = ItemNMS.saveJsonfromNMS(itemStack);
@@ -1058,6 +1062,11 @@ public class MsgUtil {
             setAndUpdate("updatenotify.label.bukkitdev","[BukkitDev]");
             setAndUpdate("language-version", 21);
             selectedVersion = 21;
+        }
+        if (selectedVersion == 21) {
+            setAndUpdate("shop-removed-cause-ongoing-fee", "&cYou shop at {0} was removed cause you had no enough money to keep it!");
+            setAndUpdate("language-version", 22);
+            selectedVersion = 22;
         }
         messagei18n.save(messageFile);
 
