@@ -11,9 +11,9 @@ script:
 after_success:
 - rm -rf push
 - mkdir push
-- cp ./target/*.jar ./push/
+- cp -r ./target/*.jar ./push/
 - mkdir devbukkit
-- cp ./target/*.jar ./devbukkit/
+- cp -r ./target/*.jar ./devbukkit/
 - rm -f ./devbukkit/original-*.jar
 - rm -f ./devbukkit/*-javadoc.jar
 - rm -f ./devbukkit/*-shaded.jar
@@ -23,7 +23,7 @@ after_success:
 - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
-- cp ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
 - echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
   [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
   > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
