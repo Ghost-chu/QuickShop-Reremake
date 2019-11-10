@@ -152,6 +152,7 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
+    private OngoingFeeWatcher ongoingFeeWatcher;
 
     /**
      * Get the Player's Shop limit.
@@ -429,6 +430,7 @@ public class QuickShop extends JavaPlugin {
         displayWatcher = new DisplayWatcher(this);
         syncTaskWatcher = new SyncTaskWatcher(this);
         shopVaildWatcher = new ShopVaildWatcher(this);
+        ongoingFeeWatcher = new OngoingFeeWatcher(this);
         lockListener = new LockListener(this);
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -464,6 +466,11 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
+
+        if(getConfig().getBoolean("shop.ongoing-fee.enable")){
+            getLogger().info("Ongoine fee feature is enabled.");
+            ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+        }
         if(this.display){
             if(getConfig().getBoolean("shop.display-auto-despawn")){
                 new BukkitRunnable(){
@@ -1002,7 +1009,14 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 63);
             selectedVersion = 63;
         }
-
+        if(selectedVersion == 63){ //Ahhh fuck versions
+            getConfig().set("shop.ongoing-fee.enable", false);
+            getConfig().set("shop.ongoing-fee.ticks", 42000);
+            getConfig().set("shop.ongoing-fee.cost-per-shop", 2);
+            getConfig().set("shop.ongoing-fee.ignore-unlimited",true);
+            getConfig().set("config-version", 64);
+            selectedVersion = 64;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");

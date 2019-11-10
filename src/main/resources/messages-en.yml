@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 20
+language-version: 22
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -227,3 +227,4 @@ updatenotify:
     github: "[Github]"
     spigotmc: "[SpigotMC]"
     bukkitdev: "[BukkitDev]"
+shop-removed-cause-ongoing-fee: "&cYou shop at {0} was removed cause you had no enough money to keep it!"
