@@ -1,6 +1,11 @@
 language: java
+sudo: required
 jdk:
 - openjdk8
+- oraclejdk8
+- openjdk10
+- openjdk11
+- oraclejdk11
 install: false
 script:
   - export PROJECT_NAME=QuickShop-Reremake
