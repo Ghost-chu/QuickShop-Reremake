@@ -3,10 +3,11 @@ jdk:
 - openjdk8
 install: false
 script:
-- git clone https://$Github_token@github.com/Ghost-chu/QuickShop-Reremake.git
-- cd QuickShop-Reremake
-- mvn clean
-- mvn -T 4 install
+  - export PROJECT_NAME=QuickShop-Reremake
+  - git clone https://$Github_token@github.com/Ghost-chu/$PROJECT_NAME.git
+  - cd $PROJECT_NAME
+  - mvn clean
+  - mvn -T 4 install
 after_success:
 - rm -rf push
 - mkdir push
@@ -20,12 +21,12 @@ after_success:
 - rm -f ./target/original-*.jar
 - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
-- mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER
-- mkdir -p ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
-- cp ./target/* ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/target
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- cp ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
 - echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
   [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
-  > ./BinaryRepository/QuickShop-Reremake/$TRAVIS_BUILD_NUMBER/BUILDINFO
+  > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
 - cd BinaryRepository
 - git add .
 - git commit -m "Auto update by Bot"
@@ -41,7 +42,7 @@ deploy:
    - ./push/*
   file_glob: true
   on:
-    repo: Ghost-chu/QuickShop-Reremake
+    repo: Ghost-chu/$PROJECT_NAME
     tags: true
   overwrite: true
 after_deploy:
