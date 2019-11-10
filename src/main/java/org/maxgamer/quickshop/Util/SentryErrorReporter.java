@@ -56,7 +56,7 @@ public class SentryErrorReporter {
         context.addTag("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
         context.addTag("server_bukkitversion", Bukkit.getVersion());
         context.addTag("server_plugins", getPluginInfo());
-        context.setUser(new UserBuilder().setId(plugin.getServerUniqueID().toString()).build());
+        context.setUser(new UserBuilder().setId(plugin.getServerUniqueID().toString()).setUsername(plugin.getServerUniqueID().toString()).build());
         sentryClient.setServerName(Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
         sentryClient.setRelease(QuickShop.getVersion());
         sentryClient.setEnvironment(Util.isDevEdition() ? "development" : "production");
