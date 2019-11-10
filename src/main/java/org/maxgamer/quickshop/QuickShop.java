@@ -645,6 +645,11 @@ public class QuickShop extends JavaPlugin {
                 sneak_action = "Disabled";
             }
             String shop_find_distance = getConfig().getString("shop.find-distance");
+            String economyType = Economy.getNowUsing().name();
+            String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
+            String useEnhanceDisplayProtect= String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
+            String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
+            String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -654,7 +659,11 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
             metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
             metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
-
+            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> economyType));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> useDisplayAutoDespawn));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
+            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
             // Exp for stats, maybe i need improve this, so i add this.
             metrics.submitData(); // Submit now!
             getLogger().info("Metrics submitted.");
