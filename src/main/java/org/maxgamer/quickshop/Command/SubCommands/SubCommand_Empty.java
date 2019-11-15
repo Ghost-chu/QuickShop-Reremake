@@ -29,7 +29,7 @@ public class SubCommand_Empty implements CommandProcesser {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -39,15 +39,15 @@ public class SubCommand_Empty implements CommandProcesser {
                     if (shop instanceof ContainerShop) {
                         ContainerShop cs = (ContainerShop) shop;
                         cs.getInventory().clear();
-                        sender.sendMessage(MsgUtil.getMessage("empty-success",sender));
+                        sender.sendMessage(MsgUtil.getMessage("empty-success", sender));
                     } else {
-                        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+                        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
 
                     }
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
         } else {
             sender.sendMessage("Can't run this command from Console");
         }

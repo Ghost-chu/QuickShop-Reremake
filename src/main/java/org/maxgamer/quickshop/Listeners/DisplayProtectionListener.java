@@ -39,7 +39,7 @@ public class DisplayProtectionListener implements Listener {
     private QuickShop plugin;
     private boolean useEnhanceProtection;
 
-    public DisplayProtectionListener(QuickShop plugin){
+    public DisplayProtectionListener(QuickShop plugin) {
         this.plugin = plugin;
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
     }
@@ -49,7 +49,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         Block targetBlock = event.getToBlock();
@@ -68,7 +68,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
@@ -98,7 +98,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
@@ -128,7 +128,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack = event.getFuel();
@@ -144,7 +144,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack = event.getFuel();
@@ -165,7 +165,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack = event.getSource();
@@ -198,7 +198,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack stack = e.getItem().getItemStack();
@@ -280,7 +280,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         if (!DisplayItem.checkIsGuardItemStack(event.getCurrentItem())) {
@@ -343,7 +343,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack = event.getCursor();
@@ -368,7 +368,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack = event.getCursor();
@@ -393,7 +393,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
@@ -434,7 +434,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         ItemStack itemStack;
@@ -507,7 +507,7 @@ public class DisplayProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if(!useEnhanceProtection){
+        if (!useEnhanceProtection) {
             return;
         }
         Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());

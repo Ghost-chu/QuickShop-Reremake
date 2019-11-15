@@ -72,21 +72,21 @@ public class BlockListener implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 //Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool",p));
+                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
                     return;
                 }
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-creative-break",p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                p.sendMessage(MsgUtil.getMessage("no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
             if (e.isCancelled()) {
-                p.sendMessage(MsgUtil.getMessage("no-permission",p));
+                p.sendMessage(MsgUtil.getMessage("no-permission", p));
                 Util.debugLog("The action was cancelled by other plugin");
                 return;
             }
             if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-permission",p));
+                p.sendMessage(MsgUtil.getMessage("no-permission", p));
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
@@ -96,7 +96,7 @@ public class BlockListener implements Listener {
             }
             shop.onUnload();
             shop.delete();
-            p.sendMessage(MsgUtil.getMessage("success-removed-shop",p));
+            p.sendMessage(MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
                 Sign sign = (Sign) b;
@@ -115,12 +115,12 @@ public class BlockListener implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 //Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool",p));
+                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
                     shop.delete();
                     return;
                 }
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-creative-break",p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                p.sendMessage(MsgUtil.getMessage("no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
             Util.debugLog("Cannot break the sign.");
             e.setCancelled(true);
@@ -160,7 +160,7 @@ public class BlockListener implements Listener {
         Block chest = Util.getSecondHalf(b);
         if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             e.setCancelled(true);
-            p.sendMessage(MsgUtil.getMessage("no-double-chests",p));
+            p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
         }
     }
 }
