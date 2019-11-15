@@ -42,7 +42,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
         } else {
             sender.sendMessage("Can't run this command from Console");
         }

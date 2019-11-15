@@ -26,7 +26,7 @@ public class SubCommand_Create implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount",sender));
+        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
         return list;
     }
 
@@ -63,12 +63,12 @@ public class SubCommand_Create implements CommandProcesser {
                         }
 
                         if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                            p.sendMessage(MsgUtil.getMessage("no-double-chests",sender));
+                            p.sendMessage(MsgUtil.getMessage("no-double-chests", sender));
                             return;
                         }
                         if (Util.isBlacklisted(item.getType())
                                 && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
-                            p.sendMessage(MsgUtil.getMessage("blacklisted-item",sender));
+                            p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
                             return;
                         }
 
@@ -79,7 +79,7 @@ public class SubCommand_Create implements CommandProcesser {
                                     b.getRelative(p.getFacing().getOppositeFace()));
                             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                             p.sendMessage(
-                                    MsgUtil.getMessage("how-much-to-trade-for",sender, Util.getItemStackName(item)));
+                                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
                         } else {
                             plugin.getShopManager().handleChat(p, cmdArg[0]);
                         }
@@ -88,7 +88,7 @@ public class SubCommand_Create implements CommandProcesser {
                 }
 
             } else {
-                sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand",sender));
+                sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand", sender));
             }
         } else {
             sender.sendMessage("This command can't be run by console");

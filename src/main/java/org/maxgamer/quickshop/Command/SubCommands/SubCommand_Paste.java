@@ -37,12 +37,12 @@ public class SubCommand_Paste implements CommandProcesser {
                     sender.sendMessage(paste.pasteTheText(pasteText));
                 } catch (Exception err) {
                     sender.sendMessage("The paste failed, saving the paste at local location...");
-                    File file = new File(plugin.getDataFolder(),"paste");
+                    File file = new File(plugin.getDataFolder(), "paste");
                     file.mkdirs();
-                    file = new File(file, "paste-"+UUID.randomUUID().toString().replaceAll("-","")+".txt");
+                    file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
                     try {
                         boolean createResult = file.createNewFile();
-                        Util.debugLog("Create paste file: "+file.getCanonicalPath()+" "+createResult);
+                        Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
                         FileWriter fwriter = new FileWriter(file);
                         fwriter.write(pasteText);
                         fwriter.flush();

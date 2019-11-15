@@ -28,8 +28,8 @@ public class PermissionManager {
 //        try {
 //            switch (providerType) {
 //                case BUKKIT:
-                    //noinspection DuplicateBranchesInSwitch
-                    provider = new BukkitPermsProvider();
+        //noinspection DuplicateBranchesInSwitch
+        provider = new BukkitPermsProvider();
 //                    break;
 //                case VAULT:
 //                    provider = new VaultPermissionProvider();

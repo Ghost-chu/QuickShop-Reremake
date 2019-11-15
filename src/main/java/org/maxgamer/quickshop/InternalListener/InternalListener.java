@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
+
 @AllArgsConstructor
 public class InternalListener implements Listener {
     private QuickShop plugin;

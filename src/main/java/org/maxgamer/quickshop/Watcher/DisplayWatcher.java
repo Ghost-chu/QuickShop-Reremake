@@ -55,7 +55,7 @@ public class DisplayWatcher {
 //                        if (!Util.isLoaded(shop.getLocation())) {
 //                            continue;
 //                        }
-                        pendingCheckDisplay.addAll(plugin.getShopManager().getLoadedShops());
+                    pendingCheckDisplay.addAll(plugin.getShopManager().getLoadedShops());
                     //}
                     Bukkit.getScheduler().runTask(plugin, new DisplayRunnable());
                 }
