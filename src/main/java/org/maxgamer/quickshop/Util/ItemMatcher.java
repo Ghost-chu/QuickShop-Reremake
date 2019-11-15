@@ -57,7 +57,7 @@ public class ItemMatcher {
 //        if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
 //            return givenStack.isSimilar(requireStack);
 //        }
-        switch (plugin.getConfig().getInt("matcher.work-type")){
+        switch (plugin.getConfig().getInt("matcher.work-type")) {
             case 1:
                 return requireStack.isSimilar(givenStack);
             case 2:

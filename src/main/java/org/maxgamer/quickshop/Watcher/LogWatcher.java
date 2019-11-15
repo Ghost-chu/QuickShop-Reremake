@@ -18,12 +18,13 @@ public class LogWatcher extends BukkitRunnable {
     private Queue<String> logs = new LinkedList<>();
     private FileWriter logFileWriter = null;
     private PrintWriter pw;
+
     public LogWatcher(QuickShop plugin, File log) {
         try {
             if (!log.exists()) {
                 log.createNewFile();
             }
-            logFileWriter = new FileWriter(log,true);
+            logFileWriter = new FileWriter(log, true);
             pw = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -58,7 +59,7 @@ public class LogWatcher extends BukkitRunnable {
             if (logFileWriter == null) {
                 continue;
             }
-            if(pw == null){
+            if (pw == null) {
                 continue;
             }
             pw.println(log);
@@ -66,7 +67,7 @@ public class LogWatcher extends BukkitRunnable {
         logs.clear();
         if (logFileWriter != null) {
             try {
-                if(pw != null){
+                if (pw != null) {
                     pw.flush();
                 }
                 logFileWriter.flush();

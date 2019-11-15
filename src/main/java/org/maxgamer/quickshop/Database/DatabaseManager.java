@@ -48,7 +48,7 @@ public class DatabaseManager {
                     plugin.getDatabaseManager().runTask();
                 }
             }.runTaskTimerAsynchronously(plugin, 1, 200);
-        }catch (IllegalPluginAccessException e){
+        } catch (IllegalPluginAccessException e) {
             Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
             plugin.getDatabaseManager().runTask();
         }

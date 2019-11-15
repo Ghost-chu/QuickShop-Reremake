@@ -445,7 +445,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
-        Bukkit.getPluginManager().registerEvents(internalListener,this);
+        Bukkit.getPluginManager().registerEvents(internalListener, this);
         if (getConfig().getBoolean("shop.lock")) {
             Bukkit.getPluginManager().registerEvents(lockListener, this);
         }
@@ -499,7 +499,7 @@ public class QuickShop extends JavaPlugin {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    if(shop.getDisplay() == null){
+                                    if (shop.getDisplay() == null) {
                                         return;
                                     }
                                     if (anyPlayerInRegion) {
@@ -1037,8 +1037,8 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 64);
             selectedVersion = 64;
         }
-        if(selectedVersion == 64){
-            getConfig().set("shop.allow-free-shop",false);
+        if (selectedVersion == 64) {
+            getConfig().set("shop.allow-free-shop", false);
             getConfig().set("config-version", 65);
             selectedVersion = 65;
         }
