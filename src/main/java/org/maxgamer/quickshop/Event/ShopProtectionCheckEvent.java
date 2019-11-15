@@ -27,6 +27,7 @@ public class ShopProtectionCheckEvent extends Event {
      * @param loc    Target location will execute protect check.
      * @param status The checking status
      * @param event  The event will call to check the permissions.
+     * @param player The player in was mentions in this event
      */
     public ShopProtectionCheckEvent(@NotNull Location loc, @NotNull Player player, @NotNull ProtectionCheckStatus status, @NotNull Event event) {
         this.loc = loc;
