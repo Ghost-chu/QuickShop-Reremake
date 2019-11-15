@@ -374,7 +374,7 @@ public class QuickShop extends JavaPlugin {
         /* It will generate a new UUID above updateConfig */
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
-        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid"));
+        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
 
