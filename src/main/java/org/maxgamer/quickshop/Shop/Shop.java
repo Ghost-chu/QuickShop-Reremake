@@ -295,6 +295,7 @@ public interface Shop {
 
     /**
      * Get the shop display entity
+     *
      * @return The entity for shop display.
      */
     @Nullable DisplayItem getDisplay();

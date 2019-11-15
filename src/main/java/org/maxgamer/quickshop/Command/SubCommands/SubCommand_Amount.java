@@ -17,21 +17,21 @@ public class SubCommand_Amount implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount",sender));
+        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
         return list;
     }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+            sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
             return;
         }
 
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-                sender.sendMessage(MsgUtil.getMessage("no-pending-action",sender));
+                sender.sendMessage(MsgUtil.getMessage("no-pending-action", sender));
                 return;
             }
             plugin.getShopManager().handleChat(player, cmdArg[0]);

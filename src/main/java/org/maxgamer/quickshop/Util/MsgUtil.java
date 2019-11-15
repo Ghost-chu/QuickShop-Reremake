@@ -112,13 +112,13 @@ public class MsgUtil {
             if (msgs != null) {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
-                        Util.debugLog("Accepted the msg for player "+p.getName()+" : "+msg);
-                       String[] msgData = msg.split("##########");
+                        Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
+                        String[] msgData = msg.split("##########");
                         try {
                             sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
                         } catch (InvalidConfigurationException e) {
                             p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
-                        }catch (ArrayIndexOutOfBoundsException e2){
+                        } catch (ArrayIndexOutOfBoundsException e2) {
                             p.getPlayer().sendMessage(msg);
                         }
                     } else {
@@ -174,8 +174,8 @@ public class MsgUtil {
     /**
      * getMessage in messages.yml
      *
-     * @param loc  location
-     * @param args args
+     * @param loc    location
+     * @param args   args
      * @param player The sender will send the message to
      * @return message
      */
@@ -186,7 +186,7 @@ public class MsgUtil {
         }
         String filled = fillArgs(raw, args);
         if (player instanceof OfflinePlayer) {
-            if(plugin.getPlaceHolderAPI() != null&& plugin.getPlaceHolderAPI().isEnabled()) {
+            if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                 Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
@@ -197,9 +197,9 @@ public class MsgUtil {
     /**
      * getMessage in messages.yml
      *
-     * @param loc  location
+     * @param loc    location
      * @param player The sender will send the message to
-     * @param args args
+     * @param args   args
      * @return message
      */
     public static String getMessageOfflinePlayer(@NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
@@ -209,7 +209,7 @@ public class MsgUtil {
         }
         String filled = fillArgs(raw, args);
         if (player != null) {
-            if(plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+            if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                 Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
@@ -454,7 +454,7 @@ public class MsgUtil {
             return; //Ignore unlimited shops messages.
         }
         Util.debugLog(message);
-        String[] msgData  = message.split("##########");
+        String[] msgData = message.split("##########");
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
             LinkedList<String> msgs = player_messages.get(player);
@@ -471,10 +471,10 @@ public class MsgUtil {
                 } catch (InvalidConfigurationException e) {
                     Util.debugLog("Unknown error, send by plain text.");
                     p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
-                } catch (ArrayIndexOutOfBoundsException e2){
-                    try{
-                        sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]),"");
-                    }catch (Exception any){
+                } catch (ArrayIndexOutOfBoundsException e2) {
+                    try {
+                        sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), "");
+                    } catch (Exception any) {
                         //Normal msg
                         p.getPlayer().sendMessage(message);
                     }
@@ -483,6 +483,7 @@ public class MsgUtil {
             }
         }
     }
+
     @SneakyThrows
     public static void sendItemholochat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
         String json = ItemNMS.saveJsonfromNMS(itemStack);
@@ -492,7 +493,7 @@ public class MsgUtil {
         Util.debugLog(left);
         Util.debugLog(itemStack.toString());
         Util.debugLog(right);
-        TextComponent centerItem = new TextComponent(left+Util.getItemStackName(itemStack)+right);
+        TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
         player.spigot().sendMessage(centerItem);
@@ -1055,13 +1056,13 @@ public class MsgUtil {
         if (selectedVersion == 20) {
             setAndUpdate("how-many-buy", "&aEnter how many you wish to &bBUY&a in chat. Enter &ball&a to buy them all.");
             setAndUpdate("how-many-sell", "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all.");
-            setAndUpdate("updatenotify.label.unstable","[Unstable]");
-            setAndUpdate("updatenotify.label.stable","[Stable]");
-            setAndUpdate("updatenotify.label.lts","[LTS]");
-            setAndUpdate("updatenotify.label.qualityverifyed","[Quality]");
-            setAndUpdate("updatenotify.label.github","[Github]");
-            setAndUpdate("updatenotify.label.spigotmc","[SpigotMC]");
-            setAndUpdate("updatenotify.label.bukkitdev","[BukkitDev]");
+            setAndUpdate("updatenotify.label.unstable", "[Unstable]");
+            setAndUpdate("updatenotify.label.stable", "[Stable]");
+            setAndUpdate("updatenotify.label.lts", "[LTS]");
+            setAndUpdate("updatenotify.label.qualityverifyed", "[Quality]");
+            setAndUpdate("updatenotify.label.github", "[Github]");
+            setAndUpdate("updatenotify.label.spigotmc", "[SpigotMC]");
+            setAndUpdate("updatenotify.label.bukkitdev", "[BukkitDev]");
             setAndUpdate("language-version", 21);
             selectedVersion = 21;
         }

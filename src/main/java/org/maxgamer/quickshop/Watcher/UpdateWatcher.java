@@ -67,9 +67,9 @@ public class UpdateWatcher implements Listener {
                             }
                             notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
                             TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
-                                    .getMessage("updatenotify.buttontitle",player));
+                                    .getMessage("updatenotify.buttontitle", player));
                             TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
-                                    .getMessage("updatenotify.onekeybuttontitle",player));
+                                    .getMessage("updatenotify.onekeybuttontitle", player));
                             updatenow
                                     .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
                             onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
@@ -112,9 +112,9 @@ public class UpdateWatcher implements Listener {
                         notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
 
                         TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
-                                .getMessage("updatenotify.buttontitle",e.getPlayer()));
+                                .getMessage("updatenotify.buttontitle", e.getPlayer()));
                         TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
-                                .getMessage("updatenotify.onekeybuttontitle",e.getPlayer()));
+                                .getMessage("updatenotify.onekeybuttontitle", e.getPlayer()));
                         updatenow
                                 .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
                         onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));

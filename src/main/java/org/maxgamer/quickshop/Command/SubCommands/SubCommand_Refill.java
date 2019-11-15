@@ -21,7 +21,7 @@ public class SubCommand_Refill implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount",sender));
+        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
         return list;
     }
 
@@ -29,19 +29,19 @@ public class SubCommand_Refill implements CommandProcesser {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Player) {
             if (cmdArg.length < 1) {
-                sender.sendMessage(MsgUtil.getMessage("command.no-amount-given",sender));
+                sender.sendMessage(MsgUtil.getMessage("command.no-amount-given", sender));
                 return;
             }
             int add;
             try {
                 add = Integer.parseInt(cmdArg[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(MsgUtil.getMessage("thats-not-a-number",sender));
+                sender.sendMessage(MsgUtil.getMessage("thats-not-a-number", sender));
                 return;
             }
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -49,11 +49,11 @@ public class SubCommand_Refill implements CommandProcesser {
                 Shop shop = plugin.getShopManager().getShop(b.getLocation());
                 if (shop != null) {
                     shop.add(shop.getItem(), add);
-                    sender.sendMessage(MsgUtil.getMessage("refill-success",sender));
+                    sender.sendMessage(MsgUtil.getMessage("refill-success", sender));
                     return;
                 }
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
         } else {
             sender.sendMessage("Can't run by Console");
         }

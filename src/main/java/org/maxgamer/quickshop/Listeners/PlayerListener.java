@@ -86,10 +86,10 @@ public class PlayerListener implements Listener {
                 MsgUtil.sendShopInfo(p, shop);
                 shop.setSignText();
                 if (shop.isSelling()) {
-                    p.sendMessage(MsgUtil.getMessage("how-many-buy",p));
+                    p.sendMessage(MsgUtil.getMessage("how-many-buy", p));
                 } else {
                     int items = Util.countItems(p.getInventory(), shop.getItem());
-                    p.sendMessage(MsgUtil.getMessage("how-many-sell",p, "" + items));
+                    p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
                 }
                 // Add the new action
                 HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
@@ -114,12 +114,12 @@ public class PlayerListener implements Listener {
                     return;
                 }
                 if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                    p.sendMessage(MsgUtil.getMessage("no-double-chests",p));
+                    p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
                     return;
                 }
                 if (Util.isBlacklisted(item.getType())
                         && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                    p.sendMessage(MsgUtil.getMessage("blacklisted-item",p));
+                    p.sendMessage(MsgUtil.getMessage("blacklisted-item", p));
                     return;
                 }
                 if (b.getType() == Material.ENDER_CHEST) {
@@ -153,7 +153,7 @@ public class PlayerListener implements Listener {
                 Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
                 plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                 p.sendMessage(
-                        MsgUtil.getMessage("how-much-to-trade-for",p, Util.getItemStackName(e.getItem())));
+                        MsgUtil.getMessage("how-much-to-trade-for", p, Util.getItemStackName(e.getItem())));
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
             Block block;
@@ -236,10 +236,10 @@ public class PlayerListener implements Listener {
         Location loc2 = p.getLocation();
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.CREATE) {
-                p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled",p));
+                p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.BUY) {
-                p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled",p));
+                p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             }
             plugin.getShopManager().getActions().remove(p.getUniqueId());
@@ -263,32 +263,33 @@ public class PlayerListener implements Listener {
         PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
         onMove(me);
     }
-    @EventHandler(priority = EventPriority.HIGH,ignoreCancelled = true)
-    public void onDyeing(PlayerInteractEvent e){
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK){
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onDyeing(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        if(e.getItem() == null){
+        if (e.getItem() == null) {
             return;
         }
-        if(!Util.isDyes(e.getItem().getType())){
+        if (!Util.isDyes(e.getItem().getType())) {
             return;
         }
         Block block = e.getClickedBlock();
-        if(block == null){
+        if (block == null) {
             return;
         }
-        if(!Util.isWallSign(block.getType())){
+        if (!Util.isWallSign(block.getType())) {
             return;
         }
         Block attachedBlock = Util.getAttached(block);
-        if(attachedBlock == null){
+        if (attachedBlock == null) {
             return;
         }
-        if(plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null){
+        if (plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
             return;
         }
         e.setCancelled(true);
-        Util.debugLog("Disallow "+e.getPlayer().getName()+" dye the shop sign.");
+        Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 }

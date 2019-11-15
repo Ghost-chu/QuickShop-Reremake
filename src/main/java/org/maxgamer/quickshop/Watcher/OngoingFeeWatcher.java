@@ -50,8 +50,8 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
                 } catch (Exception ignored) {
                 }
-            }else{
-                Util.debugLog("Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "+shop.toString());
+            } else {
+                Util.debugLog("Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : " + shop.toString());
             }
 
         }
