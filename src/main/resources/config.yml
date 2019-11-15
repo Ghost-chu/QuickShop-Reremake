@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 64
+config-version: 65
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -244,6 +244,10 @@ shop:
 
   #The word to trade all items in player inventory
   word-for-trade-all-items: "all"
+
+  #Allow player to create 0$ shop.
+  #THIS MAY BROKEN SOMETHING
+  allow-free-shop: false
 
   #The shop ongoing fee, if a shop's owner had no enough money, shop will auto-remove.
   ongoing-fee:
