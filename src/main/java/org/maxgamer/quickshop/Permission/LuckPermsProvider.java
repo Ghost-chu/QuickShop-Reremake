@@ -15,6 +15,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class LuckPermsProvider implements PermissionProvider {
     private PermissionManager manager;
     private LuckPermsApi api;
+
     @Deprecated
     public LuckPermsProvider(PermissionManager manager) throws ProviderIsEmptyException {
         this.manager = manager;

@@ -74,7 +74,7 @@ public class SubCommand_Staff implements CommandProcesser {
         if (sender instanceof Player) {
             BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
             if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
                 return;
             }
             while (bIt.hasNext()) {
@@ -83,34 +83,34 @@ public class SubCommand_Staff implements CommandProcesser {
                 if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                     switch (cmdArg.length) {
                         case 0:
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                             return;
                         case 1:
                             switch (cmdArg[0]) {
                                 case "add":
-                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                                     return;
                                 case "del":
-                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                                     return;
                                 case "clear":
                                     shop.clearStaffs();
-                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared",sender));
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-cleared", sender));
                                     return;
                                 case "list":
                                     List<UUID> staffs = shop.getStaffs();
                                     if (staffs.isEmpty()) {
                                         sender.sendMessage(ChatColor.GREEN + MsgUtil
-                                                .getMessage("tableformat.left_begin",sender) + "Empty");
+                                                .getMessage("tableformat.left_begin", sender) + "Empty");
                                         return;
                                     }
                                     for (UUID uuid : staffs) {
-                                        sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin",sender) + Bukkit
+                                        sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin", sender) + Bukkit
                                                 .getOfflinePlayer(uuid).getName());
                                     }
                                     return;
                                 default:
-                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                             }
                         case 2:
                             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(cmdArg[1]);
@@ -121,13 +121,13 @@ public class SubCommand_Staff implements CommandProcesser {
                             switch (cmdArg[0]) {
                                 case "add":
                                     shop.addStaff(offlinePlayer.getUniqueId());
-                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-added",sender, offlinePlayerName));
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-added", sender, offlinePlayerName));
                                     return;
                                 case "del":
-                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted",sender, offlinePlayerName));
+                                    sender.sendMessage(MsgUtil.getMessage("shop-staff-deleted", sender, offlinePlayerName));
                                     return;
                                 default:
-                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args",sender));
+                                    sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                             }
                         default:
                             Util.debugLog("No any args matched");

@@ -32,7 +32,7 @@ public class SubCommand_Remove implements CommandProcesser {
         Player p = (Player) sender;
         BlockIterator bIt = new BlockIterator(p, 10);
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
         while (bIt.hasNext()) {
@@ -43,11 +43,11 @@ public class SubCommand_Remove implements CommandProcesser {
                     shop.onUnload();
                     shop.delete();
                 } else {
-                    sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission",sender));
+                    sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
                 }
                 return;
             }
         }
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop",sender));
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 }
