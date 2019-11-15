@@ -136,7 +136,7 @@ public class BlockListener implements Listener {
         if (loc == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(loc);
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
         if (shop == null) {
             return;
         }
