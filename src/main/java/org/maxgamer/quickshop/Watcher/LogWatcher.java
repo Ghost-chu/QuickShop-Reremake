@@ -23,7 +23,7 @@ public class LogWatcher extends BukkitRunnable {
             if (!log.exists()) {
                 log.createNewFile();
             }
-            logFileWriter = new FileWriter(log);
+            logFileWriter = new FileWriter(log,true);
             pw = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
