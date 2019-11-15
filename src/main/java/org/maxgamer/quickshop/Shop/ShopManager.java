@@ -437,9 +437,11 @@ public class ShopManager {
             } catch (NumberFormatException e) {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     if(!shop.isUnlimited()){
-                        amount = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                        int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                        int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
+                        amount = Math.min(shopHaveItems,invHaveSpaces);
                     }else{
-                        amount = Util.countSpace(p.getInventory(), shop.getItem());
+                        amount = Util.countItems(p.getInventory(), shop.getItem());
                     }
 
                 } else {
