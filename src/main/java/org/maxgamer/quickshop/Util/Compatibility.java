@@ -41,6 +41,7 @@ public class Compatibility {
      * WIP
      *
      * @param status true=turn on closed listeners, false=turn off all turned on listeners.
+     * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
         if (status) {

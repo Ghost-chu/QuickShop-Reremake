@@ -176,6 +176,7 @@ public class MsgUtil {
      *
      * @param loc  location
      * @param args args
+     * @param player The sender will send the message to
      * @return message
      */
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
@@ -197,6 +198,7 @@ public class MsgUtil {
      * getMessage in messages.yml
      *
      * @param loc  location
+     * @param player The sender will send the message to
      * @param args args
      * @return message
      */
