@@ -374,6 +374,7 @@ public class QuickShop extends JavaPlugin {
         /* It will generate a new UUID above updateConfig */
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
+        //noinspection ConstantConditions
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
@@ -488,7 +489,6 @@ public class QuickShop extends JavaPlugin {
                             return;
                         }
 
-                        //noinspection unchecked
                         getShopManager().getLoadedShops().parallelStream().forEach(shop -> {
                             //Check the range has player?
                             int range = getConfig().getInt("shop.display-despawn-range");
@@ -499,6 +499,9 @@ public class QuickShop extends JavaPlugin {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
+                                    if(shop.getDisplay() == null){
+                                        return;
+                                    }
                                     if (anyPlayerInRegion) {
                                         if (!shop.getDisplay().isSpawned()) {
                                             Util.debugLog("Respawning the shop " + shop.toString() + " the display, cause it was despawned and a player close it");
@@ -1033,6 +1036,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.ongoing-fee.ignore-unlimited", true);
             getConfig().set("config-version", 64);
             selectedVersion = 64;
+        }
+        if(selectedVersion == 64){
+            getConfig().set("shop.allow-free-shop",false);
+            getConfig().set("config-version", 65);
+            selectedVersion = 65;
         }
         saveConfig();
         reloadConfig();
