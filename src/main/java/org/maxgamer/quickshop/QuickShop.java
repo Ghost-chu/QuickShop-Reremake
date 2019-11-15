@@ -13,6 +13,7 @@ import org.maxgamer.quickshop.Command.CommandManager;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
+import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -113,6 +114,7 @@ public class QuickShop extends JavaPlugin {
      **/
     private PermissionChecker permissionChecker;
     private PlayerListener playerListener;
+    private InternalListener internalListener;
     /**
      * Whether we players are charged a fee to change the price on their shop (To
      * help deter endless undercutting
@@ -182,7 +184,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded OpenInv support!");
             }
         }
-        if(getConfig().getBoolean("plugin.PlaceHolderAPI")){
+        if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
@@ -432,6 +434,7 @@ public class QuickShop extends JavaPlugin {
         shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         lockListener = new LockListener(this);
+        internalListener = new InternalListener(this);
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
         Bukkit.getPluginManager().registerEvents(chatListener, this);
@@ -441,6 +444,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
+        Bukkit.getPluginManager().registerEvents(internalListener,this);
         if (getConfig().getBoolean("shop.lock")) {
             Bukkit.getPluginManager().registerEvents(lockListener, this);
         }
@@ -466,22 +470,26 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
-
-        if(getConfig().getBoolean("shop.ongoing-fee.enable")){
+        if (logWatcher != null) {
+            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
+        }
+        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoine fee feature is enabled.");
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
         }
-        if(this.display){
-            if(getConfig().getBoolean("shop.display-auto-despawn")){
-                new BukkitRunnable(){
+
+        if (this.display) {
+            if (getConfig().getBoolean("shop.display-auto-despawn")) {
+                new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(getShopManager().getLoadedShops() == null){
+                        if (getShopManager().getLoadedShops() == null) {
                             return;
                         }
 
                         //noinspection unchecked
-                        getShopManager().getLoadedShops().parallelStream().forEach(shop-> {
+                        getShopManager().getLoadedShops().parallelStream().forEach(shop -> {
                             //Check the range has player?
                             int range = getConfig().getInt("shop.display-despawn-range");
                             boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
@@ -506,7 +514,7 @@ public class QuickShop extends JavaPlugin {
                             }.runTask(QuickShop.instance);
                         });
                     }
-                }.runTaskTimerAsynchronously(this,0,getConfig().getInt("shop.display-check-time" ));
+                }.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time"));
             }
         }
     }
@@ -647,7 +655,7 @@ public class QuickShop extends JavaPlugin {
             String shop_find_distance = getConfig().getString("shop.find-distance");
             String economyType = Economy.getNowUsing().name();
             String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
-            String useEnhanceDisplayProtect= String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
+            String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             // Version
@@ -978,24 +986,24 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 48) {
             getConfig().set("permission-type", null);
-            getConfig().set("shop.use-protection-checking-filter",null);
-            getConfig().set("shop.protection-checking-filter",null);
+            getConfig().set("shop.use-protection-checking-filter", null);
+            getConfig().set("shop.protection-checking-filter", null);
             getConfig().set("config-version", 49);
             selectedVersion = 49;
         }
-        if(selectedVersion == 49 || selectedVersion == 50){
+        if (selectedVersion == 49 || selectedVersion == 50) {
             getConfig().set("shop.enchance-display-protect", false);
             getConfig().set("shop.enchance-shop-protect", false);
             getConfig().set("protect", null);
             getConfig().set("config-version", 51);
             selectedVersion = 51;
         }
-        if(selectedVersion < 60){ //Ahhh fuck versions
+        if (selectedVersion < 60) { //Ahhh fuck versions
             getConfig().set("matcher.use-bukkit-matcher", false);
             getConfig().set("config-version", 60);
             selectedVersion = 60;
         }
-        if(selectedVersion == 60){ //Ahhh fuck versions
+        if (selectedVersion == 60) { //Ahhh fuck versions
             getConfig().set("matcher.use-bukkit-matcher", null);
             getConfig().set("shop.strict-matches-check", null);
             getConfig().set("matcher.work-type", 0);
@@ -1005,24 +1013,24 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 61);
             selectedVersion = 61;
         }
-        if(selectedVersion == 61){ //Ahhh fuck versions
+        if (selectedVersion == 61) { //Ahhh fuck versions
             getConfig().set("shop.word-for-sell-all-items", "all");
             getConfig().set("plugin.PlaceHolderAPI", true);
             getConfig().set("config-version", 62);
             selectedVersion = 62;
         }
-        if(selectedVersion == 62){ //Ahhh fuck versions
+        if (selectedVersion == 62) { //Ahhh fuck versions
             getConfig().set("shop.display-auto-despawn", false);
             getConfig().set("shop.word-for-trade-all-items", getConfig().getString("shop.word-for-sell-all-items"));
 
             getConfig().set("config-version", 63);
             selectedVersion = 63;
         }
-        if(selectedVersion == 63){ //Ahhh fuck versions
+        if (selectedVersion == 63) { //Ahhh fuck versions
             getConfig().set("shop.ongoing-fee.enable", false);
             getConfig().set("shop.ongoing-fee.ticks", 42000);
             getConfig().set("shop.ongoing-fee.cost-per-shop", 2);
-            getConfig().set("shop.ongoing-fee.ignore-unlimited",true);
+            getConfig().set("shop.ongoing-fee.ignore-unlimited", true);
             getConfig().set("config-version", 64);
             selectedVersion = 64;
         }
