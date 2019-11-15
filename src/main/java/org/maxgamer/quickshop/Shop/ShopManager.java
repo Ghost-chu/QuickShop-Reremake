@@ -41,7 +41,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -93,7 +93,6 @@ public class ShopManager {
             tax = 0; //Is staff or owner, so we won't will take them tax
         }
 
-        Economy eco = plugin.getEconomy();
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
                 .isUnlimited());
         if (shouldPayOwner) {
@@ -297,7 +296,7 @@ public class ShopManager {
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -348,8 +347,6 @@ public class ShopManager {
             tax = 0; //Is staff or owner, so we won't will take them tax
         }
 
-        Economy eco = plugin.getEconomy();
-
         boolean successA = eco.withdraw(p.getUniqueId(), total); //Withdraw owner's money
         if (!successA) {
             p.sendMessage(MsgUtil
@@ -399,6 +396,8 @@ public class ShopManager {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
+        Economy eco = plugin.getEconomy();
+        
         // Get the shop they interacted with
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
@@ -424,13 +423,20 @@ public class ShopManager {
                     }else{
                         amount = Util.countItems(p.getInventory(), shop.getItem());
                     }
+                    if (amount < 1) {
+                        // when typed 'all' but player doesn't have any items to sell
+                        // @TODO: from getConfig().getString("shop.not-enough-items-for-trade-all-items");
+                        p.sendMessage("you don't have enough items!");
+                        return;
+                    }
                 } else {
+                    // instead of output cancelled message, just let player know that there should be positive number or 'all'
                     p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
             }
-            actionBuy(p, actions, info, message, shop, amount);
+            actionBuy(p, eco, actions, info, message, shop, amount);
         } else if (shop.isSelling()) {
             try {
                 amount = Integer.parseInt(message);
@@ -441,16 +447,27 @@ public class ShopManager {
                         int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                         amount = Math.min(shopHaveItems,invHaveSpaces);
                     }else{
-                        amount = Util.countItems(p.getInventory(), shop.getItem());
+                        // should check not having items but having empty slots, cause player is trying to buy items from the shop.
+                        amount = Util.countSpace(p.getInventory(), shop.getItem());
                     }
-
+                    // typed 'all', check if player has enough money than price * amount
+                    double price = shop.getPrice();
+                    double balance = eco.getBalance(p.getUniqueId());
+                    amount = Math.min(amount, (int) Math.floor(balance / price));
+                    if (amount < 1) {
+                        // when typed 'all' but player can't buy any items
+                        // @TODO: from getConfig().getString("shop.not-enough-money-for-trade-all-items");
+                        p.sendMessage("you don't have enough money!");
+                        return;
+                    }
                 } else {
+                    // instead of output cancelled message, just let player know that there should be positive number or 'all'
                     p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
             }
-            actionSell(p, actions, info, message, shop, amount);
+            actionSell(p, eco, actions, info, message, shop, amount);
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation().toString());
