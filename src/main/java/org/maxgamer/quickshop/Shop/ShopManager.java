@@ -416,7 +416,14 @@ public class ShopManager {
                 amount = Integer.parseInt(message);
             } catch (NumberFormatException e) {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
+                    if(!shop.isUnlimited()){
+                        int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
+                        int shopHaveSpaces = Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
+                        amount = Math.min(shopHaveSpaces, invHaveItems);
+
+                    }else{
                         amount = Util.countItems(p.getInventory(), shop.getItem());
+                    }
                 } else {
                     p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
