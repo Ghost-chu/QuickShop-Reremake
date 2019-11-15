@@ -25,6 +25,7 @@ public class ListenerHelper {
     /**
      * Check the specify event is disabled
      * @param eventClass The event class, E.g BlockBreakEvent.class
+     * @return The status for target class
      */
     public static boolean isDisabled(Class eventClass) {
         return disabledListener.contains(eventClass);
