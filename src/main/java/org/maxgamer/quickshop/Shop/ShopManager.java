@@ -205,10 +205,18 @@ public class ShopManager {
             } else {
                 price = Double.parseDouble(message);
             }
-            if (price < 0.01) {
-                p.sendMessage(MsgUtil.getMessage("price-too-cheap",p));
-                return;
+            if(plugin.getConfig().getBoolean("shop.allow-free-shop")){
+                if (price < 0) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap",p));
+                    return;
+                }
+            }else{
+                if (price < 0.01) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap",p));
+                    return;
+                }
             }
+
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
@@ -236,7 +244,7 @@ public class ShopManager {
             // This must be called after the event has been called.
             // Else, if the event is cancelled, they won't get their
             // money back.
-            if (createCost != 0) {
+            if (createCost > 0) {
                 if (!plugin.getEconomy().withdraw(p.getUniqueId(), createCost)) {
                     p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop",p, format(createCost)));
                     return;
