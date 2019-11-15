@@ -116,11 +116,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
         for (CommandContainer container : cmds) {
-            Util.debugLog("Checking prefix with container: " + container.getPrefix() + " - " + cmdArg[0]);
             if (!container.getPrefix().toLowerCase().equals(cmdArg[0])) {
                 continue;
             }
-            Util.debugLog("Checking permission with container: " + container.getPrefix() + " - " + cmdArg[0]);
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null) {
                 for (String requirePermission : requirePermissions) {
@@ -160,11 +158,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         passthroughArgs = new String[cmdArg.length - 1];
         System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         for (CommandContainer container : cmds) {
-            Util.debugLog("Checking prefix with container: " + container.getPrefix() + " - " + cmdArg[0]);
             if (!container.getPrefix().toLowerCase().startsWith(cmdArg[0])) {
                 continue;
             }
-            Util.debugLog("Checking permission with container: " + container.getPrefix() + " - " + cmdArg[0]);
             List<String> requirePermissions = container.getPermissions();
             if (container.getPermissions() != null) {
                 for (String requirePermission : requirePermissions) {
