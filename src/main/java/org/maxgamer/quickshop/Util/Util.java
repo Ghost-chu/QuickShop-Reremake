@@ -287,6 +287,7 @@ public class Util {
 
     /**
      * Return the Class name.
+     * @param c The class to get name
      */
     public static String getClassPrefix(@NotNull Class c) {
         String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
