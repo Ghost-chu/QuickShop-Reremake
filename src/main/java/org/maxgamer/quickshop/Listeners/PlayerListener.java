@@ -89,6 +89,7 @@ public class PlayerListener implements Listener {
                     double price = shop.getPrice();
                     double money = plugin.getEconomy().getBalance(p.getUniqueId());
                     int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
+                    itemAmount = Math.min(itemAmount, shop.getRemainingStock());
                     p.sendMessage(MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
                 } else {
                     int items = Util.countItems(p.getInventory(), shop.getItem());
