@@ -965,4 +965,24 @@ public class ShopManager {
     public @Nullable Set<Shop> getLoadedShops() {
         return this.loadedShops;
     }
+
+    /**
+     * Get a players all shops.
+     * @param playerUUID The player's uuid.
+     * @param ignoreUnlimitedShop Set we should ignore unlimited to get.
+     * @return The list have this player's all shops.
+     */
+    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID, boolean ignoreUnlimitedShop){
+        List<Shop> collectedShops = new ArrayList<>();
+        for(Shop shop : getAllShops()){
+            if(!shop.getOwner().equals(playerUUID)){
+                continue;
+            }
+            if(ignoreUnlimitedShop && shop.isUnlimited()){
+                continue;
+            }
+            collectedShops.add(shop);
+        }
+        return collectedShops;
+    }
 }
