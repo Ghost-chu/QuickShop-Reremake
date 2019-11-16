@@ -210,7 +210,7 @@ public class ShopManager {
                     return;
                 }
             } else {
-                if (price < 0.01) {
+                if (price < plugin.getConfig().getDouble("minimum-price")) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p));
                     return;
                 }
