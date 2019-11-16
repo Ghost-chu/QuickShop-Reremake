@@ -204,9 +204,9 @@ public class ShopManager {
                 if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
                     try {
                       price = Integer.parseInt(message);
-                        } catch (NumberFormatException e) {
+                        } catch (NumberFormatException ex2) {
                          // input is number, but not Integer
-                           Util.debugLog(ex.getMessage());
+                           Util.debugLog(ex2.getMessage());
                            p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                            return;
                         }
@@ -214,7 +214,7 @@ public class ShopManager {
                     price = Double.parseDouble(message);
                 }
                     
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ex) {
                      //No number input
                      Util.debugLog(ex.getMessage());
                       p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
