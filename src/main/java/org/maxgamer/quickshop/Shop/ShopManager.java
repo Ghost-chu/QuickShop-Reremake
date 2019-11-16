@@ -332,7 +332,7 @@ public class ShopManager {
         }
         if (stock < amount) {
             p.sendMessage(MsgUtil
-                    .getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
+                    .getMessage("shop-stock-too-low", p, "" + stock, Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
