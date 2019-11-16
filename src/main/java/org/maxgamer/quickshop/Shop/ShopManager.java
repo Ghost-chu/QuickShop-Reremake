@@ -200,11 +200,27 @@ public class ShopManager {
             // Price per item
             double price;
             double minPrice = plugin.getConfig().getDouble("minimum-price");
-            if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-                price = Integer.parseInt(message);
-            } else {
-                price = Double.parseDouble(message);
+            try {
+                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
+                    try {
+                      price = Integer.parseInt(message);
+                        } catch (NumberFormatException e) {
+                         // input is number, but not Integer
+                           Util.debugLog(ex.getMessage());
+                           p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
+                           return;
+                        }
+                } else {
+                    price = Double.parseDouble(message);
+                }
+                    
+                } catch (NumberFormatException e) {
+                     //No number input
+                     Util.debugLog(ex.getMessage());
+                      p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
+                      return;
             }
+            
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
