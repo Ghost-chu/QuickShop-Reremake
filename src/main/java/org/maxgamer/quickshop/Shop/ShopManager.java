@@ -199,19 +199,20 @@ public class ShopManager {
             }
             // Price per item
             double price;
+            double minPrice = plugin.getConfig().getDouble("minimum-price");
             if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
                 price = Integer.parseInt(message);
             } else {
                 price = Double.parseDouble(message);
             }
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
-                if (price < 0) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p));
+                if (price != 0 && price < minPrice) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, minPrice));
                     return;
                 }
             } else {
                 if (price < plugin.getConfig().getDouble("minimum-price")) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, minPrice));
                     return;
                 }
             }
@@ -219,7 +220,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, String.valueOf(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, String.valueOf(format(price_limit))));
                     return;
                 }
             }
@@ -292,7 +293,7 @@ public class ShopManager {
         } catch (NumberFormatException ex) {
             //No number input
             Util.debugLog(ex.getMessage());
-            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
+            p.sendMessage(MsgUtil.getMessage("not-a-number", p));
         }
     }
 
