@@ -227,7 +227,7 @@ public class ShopManager {
                     return;
                 }
             } else {
-                if (price < plugin.getConfig().getDouble("minimum-price")) {
+                if (price < minPrice) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
                     return;
                 }
@@ -457,12 +457,12 @@ public class ShopManager {
             try {
                 amount = Integer.parseInt(message);
             } catch (NumberFormatException e) {
+                int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     if(!shop.isUnlimited()){
-                        int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
-                        int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                         amount = Math.min(shopHaveItems,invHaveSpaces);
-                    }else{
+                    } else {
                         // should check not having items but having empty slots, cause player is trying to buy items from the shop.
                         amount = Util.countSpace(p.getInventory(), shop.getItem());
                     }
@@ -472,8 +472,14 @@ public class ShopManager {
                     amount = Math.min(amount, (int) Math.floor(balance / price));
                     if (amount < 1) {
                         // when typed 'all' but player can't buy any items
-                        p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
-                        return;
+                        if (shopHaveItems < 1) {
+                            // but also the shop's stock is 0
+                            p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
+                            return;
+                        } else {
+                            p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
+                            return;
+                        }
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive number or 'all'
