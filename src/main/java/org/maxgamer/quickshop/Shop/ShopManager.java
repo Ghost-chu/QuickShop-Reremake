@@ -840,24 +840,20 @@ public class ShopManager {
             }
             
 	    boolean cancelAction = info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25;
-            switch (info.getAction()) {
-                case CREATE:
-		    if (cancelAction) {
-			p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
-			return;
-		    }
-                    actionCreate(p, actions, info, message, bypassProtectionChecks);
-                    break;
-                case BUY:
-		    if (cancelAction) {
-			p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
-			return;
-		    }
-                    actionTrade(p, actions, info, message);
-                    break;
-                case CANCELLED:
-                    break; //Go away
-            }
+            if (info.getAction() == ShopAction.CREATE) {
+		if (cancelAction) {
+		    p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
+		    return;
+		}
+                actionCreate(p, actions, info, message, bypassProtectionChecks);
+	    }
+	    if (info.getAction() == ShopAction.BUY) {
+		if (cancelAction) {
+	            p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+	            return;
+		}
+                actionTrade(p, actions, info, message);
+	    }
         });
     }
 
