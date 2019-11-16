@@ -1071,6 +1071,12 @@ public class MsgUtil {
             setAndUpdate("language-version", 22);
             selectedVersion = 22;
         }
+        if (selectedVersion == 22) {
+            setAndUpdate("not-a-number", "&cThere can only be number, but you input {0}");
+            setAndUpdate("not-a-integer", "&cThere can only be integer, but you input {0}");
+            setAndUpdate("language-version", 23);
+            selectedVersion = 23;
+        }
         messagei18n.save(messageFile);
 
     }
