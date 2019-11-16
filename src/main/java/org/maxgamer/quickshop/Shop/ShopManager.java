@@ -25,6 +25,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -969,20 +970,18 @@ public class ShopManager {
     /**
      * Get a players all shops.
      * @param playerUUID The player's uuid.
-     * @param ignoreUnlimitedShop Set we should ignore unlimited to get.
      * @return The list have this player's all shops.
      */
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID, boolean ignoreUnlimitedShop){
-        List<Shop> collectedShops = new ArrayList<>();
-        for(Shop shop : getAllShops()){
-            if(!shop.getOwner().equals(playerUUID)){
-                continue;
-            }
-            if(ignoreUnlimitedShop && shop.isUnlimited()){
-                continue;
-            }
-            collectedShops.add(shop);
-        }
-        return collectedShops;
+    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID){
+        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
+    }
+
+    /**
+     * Get the all shops in the world.
+     * @param world The world you want get the shops.
+     * @return The list have this world all shops
+     */
+    public @NotNull List<Shop> getShopsInWorld(@NotNull World world){
+        return getAllShops().stream().filter(shop -> shop.getLocation().getWorld().equals(world)).collect(Collectors.toList());
     }
 }
