@@ -982,6 +982,6 @@ public class ShopManager {
      * @return The list have this world all shops
      */
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world){
-        return getAllShops().stream().filter(shop -> shop.getLocation().getWorld().equals(world)).collect(Collectors.toList());
+        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
     }
 }
