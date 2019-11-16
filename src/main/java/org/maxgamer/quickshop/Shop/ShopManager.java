@@ -199,7 +199,7 @@ public class ShopManager {
             }
             // Price per item
             double price;
-            double minPrice = plugin.getConfig().getDouble("minimum-price");
+            double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
             try {
                 if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
                     try {
