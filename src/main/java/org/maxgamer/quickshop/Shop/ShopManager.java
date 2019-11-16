@@ -472,7 +472,7 @@ public class ShopManager {
                     amount = Math.min(amount, (int) Math.floor(balance / price));
                     if (amount < 1) {
                         // when typed 'all' but player can't buy any items
-                        if (shopHaveItems < 1) {
+                        if (shopHaveItems == 0) {
                             // but also the shop's stock is 0
                             p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
                             return;
