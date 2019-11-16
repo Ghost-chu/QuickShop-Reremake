@@ -20,7 +20,7 @@ no-creative-break: "&cYou cannot break other players shops in creative mode.  Us
 no-double-chests: "&cYou cannot create the DoubleChest shop."
 shop-already-owned: "&cThat is already a shop."
 chest-was-removed: "&cThe chest was removed."
-price-too-cheap: "&cPrice must be greater than &e$0.01"
+price-too-cheap: "&cPrice must be greater than &e${0}"
 no-price-change: "&cThat wouldn't result in a price change!"
 you-cant-afford-a-new-shop: "&cIt costs {0} to create a new shop."
 player-bought-from-your-store-tax: "&c{0} purchased {1} {2} from your store, and you paid {3} in taxes."
@@ -103,7 +103,7 @@ menu:
 bypassing-lock: "&cBypassing a QuickShop lock!"
 that-is-locked: "&cThat shop is locked."
 
-how-many-buy: "&aEnter how many you wish to &bBUY&a in chat. Enter &ball&a to buy them all."
+how-many-buy: "&aEnter how many you wish to &bBUY&a in chat. You can buy &e{0}&a. Enter &ball&a to buy them all."
 how-many-sell: "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all."
 
 not-allowed-to-create: "&cYou may not create a shop here."
