@@ -42,7 +42,7 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionBuy(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -94,7 +94,6 @@ public class ShopManager {
             tax = 0; //Is staff or owner, so we won't will take them tax
         }
 
-        Economy eco = plugin.getEconomy();
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
                 .isUnlimited());
         if (shouldPayOwner) {
@@ -201,19 +200,36 @@ public class ShopManager {
             }
             // Price per item
             double price;
-            if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-                price = Integer.parseInt(message);
-            } else {
-                price = Double.parseDouble(message);
+            double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
+            try {
+                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
+                    try {
+                      price = Integer.parseInt(message);
+                        } catch (NumberFormatException ex2) {
+                         // input is number, but not Integer
+                           Util.debugLog(ex2.getMessage());
+                           p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
+                           return;
+                        }
+                } else {
+                    price = Double.parseDouble(message);
+                }
+                    
+                } catch (NumberFormatException ex) {
+                     //No number input
+                     Util.debugLog(ex.getMessage());
+                      p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
+                      return;
             }
+            
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
-                if (price < 0) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p));
+                if (price != 0 && price < minPrice) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
                     return;
                 }
             } else {
-                if (price < 0.01) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p));
+                if (price < minPrice) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
                     return;
                 }
             }
@@ -221,7 +237,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, String.valueOf(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, String.valueOf(format(price_limit))));
                     return;
                 }
             }
@@ -294,11 +310,11 @@ public class ShopManager {
         } catch (NumberFormatException ex) {
             //No number input
             Util.debugLog(ex.getMessage());
-            p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
+            p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -317,7 +333,7 @@ public class ShopManager {
         }
         if (stock < amount) {
             p.sendMessage(MsgUtil
-                    .getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
+                    .getMessage("shop-stock-too-low", p, "" + stock, Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
@@ -348,8 +364,6 @@ public class ShopManager {
         if (shop.getModerator().isModerator(p.getUniqueId())) {
             tax = 0; //Is staff or owner, so we won't will take them tax
         }
-
-        Economy eco = plugin.getEconomy();
 
         boolean successA = eco.withdraw(p.getUniqueId(), total); //Withdraw owner's money
         if (!successA) {
@@ -400,6 +414,8 @@ public class ShopManager {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
+        Economy eco = plugin.getEconomy();
+        
         // Get the shop they interacted with
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
@@ -425,33 +441,55 @@ public class ShopManager {
                     }else{
                         amount = Util.countItems(p.getInventory(), shop.getItem());
                     }
+                    if (amount < 1) {
+                        // when typed 'all' but player doesn't have any items to sell
+                        p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", p, "" + amount, Util.getItemStackName(shop.getItem())));
+                        return;
+                    }
                 } else {
-                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+                    // instead of output cancelled message, just let player know that there should be positive number or 'all'
+                    p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
             }
-            actionBuy(p, actions, info, message, shop, amount);
+            actionBuy(p, eco, actions, info, message, shop, amount);
         } else if (shop.isSelling()) {
             try {
                 amount = Integer.parseInt(message);
             } catch (NumberFormatException e) {
+                int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     if(!shop.isUnlimited()){
-                        int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
-                        int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                         amount = Math.min(shopHaveItems,invHaveSpaces);
-                    }else{
-                        amount = Util.countItems(p.getInventory(), shop.getItem());
+                    } else {
+                        // should check not having items but having empty slots, cause player is trying to buy items from the shop.
+                        amount = Util.countSpace(p.getInventory(), shop.getItem());
                     }
-
+                    // typed 'all', check if player has enough money than price * amount
+                    double price = shop.getPrice();
+                    double balance = eco.getBalance(p.getUniqueId());
+                    amount = Math.min(amount, (int) Math.floor(balance / price));
+                    if (amount < 1) {
+                        // when typed 'all' but player can't buy any items
+                        if (!shop.isUnlimited() && shopHaveItems < 1) {
+                            // but also the shop's stock is 0
+                            p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
+                            return;
+                        } else {
+                            p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
+                            return;
+                        }
+                    }
                 } else {
-                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+                    // instead of output cancelled message, just let player know that there should be positive number or 'all'
+                    p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
             }
-            actionSell(p, actions, info, message, shop, amount);
+            actionSell(p, eco, actions, info, message, shop, amount);
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation().toString());
