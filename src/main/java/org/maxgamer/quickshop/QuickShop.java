@@ -1011,6 +1011,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 65) {
             getConfig().set("shop.minimum-price", 0.01);
+            getConfig().set("config-version", 66);
             selectedVersion = 66;
         }
         saveConfig();
