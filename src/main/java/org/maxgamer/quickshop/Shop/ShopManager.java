@@ -425,8 +425,7 @@ public class ShopManager {
                     }
                     if (amount < 1) {
                         // when typed 'all' but player doesn't have any items to sell
-                        // @TODO: from getConfig().getString("shop.not-enough-items-for-trade-all-items");
-                        p.sendMessage("you don't have enough items!");
+                        p.sendMessage(MsgUtil.getMessage("shop.not-enough-items-for-trade-all-items"));
                         return;
                     }
                 } else {
@@ -456,8 +455,7 @@ public class ShopManager {
                     amount = Math.min(amount, (int) Math.floor(balance / price));
                     if (amount < 1) {
                         // when typed 'all' but player can't buy any items
-                        // @TODO: from getConfig().getString("shop.not-enough-money-for-trade-all-items");
-                        p.sendMessage("you don't have enough money!");
+                        p.sendMessage(MsgUtil.getMessage("shop.not-enough-money-for-trade-all-items"));
                         return;
                     }
                 } else {
