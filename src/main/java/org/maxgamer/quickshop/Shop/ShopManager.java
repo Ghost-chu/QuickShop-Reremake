@@ -447,7 +447,7 @@ public class ShopManager {
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive number or 'all'
-                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+                    p.sendMessage(MsgUtil.getMessage("not-a-number", p));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
@@ -472,7 +472,7 @@ public class ShopManager {
                     amount = Math.min(amount, (int) Math.floor(balance / price));
                     if (amount < 1) {
                         // when typed 'all' but player can't buy any items
-                        if (shopHaveItems == 0) {
+                        if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
                             p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
                             return;
@@ -483,7 +483,7 @@ public class ShopManager {
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive number or 'all'
-                    p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+                    p.sendMessage(MsgUtil.getMessage("not-a-nubmer", p));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
