@@ -839,20 +839,20 @@ public class ShopManager {
                 return; // multithreaded means this can happen
             }
             
-			boolean cancelAction = info.getLocation().distanceSquared(p.getLocation()) > 25 || info.getLocation().getWorld() != p.getLocation().getWorld();
+	    boolean cancelAction = info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25;
             switch (info.getAction()) {
                 case CREATE:
-					if (cancelAction) {
-						p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
-						return;
-					}
+		    if (cancelAction) {
+			p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
+			return;
+		    }
                     actionCreate(p, actions, info, message, bypassProtectionChecks);
                     break;
                 case BUY:
-					if (cancelAction) {
-						p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
-						return;
-					}
+		    if (cancelAction) {
+			p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+			return;
+		    }
                     actionTrade(p, actions, info, message);
                     break;
                 case CANCELLED:
