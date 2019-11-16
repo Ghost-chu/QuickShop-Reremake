@@ -207,12 +207,12 @@ public class ShopManager {
             }
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, minPrice));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
                     return;
                 }
             } else {
                 if (price < plugin.getConfig().getDouble("minimum-price")) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, minPrice));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
                     return;
                 }
             }
