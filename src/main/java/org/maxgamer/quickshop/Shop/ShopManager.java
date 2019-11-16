@@ -447,7 +447,7 @@ public class ShopManager {
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive number or 'all'
-                    p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
+                    p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
@@ -483,7 +483,7 @@ public class ShopManager {
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive number or 'all'
-                    p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
+                    p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
                 }
