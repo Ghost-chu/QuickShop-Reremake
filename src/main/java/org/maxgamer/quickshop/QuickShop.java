@@ -1015,7 +1015,9 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 66;
         }
         if (selectedVersion == 66) {
+            getConfig().set("use-deciaml-format", false);
             getConfig().set("decimal-format", "#,###.##");
+            getConfig().set("shop.show-owner-uuid-in-controlpanel-if-op", false);
             getConfig().set("config-version", 67);
             selectedVersion = 67;
         }
