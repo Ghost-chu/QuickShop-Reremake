@@ -1021,7 +1021,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 67);
             selectedVersion = 67;
         }
-        
+        if (selectedVersion == 67) {
+            getConfig().set("disable-debuglogger", false);
+            getConfig().set("config-version", 68);
+            selectedVersion = 68;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
