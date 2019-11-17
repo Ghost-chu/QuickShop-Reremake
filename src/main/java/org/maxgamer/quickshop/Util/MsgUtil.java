@@ -51,7 +51,7 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
-    private static DecimalFormat decimalFormat = new DecimalFormat(plugin.getConfig().getString("decimal-format");
+    private static DecimalFormat decimalFormat = new DecimalFormat(plugin.getConfig().getString("decimal-format"));
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
