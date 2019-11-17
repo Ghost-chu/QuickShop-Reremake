@@ -222,14 +222,15 @@ public class ShopManager {
                       return;
             }
             
+		boolean decFormat = plugin.getConfig().getBoolean("use-deciaml-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, MsgUtil.decimalFormat(minPrice)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                     return;
                 }
             } else {
                 if (price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, MsgUtil.decimalFormat(minPrice)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                     return;
                 }
             }
@@ -237,7 +238,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, MsgUtil.decimalFormat(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, (decFormat) ?MsgUtil.decimalFormat(price_limit) : "" + price_limit));
                     return;
                 }
             }
