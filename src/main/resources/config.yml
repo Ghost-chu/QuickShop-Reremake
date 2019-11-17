@@ -85,6 +85,9 @@ economy-type: 0
 
 #The decimal format the double output, includes player money output
 #Default is #,###.##
+# whether to use decimal format output.
+use-deciaml-format: false
+
 decimal-format: "#,###.##"
 
 #Allow plugin send alert when something trying make a displayItem exploit
