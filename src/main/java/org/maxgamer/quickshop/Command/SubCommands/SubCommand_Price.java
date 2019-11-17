@@ -12,6 +12,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,20 +37,43 @@ public class SubCommand_Price implements CommandProcesser {
                 return;
             }
             double price;
+			double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
             try {
-                price = Double.parseDouble(cmdArg[0]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(MsgUtil.getMessage("thats-not-a-number", sender));
-                return;
+                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
+                    try {
+                      price = Long.parseLong(cmdArg[0]);
+                        } catch (NumberFormatException ex2) {
+                         // input is number, but not Integer
+                           Util.debugLog(ex2.getMessage());
+                           p.sendMessage(MsgUtil.getMessage("not-a-integer", p, cmdArg[0]));
+                           return;
+                        }
+                } else {
+                    price = Double.parseDouble(cmdArg[0]);
+                }
+                    
+                } catch (NumberFormatException ex) {
+                     //No number input
+                     Util.debugLog(ex.getMessage());
+                      p.sendMessage(MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
+                      return;
             }
-            if (price != 0 && !plugin.getConfig().getBoolean("shop.allow-free-shop") && price < plugin.getConfig().getDouble("shop.minimum-price")) {
-                sender.sendMessage(MsgUtil.getMessage("price-too-cheap", sender, "" + price));
-                return;
+	    boolean format = plugin.getConfig().getBoolean("use-deciaml-format");
+            if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
+                if (price != 0 && price < minPrice) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+                    return;
+                }
+            } else {
+                if (price < minPrice) {
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+                    return;
+                }
             }
             double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", sender, String.valueOf(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, (format) ? MsgUtil.decimalFormat(price_limit) : "" + price_limit));
                     return;
                 }
             }
