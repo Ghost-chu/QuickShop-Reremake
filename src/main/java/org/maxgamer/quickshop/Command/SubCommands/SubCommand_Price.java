@@ -73,7 +73,7 @@ public class SubCommand_Price implements CommandProcesser {
             double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", sender, MsgUtil.decimalFormat(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, MsgUtil.decimalFormat(price_limit)));
                     return;
                 }
             }
