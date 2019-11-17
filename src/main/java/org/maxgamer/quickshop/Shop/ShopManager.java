@@ -224,12 +224,12 @@ public class ShopManager {
             
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, MsgUtil.decimalFormat(minPrice)));
                     return;
                 }
             } else {
                 if (price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + minPrice));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, MsgUtil.decimalFormat(minPrice)));
                     return;
                 }
             }
@@ -237,7 +237,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, String.valueOf(format(price_limit))));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", sender, MsgUtil.decimalFormat(price_limit)));
                     return;
                 }
             }
