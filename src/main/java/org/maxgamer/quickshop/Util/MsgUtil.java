@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
+import java.text.DecimalFormat;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,6 +51,7 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
+    private static DecimalFormat decimalFormat = new DecimalFormat(plugin.getConfig().getString("decimal-format");
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -837,6 +839,10 @@ public class MsgUtil {
             }
         }
         chatSheetPrinter.printFooter();
+    }
+                                                                   
+    public static String decimalFormat(double value) {
+        return this.decimalFormat.format(value);
     }
 
     @SuppressWarnings("UnusedAssignment")
