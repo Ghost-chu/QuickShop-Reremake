@@ -434,21 +434,41 @@ public class ShopManager {
                 amount = Integer.parseInt(message);
             } catch (NumberFormatException e) {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
+		    int shopHaveSpaces = Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
+		    int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
+		    // Check if shop owner has enough money
+		    double ownerBalance = eco.getBalance(shop.getOwner());
+		    int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
                     if(!shop.isUnlimited()){
-                        int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
-                        int shopHaveSpaces = Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
                         amount = Math.min(shopHaveSpaces, invHaveItems);
-
-                    }else{
+			amount = Math.min(amount, (int) ownerCanAfford);
+                    } else {
                         amount = Util.countItems(p.getInventory(), shop.getItem());
+			// even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
+			// the unlimited shop owner should have enough money.
+			if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+			    amount = Math.min(amount, (int) ownerCanAfford);
+			}
                     }
-                    if (amount < 1) {
+                    if (amount < 1) { // typed 'all' but the auto set amount is 0
+			if (shopHaveSpaces == 0) {
+			   // when typed 'all' but the shop doesn't have any empty space
+			    p.sendMessage(MsgUtil
+				.getMessage("shop-has-no-space", p, "" + shopHaveSpaces, Util.getItemStackName(shop.getItem())));
+			    return;
+			}
+			if (ownerCanAfford == 0 && (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
+			    // when typed 'all' but the shop owner doesn't have enough money to buy at least 1 item (and shop isn't unlimited or pay-unlimited is true)
+			    p.sendMessage(MsgUtil
+				.getMessage("the-owner-cant-afford-to-buy-from-you", p, format(shop.getPrice()), format(ownerBalance)));
+			    return;
+			}
                         // when typed 'all' but player doesn't have any items to sell
                         p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", p, "" + amount, Util.getItemStackName(shop.getItem())));
                         return;
                     }
                 } else {
-                    // instead of output cancelled message, just let player know that there should be positive number or 'all'
+                    // instead of output cancelled message (when typed neither integer or 'all'), just let player know that there should be positive number or 'all'
                     p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
                     Util.debugLog("Receive the chat " + message + " and it format failed: " + e.getMessage());
                     return;
@@ -472,13 +492,18 @@ public class ShopManager {
                     double price = shop.getPrice();
                     double balance = eco.getBalance(p.getUniqueId());
                     amount = Math.min(amount, (int) Math.floor(balance / price));
-                    if (amount < 1) {
+                    if (amount < 1) { // typed 'all' but the auto set amount is 0
                         // when typed 'all' but player can't buy any items
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
                             p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
                             return;
                         } else {
+			    // when if player's inventory is full
+			    if (invHaveSpaces == 0) {
+				p.sendMessage(MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
+				return;
+			    }
                             p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
                             return;
                         }
