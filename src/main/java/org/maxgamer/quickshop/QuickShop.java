@@ -1014,6 +1014,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 66);
             selectedVersion = 66;
         }
+        if (selectedVersion == 66) {
+            getConfig().set("decimal-format", "#,###.##");
+            getConfig().set("config-version", 67);
+            selectedVersion = 67;
+        }
         
         saveConfig();
         reloadConfig();
