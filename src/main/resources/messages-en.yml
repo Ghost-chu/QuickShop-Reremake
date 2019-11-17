@@ -11,7 +11,7 @@ translation-version: "&c&lSupport Version: &b&lReremake"
 translation-country: "&c&lLanguage Zone: &b&lEnglish (en_US)"
 # ======================================================================
 
-language-version: 23
+language-version: 24
 
 not-looking-at-shop: "&cNo QuickShop was found, you must be looking at one."
 no-anythings-in-your-hand: "&cThere is nothing in your hand."
@@ -112,7 +112,9 @@ blacklisted-item: "&cThat item is blacklisted. You may not sell it"
 how-much-to-trade-for: "&aEnter how much you wish to trade one &e{0}&a for in chat."
 
 command:
-  toggle-unlimited: "&aShop is now {0}"
+  toggle-unlimited:
+    unlimited: "&aShop is now unlimited"
+    limited: "&aShop is now limited"
   no-owner-given: "&cNo owner given. Use &a/qs setowner <player>&c"
   new-owner: "&aNew owner: &e{0}"
   now-buying: "&aNow &dBUYING&a &e{0}"

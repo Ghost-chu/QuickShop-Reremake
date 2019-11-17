@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 65
+config-version: 67
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -82,6 +82,13 @@ include-offlineplayer-list: false
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 economy-type: 0
+
+#The decimal format the double output, includes player money output
+#Default is #,###.##
+# whether to use decimal format output.
+use-deciaml-format: false
+
+decimal-format: "#,###.##"
 
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true
@@ -212,6 +219,9 @@ shop:
 
   #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
   maximum-price: -1
+  
+  #if shop is adminshop, and player has permission to change shop owner, Whether in controll panel, print the owner's uuid?
+  show-owner-uuid-in-controlpanel-if-op: false
 
   #The wall sign material.
   #In 1.13 and legacy versions, only WALL_SIGN is available.
