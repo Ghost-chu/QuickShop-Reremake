@@ -38,9 +38,9 @@ public class SubCommand_Unlimited implements CommandProcesser {
                     //shop.setSignText();
                     shop.update();
                     if (shop.isUnlimited()) {
-                        sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited", sender));
+                        sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
                     } else {
-                         sender.sendMessage(MsgUtil.getMessage("command.toggle-limited", sender));
+                         sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
                     }
                     return;
                 }
