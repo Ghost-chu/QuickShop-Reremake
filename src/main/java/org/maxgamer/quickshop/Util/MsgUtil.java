@@ -584,7 +584,7 @@ public class MsgUtil {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.price", sender, decimalFormat(shop.getPrice()));
+            String text = MsgUtil.getMessage("controlpanel.price", sender, (plugin.getConfig().getBoolean("use-deciaml-format")) ? decimalFormat(shop.getPrice() : "" + shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
