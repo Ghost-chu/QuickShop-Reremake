@@ -529,7 +529,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if ((sender instanceof Player && !((Player sender).isOp) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
@@ -584,7 +584,7 @@ public class MsgUtil {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.price", sender, String.valueOf(shop.getPrice()));
+            String text = MsgUtil.getMessage("controlpanel.price", sender, decimalFormat(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
