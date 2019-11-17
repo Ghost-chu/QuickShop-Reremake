@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
+import java.text.DecimalFormat;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,6 +51,7 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
+    private static DecimalFormat decimalFormat = new DecimalFormat(plugin.getConfig().getString("decimal-format"));
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -527,7 +529,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if ((sender instanceof Player && !((Player) sender).isOp()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
@@ -544,7 +546,7 @@ public class MsgUtil {
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", sender, shop.ownerName()));
         } else {
-            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName()), MsgUtil
+            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName() + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) ? (" (" + shop.getOwner() + ")") : ""  )), MsgUtil
                     .getMessage("controlpanel.setowner-hover", sender), MsgUtil.getMessage("controlpanel.commands.setowner", sender));
         }
         // Unlimited
@@ -582,7 +584,7 @@ public class MsgUtil {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
-            String text = MsgUtil.getMessage("controlpanel.price", sender, String.valueOf(shop.getPrice()));
+            String text = MsgUtil.getMessage("controlpanel.price", sender, (plugin.getConfig().getBoolean("use-deciaml-format")) ? decimalFormat(shop.getPrice()) : "" + shop.getPrice());
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
@@ -838,6 +840,10 @@ public class MsgUtil {
         }
         chatSheetPrinter.printFooter();
     }
+                                                                   
+    public static String decimalFormat(double value) {
+        return decimalFormat.format(value);
+    }
 
     @SuppressWarnings("UnusedAssignment")
     private static void updateMessages(int selectedVersion) throws IOException {
@@ -1076,6 +1082,12 @@ public class MsgUtil {
             setAndUpdate("not-a-integer", "&cThere can only be integer, but you input {0}");
             setAndUpdate("language-version", 23);
             selectedVersion = 23;
+        }
+        if (selectedVersion == 23) {
+            setAndUpdate("command.toggle-unlimited.unlimited", "&aShop is now unlimited}");
+            setAndUpdate("command.toggle-unlimited.limited", "&aShop is now limited");
+            setAndUpdate("language-version", 24);
+            selectedVersion = 24;
         }
         messagei18n.save(messageFile);
 
