@@ -58,22 +58,22 @@ public class SubCommand_Price implements CommandProcesser {
                       p.sendMessage(MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
                       return;
             }
-			  
+	    boolean format = plugin.getConfig().getBoolean("use-deciaml-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, MsgUtil.decimalFormat(minPrice)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                     return;
                 }
             } else {
                 if (price < minPrice) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, "" + MsgUtil.decimalFormat(minPrice)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                     return;
                 }
             }
             double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, MsgUtil.decimalFormat(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, (format) ? MsgUtil.decimalFormat(price_limit) : "" + price_limit));
                     return;
                 }
             }
