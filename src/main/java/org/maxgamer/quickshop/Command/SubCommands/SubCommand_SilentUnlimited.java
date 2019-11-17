@@ -36,7 +36,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
             shop.update();
             MsgUtil.sendControlPanelInfo(sender, shop);
             sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited", sender,
-                    (shop.isUnlimited() ? plugin.getConfig().getString("command.toggle-unlimited.unlimited") : plugin.getConfig().getString("command.toggle-unlimited.limited"))));
+                    (shop.isUnlimited() ? plugin.getConfig().getString("shop.toggle-unlimited.unlimited") : plugin.getConfig().getString("shop.toggle-unlimited.limited"))));
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
