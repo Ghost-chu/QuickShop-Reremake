@@ -237,7 +237,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", sender, MsgUtil.decimalFormat(price_limit)));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, MsgUtil.decimalFormat(price_limit)));
                     return;
                 }
             }
