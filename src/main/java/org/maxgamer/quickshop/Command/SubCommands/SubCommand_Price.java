@@ -42,11 +42,11 @@ public class SubCommand_Price implements CommandProcesser {
                 sender.sendMessage(MsgUtil.getMessage("thats-not-a-number", sender));
                 return;
             }
-            if (price < 0.01) {
-                sender.sendMessage(MsgUtil.getMessage("price-too-cheap", sender));
+            if (price != 0 && !plugin.getConfig().getBoolean("shop.allow-free-shop") && price < plugin.getConfig().getDouble("shop.minimum-price") {
+                sender.sendMessage(MsgUtil.getMessage("price-too-cheap", sender, price));
                 return;
             }
-            double price_limit = plugin.getConfig().getInt("shop.maximum-price");
+            double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
                     p.sendMessage(MsgUtil.getMessage("price-too-high", sender, String.valueOf(price_limit)));
