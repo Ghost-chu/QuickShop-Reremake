@@ -1014,12 +1014,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 66);
             selectedVersion = 66;
         }
-        if (selectedVersion == 66) {
-            getConfig().set("shop.toggle-unlimited.unlimited", "unlimited");
-            getConfig().set("shop.toggle-unlimited.limited", "limited");
-            getConfig().set("config-version", 67);
-            selectedVersion = 67;
-        }
+        
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
