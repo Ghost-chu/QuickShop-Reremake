@@ -546,7 +546,7 @@ public class MsgUtil {
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", sender, shop.ownerName()));
         } else {
-            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName()), MsgUtil
+            chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName() + (plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") ? ("(" + shop.getOwner() + ")") : "")), MsgUtil
                     .getMessage("controlpanel.setowner-hover", sender), MsgUtil.getMessage("controlpanel.commands.setowner", sender));
         }
         // Unlimited
