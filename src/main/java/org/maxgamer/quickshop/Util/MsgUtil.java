@@ -529,7 +529,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if ((sender instanceof Player && !((Player sender).isOp) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if ((sender instanceof Player && !((Player sender).isOp()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
