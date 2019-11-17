@@ -1077,6 +1077,12 @@ public class MsgUtil {
             setAndUpdate("language-version", 23);
             selectedVersion = 23;
         }
+        if (selectedVersion == 23) {
+            setAndUpdate("command.toggle-unlimited.unlimited", "&aShop is now unlimited}");
+            setAndUpdate("command.toggle-unlimited.limited", "&aShop is now limited");
+            setAndUpdate("language-version", 24);
+            selectedVersion = 24;
+        }
         messagei18n.save(messageFile);
 
     }
