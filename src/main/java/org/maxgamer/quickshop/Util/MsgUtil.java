@@ -842,7 +842,7 @@ public class MsgUtil {
     }
                                                                    
     public static String decimalFormat(double value) {
-        return this.decimalFormat.format(value);
+        return decimalFormat.format(value);
     }
 
     @SuppressWarnings("UnusedAssignment")
