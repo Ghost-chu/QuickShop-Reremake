@@ -85,6 +85,9 @@ economy-type: 0
 
 #The decimal format the double output, includes player money output
 #Default is #,###.##
+# whether to use decimal format output.
+use-deciaml-format: false
+
 decimal-format: "#,###.##"
 
 #Allow plugin send alert when something trying make a displayItem exploit
@@ -216,6 +219,9 @@ shop:
 
   #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
   maximum-price: -1
+  
+  #if shop is adminshop, and player has permission to change shop owner, Whether in controll panel, print the owner's uuid?
+  show-owner-uuid-in-controlpanel-if-op: false
 
   #The wall sign material.
   #In 1.13 and legacy versions, only WALL_SIGN is available.
