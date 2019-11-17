@@ -177,7 +177,9 @@ public class Util {
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
-
+        if (QuickShop.instance.getConfig().getBoolean("disable-debuglogger", false)) {
+            return;
+        }
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
             Class c = Class.forName(className);
