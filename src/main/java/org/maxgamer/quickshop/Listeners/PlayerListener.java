@@ -168,8 +168,8 @@ public class PlayerListener implements Listener {
             } else {
                 block = e.getClickedBlock();
             }
-            if (plugin.getShopManager().getShop(block.getLocation()) != null && plugin.getShopManager().getShop(block
-                    .getLocation()).getOwner().equals(e.getPlayer().getUniqueId())) {
+            if (plugin.getShopManager().getShop(block.getLocation()) != null && (plugin.getShopManager().getShop(block
+                    .getLocation()).getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
                 if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                     return;
                 }
