@@ -790,6 +790,14 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Different with isDoubleShop, this method only check the shop is created on the double chest.
+     * @return true if create on double chest.
+     */
+    public boolean isDoubleChestShop(){
+        return Util.isDoubleChest(this.getLocation().getBlock());
+    }
+
+    /**
      * Check shop is or not still Valid.
      *
      * @return isValid
