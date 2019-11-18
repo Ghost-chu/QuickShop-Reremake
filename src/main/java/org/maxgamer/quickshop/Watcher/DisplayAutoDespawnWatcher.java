@@ -5,9 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable {
     private QuickShop plugin;
+
     @Override
     public void run() {
         if (plugin.getShopManager().getLoadedShops() == null) {

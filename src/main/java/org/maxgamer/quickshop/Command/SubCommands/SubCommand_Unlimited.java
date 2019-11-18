@@ -40,7 +40,7 @@ public class SubCommand_Unlimited implements CommandProcesser {
                     if (shop.isUnlimited()) {
                         sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
                     } else {
-                         sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
+                        sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
                     }
                     return;
                 }
