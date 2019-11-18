@@ -439,15 +439,11 @@ public class ShopManager {
                     // Check if shop owner has enough money
                     double ownerBalance = eco.getBalance(shop.getOwner());
                     int ownerCanAfford;
-
-                    if (ownerBalance != 0) {
-                        if (shop.getPrice() != 0) {
-                            ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-                        } else {
-                            ownerCanAfford = Integer.MAX_VALUE;
-                        }
+                    
+                    if (shop.getPrice() != 0) {
+                        ownerCanAfford = (int) (ownerBalance / shop.getPrice());
                     } else {
-                        ownerCanAfford = 0;
+                        ownerCanAfford = Integer.MAX_VALUE;
                     }
 
                     if (!shop.isUnlimited()) {
