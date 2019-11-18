@@ -172,13 +172,14 @@ public class Util {
     }
 
     static short tookLongTimeCostTimes;
+
     /**
      * Print debug log when plugin running on dev mode.
      *
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
-        if(!devMode) {
+        if (!devMode) {
             if (QuickShop.instance.getConfig().getBoolean("disable-debuglogger", false)) {
                 return;
             }
@@ -208,7 +209,7 @@ public class Util {
             }
         }
         long debugLogCost = System.currentTimeMillis() - startTime;
-        if(!devMode) {
+        if (!devMode) {
             if (debugLogCost > 2) {
                 tookLongTimeCostTimes++;
                 if (tookLongTimeCostTimes > 30) {

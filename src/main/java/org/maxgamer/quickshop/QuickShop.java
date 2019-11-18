@@ -1,11 +1,15 @@
 package org.maxgamer.quickshop;
 
 import lombok.Getter;
+import me.minebuilders.clearlag.Clearlag;
+import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +34,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
-//import com.griefcraft.lwc.LWCPlugin;
 @Getter
 public class QuickShop extends JavaPlugin {
     /**
@@ -189,6 +192,31 @@ public class QuickShop extends JavaPlugin {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
+            }
+        }
+        if (this.display) {
+            if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+                try {
+                    Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
+                    for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
+                        if (!clearLagListener.getPlugin().equals(clearlag)) {
+                            continue;
+                        }
+                        int spamTimes = 5000;
+                        if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
+                            ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
+                            for (int i = 0; i < spamTimes; i++) {
+                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
+                                getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
+                                getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
+                                getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
+                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
+                                getLogger().info("This message will spam more " + (spamTimes - i) + " times!");
+                            }
+                        }
+                    }
+                } catch (Throwable ignored) {
+                }
             }
         }
     }
