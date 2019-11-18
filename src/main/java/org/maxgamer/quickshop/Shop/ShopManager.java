@@ -204,25 +204,25 @@ public class ShopManager {
             try {
                 if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
                     try {
-                      price = Integer.parseInt(message);
-                        } catch (NumberFormatException ex2) {
-                         // input is number, but not Integer
-                           Util.debugLog(ex2.getMessage());
-                           p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
-                           return;
-                        }
+                        price = Integer.parseInt(message);
+                    } catch (NumberFormatException ex2) {
+                        // input is number, but not Integer
+                        Util.debugLog(ex2.getMessage());
+                        p.sendMessage(MsgUtil.getMessage("not-a-integer", p, message));
+                        return;
+                    }
                 } else {
                     price = Double.parseDouble(message);
                 }
-                    
-                } catch (NumberFormatException ex) {
-                     //No number input
-                     Util.debugLog(ex.getMessage());
-                      p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
-                      return;
+
+            } catch (NumberFormatException ex) {
+                //No number input
+                Util.debugLog(ex.getMessage());
+                p.sendMessage(MsgUtil.getMessage("not-a-number", p, message));
+                return;
             }
-            
-		boolean decFormat = plugin.getConfig().getBoolean("use-deciaml-format");
+
+            boolean decFormat = plugin.getConfig().getBoolean("use-deciaml-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
@@ -238,7 +238,7 @@ public class ShopManager {
             double price_limit = plugin.getConfig().getInt("shop.maximum-price");
             if (price_limit != -1) {
                 if (price > price_limit) {
-                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, (decFormat) ?MsgUtil.decimalFormat(price_limit) : "" + price_limit));
+                    p.sendMessage(MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(price_limit) : "" + price_limit));
                     return;
                 }
             }
@@ -416,7 +416,7 @@ public class ShopManager {
             return;
         }
         Economy eco = plugin.getEconomy();
-        
+
         // Get the shop they interacted with
         Shop shop = plugin.getShopManager().getShop(info.getLocation());
         // It's not valid anymore
@@ -434,35 +434,46 @@ public class ShopManager {
                 amount = Integer.parseInt(message);
             } catch (NumberFormatException e) {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-		    int shopHaveSpaces = Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
-		    int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
-		    // Check if shop owner has enough money
-		    double ownerBalance = eco.getBalance(shop.getOwner());
-		    int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-                    if(!shop.isUnlimited()){
+                    int shopHaveSpaces = Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
+                    int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
+                    // Check if shop owner has enough money
+                    double ownerBalance = eco.getBalance(shop.getOwner());
+                    int ownerCanAfford;
+
+                    if(ownerBalance != 0) {
+                        if(shop.getPrice() != 0){
+                            ownerCanAfford = (int) (ownerBalance / shop.getPrice());
+                        }else{
+                            ownerCanAfford = Integer.MAX_VALUE;
+                        }
+                    }else {
+                        ownerCanAfford = 0;
+                    }
+
+                    if (!shop.isUnlimited()) {
                         amount = Math.min(shopHaveSpaces, invHaveItems);
-			amount = Math.min(amount, (int) ownerCanAfford);
+                        amount = Math.min(amount, ownerCanAfford);
                     } else {
                         amount = Util.countItems(p.getInventory(), shop.getItem());
-			// even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
-			// the unlimited shop owner should have enough money.
-			if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-			    amount = Math.min(amount, (int) ownerCanAfford);
-			}
+                        // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
+                        // the unlimited shop owner should have enough money.
+                        if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+                            amount = Math.min(amount, (int) ownerCanAfford);
+                        }
                     }
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
-			if (shopHaveSpaces == 0) {
-			   // when typed 'all' but the shop doesn't have any empty space
-			    p.sendMessage(MsgUtil
-				.getMessage("shop-has-no-space", p, "" + shopHaveSpaces, Util.getItemStackName(shop.getItem())));
-			    return;
-			}
-			if (ownerCanAfford == 0 && (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
-			    // when typed 'all' but the shop owner doesn't have enough money to buy at least 1 item (and shop isn't unlimited or pay-unlimited is true)
-			    p.sendMessage(MsgUtil
-				.getMessage("the-owner-cant-afford-to-buy-from-you", p, format(shop.getPrice()), format(ownerBalance)));
-			    return;
-			}
+                        if (shopHaveSpaces == 0) {
+                            // when typed 'all' but the shop doesn't have any empty space
+                            p.sendMessage(MsgUtil
+                                    .getMessage("shop-has-no-space", p, "" + shopHaveSpaces, Util.getItemStackName(shop.getItem())));
+                            return;
+                        }
+                        if (ownerCanAfford == 0 && (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
+                            // when typed 'all' but the shop owner doesn't have enough money to buy at least 1 item (and shop isn't unlimited or pay-unlimited is true)
+                            p.sendMessage(MsgUtil
+                                    .getMessage("the-owner-cant-afford-to-buy-from-you", p, format(shop.getPrice()), format(ownerBalance)));
+                            return;
+                        }
                         // when typed 'all' but player doesn't have any items to sell
                         p.sendMessage(MsgUtil.getMessage("you-dont-have-that-many-items", p, "" + amount, Util.getItemStackName(shop.getItem())));
                         return;
@@ -482,8 +493,8 @@ public class ShopManager {
                 int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
                 int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    if(!shop.isUnlimited()){
-                        amount = Math.min(shopHaveItems,invHaveSpaces);
+                    if (!shop.isUnlimited()) {
+                        amount = Math.min(shopHaveItems, invHaveSpaces);
                     } else {
                         // should check not having items but having empty slots, cause player is trying to buy items from the shop.
                         amount = Util.countSpace(p.getInventory(), shop.getItem());
@@ -499,11 +510,11 @@ public class ShopManager {
                             p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
                             return;
                         } else {
-			    // when if player's inventory is full
-			    if (invHaveSpaces == 0) {
-				p.sendMessage(MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
-				return;
-			    }
+                            // when if player's inventory is full
+                            if (invHaveSpaces == 0) {
+                                p.sendMessage(MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
+                                return;
+                            }
                             p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
                             return;
                         }
@@ -864,17 +875,17 @@ public class ShopManager {
             if (info == null) {
                 return; // multithreaded means this can happen
             }
-		
+
             if (info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-		p.sendMessage(MsgUtil.getMessage("not-looking-at-shop", p));
-		return;
-	    }
+                p.sendMessage(MsgUtil.getMessage("not-looking-at-shop", p));
+                return;
+            }
             if (info.getAction() == ShopAction.CREATE) {
                 actionCreate(p, actions, info, message, bypassProtectionChecks);
-	    }
-	    if (info.getAction() == ShopAction.BUY) {
+            }
+            if (info.getAction() == ShopAction.BUY) {
                 actionTrade(p, actions, info, message);
-	    }
+            }
         });
     }
 
@@ -1026,19 +1037,21 @@ public class ShopManager {
 
     /**
      * Get a players all shops.
+     *
      * @param playerUUID The player's uuid.
      * @return The list have this player's all shops.
      */
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID){
+    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
         return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
     }
 
     /**
      * Get the all shops in the world.
+     *
      * @param world The world you want get the shops.
      * @return The list have this world all shops
      */
-    public @NotNull List<Shop> getShopsInWorld(@NotNull World world){
+    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
     }
 }
