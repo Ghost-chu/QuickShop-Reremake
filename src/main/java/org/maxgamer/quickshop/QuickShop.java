@@ -1023,6 +1023,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 67) {
             getConfig().set("disable-debuglogger", false);
+            getConfig().set("matcher.use-bukkit-matcher", null);
             getConfig().set("config-version", 68);
             selectedVersion = 68;
         }
