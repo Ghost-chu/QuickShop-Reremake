@@ -171,15 +171,19 @@ public class Util {
         return space;
     }
 
+    static short tookLongTimeCostTimes;
     /**
      * Print debug log when plugin running on dev mode.
      *
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
-        if (QuickShop.instance.getConfig().getBoolean("disable-debuglogger", false)) {
-            return;
+        if(!devMode) {
+            if (QuickShop.instance.getConfig().getBoolean("disable-debuglogger", false)) {
+                return;
+            }
         }
+        long startTime = System.currentTimeMillis();
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
             Class c = Class.forName(className);
@@ -199,10 +203,20 @@ public class Util {
             if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
                 debugLogs.remove(0);
             }
-            if (!devMode) {
-                return;
+            if (devMode) {
+                QuickShop.instance.getLogger().info(text);
             }
-            plugin.getLogger().info(text);
+        }
+        long debugLogCost = System.currentTimeMillis() - startTime;
+        if(!devMode) {
+            if (debugLogCost > 3) {
+                tookLongTimeCostTimes++;
+                if (tookLongTimeCostTimes > 30) {
+                    QuickShop.instance.getConfig().set("disable-debuglogger", true);
+                    QuickShop.instance.saveConfig();
+                    QuickShop.instance.getLogger().warning("Detected the debug logger tooked time keep too lang, QuickShop already auto-disable debug logger, your server performance should back to normal. But you must re-enable it if you want to report any bugs.");
+                }
+            }
         }
     }
 
