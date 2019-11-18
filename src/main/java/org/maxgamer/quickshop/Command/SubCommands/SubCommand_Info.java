@@ -45,7 +45,7 @@ public class SubCommand_Info implements CommandProcesser {
                     } else if (shop.isSelling() && shop.getRemainingStock() == 0) {
                         nostock++;
                     }
-                    if(shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleChestShop()){
+                    if (shop instanceof ContainerShop && ((ContainerShop) shop).isDoubleChestShop()) {
                         doubleschests++;
                     }
                 }
@@ -55,7 +55,7 @@ public class SubCommand_Info implements CommandProcesser {
         sender.sendMessage(ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
         sender.sendMessage(ChatColor.GREEN + "" + (buying + selling) + " shops in " + chunks
                 + " chunks spread over " + worlds + " worlds.");
-        sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. ("+doubleschests+" shops create on double chest.)");
+        sender.sendMessage(ChatColor.GREEN + "" + doubles + " double shops. (" + doubleschests + " shops create on double chest.)");
         sender.sendMessage(ChatColor.GREEN + "" + nostock
                 + " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
         sender.sendMessage(ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());

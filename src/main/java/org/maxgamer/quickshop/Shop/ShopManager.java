@@ -440,13 +440,13 @@ public class ShopManager {
                     double ownerBalance = eco.getBalance(shop.getOwner());
                     int ownerCanAfford;
 
-                    if(ownerBalance != 0) {
-                        if(shop.getPrice() != 0){
+                    if (ownerBalance != 0) {
+                        if (shop.getPrice() != 0) {
                             ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-                        }else{
+                        } else {
                             ownerCanAfford = Integer.MAX_VALUE;
                         }
-                    }else {
+                    } else {
                         ownerCanAfford = 0;
                     }
 
