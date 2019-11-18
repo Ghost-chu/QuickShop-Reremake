@@ -86,7 +86,7 @@ public class PlayerListener implements Listener {
                 // Text menu
                 MsgUtil.sendShopInfo(p, shop);
                 shop.setSignText();
-				Economy eco = plugin.getEconomy();
+                Economy eco = plugin.getEconomy();
                 double price = shop.getPrice();
                 double money = plugin.getEconomy().getBalance(p.getUniqueId());
                 if (shop.isSelling()) {
@@ -99,17 +99,16 @@ public class PlayerListener implements Listener {
                     double ownerBalance = eco.getBalance(shop.getOwner());
                     int items = Util.countItems(p.getInventory(), shop.getItem());
                     int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-					if (!shop.isUnlimited()) {
-						// Amount check player amount and shop empty slot
-						items = Math.min(items, shop.getRemainingSpace());
-						// Amount check player selling item total cost and the shop owner's balance
-						items = Math.min(items, (int) ownerCanAfford);
-					} 
-					else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-						// even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
-						// the unlimited shop owner should have enough money.
-						items = Math.min(items, (int) ownerCanAfford);
-					}
+                    if (!shop.isUnlimited()) {
+                        // Amount check player amount and shop empty slot
+                        items = Math.min(items, shop.getRemainingSpace());
+                        // Amount check player selling item total cost and the shop owner's balance
+                        items = Math.min(items, (int) ownerCanAfford);
+                    } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+                        // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
+                        // the unlimited shop owner should have enough money.
+                        items = Math.min(items, (int) ownerCanAfford);
+                    }
                     p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
                 }
                 // Add the new action
