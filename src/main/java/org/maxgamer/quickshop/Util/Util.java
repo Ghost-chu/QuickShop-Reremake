@@ -209,7 +209,7 @@ public class Util {
         }
         long debugLogCost = System.currentTimeMillis() - startTime;
         if(!devMode) {
-            if (debugLogCost > 3) {
+            if (debugLogCost > 2) {
                 tookLongTimeCostTimes++;
                 if (tookLongTimeCostTimes > 30) {
                     QuickShop.instance.getConfig().set("disable-debuglogger", true);
