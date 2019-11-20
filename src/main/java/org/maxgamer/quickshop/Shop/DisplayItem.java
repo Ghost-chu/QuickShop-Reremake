@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* constant literal to check if item is quickshop display item
-*/
-static final String QUICKSHOP_DISPLAY_ITEM = "§q§s§ §d§i§s§p§l§a§y";
-
-/**
  * @author Netherfoam A display item, that spawns a block above the chest and
  * cannot be interacted with.
  */
 public interface DisplayItem {
+
+    /**
+    * constant literal to check if item is quickshop display item
+    */
+    static final String QUICKSHOP_DISPLAY_ITEM = "§q§s§ §d§i§s§p§l§a§y";
 
     /**
      * Check the itemStack is contains protect flag.
