@@ -23,7 +23,7 @@ public interface DisplayItem {
     /**
     * constant literal to check if item is quickshop display item
     */
-    static final String QUICKSHOP_DISPLAY_ITEM = "§q§s§ §d§i§s§p§l§a§y";
+    static final String QUICKSHOP_DISPLAY_ITEM = "quickshop display item";
 
     /**
      * Check the itemStack is contains protect flag.
