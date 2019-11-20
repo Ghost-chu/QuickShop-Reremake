@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+* constant literal to check if item is quickshop display item
+*/
+static final String QUICKSHOP_DISPLAY_ITEM = "§q§s§ §d§i§s§p§l§a§y";
+
+/**
  * @author Netherfoam A display item, that spawns a block above the chest and
  * cannot be interacted with.
  */
@@ -37,7 +42,7 @@ public interface DisplayItem {
         }
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta.hasDisplayName()) {
-            if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem")) {
+            if (iMeta.getDisplayName().toLowerCase().contains(QUICKSHOP_DISPLAY_ITEM)) {
                 return true;
             }
         }
@@ -127,7 +132,11 @@ public interface DisplayItem {
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-            iMeta.setDisplayName("QuickShop DisplayItem");
+			if (iMeta.hasDisplayName()) {
+				iMeta.setDisplayName(iMeta.getDisplayName() + QUICKSHOP_DISPLAY_ITEM);
+			} else {
+				iMeta.setDisplayName(Util.getItemStackName(itemStack) + QUICKSHOP_DISPLAY_ITEM);
+			}
         } else {
             iMeta.setDisplayName(null);
         }
