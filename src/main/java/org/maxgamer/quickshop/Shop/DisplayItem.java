@@ -21,6 +21,11 @@ import java.util.List;
 public interface DisplayItem {
 
     /**
+    * constant literal to check if item is quickshop display item
+    */
+    static final String QUICKSHOP_DISPLAY_ITEM = "quickshop display item";
+
+    /**
      * Check the itemStack is contains protect flag.
      *
      * @param itemStack Target ItemStack
@@ -37,7 +42,7 @@ public interface DisplayItem {
         }
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta.hasDisplayName()) {
-            if (iMeta.getDisplayName().toLowerCase().contains("quickshop displayitem")) {
+            if (iMeta.getDisplayName().toLowerCase().contains(QUICKSHOP_DISPLAY_ITEM)) {
                 return true;
             }
         }
@@ -127,7 +132,11 @@ public interface DisplayItem {
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-            iMeta.setDisplayName("QuickShop DisplayItem");
+			if (iMeta.hasDisplayName()) {
+				iMeta.setDisplayName(iMeta.getDisplayName() + QUICKSHOP_DISPLAY_ITEM);
+			} else {
+				iMeta.setDisplayName(Util.getItemStackName(itemStack) + QUICKSHOP_DISPLAY_ITEM);
+			}
         } else {
             iMeta.setDisplayName(null);
         }
