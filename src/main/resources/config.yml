@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 68
+config-version: 69
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -241,6 +241,11 @@ shop:
   #The worlds name for you didn't want create new shop.
   blacklist-world:
     - disabled_world_name
+
+  #The lores keyword on you didn't want allow sell item.
+  #Won't effect already created shops.
+  blacklist-lores:
+    - "SoulBound"
 
   #Protection check
   protection-checking: true
