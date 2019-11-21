@@ -60,7 +60,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                             p.sendMessage(MsgUtil.getMessage("no-double-chests", sender));
                             return;
                         }
-                        if (Util.isBlacklisted(item.getType())
+                        if (Util.isBlacklisted(item)
                                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
                             p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
                             return;
