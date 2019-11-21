@@ -669,11 +669,25 @@ public class Util {
     }
 
     /**
-     * @param m The material to check if it is blacklisted
-     * @return true if the material is black listed. False if not.
+     * @param stack The ItemStack to check if it is blacklisted
+     * @return true if the ItemStack is black listed. False if not.
      */
-    public static boolean isBlacklisted(@NotNull Material m) {
-        return blacklist.contains(m);
+    public static boolean isBlacklisted(@NotNull ItemStack stack) {
+        if (blacklist.contains(stack.getType())){
+            return true;
+        }
+        if(!stack.hasItemMeta()){
+            return false;
+        }
+        if(!stack.getItemMeta().hasLore()){
+            return  false;
+        }
+        for (String lore:stack.getItemMeta().getLore()) {
+            if(plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

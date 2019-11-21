@@ -1055,6 +1055,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 68);
             selectedVersion = 68;
         }
+        if (selectedVersion == 68){
+            ArrayList<String> temp = new ArrayList<>();;
+            temp.add("SoulBound");
+            getConfig().set("shop.blacklist-lores", temp);
+            getConfig().set("config-version", 69);
+            selectedVersion = 69;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
