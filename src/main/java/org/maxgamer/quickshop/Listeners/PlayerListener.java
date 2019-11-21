@@ -103,11 +103,11 @@ public class PlayerListener implements Listener {
                         // Amount check player amount and shop empty slot
                         items = Math.min(items, shop.getRemainingSpace());
                         // Amount check player selling item total cost and the shop owner's balance
-                        items = Math.min(items, (int) ownerCanAfford);
+                        items = Math.min(items, ownerCanAfford);
                     } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
                         // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
                         // the unlimited shop owner should have enough money.
-                        items = Math.min(items, (int) ownerCanAfford);
+                        items = Math.min(items, ownerCanAfford);
                     }
                     p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
                 }
