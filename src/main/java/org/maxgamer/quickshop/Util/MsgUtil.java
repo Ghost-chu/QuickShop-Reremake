@@ -153,7 +153,7 @@ public class MsgUtil {
     }
 
     /**
-     * Get item's i18n name
+     * Get item's i18n name, If you want get item name, use Util.getItemStackName
      *
      * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
      * @return String Item's i18n name.
