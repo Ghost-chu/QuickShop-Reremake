@@ -20,10 +20,10 @@ import java.util.List;
  */
 public interface DisplayItem {
 
-    /**
-    * constant literal to check if item is quickshop display item
-    */
-    static final String QUICKSHOP_DISPLAY_ITEM = "quickshop display item";
+//    /**
+//    * constant literal to check if item is quickshop display item
+//    */
+//    static final String QUICKSHOP_DISPLAY_ITEM = "quickshop display item";
 
     /**
      * Check the itemStack is contains protect flag.
@@ -41,11 +41,11 @@ public interface DisplayItem {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
-        if (iMeta.hasDisplayName()) {
-            if (iMeta.getDisplayName().toLowerCase().contains(QUICKSHOP_DISPLAY_ITEM)) {
-                return true;
-            }
-        }
+//        if (iMeta.hasDisplayName()) {
+//            if (iMeta.getDisplayName().toLowerCase().contains(QUICKSHOP_DISPLAY_ITEM)) {
+//                return true;
+//            }
+//        }
         if (!iMeta.hasLore()) {
             return false;
         }
@@ -133,9 +133,9 @@ public interface DisplayItem {
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
 			if (iMeta.hasDisplayName()) {
-				iMeta.setDisplayName(iMeta.getDisplayName() + QUICKSHOP_DISPLAY_ITEM);
+				iMeta.setDisplayName(iMeta.getDisplayName());
 			} else {
-				iMeta.setDisplayName(Util.getItemStackName(itemStack) + QUICKSHOP_DISPLAY_ITEM);
+				iMeta.setDisplayName(Util.getItemStackName(itemStack));
 			}
         } else {
             iMeta.setDisplayName(null);
