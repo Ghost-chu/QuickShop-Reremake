@@ -51,7 +51,7 @@ public class InternalListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop item x" + event
+        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
                 .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
                 .format(event.getTax()) + " tax).");
     }
