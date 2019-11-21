@@ -1062,6 +1062,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
+        if (selectedVersion == 69){
+            getConfig().set("shop.display-item-use-name", false);
+            getConfig().set("config-version", 70);
+            selectedVersion = 70;
+        }
+
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
