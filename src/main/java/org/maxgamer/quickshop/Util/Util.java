@@ -106,10 +106,12 @@ public class Util {
             if (plugin.getOpenInvPlugin() == null) {
                 return false;
             }
+        }else{
+            if (!(bs instanceof InventoryHolder)) {
+                return false;
+            }
         }
-        if (!(bs instanceof InventoryHolder)) {
-            return false;
-        }
+
         if (!isShoppables(b.getType())) {
             return false;
         }
