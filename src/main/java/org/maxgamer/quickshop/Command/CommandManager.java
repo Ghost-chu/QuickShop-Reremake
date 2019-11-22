@@ -87,6 +87,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.create.sell")
                 .executor(new SubCommand_SuperCreate())
                 .build());
+        registerCmd(CommandContainer.builder().prefix("cleanghost").permission("quickshop.cleanghost")
+                .executor(new SubCommand_CleanGhost())
+                .build());
     }
 
     @Override
