@@ -18,6 +18,7 @@ import org.maxgamer.quickshop.Util.Util;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -31,6 +32,8 @@ public class ShopLoader {
     private int loadAfterWorldLoaded = 0;
     private QuickShop plugin;
     private int totalLoaded = 0;
+    /* This may contains broken shop, must use null check before load it. */
+    @Getter private List<Shop> shopsInDatabase = new ArrayList<>();
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -103,6 +106,7 @@ public class ShopLoader {
                 Shop shop = new ContainerShop(data.getLocation(), data.getPrice(), data.getItem(), data.getModerators(), data
                         .isUnlimited(), data
                         .getType());
+                shopsInDatabase.add(shop);
 
                 if (shopNullCheck(shop)) {
                     Util.debugLog("Somethings gone wrong, skipping the loading...");
