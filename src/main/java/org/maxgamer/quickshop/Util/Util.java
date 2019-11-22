@@ -77,13 +77,13 @@ public class Util {
             return true; //Backup and logs by MySQL
         }
         File dataFolder = plugin.getDataFolder();
-        File sqlfile = new File(dataFolder, "shop.db");
+        File sqlfile = new File(dataFolder, "shops.db");
         if (!sqlfile.exists()) {
             plugin.getLogger().warning("Failed to backup! (File not found)");
             return false;
         }
         String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-        File bksqlfile = new File(dataFolder, "/shop_backup_" + uuid + ".db");
+        File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
         try {
             Files.copy(sqlfile, bksqlfile);
         } catch (Exception e1) {
