@@ -1,8 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -10,23 +8,19 @@ import org.maxgamer.quickshop.Shop.Shop;
  * Getting the unloading shop, Can't cancel.
  **/
 
-public class ShopUnloadEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
-    @Getter
-    private @NotNull Shop shop;
+public class ShopUnloadEvent extends QSEvent {
 
-    /* Getting the unloading shop, Can't cancel. **/
+    @NotNull
+    @Getter
+    private Shop shop;
+
+    /**
+     * Getting the unloading shop, Can't cancel.
+     *
+     * @param shop The shop to unload
+     */
     public ShopUnloadEvent(@NotNull Shop shop) {
         this.shop = shop;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 }

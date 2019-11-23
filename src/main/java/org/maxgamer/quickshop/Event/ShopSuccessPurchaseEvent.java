@@ -3,39 +3,42 @@ package org.maxgamer.quickshop.Event;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
+
     @Getter
-    private int amount;
+    private final int amount;
+
+    @Getter
+    @NotNull
+    private final Player player;
+
+    @Getter
+    @NotNull
+    private final Shop shop;
+
+    @Getter
+    private final double tax;
+
+    private final double total; //Don't use getter, we have important notice need told dev in javadoc.
+
     private boolean cancelled;
-    @Getter
-    @NotNull
-    private Player player;
-    @Getter
-    @NotNull
-    private Shop shop;
-    @Getter
-    private double tax;
-    private double total;
 
     /**
      * Builds a new shop purchase event
      * This time, purchase not start, please listen the ShopSuccessPurchaseEvent.
      *
      * @param shop   The shop bought from
-     * @param p      The player buying
+     * @param player The player buying
      * @param amount The amount they're buying
      * @param tax    The tax in this purchase
      * @param total  The money in this purchase
      */
-    public ShopSuccessPurchaseEvent(@NotNull Shop shop, @NotNull Player p, int amount, double total, double tax) {
+    public ShopSuccessPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount, double total, double tax) {
         this.shop = shop;
-        this.player = p;
+        this.player = player;
         this.amount = amount;
         this.tax = tax;
         this.total = total;
@@ -62,23 +65,13 @@ public class ShopSuccessPurchaseEvent extends Event implements Cancellable {
         return this.total;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
     @Override
     public boolean isCancelled() {
         return this.cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

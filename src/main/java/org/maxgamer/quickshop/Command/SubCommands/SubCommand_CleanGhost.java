@@ -1,12 +1,10 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -16,10 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_CleanGhost implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
@@ -29,11 +29,14 @@ public class SubCommand_CleanGhost implements CommandProcesser {
             sender.sendMessage(ChatColor.YELLOW+"This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
             return;
         }
+
         if(!cmdArg[0].equalsIgnoreCase("confirm")){
             sender.sendMessage(ChatColor.YELLOW+"This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
             return;
         }
+
         sender.sendMessage(ChatColor.GREEN+"Starting checking the shop be ghost, all does not exist shop will be removed...");
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -44,23 +47,25 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     if (shop == null) {
                         continue; //WTF
                     }
-                    //noinspection ConstantConditions
+                    /*
+                    shop.getItem() is a constant that has NotNull annotations so.
                     if (shop.getItem() == null) {
                         sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
                         shop.delete();
                         continue;
-                    }
+                    }*/
                     if (shop.getItem().getType() == Material.AIR) {
                         sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
                         shop.delete();
                         continue;
                     }
-                    //noinspection ConstantConditions
+                    /*
+                    shop.getLocation() is a constant that has NotNull annotations so.
                     if (shop.getLocation() == null) {
                         sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause location data is damaged.");
                         shop.delete();
                         continue;
-                    }
+                    }*/
                     if (shop.getLocation().getWorld() == null) {
                         sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause target world not loaded.");
                         shop.delete();
@@ -73,7 +78,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                         continue;
                     }
                     //Shop exist check
-                    Bukkit.getScheduler().runTask(plugin, () -> {
+                    plugin.getServer().getScheduler().runTask(plugin, () -> {
                         Util.debugLog("Posted to main server thread to continue access Bukkit API for shop "+shop);
                         if (!Util.canBeShop(shop.getLocation().getBlock())) {
                             sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause target location nolonger is a shop or disallow create the shop.");
