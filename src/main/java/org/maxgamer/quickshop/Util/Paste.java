@@ -179,10 +179,19 @@ public class Paste {
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
                 finalReport.append("\t*********************************\n");
             }
-
         } catch (Throwable th) {
             finalReport.append("\tFailed to get data\n");
         }
+        finalReport.append("================================================\n");
+        finalReport.append("Shops in DB:\n");
+        plugin.getShopLoader().getOriginShopsInDatabase().forEach((shopDatabaseInfoOrigin -> {
+            finalReport.append("\t").append(shopDatabaseInfoOrigin.toString()).append("\n");
+        }));
+        finalReport.append("================================================\n");
+        finalReport.append("Shops in Mem:\n");
+        plugin.getShopLoader().getShopsInDatabase().forEach((shop -> {
+            finalReport.append("\t").append(shop.toString()).append("\n");
+        }));
         finalReport.append("================================================\n");
 
         //Process the data to protect passwords.
