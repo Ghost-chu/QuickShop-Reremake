@@ -102,15 +102,7 @@ public class Util {
      */
     public static boolean canBeShop(@NotNull Block b) {
         BlockState bs = b.getState();
-        if (b.getType() != Material.ENDER_CHEST) {
-            if (!(bs instanceof InventoryHolder)) {
-                return false;
-            }
-        }else{
-            if (plugin.getOpenInvPlugin() == null) {
-                return false;
-            }
-        }
+
         if (!isShoppables(b.getType())) {
             return false;
         }
@@ -118,8 +110,12 @@ public class Util {
         if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
-        return true;
-
+        if (b.getType() == Material.ENDER_CHEST) {
+            if(plugin.getOpenInvPlugin() == null){
+                return false;
+            }
+        }
+        return bs instanceof InventoryHolder;
     }
 
     /**
