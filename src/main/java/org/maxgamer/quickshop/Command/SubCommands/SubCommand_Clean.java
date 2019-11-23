@@ -3,7 +3,6 @@ package org.maxgamer.quickshop.Command.SubCommands;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
@@ -15,10 +14,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SubCommand_Clean implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
@@ -28,13 +29,15 @@ public class SubCommand_Clean implements CommandProcesser {
             sender.sendMessage("Can't run this command by Console");
             return;
         }
+
         sender.sendMessage(MsgUtil.getMessage("command.cleaning", sender));
-        Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
+
+        final Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
+        final ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
         int i = 0;
-        java.util.ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
 
         while (shIt.hasNext()) {
-            Shop shop = shIt.next();
+            final Shop shop = shIt.next();
 
             try {
                 if (shop.getLocation().getWorld() != null && shop.isSelling() && shop.getRemainingStock() == 0
@@ -58,7 +61,5 @@ public class SubCommand_Clean implements CommandProcesser {
 
         MsgUtil.clean();
         sender.sendMessage(MsgUtil.getMessage("command.cleaned", sender, "" + i));
-        return;
-
     }
 }

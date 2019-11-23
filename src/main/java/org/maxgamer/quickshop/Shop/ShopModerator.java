@@ -27,6 +27,7 @@ public class ShopModerator {
 
     @NonNull
     private UUID owner;
+
     @NonNull
     private ArrayList<UUID> staffs;
 
