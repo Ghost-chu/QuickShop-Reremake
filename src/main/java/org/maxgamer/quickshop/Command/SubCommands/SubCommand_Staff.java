@@ -54,12 +54,12 @@ public class SubCommand_Staff implements CommandProcesser {
         if ("add".equals(cmdArg[0]) || "del".equals(cmdArg[0])) {
             if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
                 //Include
-                for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
                     tabList.add(offlinePlayer.getName());
                 }
             } else {
                 //Not Include
-                for (OfflinePlayer offlinePlayer : Bukkit.getOnlinePlayers()) {
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
                     tabList.add(offlinePlayer.getName());
                 }
             }
@@ -113,7 +113,7 @@ public class SubCommand_Staff implements CommandProcesser {
                                     sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                             }
                         case 2:
-                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(cmdArg[1]);
+                            OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(cmdArg[1]);
                             String offlinePlayerName = offlinePlayer.getName();
                             if (offlinePlayerName == null) {
                                 offlinePlayerName = "null";
