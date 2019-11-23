@@ -184,14 +184,12 @@ public class Paste {
         }
         finalReport.append("================================================\n");
         finalReport.append("Shops in DB:\n");
-        plugin.getShopLoader().getOriginShopsInDatabase().forEach((shopDatabaseInfoOrigin -> {
-            finalReport.append("\t").append(shopDatabaseInfoOrigin.toString()).append("\n");
-        }));
+        plugin.getShopLoader().getOriginShopsInDatabase().forEach((shopDatabaseInfoOrigin -> finalReport.append("\t").append(shopDatabaseInfoOrigin.toString()).append("\n")));
+        finalReport.append("Total: ").append(plugin.getShopLoader().getOriginShopsInDatabase().size()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
-        plugin.getShopLoader().getShopsInDatabase().forEach((shop -> {
-            finalReport.append("\t").append(shop.toString()).append("\n");
-        }));
+        plugin.getShopLoader().getShopsInDatabase().forEach((shop -> finalReport.append("\t").append(shop.toString()).append("\n")));
+        finalReport.append("Total: ").append(plugin.getShopLoader().getShopsInDatabase().size()).append("\n");
         finalReport.append("================================================\n");
 
         //Process the data to protect passwords.
