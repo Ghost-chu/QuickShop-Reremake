@@ -3,21 +3,22 @@ package org.maxgamer.quickshop.Event;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-public class ShopPurchaseEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopPurchaseEvent extends QSEvent implements Cancellable {
+
     @Getter
     @NotNull
-    private Shop shop;
+    private final Shop shop;
+
     @Getter
     @NotNull
-    private Player player;
+    private final Player player;
+
     @Getter
-    private int amount;
+    private final int amount;
+
     private boolean cancelled;
 
     /**
@@ -25,25 +26,14 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
      * This time, purchase not start, please listen the ShopSuccessPurchaseEvent.
      *
      * @param shop   The shop bought from
-     * @param p      The player buying
+     * @param player The player buying
      * @param amount The amount they're buying
      */
-    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player p, int amount) {
+    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount) {
         this.shop = shop;
-        this.player = p;
+        this.player = player;
         this.amount = amount;
     }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
 
     @Override
     public boolean isCancelled() {
@@ -51,7 +41,7 @@ public class ShopPurchaseEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
