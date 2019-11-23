@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +26,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
             return;
         }
 
-        Bukkit.getScheduler().runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
+        plugin.getServer().getScheduler().runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
     }
 
 }

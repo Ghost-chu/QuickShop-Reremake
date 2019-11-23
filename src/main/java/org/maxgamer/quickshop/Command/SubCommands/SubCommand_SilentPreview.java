@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
                 Util.debugLog("Exception on command, cancel.");
                 return;
             }
-            Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]),
+            Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]),
                     Integer.parseInt(cmdArg[1]), Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
             if (shop != null) {
                 if (shop instanceof ContainerShop) {

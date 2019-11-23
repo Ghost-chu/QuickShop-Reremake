@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
             return;
         }
         Player p = (Player) sender;
-        Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
+        Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
                 Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
         if (shop == null) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
