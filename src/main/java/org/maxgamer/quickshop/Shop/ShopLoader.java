@@ -1,8 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.gson.JsonSyntaxException;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,6 +33,7 @@ public class ShopLoader {
     private int totalLoaded = 0;
     /* This may contains broken shop, must use null check before load it. */
     @Getter private List<Shop> shopsInDatabase = new ArrayList<>();
+    @Getter private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new ArrayList<>();
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -97,6 +97,7 @@ public class ShopLoader {
                 Timer singleShopLoadTimer = new Timer(true);
 
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
+                originShopsInDatabase.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
                     singleShopLoaded(singleShopLoadTimer);
                     continue;
@@ -198,9 +199,8 @@ public class ShopLoader {
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
     }
 
-    @Getter
-    @Setter
-    class ShopDatabaseInfo {
+   @Data
+    public class ShopDatabaseInfo {
         private ItemStack item;
         private Location location;
         private ShopModerator moderators;
@@ -258,9 +258,8 @@ public class ShopLoader {
         }
     }
 
-    @Getter
-    @Setter
-    class ShopDatabaseInfoOrigin {
+    @Data
+    public class ShopDatabaseInfoOrigin {
         private String item;
         private String moderators;
         private double price;
