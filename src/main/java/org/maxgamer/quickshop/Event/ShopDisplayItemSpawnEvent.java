@@ -2,8 +2,6 @@ package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.DisplayItem;
@@ -14,52 +12,44 @@ import org.maxgamer.quickshop.Shop.Shop;
  * This event is called before the shop display item created
  */
 
-public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopDisplayItemSpawnEvent extends QSEvent implements Cancellable {
+
+    @Getter
+    @NotNull
+    private final DisplayType displayType;
+
+    @Getter
+    @NotNull
+    private final ItemStack itemStack;
+
+    @Getter
+    @NotNull
+    private final Shop shop;
+
     private boolean cancelled;
-    @Getter
-    @NotNull
-    private DisplayType displayType;
-    @Getter
-    @NotNull
-    private ItemStack itemStack;
-    @Getter
-    @NotNull
-    private Shop shop;
 
     /**
      * This event is called before the shop display item created
      *
      * @param shop        Target shop
      * @param displayType The displayType
-     * @param iStack      Target ItemStack
+     * @param itemStack   Target ItemStack
      */
-    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack, @NotNull DisplayType displayType) {
+    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
         this.shop = shop;
-        this.itemStack = iStack;
+        this.itemStack = itemStack;
         this.displayType = displayType;
     }
 
     /**
      * This event is called before the shop display item created
      *
-     * @param shop   Target shop
-     * @param iStack The ItemStack for spawning the displayItem
+     * @param shop      Target shop
+     * @param itemStack The ItemStack for spawning the displayItem
      */
     @Deprecated
-    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack iStack) {
-        this.shop = shop;
-        this.itemStack = iStack;
-        this.displayType = DisplayItem.getNowUsing();
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
+    public ShopDisplayItemSpawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack) {
+        this(shop, itemStack, DisplayItem.getNowUsing());
     }
 
     @Override
@@ -68,8 +58,8 @@ public class ShopDisplayItemSpawnEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
 }
