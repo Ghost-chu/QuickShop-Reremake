@@ -198,7 +198,7 @@ public class Util {
         for (String log : logs) {
             String text = "[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log;
             debugLogs.add(text);
-            if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
+            if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
                 debugLogs.remove(0);
             }
             if (devMode) {
