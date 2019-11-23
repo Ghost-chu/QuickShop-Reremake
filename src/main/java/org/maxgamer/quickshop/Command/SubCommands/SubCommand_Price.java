@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -110,7 +109,7 @@ public class SubCommand_Price implements CommandProcesser {
                         sender.sendMessage(
                                 MsgUtil.getMessage("fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                         try {
-                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account"))
+                            plugin.getEconomy().deposit(plugin.getServer().getOfflinePlayer(plugin.getConfig().getString("tax-account"))
                                     .getUniqueId(), fee);
                         } catch (Exception e) {
                             e.getMessage();
