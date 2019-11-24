@@ -39,9 +39,11 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         for (int i = 0; i < e.blockList().size(); i++) {
-            Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            final Block b = e.blockList().get(i);
+            final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
@@ -54,32 +56,34 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass())) {
+        if (ListenerHelper.isDisabled(e.getClass()) ||
+            !useEnhanceProtection) {
             return;
         }
-        if (!useEnhanceProtection) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(e.getToBlock().getLocation());
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(e.getToBlock().getLocation());
+
         if (shop == null) {
             return;
         }
+
         e.setCancelled(true);
     }
 
     //Protect Redstone active shop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass())) {
+        if (ListenerHelper.isDisabled(event.getClass()) ||
+            !useEnhanceProtection) {
             return;
         }
-        if (!useEnhanceProtection) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+
         if (shop == null) {
             return;
         }
+
         event.setNewCurrent(event.getOldCurrent());
         //plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
         //Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the following shop " + shop);
@@ -87,15 +91,15 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent e) {
-        if (ListenerHelper.isDisabled(e.getClass())) {
+        if (ListenerHelper.isDisabled(e.getClass()) ||
+            !useEnhanceProtection) {
             return;
         }
-        if (!useEnhanceProtection) {
-            return;
-        }
-        Block newBlock = e.getNewState().getBlock();
-        Shop thisBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getLocation());
-        Shop underBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getRelative(BlockFace.DOWN).getLocation());
+
+        final Block newBlock = e.getNewState().getBlock();
+        final Shop thisBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getLocation());
+        final Shop underBlockShop = plugin.getShopManager().getShopIncludeAttached(newBlock.getRelative(BlockFace.DOWN).getLocation());
+
         if (thisBlockShop == null && underBlockShop == null) {
             return;
         }
@@ -110,9 +114,11 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         for (int i = 0; i < e.blockList().size(); i++) {
-            Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            final Block b = e.blockList().get(i);
+            final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+
             if (shop != null) {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
@@ -129,58 +135,67 @@ public class ShopProtectionListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        Location loc = event.getSource().getLocation();
+
+        final Location loc = event.getSource().getLocation();
+
         if (loc == null) {
             return;
         }
-        HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
-        if (shopsInChunk == null || shopsInChunk.isEmpty()) {
+
+        final HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
+
+        if (shopsInChunk == null || shopsInChunk.isEmpty() || shopsInChunk.get(loc) == null) {
             return;
         }
-        if (shopsInChunk.get(loc) == null) {
-            return;
-        }
+
         event.setCancelled(true);
-        Location location = event.getInitiator().getLocation();
-        if (location != null) {
-            location.getBlock().breakNaturally();
-            MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at " + location + " try steal the items for shop " + loc);
+
+        final Location location = event.getInitiator().getLocation();
+
+        if (location == null) {
+            return;
         }
+
+        location.getBlock().breakNaturally();
+        MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at " + location + " try steal the items for shop " + loc);
     }
 
     //Protect Entity pickup shop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobChangeBlock(EntityChangeBlockEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass())) {
+        if (ListenerHelper.isDisabled(event.getClass()) ||
+            !useEnhanceProtection) {
             return;
         }
-        if (!useEnhanceProtection) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+
         if (shop == null) {
             return;
         }
+
         if (plugin.getConfig().getBoolean("protect.entity")) {
             event.setCancelled(true);
-        } else {
-            shop.delete();
+            return;
         }
+
+        shop.delete();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
-        if (ListenerHelper.isDisabled(event.getClass())) {
+        if (ListenerHelper.isDisabled(event.getClass()) ||
+            !useEnhanceProtection) {
             return;
         }
-        if (!useEnhanceProtection) {
-            return;
-        }
+
         for (BlockState blockstate : event.getBlocks()) {
-            Shop shop = plugin.getShopManager().getShopIncludeAttached(blockstate.getLocation());
+            final Shop shop = plugin.getShopManager().getShopIncludeAttached(blockstate.getLocation());
+
             if (shop == null) {
                 continue;
             }
+
             event.setCancelled(true);
             return;
             //plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
