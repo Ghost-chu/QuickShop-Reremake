@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+// TODO: 24/11/2019 Optimize codes
 public class SubCommand_Price implements CommandProcesser {
     private QuickShop plugin = QuickShop.instance;
 
