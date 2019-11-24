@@ -14,6 +14,9 @@ import java.util.List;
 public class SubCommand_FetchMessage implements CommandProcesser {
 
     @NotNull
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
