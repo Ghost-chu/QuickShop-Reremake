@@ -89,21 +89,23 @@ public class SubCommand_Create implements CommandProcesser {
                 return;
             }
 
+            // Send creation menu.
+            plugin.getShopManager().getActions().put(
+                p.getUniqueId(),
+                new Info(
+                    b.getLocation(),
+                    ShopAction.CREATE,
+                    p.getInventory().getItemInMainHand(),
+                    b.getRelative(p.getFacing().getOppositeFace())
+                )
+            );
+
             if (cmdArg.length >= 1) {
                 plugin.getShopManager().handleChat(p, cmdArg[0]);
 
                 return;
             }
 
-            // Send creation menu.
-            final Info info = new Info(
-                b.getLocation(),
-                ShopAction.CREATE,
-                p.getInventory().getItemInMainHand(),
-                b.getRelative(p.getFacing().getOppositeFace())
-            );
-
-            plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             p.sendMessage(
                 MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
 
