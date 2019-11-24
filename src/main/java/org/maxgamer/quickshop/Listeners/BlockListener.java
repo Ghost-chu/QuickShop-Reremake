@@ -15,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -24,7 +26,9 @@ import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class BlockListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     /**
      * Gets the shop a sign is attached to
@@ -32,12 +36,14 @@ public class BlockListener implements Listener {
      * @param loc The location of the sign
      * @return The shop
      */
-    private Shop getShopNextTo(Location loc) {
-        Block b = Util.getAttached(loc.getBlock());
+    @Nullable
+    private Shop getShopNextTo(@NotNull Location loc) {
+        final Block b = Util.getAttached(loc.getBlock());
         // Util.getAttached(b)
         if (b == null) {
             return null;
         }
+
         return plugin.getShopManager().getShop(b.getLocation());
     }
 
@@ -49,22 +55,24 @@ public class BlockListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Block b = e.getBlock();
+
+        final Block b = e.getBlock();
+
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
-            if (plugin.getConfig().getBoolean("lockette.enable")) {
-                if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) || sign.getLine(0).equals(plugin
-                        .getConfig().getString("lockette.more_users"))) {
-                    //Ignore break lockette sign
-                    plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
-                    return;
-                }
+            if (plugin.getConfig().getBoolean("lockette.enable") &&
+                sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) ||
+                sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                //Ignore break lockette sign
+                plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
+                return;
             }
         }
-        Player p = e.getPlayer();
+
+        final Player p = e.getPlayer();
         // If the shop was a chest
         if (Util.canBeShop(b)) {
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop == null) {
                 return;
             }
@@ -79,21 +87,25 @@ public class BlockListener implements Listener {
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
+
             if (e.isCancelled()) {
                 p.sendMessage(MsgUtil.getMessage("no-permission", p));
                 Util.debugLog("The action was cancelled by other plugin");
                 return;
             }
+
             if (!shop.getModerator().isOwner(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission", p));
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
-            Info action = plugin.getShopManager().getActions().get(p.getUniqueId());
+            final Info action = plugin.getShopManager().getActions().get(p.getUniqueId());
+
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
             }
+
             shop.onUnload();
             shop.delete();
             p.sendMessage(MsgUtil.getMessage("success-removed-shop", p));
@@ -106,7 +118,9 @@ public class BlockListener implements Listener {
                     return;
                 }
             }
-            Shop shop = getShopNextTo(b.getLocation());
+
+            final Shop shop = getShopNextTo(b.getLocation());
+
             if (shop == null) {
                 return;
             }
@@ -122,6 +136,7 @@ public class BlockListener implements Listener {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
+
             Util.debugLog("Cannot break the sign.");
             e.setCancelled(true);
         }
@@ -132,14 +147,19 @@ public class BlockListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        Location loc = event.getDestination().getLocation();
+
+        final Location loc = event.getDestination().getLocation();
+
         if (loc == null) {
             return;
         }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
+
         if (shop == null) {
             return;
         }
+
         shop.setSignText();
     }
 
@@ -151,13 +171,17 @@ public class BlockListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        BlockState bs = e.getBlock().getState();
+
+        final BlockState bs = e.getBlock().getState();
+
         if (!(bs instanceof DoubleChest)) {
             return;
         }
-        Block b = e.getBlock();
-        Player p = e.getPlayer();
-        Block chest = Util.getSecondHalf(b);
+
+        final Block b = e.getBlock();
+        final Player p = e.getPlayer();
+        final Block chest = Util.getSecondHalf(b);
+
         if (chest != null && plugin.getShopManager().getShop(chest.getLocation()) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             e.setCancelled(true);
             p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
