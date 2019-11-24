@@ -7,28 +7,32 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.InventoryPreview;
 
 @AllArgsConstructor
 public class CustomInventoryListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Inventory inventory = e.getInventory();
-        ItemStack[] stacks = inventory.getContents();
+
+        final Inventory inventory = e.getInventory();
+        final ItemStack[] stacks = inventory.getContents();
+
         for (ItemStack itemStack : stacks) {
-            if (itemStack == null) {
+            if (!InventoryPreview.isPreviewItem(itemStack)) {
                 continue;
             }
-            if (InventoryPreview.isPreviewItem(itemStack)) {
-                e.setCancelled(true);
-                e.setResult(Result.DENY);
-            }
+
+            e.setCancelled(true);
+            e.setResult(Result.DENY);
         }
     }
 
@@ -37,6 +41,7 @@ public class CustomInventoryListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         if (InventoryPreview.isPreviewItem(e.getItem())) {
             e.setCancelled(true);
         }
@@ -47,10 +52,12 @@ public class CustomInventoryListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         if (InventoryPreview.isPreviewItem(e.getCursor())) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }
+
         if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
@@ -62,15 +69,12 @@ public class CustomInventoryListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        if (InventoryPreview.isPreviewItem(e.getCursor())) {
-            e.setCancelled(true);
-            e.setResult(Result.DENY);
-        }
-        if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
-            e.setCancelled(true);
-            e.setResult(Result.DENY);
-        }
 
+        if (InventoryPreview.isPreviewItem(e.getCursor()) ||
+            InventoryPreview.isPreviewItem(e.getOldCursor())) {
+            e.setCancelled(true);
+            e.setResult(Result.DENY);
+        }
     }
 
     @EventHandler
@@ -78,15 +82,16 @@ public class CustomInventoryListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Inventory inventory = e.getInventory();
-        ItemStack[] stacks = inventory.getContents();
+
+        final Inventory inventory = e.getInventory();
+        final ItemStack[] stacks = inventory.getContents();
+
         for (ItemStack itemStack : stacks) {
-            if (itemStack == null) {
+            if (!InventoryPreview.isPreviewItem(itemStack)) {
                 continue;
             }
-            if (InventoryPreview.isPreviewItem(itemStack)) {
-                e.setCancelled(true);
-            }
+
+            e.setCancelled(true);
         }
     }
 }
