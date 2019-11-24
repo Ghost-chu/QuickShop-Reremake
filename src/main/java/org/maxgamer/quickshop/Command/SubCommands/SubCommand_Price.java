@@ -122,13 +122,13 @@ public class SubCommand_Price implements CommandProcesser {
                 return;
             }
 
-            if (fee > 0) {
-                if (!plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
-                    sender.sendMessage(MsgUtil.getMessage("you-cant-afford-to-change-price", sender,
-                        plugin.getEconomy().format(fee)));
-                    return;
-                }
+            if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
+                sender.sendMessage(MsgUtil.getMessage("you-cant-afford-to-change-price", sender,
+                    plugin.getEconomy().format(fee)));
+                return;
+            }
 
+            if (fee > 0) {
                 sender.sendMessage(
                     MsgUtil.getMessage("fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                 try {
