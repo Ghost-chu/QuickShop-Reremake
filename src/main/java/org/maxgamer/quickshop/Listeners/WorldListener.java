@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopChunk;
@@ -18,7 +19,9 @@ import java.util.Map.Entry;
 
 @AllArgsConstructor
 public class WorldListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
@@ -28,24 +31,27 @@ public class WorldListener implements Listener {
          * world value is the same.
          *  ************************************
          */
+        final World world = e.getWorld();
 
-        World world = e.getWorld();
         plugin.getShopLoader().loadShops(world.getName());
         // New world data
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<>(1);
+        final HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<>(1);
         // Old world data
-        HashMap<ShopChunk, HashMap<Location, Shop>> oldInWorld = plugin.getShopManager().getShops(world.getName());
+        final HashMap<ShopChunk, HashMap<Location, Shop>> oldInWorld = plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
         // update.
         if (oldInWorld == null) {
             return;
         }
+
         for (Entry<ShopChunk, HashMap<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
-            HashMap<Location, Shop> inChunk = new HashMap<>(1);
+            final HashMap<Location, Shop> inChunk = new HashMap<>(1);
             // Put the new chunk were the old chunk was
             inWorld.put(oldInChunk.getKey(), inChunk);
+
             for (Entry<Location, Shop> entry : oldInChunk.getValue().entrySet()) {
-                Shop shop = entry.getValue();
+                final Shop shop = entry.getValue();
+
                 shop.getLocation().setWorld(world);
                 inChunk.put(shop.getLocation(), shop);
             }
@@ -56,10 +62,12 @@ public class WorldListener implements Listener {
         // world first loads....
         // So manually tell all of these shops they're loaded.
         for (Chunk chunk : world.getLoadedChunks()) {
-            HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+            final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+
             if (inChunk == null || inChunk.isEmpty()) {
                 continue;
             }
+
             for (Shop shop : inChunk.values()) {
                 shop.onLoad();
             }
@@ -68,6 +76,7 @@ public class WorldListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent e) {
+        // FIXME: 24/11/2019 It's not necessary but ok.
         if (e.isCancelled()) {
             return;
         }
@@ -75,10 +84,12 @@ public class WorldListener implements Listener {
         // world unloads, I think...
         // So manually tell all of these shops they're unloaded.
         for (Chunk chunk : e.getWorld().getLoadedChunks()) {
-            HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+            final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+
             if (inChunk == null || inChunk.isEmpty()) {
                 continue;
             }
+
             for (Shop shop : inChunk.values()) {
                 shop.onUnload();
             }
