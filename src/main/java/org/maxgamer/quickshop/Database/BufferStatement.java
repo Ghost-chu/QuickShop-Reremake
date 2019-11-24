@@ -8,10 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-
 public class BufferStatement {
-    private String query;
-    private Object[] values;
+
+    @NotNull
+    private final String query;
+
+    @NotNull
+    private final Object[] values;
 
     /**
      * Represents a PreparedStatement in a state before preparing it (E.g. No
