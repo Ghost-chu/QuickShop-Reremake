@@ -244,7 +244,6 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Reserve();
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
-
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;

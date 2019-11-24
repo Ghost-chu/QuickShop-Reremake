@@ -4,6 +4,7 @@ import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
@@ -19,12 +20,22 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Use queue to solve run SQL make server lagg issue.
  */
 public class DatabaseManager {
-    private Database database;
-    private QuickShop plugin;
-    private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
+
+    private final Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
+
+    @NotNull
+    private final Database database;
+
+    @NotNull
+    private final QuickShop plugin;
+
+    @Nullable
     private BukkitTask task;
+
     private boolean useQueue;
-    private WarningSender warningSender;
+
+    @NotNull
+    private final WarningSender warningSender;
 
     /**
      * Queued database manager.

@@ -17,11 +17,16 @@ import java.util.concurrent.LinkedBlockingQueue;
  * A Util to execute all SQLs.
  */
 public class DatabaseHelper {
-    private Database db;
-    private QuickShop plugin;
-    private Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
 
-    public DatabaseHelper(QuickShop plugin, Database db) throws SQLException {
+    private final Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
+
+    @NotNull
+    private final Database db;
+
+    @NotNull
+    private final QuickShop plugin;
+
+    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db) throws SQLException {
         this.db = db;
         this.plugin = plugin;
         if (!db.hasTable(QuickShop.instance.getDbPrefix() + "shops")) {
