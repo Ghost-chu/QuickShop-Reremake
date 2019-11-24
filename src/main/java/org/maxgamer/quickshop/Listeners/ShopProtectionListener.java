@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -23,10 +24,12 @@ import java.util.HashMap;
 
 @SuppressWarnings("DuplicatedCode")
 public class ShopProtectionListener implements Listener {
-    private QuickShop plugin;
-    private boolean useEnhanceProtection;
 
-    public ShopProtectionListener(QuickShop plugin) {
+    @NotNull
+    private final QuickShop plugin;
+    private final boolean useEnhanceProtection;
+
+    public ShopProtectionListener(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
     }

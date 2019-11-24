@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
@@ -33,167 +34,194 @@ import java.util.UUID;
 //import com.griefcraft.lwc.LWCPlugin;
 @AllArgsConstructor
 public class PlayerListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-            Block b = e.getClickedBlock();
-            if (b == null) {
-                return;
-            }
-            if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
-                return;
-            }
-            Player p = e.getPlayer();
-            Location loc = b.getLocation();
-            ItemStack item = e.getItem();
-            // Get the shop
-            Shop shop = plugin.getShopManager().getShop(loc);
-            // If that wasn't a shop, search nearby shops
-            if (shop == null) {
-                Block attached;
-                if (Util.isWallSign(b.getType())) {
-                    attached = Util.getAttached(b);
-                    if (attached != null) {
-                        shop = plugin.getShopManager().getShop(attached.getLocation());
-                    }
-                } else if (Util.isDoubleChest(b)) {
-                    attached = Util.getSecondHalf(b);
-                    if (attached != null) {
-                        Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                        if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
-                            // If player not the owner of the shop, make him select the second half of the
-                            // shop
-                            // Otherwise owner will be able to create new double chest shop
-                            shop = secondHalfShop;
-                        }
-                    }
-                }
-            }
-            // Purchase handling
-            if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
-                if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
-                    return;
-                }
-                shop.onClick();
-                if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
-                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
-                }
-                // Text menu
-                MsgUtil.sendShopInfo(p, shop);
-                shop.setSignText();
-                Economy eco = plugin.getEconomy();
-                double price = shop.getPrice();
-                double money = plugin.getEconomy().getBalance(p.getUniqueId());
-                if (shop.isSelling()) {
-                    int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
-                    if (!shop.isUnlimited()) {
-                        itemAmount = Math.min(itemAmount, shop.getRemainingStock());
-                    }
-                    p.sendMessage(MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
-                } else {
-                    double ownerBalance = eco.getBalance(shop.getOwner());
-                    int items = Util.countItems(p.getInventory(), shop.getItem());
-                    int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-                    if (!shop.isUnlimited()) {
-                        // Amount check player amount and shop empty slot
-                        items = Math.min(items, shop.getRemainingSpace());
-                        // Amount check player selling item total cost and the shop owner's balance
-                        items = Math.min(items, ownerCanAfford);
-                    } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-                        // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
-                        // the unlimited shop owner should have enough money.
-                        items = Math.min(items, ownerCanAfford);
-                    }
-                    p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
-                }
-                // Add the new action
-                HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
-                Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
-                actions.put(p.getUniqueId(), info);
-                return;
-            }
-            // Handles creating shops
 
-            else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
-                    && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
-                if (e.useInteractedBlock() == Result.DENY) {
-                    return;
+        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
+                final Block block;
+
+                if (Util.isWallSign(e.getClickedBlock().getType())) {
+                    block = Util.getAttached(e.getClickedBlock());
+                } else {
+                    block = e.getClickedBlock();
                 }
-                if (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()) {
-                    return;
-                }
-                if (!plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
-                    // As of the new checking system, most plugins will tell the
-                    // player why they can't create a shop there.
-                    // So telling them a message would cause spam etc.
-                    return;
-                }
-                if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                    p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
-                    return;
-                }
-                if (Util.isBlacklisted(item)
-                        && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                    p.sendMessage(MsgUtil.getMessage("blacklisted-item", p));
-                    return;
-                }
-                if (b.getType() == Material.ENDER_CHEST) {
-                    if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
+
+                if (plugin.getShopManager().getShop(block.getLocation()) != null && (plugin.getShopManager().getShop(block
+                        .getLocation()).getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
+                    if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                         return;
                     }
-                }
-                // if (!Util.canBeShop(b)) {
-                //     Util.debugLog("Can be shop check failed.");
-                //     return;
-                // }
-                // Already checked above
-                if (Util.isWallSign(b.getType())) {
-                    Util.debugLog("WallSign check failed.");
-                    return;
-                }
-                // Finds out where the sign should be placed for the shop
-                Block last = null;
-                Location from = p.getLocation().clone();
-                from.setY(b.getY());
-                from.setPitch(0);
-                BlockIterator bIt = new BlockIterator(from, 0, 7);
-                while (bIt.hasNext()) {
-                    Block n = bIt.next();
-                    if (n.equals(b)) {
-                        break;
+
+                    if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
+                        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
                     }
-                    last = n;
+
+                    MsgUtil.sendControlPanelInfo(e.getPlayer(),
+                            plugin.getShopManager().getShop(block.getLocation()));
+                    plugin.getShopManager().getShop(block.getLocation()).setSignText();
                 }
-                // Send creation menu.
-                Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
-                plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-                p.sendMessage(
-                        MsgUtil.getMessage("how-much-to-trade-for", p, Util.getItemStackName(e.getItem())));
             }
-        } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
-            Block block;
-            if (Util.isWallSign(e.getClickedBlock().getType())) {
-                block = Util.getAttached(e.getClickedBlock());
+
+            return;
+        }
+
+        final Block b = e.getClickedBlock();
+
+        if (b == null) {
+            return;
+        }
+
+        if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
+            return;
+        }
+
+        final Player p = e.getPlayer();
+        final Location loc = b.getLocation();
+        final ItemStack item = e.getItem();
+        // Get the shop
+        Shop shop = plugin.getShopManager().getShop(loc);
+        // If that wasn't a shop, search nearby shops
+        if (shop == null) {
+            final Block attached;
+
+            if (Util.isWallSign(b.getType())) {
+                attached = Util.getAttached(b);
+
+                if (attached != null) {
+                    shop = plugin.getShopManager().getShop(attached.getLocation());
+                }
+            } else if (Util.isDoubleChest(b)) {
+                attached = Util.getSecondHalf(b);
+
+                if (attached != null) {
+                    Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                        // If player not the owner of the shop, make him select the second half of the
+                        // shop
+                        // Otherwise owner will be able to create new double chest shop
+                        shop = secondHalfShop;
+                    }
+                }
+            }
+        }
+        // Purchase handling
+        if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
+            if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
+                return;
+            }
+
+            shop.onClick();
+
+            if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
+                e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+            }
+            // Text menu
+            MsgUtil.sendShopInfo(p, shop);
+            shop.setSignText();
+
+            final Economy eco = plugin.getEconomy();
+            final double price = shop.getPrice();
+            final double money = plugin.getEconomy().getBalance(p.getUniqueId());
+
+            if (shop.isSelling()) {
+                int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
+
+                if (!shop.isUnlimited()) {
+                    itemAmount = Math.min(itemAmount, shop.getRemainingStock());
+                }
+
+                p.sendMessage(MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
             } else {
-                block = e.getClickedBlock();
-            }
-            if (plugin.getShopManager().getShop(block.getLocation()) != null && (plugin.getShopManager().getShop(block
-                    .getLocation()).getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
-                if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
-                    return;
+                final double ownerBalance = eco.getBalance(shop.getOwner());
+                int items = Util.countItems(p.getInventory(), shop.getItem());
+                final int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
+
+                if (!shop.isUnlimited()) {
+                    // Amount check player amount and shop empty slot
+                    items = Math.min(items, shop.getRemainingSpace());
+                    // Amount check player selling item total cost and the shop owner's balance
+                    items = Math.min(items, ownerCanAfford);
+                } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+                    // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
+                    // the unlimited shop owner should have enough money.
+                    items = Math.min(items, ownerCanAfford);
                 }
-                if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
-                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
-                }
-                MsgUtil.sendControlPanelInfo(e.getPlayer(),
-                        plugin.getShopManager().getShop(block.getLocation()));
-                plugin.getShopManager().getShop(block.getLocation()).setSignText();
+
+                p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
             }
+            // Add the new action
+            HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
+            Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
+            actions.put(p.getUniqueId(), info);
+        }
+        // Handles creating shops
+        else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
+                && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
+            if (e.useInteractedBlock() == Result.DENY ||
+                plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking() ||
+                !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
+                // As of the new checking system, most plugins will tell the
+                // player why they can't create a shop there.
+                // So telling them a message would cause spam etc.
+                return;
+            }
+
+            if (Util.getSecondHalf(b) != null && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
+                p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
+                return;
+            }
+
+            if (Util.isBlacklisted(item)
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
+                p.sendMessage(MsgUtil.getMessage("blacklisted-item", p));
+                return;
+            }
+
+            if (b.getType() == Material.ENDER_CHEST &&
+                !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
+                return;
+            }
+            /*if (!Util.canBeShop(b)) {
+                Util.debugLog("Can be shop check failed.");
+                return;
+            }
+            Already checked above*/
+
+            if (Util.isWallSign(b.getType())) {
+                Util.debugLog("WallSign check failed.");
+                return;
+            }
+            // Finds out where the sign should be placed for the shop
+            Block last = null;
+            final Location from = p.getLocation().clone();
+
+            from.setY(b.getY());
+            from.setPitch(0);
+            final BlockIterator bIt = new BlockIterator(from, 0, 7);
+
+            while (bIt.hasNext()) {
+                final Block n = bIt.next();
+
+                if (n.equals(b)) {
+                    break;
+                }
+
+                last = n;
+            }
+            // Send creation menu.
+            final Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
+
+            plugin.getShopManager().getActions().put(p.getUniqueId(), info);
+            p.sendMessage(
+                    MsgUtil.getMessage("how-much-to-trade-for", p, Util.getItemStackName(e.getItem())));
         }
     }
 
@@ -202,19 +230,27 @@ public class PlayerListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         try {
             Inventory inventory = e.getInventory();
+
+            // FIXME: 24/11/2019 inventory cannot be null
             if (inventory == null) {
                 return;
             }
-            Location location = inventory.getLocation();
+
+            final Location location = inventory.getLocation();
+
             if (location == null) {
                 return;
             }
-            Shop shop = plugin.getShopManager().getShop(location);
+
+            final Shop shop = plugin.getShopManager().getShop(location);
+
             if (shop == null) {
                 return;
             }
+
             shop.setSignText();
         } catch (Throwable t) {
             //Ignore
@@ -247,13 +283,17 @@ public class PlayerListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
+
+        final Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
+
         if (info == null) {
             return;
         }
-        Player p = e.getPlayer();
-        Location loc1 = info.getLocation();
-        Location loc2 = p.getLocation();
+
+        final Player p = e.getPlayer();
+        final Location loc1 = info.getLocation();
+        final Location loc2 = p.getLocation();
+
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.CREATE) {
                 p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
@@ -286,29 +326,26 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDyeing(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK ||
+            e.getItem() == null ||
+            !Util.isDyes(e.getItem().getType())) {
             return;
         }
-        if (e.getItem() == null) {
+
+        final Block block = e.getClickedBlock();
+
+        if (block == null ||
+            !Util.isWallSign(block.getType())) {
             return;
         }
-        if (!Util.isDyes(e.getItem().getType())) {
+
+        final Block attachedBlock = Util.getAttached(block);
+
+        if (attachedBlock == null ||
+            plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
             return;
         }
-        Block block = e.getClickedBlock();
-        if (block == null) {
-            return;
-        }
-        if (!Util.isWallSign(block.getType())) {
-            return;
-        }
-        Block attachedBlock = Util.getAttached(block);
-        if (attachedBlock == null) {
-            return;
-        }
-        if (plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
-            return;
-        }
+
         e.setCancelled(true);
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
