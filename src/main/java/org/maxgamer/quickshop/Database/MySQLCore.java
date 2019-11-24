@@ -10,13 +10,19 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class MySQLCore implements DatabaseCore {
+
+    private static final ArrayList<Connection> POOL = new ArrayList<>();
+
     private static final int MAX_CONNECTIONS = 8;
-    private static ArrayList<Connection> pool = new ArrayList<>();
+
     /**
      * The connection properties... user, pass, autoReconnect..
      */
-    private Properties info;
-    private String url;
+    @NotNull
+    private final Properties info;
+
+    @NotNull
+    private final String url;
 
     public MySQLCore(@NotNull String host, @NotNull String user, @NotNull String pass, @NotNull String database, @NotNull String port, boolean useSSL) {
         info = new Properties();
@@ -28,7 +34,7 @@ public class MySQLCore implements DatabaseCore {
         info.setProperty("useSSL", String.valueOf(useSSL));
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
-            pool.add(null);
+            POOL.add(null);
         }
     }
 
@@ -71,7 +77,7 @@ public class MySQLCore implements DatabaseCore {
     @Override
     public Connection getConnection() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
-            Connection connection = pool.get(i);
+            Connection connection = POOL.get(i);
             try {
                 // If we have a current connection, fetch it
                 if (connection != null && !connection.isClosed()) {
@@ -81,7 +87,7 @@ public class MySQLCore implements DatabaseCore {
                     // Else, it is invalid, so we return another connection.
                 }
                 connection = DriverManager.getConnection(this.url, info);
-                pool.set(i, connection);
+                POOL.set(i, connection);
                 return connection;
             } catch (SQLException e) {
                 e.printStackTrace();
