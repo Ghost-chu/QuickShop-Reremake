@@ -2,7 +2,7 @@
 name: Performance report
 about: Report the performance issue
 title: "[PERFORMANCE]"
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
@@ -23,9 +23,9 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Paste link:**
- Execute command /qs paste, you will got a link contains your server infomations, paste it under this text.
+ Execute command /qs paste, you will get a link contains your server information, paste it under this text.
  You must create a paste, except plugin completely won't work.
- If create failed, you should can find a paste file under plugin/QuickShop folder.
+ If you create failed, you should find a paste file under the plugin/QuickShop folder.
 - 【REPLACE ME TO PASTE LINK】
 
 **Timings link:**
