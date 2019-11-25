@@ -28,7 +28,7 @@ public class SubCommand_Create implements CommandProcesser {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final ArrayList<String> list = new ArrayList<>();
 
-        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
+        list.add(MsgUtil.getMessage("tabcomplete.price", sender));
 
         return list;
     }
