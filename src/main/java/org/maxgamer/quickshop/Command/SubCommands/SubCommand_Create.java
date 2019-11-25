@@ -26,7 +26,7 @@ public class SubCommand_Create implements CommandProcesser {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
+        list.add(MsgUtil.getMessage("tabcomplete.price", sender));
         return list;
     }
 
@@ -72,12 +72,18 @@ public class SubCommand_Create implements CommandProcesser {
                             return;
                         }
 
+                        // Send creation menu.
+                        plugin.getShopManager().getActions().put(
+                            p.getUniqueId(),
+                            new Info(
+                                b.getLocation(),
+                                ShopAction.CREATE,
+                                p.getInventory().getItemInMainHand(),
+                                b.getRelative(p.getFacing().getOppositeFace())
+                            )
+                        );
+
                         if (cmdArg.length < 1) {
-                            // Send creation menu.
-                            Info info = new Info(b.getLocation(), ShopAction.CREATE,
-                                    p.getInventory().getItemInMainHand(),
-                                    b.getRelative(p.getFacing().getOppositeFace()));
-                            plugin.getShopManager().getActions().put(p.getUniqueId(), info);
                             p.sendMessage(
                                     MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
                         } else {
