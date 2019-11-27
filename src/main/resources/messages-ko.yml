@@ -1,12 +1,9 @@
----
 not-a-number: "&cThere can only be number, but you input {0}"
 not-a-integer: "&cThere can only be integer, but you input {0}"
 command:
   toggle-unlimited:
     unlimited: "&aShop is now unlimited"
     limited: "&aShop is now limited"
-    ? ""
-      : "&a상점은 지금 {0} 입니다"
   no-owner-given: "&c주인이 없습니다! /qs setowner <플레이어 이름>을 사용하여 주인을 지정하세요!"
   new-owner: "&a새 주인:&e{0}"
   now-buying: "&a현재 &e{0}&a를 &d구매&a중 입니다"

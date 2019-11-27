@@ -1,12 +1,9 @@
----
 not-a-number: "&cThere can only be number, but you input {0}"
 not-a-integer: "&cThere can only be integer, but you input {0}"
 command:
   toggle-unlimited:
     unlimited: "&aShop is now unlimited"
     limited: "&aShop is now limited"
-    ? ""
-      : "&aМагазин теперь {0}"
   no-owner-given: "&cВладелец не установлен. Используйте команду &a/qs setowner <player>&c"
   new-owner: "&aНовый владелец: &e{0}"
   now-buying: "&aЭтот магазин теперь &dПОКУПАЕТ&a &e{0}"

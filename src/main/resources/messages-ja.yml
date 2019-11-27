@@ -1,12 +1,9 @@
----
 not-a-number: "&cThere can only be number, but you input {0}"
 not-a-integer: "&cThere can only be integer, but you input {0}"
 command:
   toggle-unlimited:
     unlimited: "&aShop is now unlimited"
     limited: "&aShop is now limited"
-    ? ""
-      : "&a現在のショップは {0}"
   no-owner-given: "&c所有者がありません。&a/qs setowner <プレイヤー名> &cで設定してください"
   new-owner: "&a新しい所有者 : &e{0}"
   now-buying: "&a現在 &d買取 &e{0}"
