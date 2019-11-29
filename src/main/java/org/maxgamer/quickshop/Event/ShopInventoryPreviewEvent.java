@@ -3,41 +3,30 @@ package org.maxgamer.quickshop.Event;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ShopInventoryPreviewEvent extends Event implements Cancellable {
+public class ShopInventoryPreviewEvent extends QSEvent implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    @Getter
+    @NotNull
+    private final ItemStack itemStack;
+
+    @Getter
+    @NotNull
+    private final Player player;
+
     private boolean cancelled;
-    @Getter
-    @NotNull
-    private ItemStack itemStack;
-    @Getter
-    @NotNull
-    private Player player;
 
     /**
      * Build a event when player using GUI preview
      *
-     * @param p         Target plugin
+     * @param player    Target plugin
      * @param itemStack The preview item, with preview flag.
      */
-    public ShopInventoryPreviewEvent(@NotNull Player p, @NotNull ItemStack itemStack) {
-        this.player = p;
+    public ShopInventoryPreviewEvent(@NotNull Player player, @NotNull ItemStack itemStack) {
+        this.player = player;
         this.itemStack = itemStack;
-    }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
     @Override
@@ -46,7 +35,7 @@ public class ShopInventoryPreviewEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
