@@ -4,17 +4,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_Update implements CommandProcesser {
-    QuickShop plugin = QuickShop.instance;
+
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -22,18 +29,24 @@ public class SubCommand_Update implements CommandProcesser {
             @Override
             public void run() {
                 sender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
-                UpdateInfomation updateInfomation = Updater.checkUpdate();
-                String updateVersion = updateInfomation.getVersion();
+
+                final UpdateInfomation updateInfomation = Updater.checkUpdate();
+                final String updateVersion = updateInfomation.getVersion();
+
                 if (updateVersion == null) {
                     sender.sendMessage(ChatColor.RED + "Failed check the update, connection issue?");
                     return;
                 }
+
                 if (updateVersion.equals(plugin.getDescription().getVersion())) {
                     sender.sendMessage(ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
+
                 sender.sendMessage(ChatColor.YELLOW + "Downloading update, this may need a while...");
-                byte[] pluginBin;
+
+                final byte[] pluginBin;
+
                 try {
                     pluginBin = Updater.downloadUpdatedJar();
                 } catch (IOException e) {
@@ -42,11 +55,14 @@ public class SubCommand_Update implements CommandProcesser {
                     e.printStackTrace();
                     return;
                 }
-                if (pluginBin == null || pluginBin.length < 1) {
+
+                if (pluginBin.length < 1) {
                     sender.sendMessage(ChatColor.RED + "Download failed, check your connection before contact the author.");
                     return;
                 }
+
                 sender.sendMessage(ChatColor.YELLOW + "Installing update...");
+
                 try {
                     Updater.replaceTheJar(pluginBin);
                 } catch (IOException ioe) {
@@ -58,14 +74,11 @@ public class SubCommand_Update implements CommandProcesser {
                     sender.sendMessage(ChatColor.RED + "Update failed, " + re.getMessage());
                     return;
                 }
+
                 sender.sendMessage(ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
             }
         }.runTaskAsynchronously(plugin);
 
     }
 
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return null;
-    }
 }

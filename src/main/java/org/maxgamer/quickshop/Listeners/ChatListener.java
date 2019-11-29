@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -13,17 +14,21 @@ import org.maxgamer.quickshop.Util.Util;
  */
 @AllArgsConstructor
 public class ChatListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
+
         if (e.isCancelled() && plugin.getConfig().getBoolean("shop.ignore-cancel-chat-event")) {
             Util.debugLog("Ignored a chat event (Canceled by another plugin.)");
             return;
         }
+
         if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
             return;
         }

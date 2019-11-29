@@ -110,11 +110,9 @@ public class Util {
         if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
-
         if (b.getType() == Material.ENDER_CHEST) {
             return plugin.getOpenInvPlugin() != null;
         }
-
         return bs instanceof InventoryHolder;
     }
 

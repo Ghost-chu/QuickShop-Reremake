@@ -1,11 +1,9 @@
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -17,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_SilentSell implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
@@ -30,17 +30,22 @@ public class SubCommand_SilentSell implements CommandProcesser {
             Util.debugLog("Exception on command, cancel.");
             return;
         }
-        Shop shop = plugin.getShopManager().getShop(new Location(Bukkit.getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
-                Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
-        if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-            shop.setShopType(ShopType.SELLING);
-            //shop.setSignText();
-            shop.update();
-            MsgUtil.sendControlPanelInfo(sender, shop);
-            sender.sendMessage(MsgUtil
-                    .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+
+        final Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
+            Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
+
+        if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+
+        shop.setShopType(ShopType.SELLING);
+        //shop.setSignText();
+        shop.update();
+        MsgUtil.sendControlPanelInfo(sender, shop);
+        sender.sendMessage(MsgUtil
+            .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+
     }
+
 }

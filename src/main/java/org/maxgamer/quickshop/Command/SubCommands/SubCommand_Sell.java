@@ -6,7 +6,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -18,36 +17,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_Sell implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Player) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-            if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-                return;
-            }
-            while (bIt.hasNext()) {
-                Block b = bIt.next();
-                Shop shop = plugin.getShopManager().getShop(b.getLocation());
-                if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-                    shop.setShopType(ShopType.SELLING);
-                    //shop.setSignText();
-                    shop.update();
-                    sender.sendMessage(MsgUtil
-                            .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
-                    return;
-                }
-            }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
+            return;
+        }
+
+        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+
+        if (!bIt.hasNext()) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
+
+        while (bIt.hasNext()) {
+            final Block b = bIt.next();
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+            if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+                continue;
+            }
+
+            shop.setShopType(ShopType.SELLING);
+            //shop.setSignText();
+            shop.update();
+            sender.sendMessage(MsgUtil
+                .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+            return;
+        }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
     }
+
 }

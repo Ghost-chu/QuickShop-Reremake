@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.InventoryPreview;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -27,13 +28,16 @@ import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class LockListener implements Listener {
-    private QuickShop plugin;
+
+    @NotNull
+    private final QuickShop plugin;
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
         if (!InventoryPreview.isPreviewItem(e.getItem())) {
             return;
         }
+
         e.setCancelled(true);
     }
 
@@ -44,6 +48,7 @@ public class LockListener implements Listener {
             e.setResult(Event.Result.DENY);
             return;
         }
+
         if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
@@ -57,21 +62,23 @@ public class LockListener implements Listener {
             e.setResult(Event.Result.DENY);
             return;
         }
+
         if (InventoryPreview.isPreviewItem(e.getOldCursor())) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
         }
-
     }
 
     @EventHandler
     public void invEvent(InventoryPickupItemEvent e) {
-        Inventory inventory = e.getInventory();
-        ItemStack[] stacks = inventory.getContents();
+        final Inventory inventory = e.getInventory();
+        final ItemStack[] stacks = inventory.getContents();
+
         for (ItemStack itemStack : stacks) {
             if (itemStack == null) {
                 continue;
             }
+
             if (InventoryPreview.isPreviewItem(itemStack)) {
                 e.setCancelled(true);
                 return;
@@ -85,8 +92,10 @@ public class LockListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
+
         if (b.getState() instanceof Sign) {
-            Sign sign = (Sign) b.getState();
+            final Sign sign = (Sign) b.getState();
+
             if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) || sign.getLine(0).equals(plugin
                     .getConfig().getString("lockette.more_users"))) {
                 //Ignore break lockette sign
@@ -94,10 +103,12 @@ public class LockListener implements Listener {
                 return;
             }
         }
-        Player p = e.getPlayer();
+
+        final Player p = e.getPlayer();
         // If the chest was a chest
         if (Util.canBeShop(b)) {
-            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+
             if (shop == null) {
                 return; // Wasn't a shop
             }
@@ -108,7 +119,8 @@ public class LockListener implements Listener {
             }
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
-                Sign sign = (Sign) b;
+                final Sign sign = (Sign) b;
+
                 if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) || sign.getLine(0).equals(plugin
                         .getConfig().getString("lockette.more_users"))) {
                     //Ignore break lockette sign
@@ -117,10 +129,13 @@ public class LockListener implements Listener {
                 }
             }
             b = Util.getAttached(b);
+
             if (b == null) {
                 return;
             }
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
             if (shop == null) {
                 return;
             }
@@ -129,7 +144,6 @@ public class LockListener implements Listener {
             if (!shop.getOwner().equals(p.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission", p));
-                return;
             }
         }
     }
@@ -139,22 +153,29 @@ public class LockListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Block b = e.getClickedBlock();
+
+        final Block b = e.getClickedBlock();
+
         if (b == null) {
             return;
         }
+
         if (!Util.canBeShop(b)) {
             return;
         }
-        Player p = e.getPlayer();
+
+        final Player p = e.getPlayer();
+
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return; // Didn't right click it, we dont care.
         }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
         // Make sure they're not using the non-shop half of a double chest.
         if (shop == null) {
             return;
         }
+
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
                 p.sendMessage(MsgUtil.getMessage("bypassing-lock", p));
@@ -162,31 +183,30 @@ public class LockListener implements Listener {
             }
             p.sendMessage(MsgUtil.getMessage("that-is-locked", p));
             e.setCancelled(true);
-            return;
         }
     }
-    /* Moved to ShopProtectionListener */
-//    /*
-//     * Handles shops breaking through explosions
-//     */
-//    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-//    public void onExplode(EntityExplodeEvent e) {
-//        for (int i = 0; i < e.blockList().size(); i++) {
-//            Block b = e.blockList().get(i);
-//            Shop shop = plugin.getShopManager().getShop(b.getLocation());
-//            if (shop != null) {
-//                e.blockList().remove(b); //Protect shop
-//            }
-//            if (Util.isWallSign(b.getType())) {
-//                Block block = Util.getAttached(b);
-//                if (block != null) {
-//                    shop = plugin.getShopManager().getShop(block.getLocation());
-//                    if (shop != null) {
-//                        e.blockList().remove(b); //Protect shop
-//                }
-//            }
-//        }
-//    }
+    /* Moved to ShopProtectionListener
+     * Handles shops breaking through explosions
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onExplode(EntityExplodeEvent e) {
+        for (int i = 0; i < e.blockList().size(); i++) {
+            Block b = e.blockList().get(i);
+            Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            if (shop != null) {
+                e.blockList().remove(b); //Protect shop
+            }
+            if (Util.isWallSign(b.getType())) {
+                Block block = Util.getAttached(b);
+                if (block != null) {
+                    shop = plugin.getShopManager().getShop(block.getLocation());
+                    if (shop != null) {
+                        e.blockList().remove(b); //Protect shop
+                    }
+                }
+            }
+        }
+    }
+     */
 
     /*
      * Handles hopper placement
@@ -196,11 +216,15 @@ public class LockListener implements Listener {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
-        Block b = e.getBlock();
+
+        final Block b = e.getBlock();
+
         if (b.getType() != Material.HOPPER) {
             return;
         }
-        Player p = e.getPlayer();
+
+        final Player p = e.getPlayer();
+
         if (!Util.isOtherShopWithinHopperReach(b, p)) {
             return;
         }
@@ -209,8 +233,8 @@ public class LockListener implements Listener {
             p.sendMessage(MsgUtil.getMessage("bypassing-lock", p));
             return;
         }
+
         p.sendMessage(MsgUtil.getMessage("that-is-locked", p));
         e.setCancelled(true);
-        return;
     }
 }
