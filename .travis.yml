@@ -8,7 +8,7 @@ jdk:
 install: false
 script:
 - export PROJECT_NAME=QuickShop-Reremake
-- git clone https://$Github_token@github.com/Ghost-chu/$PROJECT_NAME.git
+- git clone https://github.com/Ghost-chu/$PROJECT_NAME.git
 - cd $PROJECT_NAME
 - mvn clean
 - mvn -T 4 install
