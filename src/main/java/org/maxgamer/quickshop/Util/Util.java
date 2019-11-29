@@ -612,33 +612,42 @@ public class Util {
         if (inv == null) {
             return;
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    for (int i = 0; i < inv.getSize(); i++) {
-                        ItemStack itemStack = inv.getItem(i);
-                        if (itemStack == null) {
-                            continue;
-                        }
-                        if (DisplayItem.checkIsGuardItemStack(itemStack)) {
-                            // Found Item and remove it.
-                            Location location = inv.getLocation();
-                            if (location == null) {
-                                return; //Virtual GUI
-                            }
-                            plugin.getSyncTaskWatcher().getInventoryEditQueue()
-                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
-                            Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
-                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location.toString() + ", Item is " + itemStack
-                                    .getType().name());
-                        }
+        if(!AsyncDetector.isAsync()){
+            inventoryCheckMethod(inv);
+        }else{
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    inventoryCheckMethod(inv);
+                }
+            }.runTaskAsynchronously(plugin);
+        }
+
+    }
+
+    private static void inventoryCheckMethod(@NotNull Inventory inv){
+        try {
+            for (int i = 0; i < inv.getSize(); i++) {
+                ItemStack itemStack = inv.getItem(i);
+                if (itemStack == null) {
+                    continue;
+                }
+                if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+                    // Found Item and remove it.
+                    Location location = inv.getLocation();
+                    if (location == null) {
+                        return; //Virtual GUI
                     }
-                } catch (Throwable t) {
-                    //Ignore
+                    plugin.getSyncTaskWatcher().getInventoryEditQueue()
+                            .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
+                    Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
+                    MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location.toString() + ", Item is " + itemStack
+                            .getType().name());
                 }
             }
-        }.runTaskAsynchronously(plugin);
+        } catch (Throwable t) {
+            //Ignore
+        }
     }
 
     public static boolean isAir(@NotNull Material mat) {
