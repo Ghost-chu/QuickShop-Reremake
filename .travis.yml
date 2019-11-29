@@ -2,46 +2,46 @@ language: java
 sudo: required
 cache:
   directories:
-    - '$HOME/.m2/repository'
+  - "$HOME/.m2/repository"
 jdk:
-  - openjdk8
+- openjdk8
 install: false
 script:
-  - export PROJECT_NAME=QuickShop-Reremake
-  - git clone https://$Github_token@github.com/Ghost-chu/$PROJECT_NAME.git
-  - cd $PROJECT_NAME
-  - mvn clean
-  - mvn -T 4 install
+- export PROJECT_NAME=QuickShop-Reremake
+- git clone https://$Github_token@github.com/Ghost-chu/$PROJECT_NAME.git
+- cd $PROJECT_NAME
+- mvn clean
+- mvn -T 4 install
 after_success:
-  - rm -rf push
-  - mkdir push
-  - cp -r ./target/*.jar ./push/
-  - mkdir devbukkit
-  - cp -r ./target/*.jar ./devbukkit/
-  - rm -f ./devbukkit/original-*.jar
-  - rm -f ./devbukkit/*-javadoc.jar
-  - rm -f ./devbukkit/*-shaded.jar
-  - rm -f ./devbukkit/*-sources.jar
-  - rm -f ./target/original-*.jar
-  - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
-  - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
-  - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
-  - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
-  - cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
-  - echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
-    [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
-    > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
-  - cd BinaryRepository
-  - git add .
-  - git commit -m "Auto update by Bot"
-  - git push --force
-  - cd ..
-  - echo "done"
+- rm -rf push
+- mkdir push
+- cp -r ./target/*.jar ./push/
+- mkdir devbukkit
+- cp -r ./target/*.jar ./devbukkit/
+- rm -f ./devbukkit/original-*.jar
+- rm -f ./devbukkit/*-javadoc.jar
+- rm -f ./devbukkit/*-shaded.jar
+- rm -f ./devbukkit/*-sources.jar
+- rm -f ./target/original-*.jar
+- ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+- git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
+  [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
+  > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
+- cd BinaryRepository
+- git add .
+- git commit -m "Auto update by Bot"
+- git push --force
+- cd ..
+- echo "done"
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: e+gUx17WYL9z0iHrC+KWpXXYtcoy+/YNO3AC23r10Fs3un/K6szY39b+1C/23p6hGtdgGVRxmcl9fwkCq0/IHQba8gYxIqCLRx0j/+CqxYpKvZ3+GFD3auQpSdAEBM5q6mo4PSim/0lO+5ZiRkbYy7efidTxOLw++yUny4kEr0JndQAvDYvYKDRK50ut5IMX+jN8X+tVvYkwKRtI8XLGC5NNCQ4/kVUFTJw3YfQ863lj+6d0gyJVwgcaKSc+o9AwJPaQBbHxCIGj4Ib2KaiSw+rdFmgQ8mj07tWTX3OE6bAWJUraTQeiJL+muEADT1te60F2wlM/uQ/ZvoWzheDVshuGeXsoaflCR9Qm3ed1O8lTyBNY227Ay5S5qhZ2r03d0pALyBuaMwvbt1nINpMvKiJKMG3Z9EqqhupX0X5E6VKTOMMHSY1gtxip+zh1xR0WHxkMjAVlc1lfa3B907uSy6VUkw+6baa1aCDEuzKHMntbVWkiBglI66ECC7ocOb2rzGMrbLHrylBVeRw4ymZKfjG4opMpHQiTe1jC4SGJUSCGRBT1I6fgP73MmWo4XpMq2u5/f9OMOezllMTHhhCfjeyeg6elENJqGJ6Miu0BFoXTYmAQKyS5c1HoRfIHF4Ng3HIQm7PnzW7RCv3grjYl6ulo+vGxKbhQBzRNpcieZkc=
+    secure: zud+sCLyNxYLV5hF6gDgGPlptS/hysJYsGWBeScNUsP6wy5/8Mctu/puleLOx+CdFuoeIS5PYWwkQ7FPJX0jkKaflMAJN3SbsdGp2kCCayC+yFHKjMmu7+MgSS0xL3Y02EOHxBHhFgalhhYnWDsAWvTzyT0C4yB5N8EmTF7cydJoxTA5Dhbi3rYRfDz62dw8OAdcZOjHJoCZzcdeChIspxJRqDy8SDwU7e7u5S830nT/34fy34MJEih2pZewKcY0499WulGT5VTMoyxx0VpRpLvZrCkZI+XbsckFucsJwkK0bsZE5UB3DKtpx0KsPBDJuaIIIUj1Bfanaq2EGPyT50124R9IdLNWu4tLwVaqN4AmTwEisLviBqo8KNDn4HLVLlqP3+Xiu9HbA7y+WEhgSFwSBDgmCiYLSxM6kHXdCqKSa1Tngbp9t1FqwoSTGWaiRJ31GYU6o7TXqT3frRQ1qiS1gQ/kqRAgNWp6hlwDuacvCOIc7zCCOHWvBm2q7i/WjCy2zWJyP4BnH+xeSi2FcGLemvfpBiYwIShtMA9i2q/4QigIQrjf/A3UDGrK+8OIDCvOoAy8Xviifh0Veq9ZeKDZKzwvBsNsp08GNcJ4jrZnIhITreNH80UTMOk9nGcUilCdNc2fNwM3+mZKwxbNRM9FOkQyLuOzTT91FUJgQ8Y=
   file:
     - ./push/*
   file_glob: true
@@ -50,5 +50,5 @@ deploy:
     tags: true
   overwrite: true
 after_deploy:
-  - chmod +x deploy.sh
-  - "./deploy.sh $Curse_token"
+- chmod +x deploy.sh
+- "./deploy.sh $Curse_token"
