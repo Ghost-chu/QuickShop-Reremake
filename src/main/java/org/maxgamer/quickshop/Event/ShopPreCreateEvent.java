@@ -4,8 +4,6 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -14,36 +12,29 @@ import org.jetbrains.annotations.NotNull;
  * much they wish to trade for.
  */
 
-public class ShopPreCreateEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopPreCreateEvent extends QSEvent implements Cancellable {
+
+    @Getter
+    @NotNull
+    private final Location location;
+
+    @Getter
+    @NotNull
+    private final Player player;
+
     private boolean cancelled;
-    @Getter
-    @NotNull
-    private Location location;
-    @Getter
-    @NotNull
-    private Player player;
 
     /**
      * Calling when shop pre-creating.
-     * Shop won't one-percent will create after this event, if you want get the shop created event, please use ShopCreateEvent
+     * Shop won't one-percent will create after this event,
+     * if you want get the shop created event, please use ShopCreateEvent
      *
-     * @param p   Target player
-     * @param loc The location will create be shop
+     * @param player   Target player
+     * @param location The location will create be shop
      */
-    public ShopPreCreateEvent(@NotNull Player p, @NotNull Location loc) {
-        this.location = loc;
-        this.player = p;
-    }
-
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
+    public ShopPreCreateEvent(@NotNull Player player, @NotNull Location location) {
+        this.location = location;
+        this.player = player;
     }
 
     @Override
@@ -52,7 +43,7 @@ public class ShopPreCreateEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

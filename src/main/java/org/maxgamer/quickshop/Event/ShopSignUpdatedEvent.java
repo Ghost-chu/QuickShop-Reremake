@@ -2,8 +2,6 @@ package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
 import org.bukkit.block.Sign;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -11,32 +9,25 @@ import org.maxgamer.quickshop.Shop.Shop;
  * Calling when shop sign update, Can't cancel
  **/
 
-public class ShopSignUpdatedEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopSignUpdatedEvent extends QSEvent {
+
     @Getter
     @NotNull
-    private Shop shop;
+    private final Shop shop;
+
     @Getter
     @NotNull
-    private Sign sign;
+    private final Sign sign;
 
     /**
      * Will call when shop price was changed.
      *
      * @param shop Target shop
-     * @param sign updated sign
+     * @param sign Updated sign
      */
     public ShopSignUpdatedEvent(@NotNull Shop shop, @NotNull Sign sign) {
         this.shop = shop;
         this.sign = sign;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
-    }
 }

@@ -37,8 +37,13 @@ public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private boolean isLoaded = false;
-    private ItemStack item;
-    private Location loc;
+
+    @NotNull
+    private final ItemStack item;
+
+    @NotNull
+    private final Location location;
+
     private ShopModerator moderator;
     private QuickShop plugin;
     private double price;
@@ -49,7 +54,7 @@ public class ContainerShop implements Shop {
         this.displayItem = s.displayItem;
         this.shopType = s.shopType;
         this.item = s.item;
-        this.loc = s.loc;
+        this.location = s.location;
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
         this.moderator = s.moderator;
@@ -60,7 +65,7 @@ public class ContainerShop implements Shop {
     /**
      * Adds a new shop.
      *
-     * @param loc       The location of the chest block
+     * @param location       The location of the chest block
      * @param price     The cost per item
      * @param item      The itemstack with the properties we want. This is .cloned, no
      *                  need to worry about references
@@ -68,8 +73,8 @@ public class ContainerShop implements Shop {
      * @param type      The shop type
      * @param unlimited The unlimited
      */
-    public ContainerShop(@NotNull Location loc, double price, @NotNull ItemStack item, @NotNull ShopModerator moderator, boolean unlimited, @NotNull ShopType type) {
-        this.loc = loc;
+    public ContainerShop(@NotNull Location location, double price, @NotNull ItemStack item, @NotNull ShopModerator moderator, boolean unlimited, @NotNull ShopType type) {
+        this.location = location;
         this.price = price;
         this.moderator = moderator;
         this.item = item.clone();
@@ -166,7 +171,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull Location getLocation() {
-        return this.loc;
+        return this.location;
     }
 
     /**
@@ -564,7 +569,7 @@ public class ContainerShop implements Shop {
      */
     public @Nullable Inventory getInventory() {
         try {
-            if (loc.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
+            if (location.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
                 )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
@@ -575,7 +580,7 @@ public class ContainerShop implements Shop {
         }
         InventoryHolder container;
         try {
-            container = (InventoryHolder) this.loc.getBlock().getState();
+            container = (InventoryHolder) this.location.getBlock().getState();
             return container.getInventory();
         } catch (Exception e) {
             this.onUnload();
@@ -684,9 +689,9 @@ public class ContainerShop implements Shop {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Shop " + (loc.getWorld() == null ?
+        StringBuilder sb = new StringBuilder("Shop " + (location.getWorld() == null ?
                 "unloaded world" :
-                loc.getWorld().getName()) + "(" + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+                location.getWorld().getName()) + "(" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + ")");
         sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
@@ -710,10 +715,10 @@ public class ContainerShop implements Shop {
             return signs;
         }
         Block[] blocks = new Block[4];
-        blocks[0] = loc.getBlock().getRelative(BlockFace.EAST);
-        blocks[1] = loc.getBlock().getRelative(BlockFace.NORTH);
-        blocks[2] = loc.getBlock().getRelative(BlockFace.SOUTH);
-        blocks[3] = loc.getBlock().getRelative(BlockFace.WEST);
+        blocks[0] = location.getBlock().getRelative(BlockFace.EAST);
+        blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
+        blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
+        blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         final String signHeader = MsgUtil.getMessageOfflinePlayer("signs.header", player, "");
         final String signHeader2 = MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
