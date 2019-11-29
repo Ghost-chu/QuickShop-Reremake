@@ -16,10 +16,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.AsyncDetector;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -398,20 +400,58 @@ public class ContainerShop implements Shop {
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
             Util.debugLog("Target item not spawned, spawning...");
-            this.displayItem.spawn();
+            if (!AsyncDetector.isAsync()) {
+                displayItem.spawn();
+            } else {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        displayItem.spawn();
+                    }
+                }.runTask(plugin);
+            }
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
             if (this.displayItem.checkDisplayNeedRegen()) {
-                this.displayItem.fixDisplayNeedRegen();
+                if (!AsyncDetector.isAsync()) {
+                    displayItem.fixDisplayNeedRegen();
+                } else {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            displayItem.fixDisplayNeedRegen();
+                        }
+                    }.runTask(plugin);
+                }
             } else {/* If display was regened, we didn't need check it moved, performance! */
                 if (this.displayItem.checkDisplayIsMoved()) {
-                    this.displayItem.fixDisplayMoved();
+                    if (!AsyncDetector.isAsync()) {
+                        displayItem.fixDisplayMoved();
+                    } else {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                displayItem.fixDisplayMoved();
+                            }
+                        }.runTask(plugin);
+                    }
+
                 }
             }
         }
         /* Dupe is always need check, if enabled display */
         if (plugin.isDisplay()) {
-            this.displayItem.removeDupe();
+
+            if (!AsyncDetector.isAsync()) {
+                displayItem.removeDupe();
+            } else {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        displayItem.removeDupe();
+                    }
+                }.runTask(plugin);
+            }
         }
     }
 
