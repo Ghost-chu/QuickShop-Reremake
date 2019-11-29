@@ -100,37 +100,37 @@ public class UpdateWatcher implements Listener {
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
+        if (!hasNewUpdate || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
+            return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (hasNewUpdate && QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
-                    if (!info.isBeta()) {
-                        List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
-                        Random random = new Random();
-                        int notifyNum = random.nextInt(notifys.size());
-                        String notify = notifys.get(notifyNum);
-                        notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
+                if (!info.isBeta()) {
+                    List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
+                    Random random = new Random();
+                    int notifyNum = random.nextInt(notifys.size());
+                    String notify = notifys.get(notifyNum);
+                    notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
 
-                        TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
-                                .getMessage("updatenotify.buttontitle", e.getPlayer()));
-                        TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
-                                .getMessage("updatenotify.onekeybuttontitle", e.getPlayer()));
-                        updatenow
-                                .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
-                        onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
-                        TextComponent finallyText = new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
-                        e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                        e.getPlayer().sendMessage(ChatColor.GREEN + notify);
-                        e.getPlayer().spigot().sendMessage(finallyText);
-                        e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                    } else {
-                        e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
-                        e.getPlayer().sendMessage(ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
-                        e.getPlayer()
-                                .sendMessage(ChatColor.GRAY + "This is a BETA version, which means you should use it with caution.");
-                    }
+                    TextComponent updatenow = new TextComponent(ChatColor.AQUA + MsgUtil
+                            .getMessage("updatenotify.buttontitle", e.getPlayer()));
+                    TextComponent onekeyupdate = new TextComponent(ChatColor.YELLOW + MsgUtil
+                            .getMessage("updatenotify.onekeybuttontitle", e.getPlayer()));
+                    updatenow
+                            .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
+                    onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                    TextComponent finallyText = new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
+                    e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                    e.getPlayer().sendMessage(ChatColor.GREEN + notify);
+                    e.getPlayer().spigot().sendMessage(finallyText);
+                    e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                } else {
+                    e.getPlayer().sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
+                    e.getPlayer().sendMessage(ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
+                    e.getPlayer()
+                            .sendMessage(ChatColor.GRAY + "This is a BETA version, which means you should use it with caution.");
                 }
-
             }
         }.runTaskLater(QuickShop.instance, 80);
     }
