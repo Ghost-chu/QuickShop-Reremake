@@ -4,33 +4,36 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ShopProtectionCheckEvent extends Event {
-    private static final HandlerList HANDLERS = new HandlerList();
+public class ShopProtectionCheckEvent extends QSEvent {
+
     @Getter
     @NotNull
-    private Player player;
+    private final Player player;
+
     @Getter
     @NotNull
-    private Location loc;
+    private final Location loc;
+
     @NotNull
-    private Event event; //Don't use getter, we have important notice need told dev in javadoc.
+    private final Event event; //Don't use getter, we have important notice need told dev in javadoc.
+
     @Getter
     @NotNull
-    private ProtectionCheckStatus status;
+    private final ProtectionCheckStatus status;
 
     /**
      * Will call when shop price was changed.
      *
-     * @param loc    Target location will execute protect check.
-     * @param status The checking status
-     * @param event  The event will call to check the permissions.
-     * @param player The player in was mentions in this event
+     * @param location Target location will execute protect check.
+     * @param status   The checking status
+     * @param event    The event will call to check the permissions.
+     * @param player   The player in was mentions in this event
      */
-    public ShopProtectionCheckEvent(@NotNull Location loc, @NotNull Player player, @NotNull ProtectionCheckStatus status, @NotNull Event event) {
-        this.loc = loc;
+    public ShopProtectionCheckEvent(@NotNull Location location, @NotNull Player player,
+                                    @NotNull ProtectionCheckStatus status, @NotNull Event event) {
+        this.loc = location;
         this.player = player;
         this.status = status;
         this.event = event;
@@ -42,17 +45,10 @@ public class ShopProtectionCheckEvent extends Event {
      *
      * @return The protection check event.
      */
-    public @NotNull Event getEvent() {
+    @NotNull
+    public Event getEvent() {
         return event;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
-    }
 }
 

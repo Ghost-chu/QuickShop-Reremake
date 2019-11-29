@@ -9,11 +9,13 @@ import org.maxgamer.quickshop.Util.Util;
 import java.util.UUID;
 
 public class Economy implements EconomyCore {
+
     @Getter
     @Setter
+    @NotNull
     private EconomyCore core;
 
-    public Economy(EconomyCore core) {
+    public Economy(@NotNull EconomyCore core) {
         this.core = core;
     }
 

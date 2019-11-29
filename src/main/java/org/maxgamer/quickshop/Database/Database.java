@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class Database {
-    private DatabaseCore core;
+
+    @NotNull
+    private final DatabaseCore core;
     // Fix null pointer...
-    private QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin = QuickShop.instance;
 
     /**
      * Creates a new database and validates its connection.

@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -16,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_Remove implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
@@ -29,25 +30,33 @@ public class SubCommand_Remove implements CommandProcesser {
             sender.sendMessage(ChatColor.RED + "Only players may use that command.");
             return;
         }
-        Player p = (Player) sender;
-        BlockIterator bIt = new BlockIterator(p, 10);
+
+        final Player p = (Player) sender;
+        final BlockIterator bIt = new BlockIterator(p, 10);
+
         if (!bIt.hasNext()) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
+
         while (bIt.hasNext()) {
-            Block b = bIt.next();
-            Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-                    shop.onUnload();
-                    shop.delete();
-                } else {
-                    sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
-                }
-                return;
+            final Block b = bIt.next();
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+            if (shop == null) {
+                continue;
             }
+
+            if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                shop.onUnload();
+                shop.delete();
+            } else {
+                sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
+            }
+
+            return;
         }
+
         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 }
