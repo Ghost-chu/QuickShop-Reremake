@@ -28,28 +28,27 @@ deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: zud+sCLyNxYLV5hF6gDgGPlptS/hysJYsGWBeScNUsP6wy5/8Mctu/puleLOx+CdFuoeIS5PYWwkQ7FPJX0jkKaflMAJN3SbsdGp2kCCayC+yFHKjMmu7+MgSS0xL3Y02EOHxBHhFgalhhYnWDsAWvTzyT0C4yB5N8EmTF7cydJoxTA5Dhbi3rYRfDz62dw8OAdcZOjHJoCZzcdeChIspxJRqDy8SDwU7e7u5S830nT/34fy34MJEih2pZewKcY0499WulGT5VTMoyxx0VpRpLvZrCkZI+XbsckFucsJwkK0bsZE5UB3DKtpx0KsPBDJuaIIIUj1Bfanaq2EGPyT50124R9IdLNWu4tLwVaqN4AmTwEisLviBqo8KNDn4HLVLlqP3+Xiu9HbA7y+WEhgSFwSBDgmCiYLSxM6kHXdCqKSa1Tngbp9t1FqwoSTGWaiRJ31GYU6o7TXqT3frRQ1qiS1gQ/kqRAgNWp6hlwDuacvCOIc7zCCOHWvBm2q7i/WjCy2zWJyP4BnH+xeSi2FcGLemvfpBiYwIShtMA9i2q/4QigIQrjf/A3UDGrK+8OIDCvOoAy8Xviifh0Veq9ZeKDZKzwvBsNsp08GNcJ4jrZnIhITreNH80UTMOk9nGcUilCdNc2fNwM3+mZKwxbNRM9FOkQyLuOzTT91FUJgQ8Y=
+    secure: xsJTi70QvH4lqKDhpJvqpfBBKSlxrTxkLofeJND58ZYPFhVk4egTalBYz/fT54s4G8YQHflSUNocl+W9zn/4lpdsdI1acMhCpBz014TJOMeEuwXN7yMslGO8eUKaZUiVjhygzrCp0RKwmY3TcpcFI98lbDAsVgFegzBdQpGk3gtlF3O/PAFEcHnhkEdohNJHlBrPFIdahnM8/saYbyzSzcjGRLkIOt75yzY/+AE0pQh24yI1K6xGA2FzO9LVBmNE15HvoqQhmZ8amKMbbsOJNe9OLJYHZRmWViudtaQibZtKWLLH+S+kjJ280PA96NtqCQ4xI/bDTfgxg34VWwKh3NtuAAS1mcnLpSTIQddI2D+R2pfG5igq69qXkK/Xedgv06H9y8dHw+ygBUm5J+cooktASw3WCgwncesU5oO5G2vd/NxbcpDSm5LookdpWtxHL36dg1gafPKJI2sthileN4LfIp9cBMgIN4bDdp9CLjzayzbVeRAqFrvbCV+qW5Eub5cMun0BEZpIEcAFnugMLrkMGm5wtLkFKwhE8Qy7ZmsArGOVFjaQloTWHhrae0avqbBbJPglbWeYT0Bm4M1fqNU80e8bwPaC24yJpTN+MoUZ4cvJ7c09++4b0Q4VK5ordyqipK0/2jalclGNRZAXkDr+dQO6vBCLYZPEjShW3nY=
   file:
     - ./push/*
   file_glob: true
   on:
-    repo: Ghost-chu/$PROJECT_NAME
     tags: true
   overwrite: true
 after_deploy:
 - chmod +x deploy.sh
 - "./deploy.sh $Curse_token"
 after_script:
-  - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
-  - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
-  - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
-  - cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
-  - echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
-    [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
-    > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
-  - cd BinaryRepository
-  - git add .
-  - git commit -m "Auto update by Bot"
-  - git push --force
-  - cd ..
-  - echo "done"
+- git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
+- mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
+- echo -e "== Built by Travis-CI ==\nBuild Number [$TRAVIS_BUILD_NUMBER]\nBuild Type
+  [$TRAVIS_EVENT_TYPE]\nTag [$TRAVIS_TAG]\nCommit [$TRAVIS_COMMIT] - [$TRAVIS_COMMIT_MESSAGE]"
+  > ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/BUILDINFO
+- cd BinaryRepository
+- git add .
+- git commit -m "Auto update by Bot"
+- git push --force
+- cd ..
+- echo "done"
