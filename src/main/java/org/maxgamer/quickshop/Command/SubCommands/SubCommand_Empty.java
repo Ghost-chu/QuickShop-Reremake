@@ -4,9 +4,9 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
@@ -17,40 +17,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_Empty implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    private final QuickShop plugin = QuickShop.instance;
+
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender instanceof Player) {
-            BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-            if (!bIt.hasNext()) {
-                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-                return;
-            }
-            while (bIt.hasNext()) {
-                Block b = bIt.next();
-                Shop shop = plugin.getShopManager().getShop(b.getLocation());
-                if (shop != null) {
-                    if (shop instanceof ContainerShop) {
-                        ContainerShop cs = (ContainerShop) shop;
-                        cs.getInventory().clear();
-                        sender.sendMessage(MsgUtil.getMessage("empty-success", sender));
-                    } else {
-                        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Can't run this command from Console");
+            return;
+        }
 
-                    }
+        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+
+        if (!bIt.hasNext()) {
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            return;
+        }
+
+        while (bIt.hasNext()) {
+            final Block b = bIt.next();
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+            if (shop == null) {
+                continue;
+            }
+
+            if (shop instanceof ContainerShop) {
+                final ContainerShop cs = (ContainerShop) shop;
+                final Inventory inventory = cs.getInventory();
+
+                if (inventory == null) {
+                    // TODO: 24/11/2019 Send message about that issue.
                     return;
                 }
+
+                cs.getInventory().clear();
+                sender.sendMessage(MsgUtil.getMessage("empty-success", sender));
+            } else {
+                sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
             }
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-        } else {
-            sender.sendMessage("Can't run this command from Console");
+
+            return;
         }
-        return;
+
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 }

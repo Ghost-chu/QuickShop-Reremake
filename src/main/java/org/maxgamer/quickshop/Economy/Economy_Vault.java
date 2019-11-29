@@ -11,15 +11,19 @@ import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.event.server.ServiceUnregisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.UUID;
 
 public class Economy_Vault implements EconomyCore, Listener {
-    private QuickShop plugin = QuickShop.instance;
+
+    private final QuickShop plugin = QuickShop.instance;
+
     @Getter
     @Setter
+    @Nullable
     private Economy vault;
 
     public Economy_Vault() {

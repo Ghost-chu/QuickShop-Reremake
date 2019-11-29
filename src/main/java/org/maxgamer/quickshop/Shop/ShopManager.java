@@ -32,9 +32,13 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
+
     private HashMap<UUID, Info> actions = new HashMap<>();
+
     private QuickShop plugin;
-    private HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
+
+    private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
+
     private Set<Shop> loadedShops = new CopyOnWriteArraySet<>();
 
     public ShopManager(@NotNull QuickShop plugin) {
@@ -962,7 +966,8 @@ public class ShopManager {
      *
      * @return a hashmap of World - Chunk - Shop
      */
-    public @Nullable HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
+    @NotNull
+    public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
         return this.shops;
     }
 

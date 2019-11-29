@@ -1,7 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.gson.JsonSyntaxException;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -1,8 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopModerator;
@@ -11,14 +9,15 @@ import org.maxgamer.quickshop.Shop.ShopModerator;
  * Calling when moderator was changed, Can't cancel
  **/
 
-public class ShopModeratorChangedEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+public class ShopModeratorChangedEvent extends QSEvent {
+
     @Getter
     @NotNull
-    private ShopModerator moderator;
+    private final ShopModerator moderator;
+
     @Getter
     @NotNull
-    private Shop shop;
+    private final Shop shop;
 
     /**
      * Will call when shop price was changed.
@@ -31,12 +30,4 @@ public class ShopModeratorChangedEvent extends Event {
         this.moderator = shopModerator;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
-    }
 }

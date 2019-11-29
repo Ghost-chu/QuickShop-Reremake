@@ -18,19 +18,21 @@ public class ClearLaggListener implements Listener {
         if (ListenerHelper.isDisabled(clearlaggEvent.getClass())) {
             return;
         }
-        List<Entity> entities = clearlaggEvent.getEntityList();
-        List<Entity> pendingExclude = new ArrayList<>();
+
+        final List<Entity> entities = clearlaggEvent.getEntityList();
+        final List<Entity> pendingExclude = new ArrayList<>();
+
         for (Entity entity : entities) {
-            if (!(entity instanceof Item)) {
+            if (!(entity instanceof Item) ||
+                !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
                 continue;
             }
-            Item item = (Item) entity;
-            if (!DisplayItem.checkIsGuardItemStack(item.getItemStack())) {
-                continue;
-            }
-            pendingExclude.add(item);
+
+            pendingExclude.add(entity);
         }
+
         pendingExclude.forEach(clearlaggEvent::removeEntity);
         Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
+
 }

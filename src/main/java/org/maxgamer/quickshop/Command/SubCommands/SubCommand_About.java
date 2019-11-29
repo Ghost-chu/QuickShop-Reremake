@@ -2,18 +2,16 @@ package org.maxgamer.quickshop.Command.SubCommands;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandProcesser;
-import org.maxgamer.quickshop.QuickShop;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubCommand_About implements CommandProcesser {
-    private QuickShop plugin = QuickShop.instance;
 
+    @NotNull
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
