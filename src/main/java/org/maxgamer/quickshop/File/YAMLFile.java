@@ -2,7 +2,7 @@ package org.maxgamer.quickshop.File;
 
 import org.jetbrains.annotations.NotNull;
 
-public final class YamlFile implements IFile {
+public final class YAMLFile implements IFile {
 
     @NotNull
     @Override
