@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * This event is called after DisplayItem removed
  */
-
+@ToString
 public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable {
 
     @Getter
