@@ -77,7 +77,6 @@ public final class JSONFile extends FileEnvelope {
             StandardCharsets.UTF_8
         );
 
-        System.out.println(toString());
         try {
             writer.write(toString());
             writer.close();
@@ -93,6 +92,7 @@ public final class JSONFile extends FileEnvelope {
             final JsonWriter jsonWriter = new JsonWriter(stringWriter);
 
             jsonWriter.setLenient(true);
+            jsonWriter.setIndent("  ");
             Streams.write(jsonObject, jsonWriter);
 
             return stringWriter.toString();
