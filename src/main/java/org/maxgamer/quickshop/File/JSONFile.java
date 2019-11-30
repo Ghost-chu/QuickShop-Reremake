@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop.File;
 
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,22 +48,31 @@ public final class JSONFile extends FileEnvelope {
 
     @Override
     public void reload() {
-        try {
-            final Gson gson = new Gson();
-            final Map<String, Object> map = gson.fromJson(
+        put(
+            new Gson().<Map<String, Object>>fromJson(
                 new InputStreamReader(getInputStream()),
                 Map.class
-            );
-
-            map.forEach((s, o) -> cache.put(s, o));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+            )
+        );
     }
 
     @Override
     public void save() {
 
+    }
+
+    private void put(@NotNull Map<String, Object> map) {
+        map.forEach((s, o) -> {
+            if (o instanceof String) {
+                cache.put(s, o);
+                return;
+            }
+
+            if (o instanceof Map) {
+                put(o);
+            }
+
+        });
     }
 
 }
