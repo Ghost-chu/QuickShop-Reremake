@@ -1,14 +1,18 @@
 package org.maxgamer.quickshop.File;
 
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.plugin.Plugin;
+import org.cactoos.io.InputStreamOf;
+import org.cactoos.io.ReaderOf;
+import org.cactoos.iterable.Mapped;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class JSONFile extends FileEnvelope {
@@ -50,7 +54,9 @@ public final class JSONFile extends FileEnvelope {
     public void reload() {
         put(
             new Gson().<Map<String, Object>>fromJson(
-                new InputStreamReader(getInputStream()),
+                new ReaderOf(
+                    new InputStreamOf(file)
+                ),
                 Map.class
             )
         );
@@ -63,15 +69,26 @@ public final class JSONFile extends FileEnvelope {
 
     private void put(@NotNull Map<String, Object> map) {
         map.forEach((s, o) -> {
-            if (o instanceof String) {
+            System.out.println(s);
+            System.out.println(o.getClass());
+            if (o instanceof String || o instanceof List || o instanceof Number) {
                 cache.put(s, o);
                 return;
             }
 
             if (o instanceof Map) {
-                put(o);
+                put(
+                    new MapOf<>(
+                        new Mapped<>(
+                            entry -> new MapEntry<>(
+                                s + "." + entry.getKey(),
+                                entry.getValue()
+                            ),
+                            ((Map<String, Object>) o).entrySet()
+                        )
+                    )
+                );
             }
-
         });
     }
 

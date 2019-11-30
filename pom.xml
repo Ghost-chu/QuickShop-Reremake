@@ -301,5 +301,10 @@
             <version>0.2.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.cactoos</groupId>
+            <artifactId>cactoos</artifactId>
+            <version>0.42</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,8 @@
 package org.maxgamer.quickshop.File;
 
 import org.bukkit.plugin.Plugin;
+import org.cactoos.io.InputOf;
+import org.cactoos.io.InputStreamOf;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -51,13 +53,11 @@ public abstract class FileEnvelope implements IFile {
     @NotNull
     @Override
     public InputStream getInputStream() {
-        final InputStream inputStream = plugin.getResource(resourcePath);
-
-        if (inputStream == null) {
-            throw new RuntimeException("The " + resourcePath + " file that expected  does not exist!");
-        }
-
-        return inputStream;
+        return new InputStreamOf(
+            new InputOf(
+                plugin.getResource(resourcePath)
+            )
+        );
     }
 
     private void copy(@NotNull final InputStream inputStream) {
