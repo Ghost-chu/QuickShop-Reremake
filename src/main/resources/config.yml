@@ -332,3 +332,10 @@ matcher:
 webhook:
   enable: false
   url: "https://example.com/webhookListener.php"
+cachingpool:
+  # Did you want use caching pool?
+  # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
+  enable: false
+  # How many size for caching pool?
+  # When objects more than this number, it will removed some old object.
+  maxsize: 100000000
