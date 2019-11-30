@@ -1,7 +1,8 @@
 package org.maxgamer.quickshop.Shop;
 
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
-
+@ToString
 public enum ShopType {
     //SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0), BUYING(1);
