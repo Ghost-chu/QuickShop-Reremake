@@ -1,11 +1,12 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
-
+@ToString
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
