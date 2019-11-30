@@ -7,7 +7,7 @@ public final class JSONFile implements IFile {
     @NotNull
     @Override
     public String getMessage(@NotNull String path, @NotNull String fallback) {
-        return null;
+        return "null";
     }
 
 }

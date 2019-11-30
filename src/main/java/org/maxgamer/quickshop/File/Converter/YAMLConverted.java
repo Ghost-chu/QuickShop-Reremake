@@ -9,13 +9,13 @@ public final class YAMLConverted implements Converted<JSONFile, XMLFile> {
     @NotNull
     @Override
     public JSONFile convertX() {
-        return null;
+        return new JSONFile();
     }
 
     @NotNull
     @Override
     public XMLFile convertY() {
-        return null;
+        return new XMLFile();
     }
 
 }
