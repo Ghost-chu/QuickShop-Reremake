@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.File;
 
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +36,7 @@ public abstract class FileEnvelope implements IFile {
             final File parent = file.getParentFile();
 
             if (parent != null) {
-                file.getParentFile().mkdirs();
+                parent.mkdirs();
             }
 
             file.createNewFile();
