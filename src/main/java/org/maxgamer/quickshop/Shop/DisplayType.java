@@ -1,8 +1,9 @@
 package org.maxgamer.quickshop.Shop;
 
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+@ToString
 public enum DisplayType {
     /*
      * UNKNOWN = FALLBACK TO REALITEM

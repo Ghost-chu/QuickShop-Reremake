@@ -329,3 +329,5 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
+webhook:
+  url: "https://example.com/webhookListener.php"
