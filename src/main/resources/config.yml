@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 70
+config-version: 71
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -130,7 +130,7 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks which implement InventoryHolder
 #in other words, no enderchest shops, no shops on dirt blocks, etc.
-#May cause unexpected behavior with some blocks... Eg don't make a 
+#May cause unexpected behavior with some blocks... Eg don't make a
 #shop on a hopper (It sucks the display item in) and furnace shops
 #allow players to put whatever item they want in all 3 slots and
 #dispenser shops aren't protected from redstone... Etc.
@@ -280,7 +280,7 @@ shop:
     #Should we ignore the unlimited shop?
     ignore-unlimited: true
 
-#List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
+#List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
 
@@ -329,5 +329,6 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
-# Message file mode can be "yaml/yml", "json", "xml"
-message-file-mode: yaml
+webhook:
+  enable: false
+  url: "https://example.com/webhookListener.php"

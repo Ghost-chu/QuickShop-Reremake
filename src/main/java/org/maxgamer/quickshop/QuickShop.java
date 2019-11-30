@@ -26,6 +26,7 @@ import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Watcher.*;
+import org.maxgamer.quickshop.Webhook.WebhookHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -159,6 +160,7 @@ public class QuickShop extends JavaPlugin {
      */
     private static PermissionManager permissionManager;
     private OngoingFeeWatcher ongoingFeeWatcher;
+    private WebhookHelper webhookHelper;
 
     /**
      * Get the Player's Shop limit.
@@ -441,7 +443,7 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
-
+        this.webhookHelper = new WebhookHelper(this);
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -1054,23 +1056,25 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 68);
             selectedVersion = 68;
         }
-        if (selectedVersion == 68){
-            ArrayList<String> temp = new ArrayList<>();;
+        if (selectedVersion == 68) {
+            ArrayList<String> temp = new ArrayList<>();
+            ;
             temp.add("SoulBound");
             getConfig().set("shop.blacklist-lores", temp);
             getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
-        if (selectedVersion == 69){
+        if (selectedVersion == 69) {
             getConfig().set("shop.display-item-use-name", false);
             getConfig().set("config-version", 70);
             selectedVersion = 70;
         }
         if (selectedVersion == 70) {
-            getConfig().set("message-file-mode", "yaml");
+            getConfig().set("webhook.enable", false);
+            getConfig().set("webhook.url", "https://example.com/webhookListener.php");
+            getConfig().set("config-version", 71);
             selectedVersion = 71;
         }
-
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
