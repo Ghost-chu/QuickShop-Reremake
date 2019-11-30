@@ -13,7 +13,11 @@ public final class JSONFile extends FileEnvelope {
 
     @Override
     public void reload() {
-        
+        try {
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Override
