@@ -70,16 +70,11 @@ public final class JSONFile extends FileEnvelope {
             reload();
         }
 
-        final Writer writer = new WriterTo(
-            new OutputTo(
-                file
-            ),
-            StandardCharsets.UTF_8
-        );
-
-        try {
+        try(final Writer writer = new WriterTo(
+            new OutputTo(file),
+            StandardCharsets.UTF_8)
+        ) {
             writer.write(toString());
-            writer.close();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
