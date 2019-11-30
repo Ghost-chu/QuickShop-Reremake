@@ -43,11 +43,6 @@ public abstract class FileEnvelope implements IFile {
         reload();
     }
 
-    @Override
-    public void reload() {
-
-    }
-
     private void copy(@NotNull final InputStream inputStream) {
         try(final OutputStream out = new FileOutputStream(file)) {
             final byte[] buf = new byte[1024];
