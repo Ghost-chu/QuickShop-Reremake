@@ -2,7 +2,7 @@ package org.maxgamer.quickshop.File;
 
 import org.jetbrains.annotations.NotNull;
 
-public final class JSONFile implements IFile {
+public final class JSONFile extends FileEnvelope {
 
     @NotNull
     @Override

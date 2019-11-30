@@ -2,7 +2,9 @@ package org.maxgamer.quickshop.File;
 
 import org.jetbrains.annotations.NotNull;
 
-public final class YAMLFile implements IFile {
+import java.io.File;
+
+public final class YAMLFile extends FileEnvelope {
 
     @NotNull
     @Override
