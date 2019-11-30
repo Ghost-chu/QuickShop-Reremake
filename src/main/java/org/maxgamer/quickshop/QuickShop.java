@@ -1066,7 +1066,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 70);
             selectedVersion = 70;
         }
-
+        if (selectedVersion == 70){
+            getConfig().set("webhook.enable", false);
+            getConfig().set("webhook.url", "https://example.com/webhookListener.php");
+            getConfig().set("config-version", 71);
+            selectedVersion = 71;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
