@@ -5,7 +5,6 @@ import org.bukkit.plugin.Plugin;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.File.BukkitFileAPI.JSONConfiguration;
 import org.maxgamer.quickshop.Mock.MckFileConfiguration;
 
@@ -76,34 +75,6 @@ public final class JSONFile extends FileEnvelope {
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
-    }
-
-    @Override
-    public void set(@NotNull String path, @NotNull Object object) {
-
-    }
-
-    @Override
-    public void setAndSave(@NotNull String path, @NotNull Object object) {
-
-    }
-
-    @Nullable
-    @Override
-    public <T> T get(@NotNull String path) {
-        return null;
-    }
-
-    @NotNull
-    @Override
-    public <T> T get(@NotNull String path, @NotNull T fallback) {
-        return null;
-    }
-
-    @NotNull
-    @Override
-    public <T> T getOrSet(@NotNull String path, @NotNull T fallback) {
-        return null;
     }
 
 }
