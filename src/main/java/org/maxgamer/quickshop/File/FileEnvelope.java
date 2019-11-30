@@ -11,13 +11,19 @@ import java.io.OutputStream;
 public abstract class FileEnvelope implements IFile {
 
     @NotNull
-    private final Plugin plugin;
+    protected final Plugin plugin;
 
     @NotNull
     protected final File file;
 
     @NotNull
-    protected    final String resourcePath;
+    protected final String resourcePath;
+
+    public FileEnvelope(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath) {
+        this.plugin = plugin;
+        this.file = file;
+        this.resourcePath = resourcePath;
+    }
 
     @Override
     public void create() {
@@ -33,14 +39,20 @@ public abstract class FileEnvelope implements IFile {
             throw new RuntimeException(exception);
         }
 
+        copy(getInputStream());
+        reload();
+    }
+
+    @NotNull
+    @Override
+    public InputStream getInputStream() {
         final InputStream inputStream = plugin.getResource(resourcePath);
 
         if (inputStream == null) {
-            throw new RuntimeException("The" + resourcePath + " file that expected  does not exist!");
+            throw new RuntimeException("The " + resourcePath + " file that expected  does not exist!");
         }
 
-        copy(inputStream);
-        reload();
+        return inputStream;
     }
 
     private void copy(@NotNull final InputStream inputStream) {

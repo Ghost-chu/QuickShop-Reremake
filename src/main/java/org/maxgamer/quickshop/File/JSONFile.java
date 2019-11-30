@@ -10,4 +10,14 @@ public final class JSONFile extends FileEnvelope {
         return "null";
     }
 
+    @Override
+    public void reload() {
+
+    }
+
+    @Override
+    public void save() {
+
+    }
+
 }
