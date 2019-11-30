@@ -331,6 +331,7 @@ matcher:
     custommodeldata: true
 webhook:
   enable: false
+  # It will POST to target url for our webhook messages.
   url: "https://example.com/webhookListener.php"
 cachingpool:
   # Did you want use caching pool?
