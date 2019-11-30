@@ -15,7 +15,4 @@ public interface IFile {
 
     void save();
 
-    @NotNull
-    String getMessage(@NotNull String path, @NotNull String fallback);
-
 }

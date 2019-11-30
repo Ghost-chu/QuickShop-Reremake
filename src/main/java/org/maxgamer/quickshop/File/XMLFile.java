@@ -1,13 +1,14 @@
 package org.maxgamer.quickshop.File;
 
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public final class XMLFile extends FileEnvelope {
 
-    @NotNull
-    @Override
-    public String getMessage(@NotNull String path, @NotNull String fallback) {
-        return "null";
+    public XMLFile(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath) {
+        super(plugin, file, resourcePath);
     }
 
     @Override

@@ -18,12 +18,6 @@ public final class YAMLFile extends FileEnvelope {
         super(plugin, file, resourcePath);
     }
 
-    @NotNull
-    @Override
-    public String getMessage(@NotNull String path, @NotNull String fallback) {
-        return "null";
-    }
-
     @Override
     public void reload() {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
@@ -38,7 +32,15 @@ public final class YAMLFile extends FileEnvelope {
 
     @Override
     public void save() {
+        try {
+            if (fileConfiguration instanceof MckFileConfiguration) {
+                reload();
+            }
 
+            fileConfiguration.save(file);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }
