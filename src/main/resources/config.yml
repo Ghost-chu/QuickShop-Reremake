@@ -329,3 +329,5 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
+# Message file mode can be "yaml/yml", "json", "xml"
+message-file-mode: yaml
