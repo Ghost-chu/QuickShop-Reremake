@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopModerator;
@@ -8,7 +9,7 @@ import org.maxgamer.quickshop.Shop.ShopModerator;
 /**
  * Calling when moderator was changed, Can't cancel
  **/
-
+@ToString
 public class ShopModeratorChangedEvent extends QSEvent {
 
     @Getter

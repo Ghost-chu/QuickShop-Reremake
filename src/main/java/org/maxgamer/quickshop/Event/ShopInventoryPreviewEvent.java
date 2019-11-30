@@ -1,11 +1,12 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
+@ToString
 public class ShopInventoryPreviewEvent extends QSEvent implements Cancellable {
 
     @Getter

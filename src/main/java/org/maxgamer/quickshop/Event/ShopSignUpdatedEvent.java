@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -8,7 +9,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * Calling when shop sign update, Can't cancel
  **/
-
+@ToString
 public class ShopSignUpdatedEvent extends QSEvent {
 
     @Getter
