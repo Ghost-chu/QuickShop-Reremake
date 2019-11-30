@@ -64,13 +64,11 @@ public final class JSONFile extends FileEnvelope {
 
     @Override
     public void save() {
-
+        
     }
 
     private void put(@NotNull Map<String, Object> map) {
         map.forEach((s, o) -> {
-            System.out.println(s);
-            System.out.println(o.getClass());
             if (o instanceof String || o instanceof List || o instanceof Number) {
                 cache.put(s, o);
                 return;
