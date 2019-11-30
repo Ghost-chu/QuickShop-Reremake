@@ -13,7 +13,12 @@ public final class QuickShopTest extends JavaPlugin {
     }
 
     protected QuickShopTest(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
+        super(
+            loader,
+            description,
+            new File(""),
+            file
+        );
     }
 
 }

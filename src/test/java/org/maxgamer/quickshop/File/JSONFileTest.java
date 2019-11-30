@@ -27,15 +27,6 @@ class JSONFileTest {
         json.create();
     }
 
-    @Test
-    void save() {
-        if (plugin == null) {
-            return;
-        }
-
-
-    }
-
     @AfterEach
     void tearDown() {
         MockBukkit.unload();
