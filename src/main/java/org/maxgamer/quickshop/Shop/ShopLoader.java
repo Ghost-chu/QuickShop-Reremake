@@ -87,7 +87,7 @@ public class ShopLoader {
      * @param worldName The world name
      */
     public void loadShops(@Nullable String worldName) {
-
+        boolean backupedDatabaseInDeleteProcess = false;
         Timer totalLoadTimer = new Timer(true);
         try {
             this.plugin.getLogger().info("Loading shops from the database...");
@@ -124,10 +124,17 @@ public class ShopLoader {
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the database...");
                         //shop.delete();
-                        plugin.getShopManager().removeShop(shop);
-                        plugin.getDatabaseHelper().removeShop(shop.getLocation().getBlockX(), shop
-                                .getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld()
-                                .getName());
+                        plugin.getShopManager().removeShop(shop); //Remove from Mem
+                        if(!backupedDatabaseInDeleteProcess){ //Only backup db one time.
+                            backupedDatabaseInDeleteProcess = Util.backupDatabase();
+                        }
+
+                        if(backupedDatabaseInDeleteProcess){
+                            plugin.getDatabaseHelper().removeShop(shop.getLocation().getBlockX(), shop
+                                    .getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld()
+                                    .getName());
+                        }
+
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
