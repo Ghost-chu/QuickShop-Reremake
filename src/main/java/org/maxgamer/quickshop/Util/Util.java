@@ -292,11 +292,11 @@ public class Util {
         if (b.getBlockData() instanceof Directional) {
             Directional directional = (Directional) b.getBlockData();
             return b.getRelative(directional.getFacing().getOppositeFace());
+
         } else {
             return null;
         }
     }
-
     /**
      * Return the Class name.
      *
