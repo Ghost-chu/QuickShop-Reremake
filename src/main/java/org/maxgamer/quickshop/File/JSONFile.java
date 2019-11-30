@@ -1,23 +1,27 @@
 package org.maxgamer.quickshop.File;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.Streams;
+import com.google.gson.stream.JsonWriter;
 import org.bukkit.plugin.Plugin;
 import org.cactoos.io.InputStreamOf;
+import org.cactoos.io.OutputTo;
 import org.cactoos.io.ReaderOf;
-import org.cactoos.iterable.Mapped;
-import org.cactoos.map.MapEntry;
-import org.cactoos.map.MapOf;
+import org.cactoos.io.WriterTo;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 public final class JSONFile extends FileEnvelope {
 
-    private final Map<String, Object> cache = new HashMap<>();
+    private final Gson gson = new Gson();
+
+    private JsonObject jsonObject = new JsonObject();
 
     public JSONFile(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath) {
         super(
@@ -52,42 +56,49 @@ public final class JSONFile extends FileEnvelope {
 
     @Override
     public void reload() {
-        put(
-            new Gson().<Map<String, Object>>fromJson(
-                new ReaderOf(
-                    new InputStreamOf(file)
-                ),
-                Map.class
-            )
+        jsonObject = gson.fromJson(
+            new ReaderOf(
+                new InputStreamOf(file)
+            ),
+            JsonObject.class
         );
     }
 
     @Override
     public void save() {
-        
+        if (jsonObject.size() == 0) {
+            reload();
+        }
+
+        final Writer writer = new WriterTo(
+            new OutputTo(
+                file
+            ),
+            StandardCharsets.UTF_8
+        );
+
+        System.out.println(toString());
+        try {
+            writer.write(toString());
+            writer.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
-    private void put(@NotNull Map<String, Object> map) {
-        map.forEach((s, o) -> {
-            if (o instanceof String || o instanceof List || o instanceof Number) {
-                cache.put(s, o);
-                return;
-            }
+    @NotNull
+    public String toString() {
+        try {
+            final Writer stringWriter = new StringWriter();
+            final JsonWriter jsonWriter = new JsonWriter(stringWriter);
 
-            if (o instanceof Map) {
-                put(
-                    new MapOf<>(
-                        new Mapped<>(
-                            entry -> new MapEntry<>(
-                                s + "." + entry.getKey(),
-                                entry.getValue()
-                            ),
-                            ((Map<String, Object>) o).entrySet()
-                        )
-                    )
-                );
-            }
-        });
+            jsonWriter.setLenient(true);
+            Streams.write(jsonObject, jsonWriter);
+
+            return stringWriter.toString();
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
     }
 
 }

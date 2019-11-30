@@ -9,26 +9,33 @@ import org.maxgamer.quickshop.QuickShopTest;
 class JSONFileTest {
 
     private QuickShopTest plugin;
+    private IFile json;
 
     @BeforeEach
     void setUp() {
         MockBukkit.mock();
         plugin = MockBukkit.load(QuickShopTest.class);
+        json = new JSONFile(plugin, "messages");
     }
 
     @Test
-    void reload() {
+    void createAndReload() {
         if (plugin == null) {
             return;
         }
 
-        final IFile json = new JSONFile(plugin, "messages");
-
         json.create();
+    }
+
+    @Test
+    void save() {
+        json.reload();
+        json.save();
     }
 
     @AfterEach
     void tearDown() {
         MockBukkit.unload();
     }
+
 }
