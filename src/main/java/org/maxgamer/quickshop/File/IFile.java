@@ -2,7 +2,6 @@ package org.maxgamer.quickshop.File;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sun.nio.cs.ext.IBM037;
 
 import java.io.InputStream;
 

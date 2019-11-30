@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.File;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
@@ -10,6 +11,7 @@ import org.cactoos.io.OutputTo;
 import org.cactoos.io.ReaderOf;
 import org.cactoos.io.WriterTo;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,4 +98,67 @@ public final class JSONFile extends FileEnvelope {
         }
     }
 
+    @Override
+    public void set(@NotNull String path, @NotNull Object object) {
+        if (jsonObject.size() == 0) {
+            reload();
+        }
+
+        if (path.contains(".")) {
+            final String[] split = path.split("[.]");
+
+            JsonElement jsonElement = jsonObject;
+
+            for (int i = 0; i < split.length; i++) {
+                if (jsonElement == null) {
+                    if (i == split.length - 1) {
+                        // last
+                    } else {
+                        // other
+                    }
+                    continue;
+                }
+
+                if (jsonElement.isJsonNull()) {
+                    return;
+                }
+
+                if (jsonElement.isJsonObject()) {
+                    jsonElement = ((JsonObject) jsonElement).get(split[i]);
+                } else {
+                    System.out.println(jsonElement.toString());
+                }
+            }
+
+            return;
+        }
+
+        if (jsonObject.has(path)) {
+            jsonObject.add(path, gson.toJsonTree(object));
+        }
+    }
+
+    @Override
+    public void setAndSave(@NotNull String path, @NotNull Object object) {
+        set(path, object);
+        save();
+    }
+
+    @Nullable
+    @Override
+    public <T> T get(@NotNull String path) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public <T> T get(@NotNull String path, @NotNull T fallback) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public <T> T getOrSet(@NotNull String path, @NotNull T fallback) {
+        return null;
+    }
 }

@@ -33,6 +33,11 @@ class JSONFileTest {
         json.save();
     }
 
+    @Test
+    void set() {
+        json.set("test.test", "test");
+    }
+
     @AfterEach
     void tearDown() {
         MockBukkit.unload();
