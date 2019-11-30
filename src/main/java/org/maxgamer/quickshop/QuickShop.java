@@ -1066,6 +1066,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 70);
             selectedVersion = 70;
         }
+        if (selectedVersion == 70) {
+            getConfig().set("message-file-mode", "yaml");
+            selectedVersion = 71;
+        }
 
         saveConfig();
         reloadConfig();
