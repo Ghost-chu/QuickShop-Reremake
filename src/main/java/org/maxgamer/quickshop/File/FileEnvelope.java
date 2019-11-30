@@ -14,10 +14,10 @@ public abstract class FileEnvelope implements IFile {
     private final Plugin plugin;
 
     @NotNull
-    private final File file;
+    protected final File file;
 
     @NotNull
-    private final String resourcePath;
+    protected    final String resourcePath;
 
     @Override
     public void create() {
