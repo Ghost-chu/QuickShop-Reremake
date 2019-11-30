@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.File;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import sun.nio.cs.ext.IBM037;
 
 import java.io.InputStream;
 
@@ -16,9 +17,9 @@ public interface IFile {
 
     void save();
 
-    void set(@NotNull String path, @NotNull T object);
+    void set(@NotNull String path, @NotNull Object object);
 
-    void setAndSave(@NotNull String path, @NotNull T object);
+    void setAndSave(@NotNull String path, @NotNull Object object);
 
     @Nullable
     <T> T get(@NotNull String path);
