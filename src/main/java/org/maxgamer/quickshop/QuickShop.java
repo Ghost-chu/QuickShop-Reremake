@@ -1067,11 +1067,9 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 70;
         }
         if (selectedVersion == 70){
-            getConfig().set("webhook.enable", false);
-            getConfig().set("webhook.url", "https://example.com/webhookListener.php");
-            getConfig().set("config-version", 71);
             getConfig().set("cachingpool.enable", false);
             getConfig().set("cachingpool.maxsize", 100000000);
+            getConfig().set("config-version", 71);
             selectedVersion = 71;
         }
         saveConfig();
