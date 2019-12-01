@@ -40,9 +40,6 @@ public class WebhookHelper {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!plugin.getConfig().getBoolean("webhook.enable")) {
-                    return;
-                }
                 HandledConnection connection;
                 try {
                     connection = handleConnection();
@@ -92,9 +89,6 @@ public class WebhookHelper {
     }
 
     public void noticeOnlySync(@NotNull Object obj) {
-        if (!plugin.getConfig().getBoolean("webhook.enable")) {
-            return;
-        }
         HandledConnection connection;
         try {
             connection = handleConnection();
@@ -141,7 +135,7 @@ public class WebhookHelper {
         }
     }
 
-    private HandledConnection handleConnection() throws IOException, IllegalArgumentException {
+    public HandledConnection handleConnection() throws IOException, IllegalArgumentException {
         String urls = plugin.getConfig().getString("webhook.url");
         if (urls == null) {
             throw new IllegalArgumentException("Webhook URL is null, did you set the url in config.yml?");
