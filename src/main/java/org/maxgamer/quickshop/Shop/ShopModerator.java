@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.UUID;
  * Contains shop's moderators infomations, owner, staffs etc.
  */
 @EqualsAndHashCode
-@ToString
 public class ShopModerator {
     public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         //Use Gson deserialize data
