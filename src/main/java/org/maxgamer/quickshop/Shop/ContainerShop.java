@@ -687,19 +687,19 @@ public class ContainerShop implements Shop {
         this.setSignText(lines);
     }
 
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder("Shop " + (location.getWorld() == null ?
-//                "unloaded world" :
-//                location.getWorld().getName()) + "(" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + ")");
-//        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
-//        if (isUnlimited()) {
-//            sb.append(" Unlimited: true");
-//        }
-//        sb.append(" Price: ").append(getPrice());
-//        sb.append(" Item: ").append(getItem().toString());
-//        return sb.toString();
-//    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Shop " + (location.getWorld() == null ?
+                "unloaded world" :
+                location.getWorld().getName()) + "(" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + ")");
+        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
+        if (isUnlimited()) {
+            sb.append(" Unlimited: true");
+        }
+        sb.append(" Price: ").append(getPrice());
+        sb.append(" Item: ").append(getItem().toString());
+        return sb.toString();
+    }
 
     /**
      * Returns a list of signs that are attached to this shop (QuickShop and

@@ -1,8 +1,7 @@
 package org.maxgamer.quickshop.Shop;
 
-import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
-@ToString
+
 public enum MatcherWorkMode {
     QSMATCHER(0), BUKKITMATCHER(1), JAVAMATCHER(2);
 

@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.Shop;
 
-import lombok.ToString;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 /**
  * Manage a lot of shops.
  */
-@ToString
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
 
