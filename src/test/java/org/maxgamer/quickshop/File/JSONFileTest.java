@@ -19,17 +19,13 @@ class JSONFileTest {
     }
 
     @Test
-    void createAndReload() {
+    void testAll() {
         if (plugin == null) {
             return;
         }
 
         json.create();
-    }
-
-    @Test
-    void save() {
-        json.reload();
+        json.set("test.test", "test");
         json.save();
     }
 

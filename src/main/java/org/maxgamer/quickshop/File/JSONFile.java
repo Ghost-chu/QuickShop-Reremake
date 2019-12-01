@@ -2,9 +2,9 @@ package org.maxgamer.quickshop.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.cactoos.io.InputOf;
 import org.cactoos.io.ReaderOf;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.File.BukkitFileAPI.JSONConfiguration;
 import org.maxgamer.quickshop.Mock.MckFileConfiguration;
 
@@ -53,11 +53,7 @@ public final class JSONFile extends FileEnvelope {
         fileConfiguration.setDefaults(
             JSONConfiguration.loadConfiguration(
                 new ReaderOf(
-                    new InputOf(
-                        plugin.getResource(
-                            resourcePath
-                        )
-                    ),
+                    getInputStream(),
                     StandardCharsets.UTF_8
                 )
             )
@@ -75,6 +71,17 @@ public final class JSONFile extends FileEnvelope {
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    @Nullable
+    @Override
+    public Object get(@NotNull String path) {
+        return fileConfiguration.get(path);
+    }
+
+    @Override
+    public void set(@NotNull String path, @NotNull Object object) {
+        fileConfiguration.set(path, object);
     }
 
 }

@@ -36,7 +36,6 @@ public final class JSONConfigurationOptions extends FileConfigurationOptions {
     @NotNull
     @Override
     public JSONConfigurationOptions header(@Nullable String value) {
-        super.header(value);
         return this;
     }
 

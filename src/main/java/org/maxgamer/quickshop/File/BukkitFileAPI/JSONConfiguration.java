@@ -19,11 +19,13 @@ public final class JSONConfiguration extends FileConfiguration {
 
     private final Gson gson = new Gson();
 
-    private final JsonObject jsonObject = new JsonObject();
+    private JsonObject jsonObject = new JsonObject();
 
     @NotNull
     @Override
     public String saveToString() {
+        final Map<String, Object> values = getValues(false);
+
         try {
             final Writer stringWriter = new StringWriter();
             final JsonWriter jsonWriter = new JsonWriter(stringWriter);
