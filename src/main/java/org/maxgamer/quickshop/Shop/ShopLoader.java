@@ -3,7 +3,6 @@ package org.maxgamer.quickshop.Shop;
 import com.google.gson.JsonSyntaxException;
 import lombok.Data;
 import lombok.Getter;
-import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +25,6 @@ import java.util.logging.Logger;
 /**
  * A class allow plugin load shops fast and simply.
  */
-@ToString
 public class ShopLoader {
     final private ArrayList<Long> loadTimes = new ArrayList<>();
     private int errors;
