@@ -1,12 +1,11 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
-@ToString
+
 public class ShopProtectionCheckEvent extends QSEvent {
 
     @Getter

@@ -1,11 +1,10 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import lombok.ToString;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
-@ToString
+
 public class ShopUpdateEvent extends QSEvent implements Cancellable {
 
     @NotNull

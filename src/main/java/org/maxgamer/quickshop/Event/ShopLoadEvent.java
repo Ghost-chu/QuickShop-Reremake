@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import lombok.ToString;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -9,7 +8,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 /**
  * Call when loading shop
  **/
-@ToString
+
 public class ShopLoadEvent extends QSEvent implements Cancellable {
 
     @Getter

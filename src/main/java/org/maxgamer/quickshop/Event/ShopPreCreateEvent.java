@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.Event;
 
 import lombok.Getter;
-import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * clicks a chest, this event is thrown, if successful, the player is asked how
  * much they wish to trade for.
  */
-@ToString
+
 public class ShopPreCreateEvent extends QSEvent implements Cancellable {
 
     @Getter
