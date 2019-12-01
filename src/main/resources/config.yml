@@ -329,10 +329,6 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
-webhook:
-  enable: false
-  # It will POST to target url for our webhook messages.
-  url: "https://example.com/webhookListener.php"
 cachingpool:
   # Did you want use caching pool?
   # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
