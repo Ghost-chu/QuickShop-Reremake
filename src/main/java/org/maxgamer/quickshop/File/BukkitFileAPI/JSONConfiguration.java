@@ -83,10 +83,11 @@ public final class JSONConfiguration extends FileConfiguration {
             final String key = entry.getKey().toString();
             final Object value = entry.getValue();
 
-            if (value instanceof Map) {
-                convertMapsToJsonObject((Map<String, Object>) value);
+            if (value instanceof ConfigurationSection) {
+                jsonObject.add(key, new JsonObject());
+                convertMapsToJsonObject(((ConfigurationSection) value).getValues(false));
             } else {
-                System.out.println(key);
+
             }
         }
     }
