@@ -24,7 +24,9 @@ public final class JSONConfiguration extends FileConfiguration {
     @NotNull
     @Override
     public String saveToString() {
-        final Map<String, Object> values = getValues(false);
+        jsonObject = new JsonObject();
+
+        convertMapsToJsonObject(getValues(false));
 
         try {
             final Writer stringWriter = new StringWriter();
@@ -72,6 +74,19 @@ public final class JSONConfiguration extends FileConfiguration {
                 convertMapsToSections((Map<?, ?>) value, section.createSection(key));
             } else {
                 section.set(key, value);
+            }
+        }
+    }
+
+    protected void convertMapsToJsonObject(@NotNull Map<String, Object> input) {
+        for (Map.Entry<?, ?> entry : input.entrySet()) {
+            final String key = entry.getKey().toString();
+            final Object value = entry.getValue();
+
+            if (value instanceof Map) {
+                convertMapsToJsonObject((Map<String, Object>) value);
+            } else {
+                System.out.println(key);
             }
         }
     }
