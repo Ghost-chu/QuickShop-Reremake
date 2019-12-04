@@ -94,7 +94,7 @@ public final class JSONConfiguration extends FileConfiguration {
                     finalPath = path + ".";
                 }
 
-                convertMapsToJsonObject(((ConfigurationSection) value).getValues(false), finalPath + "." + key);
+                convertMapsToJsonObject(((ConfigurationSection) value).getValues(false), finalPath + key);
             } else {
 
             }
