@@ -217,7 +217,7 @@ public class ContainerShop implements Shop {
         String world = this.getLocation().getWorld().getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this
+            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator), this
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
             e.printStackTrace();
