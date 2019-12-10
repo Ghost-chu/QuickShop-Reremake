@@ -49,6 +49,7 @@ public class ContainerShop implements Shop {
     private double price;
     private ShopType shopType;
     private boolean unlimited;
+    private Integer remainingStock;
 
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
@@ -126,6 +127,7 @@ public class ContainerShop implements Shop {
             inv.addItem(item);
             remains = remains - stackSize;
         }
+        updateStock();
         this.setSignText();
     }
 
@@ -136,10 +138,11 @@ public class ContainerShop implements Shop {
      */
     @Override
     public int getRemainingStock() {
-        if (this.unlimited) {
-            return -1;
-        }
-        return Util.countItems(this.getInventory(), this.getItem());
+    	if(remainingStock != null)
+    		return remainingStock;
+        if (this.unlimited) 
+            return remainingStock = -1;
+        return remainingStock = Util.countItems(this.getInventory(), this.getItem());
     }
 
     /**
@@ -526,6 +529,8 @@ public class ContainerShop implements Shop {
             }
             // We now have to update the chests inventory manually.
             this.getInventory().setContents(chestContents);
+            if(!unlimited)
+                 updateStock();
             this.setSignText();
         }
         for (ItemStack stack : floor) {
@@ -534,6 +539,21 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Updated the current shop stock.
+     */
+    private void updateStock() {
+    	if(unlimited) {
+    		remainingStock = -1;
+    		return;
+    	}
+		int updated = 0;
+		for(ItemStack item : getInventory().getContents()) 
+			if(item != null)
+				updated += item.getAmount();
+		remainingStock = updated;
+	}
+
+	/**
      * Returns the shop that shares it's inventory with this one.
      *
      * @return the shop that shares it's inventory with this one. Will return
@@ -619,6 +639,7 @@ public class ContainerShop implements Shop {
     @Override
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
+        updateStock();
         this.setSignText();
         update();
     }
@@ -863,6 +884,7 @@ public class ContainerShop implements Shop {
             }
         }
         checkDisplay();
+        getRemainingStock();
     }
 
     /**

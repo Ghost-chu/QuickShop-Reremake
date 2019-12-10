@@ -24,7 +24,22 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.gitignore
-.idea/*
-QuickShop.iml
-target/*
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Maven
+log/
+target/
+jars/
+/bin/
+/.gradle/
+/build/
+build/*
