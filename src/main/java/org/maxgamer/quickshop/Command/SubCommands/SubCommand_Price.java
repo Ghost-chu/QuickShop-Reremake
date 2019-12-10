@@ -66,7 +66,7 @@ public class SubCommand_Price implements CommandProcesser {
             return;
         }
 
-        final boolean format = plugin.getConfig().getBoolean("use-deciaml-format");
+        final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
 
         if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
             if (price != 0 && price < minPrice) {
