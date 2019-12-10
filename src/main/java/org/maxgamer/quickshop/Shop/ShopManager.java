@@ -226,7 +226,7 @@ public class ShopManager {
                 return;
             }
 
-            boolean decFormat = plugin.getConfig().getBoolean("use-deciaml-format");
+            boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
