@@ -1105,13 +1105,13 @@ public class QuickShop extends JavaPlugin {
         Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
         Set<String> ignoreCheckKeys = new HashSet<>();
         ignoreCheckKeys.add("server-uuid");
-        final String msgForConfigutationFix = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
+        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
                 ".....\n" +
                 "%data%\n" +
                 ".....\n" +
                 "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
         keysA.stream().filter((key)->!keysB.contains(key)).filter((key)->!ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss)->{
-            String theMsg = msgForConfigutationFix;
+            String theMsg = msgForConfiguration;
             theMsg = theMsg.replace("%key%",miss);
             List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
             StringBuilder miss2Yaml = new StringBuilder();
