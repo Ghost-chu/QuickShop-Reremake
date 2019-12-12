@@ -1,30 +1,42 @@
 package org.maxgamer.quickshop.File;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.cactoos.io.InputOf;
 import org.cactoos.io.InputStreamOf;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Mock.MckFileConfiguration;
+import org.maxgamer.quickshop.Util.Copied;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public abstract class FileEnvelope implements IFile {
 
     @NotNull
-    protected final Plugin plugin;
+    private final Plugin plugin;
 
     @NotNull
     protected final File file;
 
     @NotNull
-    protected final String resourcePath;
+    private final Copied copied;
 
-    public FileEnvelope(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath) {
+    @NotNull
+    private final String resourcePath;
+
+    protected final boolean loadDefault;
+
+    @NotNull
+    protected FileConfiguration fileConfiguration = new MckFileConfiguration();
+
+    public FileEnvelope(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath, boolean loadDefault) {
         this.plugin = plugin;
         this.file = file;
+        this.copied = new Copied(file);
         this.resourcePath = resourcePath;
+        this.loadDefault = loadDefault;
     }
 
     @Override
@@ -46,7 +58,10 @@ public abstract class FileEnvelope implements IFile {
             throw new RuntimeException(exception);
         }
 
-        copy(getInputStream());
+        if (loadDefault) {
+            copied.exec(getInputStream());
+        }
+
         reload();
     }
 
@@ -60,20 +75,28 @@ public abstract class FileEnvelope implements IFile {
         );
     }
 
-    private void copy(@NotNull final InputStream inputStream) {
-        try(final OutputStream out = new FileOutputStream(file)) {
-            final byte[] buf = new byte[1024];
-            int len;
-
-            while((len = inputStream.read(buf)) > 0) {
-                out.write(buf, 0, len);
+    @Override
+    public void save() {
+        try {
+            if (fileConfiguration instanceof MckFileConfiguration) {
+                reload();
             }
 
-            out.close();
-            inputStream.close();
+            fileConfiguration.save(file);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    @Nullable
+    @Override
+    public Object get(@NotNull String path) {
+        return fileConfiguration.get(path);
+    }
+
+    @Override
+    public void set(@NotNull String path, @NotNull Object object) {
+        fileConfiguration.set(path, object);
     }
 
 }
