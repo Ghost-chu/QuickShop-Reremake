@@ -411,7 +411,6 @@ public class QuickShop extends JavaPlugin {
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
 
-
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
