@@ -130,7 +130,7 @@ limits:
 #By default, chests are added to this list.
 #This will only work for blocks which implement InventoryHolder
 #in other words, no enderchest shops, no shops on dirt blocks, etc.
-#May cause unexpected behavior with some blocks... Eg don't make a 
+#May cause unexpected behavior with some blocks... Eg don't make a
 #shop on a hopper (It sucks the display item in) and furnace shops
 #allow players to put whatever item they want in all 3 slots and
 #dispenser shops aren't protected from redstone... Etc.
@@ -280,7 +280,7 @@ shop:
     #Should we ignore the unlimited shop?
     ignore-unlimited: true
 
-#List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it    
+#List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
 
