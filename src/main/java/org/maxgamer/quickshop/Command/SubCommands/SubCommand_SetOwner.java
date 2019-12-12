@@ -61,7 +61,7 @@ public class SubCommand_SetOwner implements CommandProcesser {
             shop.setOwner(p.getUniqueId());
             //shop.setSignText();
             shop.update();
-            sender.sendMessage(MsgUtil.getMessage("command.new-owner", sender, shopOwner == null ? "" : shopOwner));
+            sender.sendMessage(MsgUtil.getMessage("command.new-owner", sender, shopOwner));
             return;
         }
 

@@ -326,7 +326,7 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
         } catch (Throwable th) {
             //ignore, we didn't care that
         }
@@ -437,7 +437,7 @@ public class QuickShop extends JavaPlugin {
         if (limitCfg != null) {
             this.limit = limitCfg.getBoolean("use", false);
             limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : limitCfg.getKeys(true)) {
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
@@ -577,7 +577,7 @@ public class QuickShop extends JavaPlugin {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             DatabaseCore dbCore;
-            if (dbCfg.getBoolean("mysql")) {
+            if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
                 if (dbPrefix == null || "none".equals(dbPrefix)) {
@@ -589,7 +589,7 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(host, user, pass, database, port, useSSL);
+                dbCore = new MySQLCore(Objects.requireNonNull(host), Objects.requireNonNull(user), Objects.requireNonNull(pass), Objects.requireNonNull(database), Objects.requireNonNull(port), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
@@ -1080,7 +1080,7 @@ public class QuickShop extends JavaPlugin {
         File file = new File(getDataFolder(), "example.config.yml");
         file.delete();
         try {
-            Files.copy(getResource("config.yml"), file.toPath());
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), file.toPath());
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }

@@ -238,7 +238,7 @@ public class Util {
      */
     private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
         return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2
-                .getBlockZ()) && (b1.getWorld().getName().equals(b2.getWorld().getName()));
+                .getBlockZ()) && (Objects.requireNonNull(b1.getWorld()).getName().equals(Objects.requireNonNull(b2.getWorld()).getName()));
     }
 
     /**
@@ -287,6 +287,7 @@ public class Util {
      * @param b The block which is attached
      * @return The block the sign is attached to
      */
+    @Nullable
     public static Block getAttached(@NotNull Block b) {
         if (b.getBlockData() instanceof Directional) {
             Directional directional = (Directional) b.getBlockData();
@@ -309,7 +310,7 @@ public class Util {
     }
 
     public static String getItemStackName(@NotNull ItemStack itemStack) {
-        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
+        if (itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
             return itemStack.getItemMeta().getDisplayName();
         }
         return MsgUtil.getItemi18n(itemStack.getType().name());
@@ -321,6 +322,7 @@ public class Util {
      * @param itemStack Target ItemStack
      * @return LocalName or NULL
      */
+    @Nullable
     public static String getLocalizedName(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) {
@@ -349,6 +351,7 @@ public class Util {
      * @param iStack itemstack
      * @return potion data, readable
      */
+    @Nullable
     public static String getPotiondata(@NotNull ItemStack iStack) {
         if ((iStack.getType() != Material.POTION) && (iStack.getType() != Material.LINGERING_POTION) && (iStack
                 .getType() != Material.SPLASH_POTION)) {
@@ -361,9 +364,9 @@ public class Util {
         PotionMeta pMeta = (PotionMeta) iStack.getItemMeta();
         //if (pMeta.getBasePotionData().getType() != null) {
         if (!(pMeta.getBasePotionData().isUpgraded())) {
-            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()));
+            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType())));
         } else {
-            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(pMeta.getBasePotionData().getType().getEffectType()) + " II");
+            pEffects.add(ChatColor.BLUE + MsgUtil.getPotioni18n(Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType())) + " II");
         }
 
         //}
@@ -403,6 +406,7 @@ public class Util {
      * @param b The chest to check.
      * @return the block which is also a chest and connected to b.
      */
+    @Nullable
     public static Block getSecondHalf(@NotNull Block b) {
         if (!isDoubleChest(b)) {
             Util.debugLog("Target block not a DoubleChest, ignored.");
@@ -416,11 +420,11 @@ public class Util {
             InventoryHolder right = doubleChest.getRightSide();
             Chest leftC = (Chest) left;
             Chest rightC = (Chest) right;
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), rightC.getLocation())) {
+            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
                 Util.debugLog("The left side of the chest was found.");
-                return leftC.getBlock();
+                return Objects.requireNonNull(leftC).getBlock();
             }
-            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), leftC.getLocation())) {
+            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
                 Util.debugLog("The right side of the chest was found.");
                 return rightC.getBlock();
             }
@@ -440,6 +444,7 @@ public class Util {
      * @return the block which is also a chest and connected to b.
      * @deprecated
      */
+    @Nullable
     @Deprecated
     public static Block getSecondHalf_old(@NotNull Block b) {
         // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
@@ -471,7 +476,7 @@ public class Util {
         Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
         while (iterator.hasNext()) {
             Shop shop = iterator.next();
-            if (shop.getLocation().getWorld().getName().equals(worldName)) {
+            if (Objects.requireNonNull(shop.getLocation().getWorld()).getName().equals(worldName)) {
                 cost++;
             }
         }
@@ -576,6 +581,7 @@ public class Util {
      * @param filePath Target file
      * @return Byte array
      */
+    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
         try {
             InputStream in = new FileInputStream(filePath);
@@ -594,6 +600,7 @@ public class Util {
      * @param inputStream Target stream
      * @return Byte array
      */
+    @Nullable
     public static byte[] inputStream2ByteArray(@NotNull InputStream inputStream) {
         try {
             byte[] data = toByteArray(inputStream);
@@ -676,10 +683,10 @@ public class Util {
         if(!stack.hasItemMeta()){
             return false;
         }
-        if(!stack.getItemMeta().hasLore()){
+        if(!Objects.requireNonNull(stack.getItemMeta()).hasLore()){
             return  false;
         }
-        for (String lore:stack.getItemMeta().getLore()) {
+        for (String lore: Objects.requireNonNull(stack.getItemMeta().getLore())) {
             if(plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)){
                 return true;
             }
@@ -1083,7 +1090,7 @@ public class Util {
      */
     public static Material getSignMaterial() {
 
-        Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material"));
+        Material signMaterial = Material.matchMaterial(Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material")));
         if (signMaterial != null) {
             return signMaterial;
         }
