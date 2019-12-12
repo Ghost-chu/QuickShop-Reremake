@@ -198,14 +198,20 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return 0.0;
         }
-        OfflinePlayer p = Bukkit.getOfflinePlayer(name);
+
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
+
+        if (offlinePlayer.getName() == null) {
+            return 0.0;
+        }
+
         try {
-            return this.vault.getBalance(p);
+            return this.vault.getBalance(offlinePlayer);
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin.getLogger()
-                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
+                    .warning("This seems not QuickShop fault, you should contact with your economy plugin author. (" + getProviderName() + ")");
             return 0.0;
         }
     }
