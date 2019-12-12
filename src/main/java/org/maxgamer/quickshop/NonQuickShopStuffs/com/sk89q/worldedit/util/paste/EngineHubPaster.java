@@ -47,7 +47,7 @@ public class EngineHubPaster {
         }
 
         @Override
-        public URL call() throws IOException, InterruptedException {
+        public URL call() throws IOException {
             HttpRequest.Form form = HttpRequest.Form.create();
             form.add("content", content);
             form.add("from", "enginehub");
