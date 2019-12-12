@@ -275,7 +275,7 @@ public class Util {
             } else {
                 return formated;
             }
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException e) {
             Util.debugLog("format", e.getMessage());
             Util.debugLog("format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
@@ -353,6 +353,9 @@ public class Util {
     public static String getPotiondata(@NotNull ItemStack iStack) {
         if ((iStack.getType() != Material.POTION) && (iStack.getType() != Material.LINGERING_POTION) && (iStack
                 .getType() != Material.SPLASH_POTION)) {
+            return null;
+        }
+        if(!(iStack.getItemMeta() instanceof PotionMeta)){
             return null;
         }
         List<String> pEffects = new ArrayList<>();

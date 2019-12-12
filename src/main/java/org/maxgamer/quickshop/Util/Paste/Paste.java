@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.Util;
+package org.maxgamer.quickshop.Util.Paste;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -6,18 +6,14 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Economy.EconomyCore;
 import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 
 /**
  * A util to generate a paste report and upload it to Ubuntu Paste
@@ -206,37 +202,20 @@ public class Paste {
         }
         return report;
     }
-
-    /**
-     * Paste a text to paste.ubuntu.com
-     *
-     * @param text The text you want paste.
-     * @return Target paste URL.
-     * @throws Exception the throws
-     */
-    public String pasteTheText(@NotNull String text) throws Exception {
-        URL url = new URL("https://paste.ubuntu.com");
-        URLConnection conn = url.openConnection();
-        conn.setRequestProperty("accept", "*/*");
-        conn.setRequestProperty("connection", "Keep-Alive");
-        conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36");
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        PrintWriter out = new PrintWriter(conn.getOutputStream());
-        //poster=aaaaaaa&syntax=text&expiration=&content=%21%40
-        String builder = "poster=" +
-                "QuickShop Paster" +
-                "&syntax=text" +
-                "&expiration=month" +
-                "&content=" +
-                URLEncoder.encode(text, "UTF-8");
-        out.print(builder);
-        out.flush();//Drop
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        Util.debugLog("Request Completed: " + conn.getURL().toString());
-        String link = conn.getURL().toString();
-        in.close();
-        out.close();
-        return link;
+    @Nullable
+    public String paste(@NotNull String content){
+        PasteInterface paster;
+        try{
+            //EngineHub Pastebin
+            paster = new EngineHubPaster();
+            return paster.pasteTheText(content);
+        }catch (Exception ignore){}
+        try{
+            //Ubuntu Pastebin
+            paster = new UbuntuPaster();
+            return paster.pasteTheText(content);
+        }catch (Exception ignore){}
+        return null;
     }
+
 }
