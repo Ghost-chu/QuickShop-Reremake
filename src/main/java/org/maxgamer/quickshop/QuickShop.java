@@ -5,6 +5,7 @@ import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -30,10 +31,12 @@ import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -381,27 +384,25 @@ public class QuickShop extends JavaPlugin {
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
 
-        getLogger().info("Quickshop Reremake");
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
-        getLogger().info("Let's start loading the plugin");
-        /* Check the running envs is support or not. */
-        try {
-            runtimeCheck(this);
-        } catch (RuntimeException e) {
-            bootError = new BootError(e.getMessage());
-            return;
-        }
+        getLogger().info("Quickshop "+getFork());
+        getLogger().info("Reading the configuration...");
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
-        getConfig().options().copyDefaults(true); // Load defaults.
-
+        getConfig().options().copyDefaults(getConfig().getBoolean("auto-fix-configuration",false)); // Load defaults.
+        saveDefaultConfig();
+        reloadConfig();
+        //getConfig().options().copyDefaults(true);
         if (getConfig().getInt("config-version") == 0) {
             getConfig().set("config-version", 1);
         }
-
         updateConfig(getConfig().getInt("config-version"));
+
+
+        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
+        getLogger().info("Let's start loading the plugin");
+
         /* It will generate a new UUID above updateConfig */
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
@@ -410,8 +411,7 @@ public class QuickShop extends JavaPlugin {
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
 
-        /* Load 3rd party supports */
-        load3rdParty();
+
 
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
@@ -420,6 +420,18 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+
+
+        /* Check the running envs is support or not. */
+        try {
+            runtimeCheck(this);
+        } catch (RuntimeException e) {
+            bootError = new BootError(e.getMessage());
+            return;
+        }
+
+        /* Load 3rd party supports */
+        load3rdParty();
 
         setupDBonEnableding = true;
         setupDatabase(); //Load the database
@@ -1084,6 +1096,46 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }
+        configVaildate();
+    }
+
+    public void configVaildate(){
+        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
+        Set<String> keysA = new HashSet<>(attached.getKeys(true));
+        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
+        Set<String> ignoreCheckKeys = new HashSet<>();
+        ignoreCheckKeys.add("server-uuid");
+        final String msgForConfigutationFix = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
+                ".....\n" +
+                "%data%\n" +
+                ".....\n" +
+                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
+        keysA.stream().filter((key)->!keysB.contains(key)).filter((key)->!ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss)->{
+            String theMsg = msgForConfigutationFix;
+            theMsg = theMsg.replace("%key%",miss);
+            List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
+            StringBuilder miss2Yaml = new StringBuilder();
+            int spaces = 2;
+            Iterator iterator = tiers.iterator();
+            while (true){
+                String tier = (String) iterator.next();
+                miss2Yaml.append(tier);
+                if(iterator.hasNext()){
+                    miss2Yaml.append(": ");
+                    miss2Yaml.append("\n");
+                    for (int i = 0; i < spaces; i++) {
+                        miss2Yaml.append(" ");
+                    }
+                    spaces += 2;
+                }else{
+                    miss2Yaml.append(": ");
+                    miss2Yaml.append(attached.get(miss));
+                   break;
+                }
+            }
+            theMsg = theMsg.replace("%data%",miss2Yaml.toString());
+            getLogger().warning(theMsg);
+        });
     }
 
     /**
