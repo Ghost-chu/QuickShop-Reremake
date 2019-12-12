@@ -54,7 +54,7 @@ public class ShopModerator {
      */
     public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
         this.owner = owner;
-        this.staffs = new ArrayList<>();
+        this.staffs = staffs;
     }
 
     /**
