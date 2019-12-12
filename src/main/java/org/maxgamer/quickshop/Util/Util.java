@@ -679,10 +679,10 @@ public class Util {
         }
         for (String lore:stack.getItemMeta().getLore()) {
             if(plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
