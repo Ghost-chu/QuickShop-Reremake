@@ -197,6 +197,9 @@ public class ShopLoader {
             Util.debugLog("Shop Owner is null");
             return true;
         }
+        if(Bukkit.getOfflinePlayer(shop.getOwner()).getName() == null){
+            Util.debugLog("Shop owner not exist on this server, did you reset the playerdata?");
+        }
         return false;
     }
 
