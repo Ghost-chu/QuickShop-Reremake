@@ -142,7 +142,7 @@ public interface DisplayItem {
         }
         java.util.List<String> lore = new ArrayList<String>();
         Gson gson = new Gson();
-        ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
+        ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack,shop);
         String protectFlag = gson.toJson(shopProtectionFlag);
         for (int i = 0; i < 21; i++) {
             lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
@@ -150,6 +150,16 @@ public interface DisplayItem {
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
         return itemStack;
+    }
+
+    /**
+     * Create the shop protection flag for display item.
+     * @param itemStack The item stack
+     * @param shop The shop
+     * @return ShopProtectionFlag obj
+     */
+    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop){
+        return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
     /**
