@@ -194,9 +194,7 @@ class ItemMetaMatcher {
             return true;
         }
         Util.debugLog("Checking enchantments");
-        if (!meta1.hasEnchants()) {
-            return true;
-        } else {
+        if (meta1.hasEnchants()) {
             if (!meta2.hasEnchants()) {
                 return false;
             }
@@ -206,9 +204,7 @@ class ItemMetaMatcher {
                 return false;
             }
         }
-        if (!(meta1 instanceof EnchantmentStorageMeta)) {
-            return true;
-        } else {
+        if ((meta1 instanceof EnchantmentStorageMeta)) {
             if (!(meta2 instanceof EnchantmentStorageMeta)) {
                 return false;
             }
@@ -216,6 +212,7 @@ class ItemMetaMatcher {
             Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
             return Util.mapMatches(stor1, stor2);
         }
+        return true;
     }
 
     private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
