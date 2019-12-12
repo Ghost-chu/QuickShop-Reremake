@@ -2,9 +2,6 @@ package org.maxgamer.quickshop.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.cactoos.io.InputOf;
-import org.cactoos.io.InputStreamOf;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Mock.MckFileConfiguration;
@@ -12,6 +9,7 @@ import org.maxgamer.quickshop.Util.Copied;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Objects;
 
 public abstract class FileEnvelope implements IFile {
 
@@ -60,7 +58,7 @@ public abstract class FileEnvelope implements IFile {
         }
 
         if (loadDefault) {
-            copied.exec(getInputStream());
+            copied.accept(getInputStream());
         }
 
         reload();
@@ -69,9 +67,7 @@ public abstract class FileEnvelope implements IFile {
     @NotNull
     @Override
     public InputStream getInputStream() {
-        return new InputStreamOf(() ->
-            plugin.getResource(resourcePath)
-        );
+        return Objects.requireNonNull(plugin.getResource(resourcePath));
     }
 
     @Override
