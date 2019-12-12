@@ -633,7 +633,7 @@ public class Util {
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
                                     .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
-                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location.toString() + ", Item is " + itemStack
+                            MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack
                                     .getType().name());
                         }
                     }
