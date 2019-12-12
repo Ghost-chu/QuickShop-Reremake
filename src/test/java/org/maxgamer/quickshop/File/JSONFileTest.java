@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.maxgamer.quickshop.QuickShopTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class JSONFileTest {
 
     private QuickShopTest plugin;
