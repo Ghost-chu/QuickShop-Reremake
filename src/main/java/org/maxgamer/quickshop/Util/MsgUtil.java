@@ -535,7 +535,7 @@ public class MsgUtil {
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
             if (sender instanceof Player) {
-                if (!((Player) sender).isSneaking()) {
+                if (!((Player) sender).isSneaking()) {//sneaking
                     return;
                 }
             }
@@ -550,6 +550,7 @@ public class MsgUtil {
             chatSheetPrinter.printSuggestableCmdLine(MsgUtil.getMessage("controlpanel.setowner", sender, shop.ownerName() + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) ? (" (" + shop.getOwner() + ")") : "")), MsgUtil
                     .getMessage("controlpanel.setowner-hover", sender), MsgUtil.getMessage("controlpanel.commands.setowner", sender));
         }
+
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             String text = MsgUtil.getMessage("controlpanel.unlimited", sender, bool2String(shop.isUnlimited()));
