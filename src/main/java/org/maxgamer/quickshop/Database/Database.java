@@ -199,6 +199,7 @@ public class Database {
      *
      * @return the database core object, that this database runs on.
      */
+    @NotNull
     public DatabaseCore getCore() {
         return core;
     }

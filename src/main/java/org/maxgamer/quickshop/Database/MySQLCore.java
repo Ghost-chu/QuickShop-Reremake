@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Database;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -74,6 +75,7 @@ public class MySQLCore implements DatabaseCore {
      *
      * @return The database connection
      */
+    @Nullable
     @Override
     public Connection getConnection() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {

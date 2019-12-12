@@ -14,6 +14,8 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.Objects;
+
 @ToString
 public class RealDisplayItem implements DisplayItem {
 
@@ -45,7 +47,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         //return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
-        if (!this.item.getLocation().getWorld().equals(getDisplayLocation().getWorld())) {
+        if (!Objects.requireNonNull(this.item.getLocation().getWorld()).equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
             return true;
         }
         return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
@@ -69,15 +71,15 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
-        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
+        for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
             }
             Item eItem = (Item) entity;
-            if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
+            if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
                 Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
                         .getLocation());
-                eItem.teleport(getDisplayLocation());
+                eItem.teleport(Objects.requireNonNull(getDisplayLocation()));
                 return;
             }
         }
@@ -175,7 +177,7 @@ public class RealDisplayItem implements DisplayItem {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
-        if (!Util.isDisplayAllowBlock(getDisplayLocation().getBlock().getType())) {
+        if (!Util.isDisplayAllowBlock(Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
             Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
