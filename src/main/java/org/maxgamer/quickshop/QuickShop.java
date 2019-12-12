@@ -13,6 +13,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandManager;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
@@ -45,6 +46,7 @@ public class QuickShop extends JavaPlugin {
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      **/
+    @Nullable
     private BootError bootError;
     // Listeners - We decide which one to use at runtime
     private ChatListener chatListener;
@@ -98,6 +100,7 @@ public class QuickShop extends JavaPlugin {
     private HashMap<String, Integer> limits = new HashMap<>();
     private LockListener lockListener;
     //private BukkitTask itemWatcherTask;
+    @Nullable
     private LogWatcher logWatcher;
     /**
      * bStats, good helper for metrics.
@@ -1055,7 +1058,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 68;
         }
         if (selectedVersion == 68){
-            ArrayList<String> temp = new ArrayList<>();;
+            ArrayList<String> temp = new ArrayList<>();
             temp.add("SoulBound");
             getConfig().set("shop.blacklist-lores", temp);
             getConfig().set("config-version", 69);

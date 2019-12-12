@@ -67,6 +67,6 @@ public class LuckPermsProvider implements PermissionProvider {
         }
         StringBuilder permissionsBuilder = new StringBuilder();
         user.getPermissions().forEach((pnode) -> permissionsBuilder.append(pnode.getPermission()).append("\n"));
-        return new PermissionInfomationContainer(sender, permission, user.getPrimaryGroup(), "This player all permissions: \n" + permissionsBuilder.toString());
+        return new PermissionInfomationContainer(sender, permission, user.getPrimaryGroup(), "This player all permissions: \n" + permissionsBuilder);
     }
 }

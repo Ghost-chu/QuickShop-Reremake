@@ -88,7 +88,7 @@ public class GroupManagerProvider implements PermissionProvider {
             }
             StringBuilder permissionBuilder = new StringBuilder();
             handler.getAllPlayersPermissions(sender.getName(), true).forEach((node) -> permissionBuilder.append(node).append("\n"));
-            return new PermissionInfomationContainer(sender, permission, handler.getPrimaryGroup(sender.getName()), "This player have permissions: \n" + permissionBuilder.toString() + "\nWARNING: GroupManager doesn't have support, don't report to us if you got any troubles.");
+            return new PermissionInfomationContainer(sender, permission, handler.getPrimaryGroup(sender.getName()), "This player have permissions: \n" + permissionBuilder + "\nWARNING: GroupManager doesn't have support, don't report to us if you got any troubles.");
         }
     }
 }

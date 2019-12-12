@@ -51,7 +51,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 } catch (Exception ignored) {
                 }
             } else {
-                Util.debugLog("Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : " + shop.toString());
+                Util.debugLog("Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : " + shop);
             }
 
         }

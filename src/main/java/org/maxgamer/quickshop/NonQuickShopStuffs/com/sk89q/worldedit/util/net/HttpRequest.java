@@ -85,7 +85,7 @@ public class HttpRequest implements Closeable {
      * @return this object
      */
     public HttpRequest header(String key, String value) {
-        if (key.equalsIgnoreCase("Content-Type")) {
+        if ("Content-Type".equalsIgnoreCase(key)) {
             contentType = value;
         } else {
             headers.put(key, value);

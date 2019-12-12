@@ -208,7 +208,7 @@ public class SentryErrorReporter {
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
-            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID().toString());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
             return this.context.getLastEventId();
         } catch (Throwable th) {

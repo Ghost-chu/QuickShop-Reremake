@@ -124,7 +124,7 @@ public class ContainerShop implements Shop {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
             inv.addItem(item);
-            remains = remains - stackSize;
+            remains -= stackSize;
         }
         this.setSignText();
     }
@@ -268,41 +268,42 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void buy(@NotNull Player p, int amount) {
-        if (amount < 0) {
-            this.sell(p, -amount);
+        int amount1 = amount;
+        if (amount1 < 0) {
+            this.sell(p, -amount1);
         }
         if (this.isUnlimited()) {
             ItemStack[] contents = p.getInventory().getContents();
-            for (int i = 0; amount > 0 && i < contents.length; i++) {
+            for (int i = 0; amount1 > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
                 if (stack == null) {
                     continue; // No item
                 }
                 if (matches(stack)) {
-                    int stackSize = Math.min(amount, stack.getAmount());
+                    int stackSize = Math.min(amount1, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
-                    amount -= stackSize;
+                    amount1 -= stackSize;
                 }
             }
             // Send the players new inventory to them
             p.getInventory().setContents(contents);
             this.setSignText();
             // This should not happen.
-            if (amount > 0) {
+            if (amount1 > 0) {
                 plugin.getLogger().log(Level.WARNING, "Could not take all items from a players inventory on purchase! " + p
-                        .getName() + ", missing: " + amount + ", item: " + Util.getItemStackName(this.getItem()) + "!");
+                        .getName() + ", missing: " + amount1 + ", item: " + Util.getItemStackName(this.getItem()) + "!");
             }
         } else {
             ItemStack[] playerContents = p.getInventory().getContents();
             Inventory chestInv = this.getInventory();
-            for (int i = 0; amount > 0 && i < playerContents.length; i++) {
+            for (int i = 0; amount1 > 0 && i < playerContents.length; i++) {
                 ItemStack item = playerContents[i];
                 if (item != null && this.matches(item)) {
                     // Copy it, we don't want to interfere
                     item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
-                    int stackSize = Math.min(amount, item.getAmount());
+                    int stackSize = Math.min(amount1, item.getAmount());
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
@@ -311,7 +312,7 @@ public class ContainerShop implements Shop {
                     item.setAmount(stackSize);
                     // Add the items to the players inventory
                     chestInv.addItem(item);
-                    amount -= stackSize;
+                    amount1 -= stackSize;
                 }
             }
             // Now update the players inventory.
@@ -440,7 +441,7 @@ public class ContainerShop implements Shop {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
             inv.removeItem(item);
-            remains = remains - stackSize;
+            remains -= stackSize;
         }
         this.setSignText();
     }
@@ -692,12 +693,12 @@ public class ContainerShop implements Shop {
         StringBuilder sb = new StringBuilder("Shop " + (location.getWorld() == null ?
                 "unloaded world" :
                 location.getWorld().getName()) + "(" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + ")");
-        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
+        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
         }
         sb.append(" Price: ").append(getPrice());
-        sb.append(" Item: ").append(getItem().toString());
+        sb.append(" Item: ").append(getItem());
         return sb.toString();
     }
 
@@ -824,7 +825,7 @@ public class ContainerShop implements Shop {
      */
     public void checkContainer() {
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation().toString() + " container was missing, remove...");
+            Util.debugLog("Shop at " + this.getLocation() + " container was missing, remove...");
             this.onUnload();
             this.delete();
         }
