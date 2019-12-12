@@ -7,10 +7,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -21,6 +18,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 public class ShopProtectionListener implements Listener {
@@ -57,7 +55,7 @@ public class ShopProtectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()) ||
-            !useEnhanceProtection) {
+                !useEnhanceProtection) {
             return;
         }
 
@@ -74,7 +72,7 @@ public class ShopProtectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()) ||
-            !useEnhanceProtection) {
+                !useEnhanceProtection) {
             return;
         }
 
@@ -92,7 +90,7 @@ public class ShopProtectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()) ||
-            !useEnhanceProtection) {
+                !useEnhanceProtection) {
             return;
         }
 
@@ -164,7 +162,7 @@ public class ShopProtectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMobChangeBlock(EntityChangeBlockEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()) ||
-            !useEnhanceProtection) {
+                !useEnhanceProtection) {
             return;
         }
 
@@ -185,7 +183,7 @@ public class ShopProtectionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         if (ListenerHelper.isDisabled(event.getClass()) ||
-            !useEnhanceProtection) {
+                !useEnhanceProtection) {
             return;
         }
 
@@ -200,6 +198,21 @@ public class ShopProtectionListener implements Listener {
             return;
             //plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of " + shop);
             //Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried to break the shop of " + shop);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onSpongeing(SpongeAbsorbEvent event) {
+        if (ListenerHelper.isDisabled(event.getClass()) ||
+                !useEnhanceProtection) {
+            return;
+        }
+        List<BlockState> blocks = event.getBlocks();
+        for (BlockState block : blocks) {
+            if (plugin.getShopManager().getShopIncludeAttached(block.getLocation()) != null) {
+                event.setCancelled(true);
+            }
+
         }
     }
 }
