@@ -31,12 +31,12 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                     }
                     if (anyPlayerInRegion) {
                         if (!shop.getDisplay().isSpawned()) {
-                            Util.debugLog("Respawning the shop " + shop.toString() + " the display, cause it was despawned and a player close it");
+                            Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close it");
                             shop.checkDisplay();
                         }
                     } else {
                         if (shop.getDisplay().isSpawned()) {
-                            Util.debugLog("Removing the shop " + shop.toString() + " the display, cause nobody can see it");
+                            Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
                             shop.getDisplay().remove();
                         }
                     }

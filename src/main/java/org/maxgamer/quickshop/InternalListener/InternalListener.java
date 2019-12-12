@@ -33,8 +33,7 @@ public class InternalListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        plugin.log("Shop at location " + event.getShop().getLocation() + " moderator was changed to " + event.getModerator()
-                .toString());
+        plugin.log("Shop at location " + event.getShop().getLocation() + " moderator was changed to " + event.getModerator());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

@@ -50,7 +50,7 @@ public class LogWatcher extends BukkitRunnable {
     public void log(@NonNull String log) {
         Date date = Calendar.getInstance().getTime();
         Timestamp time = new Timestamp(date.getTime());
-        this.add("[" + time.toString() + "] " + log);
+        this.add("[" + time + "] " + log);
     }
 
     @Override

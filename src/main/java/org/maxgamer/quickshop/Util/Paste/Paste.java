@@ -14,6 +14,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * A util to generate a paste report and upload it to Ubuntu Paste
@@ -38,26 +39,22 @@ public class Paste {
         finalReport.append("QuickShop:\n");
         finalReport.append("\tVersion: ").append(QuickShop.getVersion()).append("\n");
         finalReport.append("\tFork: ").append(plugin.getFork()).append("\n");
-        finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID().toString()).append("\n");
+        finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID()).append("\n");
         finalReport.append("\tOpenInv Hook: ").append(plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled").append("\n");
         finalReport.append("\tEconomy System: ");
         EconomyCore economyCore = plugin.getEconomy().getCore();
-        if (economyCore != null) {
-            switch (Economy.getNowUsing()) {
-                case VAULT:
-                    finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
-                    break;
-                case RESERVE:
-                    finalReport.append("Reserve").append("%").append("No details");
-                    break;
-                case UNKNOWN:
-                    finalReport.append("Unknown").append("%").append("Unknown error");
-                    break;
-            }
-            finalReport.append("\n");
-        } else {
-            finalReport.append("null");
+        switch (Economy.getNowUsing()) {
+            case VAULT:
+                finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
+                break;
+            case RESERVE:
+                finalReport.append("Reserve").append("%").append("No details");
+                break;
+            case UNKNOWN:
+                finalReport.append("Unknown").append("%").append("Unknown error");
+                break;
         }
+        finalReport.append("\n");
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
         finalReport.append("\tOS: ").append(System.getProperty("os.name")).append("\n");
@@ -70,13 +67,14 @@ public class Paste {
         finalReport.append("\tServer Name: ").append(Bukkit.getServer().getName()).append("\n");
         finalReport.append("\tBuild: ").append(Bukkit.getServer().getVersion()).append("\n");
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
+        //noinspection deprecation
         finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
         finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
         finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit.getMaxPlayers())
                 .append("\n");
         finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
         finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
-        finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer().toString()).append("\n");
+        finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
@@ -101,27 +99,27 @@ public class Paste {
         try {
             finalReport.append("\t*********************************\n");
             finalReport.append("\tconfig.yml:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/config.yml"))).append("\n");
+            finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                    .inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tmessages.yml:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(plugin.getDataFolder().toString() + "/messages.yml"))).append("\n");
+            finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                    .inputStream2ByteArray(plugin.getDataFolder() + "/messages.yml")))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tenchi18n.yml:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
-            finalReport.append("\t\t\n").append(new String(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+            finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
@@ -130,8 +128,8 @@ public class Paste {
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tlatest.log:\n");
-                finalReport.append("\t\t\n").append(new String(Util
-                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath()))).append("\n");
+                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -142,8 +140,8 @@ public class Paste {
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
-                finalReport.append("\t\t\n").append(new String(Util
-                        .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath()))).append("\n");
+                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                        .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath())))).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -154,8 +152,8 @@ public class Paste {
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
-                finalReport.append("\t\t\n").append(new String(Util
-                        .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath()))).append("\n");
+                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                        .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath())))).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -166,8 +164,8 @@ public class Paste {
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
-                finalReport.append("\t\t\n").append(new String(Util
-                        .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath()))).append("\n");
+                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+                        .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())))).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -180,11 +178,11 @@ public class Paste {
         }
         finalReport.append("================================================\n");
         finalReport.append("Shops in DB:\n");
-        plugin.getShopLoader().getOriginShopsInDatabase().forEach((shopDatabaseInfoOrigin -> finalReport.append("\t").append(shopDatabaseInfoOrigin.toString()).append("\n")));
+        plugin.getShopLoader().getOriginShopsInDatabase().forEach((shopDatabaseInfoOrigin -> finalReport.append("\t").append(shopDatabaseInfoOrigin).append("\n")));
         finalReport.append("Total: ").append(plugin.getShopLoader().getOriginShopsInDatabase().size()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
-        plugin.getShopLoader().getShopsInDatabase().forEach((shop -> finalReport.append("\t").append(shop.toString()).append("\n")));
+        plugin.getShopLoader().getShopsInDatabase().forEach((shop -> finalReport.append("\t").append(shop).append("\n")));
         finalReport.append("Total: ").append(plugin.getShopLoader().getShopsInDatabase().size()).append("\n");
         finalReport.append("================================================\n");
 
@@ -192,11 +190,11 @@ public class Paste {
         String report = finalReport.toString();
         try {
             ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection("database");
-            report = report.replaceAll(configurationSection.getString("user"), "[PROTECTED]");
-            report = report.replaceAll(configurationSection.getString("password"), "[PROTECTED]");
-            report = report.replaceAll(configurationSection.getString("host"), "[PROTECTED]");
-            report = report.replaceAll(configurationSection.getString("port"), "[PROTECTED]");
-            report = report.replaceAll(configurationSection.getString("database"), "[PROTECTED]");
+            report = report.replaceAll(Objects.requireNonNull(Objects.requireNonNull(configurationSection).getString("user")), "[PROTECTED]");
+            report = report.replaceAll(Objects.requireNonNull(configurationSection.getString("password")), "[PROTECTED]");
+            report = report.replaceAll(Objects.requireNonNull(configurationSection.getString("host")), "[PROTECTED]");
+            report = report.replaceAll(Objects.requireNonNull(configurationSection.getString("port")), "[PROTECTED]");
+            report = report.replaceAll(Objects.requireNonNull(configurationSection.getString("database")), "[PROTECTED]");
         } catch (Throwable tg) {
             //Ignore
         }

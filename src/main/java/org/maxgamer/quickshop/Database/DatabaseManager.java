@@ -103,7 +103,7 @@ public class DatabaseManager {
                 break;
             }
             try {
-                Util.debugLog("Executing the SQL task: " + statement.toString());
+                Util.debugLog("Executing the SQL task: " + statement);
                 statement.execute();
             } catch (SQLException sqle) {
                 plugin.getSentryErrorReporter().ignoreThrow();

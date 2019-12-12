@@ -38,7 +38,7 @@ public class UbuntuPaster implements PasteInterface{
         out.print(builder);
         out.flush();//Drop
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        Util.debugLog("Request Completed: " + conn.getURL().toString());
+        Util.debugLog("Request Completed: " + conn.getURL());
         String link = conn.getURL().toString();
         in.close();
         out.close();

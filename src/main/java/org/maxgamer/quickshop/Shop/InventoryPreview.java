@@ -41,6 +41,7 @@ public class InventoryPreview implements Listener {
         return false;
     }
 
+    @Nullable
     private Inventory inventory;
     private ItemStack itemStack;
     private Player player;
