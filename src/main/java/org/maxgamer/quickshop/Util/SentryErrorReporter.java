@@ -196,7 +196,7 @@ public class SentryErrorReporter {
             Paste paste = new Paste(plugin);
             String pasteURL = "Failed to paste.";
             try {
-                pasteURL = paste.pasteTheText(paste.genNewPaste());
+                pasteURL = paste.paste(paste.genNewPaste());
             } catch (Throwable ex) {
                 //Ignore
             }
