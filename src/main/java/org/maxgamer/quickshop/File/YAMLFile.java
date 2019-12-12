@@ -2,9 +2,6 @@ package org.maxgamer.quickshop.File;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.cactoos.io.InputOf;
-import org.cactoos.io.InputStreamOf;
-import org.cactoos.io.ReaderOf;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -62,7 +59,7 @@ public final class YAMLFile extends FileEnvelope {
         if (loadDefault) {
             fileConfiguration.setDefaults(
                 YamlConfiguration.loadConfiguration(
-                    new ReaderOf(
+                    new InputStreamReader(
                         getInputStream()
                     )
                 )

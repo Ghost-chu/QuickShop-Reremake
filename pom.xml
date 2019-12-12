@@ -222,6 +222,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>fr.neatmonster</groupId>
@@ -291,17 +292,6 @@
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.13</artifactId>
             <version>0.2.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.cactoos</groupId>
-            <artifactId>cactoos</artifactId>
-            <version>0.43</version>
-        </dependency>
-        <dependency>
-            <groupId>org.llorllale</groupId>
-            <artifactId>cactoos-matchers</artifactId>
-            <version>0.18</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
