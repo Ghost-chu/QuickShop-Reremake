@@ -79,7 +79,7 @@ public class SubCommand_Debug implements CommandProcesser {
     public void printHandlerList(@NotNull CommandSender sender, String event) {
         try {
             final Class clazz = Class.forName(event);
-            final Method method = clazz.getMethod("getHandlerList", (Class[]) new Class[0]);
+            final Method method = clazz.getMethod("getHandlerList");
             final Object[] obj = new Object[0];
             final HandlerList list = (HandlerList) method.invoke(null, obj);
 

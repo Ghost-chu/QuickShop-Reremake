@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 //import com.griefcraft.lwc.LWC;
@@ -54,8 +55,8 @@ public class PlayerListener implements Listener {
                     block = e.getClickedBlock();
                 }
 
-                if (plugin.getShopManager().getShop(block.getLocation()) != null && (plugin.getShopManager().getShop(block
-                        .getLocation()).getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
+                if (plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation()) != null && (Objects.requireNonNull(plugin.getShopManager().getShop(block
+                        .getLocation())).getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
                     if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                         return;
                     }
@@ -65,8 +66,8 @@ public class PlayerListener implements Listener {
                     }
 
                     MsgUtil.sendControlPanelInfo(e.getPlayer(),
-                            plugin.getShopManager().getShop(block.getLocation()));
-                    plugin.getShopManager().getShop(block.getLocation()).setSignText();
+                            Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
+                    Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
                 }
             }
 
@@ -221,7 +222,7 @@ public class PlayerListener implements Listener {
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             p.sendMessage(
-                    MsgUtil.getMessage("how-much-to-trade-for", p, Util.getItemStackName(e.getItem())));
+                    MsgUtil.getMessage("how-much-to-trade-for", p, Util.getItemStackName(Objects.requireNonNull(e.getItem()))));
         }
     }
 
@@ -235,6 +236,7 @@ public class PlayerListener implements Listener {
             Inventory inventory = e.getInventory();
 
             // FIXME: 24/11/2019 inventory cannot be null
+            //noinspection ConstantConditions
             if (inventory == null) {
                 return;
             }
