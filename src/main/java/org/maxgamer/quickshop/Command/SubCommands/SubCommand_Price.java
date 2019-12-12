@@ -14,6 +14,7 @@ import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class SubCommand_Price implements CommandProcesser {
@@ -131,7 +132,7 @@ public class SubCommand_Price implements CommandProcesser {
                 sender.sendMessage(
                     MsgUtil.getMessage("fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                 try {
-                    plugin.getEconomy().deposit(plugin.getServer().getOfflinePlayer(plugin.getConfig().getString("tax-account"))
+                    plugin.getEconomy().deposit(plugin.getServer().getOfflinePlayer(Objects.requireNonNull(plugin.getConfig().getString("tax-account")))
                         .getUniqueId(), fee);
                 } catch (Exception e) {
                     e.getMessage();

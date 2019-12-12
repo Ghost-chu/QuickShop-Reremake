@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.Database;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class SQLiteCore implements DatabaseCore {
     private final File dbFile;
@@ -34,7 +36,7 @@ public class SQLiteCore implements DatabaseCore {
             }
             synchronized (dbFile) {
                 try {
-                    PreparedStatement ps = bs.prepareStatement(getConnection());
+                    PreparedStatement ps = bs.prepareStatement(Objects.requireNonNull(getConnection()));
                     ps.execute();
                     ps.close();
                 } catch (SQLException e) {
@@ -60,6 +62,7 @@ public class SQLiteCore implements DatabaseCore {
      *
      * @return The database connection
      */
+    @Nullable
     @Override
     public Connection getConnection() {
         try {

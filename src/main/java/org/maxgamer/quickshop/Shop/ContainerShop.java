@@ -2,7 +2,6 @@ package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +31,6 @@ import java.util.logging.Level;
  * ChestShop core
  */
 @EqualsAndHashCode
-@ToString
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude

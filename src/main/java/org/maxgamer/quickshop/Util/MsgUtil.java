@@ -213,7 +213,7 @@ public class MsgUtil {
         String filled = fillArgs(raw, args);
         if (player != null) {
             if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
-                filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+                filled = PlaceholderAPI.setPlaceholders(player, filled);
                 Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
         }
@@ -503,7 +503,7 @@ public class MsgUtil {
     }
 
     public static @NotNull String getSubString(@NotNull String text, @NotNull String left, @NotNull String right) {
-        String result = "";
+        String result;
         int zLen;
         if (left.isEmpty()) {
             zLen = 0;
@@ -530,7 +530,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if ((sender instanceof Player && !((Player) sender).isOp()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if ((sender instanceof Player && !sender.isOp()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (plugin.getConfig().getBoolean("sneak-to-control")) {
