@@ -7,14 +7,27 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class QuickShopTest extends JavaPlugin {
+public final class QuickShopTest extends JavaPlugin {
 
     public QuickShopTest() {
-        super();
     }
 
-    public QuickShopTest(@NotNull JavaPluginLoader loader, @NotNull PluginDescriptionFile description,
-                         @NotNull File dataFolder, @NotNull File file) {
+    public QuickShopTest(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, new File("build"), file);
+    }
+
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
+    public void onDisable() {
+
     }
 }

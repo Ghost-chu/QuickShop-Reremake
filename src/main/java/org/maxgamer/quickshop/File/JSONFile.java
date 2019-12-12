@@ -15,9 +15,9 @@ public final class JSONFile extends FileEnvelope {
         super(
             plugin,
             file,
-            resourcePath.endsWith(".yml")
+            resourcePath.endsWith(".json")
                 ? resourcePath
-                : resourcePath + ".yml",
+                : resourcePath + ".json",
             loadDefault
         );
     }
@@ -26,9 +26,9 @@ public final class JSONFile extends FileEnvelope {
         super(
             plugin,
             file,
-            resourcePath.endsWith(".yml")
+            resourcePath.endsWith(".json")
                 ? resourcePath
-                : resourcePath + ".yml",
+                : resourcePath + ".json",
             true
         );
     }
@@ -40,7 +40,7 @@ public final class JSONFile extends FileEnvelope {
                 plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/")
                     ? resourcePath
                     : "/" + resourcePath),
-                fileName.endsWith(".yml") ? fileName : fileName + ".yml"
+                fileName.endsWith(".json") ? fileName : fileName + ".json"
             ),
             resourcePath.isEmpty()
                 ? fileName
