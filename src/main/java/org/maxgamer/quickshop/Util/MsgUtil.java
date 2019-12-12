@@ -123,6 +123,7 @@ public class MsgUtil {
                         } catch (ArrayIndexOutOfBoundsException e2) {
                             p.getPlayer().sendMessage(msg);
                         }
+                        return true;
                     } else {
                         return false;
                     }

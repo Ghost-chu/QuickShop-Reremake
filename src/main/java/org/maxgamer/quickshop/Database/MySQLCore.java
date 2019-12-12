@@ -87,6 +87,7 @@ public class MySQLCore implements DatabaseCore {
                     // Else, it is invalid, so we return another connection.
                 }
                 connection = DriverManager.getConnection(this.url, info);
+
                 POOL.set(i, connection);
                 return connection;
             } catch (SQLException e) {

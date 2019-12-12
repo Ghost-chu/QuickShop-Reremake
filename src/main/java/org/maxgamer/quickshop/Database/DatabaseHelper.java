@@ -9,16 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A Util to execute all SQLs.
  */
 public class DatabaseHelper {
-
-    private final Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
 
     @NotNull
     private final Database db;
