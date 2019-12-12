@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.maxgamer.quickshop.QuickShopTest;
 
-class JSONFileTest {
+final class JSONFileTest {
 
     private QuickShopTest plugin;
     private IFile json;
 
     @BeforeEach
-    void setUp() {
+    void start() {
         MockBukkit.mock();
         plugin = MockBukkit.load(QuickShopTest.class);
         json = new JSONFile(plugin, "messages");
@@ -31,7 +31,7 @@ class JSONFileTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void stop() {
         MockBukkit.unload();
     }
 
