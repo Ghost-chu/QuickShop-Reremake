@@ -147,8 +147,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public void remove() {
-        if (this.armorStand == null || !this.armorStand.isValid() || this.armorStand.isDead()) {
-            Util.debugLog("Ignore the armorStand removing because the armorStand is already gone.");
+        if (this.armorStand == null) {
+            Util.debugLog("Ignore the armorStand removing because the armorStand not spawned.");
             return;
         }
         this.armorStand.remove();
