@@ -1,61 +1,75 @@
 package org.maxgamer.quickshop.File.BukkitFileAPI;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.Streams;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.*;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Util.SerializationHelper;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 public final class JSONConfiguration extends FileConfiguration {
 
-    private final Gson gson = new Gson();
-
-    private JsonObject jsonObject = new JsonObject();
+    protected static final String BLANK_CONFIG = "{}\n";
 
     @NotNull
     @Override
     public String saveToString() {
-        jsonObject = new JsonObject();
+        final GsonBuilder gsonBuilder = new GsonBuilder();
 
-        convertMapsToJsonObject(getValues(false), "");
-
-        try {
-            final Writer stringWriter = new StringWriter();
-            final JsonWriter jsonWriter = new JsonWriter(stringWriter);
-
-            jsonWriter.setLenient(true);
-            jsonWriter.setIndent("  ");
-            Streams.write(jsonObject, jsonWriter);
-
-            return stringWriter.toString();
-        } catch (IOException e) {
-            throw new AssertionError(e);
+        if (options().prettyPrint()) {
+            gsonBuilder.setPrettyPrinting();
         }
+
+        final Gson gson = gsonBuilder.create();
+        final Object value = SerializationHelper.serialize(getValues(false));
+        final String dump = StringEscapeUtils.unescapeJava(gson.toJson(value));
+
+        if (dump.equals(BLANK_CONFIG)) {
+            return "";
+        }
+
+        return dump;
     }
 
     @Override
     public void loadFromString(@NotNull String contents) throws InvalidConfigurationException {
+        if (contents.isEmpty()) {
+            return;
+        }
+
         final Map<?, ?> input;
 
         try {
-            input = (Map<?, ?>) gson.fromJson(contents, Map.class);
+            final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),
+                    new MapDeserializerDoubleAsIntFix())
+                .create();
+            input = gson.fromJson(contents, new TypeToken<Map<String, Object>>(){}.getType());
         } catch (JsonSyntaxException e) {
-            throw new InvalidConfigurationException(e);
+            throw new InvalidConfigurationException("Invalid JSON detected.", e);
         } catch (ClassCastException e) {
-            throw new InvalidConfigurationException("Top level is not a Map.");
+            throw new InvalidConfigurationException("Top level is not a Map.", e);
         }
 
         if (input != null) {
             convertMapsToSections(input, this);
+        } else {
+            throw new InvalidConfigurationException("An unknown error occurred while attempting to parse the json.");
         }
     }
 
@@ -66,38 +80,23 @@ public final class JSONConfiguration extends FileConfiguration {
     }
 
     protected void convertMapsToSections(@NotNull Map<?, ?> input, @NotNull ConfigurationSection section) {
-        for (Map.Entry<?, ?> entry : input.entrySet()) {
-            final String key = entry.getKey().toString();
-            final Object value = entry.getValue();
+        final Object result = SerializationHelper.deserialize(input);
 
-            if (value instanceof Map) {
-                convertMapsToSections((Map<?, ?>) value, section.createSection(key));
-            } else {
-                section.set(key, value);
-            }
-        }
-    }
+        if (result instanceof Map) {
+            input = (Map<?, ?>) result;
 
-    protected void convertMapsToJsonObject(@NotNull Map<String, Object> input, @NotNull String path) {
-        for (Map.Entry<?, ?> entry : input.entrySet()) {
-            final String key = entry.getKey().toString();
-            final Object value = entry.getValue();
+            for (Map.Entry<?, ?> entry : input.entrySet()) {
+                final String key = entry.getKey().toString();
+                final Object value = entry.getValue();
 
-            if (value instanceof ConfigurationSection) {
-                jsonObject.add(key, new JsonObject());
-
-                final String finalPath;
-
-                if (path.isEmpty()) {
-                    finalPath = path;
+                if (value instanceof Map) {
+                    convertMapsToSections((Map<?, ?>) value, section.createSection(key));
                 } else {
-                    finalPath = path + ".";
+                    section.set(key, value);
                 }
-
-                convertMapsToJsonObject(((ConfigurationSection) value).getValues(false), finalPath + key);
-            } else {
-
             }
+        } else {
+            section.set("", result);
         }
     }
 
@@ -139,4 +138,49 @@ public final class JSONConfiguration extends FileConfiguration {
         return config;
     }
 
+    public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>> {
+
+        @Override  @SuppressWarnings("unchecked")
+        public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return (Map<String, Object>) read(json);
+        }
+
+        public Object read(JsonElement in) {
+
+            if(in.isJsonArray()){
+                List<Object> list = new ArrayList<Object>();
+                JsonArray arr = in.getAsJsonArray();
+                for (JsonElement anArr : arr) {
+                    list.add(read(anArr));
+                }
+                return list;
+            }else if(in.isJsonObject()){
+                Map<String, Object> map = new LinkedTreeMap<String, Object>();
+                JsonObject obj = in.getAsJsonObject();
+                Set<Map.Entry<String, JsonElement>> entitySet = obj.entrySet();
+                for(Map.Entry<String, JsonElement> entry: entitySet){
+                    map.put(entry.getKey(), read(entry.getValue()));
+                }
+                return map;
+            }else if( in.isJsonPrimitive()){
+                JsonPrimitive prim = in.getAsJsonPrimitive();
+                if(prim.isBoolean()){
+                    return prim.getAsBoolean();
+                }else if(prim.isString()){
+                    return prim.getAsString();
+                }else if(prim.isNumber()){
+                    Number num = prim.getAsNumber();
+                    // here you can handle double int/long values
+                    // and return any type you want
+                    // this solution will transform 3.0 float to long values
+                    if(Math.ceil(num.doubleValue())  == num.longValue())
+                        return num.longValue();
+                    else{
+                        return num.doubleValue();
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }

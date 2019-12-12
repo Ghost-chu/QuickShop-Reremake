@@ -1,61 +1,65 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.maxgamer.quickshop.File.BukkitFileAPI;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.FileConfigurationOptions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public final class JSONConfigurationOptions extends FileConfigurationOptions {
+public class JSONConfigurationOptions extends FileConfigurationOptions {
 
-    private int indent = 2;
+    private boolean enablePrettyPrint = true;
 
-    protected JSONConfigurationOptions(@NotNull JSONConfiguration configuration) {
+    protected JSONConfigurationOptions(@NotNull final JSONConfiguration configuration) {
         super(configuration);
     }
 
-    @NotNull
     @Override
     public JSONConfiguration configuration() {
         return (JSONConfiguration) super.configuration();
     }
 
-    @NotNull
     @Override
-    public JSONConfigurationOptions copyDefaults(boolean value) {
+    public JSONConfigurationOptions copyDefaults(final boolean value) {
         super.copyDefaults(value);
         return this;
     }
 
-    @NotNull
     @Override
-    public JSONConfigurationOptions pathSeparator(char value) {
+    public JSONConfigurationOptions pathSeparator(final char value) {
         super.pathSeparator(value);
         return this;
     }
 
-    @NotNull
     @Override
-    public JSONConfigurationOptions header(@Nullable String value) {
+    public JSONConfigurationOptions header(final String value) {
+        super.header(value);
         return this;
     }
 
-    @NotNull
     @Override
-    public JSONConfigurationOptions copyHeader(boolean value) {
+    public JSONConfigurationOptions copyHeader(final boolean value) {
         super.copyHeader(value);
         return this;
     }
 
-    public int indent() {
-        return indent;
+    /**
+     * Sets whether or not to pretty print the json output of the configuration.
+     *
+     * @param enable Whether or not pretty printing should be enabled.
+     * @return This object, for chaining.
+     */
+    public JSONConfigurationOptions prettyPrint(final boolean enable) {
+        enablePrettyPrint = enable;
+        return this;
     }
 
-    @NotNull
-    public JSONConfigurationOptions indent(int indent) {
-        Validate.isTrue(indent >= 2, "Indent must be at least 2 characters");
-        Validate.isTrue(indent <= 9, "Indent cannot be greater than 9 characters");
-
-        this.indent = indent;
-        return this;
+    /**
+     * Gets whether or not to pretty print the json output of the configuration.
+     *
+     * @return Whether or not to pretty print the json.
+     */
+    public boolean prettyPrint() {
+        return enablePrettyPrint;
     }
 }
