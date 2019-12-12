@@ -58,6 +58,7 @@ public class HttpRequest implements Closeable {
     /**
      * Submit data.
      *
+     * @param data the data
      * @return this object
      */
     public HttpRequest body(String data) {
@@ -95,7 +96,7 @@ public class HttpRequest implements Closeable {
 
     /**
      * Execute the request.
-     * <p/>
+     *
      * After execution, {@link #close()} should be called.
      *
      * @return this object
