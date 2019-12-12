@@ -70,7 +70,7 @@ public class ShopLoader {
         }
 
         try {
-            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo().toString());
+            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo());
         } catch (SQLException | NullPointerException e) {
             logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
         }

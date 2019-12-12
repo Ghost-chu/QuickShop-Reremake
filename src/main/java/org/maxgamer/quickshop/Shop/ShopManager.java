@@ -529,9 +529,8 @@ public class ShopManager {
             actionSell(p, eco, actions, info, message, shop, amount);
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
-            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation().toString());
+            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
-        ;
     }
 
     /**

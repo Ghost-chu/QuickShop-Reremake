@@ -30,7 +30,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
             return;
         }
 
-        if(!cmdArg[0].equalsIgnoreCase("confirm")){
+        if(!"confirm".equalsIgnoreCase(cmdArg[0])){
             sender.sendMessage(ChatColor.YELLOW+"This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
             return;
         }

@@ -18,7 +18,9 @@ import org.maxgamer.quickshop.Util.Util;
 public class RealDisplayItem implements DisplayItem {
 
     private static QuickShop plugin = QuickShop.instance;
+    @Nullable
     private ItemStack guardedIstack;
+    @Nullable
     private Item item;
     private ItemStack originalItemStack;
     private Shop shop;
@@ -73,8 +75,8 @@ public class RealDisplayItem implements DisplayItem {
             }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId().toString() + " at " + eItem
-                        .getLocation().toString());
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
+                        .getLocation());
                 eItem.teleport(getDisplayLocation());
                 return;
             }
@@ -119,8 +121,8 @@ public class RealDisplayItem implements DisplayItem {
             }
             if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
-                            .getLocation().toString());
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
+                            .getLocation());
                     entity.remove();
                     removed = true;
                 } else {
@@ -141,7 +143,7 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void safeGuard(@NotNull Entity entity) {
         if (!(entity instanceof Item)) {
-            Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a Item");
+            Util.debugLog("Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
         }
         Item item = (Item) entity;
@@ -152,7 +154,7 @@ public class RealDisplayItem implements DisplayItem {
 		    item.setCustomName(Util.getItemStackName(this.guardedIstack));
 			item.setCustomNameVisible(true);
 		}
-        Util.debugLog("Successfully safeGuard Item: " + item.getLocation().toString());
+        Util.debugLog("Successfully safeGuard Item: " + item.getLocation());
     }
 
     @Override
@@ -192,7 +194,7 @@ public class RealDisplayItem implements DisplayItem {
         this.item.setVelocity(new Vector(0, 0.1, 0));
         this.item.setCustomNameVisible(false);
         safeGuard(this.item);
-        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation().toString());
+        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation());
     }
 
     @Override
