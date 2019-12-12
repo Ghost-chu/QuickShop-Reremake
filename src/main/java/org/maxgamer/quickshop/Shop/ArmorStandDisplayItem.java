@@ -4,6 +4,7 @@ import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.ArmorStand;
@@ -124,6 +125,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
         //Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         armorStand.setItemInHand(guardedIstack);
+        armorStand.getPersistentDataContainer().set(new NamespacedKey(plugin,"displayMark"),DisplayItemPersistentDataType.INSTANCE,DisplayItem.createShopProtectionFlag(this.originalItemStack,shop));
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation().toString());
     }
 
