@@ -92,7 +92,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void remove() {
-        if (this.item == null || !this.item.isValid() || this.item.isDead()) {
+        if (this.item == null) {
             Util.debugLog("Ignore the Item removing because the Item is already gone.");
             return;
         }
