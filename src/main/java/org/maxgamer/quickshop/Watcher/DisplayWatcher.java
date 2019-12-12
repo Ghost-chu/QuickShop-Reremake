@@ -7,6 +7,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 class DisplayRunnable implements Runnable {
     @Override
@@ -55,7 +56,7 @@ public class DisplayWatcher {
 //                        if (!Util.isLoaded(shop.getLocation())) {
 //                            continue;
 //                        }
-                    pendingCheckDisplay.addAll(plugin.getShopManager().getLoadedShops());
+                    pendingCheckDisplay.addAll(Objects.requireNonNull(plugin.getShopManager().getLoadedShops()));
                     //}
                     Bukkit.getScheduler().runTask(plugin, new DisplayRunnable());
                 }

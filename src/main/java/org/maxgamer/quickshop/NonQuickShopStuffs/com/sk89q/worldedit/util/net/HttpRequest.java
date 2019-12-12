@@ -198,9 +198,8 @@ public class HttpRequest implements Closeable {
      *
      * @return the buffered response
      * @throws java.io.IOException  on I/O error
-     * @throws InterruptedException on interruption
      */
-    public BufferedResponse returnContent() throws IOException, InterruptedException {
+    public BufferedResponse returnContent() throws IOException {
         if (inputStream == null) {
             throw new IllegalArgumentException("No input stream available");
         }
@@ -223,9 +222,8 @@ public class HttpRequest implements Closeable {
      * @param file the file
      * @return this object
      * @throws java.io.IOException  on I/O error
-     * @throws InterruptedException on interruption
      */
-    public HttpRequest saveContent(File file) throws IOException, InterruptedException {
+    public HttpRequest saveContent(File file) throws IOException {
 
         try (Closer closer = Closer.create()) {
             FileOutputStream fos = closer.register(new FileOutputStream(file));
@@ -243,9 +241,8 @@ public class HttpRequest implements Closeable {
      * @param out the output stream
      * @return this object
      * @throws java.io.IOException  on I/O error
-     * @throws InterruptedException on interruption
      */
-    public HttpRequest saveContent(OutputStream out) throws IOException, InterruptedException {
+    public HttpRequest saveContent(OutputStream out) throws IOException {
         BufferedInputStream bis;
 
         try {
@@ -276,7 +273,7 @@ public class HttpRequest implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (conn != null) conn.disconnect();
     }
 
@@ -400,7 +397,7 @@ public class HttpRequest implements Closeable {
     /**
      * Used to buffer the response in memory.
      */
-    public class BufferedResponse {
+    public static class BufferedResponse {
         private final byte[] data;
 
         private BufferedResponse(byte[] data) {
@@ -433,9 +430,8 @@ public class HttpRequest implements Closeable {
          * @param file the file
          * @return this object
          * @throws java.io.IOException  on I/O error
-         * @throws InterruptedException on interruption
          */
-        public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
+        public BufferedResponse saveContent(File file) throws IOException {
 
             try (Closer closer = Closer.create()) {
                 file.getParentFile().mkdirs();
@@ -454,9 +450,8 @@ public class HttpRequest implements Closeable {
          * @param out the output stream
          * @return this object
          * @throws java.io.IOException  on I/O error
-         * @throws InterruptedException on interruption
          */
-        public BufferedResponse saveContent(OutputStream out) throws IOException, InterruptedException {
+        public BufferedResponse saveContent(OutputStream out) throws IOException {
             out.write(data);
 
             return this;

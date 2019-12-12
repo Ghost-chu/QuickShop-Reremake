@@ -123,7 +123,7 @@ public class ContainerShop implements Shop {
         while (remains > 0) {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
-            inv.addItem(item);
+            Objects.requireNonNull(inv).addItem(item);
             remains -= stackSize;
         }
         this.setSignText();
@@ -214,7 +214,7 @@ public class ContainerShop implements Shop {
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
-        String world = this.getLocation().getWorld().getName();
+        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this
@@ -230,7 +230,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public short getDurability() {
-        return (short) ((Damageable) this.item.getItemMeta()).getDamage();
+        return (short) ((Damageable) Objects.requireNonNull(this.item.getItemMeta())).getDamage();
     }
 
     /**
@@ -311,7 +311,7 @@ public class ContainerShop implements Shop {
                     // We can modify this, it is a copy.
                     item.setAmount(stackSize);
                     // Add the items to the players inventory
-                    chestInv.addItem(item);
+                    Objects.requireNonNull(chestInv).addItem(item);
                     amount1 -= stackSize;
                 }
             }
@@ -362,7 +362,7 @@ public class ContainerShop implements Shop {
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
-        String world = this.getLocation().getWorld().getName();
+        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         // Refund if necessary
         if (plugin.getConfig().getBoolean("shop.refund")) {
             plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
@@ -440,7 +440,7 @@ public class ContainerShop implements Shop {
         while (remains > 0) {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
-            inv.removeItem(item);
+            Objects.requireNonNull(inv).removeItem(item);
             remains -= stackSize;
         }
         this.setSignText();
@@ -504,7 +504,7 @@ public class ContainerShop implements Shop {
                 amount -= stackSize;
             }
         } else {
-            ItemStack[] chestContents = this.getInventory().getContents();
+            ItemStack[] chestContents = Objects.requireNonNull(this.getInventory()).getContents();
             for (int i = 0; amount > 0 && i < chestContents.length; i++) {
                 // Can't clone it here, it could be null
                 ItemStack item = chestContents[i];
@@ -562,7 +562,7 @@ public class ContainerShop implements Shop {
      * @return The enchantments the shop has on its items.
      */
     public @NotNull Map<Enchantment, Integer> getEnchants() {
-        return this.item.getItemMeta().getEnchants();
+        return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
     }
 
     /**
@@ -572,8 +572,8 @@ public class ContainerShop implements Shop {
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
-                return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
-                )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
+                return openInv.getSpecialEnderChest(Objects.requireNonNull(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
+                ))), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
             }
         } catch (Exception e) {
             Util.debugLog(e.getMessage());
@@ -847,7 +847,7 @@ public class ContainerShop implements Shop {
         }
 
         this.isLoaded = true;
-        plugin.getShopManager().getLoadedShops().add(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
 
         checkContainer();
 
@@ -880,7 +880,7 @@ public class ContainerShop implements Shop {
         }
         update();
         this.isLoaded = false;
-        plugin.getShopManager().getLoadedShops().remove(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
         Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }

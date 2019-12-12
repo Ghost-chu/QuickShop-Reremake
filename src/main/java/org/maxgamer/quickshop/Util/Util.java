@@ -106,7 +106,6 @@ public class Util {
         if (!isShoppables(b.getType())) {
             return false;
         }
-        //noinspection RedundantIfStatement
         if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
