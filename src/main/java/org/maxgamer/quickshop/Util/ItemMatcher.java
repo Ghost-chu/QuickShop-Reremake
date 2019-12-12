@@ -205,16 +205,16 @@ class ItemMetaMatcher {
             if (!Util.mapMatches(enchMap1, enchMap2)) {
                 return false;
             }
-            if (!(meta1 instanceof EnchantmentStorageMeta)) {
-                return true;
-            } else {
-                if (!(meta2 instanceof EnchantmentStorageMeta)) {
-                    return false;
-                }
-                Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
-                Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-                return Util.mapMatches(stor1, stor2);
+        }
+        if (!(meta1 instanceof EnchantmentStorageMeta)) {
+            return true;
+        } else {
+            if (!(meta2 instanceof EnchantmentStorageMeta)) {
+                return false;
             }
+            Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+            Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+            return Util.mapMatches(stor1, stor2);
         }
     }
 

@@ -830,7 +830,8 @@ public class MsgUtil {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants", p) + MsgUtil
+                chatSheetPrinter.printLine(MsgUtil
+                        .getMessage("tableformat.left_half_line", p) + MsgUtil.getMessage("menu.stored-enchants", p) + MsgUtil
                         .getMessage("tableformat.right_half_line", p));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                     chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries
