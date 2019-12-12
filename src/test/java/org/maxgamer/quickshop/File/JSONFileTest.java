@@ -1,9 +1,7 @@
 package org.maxgamer.quickshop.File;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import jdk.nashorn.internal.runtime.UnwarrantedOptimismException;
 import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +42,7 @@ final class JSONFileTest {
 
     @AfterEach
     void stop() {
+        json.save();
         MockBukkit.unload();
     }
 
