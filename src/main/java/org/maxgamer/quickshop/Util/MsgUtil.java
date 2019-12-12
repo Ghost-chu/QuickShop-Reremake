@@ -51,7 +51,7 @@ public class MsgUtil {
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
-    private static DecimalFormat decimalFormat = new DecimalFormat(plugin.getConfig().getString("decimal-format"));
+    private static DecimalFormat decimalFormat = new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -266,7 +266,7 @@ public class MsgUtil {
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         if (!messageFile.exists()) {
             plugin.getLogger().info("Creating messages.yml");
-            plugin.getLanguage().saveFile(plugin.getConfig().getString("language"), "messages", "messages.yml");
+            plugin.getLanguage().saveFile(Objects.requireNonNull(plugin.getConfig().getString("language")), "messages", "messages.yml");
         }
         messagei18n = YamlConfiguration.loadConfiguration(messageFile);
         messagei18n.options().copyDefaults(true);
@@ -314,8 +314,8 @@ public class MsgUtil {
         // Store it
         enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
         enchi18n.options().copyDefaults(true);
-        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.
-                getResource("enchi18n.yml")));
+        YamlConfiguration enchi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.
+                getResource("enchi18n.yml"))));
         enchi18n.setDefaults(enchi18nYAML);
         Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
@@ -355,8 +355,8 @@ public class MsgUtil {
         // Store it
         itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
         itemi18n.options().copyDefaults(true);
-        YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
-                .getResource("itemi18n.yml")));
+        YamlConfiguration itemi18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin
+                .getResource("itemi18n.yml"))));
         itemi18n.setDefaults(itemi18nYAML);
         Util.parseColours(itemi18n);
         Material[] itemsi18n = Material.values();
@@ -395,8 +395,8 @@ public class MsgUtil {
         // Store it
         potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
         potioni18n.options().copyDefaults(true);
-        YamlConfiguration potioni18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin
-                .getResource("potioni18n.yml")));
+        YamlConfiguration potioni18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin
+                .getResource("potioni18n.yml"))));
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         PotionEffectType[] potionsi18n = PotionEffectType.values();
@@ -555,7 +555,7 @@ public class MsgUtil {
             String text = MsgUtil.getMessage("controlpanel.unlimited", sender, bool2String(shop.isUnlimited()));
             String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.unlimited", sender,
-                    shop.getLocation().getWorld().getName(),
+                    Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
@@ -567,7 +567,7 @@ public class MsgUtil {
                 String text = MsgUtil.getMessage("controlpanel.mode-selling", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
                 String clickCommand = MsgUtil.getMessage("controlpanel.commands.buy", sender,
-                        shop.getLocation().getWorld().getName(),
+                        Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
                         String.valueOf(shop.getLocation().getBlockZ()));
@@ -576,7 +576,7 @@ public class MsgUtil {
                 String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
                 String clickCommand = MsgUtil.getMessage("controlpanel.commands.sell", sender,
-                        shop.getLocation().getWorld().getName(),
+                        Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                         String.valueOf(shop.getLocation().getBlockX()),
                         String.valueOf(shop.getLocation().getBlockY()),
                         String.valueOf(shop.getLocation().getBlockZ()));
@@ -584,7 +584,7 @@ public class MsgUtil {
             }
         }
         // Set Price
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.price", sender, (plugin.getConfig().getBoolean("use-decimal-format")) ? decimalFormat(shop.getPrice()) : "" + shop.getPrice());
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
@@ -602,18 +602,18 @@ public class MsgUtil {
             String text = MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.empty", sender,
-                    shop.getLocation().getWorld().getName(),
+                    Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((Player) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.remove", sender,
-                    shop.getLocation().getWorld().getName(),
+                    Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                     String.valueOf(shop.getLocation().getBlockX()),
                     String.valueOf(shop.getLocation().getBlockY()),
                     String.valueOf(shop.getLocation().getBlockZ()));
@@ -637,7 +637,7 @@ public class MsgUtil {
         }
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
-        plugin.getLogWatcher().add(content);
+        Objects.requireNonNull(plugin.getLogWatcher()).add(content);
         Util.debugLog(content);
     }
 
@@ -659,7 +659,7 @@ public class MsgUtil {
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil
-                        .getMessage("menu.commands.preview", player, shop.getLocation().getWorld().getName(), String
+                        .getMessage("menu.commands.preview", player, Objects.requireNonNull(shop.getLocation().getWorld()).getName(), String
                                 .valueOf(shop.getLocation().getBlockX()), String.valueOf(shop.getLocation().getBlockY()), String
                                 .valueOf(shop.getLocation().getBlockZ()))));
             }
@@ -704,7 +704,7 @@ public class MsgUtil {
                 .getMessage("menu.item-name-and-price", p, "" + amount, Util.getItemStackName(shop.getItem()), Util
                         .format((amount * shop.getPrice()))));
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
+        if (shop.getItem().hasItemMeta() && Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
@@ -753,7 +753,7 @@ public class MsgUtil {
             }
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
+        if (shop.getItem().hasItemMeta() && Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
@@ -817,7 +817,7 @@ public class MsgUtil {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling", p));
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (items.hasItemMeta() && items.getItemMeta().hasEnchants()) {
+        if (items.hasItemMeta() && Objects.requireNonNull(items.getItemMeta()).hasEnchants()) {
             enchs = items.getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
