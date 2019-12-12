@@ -19,6 +19,8 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.Objects;
+
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
@@ -219,9 +221,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     private void setPoseForArmorStand() {
         if (this.originalItemStack.getType().isBlock()) {
-            this.armorStand.setRightArmPose(new EulerAngle(-0.2, 0, 0));
+            Objects.requireNonNull(this.armorStand).setRightArmPose(new EulerAngle(-0.2, 0, 0));
         } else {
-            this.armorStand.setRightArmPose(new EulerAngle(-89.5, 0, 0));
+            Objects.requireNonNull(this.armorStand).setRightArmPose(new EulerAngle(-89.5, 0, 0));
         }
     }
 
@@ -243,12 +245,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
-        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
+        for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof ArmorStand)) {
                 continue;
             }
             ArmorStand eArmorStand = (ArmorStand) entity;
-            if (eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
+            if (eArmorStand.getUniqueId().equals(Objects.requireNonNull(this.armorStand).getUniqueId())) {
                 Util.debugLog("Fixing moved ArmorStand displayItem " + eArmorStand.getUniqueId() + " at " + eArmorStand
                         .getLocation());
                 eArmorStand.teleport(getDisplayLocation());
