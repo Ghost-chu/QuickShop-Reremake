@@ -16,7 +16,7 @@ public final class QuickShopTest extends JavaPlugin {
         super(
             loader,
             description,
-            new File(""),
+            new File("build"),
             file
         );
     }
