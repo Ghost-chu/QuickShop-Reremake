@@ -2,7 +2,6 @@ package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +31,6 @@ import java.util.logging.Level;
  * ChestShop core
  */
 @EqualsAndHashCode
-@ToString
 public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
@@ -123,8 +121,8 @@ public class ContainerShop implements Shop {
         while (remains > 0) {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
-            inv.addItem(item);
-            remains = remains - stackSize;
+            Objects.requireNonNull(inv).addItem(item);
+            remains -= stackSize;
         }
         this.setSignText();
     }
@@ -214,10 +212,10 @@ public class ContainerShop implements Shop {
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
-        String world = this.getLocation().getWorld().getName();
+        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator), this
+            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this
                     .getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world);
         } catch (Exception e) {
             e.printStackTrace();
@@ -230,7 +228,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public short getDurability() {
-        return (short) ((Damageable) this.item.getItemMeta()).getDamage();
+        return (short) ((Damageable) Objects.requireNonNull(this.item.getItemMeta())).getDamage();
     }
 
     /**
@@ -268,41 +266,42 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void buy(@NotNull Player p, int amount) {
-        if (amount < 0) {
-            this.sell(p, -amount);
+        int amount1 = amount;
+        if (amount1 < 0) {
+            this.sell(p, -amount1);
         }
         if (this.isUnlimited()) {
             ItemStack[] contents = p.getInventory().getContents();
-            for (int i = 0; amount > 0 && i < contents.length; i++) {
+            for (int i = 0; amount1 > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
                 if (stack == null) {
                     continue; // No item
                 }
                 if (matches(stack)) {
-                    int stackSize = Math.min(amount, stack.getAmount());
+                    int stackSize = Math.min(amount1, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
-                    amount -= stackSize;
+                    amount1 -= stackSize;
                 }
             }
             // Send the players new inventory to them
             p.getInventory().setContents(contents);
             this.setSignText();
             // This should not happen.
-            if (amount > 0) {
+            if (amount1 > 0) {
                 plugin.getLogger().log(Level.WARNING, "Could not take all items from a players inventory on purchase! " + p
-                        .getName() + ", missing: " + amount + ", item: " + Util.getItemStackName(this.getItem()) + "!");
+                        .getName() + ", missing: " + amount1 + ", item: " + Util.getItemStackName(this.getItem()) + "!");
             }
         } else {
             ItemStack[] playerContents = p.getInventory().getContents();
             Inventory chestInv = this.getInventory();
-            for (int i = 0; amount > 0 && i < playerContents.length; i++) {
+            for (int i = 0; amount1 > 0 && i < playerContents.length; i++) {
                 ItemStack item = playerContents[i];
                 if (item != null && this.matches(item)) {
                     // Copy it, we don't want to interfere
                     item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
-                    int stackSize = Math.min(amount, item.getAmount());
+                    int stackSize = Math.min(amount1, item.getAmount());
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
@@ -310,8 +309,8 @@ public class ContainerShop implements Shop {
                     // We can modify this, it is a copy.
                     item.setAmount(stackSize);
                     // Add the items to the players inventory
-                    chestInv.addItem(item);
-                    amount -= stackSize;
+                    Objects.requireNonNull(chestInv).addItem(item);
+                    amount1 -= stackSize;
                 }
             }
             // Now update the players inventory.
@@ -361,7 +360,7 @@ public class ContainerShop implements Shop {
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
-        String world = this.getLocation().getWorld().getName();
+        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         // Refund if necessary
         if (plugin.getConfig().getBoolean("shop.refund")) {
             plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
@@ -439,8 +438,8 @@ public class ContainerShop implements Shop {
         while (remains > 0) {
             int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
-            inv.removeItem(item);
-            remains = remains - stackSize;
+            Objects.requireNonNull(inv).removeItem(item);
+            remains -= stackSize;
         }
         this.setSignText();
     }
@@ -503,7 +502,7 @@ public class ContainerShop implements Shop {
                 amount -= stackSize;
             }
         } else {
-            ItemStack[] chestContents = this.getInventory().getContents();
+            ItemStack[] chestContents = Objects.requireNonNull(this.getInventory()).getContents();
             for (int i = 0; amount > 0 && i < chestContents.length; i++) {
                 // Can't clone it here, it could be null
                 ItemStack item = chestContents[i];
@@ -561,7 +560,7 @@ public class ContainerShop implements Shop {
      * @return The enchantments the shop has on its items.
      */
     public @NotNull Map<Enchantment, Integer> getEnchants() {
-        return this.item.getItemMeta().getEnchants();
+        return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
     }
 
     /**
@@ -571,8 +570,8 @@ public class ContainerShop implements Shop {
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
-                return openInv.getSpecialEnderChest(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
-                )), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
+                return openInv.getSpecialEnderChest(Objects.requireNonNull(openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()
+                ))), Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline()).getBukkitInventory();
             }
         } catch (Exception e) {
             Util.debugLog(e.getMessage());
@@ -692,12 +691,12 @@ public class ContainerShop implements Shop {
         StringBuilder sb = new StringBuilder("Shop " + (location.getWorld() == null ?
                 "unloaded world" :
                 location.getWorld().getName()) + "(" + location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ() + ")");
-        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner().toString());
+        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
         }
         sb.append(" Price: ").append(getPrice());
-        sb.append(" Item: ").append(getItem().toString());
+        sb.append(" Item: ").append(getItem());
         return sb.toString();
     }
 
@@ -824,7 +823,7 @@ public class ContainerShop implements Shop {
      */
     public void checkContainer() {
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation().toString() + " container was missing, remove...");
+            Util.debugLog("Shop at " + this.getLocation() + " container was missing, remove...");
             this.onUnload();
             this.delete();
         }
@@ -846,7 +845,7 @@ public class ContainerShop implements Shop {
         }
 
         this.isLoaded = true;
-        plugin.getShopManager().getLoadedShops().add(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
 
         checkContainer();
 
@@ -879,7 +878,7 @@ public class ContainerShop implements Shop {
         }
         update();
         this.isLoaded = false;
-        plugin.getShopManager().getLoadedShops().remove(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
         Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }

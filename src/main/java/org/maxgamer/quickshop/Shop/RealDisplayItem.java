@@ -14,11 +14,15 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.Objects;
+
 @ToString
 public class RealDisplayItem implements DisplayItem {
 
     private static QuickShop plugin = QuickShop.instance;
+    @Nullable
     private ItemStack guardedIstack;
+    @Nullable
     private Item item;
     private ItemStack originalItemStack;
     private Shop shop;
@@ -43,7 +47,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         //return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
-        if (!this.item.getLocation().getWorld().equals(getDisplayLocation().getWorld())) {
+        if (!Objects.requireNonNull(this.item.getLocation().getWorld()).equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
             return true;
         }
         return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
@@ -67,15 +71,15 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
-        for (Entity entity : this.shop.getLocation().getWorld().getEntities()) {
+        for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
             }
             Item eItem = (Item) entity;
-            if (eItem.getUniqueId().equals(this.item.getUniqueId())) {
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId().toString() + " at " + eItem
-                        .getLocation().toString());
-                eItem.teleport(getDisplayLocation());
+            if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
+                        .getLocation());
+                eItem.teleport(Objects.requireNonNull(getDisplayLocation()));
                 return;
             }
         }
@@ -88,7 +92,7 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void remove() {
-        if (this.item == null || !this.item.isValid() || this.item.isDead()) {
+        if (this.item == null) {
             Util.debugLog("Ignore the Item removing because the Item is already gone.");
             return;
         }
@@ -119,8 +123,8 @@ public class RealDisplayItem implements DisplayItem {
             }
             if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId().toString() + " at " + eItem
-                            .getLocation().toString());
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
+                            .getLocation());
                     entity.remove();
                     removed = true;
                 } else {
@@ -141,7 +145,7 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void safeGuard(@NotNull Entity entity) {
         if (!(entity instanceof Item)) {
-            Util.debugLog("Failed to safeGuard " + entity.getLocation().toString() + ", cause target not a Item");
+            Util.debugLog("Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
         }
         Item item = (Item) entity;
@@ -152,7 +156,7 @@ public class RealDisplayItem implements DisplayItem {
 		    item.setCustomName(Util.getItemStackName(this.guardedIstack));
 			item.setCustomNameVisible(true);
 		}
-        Util.debugLog("Successfully safeGuard Item: " + item.getLocation().toString());
+        Util.debugLog("Successfully safeGuard Item: " + item.getLocation());
     }
 
     @Override
@@ -173,7 +177,7 @@ public class RealDisplayItem implements DisplayItem {
                 Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
-        if (!Util.isDisplayAllowBlock(getDisplayLocation().getBlock().getType())) {
+        if (!Util.isDisplayAllowBlock(Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
             Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
@@ -192,7 +196,7 @@ public class RealDisplayItem implements DisplayItem {
         this.item.setVelocity(new Vector(0, 0.1, 0));
         this.item.setCustomNameVisible(false);
         safeGuard(this.item);
-        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation().toString());
+        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation());
     }
 
     @Override

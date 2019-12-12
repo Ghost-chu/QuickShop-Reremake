@@ -17,6 +17,7 @@ import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class to create a GUI item preview quickly
@@ -29,11 +30,11 @@ public class InventoryPreview implements Listener {
         if (stack == null) {
             return false;
         }
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+        if (!stack.hasItemMeta() || !Objects.requireNonNull(stack.getItemMeta()).hasLore()) {
             return false;
         }
         List<String> lores = stack.getItemMeta().getLore();
-        for (String string : lores) {
+        for (String string : Objects.requireNonNull(lores)) {
             if ("QuickShop GUI preview item".equals(string)) {
                 return true;
             }
@@ -41,6 +42,7 @@ public class InventoryPreview implements Listener {
         return false;
     }
 
+    @Nullable
     private Inventory inventory;
     private ItemStack itemStack;
     private Player player;
@@ -54,10 +56,10 @@ public class InventoryPreview implements Listener {
     public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
         this.itemStack = itemStack.clone();
         this.player = player;
-        if (this.itemStack.getItemMeta().hasLore()) {
+        if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             List<String> lores = itemMeta.getLore();
-            lores.add("QuickShop GUI preview item");
+            Objects.requireNonNull(lores).add("QuickShop GUI preview item");
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         } else {

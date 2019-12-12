@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -67,7 +68,7 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public String format(double balance) {
         try {
-            return reserve.format(new BigDecimal(balance));
+            return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
@@ -86,7 +87,7 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public boolean deposit(UUID name, double amount) {
         try {
-            return reserve.addHoldings(name, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
@@ -110,7 +111,7 @@ public class Economy_Reserve implements EconomyCore {
                     return false;
                 }
             }
-            return reserve.removeHoldings(name, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
@@ -130,7 +131,7 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public boolean transfer(UUID from, UUID to, double amount) {
         try {
-            return reserve.transferHoldings(from, to, new BigDecimal(amount));
+            return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
@@ -148,7 +149,7 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public double getBalance(UUID name) {
         try {
-            return reserve.getHoldings(name).doubleValue();
+            return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
         } catch (Throwable throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();

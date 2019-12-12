@@ -6,12 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -48,6 +48,7 @@ public class Metrics {
      * @return The gzipped String.
      * @throws IOException If the compression failed.
      */
+    @Nullable
     private static byte[] compress(final String str) throws IOException {
         if (str == null) {
             return null;
@@ -163,7 +164,7 @@ public class Metrics {
         connection.addRequestProperty("Accept", "application/json");
         connection.addRequestProperty("Connection", "close");
         connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
-        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+        connection.addRequestProperty("Content-Length", String.valueOf(Objects.requireNonNull(compressedData).length));
         connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
         connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
         connection.setConnectTimeout(300000);
@@ -216,7 +217,7 @@ public class Metrics {
                 for (RegisteredServiceProvider<?> provider : Bukkit.getServicesManager().getRegistrations(service)) {
                     try {
                         pluginData.add(provider.getService().getMethod("getPluginData").invoke(provider.getProvider()));
-                    } catch (NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+                    } catch (Exception ignored) {
                     }
                 }
             } catch (NoSuchFieldException ignored) {
@@ -327,6 +328,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -376,6 +378,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -424,6 +427,7 @@ public class Metrics {
 
         protected abstract JSONObject getChartData() throws Exception;
 
+        @Nullable
         private JSONObject getRequestJsonObject() {
             JSONObject chart = new JSONObject();
             chart.put("chartId", chartId);
@@ -463,6 +467,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         public JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -512,6 +517,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -557,6 +563,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -595,6 +602,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
@@ -626,6 +634,7 @@ public class Metrics {
             this.callable = callable;
         }
 
+        @Nullable
         @Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();

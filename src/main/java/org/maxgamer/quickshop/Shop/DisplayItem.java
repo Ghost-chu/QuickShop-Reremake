@@ -13,6 +13,7 @@ import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
@@ -46,12 +47,12 @@ public interface DisplayItem {
 //                return true;
 //            }
 //        }
-        if (!iMeta.hasLore()) {
+        if (!Objects.requireNonNull(iMeta).hasLore()) {
             return false;
         }
         List<String> lores = iMeta.getLore();
         Gson gson = new Gson();
-        for (String lore : lores) {
+        for (String lore : Objects.requireNonNull(lores)) {
             try {
                 if (!lore.startsWith("{")) {
                     continue;
@@ -98,7 +99,7 @@ public interface DisplayItem {
         }
         List<String> lores = iMeta.getLore();
         Gson gson = new Gson();
-        for (String lore : lores) {
+        for (String lore : Objects.requireNonNull(lores)) {
             try {
                 if (!lore.startsWith("{")) {
                     continue;
@@ -132,17 +133,17 @@ public interface DisplayItem {
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-			if (iMeta.hasDisplayName()) {
+			if (Objects.requireNonNull(iMeta).hasDisplayName()) {
 				iMeta.setDisplayName(iMeta.getDisplayName());
 			} else {
 				iMeta.setDisplayName(Util.getItemStackName(itemStack));
 			}
         } else {
-            iMeta.setDisplayName(null);
+            Objects.requireNonNull(iMeta).setDisplayName(null);
         }
-        java.util.List<String> lore = new ArrayList<String>();
+        java.util.List<String> lore = new ArrayList<>();
         Gson gson = new Gson();
-        ShopProtectionFlag shopProtectionFlag = new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
+        ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack,shop);
         String protectFlag = gson.toJson(shopProtectionFlag);
         for (int i = 0; i < 21; i++) {
             lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
@@ -150,6 +151,16 @@ public interface DisplayItem {
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
         return itemStack;
+    }
+
+    /**
+     * Create the shop protection flag for display item.
+     * @param itemStack The item stack
+     * @param shop The shop
+     * @return ShopProtectionFlag obj
+     */
+    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop){
+        return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
     /**

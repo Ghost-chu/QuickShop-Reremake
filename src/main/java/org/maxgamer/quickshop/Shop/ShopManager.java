@@ -226,7 +226,7 @@ public class ShopManager {
                 return;
             }
 
-            boolean decFormat = plugin.getConfig().getBoolean("use-deciaml-format");
+            boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
                     p.sendMessage(MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
@@ -306,7 +306,7 @@ public class ShopManager {
 
             if (shop.isDoubleShop()) {
                 Shop nextTo = shop.getAttachedShop();
-                if (nextTo.getPrice() > shop.getPrice()) {
+                if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice()) {
                     // The one next to it must always be a
                     // buying shop.
                     p.sendMessage(MsgUtil.getMessage("buying-more-than-selling", p));
@@ -458,7 +458,7 @@ public class ShopManager {
                         // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
                         // the unlimited shop owner should have enough money.
                         if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-                            amount = Math.min(amount, (int) ownerCanAfford);
+                            amount = Math.min(amount, ownerCanAfford);
                         }
                     }
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
@@ -529,9 +529,8 @@ public class ShopManager {
             actionSell(p, eco, actions, info, message, shop, amount);
         } else {
             p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
-            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation().toString());
+            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
-        ;
     }
 
     /**

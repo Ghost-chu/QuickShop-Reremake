@@ -9,10 +9,7 @@ import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A util allow quickshop check item matches easy and quick.
@@ -23,7 +20,7 @@ public class ItemMatcher {
 
     public ItemMatcher(QuickShop plugin) {
         this.plugin = plugin;
-        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"));
+        itemMetaMatcher = new ItemMetaMatcher(Objects.requireNonNull(plugin.getConfig().getConfigurationSection("matcher.item")));
     }
 
     /**
@@ -124,8 +121,8 @@ class ItemMetaMatcher {
             if (!meta2.hasAttributeModifiers()) {
                 return false;
             }
-            Set<Attribute> set1 = meta1.getAttributeModifiers().keySet();
-            Set<Attribute> set2 = meta2.getAttributeModifiers().keySet();
+            Set<Attribute> set1 = Objects.requireNonNull(meta1.getAttributeModifiers()).keySet();
+            Set<Attribute> set2 = Objects.requireNonNull(meta2.getAttributeModifiers()).keySet();
             for (Attribute att : set1) {
                 if (!set2.contains(att)) {
                     return false;
@@ -194,9 +191,7 @@ class ItemMetaMatcher {
             return true;
         }
         Util.debugLog("Checking enchantments");
-        if (!meta1.hasEnchants()) {
-            return true;
-        } else {
+        if (meta1.hasEnchants()) {
             if (!meta2.hasEnchants()) {
                 return false;
             }
@@ -205,17 +200,16 @@ class ItemMetaMatcher {
             if (!Util.mapMatches(enchMap1, enchMap2)) {
                 return false;
             }
-            if (!(meta1 instanceof EnchantmentStorageMeta)) {
-                return true;
-            } else {
-                if (!(meta2 instanceof EnchantmentStorageMeta)) {
-                    return false;
-                }
-                Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
-                Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-                return Util.mapMatches(stor1, stor2);
-            }
         }
+        if ((meta1 instanceof EnchantmentStorageMeta)) {
+            if (!(meta2 instanceof EnchantmentStorageMeta)) {
+                return false;
+            }
+            Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+            Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+            return Util.mapMatches(stor1, stor2);
+        }
+        return true;
     }
 
     private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
@@ -247,7 +241,7 @@ class ItemMetaMatcher {
         }
         List<String> lores1 = meta1.getLore();
         List<String> lores2 = meta2.getLore();
-        return Arrays.deepEquals(lores1.toArray(), lores2.toArray());
+        return Arrays.deepEquals(Objects.requireNonNull(lores1).toArray(), Objects.requireNonNull(lores2).toArray());
     }
 
     boolean matches(ItemStack requireStack, ItemStack givenStack) {
@@ -344,7 +338,7 @@ class ItemMetaMatcher {
             if (!potion2.hasColor()) {
                 return false;
             } else {
-                if (!potion1.getColor().equals(potion2.getColor())) {
+                if (!Objects.requireNonNull(potion1.getColor()).equals(potion2.getColor())) {
                     return false;
                 }
             }

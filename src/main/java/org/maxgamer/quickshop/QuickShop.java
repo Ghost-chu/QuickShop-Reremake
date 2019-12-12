@@ -5,6 +5,7 @@ import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandManager;
 import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
@@ -29,10 +31,12 @@ import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -45,6 +49,7 @@ public class QuickShop extends JavaPlugin {
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      **/
+    @Nullable
     private BootError bootError;
     // Listeners - We decide which one to use at runtime
     private ChatListener chatListener;
@@ -98,6 +103,7 @@ public class QuickShop extends JavaPlugin {
     private HashMap<String, Integer> limits = new HashMap<>();
     private LockListener lockListener;
     //private BukkitTask itemWatcherTask;
+    @Nullable
     private LogWatcher logWatcher;
     /**
      * bStats, good helper for metrics.
@@ -202,7 +208,7 @@ public class QuickShop extends JavaPlugin {
                         if (!clearLagListener.getPlugin().equals(clearlag)) {
                             continue;
                         }
-                        int spamTimes = 5000;
+                        int spamTimes = 500;
                         if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
                             ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
                             for (int i = 0; i < spamTimes; i++) {
@@ -323,7 +329,7 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+            Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
         } catch (Throwable th) {
             //ignore, we didn't care that
         }
@@ -378,27 +384,25 @@ public class QuickShop extends JavaPlugin {
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
 
-        getLogger().info("Quickshop Reremake");
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
-        getLogger().info("Let's start loading the plugin");
-        /* Check the running envs is support or not. */
-        try {
-            runtimeCheck(this);
-        } catch (RuntimeException e) {
-            bootError = new BootError(e.getMessage());
-            return;
-        }
+        getLogger().info("Quickshop "+getFork());
+        getLogger().info("Reading the configuration...");
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
-        getConfig().options().copyDefaults(true); // Load defaults.
-
+        getConfig().options().copyDefaults(getConfig().getBoolean("auto-fix-configuration",false)); // Load defaults.
+        saveDefaultConfig();
+        reloadConfig();
+        //getConfig().options().copyDefaults(true);
         if (getConfig().getInt("config-version") == 0) {
             getConfig().set("config-version", 1);
         }
-
         updateConfig(getConfig().getInt("config-version"));
+
+
+        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
+        getLogger().info("Let's start loading the plugin");
+
         /* It will generate a new UUID above updateConfig */
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this);
@@ -407,8 +411,7 @@ public class QuickShop extends JavaPlugin {
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
 
-        /* Load 3rd party supports */
-        load3rdParty();
+
 
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
@@ -417,6 +420,18 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+
+
+        /* Check the running envs is support or not. */
+        try {
+            runtimeCheck(this);
+        } catch (RuntimeException e) {
+            bootError = new BootError(e.getMessage());
+            return;
+        }
+
+        /* Load 3rd party supports */
+        load3rdParty();
 
         setupDBonEnableding = true;
         setupDatabase(); //Load the database
@@ -434,7 +449,7 @@ public class QuickShop extends JavaPlugin {
         if (limitCfg != null) {
             this.limit = limitCfg.getBoolean("use", false);
             limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : limitCfg.getKeys(true)) {
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
@@ -574,7 +589,7 @@ public class QuickShop extends JavaPlugin {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             DatabaseCore dbCore;
-            if (dbCfg.getBoolean("mysql")) {
+            if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
                 if (dbPrefix == null || "none".equals(dbPrefix)) {
@@ -586,7 +601,7 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(host, user, pass, database, port, useSSL);
+                dbCore = new MySQLCore(Objects.requireNonNull(host), Objects.requireNonNull(user), Objects.requireNonNull(pass), Objects.requireNonNull(database), Objects.requireNonNull(port), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
@@ -1042,7 +1057,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 66;
         }
         if (selectedVersion == 66) {
-            getConfig().set("use-deciaml-format", false);
+            getConfig().set("use-decimal-format", false);
             getConfig().set("decimal-format", "#,###.##");
             getConfig().set("shop.show-owner-uuid-in-controlpanel-if-op", false);
             getConfig().set("config-version", 67);
@@ -1055,7 +1070,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 68;
         }
         if (selectedVersion == 68){
-            ArrayList<String> temp = new ArrayList<>();;
+            ArrayList<String> temp = new ArrayList<>();
             temp.add("SoulBound");
             getConfig().set("shop.blacklist-lores", temp);
             getConfig().set("config-version", 69);
@@ -1077,10 +1092,50 @@ public class QuickShop extends JavaPlugin {
         File file = new File(getDataFolder(), "example.config.yml");
         file.delete();
         try {
-            Files.copy(getResource("config.yml"), file.toPath());
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), file.toPath());
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }
+        configVaildate();
+    }
+
+    public void configVaildate(){
+        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
+        Set<String> keysA = new HashSet<>(attached.getKeys(true));
+        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
+        Set<String> ignoreCheckKeys = new HashSet<>();
+        ignoreCheckKeys.add("server-uuid");
+        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
+                ".....\n" +
+                "%data%\n" +
+                ".....\n" +
+                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
+        keysA.stream().filter((key)->!keysB.contains(key)).filter((key)->!ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss)->{
+            String theMsg = msgForConfiguration;
+            theMsg = theMsg.replace("%key%",miss);
+            List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
+            StringBuilder miss2Yaml = new StringBuilder();
+            int spaces = 2;
+            Iterator iterator = tiers.iterator();
+            while (true){
+                String tier = (String) iterator.next();
+                miss2Yaml.append(tier);
+                if(iterator.hasNext()){
+                    miss2Yaml.append(": ");
+                    miss2Yaml.append("\n");
+                    for (int i = 0; i < spaces; i++) {
+                        miss2Yaml.append(" ");
+                    }
+                    spaces += 2;
+                }else{
+                    miss2Yaml.append(": ");
+                    miss2Yaml.append(attached.get(miss));
+                   break;
+                }
+            }
+            theMsg = theMsg.replace("%data%",miss2Yaml.toString());
+            getLogger().warning(theMsg);
+        });
     }
 
     /**

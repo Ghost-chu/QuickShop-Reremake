@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Economy_Vault implements EconomyCore, Listener {
@@ -114,7 +115,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return "Error";
         }
         try {
-            String formatedBalance = this.vault.format(balance);
+            String formatedBalance = Objects.requireNonNull(this.vault).format(balance);
             if (formatedBalance == null)//Stupid Ecosystem
             {
                 return formatInternal(balance);
@@ -133,7 +134,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
-            return this.vault.depositPlayer(p, amount).transactionSuccess();
+            return Objects.requireNonNull(this.vault).depositPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
@@ -155,7 +156,7 @@ public class Economy_Vault implements EconomyCore, Listener {
                     return false;
                 }
             }
-            return this.vault.withdrawPlayer(p, amount).transactionSuccess();
+            return Objects.requireNonNull(this.vault).withdrawPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
@@ -173,7 +174,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
         OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
         try {
-            if (this.vault.getBalance(pFrom) >= amount) {
+            if (Objects.requireNonNull(this.vault).getBalance(pFrom) >= amount) {
                 if (this.vault.withdrawPlayer(pFrom, amount).transactionSuccess()) {
                     if (!this.vault.depositPlayer(pTo, amount).transactionSuccess()) {
                         this.vault.depositPlayer(pFrom, amount);
@@ -198,14 +199,20 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return 0.0;
         }
-        OfflinePlayer p = Bukkit.getOfflinePlayer(name);
+
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
+
+        if (offlinePlayer.getName() == null) {
+            return 0.0;
+        }
+
         try {
-            return this.vault.getBalance(p);
+            return Objects.requireNonNull(this.vault).getBalance(offlinePlayer);
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin.getLogger()
-                    .warning("This seems not QuickShop fault, you should cotact with your economy plugin author. (" + getProviderName() + ")");
+                    .warning("This seems not QuickShop fault, you should contact with your economy plugin author. (" + getProviderName() + ")");
             return 0.0;
         }
     }

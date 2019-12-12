@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class Database {
@@ -76,7 +77,7 @@ public class Database {
                 return; // go way!
             }
             String finalTable;
-            if (table.startsWith(prefix)) {
+            if (table.startsWith(Objects.requireNonNull(prefix))) {
                 finalTable = table;
             } else {
                 finalTable = prefix + table;
@@ -198,6 +199,7 @@ public class Database {
      *
      * @return the database core object, that this database runs on.
      */
+    @NotNull
     public DatabaseCore getCore() {
         return core;
     }

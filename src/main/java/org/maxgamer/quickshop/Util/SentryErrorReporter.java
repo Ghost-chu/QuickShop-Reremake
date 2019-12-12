@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Paste.Paste;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -195,7 +196,7 @@ public class SentryErrorReporter {
             Paste paste = new Paste(plugin);
             String pasteURL = "Failed to paste.";
             try {
-                pasteURL = paste.pasteTheText(paste.genNewPaste());
+                pasteURL = paste.paste(paste.genNewPaste());
             } catch (Throwable ex) {
                 //Ignore
             }
@@ -207,7 +208,7 @@ public class SentryErrorReporter {
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
-            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID().toString());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
             return this.context.getLastEventId();
         } catch (Throwable th) {

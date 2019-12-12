@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.Objects;
+
 @Getter
 @Deprecated
 public class LuckPermsProvider implements PermissionProvider {
@@ -32,8 +34,8 @@ public class LuckPermsProvider implements PermissionProvider {
     public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
         if (sender instanceof OfflinePlayer) {
             try {
-                return api.getUser(((OfflinePlayer) sender).getUniqueId()).hasPermission(api.buildNode(permission).build()).asBoolean();
-            } catch (NullPointerException npe) {
+                return Objects.requireNonNull(Objects.requireNonNull(api.getUser(((OfflinePlayer) sender).getUniqueId()))).hasPermission(api.buildNode(permission).build()).asBoolean();
+            } catch (Exception npe) {
                 Util.debugLog("Failed to get user " + sender.getName() + " 's LuckPerms permission infomation, return failed.");
                 return false;
             }
@@ -67,6 +69,6 @@ public class LuckPermsProvider implements PermissionProvider {
         }
         StringBuilder permissionsBuilder = new StringBuilder();
         user.getPermissions().forEach((pnode) -> permissionsBuilder.append(pnode.getPermission()).append("\n"));
-        return new PermissionInfomationContainer(sender, permission, user.getPrimaryGroup(), "This player all permissions: \n" + permissionsBuilder.toString());
+        return new PermissionInfomationContainer(sender, permission, user.getPrimaryGroup(), "This player all permissions: \n" + permissionsBuilder);
     }
 }

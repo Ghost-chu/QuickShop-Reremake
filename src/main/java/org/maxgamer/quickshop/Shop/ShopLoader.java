@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -70,7 +71,7 @@ public class ShopLoader {
         }
 
         try {
-            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo().toString());
+            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo());
         } catch (SQLException | NullPointerException e) {
             logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
         }
@@ -131,7 +132,7 @@ public class ShopLoader {
 
                         if(backupedDatabaseInDeleteProcess){
                             plugin.getDatabaseHelper().removeShop(shop.getLocation().getBlockX(), shop
-                                    .getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld()
+                                    .getLocation().getBlockY(), shop.getLocation().getBlockZ(), Objects.requireNonNull(shop.getLocation().getWorld())
                                     .getName());
                         }
 
@@ -172,6 +173,7 @@ public class ShopLoader {
         return sum / m.length;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
             Util.debugLog("Shop Object is null");
@@ -196,6 +198,9 @@ public class ShopLoader {
         if (shop.getOwner() == null) {
             Util.debugLog("Shop Owner is null");
             return true;
+        }
+        if(Bukkit.getOfflinePlayer(shop.getOwner()).getName() == null){
+            Util.debugLog("Shop owner not exist on this server, did you reset the playerdata?");
         }
         return false;
     }

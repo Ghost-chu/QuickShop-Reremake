@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.lang.reflect.Method;
@@ -42,6 +43,7 @@ public abstract class ItemNMS {
      * @return The json for ItemStack.
      * @throws Throwable throws
      */
+    @Nullable
     public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
         if (bStack.getType() == Material.AIR) {
             return null;
