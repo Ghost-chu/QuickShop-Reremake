@@ -202,7 +202,7 @@ public class QuickShop extends JavaPlugin {
                         if (!clearLagListener.getPlugin().equals(clearlag)) {
                             continue;
                         }
-                        int spamTimes = 5000;
+                        int spamTimes = 500;
                         if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
                             ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
                             for (int i = 0; i < spamTimes; i++) {
