@@ -2,7 +2,7 @@ package org.maxgamer.quickshop.File;
 
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.File.BukkitFileAPI.JSONConfiguration;
+import org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration.JSONConfiguration;
 
 import java.io.File;
 import java.io.InputStreamReader;
