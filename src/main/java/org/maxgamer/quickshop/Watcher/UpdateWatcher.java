@@ -72,7 +72,7 @@ public class UpdateWatcher implements Listener {
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
                         if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alert")) {
-                            List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
+                            List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
                             Random random = new Random();
                             int notifyNum = -1;
                             if (notifys.size() > 1) {
@@ -126,7 +126,7 @@ public class UpdateWatcher implements Listener {
             @Override
             public void run() {
                 if (!info.isBeta()) {
-                    List<String> notifys = MsgUtil.getI18nYaml().getStringList("updatenotify.list");
+                    List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
                     Random random = new Random();
                     int notifyNum = random.nextInt(notifys.size());
                     String notify = notifys.get(notifyNum);
