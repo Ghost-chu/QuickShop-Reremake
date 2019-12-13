@@ -994,6 +994,20 @@ public class Util {
     }
 
     /**
+     * Parse colors for the List.
+     *
+     * @param list the list
+     * @return parsed list
+     */
+    public static List<String> parseColours(@NotNull List<String> list) {
+        final List<String> newList = new ArrayList<>();
+
+        list.forEach(s -> newList.add(parseColours(s)));
+
+        return newList;
+    }
+
+    /**
      * Converts a name like IRON_INGOT into Iron Ingot to improve readability
      *
      * @param ugly The string such as IRON_INGOT
