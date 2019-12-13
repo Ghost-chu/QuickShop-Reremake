@@ -293,6 +293,7 @@ public class MsgUtil {
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
             plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
             IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
+            nJson.create();
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
             oldMsgI18n.getKeys(true).forEach((key)->nJson.set(key, Objects.requireNonNull(oldMsgI18n.get(key))));
             nJson.save();
