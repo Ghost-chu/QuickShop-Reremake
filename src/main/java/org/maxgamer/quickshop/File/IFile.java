@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.File;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +33,18 @@ public interface IFile {
     void save();
 
     /**
+     * @return the string of the file
+     */
+    @NotNull
+    String saveToString();
+
+    /**
+     * Loads from the data
+     * @param data the data
+     */
+    void loadFromString(@NotNull String data) throws InvalidConfigurationException;
+
+    /**
      * Gets the object
      *
      * @param path object path to get
@@ -45,10 +58,10 @@ public interface IFile {
      *
      * @param path object path to get
      * @param fallback fallback object to get if path does not exist
-     * @return if path does not exist returns fallback object else the path object
+     * @return if path does not exist returns fallback object
      */
-    @NotNull
-    Object get(@NotNull String path, @NotNull Object fallback);
+    @Nullable
+    Object get(@NotNull String path, @Nullable Object fallback);
 
     /**
      * Gets or sets the object
@@ -122,7 +135,7 @@ public interface IFile {
      * @param path object path to set
      * @param object {@link Object}
      */
-    void set(@NotNull final String path, @NotNull final Object object);
+    void set(@NotNull final String path, @Nullable final Object object);
 
     /**
      * Gets string list
