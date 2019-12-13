@@ -16,6 +16,9 @@ after_success:
 - rm -rf push
 - mkdir push
 - cp -r ./target/*.jar ./push/
+- rm -f ./push/original-*.jar
+- rm -f ./push/*-shaded.jar
+- rm -f ./push/*-sources.jar
 - mkdir devbukkit
 - cp -r ./target/*.jar ./devbukkit/
 - rm -f ./devbukkit/original-*.jar
