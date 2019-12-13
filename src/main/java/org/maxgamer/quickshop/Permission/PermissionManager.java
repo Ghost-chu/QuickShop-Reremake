@@ -52,15 +52,6 @@ public class PermissionManager {
 //                case VAULT:
 //                    provider = new VaultPermissionProvider();
 //                    break;
-//                case LUCKPERMS:
-//                    provider = new LuckPermsProvider(this);
-//                    break;
-//                case PERMISSIONEX:
-//                    provider = new PexPermissionProvider();
-//                    break;
-//                case GROUPMANAGER:
-//                    provider = new GroupManagerProvider();
-//                    break;
 //                default:
 //                    provider = new BukkitPermsProvider();
 //                    break;
