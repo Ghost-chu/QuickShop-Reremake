@@ -681,6 +681,8 @@ public class QuickShop extends JavaPlugin {
             String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
+            String disableDebugLoggger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
+
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -695,6 +697,7 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", ()->disableDebugLoggger));
             // Exp for stats, maybe i need improve this, so i add this.
             metrics.submitData(); // Submit now!
             getLogger().info("Metrics submitted.");
