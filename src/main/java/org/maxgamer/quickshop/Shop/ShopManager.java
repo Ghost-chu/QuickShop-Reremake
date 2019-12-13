@@ -589,17 +589,6 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-        RegisteredListener openInvRegisteredListener = null; // added for compatibility reasons with OpenInv - see https://github.com/KaiKikuchi/QuickShop/issues/139
-        // try {
-        // 	if (plugin.openInvPlugin != null) {
-        // 		for (RegisteredListener listener : PlayerInteractEvent.getHandlerList().getRegisteredListeners()) {
-        // 			if (listener.getPlugin().getName().equals(plugin.openInvPlugin.getName())) {
-        // 				openInvRegisteredListener = listener;
-        // 				PlayerInteractEvent.getHandlerList().unregister(listener);
-        // 				break;
-        // 			}
-        // 		}
-        // 	}
         try {
             plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
 
@@ -626,7 +615,6 @@ public class ShopManager {
 
                 int max = plugin.getShopLimit(p);
                 if (owned + 1 > max) {
-                    //p.sendMessage(ChatColor.RED + "You have already created a maximum of " + owned + "/" + max + " shops!");
                     p.sendMessage(MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
                     return false;
                 }
@@ -641,9 +629,6 @@ public class ShopManager {
                 return false;
             }
         } finally {
-            // if (plugin.openInvPlugin != null && openInvRegisteredListener != null) {
-            // 	PlayerInteractEvent.getHandlerList().register(openInvRegisteredListener);
-            // }
             plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
         }
 

@@ -149,7 +149,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
         //Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         armorStand.setItemInHand(guardedIstack);
-        armorStand.getPersistentDataContainer().set(new NamespacedKey(plugin,"displayMark"),DisplayItemPersistentDataType.INSTANCE,DisplayItem.createShopProtectionFlag(this.originalItemStack,shop));
+        try {
+            armorStand.getPersistentDataContainer().set(new NamespacedKey(plugin, "displayMark"), DisplayItemPersistentDataType.INSTANCE, DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
+        }catch (Throwable ignored){}
         Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation());
     }
 
