@@ -24,9 +24,9 @@
     </issueManagement>
 
     <scm>
-        <url>https://github.com/${developer}/${version}</url>
-        <connection>scm:git:git://github.com/${developer}/${version}.git</connection>
-        <developerConnection>scm:git:git@github.com:${developer}/${version}.git</developerConnection>
+        <url>https://github.com/${developer}/${project.version}</url>
+        <connection>scm:git:git://github.com/${developer}/${project.version}.git</connection>
+        <developerConnection>scm:git:git@github.com:${developer}/${project.version}.git</developerConnection>
     </scm>
 
     <build>
