@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ChatSheetPrinter {
     final ChatColor chatColor = ChatColor.DARK_PURPLE;
-    //StringBuffer buffer = new StringBuffer();
     private CommandSender p;
 
     public void printCenterLine(@NotNull String text) {
