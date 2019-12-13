@@ -44,6 +44,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.File.IFile;
+import org.maxgamer.quickshop.File.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
@@ -65,8 +67,7 @@ public class MsgUtil {
     private static YamlConfiguration enchi18n;
     private static boolean inited;
     private static YamlConfiguration itemi18n;
-    private static File messageFile;
-    private static YamlConfiguration messagei18n;
+    private static IFile messagei18n;
     private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
@@ -202,11 +203,11 @@ public class MsgUtil {
      * @return message
      */
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
-        String raw = messagei18n.getString(loc);
-        if (raw == null) {
+        Optional<String> raw = messagei18n.getString(loc);
+        if (!raw.isPresent()) {
             return invaildMsg + ": " + loc;
         }
-        String filled = fillArgs(raw, args);
+        String filled = fillArgs(raw.get(), args);
         if (player instanceof OfflinePlayer) {
             if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
@@ -225,11 +226,11 @@ public class MsgUtil {
      * @return message
      */
     public static String getMessageOfflinePlayer(@NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
-        String raw = messagei18n.getString(loc);
-        if (raw == null) {
+        Optional<String> raw = messagei18n.getString(loc);
+        if (!raw.isPresent()) {
             return invaildMsg + ": " + loc;
         }
-        String filled = fillArgs(raw, args);
+        String filled = fillArgs(raw.get(), args);
         if (player != null) {
             if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                 filled = PlaceholderAPI.setPlaceholders(player, filled);
@@ -257,14 +258,11 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    public static void loadCfgMessages() {
-        /* Check & Load & Create default messages.yml */
-        // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
+    private static void loadLangUtils(@NotNull String languageCode){
         try {
             //Load LangUtils support, before MsgUtil init.
             //Cause we maybe will use them all.
-            String languageCode = plugin.getConfig()
-                    .getString("langutils-language", "en_us");
+
             Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
             if (langUtilsPlugin != null) {
                 LangUtils langUtils = (LangUtils) langUtilsPlugin;
@@ -281,27 +279,37 @@ public class MsgUtil {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
+    }
 
-        messageFile = new File(plugin.getDataFolder(), "messages.yml");
-        if (!messageFile.exists()) {
-            plugin.getLogger().info("Creating messages.yml");
+    public static void loadCfgMessages() throws InvalidConfigurationException, IOException {
+        /* Check & Load & Create default messages.yml */
+        // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
+        String languageCode = plugin.getConfig()
+                .getString("langutils-language", "en_us");
+        //noinspection ConstantConditions
+        loadLangUtils(languageCode);
+        File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
+        if(oldMsgFile.exists()){
+            plugin.getLogger().info("Converting the old format message.yml to message.json...");
+            plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
+            IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
+            YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
+            oldMsgI18n.getKeys(true).forEach((key)->nJson.set(key, Objects.requireNonNull(oldMsgI18n.get(key))));
+            nJson.save();
+            oldMsgFile.delete(); //Convert completed
+            plugin.getLogger().info("Successfully converted, Continue loading...");
+        }
+        if (!(new File(plugin.getDataFolder(), "messages.json").exists())) {
+            plugin.getLogger().info("Creating messages.json");
             plugin.getLanguage().saveFile(Objects.requireNonNull(plugin.getConfig().getString("language")), "messages", "messages.yml");
         }
-        messagei18n = YamlConfiguration.loadConfiguration(messageFile);
-        messagei18n.options().copyDefaults(false);
-        messagei18n.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
-                .getFile(plugin.getConfig().getString("language"), "messages"))));
+        messagei18n = new JSONFile(plugin, "messages.json");
         /* Set default language vesion and update messages.yml */
-        if (Integer.parseInt(messagei18n.getString("language-version","0")) == 0) {
+        if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
         }
-            try {
-                updateMessages(messagei18n.getInt("language-version"));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-        Util.parseColours(messagei18n);
+        updateMessages(messagei18n.getInt("language-version"));
+        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
 
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
@@ -312,12 +320,7 @@ public class MsgUtil {
             inited = true;
         }
         /* Save the upgraded messages.yml */
-        try {
-            messagei18n.save(messageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction from messages.yml. Skipping.");
-        }
+        messagei18n.save();
     }
 
     public static void loadEnchi18n() {
@@ -1106,7 +1109,7 @@ public class MsgUtil {
             setAndUpdate("language-version", 24);
             selectedVersion = 24;
         }
-        messagei18n.save(messageFile);
+        messagei18n.save();
 
     }
 
@@ -1121,7 +1124,7 @@ public class MsgUtil {
         messagei18n.set(path, objFromBuiltIn);
     }
 
-    public static YamlConfiguration getI18nYaml() {
+    public static IFile getI18nFile() {
         return messagei18n;
     }
 

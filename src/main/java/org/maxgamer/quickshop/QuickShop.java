@@ -323,7 +323,12 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
-        MsgUtil.loadCfgMessages();
+        try {
+            MsgUtil.loadCfgMessages();
+        }catch (Exception e){
+            getLogger().warning("An error throws when loading messages");
+            e.printStackTrace();
+        }
     }
 
     /**
