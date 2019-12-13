@@ -977,7 +977,7 @@ public class Util {
             if (filtered.startsWith("MemorySection")) {
                 continue;
             }
-            filtered = ChatColor.translateAlternateColorCodes('&', filtered);
+            filtered = parseColours(filtered);
             config.set(key, filtered);
         }
     }
