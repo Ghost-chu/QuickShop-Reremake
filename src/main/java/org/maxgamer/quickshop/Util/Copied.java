@@ -1,14 +1,14 @@
 package org.maxgamer.quickshop.Util;
 
-import org.cactoos.Proc;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Consumer;
 
-public final class Copied implements Proc<InputStream> {
+public final class Copied implements Consumer<InputStream> {
 
     @NotNull
     private final File file;
@@ -18,7 +18,7 @@ public final class Copied implements Proc<InputStream> {
     }
 
     @Override
-    public void exec(@NotNull InputStream inputStream) {
+    public void accept(@NotNull InputStream inputStream) {
         try(final OutputStream out = new FileOutputStream(file)) {
             final byte[] buf = new byte[1024];
             int len;
