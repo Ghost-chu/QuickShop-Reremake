@@ -67,6 +67,7 @@ public class Util {
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static Field tpsField;
     private static List<String> worldBlacklist = new ArrayList<>();
+    private static boolean disableDebugLogger;
 
     /**
      * Convert strArray to String.
@@ -193,7 +194,7 @@ public class Util {
      */
     public static void debugLog(@NotNull String... logs) {
         if (!devMode) {
-            if (QuickShop.instance.getConfig().getBoolean("disable-debuglogger", false)) {
+            if (disableDebugLogger) {
                 return;
             }
         }
@@ -227,6 +228,7 @@ public class Util {
                 tookLongTimeCostTimes++;
                 if (tookLongTimeCostTimes > 30) {
                     QuickShop.instance.getConfig().set("disable-debuglogger", true);
+                    disableDebugLogger = true;
                     QuickShop.instance.saveConfig();
                     QuickShop.instance.getLogger().warning("Detected the debug logger tooked time keep too lang, QuickShop already auto-disable debug logger, your server performance should back to normal. But you must re-enable it if you want to report any bugs.");
                 }
@@ -591,6 +593,7 @@ public class Util {
             }
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
+        disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger",false);
 
     }
 
