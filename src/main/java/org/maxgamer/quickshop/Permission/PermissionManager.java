@@ -29,7 +29,6 @@ import org.maxgamer.quickshop.Util.Util;
 public class PermissionManager {
     private QuickShop plugin;
     private PermissionProvider provider;
-    //private PermissionProviderType providerType;
 
     /**
      * The manager to call permission providers
@@ -38,32 +37,7 @@ public class PermissionManager {
      */
     public PermissionManager(QuickShop plugin) {
         this.plugin = plugin;
-//        try {
-//            this.providerType = PermissionProviderType.fromID(plugin.getConfig().getInt("permission-type"));
-//        } catch (IllegalArgumentException e) {
-//            plugin.getLogger().warning("Falling back to Bukkit permission provider...");
-//            this.providerType = PermissionProviderType.BUKKIT;
-//        }
-//        try {
-//            switch (providerType) {
-//                case BUKKIT:
         provider = new BukkitPermsProvider();
-//                    break;
-//                case VAULT:
-//                    provider = new VaultPermissionProvider();
-//                    break;
-//                default:
-//                    provider = new BukkitPermsProvider();
-//                    break;
-//            }
-//        } catch (ProviderIsEmptyException empty) {
-//            plugin.getLogger().warning("Provider " + providerType.name() + " doesn't work, falling back to BUKKIT.");
-//            provider = new BukkitPermsProvider();
-//        } catch (Throwable th) {
-//            th.printStackTrace();
-//            plugin.getLogger().warning("Provider " + providerType.name() + " failed loading, falling back to BUKKIT.");
-//            provider = new BukkitPermsProvider();
-//        }
         plugin.getLogger().info("Selected permission provider: " + provider.getName());
     }
 
