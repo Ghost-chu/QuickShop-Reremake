@@ -19,16 +19,13 @@
 
 package org.maxgamer.quickshop.Util;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.kohsuke.github.GHAsset;
 import org.kohsuke.github.GitHub;
+import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.QuickShop;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -95,11 +92,7 @@ public class Updater {
             throw new IOException("Failed read the URL, cause it is empty.");
         }
         Util.debugLog("Downloading from " + uurl);
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(uurl);
-        httpget.setHeader("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion());
-        CloseableHttpResponse response = httpClient.execute(httpget);
-        InputStream is = response.getEntity().getContent();
+        InputStream is = HttpRequest.get(new URL(uurl)).header("User-Agent","QuickShop-Reremake " + QuickShop.getVersion()).execute().getInputStream();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len;
