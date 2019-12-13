@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Github.GithubAPI;
+import org.maxgamer.quickshop.Util.Github.ReleaseJsonContainer;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -66,10 +67,11 @@ public class Updater {
 
     public static byte[] downloadUpdatedJar() throws IOException {
         @Nullable String uurl;
-        long uurlSize = 0;
-
+        long uurlSize;
         try {
-            uurl = Objects.requireNonNull(new GithubAPI().getLatestRelease()).getBrowser_download_url();
+            ReleaseJsonContainer.AssetsBean bean = Objects.requireNonNull(new GithubAPI().getLatestRelease());
+            uurl = bean.getBrowser_download_url();
+            uurlSize = bean.getSize();
         }catch (Throwable ig){
             throw new IOException(ig.getMessage());
         }
@@ -83,14 +85,13 @@ public class Updater {
         byte[] buff = new byte[1024];
         int len;
         long downloaded = 0;
-        int size = os.size();
         while ((len = is.read(buff)) != -1) {
             os.write(buff, 0, len);
             downloaded += len;
-            Util.debugLog("File Downloader:  " + downloaded + "/" + size + " bytes.");
+            Util.debugLog("File Downloader:  " + downloaded + "/" + uurlSize + " bytes.");
         }
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
-        if (downloaded != uurlSize) {
+        if (!(uurlSize < 1) && downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");
         }
         Util.debugLog("Download complete.");
