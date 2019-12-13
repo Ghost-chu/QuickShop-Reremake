@@ -17,13 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.Util;
+package org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration.SerializableSet;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.util.*;
@@ -121,6 +120,8 @@ public class SerializationHelper {
      * Called recursively first on Maps and Lists before passing the parsed input over to
      * {@link ConfigurationSerialization#deserializeObject(java.util.Map)}.  Basically this means it will deserialize
      * the most nested objects FIRST and the top level object LAST.
+     * @param input the input
+     * @return the object that deserialize
      */
     public static Object deserialize(@NotNull final Map<?, ?> input) {
         final Map<String, Object> output = new LinkedHashMap<String, Object>(input.size());
