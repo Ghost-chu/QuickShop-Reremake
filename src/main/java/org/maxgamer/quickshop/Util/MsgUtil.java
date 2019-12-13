@@ -257,7 +257,7 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    public static void loadCfgMessages(@NotNull String... reload) {
+    public static void loadCfgMessages() {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         try {
@@ -288,21 +288,18 @@ public class MsgUtil {
             plugin.getLanguage().saveFile(Objects.requireNonNull(plugin.getConfig().getString("language")), "messages", "messages.yml");
         }
         messagei18n = YamlConfiguration.loadConfiguration(messageFile);
-        messagei18n.options().copyDefaults(true);
-        YamlConfiguration messagei18nYAML = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
-                .getFile(plugin.getConfig().getString("language"), "messages")));
-        messagei18n.setDefaults(messagei18nYAML);
+        messagei18n.options().copyDefaults(false);
+        messagei18n.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage()
+                .getFile(plugin.getConfig().getString("language"), "messages"))));
         /* Set default language vesion and update messages.yml */
-        if (messagei18n.getInt("language-version") == 0) {
+        if (Integer.parseInt(messagei18n.getString("language-version","0")) == 0) {
             messagei18n.set("language-version", 1);
         }
-        if (reload.length == 0) {
             try {
                 updateMessages(messagei18n.getInt("language-version"));
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-        }
 
         Util.parseColours(messagei18n);
 

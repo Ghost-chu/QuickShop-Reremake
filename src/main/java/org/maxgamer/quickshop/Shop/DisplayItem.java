@@ -40,11 +40,6 @@ import java.util.Objects;
  */
 public interface DisplayItem {
 
-//    /**
-//    * constant literal to check if item is quickshop display item
-//    */
-//    static final String QUICKSHOP_DISPLAY_ITEM = "quickshop display item";
-
     /**
      * Check the itemStack is contains protect flag.
      *
@@ -61,11 +56,6 @@ public interface DisplayItem {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
-//        if (iMeta.hasDisplayName()) {
-//            if (iMeta.getDisplayName().toLowerCase().contains(QUICKSHOP_DISPLAY_ITEM)) {
-//                return true;
-//            }
-//        }
         if (!Objects.requireNonNull(iMeta).hasLore()) {
             return false;
         }
