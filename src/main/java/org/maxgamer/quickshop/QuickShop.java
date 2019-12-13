@@ -617,7 +617,7 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(Objects.requireNonNull(host), Objects.requireNonNull(user), Objects.requireNonNull(pass), Objects.requireNonNull(database), Objects.requireNonNull(port), useSSL);
+                dbCore = new MySQLCore(Objects.requireNonNull(host,"MySQL host can't be null"), Objects.requireNonNull(user,"MySQL username can't be null"), Objects.requireNonNull(pass,"MySQL password can't be null"), Objects.requireNonNull(database,"MySQL database name can't be null"), Objects.requireNonNull(port,"MySQL port can't be null"), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
