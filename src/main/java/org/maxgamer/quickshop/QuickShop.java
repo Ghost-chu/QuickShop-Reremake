@@ -557,11 +557,11 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
-        if (!Util.isClassAvailable("org.apache.http.impl.client.HttpClients")) {
-            getLogger()
-                    .severe("FATAL: Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
-            throw new RuntimeException("Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
-        }
+//        if (!Util.isClassAvailable("org.apache.http.impl.client.HttpClients")) {
+//            getLogger()
+//                    .severe("FATAL: Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
+//            throw new RuntimeException("Broken QuickShop build, please download from SpigotMC not Github if you didn't know should download which one.");
+//        }
         try {
             getServer().spigot();
         } catch (Throwable e) {
