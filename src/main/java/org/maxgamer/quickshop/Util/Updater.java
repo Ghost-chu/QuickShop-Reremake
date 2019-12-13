@@ -23,15 +23,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.kohsuke.github.GHAsset;
-import org.kohsuke.github.GitHub;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Github.GithubAPI;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
-import java.util.List;
+import java.util.Objects;
 
 public class Updater {
     /**
@@ -65,27 +65,13 @@ public class Updater {
     }
 
     public static byte[] downloadUpdatedJar() throws IOException {
-        org.kohsuke.github.GHRelease ghRelease = GitHub.connectAnonymously().getUser("Ghost-chu")
-                .getRepository("QuickShop-Reremake").getLatestRelease();
-        Util.debugLog("Pulling update with release: " + ghRelease.getTagName());
-        List<GHAsset> assets = ghRelease.getAssets();
-        String uurl = null;
+        @Nullable String uurl;
         long uurlSize = 0;
-        for (GHAsset asset : assets) {
-            if (asset.getName().contains("original-")) {
-                continue;
-            }
-            if (asset.getName().contains("-javadoc")) {
-                continue;
-            }
-            if (asset.getName().contains("-sources")) {
-                continue;
-            }
-            if (asset.getName().contains("-shaded")) {
-                continue;
-            }
-            uurl = asset.getBrowserDownloadUrl();
-            uurlSize = asset.getSize();
+
+        try {
+            uurl = Objects.requireNonNull(new GithubAPI().getLatestRelease()).getBrowser_download_url();
+        }catch (Throwable ig){
+            throw new IOException(ig.getMessage());
         }
 
         if (uurl == null) {
