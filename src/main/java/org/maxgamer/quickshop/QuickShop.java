@@ -571,7 +571,7 @@ public class QuickShop extends JavaPlugin {
 
         if (getServer().getName().toLowerCase().contains("catserver")) {
             // Send FATAL ERROR TO CatServer's users.
-            getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro");
+            getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async");
             throw new RuntimeException("QuickShop doen't support CatServer");
         }
 
