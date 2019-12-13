@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.File;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -92,15 +93,26 @@ public abstract class FileEnvelope implements IFile {
         }
     }
 
+    @NotNull
+    @Override
+    public String saveToString() {
+        return fileConfiguration.saveToString();
+    }
+
+    @Override
+    public void loadFromString(@NotNull String data) throws InvalidConfigurationException {
+        fileConfiguration.loadFromString(data);
+    }
+
     @Nullable
     @Override
     public Object get(@NotNull String path) {
         return fileConfiguration.get(path);
     }
 
-    @NotNull
+    @Nullable
     @Override
-    public Object get(@NotNull String path, @NotNull Object fallback) {
+    public Object get(@NotNull String path, @Nullable Object fallback) {
         final Object object = fileConfiguration.get(path, fallback);
 
         if (object == null) {
@@ -163,7 +175,7 @@ public abstract class FileEnvelope implements IFile {
     }
 
     @Override
-    public void set(@NotNull String path, @NotNull Object object) {
+    public void set(@NotNull String path, @Nullable Object object) {
         fileConfiguration.set(path, object);
         save();
     }
