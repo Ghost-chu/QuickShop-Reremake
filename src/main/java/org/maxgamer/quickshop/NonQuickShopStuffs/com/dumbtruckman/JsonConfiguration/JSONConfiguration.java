@@ -9,7 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Util.SerializationHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
