@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.File.BukkitFileAPI;
+package org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration;
 
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
