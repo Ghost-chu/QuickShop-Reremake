@@ -23,7 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.File.BukkitFileAPI.SerializableSet;
+import org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration.SerializableSet;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.util.*;
