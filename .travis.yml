@@ -19,6 +19,7 @@ after_success:
 - rm -f ./push/original-*.jar
 - rm -f ./push/*-shaded.jar
 - rm -f ./push/*-sources.jar
+- mv -f ./push/*-javadoc.jar ./push/JavaDocument.zip
 - mkdir devbukkit
 - cp -r ./target/*.jar ./devbukkit/
 - rm -f ./devbukkit/original-*.jar
