@@ -1,12 +1,11 @@
 package org.maxgamer.quickshop.File;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.llorllale.cactoos.matchers.Assertion;
 import org.maxgamer.quickshop.QuickShopTest;
+import static org.junit.jupiter.api.Assertions.*;
 
 final class JSONFileTest {
 
@@ -23,21 +22,19 @@ final class JSONFileTest {
 
     @Test
     void get() {
-        new Assertion<>(
-            "There is no 'signs.item' path",
+        assertEquals(
             json.get("signs.item"),
-            new IsEqual<>("{0}")
-        ).affirm();
+            "{0}"
+        );
     }
 
     @Test
     void set() {
         json.set("test.test", "test");
-        new Assertion<>(
-            "Cannot be setted 'test.test' path as 'test'",
-            json.get("test.test"),
-            new IsEqual<>("test")
-        ).affirm();
+        assertEquals(
+            json.get("signs.item"),
+            "{0}"
+        );
     }
 
     @AfterEach

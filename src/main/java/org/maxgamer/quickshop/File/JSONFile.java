@@ -1,11 +1,11 @@
 package org.maxgamer.quickshop.File;
 
 import org.bukkit.plugin.Plugin;
-import org.cactoos.io.ReaderOf;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.File.BukkitFileAPI.JSONConfiguration;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public final class JSONFile extends FileEnvelope {
@@ -60,7 +60,7 @@ public final class JSONFile extends FileEnvelope {
         if (loadDefault) {
             fileConfiguration.setDefaults(
                 JSONConfiguration.loadConfiguration(
-                    new ReaderOf(
+                    new InputStreamReader(
                         getInputStream(),
                         StandardCharsets.UTF_8
                     )
