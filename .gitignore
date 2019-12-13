@@ -23,7 +23,7 @@
 
 # IDEA IDE files
 .idea/*
-!.idea/copyright
+!.idea/copyright/Ghost_chu_s_GPLv3_License_for_BCS.xml
 !.idea/encodings.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
