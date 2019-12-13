@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.File.BukkitFileAPI;
+package org.maxgamer.quickshop.NonQuickShopStuffs.com.dumbtruckman.JsonConfiguration;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
