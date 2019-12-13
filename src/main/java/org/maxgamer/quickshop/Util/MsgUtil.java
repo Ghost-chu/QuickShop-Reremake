@@ -288,21 +288,18 @@ public class MsgUtil {
                 .getString("langutils-language", "en_us");
         //noinspection ConstantConditions
         loadLangUtils(languageCode);
+        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
+        nJson.create();
+
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
         if(oldMsgFile.exists()){
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
             plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
-            IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
-            nJson.create();
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
             oldMsgI18n.getKeys(true).forEach((key)->nJson.set(key, Objects.requireNonNull(oldMsgI18n.get(key))));
             nJson.save();
             oldMsgFile.delete(); //Convert completed
             plugin.getLogger().info("Successfully converted, Continue loading...");
-        }
-        if (!(new File(plugin.getDataFolder(), "messages.json").exists())) {
-            plugin.getLogger().info("Creating messages.json");
-            plugin.getLanguage().saveFile(Objects.requireNonNull(plugin.getConfig().getString("language")), "messages", "messages.yml");
         }
         messagei18n = new JSONFile(plugin, "messages.json");
         /* Set default language vesion and update messages.yml */
