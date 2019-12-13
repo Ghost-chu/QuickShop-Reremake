@@ -305,7 +305,7 @@ public class MsgUtil {
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
         }
-        messagei18n = new JSONFile(plugin, "messages.json");
+        messagei18n = nJson;
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
             messagei18n.set("language-version", 1);
