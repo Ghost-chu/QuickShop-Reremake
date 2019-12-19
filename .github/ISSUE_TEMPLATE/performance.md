@@ -2,7 +2,7 @@
 name: Performance report
 about: Report the performance issue
 title: "[PERFORMANCE]"
-labels: 'bug'
+labels: 'performance'
 assignees: ''
 
 ---
@@ -28,13 +28,14 @@ If applicable, add screenshots to help explain your problem.
  If you create failed, you should find a paste file under the plugin/QuickShop folder.
 - 【REPLACE ME TO PASTE LINK】
 
-**Timings link:**
+**Spark result link: (Require)**
+ Install the spark at https://www.spigotmc.org/resources/spark.57242/, and execute /spark sampler --start to enable the spark sampler, wait 10mins and execute /spark sampler --stop to get sample result.
+- 【REPLACE ME TO SPARK PASTE LINK】
+
+**Timings link: (Optional)**
  Execute command /timings on to enable timings and wait for 10mins, then execute /timings paste to get timings link.
 - 【REPLACE ME TO TIMINGS PASTE LINK】
 
-**Spark result link:**
- Install the spark at https://www.spigotmc.org/resources/spark.57242/, and execute /spark sampler --start to enable the spark sampler, wait 10mins and execute /spark sampler --stop to get sample result.
-- 【REPLACE ME TO SPARK PASTE LINK】
 
 **Additional context**
 Add any other context about the problem here.
