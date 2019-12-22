@@ -1,5 +1,5 @@
 ---
-name: Wki Contribute
+name: Wiki Contribute
 about: Contributing the wiki
 title: "[Contribute WIKI]"
 labels: 'wiki'
