@@ -80,8 +80,8 @@ public class BlockListener implements Listener {
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
             if (plugin.getConfig().getBoolean("lockette.enable") &&
-                sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) ||
-                sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                    sign.getLine(0).equals(plugin.getConfig().getString("lockette.private")) ||
+                    sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
                 //Ignore break lockette sign
                 plugin.getLogger().info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
@@ -167,19 +167,35 @@ public class BlockListener implements Listener {
             return;
         }
 
-        final Location loc = event.getDestination().getLocation();
-
-        if (loc == null) {
+        if (!plugin.getConfig().getBoolean("shop.update-sign-when-inventory-moving", true)) {
             return;
         }
 
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
+        final Inventory inventory = event.getDestination();
+        final Location location = inventory.getLocation();
 
-        if (shop == null) {
+        if (location == null) {
             return;
         }
 
-        shop.setSignText();
+        final Shop shop = plugin.getShopManager().getShop(location);
+        final Shop otherShop = plugin.getShopManager().getShopIncludeAttached(location);
+
+        // Delayed task. Event triggers when item is moved, not when it is received.
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (shop != null) {
+                    shop.setSignText();
+                }
+
+                if (otherShop != null) {
+                    otherShop.setSignText();
+                }
+
+            }
+        }.runTaskLater(plugin, 20);
+
     }
 
     /*
