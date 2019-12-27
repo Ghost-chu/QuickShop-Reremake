@@ -72,11 +72,15 @@ public class InternalListener implements Listener {
             return;
         }
         if ((event.shop).getShopType() == ShopType.BUYING ) {
-        	plugin.log("sold");
-        }
-        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
+        	plugin.log("Player " + event.getPlayer().getName() + " sold " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
             .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
             .format(event.getTax()) + " tax).");
+        }
+        if ((event.shop).getShopType() == ShopType.SELLING ) {
+        	plugin.log("Player " + event.getPlayer().getName() + " bought " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
+            .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
+            .format(event.getTax()) + " tax).");
+        }
         
       
     }
