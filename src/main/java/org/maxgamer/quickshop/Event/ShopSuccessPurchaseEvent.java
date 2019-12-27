@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.ShopType;
 
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
@@ -36,7 +37,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
-    private final Shop shop;
+    public final Shop shop;
 
     @Getter
     private final double tax;
@@ -44,6 +45,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
     private final double total; //Don't use getter, we have important notice need told dev in javadoc.
 
     private boolean cancelled;
+   
 
     /**
      * Builds a new shop purchase event
