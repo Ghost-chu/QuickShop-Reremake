@@ -97,8 +97,8 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
-    
-	public Object getShop() {
-		return this.type;
-	}
+
+    public Object getShop() {
+	return this.type;
+    }
 }
