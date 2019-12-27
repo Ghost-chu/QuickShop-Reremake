@@ -26,7 +26,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.QuickShop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopType;
 
 @AllArgsConstructor
