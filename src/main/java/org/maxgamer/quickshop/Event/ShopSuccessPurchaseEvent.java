@@ -46,7 +46,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     private boolean cancelled;
     
-    public ShopType type;
+    private final ShopType type;
 
     /**
      * Builds a new shop purchase event
