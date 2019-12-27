@@ -71,17 +71,16 @@ public class InternalListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if ((event.getShop().getShopType()) == ShopType.BUYING ) {
+        if (event.getShop().getShopType() == ShopType.BUYING) {
         	plugin.log("Player " + event.getPlayer().getName() + " sold " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
-            .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
-            .format(event.getTax()) + " tax).");
+                    .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
+                    .format(event.getTax()) + " tax).");
         }
-        if ((event.getShop().getShopType()) == ShopType.SELLING ) {
+        if (event.getShop().getShopType() == ShopType.SELLING) {
         	plugin.log("Player " + event.getPlayer().getName() + " bought " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
-            .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
-            .format(event.getTax()) + " tax).");
+                    .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
+                    .format(event.getTax()) + " tax).");
         }
-        
       
     }
 
