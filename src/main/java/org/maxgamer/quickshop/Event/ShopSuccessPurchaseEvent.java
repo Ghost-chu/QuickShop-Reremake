@@ -45,8 +45,6 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
     private final double total; //Don't use getter, we have important notice need told dev in javadoc.
 
     private boolean cancelled;
-    
-    private ShopType type;
    
 
     /**
@@ -98,7 +96,4 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    public Object getShop() {
-	return this.type;
-    }
 }
