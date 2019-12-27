@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.QuickShop.Shop;
 
 @AllArgsConstructor
 public class InternalListener implements Listener {
@@ -69,9 +70,16 @@ public class InternalListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        plugin.log("Player " + event.getPlayer().getName() + " purchased " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
+        if (Shop.getShopType() == SELLING){
+            plugin.log("Player " + event.getPlayer().getName() + " bought " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
                 .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
                 .format(event.getTax()) + " tax).");
+        }
+         if (Shop.getShopType() == BUYING){
+            plugin.log("Player " + event.getPlayer().getName() + " sold " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
+                .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
+                .format(event.getTax()) + " tax).");
+        }
     }
 
 }
