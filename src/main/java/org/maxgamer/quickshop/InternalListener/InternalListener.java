@@ -70,12 +70,12 @@ public class InternalListener implements Listener {
         if (ListenerHelper.isDisabled(event.getClass())) {
             return;
         }
-        if (Shop.getShopType() == SELLING){
+        if (Shop.getShopType() == SELLING(0)){
             plugin.log("Player " + event.getPlayer().getName() + " bought " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
                 .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
                 .format(event.getTax()) + " tax).");
         }
-         if (Shop.getShopType() == BUYING){
+         if (Shop.getShopType() == BUYING(1)){
             plugin.log("Player " + event.getPlayer().getName() + " sold " + event.getShop().ownerName() + " shop "+event.getShop()+" for items x" + event
                 .getAmount() + " for " + plugin.getEconomy().format(event.getBalance()) + " (" + plugin.getEconomy()
                 .format(event.getTax()) + " tax).");
