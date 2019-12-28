@@ -35,8 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.bukkit.inventory.*;
-
+import org.bukkit.inventory.InventoryHolder;
 import java.util.HashMap;
 import java.util.List;
 
