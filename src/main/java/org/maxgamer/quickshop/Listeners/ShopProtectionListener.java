@@ -23,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -175,9 +176,9 @@ public class ShopProtectionListener implements Listener {
         
         final InventoryHolder holder = event.getInitiator().getHolder();
         
-        if(holder instanceof Entity){
+        if (holder instanceof Entity) {
             ((Entity)holder).remove();
-        }else if(holder instanceof Block){
+        } else if (holder instanceof Block) {
             location.getBlock().breakNaturally();
         }
 
