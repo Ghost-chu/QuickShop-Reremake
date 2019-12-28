@@ -32,12 +32,12 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.bukkit.inventory.InventoryHolder;
-import java.util.HashMap;
+
 import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")

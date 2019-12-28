@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopType;
 
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
