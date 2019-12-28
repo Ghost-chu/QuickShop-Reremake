@@ -186,8 +186,8 @@ public class PlayerListener implements Listener {
         else if (e.useInteractedBlock() == Result.ALLOW && shop == null && item != null && item.getType() != Material.AIR
                 && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell") && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Result.DENY ||
-                plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking() ||
-                !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
+                    plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking() ||
+                    !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
@@ -206,7 +206,7 @@ public class PlayerListener implements Listener {
             }
 
             if (b.getType() == Material.ENDER_CHEST &&
-                !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
+                    !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                 return;
             }
             /*if (!Util.canBeShop(b)) {
@@ -251,31 +251,24 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        try {
-            Inventory inventory = e.getInventory();
+        final Inventory inventory = e.getInventory();
+        final Location location = inventory.getLocation();
 
-            // FIXME: 24/11/2019 inventory cannot be null
-            //noinspection ConstantConditions
-            if (inventory == null) {
-                return;
-            }
-
-            final Location location = inventory.getLocation();
-
-            if (location == null) {
-                return;
-            }
-
-            final Shop shop = plugin.getShopManager().getShop(location);
-
-            if (shop == null) {
-                return;
-            }
-
-            shop.setSignText();
-        } catch (Throwable t) {
-            //Ignore
+        if (location == null) {
+            return;
         }
+
+        final Shop shop = plugin.getShopManager().getShop(location);
+        final Shop otherShop = plugin.getShopManager().getShopIncludeAttached(location);
+
+        if (shop != null) {
+            shop.setSignText();
+        }
+
+        if (otherShop != null) {
+            otherShop.setSignText();
+        }
+
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -348,22 +341,22 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDyeing(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK ||
-            e.getItem() == null ||
-            !Util.isDyes(e.getItem().getType())) {
+                e.getItem() == null ||
+                !Util.isDyes(e.getItem().getType())) {
             return;
         }
 
         final Block block = e.getClickedBlock();
 
         if (block == null ||
-            !Util.isWallSign(block.getType())) {
+                !Util.isWallSign(block.getType())) {
             return;
         }
 
         final Block attachedBlock = Util.getAttached(block);
 
         if (attachedBlock == null ||
-            plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+                plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
             return;
         }
 
