@@ -176,7 +176,7 @@ public class ShopProtectionListener implements Listener {
         final InventoryHolder holder = event.getInitiator().getHolder();
         
         if(holder instanceof Entity){
-            holder.remove();
+            ((Entity)holder).remove();
         }else if(holder instanceof Block){
             location.getBlock().breakNaturally();
         }
