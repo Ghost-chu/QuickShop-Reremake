@@ -23,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,12 +32,12 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
@@ -159,9 +160,9 @@ public class ShopProtectionListener implements Listener {
             return;
         }
 
-        final HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
 
-        if (shopsInChunk == null || shopsInChunk.isEmpty() || shopsInChunk.get(loc) == null) {
+        if (shop == null) {
             return;
         }
 
@@ -172,9 +173,17 @@ public class ShopProtectionListener implements Listener {
         if (location == null) {
             return;
         }
+        
+        final InventoryHolder holder = event.getInitiator().getHolder();
+        
+        if (holder instanceof Entity) {
+            ((Entity)holder).remove();
+        } else if (holder instanceof Block) {
+            location.getBlock().breakNaturally();
+        }
 
-        location.getBlock().breakNaturally();
-        MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at " + location + " try steal the items for shop " + loc);
+ 
+        MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
     }
 
     //Protect Entity pickup shop
