@@ -159,9 +159,9 @@ public class ShopProtectionListener implements Listener {
             return;
         }
 
-        final HashMap<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(loc.getChunk());
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc)
 
-        if (shopsInChunk == null || shopsInChunk.isEmpty() || shopsInChunk.get(loc) == null) {
+        if (shop == null) {
             return;
         }
 
@@ -172,9 +172,17 @@ public class ShopProtectionListener implements Listener {
         if (location == null) {
             return;
         }
+        
+        final InventoryHolder holder = event.getInitiator().getHolder();
+        
+        if(holder instanceof Entity){
+            holder.remove();
+        }else if(holder instanceof Block){
+            location.getBlock().breakNaturally();
+        }
 
-        location.getBlock().breakNaturally();
-        MsgUtil.sendGlobalAlert("[DisplayGuard] Breaked the block at " + location + " try steal the items for shop " + loc);
+ 
+        MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
     }
 
     //Protect Entity pickup shop
