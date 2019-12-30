@@ -841,6 +841,9 @@ public class ContainerShop implements Shop {
      * Check the container still there and we can keep use it.
      */
     public void checkContainer() {
+        if(!this.isLoaded){
+            return;
+        }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             Util.debugLog("Shop at " + this.getLocation() + " container was missing, remove...");
             this.onUnload();
