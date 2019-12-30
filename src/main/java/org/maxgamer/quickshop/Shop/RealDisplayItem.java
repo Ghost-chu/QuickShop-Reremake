@@ -26,7 +26,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -130,24 +129,7 @@ public class RealDisplayItem implements DisplayItem {
             return false;
         }
 
-        Boolean removed = null;
-        try { //We use async remove to remove the drops, it have better performance.
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    removeDupeMethod(removed);
-                }
-            }.runTaskAsynchronously(plugin);
-        }catch (Exception e){ //But we know, bukkit not recommend run any method on off-thread, if bukkit have any exceptions, we fallback to sync way.
-            removeDupeMethod(removed);
-        }
-        return removed;
-    }
-    public boolean removeDupeMethod(Boolean removed) {
-        if (this.item == null) {
-            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
-            return false;
-        }
+        boolean removed = false;
         //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof Item)) {
@@ -168,6 +150,7 @@ public class RealDisplayItem implements DisplayItem {
         }
         return removed;
     }
+
     @Override
     public void respawn() {
         remove();
