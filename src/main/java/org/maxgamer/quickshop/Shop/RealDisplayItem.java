@@ -24,7 +24,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,7 +100,7 @@ public class RealDisplayItem implements DisplayItem {
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
                 Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
                         .getLocation());
-                eItem.teleport(Objects.requireNonNull(getDisplayLocation()));
+                plugin.getBukkitAPIWrapper().teleportEntity(eItem,Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -121,14 +123,31 @@ public class RealDisplayItem implements DisplayItem {
         ShopDisplayItemDespawnEvent shopDisplayItemDepawnEvent = new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDepawnEvent);
     }
-
     @Override
     public boolean removeDupe() {
         if (this.item == null) {
             Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
             return false;
         }
-        boolean removed = false;
+
+        Boolean removed = null;
+        try { //We use async remove to remove the drops, it have better performance.
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    removeDupeMethod(removed);
+                }
+            }.runTaskAsynchronously(plugin);
+        }catch (Exception e){ //But we know, bukkit not recommend run any method on off-thread, if bukkit have any exceptions, we fallback to sync way.
+            removeDupeMethod(removed);
+        }
+        return removed;
+    }
+    public boolean removeDupeMethod(Boolean removed) {
+        if (this.item == null) {
+            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
+            return false;
+        }
         //Chunk chunk = shop.getLocation().getChunk();
         for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
             if (!(entity instanceof Item)) {
@@ -136,8 +155,6 @@ public class RealDisplayItem implements DisplayItem {
             }
             Item eItem = (Item) entity;
             if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
-                Util.debugLog(Util
-                        .getItemStackName(eItem.getItemStack()) + " not a shop displayItem: Failed check guardedItemStack");
                 continue;
             }
             if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
@@ -146,15 +163,11 @@ public class RealDisplayItem implements DisplayItem {
                             .getLocation());
                     entity.remove();
                     removed = true;
-                } else {
-                    Util.debugLog(Util
-                            .getItemStackName(eItem.getItemStack()) + " not a shop displayItem: Failed check shop display.");
                 }
             }
         }
         return removed;
     }
-
     @Override
     public void respawn() {
         remove();
@@ -207,7 +220,6 @@ public class RealDisplayItem implements DisplayItem {
             Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
-
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), originalItemStack);
         this.item.setPickupDelay(Integer.MAX_VALUE);
         this.item.setSilent(true);
