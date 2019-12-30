@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 71
+config-version: 72
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -81,6 +81,12 @@ send-display-item-protection-alert: true
 
 #Disable the debug silent logger. This should can fix heavy lagging on some overloaded server, but AFTER ENABLE IT, YOU WILL LOSE OUR SUPPORT UNTIL YOU RE-ENABLE IT.
 disable-debuglogger: false
+
+#Force plugin running under a platform
+#0=AUTO
+#1=SPIGOT
+#2=PAPER
+server-platform: 0
 
 #MySQL database settings.
 database:

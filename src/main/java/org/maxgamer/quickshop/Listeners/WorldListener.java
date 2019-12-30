@@ -76,6 +76,7 @@ public class WorldListener implements Listener {
             }
         }
         // Done - Now we can store the new world dataz!
+
         plugin.getShopManager().getShops().put(world.getName(), inWorld);
         // This is a workaround, because I don't get parsed chunk events when a
         // world first loads....

@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.Util.Util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class SubCommand_Find implements CommandProcesser {
 
@@ -70,8 +71,18 @@ public class SubCommand_Find implements CommandProcesser {
         double minDistanceSquared = minDistance * minDistance;
         final int chunkRadius = (int) minDistance / 16 + 1;
         Shop closest = null;
-        final Chunk c = loc.getChunk();
-
+        CompletableFuture<Chunk> future = new CompletableFuture<>();
+        plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(),loc, future);
+        final Chunk c;
+        try {
+            c = future.get();
+        }catch (Exception asyncErr){
+            sender.sendMessage("Cannot execute the command, see console for details.");
+            plugin.getSentryErrorReporter().sendError(asyncErr,"Unknown errors");
+            plugin.getSentryErrorReporter().ignoreThrow();
+            asyncErr.printStackTrace();
+            return;
+        }
         for (int x = -chunkRadius + c.getX(); x < chunkRadius + c.getX(); x++) {
             for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
                 final Chunk d = c.getWorld().getChunkAt(x, z);
@@ -103,7 +114,7 @@ public class SubCommand_Find implements CommandProcesser {
         
         final Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
         // Hack fix to make /qs find not used by /back
-        p.teleport(Util.lookAt(loc, lookat).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
+        plugin.getBukkitAPIWrapper().teleportEntity(p,Util.lookAt(loc, lookat).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         p.sendMessage(
             MsgUtil.getMessage("nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
     }

@@ -740,11 +740,9 @@ public class Util {
 
     public static boolean isDoubleChest(@Nullable Block b) {
         if (b == null) {
-            Util.debugLog("The block is NULL.");
             return false;
         }
         if (!(b.getState() instanceof Container)) {
-            Util.debugLog("Target block not a Container.");
             return false;
         }
         Container container = (Container) b.getState();
