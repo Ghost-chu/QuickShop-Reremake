@@ -45,6 +45,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
+import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
+import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.OneSkyAppPlatform.LanguageOTA;
 import org.maxgamer.quickshop.Watcher.*;
@@ -188,6 +191,7 @@ public class QuickShop extends JavaPlugin {
     private SignUpdateWatcher signUpdateWatcher;
     private ShopContainerWatcher shopContainerWatcher;
     private LanguageOTA languageOTA;
+    private BukkitAPIWrapper bukkitAPIWrapper;
 
     /**
      * Get the Player's Shop limit.
@@ -438,11 +442,27 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
+        switch (getConfig().getInt("server-platform",0)){
+            case 1:
+                bukkitAPIWrapper = new SpigotWrapper();
+                getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
+            case 2:
+                bukkitAPIWrapper = new PaperWrapper();
+                getLogger().info("Plugin now running under Paper mode.");
+            default: //AUTO
+                try {
+                    Bukkit.spigot().getSpigotConfig();
+                    bukkitAPIWrapper = new PaperWrapper();
+                    getLogger().info("Plugin now running under Paper mode.");
+                }catch (Exception e){
+                    bukkitAPIWrapper = new SpigotWrapper();
+                    getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
+                }
+        }
 
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
-
         languageOTA = new LanguageOTA(this);
 
         MsgUtil.loadItemi18n();
@@ -1120,8 +1140,11 @@ public class QuickShop extends JavaPlugin {
             if(Objects.equals(getConfig().getString("language"), "en")){
                 getConfig().set("language","en-US");
             }
+            getConfig().set("server-platform",0);
             getConfig().set("config-version", 72);
         }
+
+
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
