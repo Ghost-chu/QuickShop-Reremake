@@ -7,22 +7,8 @@ config-version: 71
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
 #After you set the new language, you need to delete `messages.yml` to let plugin regen it with your desired language file.
 
-#Available languages:
-#en - English
-#da - Danish
-#sv - Swedish
-#fr - France
-#de - German
-#ko - Korean
-#ru - Russian
-#pl - Polish
-#fi - Finnish
-#zh_CN - Chinese Modern
-#zh_TW - Chinese Traditional
-#es - Spanish (Latin America)
-#ja - Japanese
-
-language: en
+#Available languages: http://quickshop.oneskyapp.com/collaboration/project?id=166413
+language: en-US
 
 #Download LangUtils:
 #For 1.13, you can download this: https://github.com/NyaaCat/LanguageUtils/releases/download/v2.1.17-mc1.13.1/LangUtils-v2.1.17-mc1.13.1.jar
