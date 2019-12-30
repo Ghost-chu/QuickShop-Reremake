@@ -258,15 +258,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        final Shop shop = plugin.getShopManager().getShop(location);
-        final Shop otherShop = plugin.getShopManager().getShopIncludeAttached(location);
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
 
         if (shop != null) {
             shop.setSignText();
-        }
-
-        if (otherShop != null) {
-            otherShop.setSignText();
         }
 
     }
