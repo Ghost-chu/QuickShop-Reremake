@@ -678,7 +678,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setSignText() {
-        if (!Util.isLoaded(this.getLocation())) {
+        if (isLoaded) {
             return;
         }
         String[] lines = new String[4];
