@@ -185,6 +185,7 @@ public class QuickShop extends JavaPlugin {
     private static PermissionManager permissionManager;
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
+    private ShopContainerWatcher shopContainerWatcher;
 
     /**
      * Get the Player's Shop limit.
@@ -502,6 +503,7 @@ public class QuickShop extends JavaPlugin {
         lockListener = new LockListener(this);
         internalListener = new InternalListener(this);
         signUpdateWatcher = new SignUpdateWatcher(this);
+        shopContainerWatcher = new ShopContainerWatcher(this);
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
         Bukkit.getPluginManager().registerEvents(chatListener, this);
@@ -538,6 +540,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
         signUpdateWatcher.runTaskTimer(this,0,120);
+        shopContainerWatcher.runTaskTimer(this,0,20);
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
