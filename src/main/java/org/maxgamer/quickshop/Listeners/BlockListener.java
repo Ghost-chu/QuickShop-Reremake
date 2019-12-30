@@ -35,7 +35,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -180,24 +179,11 @@ public class BlockListener implements Listener {
             return;
         }
 
-        final Shop shop = plugin.getShopManager().getShop(location);
-        final Shop otherShop = plugin.getShopManager().getShopIncludeAttached(location);
-
         // Delayed task. Event triggers when item is moved, not when it is received.
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (shop != null) {
-                    shop.setSignText();
-                }
-
-                if (otherShop != null) {
-                    otherShop.setSignText();
-                }
-
-            }
-        }.runTaskLater(plugin, 20);
-
+        final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
+        if (shop != null) {
+            plugin.getSignUpdateWatcher().scheduleSignUpdate(shop);
+        }
     }
 
     /*
