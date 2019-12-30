@@ -678,7 +678,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setSignText() {
-        if (isLoaded) {
+        if (!Util.isLoaded(this.location)) {
             return;
         }
         String[] lines = new String[4];
@@ -738,8 +738,7 @@ public class ContainerShop implements Shop {
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
-        final String signHeader = MsgUtil.getMessageOfflinePlayer("signs.header", player, "");
-        final String signHeader2 = MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
+        final String signHeader = MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
 
         for (Block b : blocks) {
             if (b == null) {
@@ -757,22 +756,35 @@ public class ContainerShop implements Shop {
                 continue;
             }
             org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
-            String currentLine = sign.getLine(0);
-            if (currentLine.contains(signHeader) || currentLine.contains(signHeader2)) {
-                signs.add(sign);
-            } else {
-                boolean text = false;
-                for (String s : sign.getLines()) {
-                    if (!s.isEmpty()) {
-                        text = true;
+            for (int i = 0; i < sign.getLines().length; i++) {
+                if (i == 0) {
+                    if (sign.getLine(i).contains(signHeader)) {
+                        signs.add(sign);
+                        break;
+                    }
+                } else {
+                    if (Arrays.stream(sign.getLines()).anyMatch((str) -> !str.isEmpty())) {
                         break;
                     }
                 }
-                if (!text) {
-                    signs.add(sign);
-                }
             }
+            signs.add(sign);
         }
+//            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
+//                signs.add(sign);
+//            } else {
+//                boolean text = false;
+//                for (String s : sign.getLines()) {
+//                    if (!s.isEmpty()) {
+//                        text = true;
+//                        break;
+//                    }
+//                }
+//                if (!text) {
+//                    signs.add(sign);
+//                }
+//            }
+//        }
         return signs;
     }
 
