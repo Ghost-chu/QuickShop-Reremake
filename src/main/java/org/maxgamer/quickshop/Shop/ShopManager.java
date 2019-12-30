@@ -311,7 +311,6 @@ public class ShopManager {
             }
             /* The shop has hereforth been successfully created */
             createShop(shop, info);
-            Location loc = shop.getLocation();
             if (!plugin.getConfig().getBoolean("shop.lock")) {
                 // Warn them if they haven't been warned since
                 // reboot

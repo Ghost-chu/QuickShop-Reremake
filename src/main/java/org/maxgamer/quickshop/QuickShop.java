@@ -384,14 +384,11 @@ public class QuickShop extends JavaPlugin {
         if (shopManager != null) {
             shopManager.clear();
         }
-        /* Empty the buffer */
-        if (databaseManager != null) {
-            database.close();
-        }
         /* Close Database */
         if (database != null) {
             try {
                 this.database.getConnection().close();
+                database.close();
             } catch (SQLException e) {
                 if (getSentryErrorReporter() != null) {
                     this.getSentryErrorReporter().ignoreThrow();
