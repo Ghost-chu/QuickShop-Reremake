@@ -450,13 +450,13 @@ public class QuickShop extends JavaPlugin {
                 bukkitAPIWrapper = new PaperWrapper();
                 getLogger().info("Plugin now running under Paper mode.");
             default: //AUTO
-                try {
-                    Bukkit.spigot().getSpigotConfig();
+                if(Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")){
                     bukkitAPIWrapper = new PaperWrapper();
                     getLogger().info("Plugin now running under Paper mode.");
-                }catch (Exception e){
+                }else{
                     bukkitAPIWrapper = new SpigotWrapper();
                     getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
+
                 }
         }
 
