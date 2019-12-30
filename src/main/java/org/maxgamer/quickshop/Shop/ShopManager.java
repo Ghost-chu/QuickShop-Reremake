@@ -855,7 +855,7 @@ public class ShopManager {
         // "ms.");
     }
 
-    public @Nullable HashMap<Location, Shop> getShops(String world, int chunkX, int chunkZ) {
+    public @Nullable HashMap<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
