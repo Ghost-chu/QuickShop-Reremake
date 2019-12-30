@@ -29,8 +29,8 @@ import java.util.Map;
 
 public class HttpRequest implements Closeable {
 
-    private static final int CONNECT_TIMEOUT = 1000 * 5;
-    private static final int READ_TIMEOUT = 1000 * 5;
+    private static final int CONNECT_TIMEOUT = 1000 * 15;
+    private static final int READ_TIMEOUT = 1000 * 30;
     private static final int READ_BUFFER_SIZE = 1024 * 8;
 
     private final Map<String, String> headers = new HashMap<>();

@@ -16,6 +16,7 @@ import org.maxgamer.quickshop.Util.Location.StringOf;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
@@ -72,6 +73,14 @@ public abstract class FileEnvelope implements IFile {
         }
 
         reload();
+    }
+
+    @Override
+    public void createButDoNotReplace() throws IOException {
+        if (file.exists()) {
+            throw new IOException("The target file alredy exist");
+        }
+        create();
     }
 
     @NotNull
