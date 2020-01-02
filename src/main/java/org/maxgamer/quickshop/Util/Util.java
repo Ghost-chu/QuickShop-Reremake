@@ -917,6 +917,7 @@ public class Util {
      * @param map2 Map2
      * @return Map1 match Map2 and Map2 match Map1
      */
+    @Deprecated
     public static boolean mapDuoMatches(@NotNull Map map1, @NotNull Map map2) {
         boolean result = mapMatches(map1, map2);
         if (!result) {
