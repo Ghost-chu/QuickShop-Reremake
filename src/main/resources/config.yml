@@ -72,7 +72,7 @@ economy-type: 0
 #The decimal format the double output, includes player money output
 #Default is #,###.##
 # whether to use decimal format output.
-use-deciaml-format: false
+use-decimal-format: false
 
 decimal-format: "#,###.##"
 
