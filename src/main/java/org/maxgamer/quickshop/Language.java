@@ -52,10 +52,10 @@ public class Language {
         if (type == null || type.isEmpty()) {
             throw new IllegalArgumentException("Type cannot be null or empty");
         }
-        InputStream inputStream = plugin.getResource(type + "/" + language + ".json");
+        InputStream inputStream = plugin.getResource(type + "-" + language + ".json");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
-            inputStream = plugin.getResource(type + "/" + "en-US" + ".json");
+            inputStream = plugin.getResource(type + "-" + "en" + ".json");
         }
         return inputStream;
         //File name should call    type-language.yml    ---> config-zh.yml
@@ -70,10 +70,14 @@ public class Language {
      * @param type     Target type
      * @param fileName The filename you want write to the plugin datafolder.
      */
-    public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) throws IOException{
+    public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) {
         File targetFile = new File(plugin.getDataFolder(), fileName);
         if (!targetFile.exists()) {
-           throw new IOException("File not exist in Jar");
+            try {
+                targetFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         try {
             InputStream is = getFile(language, type);

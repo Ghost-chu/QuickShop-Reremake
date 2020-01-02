@@ -51,7 +51,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.sql.ResultSet;
@@ -286,33 +285,13 @@ public class MsgUtil {
     public static void loadCfgMessages() throws InvalidConfigurationException, IOException {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
-        String languageUtilCode = plugin.getConfig()
+        String languageCode = plugin.getConfig()
                 .getString("langutils-language", "en_us");
-        String languageCode = Objects.requireNonNull(plugin.getConfig()
-                .getString("language", "en-US"));
         //noinspection ConstantConditions
-        loadLangUtils(languageUtilCode);
+        loadLangUtils(languageCode);
+        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
+        nJson.create();
 
-        File messagesFile = new File(plugin.getDataFolder(),"messages.json");
-        IFile nJson = new JSONFile(plugin, messagesFile,"en-US.json",false); //Load it
-        if(!messagesFile.exists()){
-            InputStream input = plugin.getLanguage().getFile(languageCode,"messages");
-            if(input == null){
-                //Download from OTA
-                plugin.getLogger().info("We're downloading the plugin language file from OneSkyApp platform by OTA api, this may need a while...");
-                try {
-                    plugin.getLanguageOTA().downloadTranslations(languageCode);
-                }catch (Exception e){
-                    plugin.getLogger().warning("Cannot download language file, this may cause LanguageCode not exist/Language file doesn't ready/Internet trouble, we're falling back to English language...");
-                    plugin.getLanguage().saveFile("en-US","messages","messages.json");
-                }
-            }else{
-                //Export from JAR
-                messagesFile.createNewFile();
-                plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
-            }
-
-        }else{
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
         if(oldMsgFile.exists()){ //Old messages file convert.
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
@@ -326,8 +305,6 @@ public class MsgUtil {
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
         }
-       }
-        nJson.create(); //Load json file
         messagei18n = nJson;
         /* Set default language vesion and update messages.yml */
         if (messagei18n.getInt("language-version") == 0) {
