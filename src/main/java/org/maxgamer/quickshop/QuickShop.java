@@ -49,7 +49,6 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Util.Timer;
-import org.maxgamer.quickshop.Util.OneSkyAppPlatform.LanguageOTA;
 import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
@@ -190,7 +189,6 @@ public class QuickShop extends JavaPlugin {
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
     private ShopContainerWatcher shopContainerWatcher;
-    private LanguageOTA languageOTA;
     private BukkitAPIWrapper bukkitAPIWrapper;
 
     /**
@@ -460,7 +458,6 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
-        languageOTA = new LanguageOTA(this);
 
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
