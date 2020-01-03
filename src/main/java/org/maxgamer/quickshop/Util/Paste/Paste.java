@@ -121,9 +121,9 @@ public class Paste {
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
                     .inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")))).append("\n");
             finalReport.append("\t*********************************\n");
-            finalReport.append("\tmessages.yml:\n");
+            finalReport.append("\tmessages.json:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(plugin.getDataFolder() + "/messages.yml")))).append("\n");
+                    .inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")))).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
