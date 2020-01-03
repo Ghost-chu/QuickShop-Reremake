@@ -366,7 +366,7 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("Cleaning up database queues...");
         if (this.getDatabaseManager() != null) {
-            this.getDatabaseManager().uninit();
+            this.getDatabaseManager().unInit();
         }
 
         Util.debugLog("Unregistering tasks...");
