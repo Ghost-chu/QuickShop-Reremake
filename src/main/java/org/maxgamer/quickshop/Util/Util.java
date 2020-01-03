@@ -645,6 +645,10 @@ public class Util {
         if (inv == null) {
             return;
         }
+        if(inv.getHolder() == null){
+            Util.debugLog("Skipped plugin gui inventory check.");
+            return;
+        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -661,7 +665,7 @@ public class Util {
                                 return; //Virtual GUI
                             }
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
-                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR, 0)));
+                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
                             MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack
                                     .getType().name());
