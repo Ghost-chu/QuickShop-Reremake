@@ -47,8 +47,8 @@ import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
-import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Util.Timer;
+import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
