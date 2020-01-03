@@ -145,18 +145,18 @@ public class Paste {
             finalReport.append("\tInternal Debug Log:\n");
             finalReport.append("\t\t\n").append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n")).append("\n");
             finalReport.append("\t*********************************\n");
-            try {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tlatest.log:\n");
-                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
-                finalReport.append("\t*********************************\n");
-            } catch (Throwable th) {
-                finalReport.append("\t*********************************\n");
-                finalReport.append("\tlatest.log:\n");
-                finalReport.append("\t\t\n").append("Read failed.").append("\n");
-                finalReport.append("\t*********************************\n");
-            }
+//            try {
+//                finalReport.append("\t*********************************\n");
+//                finalReport.append("\tlatest.log:\n");
+//                finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
+//                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
+//                finalReport.append("\t*********************************\n");
+//            } catch (Throwable th) {
+//                finalReport.append("\t*********************************\n");
+//                finalReport.append("\tlatest.log:\n");
+//                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+//                finalReport.append("\t*********************************\n");
+//            }
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
