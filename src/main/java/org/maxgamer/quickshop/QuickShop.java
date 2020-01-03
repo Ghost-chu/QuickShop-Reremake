@@ -558,7 +558,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
         signUpdateWatcher.runTaskTimer(this,0,120);
-        shopContainerWatcher.runTaskTimer(this,0,20);
+        shopContainerWatcher.runTaskTimer(this,0,5);
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
