@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.File;
 
+import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+@ToString
 public abstract class FileEnvelope implements IFile {
 
     @NotNull
