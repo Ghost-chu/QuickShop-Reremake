@@ -8,19 +8,13 @@ config-version: 72
 #After you set the new language, you need to delete `messages.yml` to let plugin regen it with your desired language file.
 
 #Available languages:
-#en - English
-#da - Danish
-#sv - Swedish
-#fr - France
-#de - German
-#ko - Korean
-#ru - Russian
-#pl - Polish
-#fi - Finnish
-#zh_CN - Chinese Modern
-#zh_TW - Chinese Traditional
-#es - Spanish (Latin America)
-#ja - Japanese
+#en
+#es-419
+#ja
+#ko
+#pl
+#ru
+#zh-TW
 
 language: en
 
