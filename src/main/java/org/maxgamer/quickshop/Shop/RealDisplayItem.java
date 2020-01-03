@@ -136,9 +136,6 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             }
             Item eItem = (Item) entity;
-            if (!DisplayItem.checkIsGuardItemStack(eItem.getItemStack())) {
-                continue;
-            }
             if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
                     Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
