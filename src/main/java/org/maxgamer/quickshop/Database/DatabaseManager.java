@@ -146,7 +146,7 @@ public class DatabaseManager {
     /**
      * Unload the DatabaseManager, run at onDisable()
      */
-    public void uninit() {
+    public void unInit() {
         if (task != null && !task.isCancelled()) {
             task.cancel();
         }
