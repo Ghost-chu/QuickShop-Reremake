@@ -282,7 +282,7 @@ public class MsgUtil {
         }
     }
 
-    public static void loadCfgMessages() throws InvalidConfigurationException, IOException {
+    public static void loadCfgMessages() throws IOException, InvalidConfigurationException {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         String languageCode = plugin.getConfig()
@@ -299,7 +299,9 @@ public class MsgUtil {
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
             oldMsgI18n.getKeys(true).forEach((key)->nJson.set(key, oldMsgI18n.get(key)));
             nJson.save();
-            Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
+            try {
+                Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
+            }catch (IOException ignore){}
             if(oldMsgFile.exists()){
                 oldMsgFile.delete();
             }
