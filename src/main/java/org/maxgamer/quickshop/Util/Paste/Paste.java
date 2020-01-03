@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -119,26 +120,26 @@ public class Paste {
             finalReport.append("\t*********************************\n");
             finalReport.append("\tconfig.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")))).append("\n");
+                    .inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tmessages.json:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")))).append("\n");
+                    .inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tenchi18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
+                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
@@ -148,7 +149,7 @@ public class Paste {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tlatest.log:\n");
                 finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())))).append("\n");
+                        .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -160,7 +161,7 @@ public class Paste {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
                 finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                        .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath())))).append("\n");
+                        .inputStream2ByteArray(new File(new File("."), "bukkit.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -172,7 +173,7 @@ public class Paste {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
                 finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                        .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath())))).append("\n");
+                        .inputStream2ByteArray(new File(new File("."), "spigot.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
@@ -184,7 +185,7 @@ public class Paste {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                        .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())))).append("\n");
+                        .inputStream2ByteArray(new File(new File("."), "paper.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
                 finalReport.append("\t*********************************\n");
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
