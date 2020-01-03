@@ -289,7 +289,7 @@ public class MsgUtil {
                 .getString("langutils-language", "en_us");
         //noinspection ConstantConditions
         loadLangUtils(languageCode);
-        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages-en.json",false); //Load it
+        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",false); //Load it
         nJson.create();
 
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
@@ -1127,7 +1127,6 @@ public class MsgUtil {
         }
         messagei18n.set(path, objFromBuiltIn);
     }
-
     public static IFile getI18nFile() {
         return messagei18n;
     }

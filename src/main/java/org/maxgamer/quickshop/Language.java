@@ -52,10 +52,10 @@ public class Language {
         if (type == null || type.isEmpty()) {
             throw new IllegalArgumentException("Type cannot be null or empty");
         }
-        InputStream inputStream = plugin.getResource(type + "-" + language + ".json");
+        InputStream inputStream = plugin.getResource(type + "/" + language + ".json");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
-            inputStream = plugin.getResource(type + "-" + "en" + ".json");
+            inputStream = plugin.getResource(type + "/" + "en" + ".json");
         }
         return inputStream;
         //File name should call    type-language.yml    ---> config-zh.yml
