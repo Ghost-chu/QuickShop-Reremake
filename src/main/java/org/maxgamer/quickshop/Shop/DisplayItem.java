@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -39,7 +40,7 @@ import java.util.Objects;
  * cannot be interacted with.
  */
 public interface DisplayItem {
-
+    Gson gson = new GsonBuilder().create();
     /**
      * Check the itemStack is contains protect flag.
      *
@@ -56,33 +57,39 @@ public interface DisplayItem {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
-        if (!Objects.requireNonNull(iMeta).hasLore()) {
+        if(iMeta == null){
+            return false;
+        }
+        if (!iMeta.hasLore()) {
             return false;
         }
         List<String> lores = iMeta.getLore();
-        Gson gson = new Gson();
-        for (String lore : Objects.requireNonNull(lores)) {
-            try {
-                if (!lore.startsWith("{")) {
-                    continue;
+        if(lores != null){
+            String defaultMark = ShopProtectionFlag.getDefaultMark();
+            for (String lore : lores) {
+                try {
+                    if (!lore.startsWith("{")) {
+                        continue;
+                    }
+                    ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                    if (shopProtectionFlag == null) {
+                        continue;
+                    }
+                    if (defaultMark.equals(shopProtectionFlag.getMark())) {
+                        return true;
+                    }
+                    if (shopProtectionFlag.getShopLocation() != null) {
+                        return true;
+                    }
+                    if (shopProtectionFlag.getItemStackString() != null) {
+                        return true;
+                    }
+                } catch (JsonSyntaxException e) {
+                    //Ignore
                 }
-                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null) {
-                    continue;
-                }
-                if (ShopProtectionFlag.getDefaultMark().equals(shopProtectionFlag.getMark())) {
-                    return true;
-                }
-                if (shopProtectionFlag.getShopLocation() != null) {
-                    return true;
-                }
-                if (shopProtectionFlag.getItemStackString() != null) {
-                    return true;
-                }
-            } catch (JsonSyntaxException e) {
-                //Ignore
             }
         }
+
         return false;
     }
 
@@ -107,24 +114,27 @@ public interface DisplayItem {
             return false;
         }
         List<String> lores = iMeta.getLore();
-        Gson gson = new Gson();
-        for (String lore : Objects.requireNonNull(lores)) {
-            try {
-                if (!lore.startsWith("{")) {
-                    continue;
+        if (lores != null) {
+            String defaultMark = ShopProtectionFlag.getDefaultMark();
+            String shopLocation = shop.getLocation().toString();
+            for (String lore : lores) {
+                try {
+                    if (!lore.startsWith("{")) {
+                        continue;
+                    }
+                    ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                    if (shopProtectionFlag == null) {
+                        continue;
+                    }
+                    if (!shopProtectionFlag.getMark().equals(defaultMark)) {
+                        continue;
+                    }
+                    if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
+                        return true;
+                    }
+                } catch (JsonSyntaxException e) {
+                    //Ignore
                 }
-                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-                if (shopProtectionFlag == null) {
-                    continue;
-                }
-                if (!shopProtectionFlag.getMark().equals(ShopProtectionFlag.getDefaultMark())) {
-                    continue;
-                }
-                if (shopProtectionFlag.getShopLocation().equals(shop.getLocation().toString())) {
-                    return true;
-                }
-            } catch (JsonSyntaxException e) {
-                //Ignore
             }
         }
         return false;
@@ -142,17 +152,17 @@ public interface DisplayItem {
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-			if (Objects.requireNonNull(iMeta).hasDisplayName()) {
-				iMeta.setDisplayName(iMeta.getDisplayName());
-			} else {
-				iMeta.setDisplayName(Util.getItemStackName(itemStack));
-			}
+            if (Objects.requireNonNull(iMeta).hasDisplayName()) {
+                iMeta.setDisplayName(iMeta.getDisplayName());
+            } else {
+                iMeta.setDisplayName(Util.getItemStackName(itemStack));
+            }
         } else {
             Objects.requireNonNull(iMeta).setDisplayName(null);
         }
         java.util.List<String> lore = new ArrayList<>();
         Gson gson = new Gson();
-        ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack,shop);
+        ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
         String protectFlag = gson.toJson(shopProtectionFlag);
         for (int i = 0; i < 21; i++) {
             lore.add(protectFlag); //Create 20 lines lore to make sure no stupid plugin accident remove mark.
@@ -164,11 +174,12 @@ public interface DisplayItem {
 
     /**
      * Create the shop protection flag for display item.
+     *
      * @param itemStack The item stack
-     * @param shop The shop
+     * @param shop      The shop
      * @return ShopProtectionFlag obj
      */
-    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop){
+    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
