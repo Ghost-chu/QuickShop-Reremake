@@ -52,7 +52,7 @@ public class Updater {
             connection.setReadTimeout(timed_out);
             String localPluginVersion = QuickShop.instance.getDescription().getVersion();
             String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-            if (spigotPluginVersion != null && !spigotPluginVersion.equals(localPluginVersion)) {
+            if (spigotPluginVersion != null && !spigotPluginVersion.isEmpty() && !spigotPluginVersion.equals(localPluginVersion)) {
                 connection.disconnect();
                 return new UpdateInfomation(spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
             }
