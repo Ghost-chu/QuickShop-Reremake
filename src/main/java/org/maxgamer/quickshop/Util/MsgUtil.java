@@ -206,6 +206,8 @@ public class MsgUtil {
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         Optional<String> raw = messagei18n.getString(loc);
         if (!raw.isPresent()) {
+            Util.debugLog("ERR: MsgUtil cannot find the the phrase at "+loc+", printing the all readed datas: "+messagei18n);
+
             return invaildMsg + ": " + loc;
         }
         String filled = fillArgs(raw.get(), args);
@@ -289,9 +291,8 @@ public class MsgUtil {
                 .getString("langutils-language", "en_us");
         //noinspection ConstantConditions
         loadLangUtils(languageCode);
-        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",false); //Load it
+        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",true); //Load it
         nJson.create();
-
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
         if(oldMsgFile.exists()){ //Old messages file convert.
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
@@ -324,7 +325,7 @@ public class MsgUtil {
             inited = true;
         }
         /* Save the upgraded messages.yml */
-        messagei18n.save();
+
     }
 
     public static void loadEnchi18n() {
@@ -1114,7 +1115,6 @@ public class MsgUtil {
             selectedVersion = 24;
         }
         messagei18n.save();
-
     }
 
     public static void setAndUpdate(@NotNull String path, @Nullable Object object) {
