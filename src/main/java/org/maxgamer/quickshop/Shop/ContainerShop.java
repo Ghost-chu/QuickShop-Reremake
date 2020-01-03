@@ -756,14 +756,15 @@ public class ContainerShop implements Shop {
                 continue;
             }
             org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
-            for (int i = 0; i < sign.getLines().length; i++) {
+            String[] lines = sign.getLines();
+            for (int i = 0; i < lines.length; i++) {
                 if (i == 0) {
-                    if (sign.getLine(i).contains(signHeader)) {
+                    if (lines[i].contains(signHeader)) {
                         signs.add(sign);
                         break;
                     }
                 } else {
-                    if (Arrays.stream(sign.getLines()).anyMatch((str) -> !str.isEmpty())) {
+                    if (Arrays.stream(lines).anyMatch((str) -> !str.isEmpty())) {
                         break;
                     }
                 }
