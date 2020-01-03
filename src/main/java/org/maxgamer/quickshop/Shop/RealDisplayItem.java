@@ -164,7 +164,7 @@ public class RealDisplayItem implements DisplayItem {
         //Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         item.setItemStack(this.guardedIstack);
-		if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
+		if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
 		    item.setCustomName(Util.getItemStackName(this.guardedIstack));
 			item.setCustomNameVisible(true);
 		}
