@@ -30,6 +30,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -64,7 +66,11 @@ public class ChatSheetPrinter {
     }
 
     public void printLine(@NotNull String text) {
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + text);
+        String[] texts = text.split("\n");
+        Arrays.asList(texts).forEach((str)->{
+            p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str);
+        });
+
     }
 
     public void printSuggestableCmdLine(@NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
