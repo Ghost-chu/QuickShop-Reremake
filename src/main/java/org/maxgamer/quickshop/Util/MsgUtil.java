@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import com.meowj.langutils.LangUtils;
 import com.meowj.langutils.lang.LanguageHelper;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -39,6 +38,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -268,7 +268,6 @@ public class MsgUtil {
 
             Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
             if (langUtilsPlugin != null) {
-                LangUtils langUtils = (LangUtils) langUtilsPlugin;
                 List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
                 if (!langLanguages.contains(languageCode)) {
                     langLanguages.add(languageCode);
@@ -280,7 +279,7 @@ public class MsgUtil {
                 }
             }
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            plugin.getSentryErrorReporter().sendError(throwable,"LangUtils cannot load.");
         }
     }
 
@@ -815,9 +814,9 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         //Enabled
-        sendItemholochat(shop, shop.getItem(), p, ChatColor.DARK_PURPLE + MsgUtil
+        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil
                 .getMessage("tableformat.left_begin", p) + " " + MsgUtil
-                .getMessage("menu.item", p, Util.getItemStackName(shop.getItem())));
+                .getMessage("menu.item", p, Util.getItemStackName(items)));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
         }
@@ -853,7 +852,6 @@ public class MsgUtil {
         }
         if (items.getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
-            stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
                 chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants", p));
@@ -862,6 +860,15 @@ public class MsgUtil {
                             .getValue());
                 }
             }
+        }
+        if(items.getItemMeta() instanceof PotionMeta){
+            PotionMeta potionMeta = (PotionMeta)items.getItemMeta();
+            PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
+            if(potionEffectType != null){
+                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.effects", p));
+                chatSheetPrinter.printLine(ChatColor.YELLOW+MsgUtil.getPotioni18n(potionEffectType));
+            }
+            potionMeta.getCustomEffects().forEach((potionEffect -> chatSheetPrinter.printLine(ChatColor.YELLOW+MsgUtil.getPotioni18n(potionEffect.getType()))));
         }
         chatSheetPrinter.printFooter();
     }

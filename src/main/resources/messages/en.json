@@ -88,7 +88,7 @@
     "damage-percent-remaining": "&e{0}% &aRemaining.",
     "this-shop-is-buying": "&aThis shop is &dBUYING&a items.",
     "this-shop-is-selling": "&aThis shop is &bSELLING&a items.",
-    "effects": "&aEffects: &e{0}",
+    "effects": "&aEffects",
     "commands": {
       "preview": "/qs silentpreview {0} {1} {2} {3}"
     }
