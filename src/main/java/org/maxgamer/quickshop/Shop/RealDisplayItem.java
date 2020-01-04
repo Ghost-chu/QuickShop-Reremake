@@ -162,12 +162,16 @@ public class RealDisplayItem implements DisplayItem {
         }
         Item item = (Item) entity;
         //Set item protect in the armorstand's hand
-        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-        item.setItemStack(this.guardedIstack);
-		if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-		    item.setCustomName(Util.getItemStackName(this.guardedIstack));
-			item.setCustomNameVisible(true);
-		}
+
+        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+            item.setCustomName(Util.getItemStackName(this.originalItemStack));
+            item.setCustomNameVisible(true);
+        }
+        item.setPickupDelay(Integer.MAX_VALUE);
+        item.setSilent(true);
+        item.setPortalCooldown(Integer.MAX_VALUE);
+        item.setVelocity(new Vector(0, 0.1, 0));
+        item.setCustomNameVisible(false);
         Util.debugLog("Successfully safeGuard Item: " + item.getLocation());
     }
 
@@ -200,12 +204,9 @@ public class RealDisplayItem implements DisplayItem {
             Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
-        this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), originalItemStack);
-        this.item.setPickupDelay(Integer.MAX_VALUE);
-        this.item.setSilent(true);
-        this.item.setPortalCooldown(Integer.MAX_VALUE);
-        this.item.setVelocity(new Vector(0, 0.1, 0));
-        this.item.setCustomNameVisible(false);
+        this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
+        this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+        this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
         Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation());
     }
