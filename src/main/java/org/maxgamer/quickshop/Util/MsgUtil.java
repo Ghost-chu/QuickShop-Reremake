@@ -845,7 +845,7 @@ public class MsgUtil {
             enchs = items.getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p,""));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
             }
