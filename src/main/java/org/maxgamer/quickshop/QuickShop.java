@@ -331,7 +331,7 @@ public class QuickShop extends JavaPlugin {
         }
         try {
             MsgUtil.loadCfgMessages();
-        }catch (Exception e){
+        } catch (Exception e) {
             getLogger().warning("An error throws when loading messages");
             e.printStackTrace();
         }
@@ -411,12 +411,12 @@ public class QuickShop extends JavaPlugin {
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
 
-        getLogger().info("Quickshop "+getFork());
+        getLogger().info("Quickshop " + getFork());
         getLogger().info("Reading the configuration...");
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
-        getConfig().options().copyDefaults(getConfig().getBoolean("auto-fix-configuration",false)); // Load defaults.
+        getConfig().options().copyDefaults(getConfig().getBoolean("auto-fix-configuration", false)); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
         //getConfig().options().copyDefaults(true);
@@ -437,7 +437,7 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         sentryErrorReporter = new SentryErrorReporter(this);
         // loadEcon();
-        switch (getConfig().getInt("server-platform",0)){
+        switch (getConfig().getInt("server-platform", 0)) {
             case 1:
                 bukkitAPIWrapper = new SpigotWrapper();
                 getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
@@ -445,10 +445,10 @@ public class QuickShop extends JavaPlugin {
                 bukkitAPIWrapper = new PaperWrapper();
                 getLogger().info("Plugin now running under Paper mode.");
             default: //AUTO
-                if(Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")){
+                if (Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")) {
                     bukkitAPIWrapper = new PaperWrapper();
                     getLogger().info("Plugin now running under Paper mode.");
-                }else{
+                } else {
                     bukkitAPIWrapper = new SpigotWrapper();
                     getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
 
@@ -557,8 +557,8 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
-        signUpdateWatcher.runTaskTimer(this,0,120);
-        shopContainerWatcher.runTaskTimer(this,0,5);
+        signUpdateWatcher.runTaskTimer(this, 0, 120);
+        shopContainerWatcher.runTaskTimer(this, 0, 5);
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
@@ -614,7 +614,7 @@ public class QuickShop extends JavaPlugin {
         }
         String nmsVersion = Util.getNMSVersion();
         IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
-        getLogger().info("Running QuickShop-Reremake on Minecraft version " + nmsVersion);
+        getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + Util.getMinecraftVersionFromNMSVersion(Util.getNMSVersion()));
         if (incompatibleChecker.isIncompatible(nmsVersion)) {
             throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
         }
@@ -641,7 +641,7 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(Objects.requireNonNull(host,"MySQL host can't be null"), Objects.requireNonNull(user,"MySQL username can't be null"), Objects.requireNonNull(pass,"MySQL password can't be null"), Objects.requireNonNull(database,"MySQL database name can't be null"), Objects.requireNonNull(port,"MySQL port can't be null"), useSSL);
+                dbCore = new MySQLCore(Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
@@ -726,7 +726,7 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", ()->disableDebugLoggger));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLoggger));
             // Exp for stats, maybe i need improve this, so i add this.
             metrics.submitData(); // Submit now!
             getLogger().info("Metrics submitted.");
@@ -1112,29 +1112,29 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 68);
             selectedVersion = 68;
         }
-        if (selectedVersion == 68){
+        if (selectedVersion == 68) {
             ArrayList<String> temp = new ArrayList<>();
             temp.add("SoulBound");
             getConfig().set("shop.blacklist-lores", temp);
             getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
-        if (selectedVersion == 69){
+        if (selectedVersion == 69) {
             getConfig().set("shop.display-item-use-name", false);
             getConfig().set("config-version", 70);
             selectedVersion = 70;
         }
-        if (selectedVersion == 70){
+        if (selectedVersion == 70) {
             getConfig().set("cachingpool.enable", false);
             getConfig().set("cachingpool.maxsize", 100000000);
             getConfig().set("config-version", 71);
             selectedVersion = 71;
         }
-        if(selectedVersion == 71){
-            if(Objects.equals(getConfig().getString("language"), "en")){
-                getConfig().set("language","en-US");
+        if (selectedVersion == 71) {
+            if (Objects.equals(getConfig().getString("language"), "en")) {
+                getConfig().set("language", "en-US");
             }
-            getConfig().set("server-platform",0);
+            getConfig().set("server-platform", 0);
             getConfig().set("config-version", 72);
         }
 
@@ -1151,7 +1151,7 @@ public class QuickShop extends JavaPlugin {
         configVaildate();
     }
 
-    public void configVaildate(){
+    public void configVaildate() {
         YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
         Set<String> keysA = new HashSet<>(attached.getKeys(true));
         Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
@@ -1162,30 +1162,30 @@ public class QuickShop extends JavaPlugin {
                 "%data%\n" +
                 ".....\n" +
                 "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
-        keysA.stream().filter((key)->!keysB.contains(key)).filter((key)->!ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss)->{
+        keysA.stream().filter((key) -> !keysB.contains(key)).filter((key) -> !ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss) -> {
             String theMsg = msgForConfiguration;
-            theMsg = theMsg.replace("%key%",miss);
+            theMsg = theMsg.replace("%key%", miss);
             List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
             StringBuilder miss2Yaml = new StringBuilder();
             int spaces = 2;
             Iterator iterator = tiers.iterator();
-            while (true){
+            while (true) {
                 String tier = (String) iterator.next();
                 miss2Yaml.append(tier);
-                if(iterator.hasNext()){
+                if (iterator.hasNext()) {
                     miss2Yaml.append(": ");
                     miss2Yaml.append("\n");
                     for (int i = 0; i < spaces; i++) {
                         miss2Yaml.append(" ");
                     }
                     spaces += 2;
-                }else{
+                } else {
                     miss2Yaml.append(": ");
                     miss2Yaml.append(attached.get(miss));
-                   break;
+                    break;
                 }
             }
-            theMsg = theMsg.replace("%data%",miss2Yaml.toString());
+            theMsg = theMsg.replace("%data%", miss2Yaml.toString());
             getLogger().warning(theMsg);
         });
     }
