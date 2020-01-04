@@ -93,4 +93,15 @@ public class Language {
             err.printStackTrace();
         }
     }
+
+//    public boolean updateLanguageJson(@NotNull String languageCode){
+//        MojangAPI mojangAPI = new MojangAPI();
+//        String versionManifest = mojangAPI.getVersionManifest();
+//        if(versionManifest == null){
+//            return false;
+//        }
+//        String langFileContent = mojangAPI.getLanguageFileFromAsset(versionManifest,languageCode);
+//        File file = new File(plugin.getDataFolder(),"mcLang.json");
+//        @TODO
+//    }
 }
