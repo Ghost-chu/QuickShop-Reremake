@@ -1144,6 +1144,9 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("use-decimal-format", false);
             }
             getConfig().set("use-deciaml-format", null);
+
+            getConfig().set("shop.force-load-downgrade-items.enable", false);
+            getConfig().set("shop.force-load-downgrade-items.method", 0);
             getConfig().set("config-version", 73);
         }
         saveConfig();

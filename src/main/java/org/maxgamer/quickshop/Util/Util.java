@@ -245,13 +245,31 @@ public class Util {
      * @return ItemStack iStack
      * @throws InvalidConfigurationException when failed deserialize config
      */
-    public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
+    @Nullable
+    public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException, IllegalStateException {
         YamlConfiguration cfg = new YamlConfiguration();
         cfg.loadFromString(config);
-        cfg.getString("item");
-        return cfg.getItemStack("item");
-    }
+        try{
+            int version = cfg.getInt("item.v",-1);
+            if(version > Bukkit.getUnsafe().getDataVersion()){
+                if(!plugin.getConfig().getBoolean("force-load-downgrade-items.enable")){
+                    throw new IllegalStateException("Server didn't support server downgrade!");
+                }else{
+                    Util.debugLog("Trying force loading item from higher version Minecraft, it may cause data damage!");
+                    if(plugin.getConfig().getInt("force-load-downgrade-items.method") == 0){
+                        cfg.set("item.v",Bukkit.getUnsafe().getDataVersion()-1);
+                    }else{
+                        cfg.set("item.v",Bukkit.getUnsafe().getDataVersion());
+                    }
+                    return cfg.getItemStack("item");
+                }
+            }
+            return cfg.getItemStack("item");
+        }catch (Exception e){
+            return cfg.getItemStack("item");
+        }
 
+    }
     /**
      * Check two location is or not equals for the BlockPosition on 2D
      *
