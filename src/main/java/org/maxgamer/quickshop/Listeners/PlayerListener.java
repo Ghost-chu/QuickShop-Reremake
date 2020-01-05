@@ -252,6 +252,10 @@ public class PlayerListener implements Listener {
         }
 
         final Inventory inventory = e.getInventory();
+        //noinspection ConstantConditions
+        if(inventory == null){ //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
+            return;
+        }
         final Location location = inventory.getLocation();
 
         if (location == null) {
