@@ -215,9 +215,9 @@ public class SentryErrorReporter {
             for (String record : context) {
                 this.context.recordBreadcrumb(new BreadcrumbBuilder().setMessage(record).build());
             }
-            Paste paste = new Paste(plugin);
             String pasteURL = "Failed to paste.";
             try {
+                Paste paste = new Paste(plugin);
                 pasteURL = paste.paste(paste.genNewPaste());
             } catch (Throwable ex) {
                 //Ignore
