@@ -147,14 +147,11 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); //Remove from Mem
                         if(!backupedDatabaseInDeleteProcess){ //Only backup db one time.
                             backupedDatabaseInDeleteProcess = Util.backupDatabase();
-                        }
-
-                        if(backupedDatabaseInDeleteProcess){
+                        }else{
                             plugin.getDatabaseHelper().removeShop(shop.getLocation().getBlockX(), shop
                                     .getLocation().getBlockY(), shop.getLocation().getBlockZ(), Objects.requireNonNull(shop.getLocation().getWorld())
                                     .getName());
                         }
-
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
