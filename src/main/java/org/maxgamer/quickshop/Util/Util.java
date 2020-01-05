@@ -205,7 +205,7 @@ public class Util {
         long startTime = System.currentTimeMillis();
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
-            Class c = Class.forName(className);
+            Class<?> c = Class.forName(className);
             className = c.getSimpleName();
             if (!c.getSimpleName().isEmpty()) {
                 className = c.getSimpleName();
@@ -260,6 +260,7 @@ public class Util {
         int itemDataVersion = Integer.parseInt(String.valueOf(item.get("v")));
         try{
             //Try load the itemDataVersion to do some checks.
+            //noinspection deprecation
             if(itemDataVersion > Bukkit.getUnsafe().getDataVersion()){
                 Util.debugLog("WARNING: DataVersion not matched with ItemStack: "+config);
                 //okay we need some things to do
@@ -267,8 +268,10 @@ public class Util {
                     //okay it enabled
                     Util.debugLog("QuickShop is trying force loading it...");
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) {//Mode 0
+                        //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
                     } else {//Mode other
+                        //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion());
                     }
                     //Okay we have hacked the dataVersion, now put it back
@@ -363,7 +366,7 @@ public class Util {
      * @param c The class to get name
      * @return The class prefix
      */
-    public static String getClassPrefix(@NotNull Class c) {
+    public static String getClassPrefix(@NotNull Class<?> c) {
         String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
@@ -961,7 +964,7 @@ public class Util {
      * @return Map1 match Map2 and Map2 match Map1
      */
     @Deprecated
-    public static boolean mapDuoMatches(@NotNull Map map1, @NotNull Map map2) {
+    public static boolean mapDuoMatches(@NotNull Map<?,?> map1, @NotNull Map<?,?> map2) {
         boolean result = mapMatches(map1, map2);
         if (!result) {
             return false;
@@ -976,7 +979,7 @@ public class Util {
      * @param map2 Map2
      * @return Map1 match Map2
      */
-    public static boolean mapMatches(@NotNull Map map1, @NotNull Map map2) {
+    public static boolean mapMatches(@NotNull Map<?,?> map1, @NotNull Map<?,?> map2) {
         for (Object obj : map1.keySet()) {
             if (!map2.containsKey(obj)) {
                 return false;
@@ -1143,7 +1146,7 @@ public class Util {
 
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
         try {
-            Class c = Class.forName(className);
+            Class<?> c = Class.forName(className);
             className = c.getSimpleName();
             if (!c.getSimpleName().isEmpty()) {
                 className = c.getSimpleName();
@@ -1266,8 +1269,8 @@ public class Util {
             instance.update(s.getBytes(StandardCharsets.UTF_8));
             final byte[] digest = instance.digest();
             final StringBuilder sb = new StringBuilder("");
-            for (int i = 0; i < digest.length; ++i) {
-                int n = digest[i];
+            for (int b : digest) {
+                int n = b;
                 if (n < 0) {
                     n += 256;
                 }
