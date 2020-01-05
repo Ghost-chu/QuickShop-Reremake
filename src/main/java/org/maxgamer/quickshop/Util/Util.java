@@ -276,6 +276,9 @@ public class Util {
                     config = yaml.dump(root);
 
                     Util.debugLog("Updated, we will try load as hacked ItemStack: "+config);
+                }else{
+                    plugin.getLogger().warning("Cannot load ItemStack "+config+" because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
+                    plugin.getLogger().warning("You can try force load this ItemStack by our hacked ItemStack read util(shop.force-load-downgrade-items), but beware, the data may damaged if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
             yamlConfiguration.loadFromString(config);
