@@ -48,7 +48,7 @@ public class Paste {
      *
      * @return The paste result content.
      */
-    public String genNewPaste() {
+    public @NotNull String genNewPaste() {
         StringBuilder finalReport = new StringBuilder();
         finalReport.append("###############################\n");
         finalReport.append("QuickShop-Reremake Paste Result\n");
