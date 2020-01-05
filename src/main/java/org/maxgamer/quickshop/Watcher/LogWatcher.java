@@ -30,11 +30,11 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LogWatcher extends BukkitRunnable {
-    private Queue<String> logs = new LinkedList<>();
+    private Queue<String> logs = new ConcurrentLinkedQueue<>();
     private FileWriter logFileWriter = null;
     private PrintWriter pw;
 
