@@ -137,6 +137,9 @@ public class SentryErrorReporter {
         if (throwable == null) {
             return false;
         }
+        if(throwable.getMessage().contains("Could not pass event")){
+            return throwable.getMessage().contains("QuickShop");
+        }
         while (throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
