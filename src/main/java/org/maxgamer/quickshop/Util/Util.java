@@ -248,7 +248,7 @@ public class Util {
      * @throws InvalidConfigurationException when failed deserialize config
      */
     @Nullable
-    public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException, IllegalStateException {
+    public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
         DumperOptions yamlOptions = new DumperOptions();
         yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         yamlOptions.setIndent(2);
