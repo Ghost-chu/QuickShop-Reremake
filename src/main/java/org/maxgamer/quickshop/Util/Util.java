@@ -43,6 +43,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Watcher.InventoryEditContainer;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -247,28 +249,42 @@ public class Util {
      */
     @Nullable
     public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException, IllegalStateException {
-        YamlConfiguration cfg = new YamlConfiguration();
-        cfg.loadFromString(config);
+        DumperOptions yamlOptions = new DumperOptions();
+        yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        yamlOptions.setIndent(2);
+        Yaml yaml = new Yaml(yamlOptions);
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        Map<Object,Object> root = yaml.load(config);
+        //noinspection unchecked
+        Map<String, Object> item = (Map<String, Object>)root.get("item");
+        int itemDataVersion = Integer.parseInt(String.valueOf(item.get("v")));
         try{
-            int version = cfg.getInt("item.v",-1);
-            if(version > Bukkit.getUnsafe().getDataVersion()){
-                if(!plugin.getConfig().getBoolean("force-load-downgrade-items.enable")){
-                    throw new IllegalStateException("Server didn't support server downgrade!");
-                }else{
-                    Util.debugLog("Trying force loading item from higher version Minecraft, it may cause data damage!");
-                    if(plugin.getConfig().getInt("force-load-downgrade-items.method") == 0){
-                        cfg.set("item.v",Bukkit.getUnsafe().getDataVersion()-1);
-                    }else{
-                        cfg.set("item.v",Bukkit.getUnsafe().getDataVersion());
+            //Try load the itemDataVersion to do some checks.
+            if(itemDataVersion > Bukkit.getUnsafe().getDataVersion()){
+                Util.debugLog("WARNING: DataVersion not matched with ItemStack: "+config);
+                //okay we need some things to do
+                if(plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")){
+                    //okay it enabled
+                    Util.debugLog("QuickShop is trying force loading it...");
+                    if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) {//Mode 0
+                        item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
+                    } else {//Mode other
+                        item.put("v", Bukkit.getUnsafe().getDataVersion());
                     }
-                    return cfg.getItemStack("item");
+                    //Okay we have hacked the dataVersion, now put it back
+                    root.put("item",item);
+                    config = yaml.dump(root);
+
+                    Util.debugLog("Updated, we will try load as hacked ItemStack: "+config);
                 }
             }
-            return cfg.getItemStack("item");
+            yamlConfiguration.loadFromString(config);
+            return yamlConfiguration.getItemStack("item");
         }catch (Exception e){
-            return cfg.getItemStack("item");
+            e.printStackTrace();
+            yamlConfiguration.loadFromString(config);
+            return yamlConfiguration.getItemStack("item");
         }
-
     }
     /**
      * Check two location is or not equals for the BlockPosition on 2D
