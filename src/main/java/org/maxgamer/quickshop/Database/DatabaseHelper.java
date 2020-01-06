@@ -123,10 +123,10 @@ public class DatabaseHelper {
     private boolean createMessagesTable() throws SQLException {
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                + "messages (owner  VARCHAR(255) NOT NULL, message TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+                + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
         if (plugin.getDatabase().getCore() instanceof MySQLCore) {
             createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                    + "messages (owner  VARCHAR(255) NOT NULL, message TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
+                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
         }
         return st.execute(createTable);
     }
