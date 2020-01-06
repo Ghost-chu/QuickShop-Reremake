@@ -76,6 +76,17 @@ public class DatabaseHelper {
         } catch (SQLException e) {
             //ignore
         }
+        if(QuickShop.instance.getDatabase().getCore() instanceof MySQLCore){
+            try{
+                ps = db.getConnection().prepareStatement("ALTER TABLE "+QuickShop.instance
+                        .getDbPrefix()+"messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
+                ps.execute();
+                ps.close();
+            }catch (SQLException e){
+                //ignore
+            }
+        }
+
     }
 
     public void cleanMessage(long weekAgo) {
