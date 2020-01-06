@@ -28,12 +28,11 @@ public final class JSONConfiguration extends FileConfiguration {
     @NotNull
     @Override
     public String saveToString() {
-        final GsonBuilder gsonBuilder = new GsonBuilder();
+        final GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
 
-        if (options().prettyPrint()) {
+        //if (!options().prettyPrint()) {
             gsonBuilder.setPrettyPrinting();
-        }
-
+        //}
         final Gson gson = gsonBuilder.create();
         final Object value = SerializationHelper.serialize(getValues(false));
         final String dump = StringEscapeUtils.unescapeJava(gson.toJson(value));
