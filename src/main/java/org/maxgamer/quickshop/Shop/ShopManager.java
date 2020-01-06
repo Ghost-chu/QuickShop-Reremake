@@ -99,8 +99,7 @@ public class ShopManager {
             return;
         }
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled()) {
+        if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }
         // Money handling
@@ -287,7 +286,7 @@ public class ShopManager {
             // money back.
             if (createCost > 0) {
                 if (!plugin.getEconomy().withdraw(p.getUniqueId(), createCost)) {
-                    p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", p, format(createCost)));
+                    p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                     return;
                 }
                 try {
@@ -304,8 +303,7 @@ public class ShopManager {
             }
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
-            Bukkit.getPluginManager().callEvent(e);
-            if (e.isCancelled()) {
+            if (Util.fireCancellableEvent(e)) {
                 shop.onUnload();
                 return;
             }
@@ -370,8 +368,7 @@ public class ShopManager {
             return;
         }
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled()) {
+        if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }
         // Money handling
@@ -391,7 +388,7 @@ public class ShopManager {
         boolean successA = eco.withdraw(p.getUniqueId(), total); //Withdraw owner's money
         if (!successA) {
             p.sendMessage(MsgUtil
-                    .getMessage("you-cant-afford-to-buy", p, format(total), format(eco.getBalance(p.getUniqueId()))));
+                    .getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
             return;
         }
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop
@@ -489,7 +486,7 @@ public class ShopManager {
                         if (ownerCanAfford == 0 && (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
                             // when typed 'all' but the shop owner doesn't have enough money to buy at least 1 item (and shop isn't unlimited or pay-unlimited is true)
                             p.sendMessage(MsgUtil
-                                    .getMessage("the-owner-cant-afford-to-buy-from-you", p, format(shop.getPrice()), format(ownerBalance)));
+                                    .getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(shop.getPrice())), Objects.requireNonNull(format(ownerBalance))));
                             return;
                         }
                         // when typed 'all' but player doesn't have any items to sell
@@ -533,7 +530,7 @@ public class ShopManager {
                                 p.sendMessage(MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
                                 return;
                             }
-                            p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, format(price), format(balance)));
+                            p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(price)), Objects.requireNonNull(format(balance))));
                             return;
                         }
                     }
@@ -624,7 +621,7 @@ public class ShopManager {
             }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
             Bukkit.getPluginManager().callEvent(spce);
-            if (spce.isCancelled()) {
+            if (Util.fireCancellableEvent(spce)) {
                 return false;
             }
         } finally {
@@ -668,8 +665,7 @@ public class ShopManager {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
-        Bukkit.getPluginManager().callEvent(ssShopCreateEvent);
-        if (ssShopCreateEvent.isCancelled()) {
+        if (Util.fireCancellableEvent(ssShopCreateEvent)) {
             return;
         }
         Location loc = shop.getLocation();
