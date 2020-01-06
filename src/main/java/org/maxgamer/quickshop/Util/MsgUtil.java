@@ -287,9 +287,10 @@ public class MsgUtil {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         String languageCode = plugin.getConfig()
-                .getString("langutils-language", "en_us");
+                .getString("language", "en");
         //noinspection ConstantConditions
-        loadLangUtils(languageCode);
+        loadLangUtils(plugin.getConfig()
+                .getString("langutils-language", "en_us"));
         IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",true); //Load it
         nJson.create();
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
@@ -306,6 +307,11 @@ public class MsgUtil {
                 oldMsgFile.delete();
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
+        }else{
+           if(!new File(plugin.getDataFolder(),"messages.json").exists()){
+               plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
+               nJson.reload();
+           }
         }
         messagei18n = nJson;
         /* Set default language vesion and update messages.yml */
