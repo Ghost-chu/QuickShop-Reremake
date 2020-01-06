@@ -123,8 +123,8 @@ public class ShopManager {
             boolean successA = eco.withdraw(shop.getOwner(), total); //Withdraw owner's money
             if (!successA) {
                 p.sendMessage(MsgUtil
-                        .getMessage("the-owner-cant-afford-to-buy-from-you", p, format(total), format(eco
-                                .getBalance(shop.getOwner()))));
+                        .getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco
+                                .getBalance(shop.getOwner())))));
                 return;
             }
         }
