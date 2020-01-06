@@ -207,8 +207,7 @@ public class ContainerShop implements Shop {
     @Override
     public void setPrice(double price) {
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
+        if (Util.fireCancellableEvent(event)) {
             Util.debugLog("A plugin cancelled the price change event.");
             return;
         }
@@ -223,7 +222,7 @@ public class ContainerShop implements Shop {
     @Override
     public void update() {
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
-        if (shopUpdateEvent.isCancelled()) {
+        if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
@@ -358,8 +357,7 @@ public class ContainerShop implements Shop {
     @Override
     public void delete(boolean fromMemory) {
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
-        Bukkit.getPluginManager().callEvent(shopDeleteEvent);
-        if (shopDeleteEvent.isCancelled()) {
+        if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
@@ -874,8 +872,7 @@ public class ContainerShop implements Shop {
             return;
         }
         ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
-        Bukkit.getPluginManager().callEvent(shopLoadEvent);
-        if (shopLoadEvent.isCancelled()) {
+        if (Util.fireCancellableEvent(shopLoadEvent)) {
             return;
         }
 
@@ -921,8 +918,7 @@ public class ContainerShop implements Shop {
     @Override
     public void onClick() {
         ShopClickEvent event = new ShopClickEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
+        if (Util.fireCancellableEvent(event)) {
             Util.debugLog("Ignore shop click, because some plugin cancel it.");
             return;
         }
