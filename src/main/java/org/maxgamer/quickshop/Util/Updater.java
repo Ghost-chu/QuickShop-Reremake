@@ -64,7 +64,6 @@ public class Updater {
             return new UpdateInfomation(false, null);
         }
     }
-
     public static byte[] downloadUpdatedJar() throws IOException {
         @Nullable String uurl;
         long uurlSize;
@@ -85,6 +84,9 @@ public class Updater {
         byte[] buff = new byte[1024];
         int len;
         long downloaded = 0;
+        if(is == null){
+            throw new IOException("Failed downloading: Cannot open connection with remote server.");
+        }
         while ((len = is.read(buff)) != -1) {
             os.write(buff, 0, len);
             downloaded += len;
@@ -93,6 +95,7 @@ public class Updater {
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
         if (!(uurlSize < 1) && downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");
+            throw new IOException("Size not match, download mayb broken, aborting.");
         }
         Util.debugLog("Download complete.");
         return os.toByteArray();
