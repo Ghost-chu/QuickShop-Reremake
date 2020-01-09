@@ -299,6 +299,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("Plugin listeners was disabled, please fix the economy issue.");
             return false;
         }
+
     }
 
     /**
@@ -1148,6 +1149,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.force-load-downgrade-items.enable", false);
             getConfig().set("shop.force-load-downgrade-items.method", 0);
             getConfig().set("config-version", 73);
+        }
+        if (selectedVersion == 73) {
+            getConfig().set("mixedeconomy.deposit", "eco give {0} {1}");
+            getConfig().set("mixedeconomy.withdraw", "eco take {0} {1}");
+            getConfig().set("config-version", 74);
         }
         saveConfig();
         reloadConfig();

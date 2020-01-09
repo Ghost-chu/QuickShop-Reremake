@@ -70,6 +70,7 @@ include-offlineplayer-list: false
 #What economy provider you want let QuickShop use?
 #0=Vault
 #1=Reserve
+#2=Vault+Command mixed
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
@@ -344,3 +345,6 @@ cachingpool:
   # How many size for caching pool?
   # When objects more than this number, it will removed some old object.
   maxsize: 100000000
+mixedeconomy:
+  deposit: "eco give {0} {1}"
+  withdraw: "eco take {0} {1}"
