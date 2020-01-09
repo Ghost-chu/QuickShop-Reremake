@@ -27,7 +27,7 @@ public enum EconomyType {
      * VAULT = USE VAULT API
      * RESERVE = USE RESERVE API
      * */
-    UNKNOWN(-1), VAULT(0), RESERVE(1);
+    UNKNOWN(-1), VAULT(0), RESERVE(1), MIXED(2);
 
     public static EconomyType fromID(int id) {
         for (EconomyType type : EconomyType.values()) {
