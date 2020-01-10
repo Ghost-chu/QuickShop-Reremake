@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util.MojangAPI;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,36 +29,61 @@ import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.Ht
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class MojangAPI {
     final String versionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
     final String assetsUrl = "https://resources.download.minecraft.net/";
     final String pathTemplate = "minecraft/lang/{0}.json";
+    final Gson gson = new Gson();
 
     /**
      * Return Minecraft version manifest.
+     *
      * @return Version Manifest, may be null when failed to get.
      */
     @Nullable
-    public String getVersionManifest(){
-        try{
+    public String getVersionManifest() {
+        try {
             return HttpRequest.get(new URL(versionManifestUrl))
                     .expectResponseCode(200)
                     .execute()
                     .returnContent()
                     .asString("UTF-8").trim();
-        }catch (Exception e){
+        } catch (Exception e) {
             Util.debugLog(e.getMessage());
             return null;
         }
     }
 
     @Nullable
-    public String getLanguageFileFromAsset(@NotNull String versionManifestJson,@NotNull String languageCode){
+    public String getVersionJson(@NotNull String versionManifest, @NotNull String mcVer) {
+        VersionList list = gson.fromJson(versionManifest, VersionList.class);
+        for (VersionList.VersionsBean mcv :
+                list.getVersions()) {
+            if (mcv.getId().equals(mcVer)) {
+                try {
+                    return HttpRequest.get(new URL(mcv.getUrl()))
+                            .expectResponseCode(200)
+                            .execute()
+                            .returnContent()
+                            .asString("UTF-8").trim();
+                } catch (IOException e) {
+                    Util.debugLog(e.getMessage());
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public String getLanguageFileFromAsset(@NotNull String versionJson, @NotNull String languageCode) {
         try {
             languageCode = languageCode.toLowerCase().trim();
-            JsonObject object = new JsonParser().parse(versionManifestJson).getAsJsonObject();
+
+            JsonObject object = new JsonParser().parse(versionJson).getAsJsonObject();
             JsonElement element = object.get(MsgUtil.fillArgs(pathTemplate, languageCode));
             String hash = element.getAsString();
 
@@ -66,7 +92,7 @@ public class MojangAPI {
                     .expectResponseCode(200)
                     .returnContent()
                     .asString("UTF-8").trim();
-        }catch (Exception e){
+        } catch (Exception e) {
             Util.debugLog(e.getMessage());
             return null;
         }
