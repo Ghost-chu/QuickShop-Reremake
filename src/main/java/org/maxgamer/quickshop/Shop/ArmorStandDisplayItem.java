@@ -111,7 +111,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         safeGuard(this.armorStand);
         //Set pose
         setPoseForArmorStand();
-        Util.debugLog("Spawned a new ArmorStand DisplayItem for a shop " + shop.getLocation());
     }
 
     @Override
@@ -152,7 +151,6 @@ public class ArmorStandDisplayItem implements DisplayItem {
         try {
             armorStand.getPersistentDataContainer().set(new NamespacedKey(plugin, "displayMark"), DisplayItemPersistentDataType.INSTANCE, DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
         }catch (Throwable ignored){}
-        Util.debugLog("Successfully safeGuard ArmorStand: " + armorStand.getLocation());
     }
 
     @Override
@@ -266,6 +264,19 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
+        Location location = this.getDisplayLocation();
+        if(this.armorStand != null){
+            if(location != null){
+                this.armorStand.teleport(location);
+            }else{
+                fixDisplayMovedOld();
+            }
+        }else{
+            fixDisplayMovedOld();
+        }
+    }
+
+    public void fixDisplayMovedOld() {
         for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof ArmorStand)) {
                 continue;
