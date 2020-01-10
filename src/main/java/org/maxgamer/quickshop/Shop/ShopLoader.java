@@ -272,13 +272,13 @@ public class ShopLoader {
         private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
-                Util.debugLog("Updating old shop data...");
+                Util.debugLog("Updating old shop data... for "+moderatorJson);
                 shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); //New one
             } else {
                 try {
                     shopModerator = ShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
-                    Util.debugLog("Updating old shop data...");
+                    Util.debugLog("Updating old shop data... for "+moderatorJson);
                     moderatorJson = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); //New one
                 }
