@@ -96,6 +96,5 @@ public class MojangAPI {
             Util.debugLog(e.getMessage());
             return null;
         }
-
     }
 }
