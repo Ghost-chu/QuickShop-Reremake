@@ -189,6 +189,7 @@ public class QuickShop extends JavaPlugin {
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
     private ShopContainerWatcher shopContainerWatcher;
+    private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
 
     /**
@@ -523,6 +524,8 @@ public class QuickShop extends JavaPlugin {
         internalListener = new InternalListener(this);
         signUpdateWatcher = new SignUpdateWatcher(this);
         shopContainerWatcher = new ShopContainerWatcher(this);
+        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
         Bukkit.getPluginManager().registerEvents(chatListener, this);
@@ -560,6 +563,7 @@ public class QuickShop extends JavaPlugin {
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
         signUpdateWatcher.runTaskTimer(this, 0, 120);
         shopContainerWatcher.runTaskTimer(this, 0, 5);
+        displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1);
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
