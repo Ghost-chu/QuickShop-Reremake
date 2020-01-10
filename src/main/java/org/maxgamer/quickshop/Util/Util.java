@@ -1083,7 +1083,6 @@ public class Util {
      * @return Target file's content.
      */
     public static String readToString(@NotNull String fileName) {
-        String encoding = "UTF-8";
         File file = new File(fileName);
         long filelength = file.length();
         byte[] filecontent = new byte[(int) filelength];
@@ -1094,12 +1093,7 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            return new String(filecontent, encoding);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return ("The OS does not support " + encoding);
-        }
+        return new String(filecontent,StandardCharsets.UTF_8);
     }
 
     /**

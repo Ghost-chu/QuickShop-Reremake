@@ -331,12 +331,7 @@ public class QuickShop extends JavaPlugin {
         } else {
             logWatcher = null;
         }
-        try {
-            MsgUtil.loadCfgMessages();
-        } catch (Exception e) {
-            getLogger().warning("An error throws when loading messages");
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -460,10 +455,16 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
-
+        try {
+            MsgUtil.loadCfgMessages();
+        } catch (Exception e) {
+            getLogger().warning("An error throws when loading messages");
+            e.printStackTrace();
+        }
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+
 
         /* Check the running envs is support or not. */
         try {
