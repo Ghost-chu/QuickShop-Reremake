@@ -29,6 +29,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
@@ -127,7 +128,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
             ArmorStand eArmorStand = (ArmorStand) entity;
 
             if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItem(EquipmentSlot.HAND), this.shop)) {
                     Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId() + " at " + eArmorStand
                             .getLocation());
                     entity.remove();

@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @ToString
 public class RealDisplayItem implements DisplayItem {
@@ -149,7 +150,8 @@ public class RealDisplayItem implements DisplayItem {
                 continue;
             }
             Item eItem = (Item) entity;
-            if (!eItem.getUniqueId().equals(this.item.getUniqueId())) {
+            UUID displayUUID = this.item.getUniqueId();
+            if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
                     Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem
                             .getLocation());
