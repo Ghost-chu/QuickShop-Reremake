@@ -65,7 +65,7 @@ import java.util.Map.Entry;
 public class Util {
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
     @Getter
-    private static List<String> debugLogs = new ArrayList<>();
+    private static List<String> debugLogs = new LinkedList<>();
     private static boolean devMode;
     private static QuickShop plugin;
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
@@ -230,9 +230,9 @@ public class Util {
         }
         long debugLogCost = System.currentTimeMillis() - startTime;
         if (!devMode) {
-            if (debugLogCost > 2) {
+            if (debugLogCost > 5) {
                 tookLongTimeCostTimes++;
-                if (tookLongTimeCostTimes > 30) {
+                if (tookLongTimeCostTimes > 15000) {
                     QuickShop.instance.getConfig().set("disable-debuglogger", true);
                     disableDebugLogger = true;
                     QuickShop.instance.saveConfig();
