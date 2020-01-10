@@ -21,10 +21,10 @@ package org.maxgamer.quickshop;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Util.Copied;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -79,16 +79,11 @@ public class Language {
                 e.printStackTrace();
             }
         }
+
         try {
             InputStream is = getFile(language, type);
-            FileOutputStream fos = new FileOutputStream(targetFile);
-            byte[] b = new byte[1024];
-            int length;
-            while ((length = is.read(b)) != -1) {
-                fos.write(b, 0, length);
-            }
+            new Copied(targetFile).accept(is);
             is.close();
-            fos.close();
         } catch (Exception err) {
             err.printStackTrace();
         }
