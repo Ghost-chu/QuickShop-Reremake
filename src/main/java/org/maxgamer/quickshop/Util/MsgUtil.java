@@ -49,9 +49,7 @@ import org.maxgamer.quickshop.File.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -291,14 +289,26 @@ public class MsgUtil {
         //noinspection ConstantConditions
         loadLangUtils(plugin.getConfig()
                 .getString("langutils-language", "en_us"));
-        IFile nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",true); //Load it
+
+        //Init nJson
+        IFile nJson;
+        if(plugin.getResource("messages/"+languageCode+".json") == null){
+            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",true);
+        }else{
+            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/"+languageCode+".json",true);
+        }
+
         nJson.create();
+
+
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
         if(oldMsgFile.exists()){ //Old messages file convert.
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
             plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
-            oldMsgI18n.getKeys(true).forEach((key)->nJson.set(key, oldMsgI18n.get(key)));
+            for (String key:oldMsgI18n.getKeys(true)){
+                oldMsgI18n.get(key);
+            }
             nJson.save();
             try {
                 Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
@@ -308,9 +318,10 @@ public class MsgUtil {
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
         }else{
+            Util.debugLog("Loading language file from exist file...");
            if(!new File(plugin.getDataFolder(),"messages.json").exists()){
                plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
-               nJson.reload();
+               nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(),"messages.json").getAbsolutePath()));
            }
         }
         messagei18n = nJson;
