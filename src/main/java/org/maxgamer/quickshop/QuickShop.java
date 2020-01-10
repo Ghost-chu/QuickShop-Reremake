@@ -580,6 +580,7 @@ public class QuickShop extends JavaPlugin {
                 this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time"));
             }
         }
+        getLogger().severe("MCVER:"+ReflectFactory.getServerVersion());
     }
 
     /**
@@ -599,7 +600,7 @@ public class QuickShop extends JavaPlugin {
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
         }
 
-        if (getServer().getName().toLowerCase().contains("catserver")) {
+        if (getServer().getName().toLowerCase().contains("catserver") || Util.isClassAvailable("moe.luohuayu.CatServer") ||Util.isClassAvailable("catserver.server.CatServer")) {
             // Send FATAL ERROR TO CatServer's users.
             getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async");
             throw new RuntimeException("QuickShop doen't support CatServer");
@@ -620,9 +621,9 @@ public class QuickShop extends JavaPlugin {
         }
         String nmsVersion = Util.getNMSVersion();
         IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
-        getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + Util.getMinecraftVersionFromNMSVersion(Util.getNMSVersion()));
+        getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
         if (incompatibleChecker.isIncompatible(nmsVersion)) {
-            throw new RuntimeException("Your Minecraft version is nolonger supported: " + nmsVersion);
+            throw new RuntimeException("Your Minecraft version is nolonger supported: " +  ReflectFactory.getServerVersion()+" ("+nmsVersion+")");
         }
     }
 

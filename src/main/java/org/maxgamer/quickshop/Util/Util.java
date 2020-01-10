@@ -1283,22 +1283,6 @@ public class Util {
     }
 
     /**
-     * Get Minecraft version without patch number.
-     * E.g 1.12,1.13,1.14,1.15
-     * @param NMSVersion Util.getNMSVersion()
-     * @return The Minecraft Version
-     */
-    @Nullable
-    public static String getMinecraftVersionFromNMSVersion(@NotNull String NMSVersion){
-        //v1_11_R1
-        String minecrftVersion = MsgUtil.getSubString(NMSVersion,"v","_R");
-        if(minecrftVersion.isEmpty()){
-            return null;
-        }
-        return minecrftVersion.replace("_",".");
-    }
-
-    /**
      * Call a event and check it is cancelled.
      * @param event The event implement the Cancellable interface.
      * @return The event is cancelled.
