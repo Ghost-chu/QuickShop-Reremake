@@ -91,6 +91,19 @@ public class RealDisplayItem implements DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
+        Location location = this.getDisplayLocation();
+        if(this.item != null){
+            if(location != null){
+                this.item.teleport(location);
+            }else{
+                fixDisplayMovedOld();
+            }
+        }else{
+            fixDisplayMovedOld();
+        }
+    }
+
+    public void fixDisplayMovedOld() {
         for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
@@ -172,7 +185,6 @@ public class RealDisplayItem implements DisplayItem {
         item.setPortalCooldown(Integer.MAX_VALUE);
         item.setVelocity(new Vector(0, 0.1, 0));
         item.setCustomNameVisible(false);
-        Util.debugLog("Successfully safeGuard Item: " + item.getLocation());
     }
 
     @Override
@@ -208,7 +220,6 @@ public class RealDisplayItem implements DisplayItem {
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
         this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
-        Util.debugLog("Spawned new DisplayItem for shop " + shop.getLocation());
     }
 
     @Override

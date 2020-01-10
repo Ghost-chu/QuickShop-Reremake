@@ -268,7 +268,7 @@ public class Util {
                 //okay we need some things to do
                 if(plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")){
                     //okay it enabled
-                    Util.debugLog("QuickShop is trying force loading it...");
+                    Util.debugLog("QuickShop is trying force loading "+config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) {//Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
