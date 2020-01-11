@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -116,6 +117,11 @@ public class GameLanguage {
         }
     }
 
+    /**
+     * Get item and block translations, if not found, it will both call getBlock()
+     * @param material The material
+     * @return The translations for material
+     */
     @NotNull
     public String getItem(@NotNull Material material) {
         String name = Util.prettifyText(material.name());
@@ -134,7 +140,11 @@ public class GameLanguage {
             return name;
         }
     }
-
+    /**
+     * Get block only translations, if not found, it WON'T call getItem()
+     * @param material The material
+     * @return The translations for material
+     */
     @NotNull
     public String getBlock(@NotNull Material material) {
         String name = Util.prettifyText(material.name());
@@ -147,20 +157,28 @@ public class GameLanguage {
             return name;
         }
     }
-
+    /**
+     * Get entity translations.
+     * @param entity The entity name
+     * @return The translations for entity
+     */
     @NotNull
-    public String getEntity(@NotNull Material material) {
-        String name = Util.prettifyText(material.name());
+    public String getEntity(@NotNull Entity entity) {
+        String name = Util.prettifyText(entity.getType().name());
         if (lang == null) {
             return name;
         }
         try {
-            return lang.get("entity.minecraft."+material.name().toLowerCase()).getAsString();
+            return lang.get("entity.minecraft."+entity.getType().name().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
     }
-
+    /**
+     * Get potion/effect translations.
+     * @param effect The potion/effect name
+     * @return The translations for effect/potions
+     */
     @NotNull
     public String getPotion(@NotNull PotionEffectType effect) {
         String name = Util.prettifyText(effect.getName());
@@ -173,7 +191,11 @@ public class GameLanguage {
             return name;
         }
     }
-
+    /**
+     * Get enchantment translations.
+     * @param enchantmentName The enchantment name
+     * @return The translations for enchantment
+     */
     @NotNull
     public String getEnchantment(@NotNull String enchantmentName) {
         String name = Util.prettifyText(enchantmentName);
@@ -186,7 +208,11 @@ public class GameLanguage {
             return name;
         }
     }
-
+    /**
+     * Get custom translations.
+     * @param node The target node path
+     * @return The translations for you custom node path
+     */
     @Nullable
     public String getCustom(@NotNull String node) {
         if (lang == null) {
