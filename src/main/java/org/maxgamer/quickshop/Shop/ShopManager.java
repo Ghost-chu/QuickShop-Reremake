@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -235,6 +236,15 @@ public class ShopManager {
                     }
                 } else {
                     price = Double.parseDouble(message);
+                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",",".");
+                    String[] processedDouble = strFormat.split(".");
+                    if(processedDouble.length > 1){
+                        int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price",-1);
+                        if(processedDouble[1].length() >  maximumDigitsLimit && maximumDigitsLimit!=-1){
+                            p.sendMessage(MsgUtil.getMessage("digits-reach-the-limit",p,String.valueOf(maximumDigitsLimit)));
+                            return;
+                        }
+                    }
                 }
 
             } catch (NumberFormatException ex) {

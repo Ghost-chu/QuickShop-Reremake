@@ -1139,6 +1139,12 @@ public class MsgUtil {
             setAndUpdate("language-version", 24);
             selectedVersion = 24;
         }
+        if (selectedVersion == 24) {
+            setAndUpdate("digits-reach-the-limit", "&cYou have reach the limit of the digits after the dot in price.");
+            setAndUpdate("language-version", 25);
+            selectedVersion = 25;
+        }
+
         messagei18n.save();
     }
 
