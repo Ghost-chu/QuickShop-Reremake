@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.Util.Paste;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -48,6 +49,7 @@ public class Paste {
      *
      * @return The paste result content.
      */
+    @SneakyThrows
     public @NotNull String genNewPaste() {
         StringBuilder finalReport = new StringBuilder();
         finalReport.append("###############################\n");
