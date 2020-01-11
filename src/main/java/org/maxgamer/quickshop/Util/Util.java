@@ -708,7 +708,7 @@ public class Util {
                             }
                             plugin.getSyncTaskWatcher().getInventoryEditQueue()
                                     .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
-                            Util.debugLog("Found a displayitem in an inventory, Scheduling to removeal...");
+                            Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
                             MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack
                                     .getType().name());
                         }
@@ -875,7 +875,6 @@ public class Util {
         if (string.length() != 36 && string.length() != 32) {
             return false;
         }
-        Util.debugLog("Run an extra uuid check for " + string + ". Length: " + string.length());
         try {
             //noinspection ResultOfMethodCallIgnored
             UUID.fromString(string);
