@@ -29,7 +29,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Github.GithubAPI;
 import org.maxgamer.quickshop.Util.Github.ReleaseJsonContainer;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.util.Objects;
@@ -45,18 +44,18 @@ public class Updater {
             return new UpdateInfomation(false, null);
         }
         try {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.spigotmc.org/legacy/update.php?resource=62575")
-                    .openConnection();
-            int timed_out = 300000;
-            connection.setConnectTimeout(timed_out);
-            connection.setReadTimeout(timed_out);
+
             String localPluginVersion = QuickShop.instance.getDescription().getVersion();
-            String spigotPluginVersion = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-            if (spigotPluginVersion != null && !spigotPluginVersion.isEmpty() && !spigotPluginVersion.equals(localPluginVersion)) {
-                connection.disconnect();
+            String spigotPluginVersion = HttpRequest.get(new URL("https://api.spigotmc.org/legacy/update.php?resource=62575"))
+                    .execute()
+                    .expectResponseCode(200)
+                    .returnContent()
+                    .asString("UTF-8")
+                    .trim();
+            if (!spigotPluginVersion.isEmpty() && !spigotPluginVersion.equals(localPluginVersion)) {
+                Util.debugLog(spigotPluginVersion);
                 return new UpdateInfomation(spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
             }
-            connection.disconnect();
             return new UpdateInfomation(false, spigotPluginVersion);
         } catch (IOException e) {
             Bukkit.getConsoleSender()
