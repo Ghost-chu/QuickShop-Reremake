@@ -141,6 +141,14 @@ public class DatabaseManager {
                         .sendWarn("Database performance warning: It took too long time (" + tookTime + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
             }
         }
+        try {
+            this.database.getConnection().commit();
+        }catch (SQLException e){
+            try {
+                this.database.getConnection().rollback();
+            }catch (SQLException ignored){
+            }
+        }
     }
 
     /**
