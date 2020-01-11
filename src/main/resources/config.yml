@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 73
+config-version: 75
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -27,7 +27,7 @@ language: en
 #Available language you can found here -> https://github.com/NyaaCat/LanguageUtils/blob/1.14/src/main/java/com/meowj/langutils/lang/convert/EnumLang.java
 #You need fill the low case at there
 #E.g EN_US("en_us", new HashMap<>()), you need fill there with en_us
-langutils-language: en_us
+game-language: en_us
 
 #This enables developer mode, Do not touch this if you not know what it does
 dev-mode: false

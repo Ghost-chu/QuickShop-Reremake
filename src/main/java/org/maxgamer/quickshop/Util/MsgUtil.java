@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import com.meowj.langutils.lang.LanguageHelper;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -39,7 +38,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +47,9 @@ import org.maxgamer.quickshop.File.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,6 +71,7 @@ public class MsgUtil {
     private static QuickShop plugin = QuickShop.instance;
     private static YamlConfiguration potioni18n;
     private static DecimalFormat decimalFormat = new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
+    private static GameLanguage gameLanguage;
 
     /**
      * Translate boolean value to String, the symbon is changeable by language file.
@@ -259,26 +260,30 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    private static void loadLangUtils(@NotNull String languageCode){
-        try {
-            //Load LangUtils support, before MsgUtil init.
-            //Cause we maybe will use them all.
+//    private static void loadLangUtils(@NotNull String languageCode){
+//        try {
+//            //Load LangUtils support, before MsgUtil init.
+//            //Cause we maybe will use them all.
+//
+//            Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
+//            if (langUtilsPlugin != null) {
+//                List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
+//                if (!langLanguages.contains(languageCode)) {
+//                    langLanguages.add(languageCode);
+//                    langUtilsPlugin.getConfig().set("LoadLanguage", langLanguages);
+//                    langUtilsPlugin.saveConfig();
+//                    langUtilsPlugin.reloadConfig();
+//                    langUtilsPlugin.onDisable();
+//                    langUtilsPlugin.onEnable();
+//                }
+//            }
+//        } catch (Throwable throwable) {
+//            plugin.getSentryErrorReporter().sendError(throwable,"LangUtils cannot load.");
+//        }
+//    }
 
-            Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
-            if (langUtilsPlugin != null) {
-                List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
-                if (!langLanguages.contains(languageCode)) {
-                    langLanguages.add(languageCode);
-                    langUtilsPlugin.getConfig().set("LoadLanguage", langLanguages);
-                    langUtilsPlugin.saveConfig();
-                    langUtilsPlugin.reloadConfig();
-                    langUtilsPlugin.onDisable();
-                    langUtilsPlugin.onEnable();
-                }
-            }
-        } catch (Throwable throwable) {
-            plugin.getSentryErrorReporter().sendError(throwable,"LangUtils cannot load.");
-        }
+    public static void loadGameLanguage(@NotNull String languageCode){
+        gameLanguage = new GameLanguage(languageCode);
     }
 
     public static void loadCfgMessages() throws IOException, InvalidConfigurationException {
@@ -287,9 +292,8 @@ public class MsgUtil {
         String languageCode = plugin.getConfig()
                 .getString("language", "en");
         //noinspection ConstantConditions
-        loadLangUtils(plugin.getConfig()
-                .getString("langutils-language", "en_us"));
 
+        loadGameLanguage(plugin.getConfig().getString("game-language","default"));
         //Init nJson
         IFile nJson;
         if(plugin.getResource("messages/"+languageCode+".json") == null){
@@ -364,13 +368,13 @@ public class MsgUtil {
             if (enchi18nString != null && !enchi18nString.isEmpty()) {
                 continue;
             }
-            String enchName;
-            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
-                //noinspection ConstantConditions
-                enchName = LanguageHelper.getEnchantmentName(ench, plugin.getConfig().getString("langutils-language", "en_us"));
-            } else {
-                enchName = Util.prettifyText(ench.getKey().getKey());
-            }
+            String enchName = gameLanguage.getEnchantment(ench.getKey().getKey());
+//            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
+//                //noinspection ConstantConditions
+//                enchName = LanguageHelper.getEnchantmentName(ench, plugin.getConfig().getString("langutils-language", "en_us"));
+//            } else {
+//                enchName = Util.prettifyText(ench.getKey().getKey());
+//            }
             enchi18n.set("enchi18n." + ench.getKey().getKey(), enchName);
             plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
         }
@@ -405,14 +409,14 @@ public class MsgUtil {
             if (itemi18nString != null && !itemi18nString.isEmpty()) {
                 continue;
             }
-            String itemName;
-            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
-                //noinspection ConstantConditions
-                itemName = LanguageHelper.getItemName(new ItemStack(material), plugin.getConfig()
-                        .getString("langutils-language", "en_us"));
-            } else {
-                itemName = Util.prettifyText(material.name());
-            }
+            String itemName = gameLanguage.getItem(material);
+//            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
+//                //noinspection ConstantConditions
+//                itemName = LanguageHelper.getItemName(new ItemStack(material), plugin.getConfig()
+//                        .getString("langutils-language", "en_us"));
+//            } else {
+//                itemName = Util.prettifyText(material.name());
+//            }
             itemi18n.set("itemi18n." + material.name(), itemName);
             plugin.getLogger().info("Found new items/blocks [" + itemName + "] , adding it to the config...");
         }
@@ -446,9 +450,9 @@ public class MsgUtil {
                 if (potionI18n != null && !potionI18n.isEmpty()) {
                     continue;
                 }
-                String potionName = potion.getName();
-                plugin.getLogger().info("Found new potion [" + Util.prettifyText(potionName) + "] , adding it to the config...");
-                potioni18n.set("potioni18n." + potionName, Util.prettifyText(potionName));
+                String potionName = gameLanguage.getPotion(potion);
+                plugin.getLogger().info("Found new potion [" +potionName + "] , adding it to the config...");
+                potioni18n.set("potioni18n." + potionName, potionName);
             }
         }
         try {

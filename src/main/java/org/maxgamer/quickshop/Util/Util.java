@@ -1094,7 +1094,24 @@ public class Util {
         }
         return new String(filecontent,StandardCharsets.UTF_8);
     }
-
+    /**
+     * Read the file to the String
+     *
+     * @param file Target file.
+     * @return Target file's content.
+     */
+    public static String readToString(@NotNull File file) {
+        long filelength = file.length();
+        byte[] filecontent = new byte[(int) filelength];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String(filecontent,StandardCharsets.UTF_8);
+    }
     /**
      * Send warning message when some plugin calling deprecated method...
      * With the trace.
@@ -1292,5 +1309,17 @@ public class Util {
         }
         Bukkit.getPluginManager().callEvent((Event) event);
         return event.isCancelled();
+    }
+
+    /**
+     * Get QuickShop caching folder
+     * @return The caching folder
+     */
+    public static File getCacheFolder(){
+        File cache = new File(QuickShop.instance.getDataFolder(),"cache");
+        if(!cache.exists()){
+            cache.mkdirs();
+        }
+        return cache;
     }
 }
