@@ -27,6 +27,7 @@ import io.sentry.event.UserBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -100,8 +101,13 @@ public class SentryErrorReporter {
             unit();
             return;
         }
-        Paste paste = new Paste(plugin);
-        this.lastPaste = paste.paste(paste.genNewPaste(),1);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                Paste paste = new Paste(plugin);
+                lastPaste = paste.paste(paste.genNewPaste(),1);
+            }
+        }.runTaskAsynchronously(plugin);
     }
 
     /**
