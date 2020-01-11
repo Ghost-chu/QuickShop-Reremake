@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is VersionJson.java
+ * This file is a part of project QuickShop, the name is AssetJson.java
  * Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  * Copyright (C) Bukkit Commons Studio and contributors
  *
@@ -20,32 +20,47 @@
 package org.maxgamer.quickshop.Util.MojangAPI;
 
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
-public class VersionJson {
-    @NotNull String versionJson;
+public class AssetJson {
+    @NotNull String gameAssets;
     final String pathTemplate = "minecraft/lang/{0}.json";
-    public VersionJson(@NotNull String json){
-        this.versionJson = json;
+    public AssetJson(@NotNull String json){
+        this.gameAssets = json;
     }
     @Nullable
     public String getLanguageHash(@NotNull String languageCode){
-        JsonObject json = (JsonObject) new JsonParser().parse(this.versionJson);
+        JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
         if(json == null || json.isJsonNull()){
+            Util.debugLog("Cannot parse the json: "+this.gameAssets);
             return null;
         }
-        JsonObject objs = json.get("objects").getAsJsonObject();
+        JsonElement obje = json.get("objects");
+        if(obje == null){
+            Util.debugLog("Json element is null for json "+this.gameAssets);
+        return null;
+        }
+        JsonObject objs = obje.getAsJsonObject();
         if(objs == null || objs.isJsonNull()){
-            return null;
+        Util.debugLog("Json object is null.");
+        return null;
         }
         JsonObject langObj = objs.getAsJsonObject(MsgUtil.fillArgs(pathTemplate,languageCode));
         if(langObj == null || langObj.isJsonNull()){
+        Util.debugLog("Cannot find request path.");
+        return null;
+        }
+        JsonObject hashObj = langObj.getAsJsonObject("hash");
+        if(hashObj == null || hashObj.isJsonNull()){
+            Util.debugLog("Cannot get hash.");
             return null;
         }
-        return langObj.getAsString();
-    }
-}
+        return hashObj.getAsString();
+        }
+        }

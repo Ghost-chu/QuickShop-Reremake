@@ -45,8 +45,8 @@ public class MojangAPI {
     public String getVersionManifest() throws IOException {
             QuickShop.instance.getLogger().info("Downloading version manifest...");
             return HttpRequest.get(new URL(versionManifestUrl))
-                    .expectResponseCode(200)
                     .execute()
+                    .expectResponseCode(200)
                     .returnContent()
                     .asString("UTF-8").trim();
     }
@@ -60,8 +60,8 @@ public class MojangAPI {
                 try {
                     QuickShop.instance.getLogger().info("Downloading version index...");
                     return HttpRequest.get(new URL(mcv.getUrl()))
-                            .expectResponseCode(200)
                             .execute()
+                            .expectResponseCode(200)
                             .returnContent()
                             .asString("UTF-8").trim();
                 } catch (IOException e) {
@@ -72,6 +72,36 @@ public class MojangAPI {
         }
         return null;
     }
+    @Nullable
+    public String getAssetIndexJson(@NotNull String mcVer) throws IOException{
+        String versionJson = getVersionJson(mcVer);
+        if(versionJson == null){
+            return null;
+        }
+        PerVersionJson perVersionList = gson.fromJson(versionJson, PerVersionJson.class);
+        String url = null;
+        if(perVersionList == null){
+            return null;
+        }
+        for (PerVersionJson.PatchesBean bean:
+        perVersionList.getPatches()) {
+            if(!"game".equals(bean.getId())){
+                continue;
+            }
+            url = bean.getAssetIndex().getUrl();
+            break;
+        }
+        if(url == null){
+            Util.debugLog("Cannot get asset url.");
+            return null;
+        }
+        return HttpRequest.get(new URL(url))
+                .execute()
+                .expectResponseCode(200)
+                .returnContent()
+                .asString("UTF-8")
+                .trim();
+    }
 
     @Nullable
     public String downloadTextFileFromMojang(@NotNull String hash) throws IOException {
@@ -79,11 +109,11 @@ public class MojangAPI {
         if(cacheFile.exists()){
             return Util.readToString(cacheFile);
         }
-        String data = null;
+        String data;
         QuickShop.instance.getLogger().info("Downloading assets file...");
             data = HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2)))
-                    .expectResponseCode(200)
                     .execute()
+                    .expectResponseCode(200)
                     .returnContent()
                     .asString("UTF-8").trim();
 
