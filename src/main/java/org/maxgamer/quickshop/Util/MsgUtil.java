@@ -452,7 +452,7 @@ public class MsgUtil {
                 }
                 String potionName = gameLanguage.getPotion(potion);
                 plugin.getLogger().info("Found new potion [" +potionName + "] , adding it to the config...");
-                potioni18n.set("potioni18n." + potionName, potionName);
+                potioni18n.set("potioni18n." + potion.getName(), potionName);
             }
         }
         try {
