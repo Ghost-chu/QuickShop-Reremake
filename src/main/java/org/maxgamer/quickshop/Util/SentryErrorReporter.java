@@ -101,7 +101,7 @@ public class SentryErrorReporter {
             return;
         }
         Paste paste = new Paste(plugin);
-        this.lastPaste = paste.paste(paste.genNewPaste());
+        this.lastPaste = paste.paste(paste.genNewPaste(),1);
     }
 
     /**

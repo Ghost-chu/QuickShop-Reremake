@@ -235,5 +235,24 @@ public class Paste {
         }catch (Exception ignore){}
         return null;
     }
-
+    @Nullable
+    public String paste(@NotNull String content,int type){
+        PasteInterface paster;
+        if (type == 0) {
+            try {
+                //EngineHub Pastebin
+                paster = new EngineHubPaster();
+                return paster.pasteTheText(content);
+            } catch (Exception ignore) {
+            }
+        } else {
+            try {
+                //Ubuntu Pastebin
+                paster = new UbuntuPaster();
+                return paster.pasteTheText(content);
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+    }
 }
