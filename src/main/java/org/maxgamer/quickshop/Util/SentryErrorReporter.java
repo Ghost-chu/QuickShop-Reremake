@@ -57,6 +57,7 @@ public class SentryErrorReporter {
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
     private boolean tempDisable;
+    private String lastPaste;
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -97,7 +98,10 @@ public class SentryErrorReporter {
         if (!plugin.getConfig().getBoolean("auto-report-errors")) {
             Util.debugLog("Sentry error report was disabled, unloading...");
             unit();
+            return;
         }
+        Paste paste = new Paste(plugin);
+        this.lastPaste = paste.paste(paste.genNewPaste());
     }
 
     /**
@@ -225,8 +229,12 @@ public class SentryErrorReporter {
             try {
                 Paste paste = new Paste(plugin);
                 pasteURL = paste.paste(paste.genNewPaste());
+                if(pasteURL != null && !pasteURL.isEmpty()){
+                    lastPaste = pasteURL;
+                }
             } catch (Throwable ex) {
                 //Ignore
+                pasteURL = this.lastPaste;
             }
             this.context.addTag("paste", pasteURL);
             this.sentryClient.sendException(throwable);
