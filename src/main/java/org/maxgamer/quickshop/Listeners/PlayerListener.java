@@ -87,10 +87,9 @@ public class PlayerListener implements Listener {
                     MsgUtil.sendControlPanelInfo(e.getPlayer(),
                             Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
                     Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
+                    return;
                 }
             }
-
-            return;
         }
 
         final Block b = e.getClickedBlock();
@@ -253,7 +252,7 @@ public class PlayerListener implements Listener {
 
         final Inventory inventory = e.getInventory();
         //noinspection ConstantConditions
-        if(inventory == null){ //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
+        if (inventory == null) { //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
             return;
         }
         final Location location = inventory.getLocation();
