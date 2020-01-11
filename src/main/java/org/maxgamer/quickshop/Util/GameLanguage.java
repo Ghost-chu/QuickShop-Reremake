@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.Material;
@@ -118,10 +119,15 @@ public class GameLanguage {
         if (lang == null) {
             return name;
         }
+        String jsonName;
         try {
-            return lang.get("item.minecraft."+material.name().toLowerCase()).getAsString();
+            JsonElement element = lang.get("item.minecraft."+material.name().toLowerCase());
+            if(element == null){
+                return getBlock(material);
+            }else{
+                return element.getAsString();
+            }
         } catch (NullPointerException npe) {
-            npe.printStackTrace();
             return name;
         }
     }
