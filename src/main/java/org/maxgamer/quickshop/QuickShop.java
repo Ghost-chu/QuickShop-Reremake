@@ -1167,6 +1167,7 @@ public class QuickShop extends JavaPlugin {
                 langUtilsLanguage = "default";
             }
             getConfig().set("game-language", langUtilsLanguage);
+            getConfig().set("maximum-digits-in-price",-1);
             getConfig().set("config-version", 75);
         }
         saveConfig();

@@ -224,6 +224,9 @@ shop:
   #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
   maximum-price: -1
 
+  #The number of digits after decimal, set it to -1 to disable it
+  maximum-digits-in-price: -1
+
   #if shop is adminshop, and player has permission to change shop owner, Whether in controll panel, print the owner's uuid?
   show-owner-uuid-in-controlpanel-if-op: false
 
