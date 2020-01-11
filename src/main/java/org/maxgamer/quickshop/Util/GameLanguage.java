@@ -27,6 +27,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MojangAPI.AssetJson;
 import org.maxgamer.quickshop.Util.MojangAPI.MojangAPI;
 
@@ -36,33 +37,32 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class GameLanguage {
-    private Locale locale = Locale.getDefault();
-    private String languageCode;
-    private MojangAPI mojangAPI = new MojangAPI();
     private @Nullable JsonObject lang = null;
-    private YamlConfiguration yamlConfiguration = new YamlConfiguration();
 
     public GameLanguage(@NotNull String languageCode) {
 
         try {
-            File cacheFile = new File(Util.getCacheFolder(), "lang.cache");
+            File cacheFile = new File(Util.getCacheFolder(), "lang.cache"); //Load cache file
             if (!cacheFile.exists()) {
                 cacheFile.createNewFile();
             }
+            YamlConfiguration yamlConfiguration = new YamlConfiguration();
             yamlConfiguration.load(new File(Util.getCacheFolder(), "lang.cache"));
             boolean needUpdateCache = false;
+            /* The cache data, if it all matches, we doesn't need connect to internet to download files again. */
             String cachingServerVersion = yamlConfiguration.getString("ver");
             String cachingLanguageHash = yamlConfiguration.getString("hash");
             String cachingLanguageName = yamlConfiguration.getString("lang");
-
+            /* If language name is default, use computer language */
             if ("default".equals(languageCode)) {
+                Locale locale = Locale.getDefault();
                 languageCode = locale.getLanguage() + "_" + locale.getCountry();
             }
             if (!languageCode.equals(cachingLanguageName)) {
                 cachingLanguageName = languageCode;
                 needUpdateCache = true;
             }
-            this.languageCode = languageCode.toLowerCase();
+            String languageCode1 = languageCode.toLowerCase();
             String serverVersion = ReflectFactory.getServerVersion();
             if (!serverVersion.equals(cachingServerVersion)) {
                 cachingServerVersion = serverVersion;
@@ -71,12 +71,12 @@ public class GameLanguage {
             if(cachingLanguageHash == null || cachingLanguageHash.isEmpty()){
                 needUpdateCache = true;
             }
-
             if (needUpdateCache) {
+                MojangAPI mojangAPI = new MojangAPI();
                 String assetJson = mojangAPI.getAssetIndexJson(cachingServerVersion);
                 if (assetJson != null) {
                     AssetJson versionJson = new AssetJson(assetJson);
-                    String hash = versionJson.getLanguageHash(this.languageCode);
+                    String hash = versionJson.getLanguageHash(languageCode1);
                     if (hash != null) {
                         cachingLanguageHash = hash;
                         String langJson = mojangAPI.downloadTextFileFromMojang(hash);
@@ -84,12 +84,15 @@ public class GameLanguage {
                             new Copied(new File(Util.getCacheFolder(), hash)).accept(new ByteArrayInputStream(langJson.getBytes(StandardCharsets.UTF_8)));
                         }else{
                             Util.debugLog("Cannot download file.");
+                            QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                         }
                     }else{
-                        Util.debugLog("Cannot get file hash for language "+this.languageCode);
+                        Util.debugLog("Cannot get file hash for language "+ languageCode1);
+                        QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                     }
                 }else{
                     Util.debugLog("Cannot get version json.");
+                    QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                 }
             }
             yamlConfiguration.set("ver", cachingServerVersion);
@@ -107,8 +110,8 @@ public class GameLanguage {
             }else{
                 Util.debugLog("json is null");
             }
-
         } catch (Exception e) {
+            QuickShop.instance.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
         }
     }
