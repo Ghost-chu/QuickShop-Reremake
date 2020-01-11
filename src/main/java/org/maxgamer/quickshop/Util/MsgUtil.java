@@ -443,17 +443,14 @@ public class MsgUtil {
                 .getResource("potioni18n.yml"))));
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
-        PotionEffectType[] potionsi18n = PotionEffectType.values();
-        for (PotionEffectType potion : potionsi18n) {
-            if (potion != null) {
-                String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
-                if (potionI18n != null && !potionI18n.isEmpty()) {
-                    continue;
-                }
-                String potionName = gameLanguage.getPotion(potion);
-                plugin.getLogger().info("Found new potion [" +potionName + "] , adding it to the config...");
-                potioni18n.set("potioni18n." + potion.getName(), potionName);
+        for (PotionEffectType potion : PotionEffectType.values()) {
+            String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
+            if (potionI18n != null && !potionI18n.isEmpty()) {
+                continue;
             }
+            String potionName = gameLanguage.getPotion(potion);
+            plugin.getLogger().info("Found new potion [" +potionName + "] , adding it to the config...");
+            potioni18n.set("potioni18n." + potion.getName(), potionName);
         }
         try {
             potioni18n.save(potioni18nFile);
