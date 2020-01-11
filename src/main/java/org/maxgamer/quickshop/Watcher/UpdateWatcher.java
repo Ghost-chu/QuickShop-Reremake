@@ -67,7 +67,7 @@ public class UpdateWatcher implements Listener {
                 hasNewUpdate = true;
 
                 if (!info.isBeta()) {
-                    QuickShop.instance.getLogger().info("A new version of QuickShop has been released!");
+                    QuickShop.instance.getLogger().info("A new version of QuickShop has been released! ["+info.getVersion()+"]");
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
