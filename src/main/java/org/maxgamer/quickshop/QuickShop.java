@@ -580,7 +580,6 @@ public class QuickShop extends JavaPlugin {
                 this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time"));
             }
         }
-        getLogger().severe("MCVER:"+ReflectFactory.getServerVersion());
     }
 
     /**
