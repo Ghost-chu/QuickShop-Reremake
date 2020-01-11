@@ -23,6 +23,7 @@ package org.maxgamer.quickshop.Util.MojangAPI;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -56,7 +57,7 @@ public class AssetJson {
         Util.debugLog("Cannot find request path.");
         return null;
         }
-        JsonObject hashObj = langObj.getAsJsonObject("hash");
+        JsonPrimitive hashObj = langObj.getAsJsonPrimitive("hash");
         if(hashObj == null || hashObj.isJsonNull()){
             Util.debugLog("Cannot get hash.");
             return null;

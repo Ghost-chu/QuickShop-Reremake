@@ -20,6 +20,9 @@
 package org.maxgamer.quickshop.Util.MojangAPI;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
@@ -43,12 +46,12 @@ public class MojangAPI {
      */
     @Nullable
     public String getVersionManifest() throws IOException {
-            QuickShop.instance.getLogger().info("Downloading version manifest...");
-            return HttpRequest.get(new URL(versionManifestUrl))
-                    .execute()
-                    .expectResponseCode(200)
-                    .returnContent()
-                    .asString("UTF-8").trim();
+        QuickShop.instance.getLogger().info("Downloading version manifest...");
+        return HttpRequest.get(new URL(versionManifestUrl))
+                .execute()
+                .expectResponseCode(200)
+                .returnContent()
+                .asString("UTF-8").trim();
     }
 
     @Nullable
@@ -72,26 +75,26 @@ public class MojangAPI {
         }
         return null;
     }
+
     @Nullable
-    public String getAssetIndexJson(@NotNull String mcVer) throws IOException{
+    public String getAssetIndexJson(@NotNull String mcVer) throws IOException {
         String versionJson = getVersionJson(mcVer);
-        if(versionJson == null){
+        if (versionJson == null) {
             return null;
         }
-        PerVersionJson perVersionList = gson.fromJson(versionJson, PerVersionJson.class);
-        String url = null;
-        if(perVersionList == null){
+        JsonObject rootObj = new JsonParser().parse(versionJson).getAsJsonObject();
+        JsonObject assetIndex = rootObj.getAsJsonObject("assetIndex");
+        if (assetIndex == null) {
+            Util.debugLog("Cannot get assetIndex obj.");
             return null;
         }
-        for (PerVersionJson.PatchesBean bean:
-        perVersionList.getPatches()) {
-            if(!"game".equals(bean.getId())){
-                continue;
-            }
-            url = bean.getAssetIndex().getUrl();
-            break;
+        JsonPrimitive urlObj = assetIndex.getAsJsonPrimitive("url");
+        if (urlObj == null) {
+            Util.debugLog("Cannot get asset url obj.");
+            return null;
         }
-        if(url == null){
+        String url = urlObj.getAsString();
+        if (url == null) {
             Util.debugLog("Cannot get asset url.");
             return null;
         }
@@ -105,18 +108,17 @@ public class MojangAPI {
 
     @Nullable
     public String downloadTextFileFromMojang(@NotNull String hash) throws IOException {
-        File cacheFile = new File(Util.getCacheFolder(),hash);
-        if(cacheFile.exists()){
+        File cacheFile = new File(Util.getCacheFolder(), hash);
+        if (cacheFile.exists()) {
             return Util.readToString(cacheFile);
         }
         String data;
         QuickShop.instance.getLogger().info("Downloading assets file...");
-            data = HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2)))
-                    .execute()
-                    .expectResponseCode(200)
-                    .returnContent()
-                    .asString("UTF-8").trim();
-
+        data = HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2) + "/" + hash))
+                .execute()
+                .expectResponseCode(200)
+                .returnContent()
+                .asString("UTF-8").trim();
         return data;
     }
 }

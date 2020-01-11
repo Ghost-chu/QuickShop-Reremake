@@ -98,9 +98,13 @@ public class GameLanguage {
             String json = null;
             if (cachingLanguageHash != null) {
                 json = Util.readToString(new File(Util.getCacheFolder(), cachingLanguageHash));
+            }else{
+                Util.debugLog("Caching LanguageHash is null");
             }
             if (json != null && !json.isEmpty()) {
                 lang = new JsonParser().parse(json).getAsJsonObject();
+            }else{
+                Util.debugLog("json is null");
             }
 
         } catch (Exception e) {
@@ -115,13 +119,9 @@ public class GameLanguage {
             return name;
         }
         try {
-            JsonObject obj = lang.get("item").getAsJsonObject().get("minecraft").getAsJsonObject();
-            String jsonName = obj.get(material.name().toLowerCase()).getAsString();
-            if (jsonName == null || jsonName.isEmpty()) {
-                return name;
-            }
-            return jsonName;
+            return lang.get("item.minecraft."+material.name().toLowerCase()).getAsString();
         } catch (NullPointerException npe) {
+            npe.printStackTrace();
             return name;
         }
     }
@@ -133,12 +133,7 @@ public class GameLanguage {
             return name;
         }
         try {
-            JsonObject obj = lang.get("block").getAsJsonObject().get("minecraft").getAsJsonObject();
-            String jsonName = obj.get(material.name().toLowerCase()).getAsString();
-            if (jsonName == null || jsonName.isEmpty()) {
-                return name;
-            }
-            return jsonName;
+            return lang.get("block.minecraft."+material.name().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
@@ -151,12 +146,7 @@ public class GameLanguage {
             return name;
         }
         try {
-            JsonObject obj = lang.get("entity").getAsJsonObject().get("minecraft").getAsJsonObject();
-            String jsonName = obj.get(material.name().toLowerCase()).getAsString();
-            if (jsonName == null || jsonName.isEmpty()) {
-                return name;
-            }
-            return jsonName;
+            return lang.get("entity.minecraft."+material.name().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
@@ -169,12 +159,7 @@ public class GameLanguage {
             return name;
         }
         try {
-            JsonObject obj = lang.get("effect").getAsJsonObject().get("minecraft").getAsJsonObject();
-            String jsonName = obj.get(effect.getName().toLowerCase()).getAsString();
-            if (jsonName == null || jsonName.isEmpty()) {
-                return name;
-            }
-            return jsonName;
+            return lang.get("effect.minecraft."+effect.getName().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
@@ -187,12 +172,7 @@ public class GameLanguage {
             return name;
         }
         try {
-            JsonObject obj = lang.get("enchantment").getAsJsonObject().get("minecraft").getAsJsonObject();
-            String jsonName = obj.get(enchantmentName.toLowerCase()).getAsString();
-            if (jsonName == null || jsonName.isEmpty()) {
-                return name;
-            }
-            return jsonName;
+            return lang.get("enchantment.minecraft."+enchantmentName.toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
@@ -203,21 +183,8 @@ public class GameLanguage {
         if (lang == null) {
             return null;
         }
-        try {
-            node = node.toLowerCase();
-            String[] nodes = node.split(".");
-            JsonObject obj = null;
-            for (String s : nodes) {
-                if (obj == null) {
-                    obj = lang.get(s).getAsJsonObject();
-                } else {
-                    obj = obj.get(s).getAsJsonObject();
-                }
-            }
-            if (obj == null) {
-                return null;
-            }
-            return obj.getAsString();
+        try{
+            return lang.get(node).getAsString();
         } catch (NullPointerException e) {
             return null;
         }
