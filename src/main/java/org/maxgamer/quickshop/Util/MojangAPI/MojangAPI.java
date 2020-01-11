@@ -20,15 +20,13 @@
 package org.maxgamer.quickshop.Util.MojangAPI;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
-import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -44,26 +42,23 @@ public class MojangAPI {
      * @return Version Manifest, may be null when failed to get.
      */
     @Nullable
-    public String getVersionManifest() {
-        try {
+    public String getVersionManifest() throws IOException {
+            QuickShop.instance.getLogger().info("Downloading version manifest...");
             return HttpRequest.get(new URL(versionManifestUrl))
                     .expectResponseCode(200)
                     .execute()
                     .returnContent()
                     .asString("UTF-8").trim();
-        } catch (Exception e) {
-            Util.debugLog(e.getMessage());
-            return null;
-        }
     }
 
     @Nullable
-    public String getVersionJson(@NotNull String versionManifest, @NotNull String mcVer) {
-        VersionList list = gson.fromJson(versionManifest, VersionList.class);
+    public String getVersionJson(@NotNull String mcVer) throws IOException {
+        VersionList list = gson.fromJson(this.getVersionManifest(), VersionList.class);
         for (VersionList.VersionsBean mcv :
                 list.getVersions()) {
             if (mcv.getId().equals(mcVer)) {
                 try {
+                    QuickShop.instance.getLogger().info("Downloading version index...");
                     return HttpRequest.get(new URL(mcv.getUrl()))
                             .expectResponseCode(200)
                             .execute()
@@ -79,22 +74,19 @@ public class MojangAPI {
     }
 
     @Nullable
-    public String getLanguageFileFromAsset(@NotNull String versionJson, @NotNull String languageCode) {
-        try {
-            languageCode = languageCode.toLowerCase().trim();
-
-            JsonObject object = new JsonParser().parse(versionJson).getAsJsonObject();
-            JsonElement element = object.get(MsgUtil.fillArgs(pathTemplate, languageCode));
-            String hash = element.getAsString();
-
-            return HttpRequest.get(new URL(assetsUrl + hash.substring(0, 3)))
-                    .execute()
+    public String downloadTextFileFromMojang(@NotNull String hash) throws IOException {
+        File cacheFile = new File(Util.getCacheFolder(),hash);
+        if(cacheFile.exists()){
+            return Util.readToString(cacheFile);
+        }
+        String data = null;
+        QuickShop.instance.getLogger().info("Downloading assets file...");
+            data = HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2)))
                     .expectResponseCode(200)
+                    .execute()
                     .returnContent()
                     .asString("UTF-8").trim();
-        } catch (Exception e) {
-            Util.debugLog(e.getMessage());
-            return null;
-        }
+
+        return data;
     }
 }

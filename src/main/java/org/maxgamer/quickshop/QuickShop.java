@@ -1160,6 +1160,15 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("mixedeconomy.withdraw", "eco take {0} {1}");
             getConfig().set("config-version", 74);
         }
+        if (selectedVersion == 74) {
+            String langUtilsLanguage  = getConfig().getString("langutils-language");
+            getConfig().set("langutils-language", null);
+            if("en_us".equals(langUtilsLanguage)){
+                langUtilsLanguage = "default";
+            }
+            getConfig().set("game-language", langUtilsLanguage);
+            getConfig().set("config-version", 75);
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
