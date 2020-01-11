@@ -62,18 +62,23 @@ public class Paste {
         finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID()).append("\n");
         finalReport.append("\tOpenInv Hook: ").append(plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled").append("\n");
         finalReport.append("\tEconomy System: ");
-        EconomyCore economyCore = plugin.getEconomy().getCore();
-        switch (Economy.getNowUsing()) {
-            case VAULT:
-                finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
-                break;
-            case RESERVE:
-                finalReport.append("Reserve").append("%").append("No details");
-                break;
-            case UNKNOWN:
-                finalReport.append("Unknown").append("%").append("Unknown error");
-                break;
+        try {
+            EconomyCore economyCore = plugin.getEconomy().getCore();
+            switch (Economy.getNowUsing()) {
+                case VAULT:
+                    finalReport.append("Vault").append("%").append(((Economy_Vault) economyCore).getProviderName());
+                    break;
+                case RESERVE:
+                    finalReport.append("Reserve").append("%").append("No details");
+                    break;
+                case UNKNOWN:
+                    finalReport.append("Unknown").append("%").append("Unknown error");
+                    break;
+            }
+        }catch(Exception e){
+            finalReport.append("Unknown").append("%").append("Unknown error");
         }
+
         finalReport.append("\n");
         finalReport.append("================================================\n");
         finalReport.append("System:\n");
