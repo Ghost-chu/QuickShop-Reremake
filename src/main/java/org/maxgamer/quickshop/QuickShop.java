@@ -1170,6 +1170,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("maximum-digits-in-price",-1);
             getConfig().set("config-version", 75);
         }
+        if (selectedVersion == 75) {
+            getConfig().set("langutils-language", null);
+            if(getConfig().getString("game-language") == null){
+                getConfig().set("game-language", "default");
+            }
+            getConfig().set("config-version", 76);
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
