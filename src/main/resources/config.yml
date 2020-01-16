@@ -86,6 +86,9 @@ decimal-format: "#,###.##"
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true
 
+#Allow plugin send alert when something trying steal shop
+send-shop-protection-alert: true
+
 #Disable the debug silent logger. This should can fix heavy lagging on some overloaded server, but AFTER ENABLE IT, YOU WILL LOSE OUR SUPPORT UNTIL YOU RE-ENABLE IT.
 disable-debuglogger: false
 
