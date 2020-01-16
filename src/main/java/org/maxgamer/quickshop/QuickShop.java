@@ -41,6 +41,7 @@ import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
+import org.maxgamer.quickshop.PluginsIntegration.PlotSquared.PlotSquaredIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -605,7 +606,13 @@ public class QuickShop extends JavaPlugin {
         if(getConfig().getBoolean("integration.worldguard.enable")){
             Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
             if(worldGuard != null && worldGuard.isEnabled()){
-                this.integrationHelper.register(new TownyIntegration(this));
+                this.integrationHelper.register(new WorldGuardIntegration(this));
+            }
+        }
+        if(getConfig().getBoolean("integration.plotsquared.enable")){
+            Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
+            if(plotSquared != null && plotSquared.isEnabled()){
+                this.integrationHelper.register(new PlotSquaredIntegration(this));
             }
         }
     }
