@@ -124,6 +124,9 @@ public class SentryErrorReporter {
         if(UpdateWatcher.hasNewUpdate){ //We only receive latest reports.
             return false;
         }
+        if(new IncompatibleChecker().isIncompatible(Util.getNMSVersion())){ //Ignore errors if user install quickshop on unsupported version.
+            return false;
+        }
         StackTraceElement stackTraceElement;
         if (throwable.getStackTrace().length < 3) {
             stackTraceElement = throwable.getStackTrace()[1];
