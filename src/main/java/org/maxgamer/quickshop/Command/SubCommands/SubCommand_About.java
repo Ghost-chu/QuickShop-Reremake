@@ -19,9 +19,13 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Command.CommandProcesser;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +40,28 @@ public class SubCommand_About implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        sender.sendMessage("[QuickShop] About QuickShop");
-        sender.sendMessage("[QuickShop] Hello, I'm Ghost_chu Author of QS reremake.");
-        sender.sendMessage("[QuickShop] This plugin is a remake by the SunnySide Community.");
-        sender.sendMessage("[QuickShop] Original author is KaiNoMood. This is an unofficial QS version.");
-        sender.sendMessage("[QuickShop] It has more feature, and has been designed for 1.13 and newer versions.");
-        sender.sendMessage("[QuickShop] You can look at our SpigotMC page to learn more:");
-        sender.sendMessage("[QuickShop] https://www.spigotmc.org/resources/62575/");
-        sender.sendMessage("[QuickShop] Thanks for using QuickShop-Reremake.");
+        sender.sendMessage(ChatColor.AQUA+"QuickShop "+ChatColor.YELLOW+ QuickShop.instance.getFork());
+        sender.sendMessage(ChatColor.AQUA+"Ver "+ChatColor.YELLOW+">> "+ChatColor.GREEN+QuickShop.getVersion());
+        if(QuickShop.getVersion().toUpperCase().contains("LTS")){
+            sender.sendMessage(ChatColor.AQUA+"Release "+ChatColor.YELLOW+">> "+ChatColor.GREEN+ MsgUtil.getMessage("updatenotify.label.lts",sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("STABLE")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.stable", sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("QV")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.qualityverifyed", sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("BETA")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("ALPHA")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("EARLY ACCESS")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+        }else if(QuickShop.getVersion().toUpperCase().contains("SNAPSHOT")) {
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+        }else{
+            sender.sendMessage(ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN +"[Main Line]");
+        }
+        sender.sendMessage(ChatColor.AQUA+"Dev "+ChatColor.YELLOW+">> "+ChatColor.GREEN+ Util.list2String(QuickShop.instance.getDescription().getAuthors()));
+        sender.sendMessage(ChatColor.GOLD + "Powered by Bukkit Common Studio");
+        sender.sendMessage(ChatColor.RED + "Made with ❤");
+
     }
 }
