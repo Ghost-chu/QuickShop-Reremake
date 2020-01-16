@@ -143,6 +143,8 @@ public class MsgUtil {
                         } catch (ArrayIndexOutOfBoundsException e2) {
                             p.getPlayer().sendMessage(msg);
                         }
+                        plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
+                        msgs.clear();
                         return true;
                     } else {
                         return false;
