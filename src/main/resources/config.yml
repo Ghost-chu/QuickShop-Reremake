@@ -277,6 +277,9 @@ shop:
   #THIS MAY BROKEN SOMETHING
   allow-free-shop: false
 
+  #Use fast algorithm for ShopManager#getShopIncludeAttached, it should improve HUGE performance on it. (BETA)
+  use-fast-shop-search-algorithm: false
+
   #The shop ongoing fee, if a shop's owner had no enough money, shop will auto-remove.
   ongoing-fee:
     enable: false
