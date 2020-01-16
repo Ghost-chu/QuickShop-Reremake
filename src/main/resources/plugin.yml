@@ -98,3 +98,6 @@ permissions:
   quickshop.cleanghost:
     description: Permission to use /qs cleanghost
     default: op
+  quickshop.reset:
+    description: Permission to use /qs reset
+    default: op

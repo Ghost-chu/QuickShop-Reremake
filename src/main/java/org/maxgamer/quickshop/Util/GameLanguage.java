@@ -332,7 +332,7 @@ class GameLanguageLoadThread extends Thread{
             e.printStackTrace();
         }
         if(!this.mainThreadWaiting){
-            QuickShop.instance.getLogger().info("Download completed, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml to generate localized language files.");
+            QuickShop.instance.getLogger().info("Download completed, please execute /qs reset lang to generate localized language files.");
         }
     }
 }
