@@ -1177,6 +1177,11 @@ public class QuickShop extends JavaPlugin {
             }
             getConfig().set("config-version", 76);
         }
+        if (selectedVersion == 76) {
+            getConfig().set("database.auto-fix-encoding-issue-in-database", false);
+            getConfig().set("config-version", 77);
+        }
+
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
