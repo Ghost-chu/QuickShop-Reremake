@@ -137,13 +137,15 @@ public class ShopProtectionListener implements Listener {
             final Block b = e.blockList().get(i);
             final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
 
-            if (shop != null) {
-                if (plugin.getConfig().getBoolean("protect.explode")) {
-                    e.setCancelled(true);
-                } else {
-                    shop.delete();
-                }
+            if (shop == null) {
+                continue;
             }
+            if (plugin.getConfig().getBoolean("protect.explode")) {
+                e.setCancelled(true);
+            } else {
+                shop.delete();
+            }
+
         }
     }
 
@@ -173,17 +175,19 @@ public class ShopProtectionListener implements Listener {
         if (location == null) {
             return;
         }
-        
+
         final InventoryHolder holder = event.getInitiator().getHolder();
-        
+
         if (holder instanceof Entity) {
-            ((Entity)holder).remove();
+            ((Entity) holder).remove();
         } else if (holder instanceof Block) {
             location.getBlock().breakNaturally();
         }
 
- 
-        MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
+        if (plugin.getConfig().getBoolean("send-shop-protection-alert")) {
+            MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
+        }
+
     }
 
     //Protect Entity pickup shop
@@ -240,7 +244,6 @@ public class ShopProtectionListener implements Listener {
             if (plugin.getShopManager().getShopIncludeAttached(block.getLocation()) != null) {
                 event.setCancelled(true);
             }
-
         }
     }
 }
