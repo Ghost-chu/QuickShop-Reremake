@@ -19,24 +19,17 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class SubCommand_Reset implements CommandProcesser {
 
@@ -53,6 +46,7 @@ public class SubCommand_Reset implements CommandProcesser {
     }
 
     @Override
+    @SneakyThrows
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
@@ -81,67 +75,13 @@ public class SubCommand_Reset implements CommandProcesser {
                 Bukkit.getPluginManager().enablePlugin(plugin);
                 sender.sendMessage(MsgUtil.getMessage("complete",sender));
                 break;
+            case "messages":
+                File msgs = new File(plugin.getDataFolder(),"messages.json");
+                msgs.delete();
+                MsgUtil.loadCfgMessages();
+                sender.sendMessage(MsgUtil.getMessage("complete",sender));
+
         }
-
-        final StringBuilder sb = new StringBuilder(cmdArg[0]);
-
-        for (int i = 1; i < cmdArg.length; i++) {
-            sb.append(" ").append(cmdArg[i]);
-        }
-
-        final String lookFor = sb.toString().toLowerCase();
-        final Player p = (Player) sender;
-        final Location loc = p.getEyeLocation().clone();
-        final double minDistance = plugin.getConfig().getInt("shop.find-distance");
-        double minDistanceSquared = minDistance * minDistance;
-        final int chunkRadius = (int) minDistance / 16 + 1;
-        Shop closest = null;
-        CompletableFuture<Chunk> future = new CompletableFuture<>();
-        plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(),loc, future);
-        final Chunk c;
-        try {
-            c = future.get();
-        }catch (Exception asyncErr){
-            sender.sendMessage("Cannot execute the command, see console for details.");
-            plugin.getSentryErrorReporter().sendError(asyncErr,"Unknown errors");
-            plugin.getSentryErrorReporter().ignoreThrow();
-            asyncErr.printStackTrace();
-            return;
-        }
-        for (int x = -chunkRadius + c.getX(); x < chunkRadius + c.getX(); x++) {
-            for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
-                final Chunk d = c.getWorld().getChunkAt(x, z);
-                final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(d);
-
-                if (inChunk == null) {
-                    continue;
-                }
-
-                for (Shop shop : inChunk.values()) {
-                    if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
-                        continue;
-                    }
-
-                    if (shop.getLocation().distanceSquared(loc) >= minDistanceSquared) {
-                        continue;
-                    }
-
-                    closest = shop;
-                    minDistanceSquared = shop.getLocation().distanceSquared(loc);
-                }
-            }
-        }
-
-        if (closest == null) {
-            sender.sendMessage(MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
-            return;
-        }
-        
-        final Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
-        // Hack fix to make /qs find not used by /back
-        plugin.getBukkitAPIWrapper().teleportEntity(p,Util.lookAt(loc, lookat).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
-        p.sendMessage(
-            MsgUtil.getMessage("nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
     }
 
 }
