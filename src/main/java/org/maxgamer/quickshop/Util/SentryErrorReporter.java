@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Paste.Paste;
+import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -118,6 +119,9 @@ public class SentryErrorReporter {
      */
     public boolean canReport(@NotNull Throwable throwable) {
         if (!enabled) {
+            return false;
+        }
+        if(UpdateWatcher.hasNewUpdate){ //We only receive latest reports.
             return false;
         }
         StackTraceElement stackTraceElement;

@@ -39,7 +39,7 @@ import java.util.Random;
 
 public class UpdateWatcher implements Listener {
     private static BukkitTask cronTask = null;
-    private static boolean hasNewUpdate = false;
+    public static boolean hasNewUpdate = false;
     private static UpdateInfomation info = null;
 
     public static String fixVer(@NotNull String originalVer) {

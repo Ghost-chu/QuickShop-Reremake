@@ -536,6 +536,7 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
         Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
         Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
+        Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
         if (getConfig().getBoolean("shop.lock")) {
             Bukkit.getPluginManager().registerEvents(lockListener, this);
