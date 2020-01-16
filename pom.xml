@@ -300,8 +300,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-
-
+        <dependency>
+            <groupId>de.themoep.idconverter</groupId>
+            <artifactId>Towny</artifactId>
+            <version>0.95.2.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

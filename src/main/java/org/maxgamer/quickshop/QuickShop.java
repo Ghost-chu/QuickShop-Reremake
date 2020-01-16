@@ -40,6 +40,9 @@ import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
+import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
+import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
+import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -63,6 +66,8 @@ public class QuickShop extends JavaPlugin {
      * The active instance of QuickShop
      */
     public static QuickShop instance;
+
+    private IntegrationHelper integrationHelper;
     // Listeners (These don't)
     private BlockListener blockListener;
     /**
@@ -337,7 +342,11 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
-        bootError = null;
+        this.bootError = null;
+        this.integrationHelper = new IntegrationHelper();
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
+        this.integrationHelper.register(new WorldGuardIntegration(this)); //WG require register flags when onLoad called.
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
     }
 
     @Override
@@ -345,6 +354,7 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable) {
             return;
         }
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
 
         Util.debugLog("Closing all GUIs...");
@@ -392,12 +402,16 @@ public class QuickShop extends JavaPlugin {
             warnings.clear();
         }
         //this.reloadConfig();
+        Util.debugLog("Calling integrations...");
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onUnloadAfter);
         Util.debugLog("All shutdown work is finished.");
     }
 
     @Override
     public void onEnable() {
+
         Timer enableTimer = new Timer(true);
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
         commandManager = new CommandManager();
         //noinspection ConstantConditions
@@ -571,11 +585,27 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Ongoine fee feature is enabled.");
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
         }
-
         if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
                 this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
                 this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time"));
+            }
+        }
+        registerIntegrations();
+        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
+    }
+
+    private void registerIntegrations(){
+        if(getConfig().getBoolean("integration.towny.enable")){
+            Plugin towny = Bukkit.getPluginManager().getPlugin("Towny");
+            if(towny != null && towny.isEnabled()){
+                this.integrationHelper.register(new TownyIntegration(this));
+            }
+        }
+        if(getConfig().getBoolean("integration.worldguard.enable")){
+            Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
+            if(worldGuard != null && worldGuard.isEnabled()){
+                this.integrationHelper.register(new TownyIntegration(this));
             }
         }
     }
@@ -1140,6 +1170,7 @@ public class QuickShop extends JavaPlugin {
             }
             getConfig().set("server-platform", 0);
             getConfig().set("config-version", 72);
+            selectedVersion = 72;
         }
         if (selectedVersion == 72) {
             if(getConfig().getBoolean("use-deciaml-format")){
@@ -1152,11 +1183,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.force-load-downgrade-items.enable", false);
             getConfig().set("shop.force-load-downgrade-items.method", 0);
             getConfig().set("config-version", 73);
+            selectedVersion = 73;
         }
         if (selectedVersion == 73) {
             getConfig().set("mixedeconomy.deposit", "eco give {0} {1}");
             getConfig().set("mixedeconomy.withdraw", "eco take {0} {1}");
             getConfig().set("config-version", 74);
+            selectedVersion = 74;
         }
         if (selectedVersion == 74) {
             String langUtilsLanguage  = getConfig().getString("langutils-language");
@@ -1167,6 +1200,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("game-language", langUtilsLanguage);
             getConfig().set("maximum-digits-in-price",-1);
             getConfig().set("config-version", 75);
+            selectedVersion = 75;
         }
         if (selectedVersion == 75) {
             getConfig().set("langutils-language", null);
@@ -1174,6 +1208,7 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("game-language", "default");
             }
             getConfig().set("config-version", 76);
+            selectedVersion = 76;
         }
         if (selectedVersion == 76) {
             getConfig().set("database.auto-fix-encoding-issue-in-database", false);
@@ -1181,8 +1216,18 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("send-display-item-protection-alert", false);
             getConfig().set("shop.use-fast-shop-search-algorithm",false);
             getConfig().set("config-version", 77);
+            selectedVersion = 77;
         }
-
+        if (selectedVersion == 77) {
+            getConfig().set("integration.towny.enable", false);
+            getConfig().set("integration.towny.create", new String[] {"SHOPTYPE","MODIFY"});
+            getConfig().set("integration.towny.trade", new String[]{});
+            getConfig().set("integration.worldguard.enable", false);
+            getConfig().set("integration.worldguard.create", new String[] {"FLAG","CHEST_ACCESS"});
+            getConfig().set("integration.worldguard.trade", new String[]{});
+            getConfig().set("config-version", 78);
+            selectedVersion = 78;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
