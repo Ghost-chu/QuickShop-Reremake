@@ -109,7 +109,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         registerCmd(CommandContainer.builder().prefix("cleanghost").permission("quickshop.cleanghost")
                 .executor(new SubCommand_CleanGhost())
                 .build());
-        registerCmd(CommandContainer.builder().prefix("reset").permission("quickshop.reset")
+        registerCmd(CommandContainer.builder().prefix("reset").hidden(true).permission("quickshop.reset")
                 .executor(new SubCommand_Reset())
                 .build());
     }
