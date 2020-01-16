@@ -1146,7 +1146,11 @@ public class MsgUtil {
             setAndUpdate("language-version", 25);
             selectedVersion = 25;
         }
-
+        if (selectedVersion == 25) {
+            setAndUpdate("complete", "&aComplete!");
+            setAndUpdate("language-version", 26);
+            selectedVersion = 26;
+        }
         messagei18n.save();
     }
 
