@@ -61,8 +61,11 @@ public class ShopManager {
 
     private Set<Shop> loadedShops = new CopyOnWriteArraySet<>();
 
+    private boolean useFastShopSearchAlgorithm = false;
+
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm",false);
     }
 
     @SuppressWarnings("deprecation")
@@ -782,6 +785,18 @@ public class ShopManager {
             Util.debugLog("Location is null.");
             return null;
         }
+
+        if(this.useFastShopSearchAlgorithm){
+            return getShopIncludeAttached_Fast(loc);
+        }else{
+            return getShopIncludeAttached_Classic(loc);
+        }
+    }
+    public @Nullable Shop getShopIncludeAttached_Classic(@Nullable Location loc) {
+        if (loc == null) {
+            Util.debugLog("Location is null.");
+            return null;
+        }
         Util.debugLog("Start searching the shops...");
         @Nullable Shop shop;
         //Get location's chunk all shops
@@ -832,6 +847,24 @@ public class ShopManager {
         Util.debugLog("Not found shops use the attached util.");
 
         return null;
+    }
+    private @Nullable Shop getShopIncludeAttached_Fast(@Nullable Location loc){
+        if (loc == null) {
+            Util.debugLog("Location is null.");
+            return null;
+        }
+        Util.debugLog("Use fast shop search algorithm to searching the shops...");
+        @Nullable Shop shop;
+        shop = getShop(loc);
+        if(shop != null){
+            return shop;
+        }
+        @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+        if(attachedBlock != null){
+            return getShop(attachedBlock.getLocation());
+        }else{
+            return null;
+        }
     }
 
     /**
