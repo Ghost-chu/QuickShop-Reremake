@@ -90,4 +90,14 @@ public class TownyIntegration implements IntegratedPlugin {
         }
         return true;
     }
+
+    @Override
+    public void load() {
+
+    }
+
+    @Override
+    public void unload() {
+
+    }
 }
