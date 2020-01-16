@@ -1160,6 +1160,11 @@ public class MsgUtil {
             setAndUpdate("language-version", 26);
             selectedVersion = 26;
         }
+        if (selectedVersion == 26) {
+            setAndUpdate("updatenotify.label.master", "[Master]");
+            setAndUpdate("language-version", 27);
+            selectedVersion = 27;
+        }
         messagei18n.save();
     }
 
