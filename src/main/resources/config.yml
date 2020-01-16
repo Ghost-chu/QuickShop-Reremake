@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 76
+config-version: 77
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -108,6 +108,8 @@ database:
   prefix: none
   usessl: false
   queue: true
+  # Auto set table encoding to utf8mb4 (beta)
+  auto-fix-encoding-issue-in-database: false
 
 #Limits the number of shops a person can create and own at a single time.
 limits:
