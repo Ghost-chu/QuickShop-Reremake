@@ -327,12 +327,7 @@
             <groupId>com.github.intellectualsites.plotsquared</groupId>
             <artifactId>PlotSquared-API</artifactId>
             <version>4.400</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>worldedit-core</artifactId>
-                    <groupId>com.sk89q.worldedit</groupId>
-                </exclusion>
-            </exclusions>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
