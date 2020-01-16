@@ -158,6 +158,10 @@ public class PlayerListener implements Listener {
                     itemAmount = Math.min(itemAmount, shop.getRemainingStock());
                 }
 
+                if(itemAmount < 0){
+                    itemAmount = 0;
+                }
+
                 p.sendMessage(MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner());
@@ -173,6 +177,10 @@ public class PlayerListener implements Listener {
                     // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to true,
                     // the unlimited shop owner should have enough money.
                     items = Math.min(items, ownerCanAfford);
+                }
+
+                if(items < 0){
+                    items = 0;
                 }
 
                 p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
