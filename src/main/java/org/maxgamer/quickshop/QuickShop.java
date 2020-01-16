@@ -1181,6 +1181,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("database.auto-fix-encoding-issue-in-database", false);
             getConfig().set("send-shop-protection-alert", false);
             getConfig().set("send-display-item-protection-alert", false);
+            getConfig().set("shop.use-fast-shop-search-algorithm",false);
             getConfig().set("config-version", 77);
         }
 
