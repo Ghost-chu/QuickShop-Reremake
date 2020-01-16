@@ -128,7 +128,8 @@ public class MsgUtil {
      * @return True if success, False if the player is offline or null
      */
     public static boolean flush(@NotNull OfflinePlayer p) {
-        if (p.isOnline()) {
+        Player player = p.getPlayer();
+        if (player!= null) {
             UUID pName = p.getUniqueId();
             LinkedList<String> msgs = player_messages.get(pName);
             if (msgs != null) {
@@ -137,7 +138,7 @@ public class MsgUtil {
                         Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
                         String[] msgData = msg.split("##########");
                         try {
-                            sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
+                            sendItemholochat(player, msgData[0], Util.deserialize(msgData[1]), msgData[2]);
                         } catch (InvalidConfigurationException e) {
                             p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
                         } catch (ArrayIndexOutOfBoundsException e2) {
