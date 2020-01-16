@@ -397,3 +397,14 @@ integration:
       - FLAG
       - CHEST_ACCESS
     trade: []
+  plotsquared:
+    enable: false
+    #Player if want create a shop, player must have quickshop.create flag
+    #Player if want trade a shop, player must have quickshop.trade flag
+
+
+
+
+
+
+

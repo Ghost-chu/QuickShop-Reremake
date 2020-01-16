@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is TownyIntegration.java
+ * This file is a part of project QuickShop, the name is PlotSquaredIntegration.java
  * Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  * Copyright (C) Bukkit Commons Studio and contributors
  *
@@ -23,12 +23,15 @@ import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
 import org.maxgamer.quickshop.PluginsIntegration.IntegratedPlugin;
+import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
+@IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class TownyIntegration implements IntegratedPlugin {
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
