@@ -1232,6 +1232,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.worldguard.enable", false);
             getConfig().set("integration.worldguard.create", new String[] {"FLAG","CHEST_ACCESS"});
             getConfig().set("integration.worldguard.trade", new String[]{});
+            getConfig().set("integration.plotsquared.enable", false);
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
