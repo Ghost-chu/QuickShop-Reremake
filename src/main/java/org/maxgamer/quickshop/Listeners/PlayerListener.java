@@ -35,7 +35,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Economy.Economy;
@@ -158,7 +157,7 @@ public class PlayerListener implements Listener {
                     itemAmount = Math.min(itemAmount, shop.getRemainingStock());
                 }
 
-                if(itemAmount < 0){
+                if (itemAmount < 0) {
                     itemAmount = 0;
                 }
 
@@ -179,7 +178,7 @@ public class PlayerListener implements Listener {
                     items = Math.min(items, ownerCanAfford);
                 }
 
-                if(items < 0){
+                if (items < 0) {
                     items = 0;
                 }
 
@@ -261,7 +260,7 @@ public class PlayerListener implements Listener {
 
         final Inventory inventory = e.getInventory();
         //noinspection ConstantConditions
-        if(inventory == null){ //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
+        if (inventory == null) { //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
             return;
         }
         final Location location = inventory.getLocation();
@@ -278,19 +277,14 @@ public class PlayerListener implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
         if (ListenerHelper.isDisabled(e.getClass())) {
             return;
         }
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    MsgUtil.flush(e.getPlayer());
-                }
-            }.runTaskAsynchronously(plugin);
+            MsgUtil.flush(e.getPlayer());
         }
 
     }
