@@ -163,6 +163,10 @@
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>p2-repo</id>
+            <url>http://ci.athion.net/job/PlotSquared-Releases/ws/mvn/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -312,6 +316,23 @@
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.2</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.intellectualsites.plotsquared</groupId>
+            <artifactId>PlotSquared-API</artifactId>
+            <version>4.400</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>worldedit-core</artifactId>
+                    <groupId>com.sk89q.worldedit</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
