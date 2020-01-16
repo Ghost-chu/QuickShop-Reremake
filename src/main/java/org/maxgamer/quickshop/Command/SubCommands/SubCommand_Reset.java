@@ -80,7 +80,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 msgs.delete();
                 MsgUtil.loadCfgMessages();
                 sender.sendMessage(MsgUtil.getMessage("complete",sender));
-
+                break;
         }
     }
 
