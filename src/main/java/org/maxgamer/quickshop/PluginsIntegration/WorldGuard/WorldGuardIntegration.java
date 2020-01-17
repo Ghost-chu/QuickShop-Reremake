@@ -29,6 +29,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,9 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     private List<WorldGuardFlags> tradeFlags;
     private StateFlag createFlag;
     private StateFlag tradeFlag;
+    private QuickShop plugin;
     public WorldGuardIntegration(QuickShop plugin){
+        this.plugin = plugin;
         createFlags = WorldGuardFlags.deserialize(plugin.getConfig().getStringList("integration.worldguard.create"));
         tradeFlags = WorldGuardFlags.deserialize(plugin.getConfig().getStringList("integration.worldguard.trade"));
     }
@@ -59,6 +62,8 @@ public class WorldGuardIntegration implements IntegratedPlugin {
             this.tradeFlag = new StateFlag("quickshop-trade", true);
             registry.register(this.createFlag);
             registry.register(this.tradeFlag);
+            plugin.getLogger().info(ChatColor.GREEN+getName()+" flags register successfully.");
+            Util.debugLog("Success register "+getName()+" flags.");
         } catch (FlagConflictException e) {
             e.printStackTrace();
         }
