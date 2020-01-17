@@ -6,7 +6,21 @@ authors: [BukkitCommonsStudio,Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
 #Now we only need Vault.
-softdepend: [Vault, Reserve, LangUtils, PlaceholderAPI, NoCheatPlus, LuckPerms, PermissionEx, GroupManager, ClearLag]
+softdepend:
+  - Vault
+  - Reserve
+  - PlaceholderAPI
+  - NoCheatPlus
+  - LuckPerms
+  - PermissionEx
+  - GroupManager
+  - ClearLag
+  - Essentials
+  - CMI
+  - PlotSquared
+  - Residence
+  - Towny
+  - WorldGuard
 
 api-version: 1.13
 

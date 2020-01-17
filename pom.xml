@@ -329,5 +329,12 @@
             <version>4.400</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.bekvon.bukkit.residence</groupId>
+            <artifactId>Residence</artifactId>
+            <version>4.4.8.2</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

@@ -401,6 +401,27 @@ integration:
     enable: false
     #Player if want create a shop, player must have quickshop.create flag
     #Player if want trade a shop, player must have quickshop.trade flag
+  residence:
+    enable: false
+      #Player if want create a shop, player must pass which checks?
+      #You can use multi checks in same time.
+      #Priority: UP to DOWN
+      #
+      #Avaliable field:
+      #FLAG = Region must set quickshop.create flag available for players.
+      #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    create:
+      - FLAG
+      - interact
+      - use
+      #Player if want trade a shop, player must pass which checks?
+      #You can use multi checks in same time.
+      #Priority: UP to DOWN
+      #
+      #Avaliable field:
+      #FLAG = Region must set quickshop.create flag available for players.
+      #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    trade: []
 
 
 
