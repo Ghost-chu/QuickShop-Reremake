@@ -387,18 +387,27 @@ integration:
       #Priority: UP to DOWN
       #
       #Avaliable field:
-      #FLAG = Region must set quickshop.create flag available for players.
+      #FLAG = Region must set quickshop-create flag available for players.
       #BUILD = Player must have ability to build at the target region.
       #CHEST_ACCESS = Player must can access chest.
       #INTERACT = Player must have ability to interact in the target region.
     create:
       - FLAG
       - CHEST_ACCESS
+        #Player if want create a shop, player must pass which checks?
+        #You can use multi checks in same time.
+        #Priority: UP to DOWN
+        #
+        #Avaliable field:
+        #FLAG = Region must set quickshop-trade flag available for players.
+        #BUILD = Player must have ability to build at the target region.
+        #CHEST_ACCESS = Player must can access chest.
+      #INTERACT = Player must have ability to interact in the target region.
     trade: []
   plotsquared:
     enable: false
-    #Player if want create a shop, player must have quickshop.create flag
-    #Player if want trade a shop, player must have quickshop.trade flag
+    #Player if want create a shop, player must have quickshop-create flag
+    #Player if want trade a shop, player must have quickshop-trade flag
   residence:
     enable: false
       #Player if want create a shop, player must pass which checks?

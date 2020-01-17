@@ -61,8 +61,8 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
 
     @Override
     public void load() {
-        this.createFlag = new BooleanFlag("quickshop.create");
-        this.tradeFlag = new BooleanFlag("quickshop.trade");
+        this.createFlag = new BooleanFlag("quickshop-create");
+        this.tradeFlag = new BooleanFlag("quickshop-trade");
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
     }
