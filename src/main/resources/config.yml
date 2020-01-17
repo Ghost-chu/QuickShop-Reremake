@@ -50,9 +50,6 @@ force-bukkit-chat-handler: false
 
 #Disallow QuickShop-Reremake to send metrics data to bStats.
 disabled-metrics: false
-#Use "Anonymous" to replace your server name, BUT it will make it so we cannot send important alerts.
-#Usually, if we have an important alert that needs to be sent. We will get your servers name from bStats and Google your servers discord and send an alert to the server administrators there.
-anonymous-metrics: false
 
 #Should QS be allowed to check for updates on SpigotMC.org?
 updater: true
@@ -357,6 +354,7 @@ cachingpool:
 mixedeconomy:
   deposit: "eco give {0} {1}"
   withdraw: "eco take {0} {1}"
+#Integration is under BETA stage, please report any bugs to our Issue Tracker.
 integration:
   #Towny Integration Component
   towny:
