@@ -731,7 +731,6 @@ public class QuickShop extends JavaPlugin {
         if (!getConfig().getBoolean("disabled-metrics")) {
             String serverVer = Bukkit.getVersion();
             String bukkitVer = Bukkit.getBukkitVersion();
-            String serverName = Bukkit.getServer().getName();
             String vaultVer;
             Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
             if (vault != null) {
@@ -771,7 +770,6 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
             metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
-            metrics.addCustomChart(new Metrics.SimplePie("server_name", () -> serverName));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
             metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
@@ -1272,6 +1270,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.factions.trade.require.safezone", false);
             getConfig().set("integration.factions.trade.require.own", false);
             getConfig().set("integration.factions.trade.require.warzone", false);
+            getConfig().set("anonymous-metrics", null);
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
