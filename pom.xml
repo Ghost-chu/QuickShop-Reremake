@@ -61,11 +61,6 @@
                             </excludes>
                         </filter>
                     </filters>
-                    <artifactSet>
-                        <includes>
-                            <include>me.lucko:commodore</include>
-                        </includes>
-                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>me.lucko.commodore</pattern>
