@@ -23,7 +23,6 @@ import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -350,9 +349,7 @@ public class QuickShop extends JavaPlugin {
     public void onLoad() {
         instance = this;
         replaceLogger();
-        if(getConfig().getBoolean("dev-mode")){
-            getLogger().info(ChatColor.AQUA+"Logger replaced!");
-        }
+
         this.bootError = null;
         this.integrationHelper = new IntegrationHelper();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
@@ -1385,4 +1382,5 @@ public class QuickShop extends JavaPlugin {
         }
 
     }
+
 }
