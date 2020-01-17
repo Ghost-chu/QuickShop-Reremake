@@ -34,3 +34,4 @@ hs_err_pid*
 QuickShop.iml
 target/*
 build/
+/target/

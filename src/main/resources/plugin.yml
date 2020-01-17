@@ -1,7 +1,7 @@
 name: ${name}
 main: ${package}.${name}
 version: ${project.version}
-authors: [BukkitCommonsStudio,Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
+authors: [BukkitCommonsStudio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
