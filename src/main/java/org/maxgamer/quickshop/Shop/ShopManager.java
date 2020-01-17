@@ -447,6 +447,10 @@ public class ShopManager {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
+        if(!plugin.getIntegrationHelper().callIntegrationsCanTrade(p,info.getLocation())){
+            Util.debugLog("Cancel by integrations.");
+            return;
+        }
         Economy eco = plugin.getEconomy();
 
         // Get the shop they interacted with
@@ -679,6 +683,11 @@ public class ShopManager {
         }
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
         if (Util.fireCancellableEvent(ssShopCreateEvent)) {
+            Util.debugLog("Cancelled by plugin");
+            return;
+        }
+        if(!plugin.getIntegrationHelper().callIntegrationsCanCreate(player,info.getLocation())){
+            Util.debugLog("Cancelled by integrations");
             return;
         }
         Location loc = shop.getLocation();
