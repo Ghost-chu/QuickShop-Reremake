@@ -36,6 +36,7 @@ public class IntegrationHelper {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
+        Util.debugLog("Registering "+clazz.getName());
         integrations.add(clazz);
 
     }
@@ -44,12 +45,14 @@ public class IntegrationHelper {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
+        Util.debugLog("Unregistering "+clazz.getName());
         integrations.remove(clazz);
     }
 
     public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
-            if (integratedPlugin.getClass().getAnnotation(IntegrationStage.class).loadStage() == stage) {
+            if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
+                Util.debugLog("Calling for load "+integratedPlugin.getName());
                 integratedPlugin.load();
             }
         });
@@ -57,7 +60,8 @@ public class IntegrationHelper {
 
     public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
-            if (integratedPlugin.getClass().getAnnotation(IntegrationStage.class).loadStage() == stage) {
+            if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
+                Util.debugLog("Calling for unload "+integratedPlugin.getName());
                 integratedPlugin.unload();
             }
         });
