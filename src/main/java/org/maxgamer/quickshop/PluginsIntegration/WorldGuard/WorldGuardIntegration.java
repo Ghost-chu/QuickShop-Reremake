@@ -55,8 +55,8 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
-            this.createFlag = new StateFlag("quickshop.create", false);
-            this.tradeFlag = new StateFlag("quickshop.trade", true);
+            this.createFlag = new StateFlag("quickshop-create", false);
+            this.tradeFlag = new StateFlag("quickshop-trade", true);
             registry.register(this.createFlag);
             registry.register(this.tradeFlag);
         } catch (FlagConflictException e) {
