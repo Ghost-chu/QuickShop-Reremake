@@ -42,6 +42,7 @@ import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
 import org.maxgamer.quickshop.PluginsIntegration.PlotSquared.PlotSquaredIntegration;
+import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -613,6 +614,12 @@ public class QuickShop extends JavaPlugin {
             Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
             if(plotSquared != null && plotSquared.isEnabled()){
                 this.integrationHelper.register(new PlotSquaredIntegration(this));
+            }
+        }
+        if(getConfig().getBoolean("integration.residence.enable")){
+            Plugin residence = Bukkit.getPluginManager().getPlugin("Residence");
+            if(residence != null && residence.isEnabled()){
+                this.integrationHelper.register(new ResidenceIntegration(this));
             }
         }
     }
@@ -1233,6 +1240,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.worldguard.create", new String[] {"FLAG","CHEST_ACCESS"});
             getConfig().set("integration.worldguard.trade", new String[]{});
             getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.residence.enable", false);
+            getConfig().set("integration.residence.create", new String[] {"FLAG","interact","use"});
+            getConfig().set("integration.residence.trade", new String[] {});
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
