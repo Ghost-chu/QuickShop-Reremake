@@ -34,7 +34,12 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -97,6 +102,14 @@ public class Paste {
         //noinspection deprecation
         finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
         finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
+        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+        List<String> arguments = runtimeMxBean.getInputArguments();
+        finalReport.append("\tInput Args: ").append(Util.list2String(arguments)).append("\n");
+        finalReport.append("\tVM Name: ").append(runtimeMxBean.getVmName()).append("\n");
+        Map<String,String> sys = runtimeMxBean.getSystemProperties();
+        List<String> sysData = new ArrayList<>();
+        sys.keySet().forEach(key-> sysData.add(key+"="+sys.get(key)));
+        finalReport.append("\tSystem Properties: ").append(Util.list2String(sysData)).append("\n");
         finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit.getMaxPlayers())
                 .append("\n");
         finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
@@ -136,17 +149,17 @@ public class Paste {
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
+                    .inputStream2ByteArray(new File(plugin.getDataFolder(), "itemi18n.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tenchi18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
+                    .inputStream2ByteArray(new File(plugin.getDataFolder(), "enchi18n.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(new File(".", "logs"), "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
+                    .inputStream2ByteArray(new File(plugin.getDataFolder(), "potioni18n").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
