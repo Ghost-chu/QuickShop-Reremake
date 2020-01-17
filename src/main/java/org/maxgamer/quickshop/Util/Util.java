@@ -219,7 +219,7 @@ public class Util {
         int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
 
         for (String log : logs) {
-            String text = "[DEBUG] [" + className + "]" + " [" + methodName + "] (" + codeLine + ") " + log;
+            String text = "["+ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN  + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN  + codeLine + ChatColor.RESET + ") " + log;
             debugLogs.add(text);
             if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
                 debugLogs.remove(0);
@@ -256,19 +256,19 @@ public class Util {
         yamlOptions.setIndent(2);
         Yaml yaml = new Yaml(yamlOptions);
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        Map<Object,Object> root = yaml.load(config);
+        Map<Object, Object> root = yaml.load(config);
         //noinspection unchecked
-        Map<String, Object> item = (Map<String, Object>)root.get("item");
+        Map<String, Object> item = (Map<String, Object>) root.get("item");
         int itemDataVersion = Integer.parseInt(String.valueOf(item.get("v")));
-        try{
+        try {
             //Try load the itemDataVersion to do some checks.
             //noinspection deprecation
-            if(itemDataVersion > Bukkit.getUnsafe().getDataVersion()){
-                Util.debugLog("WARNING: DataVersion not matched with ItemStack: "+config);
+            if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
+                Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
                 //okay we need some things to do
-                if(plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")){
+                if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     //okay it enabled
-                    Util.debugLog("QuickShop is trying force loading "+config);
+                    Util.debugLog("QuickShop is trying force loading " + config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) {//Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
@@ -277,23 +277,24 @@ public class Util {
                         item.put("v", Bukkit.getUnsafe().getDataVersion());
                     }
                     //Okay we have hacked the dataVersion, now put it back
-                    root.put("item",item);
+                    root.put("item", item);
                     config = yaml.dump(root);
 
-                    Util.debugLog("Updated, we will try load as hacked ItemStack: "+config);
-                }else{
-                    plugin.getLogger().warning("Cannot load ItemStack "+config+" because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
+                    Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
+                } else {
+                    plugin.getLogger().warning("Cannot load ItemStack " + config + " because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
                     plugin.getLogger().warning("You can try force load this ItemStack by our hacked ItemStack read util(shop.force-load-downgrade-items), but beware, the data may damaged if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
             yamlConfiguration.loadFromString(config);
             return yamlConfiguration.getItemStack("item");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             yamlConfiguration.loadFromString(config);
             return yamlConfiguration.getItemStack("item");
         }
     }
+
     /**
      * Check two location is or not equals for the BlockPosition on 2D
      *
@@ -362,6 +363,7 @@ public class Util {
             return null;
         }
     }
+
     /**
      * Return the Class name.
      *
@@ -422,7 +424,7 @@ public class Util {
                 .getType() != Material.SPLASH_POTION)) {
             return null;
         }
-        if(!(iStack.getItemMeta() instanceof PotionMeta)){
+        if (!(iStack.getItemMeta() instanceof PotionMeta)) {
             return null;
         }
         List<String> pEffects = new ArrayList<>();
@@ -637,7 +639,7 @@ public class Util {
             }
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
-        disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger",false);
+        disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger", false);
 
     }
 
@@ -687,7 +689,7 @@ public class Util {
         if (inv == null) {
             return;
         }
-        if(inv.getHolder() == null){
+        if (inv.getHolder() == null) {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
@@ -747,17 +749,17 @@ public class Util {
      * @return true if the ItemStack is black listed. False if not.
      */
     public static boolean isBlacklisted(@NotNull ItemStack stack) {
-        if (blacklist.contains(stack.getType())){
+        if (blacklist.contains(stack.getType())) {
             return true;
         }
-        if(!stack.hasItemMeta()){
+        if (!stack.hasItemMeta()) {
             return false;
         }
-        if(!Objects.requireNonNull(stack.getItemMeta()).hasLore()){
-            return  false;
+        if (!Objects.requireNonNull(stack.getItemMeta()).hasLore()) {
+            return false;
         }
-        for (String lore: Objects.requireNonNull(stack.getItemMeta().getLore())) {
-            if(plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)){
+        for (String lore : Objects.requireNonNull(stack.getItemMeta().getLore())) {
+            if (plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)) {
                 return true;
             }
         }
@@ -965,7 +967,7 @@ public class Util {
      * @return Map1 match Map2 and Map2 match Map1
      */
     @Deprecated
-    public static boolean mapDuoMatches(@NotNull Map<?,?> map1, @NotNull Map<?,?> map2) {
+    public static boolean mapDuoMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
         boolean result = mapMatches(map1, map2);
         if (!result) {
             return false;
@@ -980,7 +982,7 @@ public class Util {
      * @param map2 Map2
      * @return Map1 match Map2
      */
-    public static boolean mapMatches(@NotNull Map<?,?> map1, @NotNull Map<?,?> map2) {
+    public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
         for (Object obj : map1.keySet()) {
             if (!map2.containsKey(obj)) {
                 return false;
@@ -1092,8 +1094,9 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String(filecontent,StandardCharsets.UTF_8);
+        return new String(filecontent, StandardCharsets.UTF_8);
     }
+
     /**
      * Read the file to the String
      *
@@ -1110,8 +1113,9 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String(filecontent,StandardCharsets.UTF_8);
+        return new String(filecontent, StandardCharsets.UTF_8);
     }
+
     /**
      * Send warning message when some plugin calling deprecated method...
      * With the trace.
@@ -1271,6 +1275,7 @@ public class Util {
 
     /**
      * Calc the string md5
+     *
      * @param s string
      * @return md5
      */
@@ -1292,19 +1297,19 @@ public class Util {
                 sb.append(Integer.toHexString(n));
             }
             return sb.toString().toLowerCase();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return "";
         }
     }
 
     /**
      * Call a event and check it is cancelled.
+     *
      * @param event The event implement the Cancellable interface.
      * @return The event is cancelled.
      */
-    public static boolean fireCancellableEvent(@NotNull Cancellable event){
-        if(!(event instanceof Event)){
+    public static boolean fireCancellableEvent(@NotNull Cancellable event) {
+        if (!(event instanceof Event)) {
             throw new IllegalArgumentException("Cancellable must is event implement");
         }
         Bukkit.getPluginManager().callEvent((Event) event);
@@ -1313,11 +1318,12 @@ public class Util {
 
     /**
      * Get QuickShop caching folder
+     *
      * @return The caching folder
      */
-    public static File getCacheFolder(){
-        File cache = new File(QuickShop.instance.getDataFolder(),"cache");
-        if(!cache.exists()){
+    public static File getCacheFolder() {
+        File cache = new File(QuickShop.instance.getDataFolder(), "cache");
+        if (!cache.exists()) {
             cache.mkdirs();
         }
         return cache;
