@@ -159,7 +159,7 @@ public class Paste {
             finalReport.append("\t*********************************\n");
             finalReport.append("\tpotioni18n.yml:\n");
             finalReport.append("\t\t\n").append(new String(Objects.requireNonNull(Util
-                    .inputStream2ByteArray(new File(plugin.getDataFolder(), "potioni18n").getPath())), StandardCharsets.UTF_8)).append("\n");
+                    .inputStream2ByteArray(new File(plugin.getDataFolder(), "potioni18n.yml").getPath())), StandardCharsets.UTF_8)).append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
