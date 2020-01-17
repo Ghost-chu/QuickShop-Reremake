@@ -66,14 +66,16 @@ public class IntegrationHelper {
             if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
                 Util.debugLogHeavy("Calling for unload "+integratedPlugin.getName());
                 integratedPlugin.unload();
+            }else{
+                Util.debugLogHeavy("Ignored calling because "+integratedPlugin.getName()+" stage is "+integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
             }
         });
     }
 
     public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
-        for (IntegratedPlugin integratedPlugin : integrations) {
-            if (!integratedPlugin.canCreateShopHere(player, location)) {
-                Util.debugLogHeavy("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop creation.");
+        for(IntegratedPlugin plugin : integrations){
+            if (!plugin.canCreateShopHere(player,location)) {
+                Util.debugLogHeavy("Cancelled by "+plugin.getName());
                 return false;
             }
         }
@@ -81,9 +83,9 @@ public class IntegrationHelper {
     }
 
     public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
-        for (IntegratedPlugin integratedPlugin : integrations) {
-            if (!integratedPlugin.canTradeShopHere(player, location)) {
-                Util.debugLogHeavy("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop trading.");
+        for(IntegratedPlugin plugin : integrations){
+            if (!plugin.canTradeShopHere(player,location)) {
+                Util.debugLogHeavy("Cancelled by "+plugin.getName());
                 return false;
             }
         }
