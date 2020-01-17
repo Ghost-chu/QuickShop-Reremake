@@ -47,7 +47,6 @@ public class QuickShopLogger extends PluginLogger {
 
     public QuickShopLogger(Plugin context) {
         super(context);
-
         try {
             if (Ansi.isEnabled()) {
                 registerStyles();
@@ -59,7 +58,7 @@ public class QuickShopLogger extends PluginLogger {
 
 
         String prefix = context.getDescription().getPrefix();
-        pluginName = prefix != null ? "[" + ChatColor.DARK_GREEN + prefix + ChatColor.RESET + "] " : "[" + ChatColor.DARK_GREEN + context.getDescription().getName() + ChatColor.RESET + "] ";
+        pluginName = prefix != null ? "[" + ChatColor.YELLOW+ prefix + ChatColor.RESET + "] " : "[" + ChatColor.YELLOW + context.getDescription().getName() + ChatColor.RESET + "] ";
         if (AnsiSupported) {
             pluginName = applyStyles(pluginName);
         }
@@ -72,12 +71,12 @@ public class QuickShopLogger extends PluginLogger {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        this.config();
         //super.setUseParentHandlers(false);
 
     }
-
     public void log(LogRecord logRecord) {
-
+        logRecord.setLoggerName("");
         String message = logRecord.getMessage();
         if (message != null) {
             if (logRecord.getLevel() == Level.WARNING) {
@@ -92,7 +91,7 @@ public class QuickShopLogger extends PluginLogger {
             logRecord.setMessage(message);
         }
 
-        super.log( logRecord);
+        super.log(logRecord);
     }
 
     public String applyStyles(String message) {
