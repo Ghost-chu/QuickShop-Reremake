@@ -50,6 +50,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
 import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
@@ -58,6 +59,7 @@ import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
@@ -345,6 +347,7 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        replaceLogger();
         this.bootError = null;
         this.integrationHelper = new IntegrationHelper();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
@@ -1364,5 +1367,16 @@ public class QuickShop extends JavaPlugin {
      */
     public static PermissionManager getPermissionManager() {
         return permissionManager;
+    }
+
+    private void replaceLogger() {
+        try {
+
+                Field logger = JavaPlugin.class.getDeclaredField("logger");
+                logger.setAccessible(true);
+                logger.set(this, new QuickShopLogger(this));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }
