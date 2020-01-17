@@ -21,6 +21,7 @@ softdepend:
   - Residence
   - Towny
   - WorldGuard
+  - Factions
 
 api-version: 1.13
 

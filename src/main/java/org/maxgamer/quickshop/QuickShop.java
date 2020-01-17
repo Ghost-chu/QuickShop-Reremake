@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
+import org.maxgamer.quickshop.PluginsIntegration.FactionsUUID.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
 import org.maxgamer.quickshop.PluginsIntegration.PlotSquared.PlotSquaredIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
@@ -620,6 +621,12 @@ public class QuickShop extends JavaPlugin {
             Plugin residence = Bukkit.getPluginManager().getPlugin("Residence");
             if(residence != null && residence.isEnabled()){
                 this.integrationHelper.register(new ResidenceIntegration(this));
+            }
+        }
+        if(getConfig().getBoolean("integration.factions.enable")){
+            Plugin factions = Bukkit.getPluginManager().getPlugin("Factions");
+            if(factions != null && factions.isEnabled()){
+                this.integrationHelper.register(new FactionsUUIDIntegration(this));
             }
         }
     }
@@ -1245,6 +1252,26 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.residence.enable", false);
             getConfig().set("integration.residence.create", new String[] {"FLAG","interact","use"});
             getConfig().set("integration.residence.trade", new String[] {});
+
+            getConfig().set("integration.factions.enable", false);
+            getConfig().set("integration.factions.create.flag", new String[] {});
+            getConfig().set("integration.factions.trade.flag", new String[] {});
+            getConfig().set("integration.factions.create.require.open", false);
+            getConfig().set("integration.factions.create.require.normal", true);
+            getConfig().set("integration.factions.create.require.wilderness", false);
+            getConfig().set("integration.factions.create.require.peaceful", true);
+            getConfig().set("integration.factions.create.require.permanent", false);
+            getConfig().set("integration.factions.create.require.safezone", false);
+            getConfig().set("integration.factions.create.require.own", false);
+            getConfig().set("integration.factions.create.require.warzone", false);
+            getConfig().set("integration.factions.trade.require.open", false);
+            getConfig().set("integration.factions.trade.require.normal", true);
+            getConfig().set("integration.factions.trade.require.wilderness", false);
+            getConfig().set("integration.factions.trade.require.peaceful", false);
+            getConfig().set("integration.factions.trade.require.permanent", false);
+            getConfig().set("integration.factions.trade.require.safezone", false);
+            getConfig().set("integration.factions.trade.require.own", false);
+            getConfig().set("integration.factions.trade.require.warzone", false);
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
