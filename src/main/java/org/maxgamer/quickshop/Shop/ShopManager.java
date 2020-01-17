@@ -320,6 +320,11 @@ public class ShopManager {
                 shop.onUnload();
                 return;
             }
+            if(!plugin.getIntegrationHelper().callIntegrationsCanCreate(p,info.getLocation())){
+                shop.onUnload();
+                Util.debugLog("Cancelled by integrations");
+                return;
+            }
             /* The shop has hereforth been successfully created */
             createShop(shop, info);
             if (!plugin.getConfig().getBoolean("shop.lock")) {
@@ -684,10 +689,6 @@ public class ShopManager {
         ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
         if (Util.fireCancellableEvent(ssShopCreateEvent)) {
             Util.debugLog("Cancelled by plugin");
-            return;
-        }
-        if(!plugin.getIntegrationHelper().callIntegrationsCanCreate(player,info.getLocation())){
-            Util.debugLog("Cancelled by integrations");
             return;
         }
         Location loc = shop.getLocation();
