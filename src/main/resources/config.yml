@@ -422,6 +422,38 @@ integration:
       #FLAG = Region must set quickshop.create flag available for players.
       #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
     trade: []
+  factions:
+    enable: false
+      #Player if want create a shop, player must pass which checks?
+    create:
+      #Faction require the status must match with under:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: true
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #Player must have flags in the faction:
+      flags:
+        - CONTAINER
+        - ECONOMY
+    #Faction require the status must match with under?
+    trade:
+      #Faction require:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: false
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #Player must have flags in the faction:
+      flags: []
 
 
 
