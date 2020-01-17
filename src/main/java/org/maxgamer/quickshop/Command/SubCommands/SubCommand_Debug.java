@@ -27,10 +27,14 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Util;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SubCommand_Debug implements CommandProcesser {
 
@@ -45,6 +49,7 @@ public class SubCommand_Debug implements CommandProcesser {
         list.add("dev");
         list.add("devmode");
         list.add("handlerlist");
+        list.add("jvm");
 
         return list;
     }
@@ -69,6 +74,20 @@ public class SubCommand_Debug implements CommandProcesser {
                 }
 
                 printHandlerList(sender, cmdArg[1]);
+                break;
+            case "jvm":
+                RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+
+                List<String> arguments = runtimeMxBean.getInputArguments();
+                sender.sendMessage(ChatColor.GOLD+"Arguments: "+ChatColor.AQUA+ Util.list2String(arguments));
+                sender.sendMessage(ChatColor.GOLD+"Name: "+ChatColor.AQUA+ runtimeMxBean.getName());
+                sender.sendMessage(ChatColor.GOLD+"VM Name: "+ChatColor.AQUA+ runtimeMxBean.getVmName());
+                sender.sendMessage(ChatColor.GOLD+"Uptime: "+ChatColor.AQUA+ runtimeMxBean.getUptime());
+                sender.sendMessage(ChatColor.GOLD+"JVM Ver: "+ChatColor.AQUA+ runtimeMxBean.getVmVersion());
+                Map<String,String> sys = runtimeMxBean.getSystemProperties();
+                List<String> sysData = new ArrayList<>();
+                sys.keySet().forEach(key-> sysData.add(key+"="+sys.get(key)));
+                sender.sendMessage(ChatColor.GOLD+"Sys Pro: "+ChatColor.AQUA+ Util.list2String(sysData));
                 break;
             default:
                 sender.sendMessage("Error, no correct args given.");
