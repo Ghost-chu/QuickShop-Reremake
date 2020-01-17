@@ -607,6 +607,10 @@ public class QuickShop extends JavaPlugin {
         }
         registerIntegrations();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
+        String[] easterEgg =new FunnyEasterEgg().getRandomEasterEgg();
+        if(!(easterEgg == null)){
+            Arrays.stream(easterEgg).forEach(str->getLogger().info(str));
+        }
     }
 
     private void registerIntegrations(){
