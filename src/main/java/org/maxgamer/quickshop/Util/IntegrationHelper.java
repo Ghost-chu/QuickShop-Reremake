@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,15 +29,15 @@ import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Getter
 public class IntegrationHelper {
-    Set<IntegratedPlugin> integrations = new HashSet<>();
+    private Set<IntegratedPlugin> integrations = new HashSet<>();
 
     public void register(@NotNull IntegratedPlugin clazz) {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
-        Util.debugLog("Registering "+clazz.getName());
+        Util.debugLogHeavy("Registering "+clazz.getName());
         integrations.add(clazz);
 
     }
@@ -45,15 +46,17 @@ public class IntegrationHelper {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
-        Util.debugLog("Unregistering "+clazz.getName());
+        Util.debugLogHeavy("Unregistering "+clazz.getName());
         integrations.remove(clazz);
     }
 
     public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
             if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
-                Util.debugLog("Calling for load "+integratedPlugin.getName());
+                Util.debugLogHeavy("Calling for load "+integratedPlugin.getName());
                 integratedPlugin.load();
+            }else{
+                Util.debugLogHeavy("Ignored calling because "+integratedPlugin.getName()+" stage is "+integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
             }
         });
     }
@@ -61,7 +64,7 @@ public class IntegrationHelper {
     public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
             if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
-                Util.debugLog("Calling for unload "+integratedPlugin.getName());
+                Util.debugLogHeavy("Calling for unload "+integratedPlugin.getName());
                 integratedPlugin.unload();
             }
         });
@@ -70,7 +73,7 @@ public class IntegrationHelper {
     public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin integratedPlugin : integrations) {
             if (!integratedPlugin.canCreateShopHere(player, location)) {
-                Util.debugLog("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop creation.");
+                Util.debugLogHeavy("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop creation.");
                 return false;
             }
         }
@@ -80,7 +83,7 @@ public class IntegrationHelper {
     public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin integratedPlugin : integrations) {
             if (!integratedPlugin.canTradeShopHere(player, location)) {
-                Util.debugLog("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop trading.");
+                Util.debugLogHeavy("Integration " + integratedPlugin.getName() + " denied the player " + player.getName() + " at " + location + " shop trading.");
                 return false;
             }
         }
@@ -88,7 +91,7 @@ public class IntegrationHelper {
     }
 
     private boolean isIntegrationClass(@NotNull IntegratedPlugin clazz) {
-        return clazz.getClass().getAnnotation(IntegrationStage.class) != null;
+        return clazz.getClass().getDeclaredAnnotation(IntegrationStage.class) != null;
     }
 }
 
