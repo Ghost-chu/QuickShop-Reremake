@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.stream.Collectors;
@@ -44,6 +43,7 @@ public class QuickShopLogger extends PluginLogger {
     private final Map<ChatColor, String> replacements = new HashMap<>();
     private static FileHandler debugLogFileHandler = null;
     private static boolean AnsiSupported = true;
+    private String pluginName = "Unknown";
 
     public QuickShopLogger(Plugin context) {
         super(context);
@@ -54,26 +54,36 @@ public class QuickShopLogger extends PluginLogger {
             }
         } catch (NoClassDefFoundError e) {
             AnsiSupported = false;
+            info("Your server doesn't support ANSI color, disabling color formatter...");
         }
 
+
         String prefix = context.getDescription().getPrefix();
-        String pluginName = prefix != null ? "[" + ChatColor.DARK_GREEN + prefix + ChatColor.RESET + "] " : "[" + ChatColor.DARK_GREEN + context.getDescription().getName() + ChatColor.RESET + "] ";
+        pluginName = prefix != null ? "[" + ChatColor.DARK_GREEN + prefix + ChatColor.RESET + "] " : "[" + ChatColor.DARK_GREEN + context.getDescription().getName() + ChatColor.RESET + "] ";
         if (AnsiSupported) {
             pluginName = applyStyles(pluginName);
         }
 
         try {
             Field logger = ReflectionUtil.getField(PluginLogger.class, "pluginName");
-            logger.set(this, pluginName);
+            if (logger != null) {
+                logger.set(this, pluginName);
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        //super.setUseParentHandlers(false);
+
     }
 
     public void log(LogRecord logRecord) {
+
         String message = logRecord.getMessage();
         if (message != null) {
-            if (logRecord.getLevel() == Level.WARNING || logRecord.getLevel() == Level.SEVERE) {
+            if (logRecord.getLevel() == Level.WARNING) {
+                message = ChatColor.YELLOW + message;
+            }
+            if (logRecord.getLevel() == Level.SEVERE) {
                 message = ChatColor.RED + message;
             }
             if (AnsiSupported) {
@@ -82,40 +92,18 @@ public class QuickShopLogger extends PluginLogger {
             logRecord.setMessage(message);
         }
 
-        super.log(logRecord);
+        super.log( logRecord);
     }
 
     public String applyStyles(String message) {
         for (ChatColor color : replacements.keySet()) {
             if (this.replacements.containsKey(color)) {
-                message = message.replaceAll("(?i)" + color.toString(), this.replacements.get(color));
+                message = message.replaceAll("(?i)" + color, this.replacements.get(color));
             } else {
-                message = message.replaceAll("(?i)" + color.toString(), "");
+                message = message.replaceAll("(?i)" + color, "");
             }
         }
-        return message + Ansi.ansi().reset().toString();
-    }
-
-    public void updateDebugLoggerLogLevel() {
-        if (debugLogFileHandler != null) {
-            Level level;
-            try {
-                level = Level.INFO;
-            } catch (IllegalArgumentException e) {
-                level = Level.OFF;
-                this.warning(e.getMessage());
-            }
-            debugLogFileHandler.setLevel(level);
-        }
-    }
-
-    public void disableDebugLogger() {
-        for (Handler h : getHandlers()) {
-            if ("MyPet-Debug-Logger-FileHandler".equals(h.toString())) {
-                removeHandler(h);
-                h.close();
-            }
-        }
+        return message + Ansi.ansi().reset();
     }
 
     private void registerStyles() {

@@ -23,6 +23,7 @@ import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -39,6 +40,7 @@ import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.ReflectionUtil;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.PluginsIntegration.FactionsUUID.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
@@ -348,6 +350,9 @@ public class QuickShop extends JavaPlugin {
     public void onLoad() {
         instance = this;
         replaceLogger();
+        if(getConfig().getBoolean("dev-mode")){
+            getLogger().info(ChatColor.AQUA+"Logger replaced!");
+        }
         this.bootError = null;
         this.integrationHelper = new IntegrationHelper();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
@@ -1371,12 +1376,13 @@ public class QuickShop extends JavaPlugin {
 
     private void replaceLogger() {
         try {
-
-                Field logger = JavaPlugin.class.getDeclaredField("logger");
-                logger.setAccessible(true);
+            Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
+            if (logger != null) {
                 logger.set(this, new QuickShopLogger(this));
+            }
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
     }
 }
