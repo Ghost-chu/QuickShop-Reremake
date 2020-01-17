@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A util to generate a paste report and upload it to Ubuntu Paste
+ * A util to generate a paste report and upload it to EngineHub/Ubuntu Paste
  */
 @AllArgsConstructor
 public class Paste {
