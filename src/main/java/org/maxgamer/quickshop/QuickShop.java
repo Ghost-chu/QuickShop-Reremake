@@ -199,6 +199,7 @@ public class QuickShop extends JavaPlugin {
     private ShopContainerWatcher shopContainerWatcher;
     private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
+    private boolean isUtilInited = false;
 
     /**
      * Get the Player's Shop limit.
@@ -351,11 +352,14 @@ public class QuickShop extends JavaPlugin {
         replaceLogger();
 
         this.bootError = null;
+        getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if(getConfig().getBoolean("integration.worldguard.enable")){
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            if(wg != null && wg.isEnabled()){
+            Util.debugLogHeavy("Check WG plugin...");
+            if(wg != null){
+                Util.debugLogHeavy("Loading WG modules.");
                 this.integrationHelper.register(new WorldGuardIntegration(this)); //WG require register flags when onLoad called.
             }
         }
@@ -480,6 +484,7 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
+        this.isUtilInited = true;
         try {
             MsgUtil.loadCfgMessages();
         } catch (Exception e) {

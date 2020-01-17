@@ -41,6 +41,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Database.MySQLCore;
+import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.Colorizer;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -66,14 +67,14 @@ public class Util {
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
     @Getter
     private static List<String> debugLogs = new LinkedList<>();
-    private static boolean devMode;
+    private static boolean devMode = true;
     private static QuickShop plugin;
     private static EnumMap<Material, Entry<Double, Double>> restrictedPrices = new EnumMap<>(Material.class);
     private static Object serverInstance;
     private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static Field tpsField;
     private static List<String> worldBlacklist = new ArrayList<>();
-    private static boolean disableDebugLogger;
+    private static boolean disableDebugLogger = false;
 
     /**
      * Convert strArray to String.
@@ -198,6 +199,7 @@ public class Util {
      *
      * @param logs logs
      */
+
     public static void debugLog(@NotNull String... logs) {
         if (!devMode) {
             if (disableDebugLogger) {
@@ -220,7 +222,7 @@ public class Util {
 
         for (String log : logs) {
             String text = "["+ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN  + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN  + codeLine + ChatColor.RESET + ") " + log;
-            debugLogs.add(text);
+            debugLogs.add(Colorizer.stripColors(text));
             if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
                 debugLogs.remove(0);
             }
@@ -240,6 +242,42 @@ public class Util {
                 }
             }
         }
+    }
+    /**
+     * Print debug log when plugin running on dev mode.
+     *
+     * @param logs logs
+     */
+
+    public static void debugLogHeavy(@NotNull String... logs) {
+        if (!QuickShop.instance.getConfig().getBoolean("dev-mode")) {
+            return;
+        }
+        long startTime = System.currentTimeMillis();
+        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        try {
+            Class<?> c = Class.forName(className);
+            className = c.getSimpleName();
+            if (!c.getSimpleName().isEmpty()) {
+                className = c.getSimpleName();
+            }
+        } catch (ClassNotFoundException e) {
+            //Ignore
+        }
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
+
+        for (String log : logs) {
+            String text = "["+ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN  + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN  + codeLine + ChatColor.RESET + ") " + log;
+            debugLogs.add(Colorizer.stripColors(text));
+            if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
+                debugLogs.remove(0);
+            }
+            if (QuickShop.instance.getConfig().getBoolean("dev-mode")) {
+                QuickShop.instance.getLogger().info(text);
+            }
+        }
+        long debugLogCost = System.currentTimeMillis() - startTime;
     }
 
     /**
