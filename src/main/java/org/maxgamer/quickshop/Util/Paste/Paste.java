@@ -115,6 +115,9 @@ public class Paste {
         finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
         finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
         finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer()).append("\n");
+        List<String> modules = new ArrayList<>();;
+        plugin.getIntegrationHelper().getIntegrations().forEach(m->modules.add(m.getName()));
+        finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
