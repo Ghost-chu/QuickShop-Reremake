@@ -23,6 +23,7 @@ import com.github.intellectualsites.plotsquared.api.PlotAPI;
 import com.github.intellectualsites.plotsquared.plot.flag.BooleanFlag;
 import com.github.intellectualsites.plotsquared.plot.flag.Flags;
 import com.github.intellectualsites.plotsquared.plot.object.Plot;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -30,14 +31,17 @@ import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
 import org.maxgamer.quickshop.PluginsIntegration.IntegratedPlugin;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegration implements IntegratedPlugin {
-    PlotAPI plotAPI;
-    BooleanFlag createFlag;
-    BooleanFlag tradeFlag;
+    private PlotAPI plotAPI;
+    private BooleanFlag createFlag;
+    private BooleanFlag tradeFlag;
+    private QuickShop plugin;
     public PlotSquaredIntegration(QuickShop plugin){
+        this.plugin = plugin;
         this.plotAPI = new PlotAPI();
     }
     @Override
@@ -65,6 +69,8 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
         this.tradeFlag = new BooleanFlag("quickshop-trade");
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
+        plugin.getLogger().info(ChatColor.GREEN+getName()+" flags register successfully.");
+        Util.debugLog("Success register "+getName()+" flags.");
     }
 
     @Override
