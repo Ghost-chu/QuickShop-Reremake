@@ -103,7 +103,7 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             if (Util.isBlacklisted(item)
-                && !p.hasPermission("quickshop.bypass." + item.getType().name())) {
+                && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
                 p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
