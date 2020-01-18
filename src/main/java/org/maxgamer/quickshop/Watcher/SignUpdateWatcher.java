@@ -28,11 +28,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SignUpdateWatcher extends BukkitRunnable {
-    private QuickShop plugin;
+    //private QuickShop plugin;
     private Queue<Shop> signUpdateQueue = new LinkedList<>();
 
     public SignUpdateWatcher(QuickShop plugin) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
     }
 
     public void scheduleSignUpdate(@NotNull Shop shop) {
