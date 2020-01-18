@@ -36,10 +36,7 @@ import org.maxgamer.quickshop.Util.Util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -72,7 +69,11 @@ public class ShopLoader {
         Logger logger = plugin.getLogger();
         logger.warning("##########FAILED TO LOAD SHOP##########");
         logger.warning("  >> Error Info:");
-        logger.warning(ex.getMessage());
+        String err = ex.getMessage();
+        if(err == null){
+            err = "null";
+        }
+        logger.warning(err);
         logger.warning("  >> Error Trace");
         ex.printStackTrace();
         logger.warning("  >> Target Location Info");
@@ -118,7 +119,6 @@ public class ShopLoader {
             this.plugin.getLogger().info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 Timer singleShopLoadTimer = new Timer(true);
-
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
                 originShopsInDatabase.add(origin);
                 if (worldName != null && !origin.getWorld().equals(worldName)) {
@@ -126,12 +126,11 @@ public class ShopLoader {
                     continue;
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
-
                 Shop shop = new ContainerShop(data.getLocation(), data.getPrice(), data.getItem(), data.getModerators(), data
                         .isUnlimited(), data
                         .getType());
                 shopsInDatabase.add(shop);
-
+                this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
                     Util.debugLog("Somethings gone wrong, skipping the loading...");
                     loadAfterWorldLoaded++;
@@ -140,7 +139,6 @@ public class ShopLoader {
                 }
                 //Load to RAM
                 plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
-
                 if (Util.isLoaded(shop.getLocation())) {
                     //Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
@@ -159,7 +157,6 @@ public class ShopLoader {
                     }
                     shop.onLoad();
                     shop.update();
-
                 } else {
                     loadAfterChunkLoaded++;
                 }
@@ -174,6 +171,11 @@ public class ShopLoader {
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
+    }
+    Map<Timer, Double> costCache = new HashMap<>();
+    private double costCalc(@NotNull Timer timer){
+        costCache.putIfAbsent(timer, (double) timer.getTimer());
+        return timer.getTimer() - costCache.get(timer);
     }
 
     public void loadShops() {
