@@ -42,7 +42,7 @@ hs_err_pid*
 .idea/.name
 .idea/codeStyles/
 .idea/compiler.xml
-.idea/copyright/
+!.idea/copyright/
 .idea/dbnavigator.xml
 .idea/discord.xml
 .idea/inspectionProfiles/
@@ -54,3 +54,9 @@ hs_err_pid*
 .idea/uiDesigner.xml
 .idea/vcs.xml
 QuickShop.iml
+
+#Eclipse
+./.settings/*
+.classpath
+.project
+
