@@ -85,10 +85,10 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
         boolean canBypass = WorldGuard.getInstance().getPlatform().getSessionManager().hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
-//        if (canBypass) {
-//            Util.debugLog("Player " + player.getName() + " bypassing the protection checks, because player have bypass permission in WorldGuard");
-//            return true;
-//        }
+        if (canBypass) {
+            Util.debugLog("Player " + player.getName() + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+            return true;
+        }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         for (WorldGuardFlags flag : createFlags) {
