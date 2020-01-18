@@ -121,33 +121,42 @@ public class QuickShopLogger extends PluginLogger {
 
 	super.log(logRecord);
     }
+    
+    /**
+     * Collect params as a string with blank spaces between 
+     * @param params
+     * @return collected string
+     */
+    public String collectParams(Object... params) {
+	return Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" "));
+    }
 
     public void info(Object... params) {
-	this.info(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.info(collectParams(params));
     }
 
     public void warning(Object... params) {
-	this.warning(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.warning(collectParams(params));
     }
 
     public void severe(Object... params) {
-	this.severe(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.severe(collectParams(params));
     }
 
     public void config(Object... params) {
-	this.config(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.config(collectParams(params));
     }
 
     public void fine(Object... params) {
-	this.fine(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.fine(collectParams(params));
     }
 
     public void finer(Object... params) {
-	this.finer(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.finer(collectParams(params));
     }
 
     public void finest(Object... params) {
-	this.finest(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
+	this.finest(collectParams(params));
     }
 
     // Style stuffs
