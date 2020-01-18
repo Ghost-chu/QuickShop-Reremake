@@ -37,6 +37,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
@@ -258,23 +259,24 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        final Inventory inventory = e.getInventory();
-        //noinspection ConstantConditions
-        if (inventory == null) { //Fix issue #QUICKSHOP-QA, stupid NotNull mark.
+        @Nullable Inventory inventory = e.getInventory(); // Possibly wrong tag
+        @Nullable Location location = null;
+        
+        try {
+            // This will cause NPE when the internal getLocation method
+            // itself NPE, which should be a server issue.
+            location = inventory.getLocation();
+        } catch (NullPointerException npe) {
+            return; // ignored as workaround, GH-303
+	}
+        
+        if (location == null)
             return;
-        }
-        final Location location = inventory.getLocation();
-
-        if (location == null) {
-            return;
-        }
 
         final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
-
-        if (shop != null) {
+        
+        if (shop != null)
             shop.setSignText();
-        }
-
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
