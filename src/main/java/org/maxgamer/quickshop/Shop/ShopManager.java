@@ -109,7 +109,7 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-        if (p.hasPermission("quickshop.tax")) {
+        if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.tax")) {
             tax = 0;
             Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
         }
@@ -297,6 +297,9 @@ public class ShopManager {
             // This must be called after the event has been called.
             // Else, if the event is cancelled, they won't get their
             // money back.
+            if(QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypasscreatefee")){
+                createCost = 0;
+            }
             if (createCost > 0) {
                 if (!plugin.getEconomy().withdraw(p.getUniqueId(), createCost)) {
                     p.sendMessage(MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
@@ -392,7 +395,7 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-        if (p.hasPermission("quickshop.tax")) {
+        if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.tax")) {
             tax = 0;
             Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
         }

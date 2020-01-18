@@ -117,3 +117,6 @@ permissions:
   quickshop.reset:
     description: Permission to use /qs reset
     default: op
+  quickshop.bypasscreatefee:
+    description: Permission to bypass creation fee
+    default: op
