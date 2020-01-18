@@ -25,9 +25,11 @@ import org.bukkit.plugin.PluginLogger;
 import org.fusesource.jansi.Ansi;
 
 import com.bekvon.bukkit.residence.commands.sublist;
+import com.google.common.base.Strings;
 
 import lombok.SneakyThrows;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,7 +89,16 @@ public class QuickShopLogger extends PluginLogger {
 		"[" + ChatColor.YELLOW + prefix                            + ChatColor.RESET + "] ":
 		"[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ";
 	pluginName = AnsiSupported ? applyStyles(pluginName) : pluginName;
-	super.getClass().getDeclaredField("pluginName").set(this, pluginName);
+	
+	// Apply plugin name for BukkitLogger
+	Field pluginNameField = PluginLogger.class.getDeclaredField("pluginName");
+	pluginNameField.setAccessible(true); // private
+	pluginNameField.set(this, pluginName);
+	
+	// Remove logger name from package name
+	Field nameField = Logger.class.getDeclaredField("name");
+	nameField.setAccessible(true); // private
+	nameField.set(this, "");
 
 	this.config();
 	//super.setUseParentHandlers(false);
@@ -96,7 +107,6 @@ public class QuickShopLogger extends PluginLogger {
     // Logging stuffs
     @Override
     public void log(LogRecord logRecord) {
-	//logRecord.setLoggerName("");
 	String message = logRecord.getMessage();
 
 	if (message != null && AnsiSupported) {
