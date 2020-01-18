@@ -51,7 +51,7 @@ public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable 
      * This event is called before the shop display item created
      *
      * @param shop        Target shop
-     * @param itemStack      Target itemstacck
+     * @param itemStack   Target itemstacck
      * @param displayType The displayType
      */
     public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack,

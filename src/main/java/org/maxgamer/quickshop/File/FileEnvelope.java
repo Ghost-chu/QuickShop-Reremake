@@ -21,23 +21,19 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 @ToString
 public abstract class FileEnvelope implements IFile {
 
     @NotNull
-    private final Plugin plugin;
-
-    @NotNull
     protected final File file;
-
+    protected final boolean loadDefault;
+    @NotNull
+    private final Plugin plugin;
     @NotNull
     private final Copied copied;
-
     @NotNull
     private final String resourcePath;
-
-    protected final boolean loadDefault;
-
     @NotNull
     protected FileConfiguration fileConfiguration = new MckFileConfiguration();
 
@@ -142,15 +138,15 @@ public abstract class FileEnvelope implements IFile {
     @Override
     public Location getLocation(@NotNull String path) {
         return new LocationOf(
-            getString(path).orElse("")
+                getString(path).orElse("")
         ).value();
     }
 
     @Override
     public void setLocation(@NotNull String path, @NotNull Location location) {
         set(
-            path,
-            new StringOf(location).asString()
+                path,
+                new StringOf(location).asString()
         );
     }
 

@@ -93,13 +93,13 @@ public class RealDisplayItem implements DisplayItem {
     @Override
     public void fixDisplayMoved() {
         Location location = this.getDisplayLocation();
-        if(this.item != null){
-            if(location != null){
+        if (this.item != null) {
+            if (location != null) {
                 this.item.teleport(location);
-            }else{
+            } else {
                 fixDisplayMovedOld();
             }
-        }else{
+        } else {
             fixDisplayMovedOld();
         }
     }
@@ -113,7 +113,7 @@ public class RealDisplayItem implements DisplayItem {
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
                 Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem
                         .getLocation());
-                plugin.getBukkitAPIWrapper().teleportEntity(eItem,Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                plugin.getBukkitAPIWrapper().teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -136,6 +136,7 @@ public class RealDisplayItem implements DisplayItem {
         ShopDisplayItemDespawnEvent shopDisplayItemDepawnEvent = new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDepawnEvent);
     }
+
     @Override
     public boolean removeDupe() {
         if (this.item == null) {

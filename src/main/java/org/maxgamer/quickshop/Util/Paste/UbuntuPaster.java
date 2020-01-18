@@ -29,7 +29,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-public class UbuntuPaster implements PasteInterface{
+public class UbuntuPaster implements PasteInterface {
     /**
      * Paste a text to paste.ubuntu.com
      *

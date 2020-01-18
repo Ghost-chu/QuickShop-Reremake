@@ -78,7 +78,7 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        if(shop.getDisplay() != null){
+        if (shop.getDisplay() != null) {
             shop.getDisplay().remove();
         }
         sendAlert("[DisplayGuard] Liuqid " + targetBlock.getLocation() + " trying flow to top of shop, QuickShop already cancel it.");
@@ -113,7 +113,7 @@ public class DisplayProtectionListener implements Listener {
         if (shop != null) {
             event.setCancelled(true);
             sendAlert("[DisplayGuard] Piston  " + event.getBlock().getLocation() + " trying push somethings on the shop top, QuickShop already cancel it.");
-            if(shop.getDisplay() != null){
+            if (shop.getDisplay() != null) {
                 shop.getDisplay().remove();
             }
             return;
@@ -122,12 +122,12 @@ public class DisplayProtectionListener implements Listener {
             Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
                 shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
-                    if (shop != null) {
+                if (shop != null) {
                     event.setCancelled(true);
                     sendAlert("[DisplayGuard] Piston  " + event.getBlock().getLocation() + " trying push somethings on the shop top, QuickShop already cancel it.");
-                        if(shop.getDisplay() != null){
-                            shop.getDisplay().remove();
-                        }
+                    if (shop.getDisplay() != null) {
+                        shop.getDisplay().remove();
+                    }
                     return;
                 }
             }
@@ -147,7 +147,7 @@ public class DisplayProtectionListener implements Listener {
         if (shop != null) {
             event.setCancelled(true);
             sendAlert("[DisplayGuard] Piston  " + event.getBlock().getLocation() + " trying pull somethings on the shop top, QuickShop already cancel it.");
-            if(shop.getDisplay() != null){
+            if (shop.getDisplay() != null) {
                 shop.getDisplay().remove();
             }
             return;
@@ -159,7 +159,7 @@ public class DisplayProtectionListener implements Listener {
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert("[DisplayGuard] Piston  " + event.getBlock().getLocation() + " trying push somethings on the shop top, QuickShop already cancel it.");
-                    if(shop.getDisplay() != null){
+                    if (shop.getDisplay() != null) {
                         shop.getDisplay().remove();
                     }
                     return;

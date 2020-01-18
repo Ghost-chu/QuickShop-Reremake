@@ -36,10 +36,11 @@ public class ResidenceIntegration implements IntegratedPlugin {
     List<String> createLimits;
     List<String> tradeLimits;
 
-    public ResidenceIntegration(QuickShop plugin){
+    public ResidenceIntegration(QuickShop plugin) {
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
         this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");
     }
+
     @Override
     public @NotNull String getName() {
         return "Residence";
@@ -50,27 +51,27 @@ public class ResidenceIntegration implements IntegratedPlugin {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(location);
 
 
-        for (String limit:this.createLimits) {
-            if("FLAG".equalsIgnoreCase(limit)){
-                if(residence == null){
+        for (String limit : this.createLimits) {
+            if ("FLAG".equalsIgnoreCase(limit)) {
+                if (residence == null) {
                     //Check world permission
-                    if(!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag("quickshop-create"), false)){
+                    if (!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag("quickshop-create"), false)) {
                         return false;
                     }
-                }else{
-                    if(!residence.getPermissions().playerHas(player,Flags.getFlag("quickshop-create"),false)){
+                } else {
+                    if (!residence.getPermissions().playerHas(player, Flags.getFlag("quickshop-create"), false)) {
                         return false;
                     }
                 }
 
             }
             //Not flag
-            if(residence == null){
-                if(!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag(limit), false)){
+            if (residence == null) {
+                if (!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
-            }else{
-                if(!residence.getPermissions().playerHas(player,Flags.getFlag(limit),false)){
+            } else {
+                if (!residence.getPermissions().playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
             }
@@ -84,27 +85,27 @@ public class ResidenceIntegration implements IntegratedPlugin {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(location);
 
 
-        for (String limit:this.createLimits) {
-            if("FLAG".equalsIgnoreCase(limit)){
-                if(residence == null){
+        for (String limit : this.createLimits) {
+            if ("FLAG".equalsIgnoreCase(limit)) {
+                if (residence == null) {
                     //Check world permission
-                    if(!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag("quickshop-trade"), false)){
+                    if (!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag("quickshop-trade"), false)) {
                         return false;
                     }
-                }else{
-                    if(!residence.getPermissions().playerHas(player,Flags.getFlag("quickshop-trade"),true)){
+                } else {
+                    if (!residence.getPermissions().playerHas(player, Flags.getFlag("quickshop-trade"), true)) {
                         return false;
                     }
                 }
 
             }
             //Not flag
-            if(residence == null){
-                if(!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag(limit), false)){
+            if (residence == null) {
+                if (!Residence.getInstance().getWorldFlags().getPerms(location.getWorld().getName()).playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
-            }else{
-                if(!residence.getPermissions().playerHas(player,Flags.getFlag(limit),false)){
+            } else {
+                if (!residence.getPermissions().playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
             }
