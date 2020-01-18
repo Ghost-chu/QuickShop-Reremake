@@ -874,8 +874,19 @@ public class MsgUtil {
     }
 
     @SuppressWarnings("UnusedAssignment")
-    private static void updateMessages(int selectedVersion) throws IOException {
-
+    private static void updateMessages(int selectedVersion) {
+        String languageName = plugin.getConfig()
+                .getString("language", "en");
+        if(!messagei18n.getString("language-name").isPresent()){
+            setAndUpdate("language-name",languageName);
+        }
+        if(!messagei18n.getString("language-name").get().equals(languageName)){
+            new File(plugin.getDataFolder(),"messages.json").delete();
+            try {
+                loadCfgMessages();
+            }catch (Exception ignore){}
+            return;
+        }
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
             setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
