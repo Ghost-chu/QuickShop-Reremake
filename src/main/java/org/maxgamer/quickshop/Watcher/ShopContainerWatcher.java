@@ -32,11 +32,11 @@ import java.util.Queue;
  * Check the shops after server booted up, make sure shop can correct self-deleted when container lost.
  */
 public class ShopContainerWatcher extends BukkitRunnable {
-    private QuickShop plugin;
+    //private QuickShop plugin;
     private Queue<Shop> checkQueue = new LinkedList<>();
 
     public ShopContainerWatcher(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
     }
 
     public void scheduleCheck(@NotNull Shop shop) {
