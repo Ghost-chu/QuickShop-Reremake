@@ -41,7 +41,7 @@ public class HttpRequest implements Closeable {
     private HttpURLConnection conn;
     private InputStream inputStream;
 
-    private long contentLength = -1;
+    //private long contentLength = -1;
     private long readBytes = 0;
 
     /**
@@ -316,9 +316,9 @@ public class HttpRequest implements Closeable {
             String field = conn.getHeaderField("Content-Length");
             if (field != null) {
                 long len = Long.parseLong(field);
-                if (len >= 0) { // Let's just not deal with really big numbers
-                    contentLength = len;
-                }
+//                if (len >= 0) { // Let's just not deal with really big numbers
+//                    contentLength = len;
+//                }
             }
         } catch (NumberFormatException ignored) {
         }

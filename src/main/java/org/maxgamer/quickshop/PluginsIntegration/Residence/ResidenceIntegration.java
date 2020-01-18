@@ -85,7 +85,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(location);
 
 
-        for (String limit : this.createLimits) {
+        for (String limit : this.tradeLimits) {
             if ("FLAG".equalsIgnoreCase(limit)) {
                 if (residence == null) {
                     //Check world permission
