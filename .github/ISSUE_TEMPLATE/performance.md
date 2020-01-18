@@ -6,6 +6,12 @@ labels: 'performance'
 assignees: ''
 
 ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+README BEFORE REPORTING:
+Don't upload timings, we only accept Spark sampler result. If you issue not upload spark sampler result, you issue will closed without any reply.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 **Describe the issue**
 A clear and concise description of what the bug is.
 
