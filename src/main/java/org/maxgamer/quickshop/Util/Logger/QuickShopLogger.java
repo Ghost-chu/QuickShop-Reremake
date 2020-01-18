@@ -114,7 +114,7 @@ public class QuickShopLogger extends PluginLogger {
 	    message = applyStyles(message);
 	    logRecord.setMessage(message);
 	}
-	super.log(logRecord);
+		super.log(logRecord);
     }
     
     /**
