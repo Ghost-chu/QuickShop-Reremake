@@ -159,13 +159,6 @@ public interface Shop {
     void update();
 
     /**
-     * Set new shop type for this shop
-     *
-     * @param paramShopType New shop type
-     */
-    void setShopType(ShopType paramShopType);
-
-    /**
      * Get shop's item durability, if have.
      *
      * @return Shop's item durability
@@ -255,6 +248,13 @@ public interface Shop {
      * @return shop type
      */
     @NotNull ShopType getShopType();
+
+    /**
+     * Set new shop type for this shop
+     *
+     * @param paramShopType New shop type
+     */
+    void setShopType(ShopType paramShopType);
 
     /**
      * Get shop signs, may have multi signs

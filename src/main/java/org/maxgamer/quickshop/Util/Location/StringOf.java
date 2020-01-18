@@ -28,16 +28,16 @@ public final class StringOf {
         String s = world.getName() + ":";
 
         s += String.format(
-            Locale.ENGLISH,
-            "%.2f,%.2f,%.2f",
-            location.getX(), location.getY(), location.getZ()
+                Locale.ENGLISH,
+                "%.2f,%.2f,%.2f",
+                location.getX(), location.getY(), location.getZ()
         );
 
         if (location.getYaw() != 0f || location.getPitch() != 0f) {
             s += String.format(
-                Locale.ENGLISH,
-                ":%.2f:%.2f",
-                location.getYaw(), location.getPitch()
+                    Locale.ENGLISH,
+                    ":%.2f:%.2f",
+                    location.getYaw(), location.getPitch()
             );
         }
         return s;

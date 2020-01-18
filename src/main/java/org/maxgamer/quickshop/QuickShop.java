@@ -72,7 +72,10 @@ public class QuickShop extends JavaPlugin {
      * The active instance of QuickShop
      */
     public static QuickShop instance;
-
+    /**
+     * The manager to check permissions.
+     */
+    private static PermissionManager permissionManager;
     private IntegrationHelper integrationHelper;
     // Listeners (These don't)
     private BlockListener blockListener;
@@ -190,16 +193,32 @@ public class QuickShop extends JavaPlugin {
      */
     private HashSet<String> warnings = new HashSet<>();
     private WorldListener worldListener;
-    /**
-     * The manager to check permissions.
-     */
-    private static PermissionManager permissionManager;
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
     private ShopContainerWatcher shopContainerWatcher;
     private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
     private boolean isUtilInited = false;
+
+    /**
+     * Returns QS version, this method only exist on QSRR forks If running other
+     * QSRR forks,, result may not is "Reremake x.x.x" If running QS offical, Will
+     * throw exception.
+     *
+     * @return Plugin Version
+     */
+    public static String getVersion() {
+        return QuickShop.instance.getDescription().getVersion();
+    }
+
+    /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
 
     /**
      * Get the Player's Shop limit.
@@ -289,7 +308,7 @@ public class QuickShop extends JavaPlugin {
                     Util.debugLog("No any economy provider selected.");
                     break;
             }
-            if(core == null){
+            if (core == null) {
                 return false;
             }
             if (!core.isValid()) {
@@ -358,10 +377,10 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
-        if(getConfig().getBoolean("integration.worldguard.enable")){
+        if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
             Util.debugLogHeavy("Check WG plugin...");
-            if(wg != null){
+            if (wg != null) {
                 Util.debugLogHeavy("Loading WG modules.");
                 this.integrationHelper.register(new WorldGuardIntegration(this)); //WG require register flags when onLoad called.
             }
@@ -598,7 +617,7 @@ public class QuickShop extends JavaPlugin {
         shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
         signUpdateWatcher.runTaskTimer(this, 0, 120);
         shopContainerWatcher.runTaskTimer(this, 0, 5);
-        displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1);
+        displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
@@ -615,40 +634,40 @@ public class QuickShop extends JavaPlugin {
         }
         registerIntegrations();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
-        String[] easterEgg =new FunnyEasterEgg().getRandomEasterEgg();
-        if(!(easterEgg == null)){
-            Arrays.stream(easterEgg).forEach(str->getLogger().info(str));
+        String[] easterEgg = new FunnyEasterEgg().getRandomEasterEgg();
+        if (!(easterEgg == null)) {
+            Arrays.stream(easterEgg).forEach(str -> getLogger().info(str));
         }
     }
 
-    private void registerIntegrations(){
-        if(getConfig().getBoolean("integration.towny.enable")){
+    private void registerIntegrations() {
+        if (getConfig().getBoolean("integration.towny.enable")) {
             Plugin towny = Bukkit.getPluginManager().getPlugin("Towny");
-            if(towny != null && towny.isEnabled()){
+            if (towny != null && towny.isEnabled()) {
                 this.integrationHelper.register(new TownyIntegration(this));
             }
         }
-        if(getConfig().getBoolean("integration.worldguard.enable")){
+        if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            if(worldGuard != null && worldGuard.isEnabled()){
+            if (worldGuard != null && worldGuard.isEnabled()) {
                 this.integrationHelper.register(new WorldGuardIntegration(this));
             }
         }
-        if(getConfig().getBoolean("integration.plotsquared.enable")){
+        if (getConfig().getBoolean("integration.plotsquared.enable")) {
             Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
-            if(plotSquared != null && plotSquared.isEnabled()){
+            if (plotSquared != null && plotSquared.isEnabled()) {
                 this.integrationHelper.register(new PlotSquaredIntegration(this));
             }
         }
-        if(getConfig().getBoolean("integration.residence.enable")){
+        if (getConfig().getBoolean("integration.residence.enable")) {
             Plugin residence = Bukkit.getPluginManager().getPlugin("Residence");
-            if(residence != null && residence.isEnabled()){
+            if (residence != null && residence.isEnabled()) {
                 this.integrationHelper.register(new ResidenceIntegration(this));
             }
         }
-        if(getConfig().getBoolean("integration.factions.enable")){
+        if (getConfig().getBoolean("integration.factions.enable")) {
             Plugin factions = Bukkit.getPluginManager().getPlugin("Factions");
-            if(factions != null && factions.isEnabled()){
+            if (factions != null && factions.isEnabled()) {
                 this.integrationHelper.register(new FactionsUUIDIntegration(this));
             }
         }
@@ -671,7 +690,7 @@ public class QuickShop extends JavaPlugin {
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
         }
 
-        if (getServer().getName().toLowerCase().contains("catserver") || Util.isClassAvailable("moe.luohuayu.CatServer") ||Util.isClassAvailable("catserver.server.CatServer")) {
+        if (getServer().getName().toLowerCase().contains("catserver") || Util.isClassAvailable("moe.luohuayu.CatServer") || Util.isClassAvailable("catserver.server.CatServer")) {
             // Send FATAL ERROR TO CatServer's users.
             getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async");
             throw new RuntimeException("QuickShop doen't support CatServer");
@@ -694,7 +713,7 @@ public class QuickShop extends JavaPlugin {
         IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
         getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
         if (incompatibleChecker.isIncompatible(nmsVersion)) {
-            throw new RuntimeException("Your Minecraft version is nolonger supported: " +  ReflectFactory.getServerVersion()+" ("+nmsVersion+")");
+            throw new RuntimeException("Your Minecraft version is nolonger supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
         }
     }
 
@@ -749,6 +768,51 @@ public class QuickShop extends JavaPlugin {
         }
         return true;
     }
+
+//    public void configVaildate() {
+//        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
+//        Set<String> keysA = new HashSet<>(attached.getKeys(true));
+//        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
+//        Set<String> ignoreCheckKeys = new HashSet<>();
+//        ignoreCheckKeys.add("server-uuid");
+//        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
+//                ".....\n" +
+//                "%data%\n" +
+//                ".....\n" +
+//                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
+//        keysA.stream().filter((key) -> !keysB.contains(key)).filter((key) -> !ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss) -> {
+//            if(!getConfig().getBoolean("auto-fix-configuration",false)){
+//                String theMsg = msgForConfiguration;
+//                theMsg = theMsg.replace("%key%", miss);
+//                List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
+//                StringBuilder miss2Yaml = new StringBuilder();
+//                int spaces = 2;
+//                Iterator<String> iterator = tiers.iterator();
+//                while (true) {
+//                    String tier = iterator.next();
+//                    miss2Yaml.append(tier);
+//                    if (iterator.hasNext()) {
+//                        miss2Yaml.append(": ");
+//                        miss2Yaml.append("\n");
+//                        for (int i = 0; i < spaces; i++) {
+//                            miss2Yaml.append(" ");
+//                        }
+//                        spaces += 2;
+//                    } else {
+//                        miss2Yaml.append(": ");
+//                        miss2Yaml.append(attached.get(miss));
+//                        break;
+//                    }
+//                }
+//                theMsg = theMsg.replace("%data%", miss2Yaml.toString());
+//                getLogger().warning(theMsg);
+//            }else{
+//                getConfig().set(miss,attached.get(miss));
+//            }
+//
+//
+//        });
+//    }
 
     private void submitMeritcs() {
         if (!getConfig().getBoolean("disabled-metrics")) {
@@ -1215,9 +1279,9 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 72;
         }
         if (selectedVersion == 72) {
-            if(getConfig().getBoolean("use-deciaml-format")){
+            if (getConfig().getBoolean("use-deciaml-format")) {
                 getConfig().set("use-decimal-format", getConfig().getBoolean("use-deciaml-format"));
-            }else{
+            } else {
                 getConfig().set("use-decimal-format", false);
             }
             getConfig().set("use-deciaml-format", null);
@@ -1234,19 +1298,19 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 74;
         }
         if (selectedVersion == 74) {
-            String langUtilsLanguage  = getConfig().getString("langutils-language");
+            String langUtilsLanguage = getConfig().getString("langutils-language");
             getConfig().set("langutils-language", null);
-            if("en_us".equals(langUtilsLanguage)){
+            if ("en_us".equals(langUtilsLanguage)) {
                 langUtilsLanguage = "default";
             }
             getConfig().set("game-language", langUtilsLanguage);
-            getConfig().set("maximum-digits-in-price",-1);
+            getConfig().set("maximum-digits-in-price", -1);
             getConfig().set("config-version", 75);
             selectedVersion = 75;
         }
         if (selectedVersion == 75) {
             getConfig().set("langutils-language", null);
-            if(getConfig().getString("game-language") == null){
+            if (getConfig().getString("game-language") == null) {
                 getConfig().set("game-language", "default");
             }
             getConfig().set("config-version", 76);
@@ -1256,27 +1320,27 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("database.auto-fix-encoding-issue-in-database", false);
             getConfig().set("send-shop-protection-alert", false);
             getConfig().set("send-display-item-protection-alert", false);
-            getConfig().set("shop.use-fast-shop-search-algorithm",false);
+            getConfig().set("shop.use-fast-shop-search-algorithm", false);
             getConfig().set("config-version", 77);
             selectedVersion = 77;
         }
         if (selectedVersion == 77) {
             getConfig().set("integration.towny.enable", false);
-            getConfig().set("integration.towny.create", new String[] {"SHOPTYPE","MODIFY"});
+            getConfig().set("integration.towny.create", new String[]{"SHOPTYPE", "MODIFY"});
             getConfig().set("integration.towny.trade", new String[]{});
             getConfig().set("integration.worldguard.enable", false);
-            getConfig().set("integration.worldguard.create", new String[] {"FLAG","CHEST_ACCESS"});
+            getConfig().set("integration.worldguard.create", new String[]{"FLAG", "CHEST_ACCESS"});
             getConfig().set("integration.worldguard.trade", new String[]{});
             getConfig().set("integration.plotsquared.enable", false);
             getConfig().set("integration.plotsquared.enable", false);
             getConfig().set("integration.plotsquared.enable", false);
             getConfig().set("integration.residence.enable", false);
-            getConfig().set("integration.residence.create", new String[] {"FLAG","interact","use"});
-            getConfig().set("integration.residence.trade", new String[] {});
+            getConfig().set("integration.residence.create", new String[]{"FLAG", "interact", "use"});
+            getConfig().set("integration.residence.trade", new String[]{});
 
             getConfig().set("integration.factions.enable", false);
-            getConfig().set("integration.factions.create.flag", new String[] {});
-            getConfig().set("integration.factions.trade.flag", new String[] {});
+            getConfig().set("integration.factions.create.flag", new String[]{});
+            getConfig().set("integration.factions.trade.flag", new String[]{});
             getConfig().set("integration.factions.create.require.open", false);
             getConfig().set("integration.factions.create.require.normal", true);
             getConfig().set("integration.factions.create.require.wilderness", false);
@@ -1309,51 +1373,6 @@ public class QuickShop extends JavaPlugin {
         //configVaildate();
     }
 
-//    public void configVaildate() {
-//        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
-//        Set<String> keysA = new HashSet<>(attached.getKeys(true));
-//        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
-//        Set<String> ignoreCheckKeys = new HashSet<>();
-//        ignoreCheckKeys.add("server-uuid");
-//        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
-//                ".....\n" +
-//                "%data%\n" +
-//                ".....\n" +
-//                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
-//        keysA.stream().filter((key) -> !keysB.contains(key)).filter((key) -> !ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss) -> {
-//            if(!getConfig().getBoolean("auto-fix-configuration",false)){
-//                String theMsg = msgForConfiguration;
-//                theMsg = theMsg.replace("%key%", miss);
-//                List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
-//                StringBuilder miss2Yaml = new StringBuilder();
-//                int spaces = 2;
-//                Iterator<String> iterator = tiers.iterator();
-//                while (true) {
-//                    String tier = iterator.next();
-//                    miss2Yaml.append(tier);
-//                    if (iterator.hasNext()) {
-//                        miss2Yaml.append(": ");
-//                        miss2Yaml.append("\n");
-//                        for (int i = 0; i < spaces; i++) {
-//                            miss2Yaml.append(" ");
-//                        }
-//                        spaces += 2;
-//                    } else {
-//                        miss2Yaml.append(": ");
-//                        miss2Yaml.append(attached.get(miss));
-//                        break;
-//                    }
-//                }
-//                theMsg = theMsg.replace("%data%", miss2Yaml.toString());
-//                getLogger().warning(theMsg);
-//            }else{
-//                getConfig().set(miss,attached.get(miss));
-//            }
-//
-//
-//        });
-//    }
-
     /**
      * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
      *
@@ -1361,26 +1380,6 @@ public class QuickShop extends JavaPlugin {
      */
     public String getFork() {
         return "Reremake";
-    }
-
-    /**
-     * Returns QS version, this method only exist on QSRR forks If running other
-     * QSRR forks,, result may not is "Reremake x.x.x" If running QS offical, Will
-     * throw exception.
-     *
-     * @return Plugin Version
-     */
-    public static String getVersion() {
-        return QuickShop.instance.getDescription().getVersion();
-    }
-
-    /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
     }
 
     private void replaceLogger() {

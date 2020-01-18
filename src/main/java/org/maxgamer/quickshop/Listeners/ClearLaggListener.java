@@ -43,7 +43,7 @@ public class ClearLaggListener implements Listener {
 
         for (Entity entity : entities) {
             if (!(entity instanceof Item) ||
-                !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
+                    !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
                 continue;
             }
 

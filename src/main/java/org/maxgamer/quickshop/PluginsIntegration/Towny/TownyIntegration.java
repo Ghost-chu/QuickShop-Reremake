@@ -35,10 +35,12 @@ import java.util.List;
 public class TownyIntegration implements IntegratedPlugin {
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
-    public TownyIntegration(QuickShop plugin){
+
+    public TownyIntegration(QuickShop plugin) {
         createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
     }
+
     @Override
     public @NotNull String getName() {
         return "Towny";
@@ -46,20 +48,20 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        for(TownyFlags flag : createFlags){
-            switch (flag){
+        for (TownyFlags flag : createFlags) {
+            switch (flag) {
                 case OWN:
-                    if(!ShopPlotUtil.doesPlayerOwnShopPlot(player,location)){
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
                         return false;
                     }
                     break;
                 case MODIFY:
-                    if(!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player,location)){
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
                         return false;
                     }
                     break;
                 case SHOPTYPE:
-                    if(!ShopPlotUtil.isShopPlot(location)){
+                    if (!ShopPlotUtil.isShopPlot(location)) {
                         return false;
                     }
                 default:
@@ -71,20 +73,20 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        for(TownyFlags flag : tradeFlags){
-            switch (flag){
+        for (TownyFlags flag : tradeFlags) {
+            switch (flag) {
                 case OWN:
-                    if(!ShopPlotUtil.doesPlayerOwnShopPlot(player,location)){
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
                         return false;
                     }
                     break;
                 case MODIFY:
-                    if(!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player,location)){
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
                         return false;
                     }
                     break;
                 case SHOPTYPE:
-                    if(!ShopPlotUtil.isShopPlot(location)){
+                    if (!ShopPlotUtil.isShopPlot(location)) {
                         return false;
                     }
                 default:

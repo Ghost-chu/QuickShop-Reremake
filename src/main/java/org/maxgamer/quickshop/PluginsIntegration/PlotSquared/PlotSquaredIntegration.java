@@ -40,10 +40,12 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
     private QuickShop plugin;
-    public PlotSquaredIntegration(QuickShop plugin){
+
+    public PlotSquaredIntegration(QuickShop plugin) {
         this.plugin = plugin;
         this.plotAPI = new PlotAPI();
     }
+
     @Override
     public @NotNull String getName() {
         return "PlotSquared";
@@ -51,14 +53,14 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        com.github.intellectualsites.plotsquared.plot.object.Location pLocation = new com.github.intellectualsites.plotsquared.plot.object.Location(location.getWorld().getName(),location.getBlockX(),location.getBlockY(),location.getBlockZ());
+        com.github.intellectualsites.plotsquared.plot.object.Location pLocation = new com.github.intellectualsites.plotsquared.plot.object.Location(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
         Plot plot = pLocation.getPlot();
         return this.createFlag.isTrue(plot);
     }
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        com.github.intellectualsites.plotsquared.plot.object.Location pLocation = new com.github.intellectualsites.plotsquared.plot.object.Location(location.getWorld().getName(),location.getBlockX(),location.getBlockY(),location.getBlockZ());
+        com.github.intellectualsites.plotsquared.plot.object.Location pLocation = new com.github.intellectualsites.plotsquared.plot.object.Location(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
         Plot plot = pLocation.getPlot();
         return this.tradeFlag.isFalse(plot);
     }
@@ -69,8 +71,8 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
         this.tradeFlag = new BooleanFlag("quickshop-trade");
         Flags.registerFlag(this.createFlag);
         Flags.registerFlag(this.tradeFlag);
-        plugin.getLogger().info(ChatColor.GREEN+getName()+" flags register successfully.");
-        Util.debugLog("Success register "+getName()+" flags.");
+        plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        Util.debugLog("Success register " + getName() + " flags.");
     }
 
     @Override

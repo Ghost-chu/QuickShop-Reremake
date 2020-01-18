@@ -102,11 +102,11 @@ public class SentryErrorReporter {
             unit();
             return;
         }
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 Paste paste = new Paste(plugin);
-                lastPaste = paste.paste(paste.genNewPaste(),1);
+                lastPaste = paste.paste(paste.genNewPaste(), 1);
             }
         }.runTaskAsynchronously(plugin);
     }
@@ -121,10 +121,10 @@ public class SentryErrorReporter {
         if (!enabled) {
             return false;
         }
-        if(UpdateWatcher.hasNewUpdate){ //We only receive latest reports.
+        if (UpdateWatcher.hasNewUpdate) { //We only receive latest reports.
             return false;
         }
-        if(new IncompatibleChecker().isIncompatible(Util.getNMSVersion())){ //Ignore errors if user install quickshop on unsupported version.
+        if (new IncompatibleChecker().isIncompatible(Util.getNMSVersion())) { //Ignore errors if user install quickshop on unsupported version.
             return false;
         }
         StackTraceElement stackTraceElement;
@@ -154,10 +154,10 @@ public class SentryErrorReporter {
         if (throwable == null) {
             return false;
         }
-        if(throwable.getMessage() == null){
+        if (throwable.getMessage() == null) {
             return false;
         }
-        if(throwable.getMessage().contains("Could not pass event")){
+        if (throwable.getMessage().contains("Could not pass event")) {
             return throwable.getMessage().contains("QuickShop");
         }
         while (throwable.getCause() != null) {
@@ -203,7 +203,7 @@ public class SentryErrorReporter {
      */
     public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         try {
-            if(QuickShop.instance.getBootError() != null){
+            if (QuickShop.instance.getBootError() != null) {
                 return null; //Don't report any errors if boot failed.
             }
             if (tempDisable) {
@@ -242,7 +242,7 @@ public class SentryErrorReporter {
             try {
                 Paste paste = new Paste(plugin);
                 pasteURL = paste.paste(paste.genNewPaste());
-                if(pasteURL != null && !pasteURL.isEmpty()){
+                if (pasteURL != null && !pasteURL.isEmpty()) {
                     lastPaste = pasteURL;
                 }
             } catch (Throwable ex) {
@@ -259,7 +259,7 @@ public class SentryErrorReporter {
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
             plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
-            if(Util.isDevMode()){
+            if (Util.isDevMode()) {
                 throwable.printStackTrace();
             }
             return this.context.getLastEventId();

@@ -28,10 +28,6 @@ public enum PermissionProviderType {
         this.id = id;
     }
 
-    public int toID() {
-        return this.id;
-    }
-
     public static PermissionProviderType fromID(int id) throws IllegalArgumentException {
         for (PermissionProviderType child : PermissionProviderType.values()) {
             if (child.toID() == id) {
@@ -39,5 +35,9 @@ public enum PermissionProviderType {
             }
         }
         throw new IllegalArgumentException("Type not exists");
+    }
+
+    public int toID() {
+        return this.id;
     }
 }

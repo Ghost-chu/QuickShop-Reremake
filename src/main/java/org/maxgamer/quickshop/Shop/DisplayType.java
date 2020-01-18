@@ -31,6 +31,12 @@ public enum DisplayType {
      * */
     UNKNOWN(-1), REALITEM(0), ARMORSTAND(1), VIRTUALITEM(2);
 
+    private int id;
+
+    DisplayType(int id) {
+        this.id = id;
+    }
+
     public static @NotNull DisplayType fromID(int id) {
         for (DisplayType type : DisplayType.values()) {
             if (type.id == id) {
@@ -52,12 +58,6 @@ public enum DisplayType {
             return ARMORSTAND;
         }
         return UNKNOWN;
-    }
-
-    private int id;
-
-    DisplayType(int id) {
-        this.id = id;
     }
 
     public int toID() {

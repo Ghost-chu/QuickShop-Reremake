@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum WorldGuardFlags {
-    FLAG, BUILD, CHEST_ACCESS,INTERACT;
+    FLAG, BUILD, CHEST_ACCESS, INTERACT;
 
     public static List<WorldGuardFlags> deserialize(List<String> list) {
         List<WorldGuardFlags> result = new ArrayList<>();

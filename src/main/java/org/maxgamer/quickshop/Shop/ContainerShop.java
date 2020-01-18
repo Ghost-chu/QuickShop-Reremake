@@ -51,16 +51,13 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
+    @NotNull
+    private final ItemStack item;
+    @NotNull
+    private final Location location;
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private boolean isLoaded = false;
-
-    @NotNull
-    private final ItemStack item;
-
-    @NotNull
-    private final Location location;
-
     private ShopModerator moderator;
     private QuickShop plugin;
     private double price;
@@ -82,7 +79,7 @@ public class ContainerShop implements Shop {
     /**
      * Adds a new shop.
      *
-     * @param location       The location of the chest block
+     * @param location  The location of the chest block
      * @param price     The cost per item
      * @param item      The itemstack with the properties we want. This is .cloned, no
      *                  need to worry about references
@@ -255,6 +252,19 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull UUID getOwner() {
         return this.moderator.getOwner();
+    }
+
+    /**
+     * Changes the owner of this shop to the given player.
+     *
+     * @param owner the new owner
+     */
+    @Override
+    public void setOwner(@NotNull UUID owner) {
+        this.moderator.setOwner(owner);
+        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        this.setSignText();
+        update();
     }
 
     /**
@@ -460,19 +470,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Changes the owner of this shop to the given player.
-     *
-     * @param owner the new owner
-     */
-    @Override
-    public void setOwner(@NotNull UUID owner) {
-        this.moderator.setOwner(owner);
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        this.setSignText();
-        update();
-    }
-
-    /**
      * @return The list of players who can manage the shop.
      */
     @NotNull
@@ -631,6 +628,11 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public boolean isUnlimited() {
+        return this.unlimited;
+    }
+
+    @Override
     public void setUnlimited(boolean unlimited) {
         this.unlimited = unlimited;
         this.setSignText();
@@ -638,23 +640,8 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public boolean isUnlimited() {
-        return this.unlimited;
-    }
-
-    @Override
     public @NotNull ShopType getShopType() {
         return this.shopType;
-    }
-
-    @Override
-    public boolean isBuying() {
-        return this.shopType == ShopType.BUYING;
-    }
-
-    @Override
-    public boolean isSelling() {
-        return this.shopType == ShopType.SELLING;
     }
 
     /**
@@ -667,6 +654,16 @@ public class ContainerShop implements Shop {
         this.shopType = shopType;
         this.setSignText();
         update();
+    }
+
+    @Override
+    public boolean isBuying() {
+        return this.shopType == ShopType.BUYING;
+    }
+
+    @Override
+    public boolean isSelling() {
+        return this.shopType == ShopType.SELLING;
     }
 
     /**
@@ -850,7 +847,7 @@ public class ContainerShop implements Shop {
      * Check the container still there and we can keep use it.
      */
     public void checkContainer() {
-        if(!this.isLoaded){
+        if (!this.isLoaded) {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {

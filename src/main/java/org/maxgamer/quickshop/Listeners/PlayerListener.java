@@ -261,20 +261,20 @@ public class PlayerListener implements Listener {
 
         @Nullable Inventory inventory = e.getInventory(); // Possibly wrong tag
         @Nullable Location location = null;
-        
+
         try {
             // This will cause NPE when the internal getLocation method
             // itself NPE, which should be a server issue.
             location = inventory.getLocation();
         } catch (NullPointerException npe) {
             return; // ignored as workaround, GH-303
-	}
-        
+        }
+
         if (location == null)
             return;
 
         final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
-        
+
         if (shop != null)
             shop.setSignText();
     }

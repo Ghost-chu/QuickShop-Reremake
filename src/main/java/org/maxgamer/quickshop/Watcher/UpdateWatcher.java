@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Random;
 
 public class UpdateWatcher implements Listener {
-    private static BukkitTask cronTask = null;
     public static boolean hasNewUpdate = false;
+    private static BukkitTask cronTask = null;
     private static UpdateInfomation info = null;
 
     public static String fixVer(@NotNull String originalVer) {
@@ -67,7 +67,7 @@ public class UpdateWatcher implements Listener {
                 hasNewUpdate = true;
 
                 if (!info.isBeta()) {
-                    QuickShop.instance.getLogger().info("A new version of QuickShop has been released! ["+info.getVersion()+"]");
+                    QuickShop.instance.getLogger().info("A new version of QuickShop has been released! [" + info.getVersion() + "]");
                     QuickShop.instance.getLogger().info("Update here: https://www.spigotmc.org/resources/62575/");
 
                     Bukkit.getOnlinePlayers().forEach(player -> {

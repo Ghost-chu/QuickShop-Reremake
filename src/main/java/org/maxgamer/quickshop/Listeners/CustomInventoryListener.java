@@ -90,7 +90,7 @@ public class CustomInventoryListener implements Listener {
         }
 
         if (InventoryPreview.isPreviewItem(e.getCursor()) ||
-            InventoryPreview.isPreviewItem(e.getOldCursor())) {
+                InventoryPreview.isPreviewItem(e.getOldCursor())) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }

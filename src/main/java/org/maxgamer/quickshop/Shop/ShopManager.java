@@ -53,19 +53,16 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 public class ShopManager {
 
-    private HashMap<UUID, Info> actions = new HashMap<>();
-
-    private QuickShop plugin;
-
     private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
-
+    private HashMap<UUID, Info> actions = new HashMap<>();
+    private QuickShop plugin;
     private Set<Shop> loadedShops = new CopyOnWriteArraySet<>();
 
     private boolean useFastShopSearchAlgorithm = false;
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm",false);
+        this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
     }
 
     @SuppressWarnings("deprecation")
@@ -109,7 +106,7 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-        if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.tax")) {
+        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
             tax = 0;
             Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
         }
@@ -239,12 +236,12 @@ public class ShopManager {
                     }
                 } else {
                     price = Double.parseDouble(message);
-                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",",".");
+                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
                     String[] processedDouble = strFormat.split(".");
-                    if(processedDouble.length > 1){
-                        int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price",-1);
-                        if(processedDouble[1].length() >  maximumDigitsLimit && maximumDigitsLimit!=-1){
-                            p.sendMessage(MsgUtil.getMessage("digits-reach-the-limit",p,String.valueOf(maximumDigitsLimit)));
+                    if (processedDouble.length > 1) {
+                        int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price", -1);
+                        if (processedDouble[1].length() > maximumDigitsLimit && maximumDigitsLimit != -1) {
+                            p.sendMessage(MsgUtil.getMessage("digits-reach-the-limit", p, String.valueOf(maximumDigitsLimit)));
                             return;
                         }
                     }
@@ -297,7 +294,7 @@ public class ShopManager {
             // This must be called after the event has been called.
             // Else, if the event is cancelled, they won't get their
             // money back.
-            if(QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypasscreatefee")){
+            if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypasscreatefee")) {
                 createCost = 0;
             }
             if (createCost > 0) {
@@ -323,7 +320,7 @@ public class ShopManager {
                 shop.onUnload();
                 return;
             }
-            if(!plugin.getIntegrationHelper().callIntegrationsCanCreate(p,info.getLocation())){
+            if (!plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation())) {
                 shop.onUnload();
                 Util.debugLog("Cancelled by integrations");
                 return;
@@ -395,7 +392,7 @@ public class ShopManager {
         // Money handling
         double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-        if (QuickShop.getPermissionManager().hasPermission(p,"quickshop.tax")) {
+        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
             tax = 0;
             Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
         }
@@ -455,7 +452,7 @@ public class ShopManager {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
-        if(!plugin.getIntegrationHelper().callIntegrationsCanTrade(p,info.getLocation())){
+        if (!plugin.getIntegrationHelper().callIntegrationsCanTrade(p, info.getLocation())) {
             Util.debugLog("Cancel by integrations.");
             return;
         }
@@ -483,7 +480,7 @@ public class ShopManager {
                     // Check if shop owner has enough money
                     double ownerBalance = eco.getBalance(shop.getOwner());
                     int ownerCanAfford;
-                    
+
                     if (shop.getPrice() != 0) {
                         ownerCanAfford = (int) (ownerBalance / shop.getPrice());
                     } else {
@@ -799,12 +796,13 @@ public class ShopManager {
             return null;
         }
 
-        if(this.useFastShopSearchAlgorithm){
+        if (this.useFastShopSearchAlgorithm) {
             return getShopIncludeAttached_Fast(loc);
-        }else{
+        } else {
             return getShopIncludeAttached_Classic(loc);
         }
     }
+
     public @Nullable Shop getShopIncludeAttached_Classic(@Nullable Location loc) {
         if (loc == null) {
             Util.debugLog("Location is null.");
@@ -861,7 +859,8 @@ public class ShopManager {
 
         return null;
     }
-    private @Nullable Shop getShopIncludeAttached_Fast(@Nullable Location loc){
+
+    private @Nullable Shop getShopIncludeAttached_Fast(@Nullable Location loc) {
         if (loc == null) {
             Util.debugLog("Location is null.");
             return null;
@@ -869,13 +868,13 @@ public class ShopManager {
         Util.debugLog("Use fast shop search algorithm to searching the shops...");
         @Nullable Shop shop;
         shop = getShop(loc);
-        if(shop != null){
+        if (shop != null) {
             return shop;
         }
         @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
-        if(attachedBlock != null){
+        if (attachedBlock != null) {
             return getShop(attachedBlock.getLocation());
-        }else{
+        } else {
             return null;
         }
     }
@@ -1025,6 +1024,35 @@ public class ShopManager {
         return this.shops;
     }
 
+    /**
+     * Get all loaded shops.
+     *
+     * @return All loaded shops.
+     */
+    public @Nullable Set<Shop> getLoadedShops() {
+        return this.loadedShops;
+    }
+
+    /**
+     * Get a players all shops.
+     *
+     * @param playerUUID The player's uuid.
+     * @return The list have this player's all shops.
+     */
+    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
+        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
+    }
+
+    /**
+     * Get the all shops in the world.
+     *
+     * @param world The world you want get the shops.
+     * @return The list have this world all shops
+     */
+    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
+        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
+    }
+
     public class ShopIterator implements Iterator<Shop> {
         private Iterator<HashMap<Location, Shop>> chunks;
         private Iterator<Shop> shops;
@@ -1079,34 +1107,5 @@ public class ShopManager {
             }
             return shops.next();
         }
-    }
-
-    /**
-     * Get all loaded shops.
-     *
-     * @return All loaded shops.
-     */
-    public @Nullable Set<Shop> getLoadedShops() {
-        return this.loadedShops;
-    }
-
-    /**
-     * Get a players all shops.
-     *
-     * @param playerUUID The player's uuid.
-     * @return The list have this player's all shops.
-     */
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
-        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
-    }
-
-    /**
-     * Get the all shops in the world.
-     *
-     * @param world The world you want get the shops.
-     * @return The list have this world all shops
-     */
-    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
     }
 }

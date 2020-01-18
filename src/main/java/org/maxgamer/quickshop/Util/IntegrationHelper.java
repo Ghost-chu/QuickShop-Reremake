@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 
 import java.util.HashSet;
 import java.util.Set;
+
 @Getter
 public class IntegrationHelper {
     private Set<IntegratedPlugin> integrations = new HashSet<>();
@@ -37,7 +38,7 @@ public class IntegrationHelper {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
-        Util.debugLogHeavy("Registering "+clazz.getName());
+        Util.debugLogHeavy("Registering " + clazz.getName());
         integrations.add(clazz);
 
     }
@@ -46,17 +47,17 @@ public class IntegrationHelper {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
         }
-        Util.debugLogHeavy("Unregistering "+clazz.getName());
+        Util.debugLogHeavy("Unregistering " + clazz.getName());
         integrations.remove(clazz);
     }
 
     public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
             if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
-                Util.debugLogHeavy("Calling for load "+integratedPlugin.getName());
+                Util.debugLogHeavy("Calling for load " + integratedPlugin.getName());
                 integratedPlugin.load();
-            }else{
-                Util.debugLogHeavy("Ignored calling because "+integratedPlugin.getName()+" stage is "+integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
+            } else {
+                Util.debugLogHeavy("Ignored calling because " + integratedPlugin.getName() + " stage is " + integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
             }
         });
     }
@@ -64,18 +65,18 @@ public class IntegrationHelper {
     public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
         integrations.forEach(integratedPlugin -> {
             if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage() == stage) {
-                Util.debugLogHeavy("Calling for unload "+integratedPlugin.getName());
+                Util.debugLogHeavy("Calling for unload " + integratedPlugin.getName());
                 integratedPlugin.unload();
-            }else{
-                Util.debugLogHeavy("Ignored calling because "+integratedPlugin.getName()+" stage is "+integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
+            } else {
+                Util.debugLogHeavy("Ignored calling because " + integratedPlugin.getName() + " stage is " + integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage());
             }
         });
     }
 
     public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
-        for(IntegratedPlugin plugin : integrations){
-            if (!plugin.canCreateShopHere(player,location)) {
-                Util.debugLogHeavy("Cancelled by "+plugin.getName());
+        for (IntegratedPlugin plugin : integrations) {
+            if (!plugin.canCreateShopHere(player, location)) {
+                Util.debugLogHeavy("Cancelled by " + plugin.getName());
                 return false;
             }
         }
@@ -83,9 +84,9 @@ public class IntegrationHelper {
     }
 
     public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
-        for(IntegratedPlugin plugin : integrations){
-            if (!plugin.canTradeShopHere(player,location)) {
-                Util.debugLogHeavy("Cancelled by "+plugin.getName());
+        for (IntegratedPlugin plugin : integrations) {
+            if (!plugin.canTradeShopHere(player, location)) {
+                Util.debugLogHeavy("Cancelled by " + plugin.getName());
                 return false;
             }
         }
