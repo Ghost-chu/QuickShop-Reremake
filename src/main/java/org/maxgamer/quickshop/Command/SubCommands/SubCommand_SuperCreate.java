@@ -86,7 +86,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
             }
 
             if (!plugin.getShopManager().canBuildShop(p, b,
-                blockFace)) {
+                    blockFace)) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
@@ -100,7 +100,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
             }
 
             if (Util.isBlacklisted(item)
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
                 p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
@@ -111,12 +111,12 @@ public class SubCommand_SuperCreate implements CommandProcesser {
             }
             // Send creation menu.
             final Info info = new Info(b.getLocation(), ShopAction.CREATE,
-                p.getInventory().getItemInMainHand(),
-                b.getRelative(p.getFacing().getOppositeFace()));
+                    p.getInventory().getItemInMainHand(),
+                    b.getRelative(p.getFacing().getOppositeFace()));
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             p.sendMessage(
-                MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));

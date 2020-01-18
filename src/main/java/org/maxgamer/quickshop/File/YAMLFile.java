@@ -10,42 +10,42 @@ import java.io.InputStreamReader;
 public final class YAMLFile extends FileEnvelope {
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath,
-                  boolean loadDefault) {
+                    boolean loadDefault) {
         super(
-            plugin,
-            file,
-            resourcePath.endsWith(".yml")
-                ? resourcePath
-                : resourcePath + ".yml",
-            loadDefault
+                plugin,
+                file,
+                resourcePath.endsWith(".yml")
+                        ? resourcePath
+                        : resourcePath + ".yml",
+                loadDefault
         );
     }
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath) {
         super(
-            plugin,
-            file,
-            resourcePath.endsWith(".yml")
-                ? resourcePath
-                : resourcePath + ".yml",
-            true
+                plugin,
+                file,
+                resourcePath.endsWith(".yml")
+                        ? resourcePath
+                        : resourcePath + ".yml",
+                true
         );
     }
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final String resourcePath, @NotNull final String fileName) {
         this(
-            plugin,
-            new File(
-                plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/")
-                    ? resourcePath
-                    : "/" + resourcePath),
-                fileName.endsWith(".yml") ? fileName : fileName + ".yml"
-            ),
-            resourcePath.isEmpty()
-                ? fileName
-                : resourcePath.endsWith("/")
-                ? resourcePath + fileName
-                : resourcePath + "/" + fileName
+                plugin,
+                new File(
+                        plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/")
+                                ? resourcePath
+                                : "/" + resourcePath),
+                        fileName.endsWith(".yml") ? fileName : fileName + ".yml"
+                ),
+                resourcePath.isEmpty()
+                        ? fileName
+                        : resourcePath.endsWith("/")
+                        ? resourcePath + fileName
+                        : resourcePath + "/" + fileName
         );
     }
 
@@ -58,11 +58,11 @@ public final class YAMLFile extends FileEnvelope {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
         if (loadDefault) {
             fileConfiguration.setDefaults(
-                YamlConfiguration.loadConfiguration(
-                    new InputStreamReader(
-                        getInputStream()
+                    YamlConfiguration.loadConfiguration(
+                            new InputStreamReader(
+                                    getInputStream()
+                            )
                     )
-                )
             );
         }
     }

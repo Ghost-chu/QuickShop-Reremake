@@ -71,7 +71,7 @@ public class SubCommand_Sell implements CommandProcesser {
             //shop.setSignText();
             shop.update();
             sender.sendMessage(MsgUtil
-                .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                    .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
             return;
         }
         sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));

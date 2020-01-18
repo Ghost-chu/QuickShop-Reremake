@@ -89,7 +89,7 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             if (!plugin.getShopManager().canBuildShop(p, b,
-                blockFace)) {
+                    blockFace)) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
@@ -103,20 +103,20 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             if (Util.isBlacklisted(item)
-                && !QuickShop.getPermissionManager().hasPermission(p,"quickshop.bypass." + item.getType().name())) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypass." + item.getType().name())) {
                 p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
 
             // Send creation menu.
             plugin.getShopManager().getActions().put(
-                p.getUniqueId(),
-                new Info(
-                    b.getLocation(),
-                    ShopAction.CREATE,
-                    p.getInventory().getItemInMainHand(),
-                    b.getRelative(p.getFacing().getOppositeFace())
-                )
+                    p.getUniqueId(),
+                    new Info(
+                            b.getLocation(),
+                            ShopAction.CREATE,
+                            p.getInventory().getItemInMainHand(),
+                            b.getRelative(p.getFacing().getOppositeFace())
+                    )
             );
 
             if (cmdArg.length >= 1) {
@@ -126,7 +126,7 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             p.sendMessage(
-                MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
 
             return;
         }

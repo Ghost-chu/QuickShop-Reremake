@@ -25,8 +25,12 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IntegratedPlugin {
     @NotNull String getName();
+
     boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
+
     boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
+
     void load();
+
     void unload();
 }

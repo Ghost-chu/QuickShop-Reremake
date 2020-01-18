@@ -40,6 +40,7 @@ public interface IFile {
 
     /**
      * Loads from the data
+     *
      * @param data the data
      */
     void loadFromString(@NotNull String data) throws InvalidConfigurationException;
@@ -56,7 +57,7 @@ public interface IFile {
     /**
      * Gets the object with fallback
      *
-     * @param path object path to get
+     * @param path     object path to get
      * @param fallback fallback object to get if path does not exist
      * @return if path does not exist returns fallback object
      */
@@ -66,13 +67,12 @@ public interface IFile {
     /**
      * Gets or sets the object
      *
-     * @param path object path to get
+     * @param path     object path to get
      * @param fallback fallback object to get if path does not exist
-     * @param <T> object type
+     * @param <T>      object type
      * @return if path does not exist returns and set the path with fallback object
      */
-    @NotNull
-    <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
+    @NotNull <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
 
     /**
      * Gets location
@@ -86,25 +86,25 @@ public interface IFile {
     /**
      * Sets location into the path
      *
-     * @param path location path to set
+     * @param path     location path to set
      * @param location {@link Location}
      */
     void setLocation(@NotNull final String path, @NotNull final Location location);
 
     /**
      * Pattern:
-     *
+     * <p>
      * path:
-     *   (material): 'DIAMOND'
-     *   [amount]: 1
-     *   [data]: 0
-     *   [display-name]: 'Diamond Sword'
-     *   [enchants]:
-     *     DAMAGE_ALL: 10
-     *     FIRE_ASPECT: 2
-     *   [lore]:
-     *     - 'Lore 1'
-     *     - 'Lore 2'
+     * (material): 'DIAMOND'
+     * [amount]: 1
+     * [data]: 0
+     * [display-name]: 'Diamond Sword'
+     * [enchants]:
+     * DAMAGE_ALL: 10
+     * FIRE_ASPECT: 2
+     * [lore]:
+     * - 'Lore 1'
+     * - 'Lore 2'
      *
      * @param path itemstack path to get
      * @return {@link ItemStack}
@@ -115,7 +115,7 @@ public interface IFile {
     /**
      * Sets custom itemstack to path
      *
-     * @param path itemstack path to set
+     * @param path      itemstack path to set
      * @param itemStack {@link ItemStack}
      */
     void setCustomItemStack(@NotNull final String path, @NotNull final ItemStack itemStack);
@@ -132,7 +132,7 @@ public interface IFile {
     /**
      * Sets object to path
      *
-     * @param path object path to set
+     * @param path   object path to set
      * @param object {@link Object}
      */
     void set(@NotNull final String path, @Nullable final Object object);

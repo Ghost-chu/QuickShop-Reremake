@@ -43,6 +43,7 @@ import java.util.Locale;
 public class GameLanguage extends Thread {
     private @Nullable JsonObject lang = null;
     private GameLanguageLoadThread loadThread;
+
     @SneakyThrows
     public GameLanguage(@NotNull String languageCode) {
         loadThread = new GameLanguageLoadThread();
@@ -50,15 +51,15 @@ public class GameLanguage extends Thread {
         loadThread.setMainThreadWaiting(true); //Told thread we're waiting him
         loadThread.start();
         int count = 0;
-        while (count < 20){
-            if(loadThread.isAlive()){
-                count ++;
+        while (count < 20) {
+            if (loadThread.isAlive()) {
+                count++;
                 Thread.sleep(1000);
-                if(count >= 20){
+                if (count >= 20) {
                     Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
                     QuickShop.instance.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
                 }
-            }else{
+            } else {
                 break;
             }
         }
@@ -66,7 +67,7 @@ public class GameLanguage extends Thread {
         loadThread.setMainThreadWaiting(false); //Told thread it now move to background, thread should told user reset files.
     }
 
-    public void loadLimited(@NotNull String languageCode){
+    public void loadLimited(@NotNull String languageCode) {
         try {
             File cacheFile = new File(Util.getCacheFolder(), "lang.cache"); //Load cache file
             if (!cacheFile.exists()) {
@@ -94,7 +95,7 @@ public class GameLanguage extends Thread {
                 cachingServerVersion = serverVersion;
                 needUpdateCache = true;
             }
-            if(cachingLanguageHash == null || cachingLanguageHash.isEmpty()){
+            if (cachingLanguageHash == null || cachingLanguageHash.isEmpty()) {
                 needUpdateCache = true;
             }
             if (needUpdateCache) {
@@ -108,15 +109,15 @@ public class GameLanguage extends Thread {
                         String langJson = mojangAPI.downloadTextFileFromMojang(hash);
                         if (langJson != null) {
                             new Copied(new File(Util.getCacheFolder(), hash)).accept(new ByteArrayInputStream(langJson.getBytes(StandardCharsets.UTF_8)));
-                        }else{
+                        } else {
                             Util.debugLog("Cannot download file.");
                             QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                         }
-                    }else{
-                        Util.debugLog("Cannot get file hash for language "+ languageCode1);
+                    } else {
+                        Util.debugLog("Cannot get file hash for language " + languageCode1);
                         QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                     }
-                }else{
+                } else {
                     Util.debugLog("Cannot get version json.");
                     QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                 }
@@ -128,12 +129,12 @@ public class GameLanguage extends Thread {
             String json = null;
             if (cachingLanguageHash != null) {
                 json = Util.readToString(new File(Util.getCacheFolder(), cachingLanguageHash));
-            }else{
+            } else {
                 Util.debugLog("Caching LanguageHash is null");
             }
             if (json != null && !json.isEmpty()) {
                 lang = new JsonParser().parse(json).getAsJsonObject();
-            }else{
+            } else {
                 Util.debugLog("json is null");
             }
         } catch (Exception e) {
@@ -144,6 +145,7 @@ public class GameLanguage extends Thread {
 
     /**
      * Get item and block translations, if not found, it will both call getBlock()
+     *
      * @param material The material
      * @return The translations for material
      */
@@ -155,18 +157,20 @@ public class GameLanguage extends Thread {
         }
         String jsonName;
         try {
-            JsonElement element = lang.get("item.minecraft."+material.name().toLowerCase());
-            if(element == null){
+            JsonElement element = lang.get("item.minecraft." + material.name().toLowerCase());
+            if (element == null) {
                 return getBlock(material);
-            }else{
+            } else {
                 return element.getAsString();
             }
         } catch (NullPointerException npe) {
             return name;
         }
     }
+
     /**
      * Get block only translations, if not found, it WON'T call getItem()
+     *
      * @param material The material
      * @return The translations for material
      */
@@ -177,13 +181,15 @@ public class GameLanguage extends Thread {
             return name;
         }
         try {
-            return lang.get("block.minecraft."+material.name().toLowerCase()).getAsString();
+            return lang.get("block.minecraft." + material.name().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
     }
+
     /**
      * Get entity translations.
+     *
      * @param entity The entity name
      * @return The translations for entity
      */
@@ -194,13 +200,15 @@ public class GameLanguage extends Thread {
             return name;
         }
         try {
-            return lang.get("entity.minecraft."+entity.getType().name().toLowerCase()).getAsString();
+            return lang.get("entity.minecraft." + entity.getType().name().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
     }
+
     /**
      * Get potion/effect translations.
+     *
      * @param effect The potion/effect name
      * @return The translations for effect/potions
      */
@@ -211,13 +219,15 @@ public class GameLanguage extends Thread {
             return name;
         }
         try {
-            return lang.get("effect.minecraft."+effect.getName().toLowerCase()).getAsString();
+            return lang.get("effect.minecraft." + effect.getName().toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
     }
+
     /**
      * Get enchantment translations.
+     *
      * @param enchantmentName The enchantment name
      * @return The translations for enchantment
      */
@@ -228,13 +238,15 @@ public class GameLanguage extends Thread {
             return name;
         }
         try {
-            return lang.get("enchantment.minecraft."+enchantmentName.toLowerCase()).getAsString();
+            return lang.get("enchantment.minecraft." + enchantmentName.toLowerCase()).getAsString();
         } catch (NullPointerException e) {
             return name;
         }
     }
+
     /**
      * Get custom translations.
+     *
      * @param node The target node path
      * @return The translations for you custom node path
      */
@@ -243,21 +255,22 @@ public class GameLanguage extends Thread {
         if (lang == null) {
             return null;
         }
-        try{
+        try {
             return lang.get(node).getAsString();
         } catch (NullPointerException e) {
             return null;
         }
     }
 }
+
 @Getter
 @Setter
-class GameLanguageLoadThread extends Thread{
+class GameLanguageLoadThread extends Thread {
     private JsonObject lang;
     private String languageCode;
     private boolean mainThreadWaiting;
 
-    public void run(@NotNull String languageCode){
+    public void run(@NotNull String languageCode) {
         try {
             File cacheFile = new File(Util.getCacheFolder(), "lang.cache"); //Load cache file
             if (!cacheFile.exists()) {
@@ -285,7 +298,7 @@ class GameLanguageLoadThread extends Thread{
                 cachingServerVersion = serverVersion;
                 needUpdateCache = true;
             }
-            if(cachingLanguageHash == null || cachingLanguageHash.isEmpty()){
+            if (cachingLanguageHash == null || cachingLanguageHash.isEmpty()) {
                 needUpdateCache = true;
             }
             if (needUpdateCache) {
@@ -299,15 +312,15 @@ class GameLanguageLoadThread extends Thread{
                         String langJson = mojangAPI.downloadTextFileFromMojang(hash);
                         if (langJson != null) {
                             new Copied(new File(Util.getCacheFolder(), hash)).accept(new ByteArrayInputStream(langJson.getBytes(StandardCharsets.UTF_8)));
-                        }else{
+                        } else {
                             Util.debugLog("Cannot download file.");
                             QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                         }
-                    }else{
-                        Util.debugLog("Cannot get file hash for language "+ languageCode1);
+                    } else {
+                        Util.debugLog("Cannot get file hash for language " + languageCode1);
                         QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                     }
-                }else{
+                } else {
                     Util.debugLog("Cannot get version json.");
                     QuickShop.instance.getLogger().warning("Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                 }
@@ -319,19 +332,19 @@ class GameLanguageLoadThread extends Thread{
             String json = null;
             if (cachingLanguageHash != null) {
                 json = Util.readToString(new File(Util.getCacheFolder(), cachingLanguageHash));
-            }else{
+            } else {
                 Util.debugLog("Caching LanguageHash is null");
             }
             if (json != null && !json.isEmpty()) {
                 lang = new JsonParser().parse(json).getAsJsonObject();
-            }else{
+            } else {
                 Util.debugLog("json is null");
             }
         } catch (Exception e) {
             QuickShop.instance.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
         }
-        if(!this.mainThreadWaiting){
+        if (!this.mainThreadWaiting) {
             QuickShop.instance.getLogger().info("Download completed, please execute /qs reset lang to generate localized language files.");
         }
     }

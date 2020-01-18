@@ -33,10 +33,10 @@ import java.util.concurrent.CompletableFuture;
 public class SpigotWrapper implements BukkitAPIWrapper {
     @Override
     public void teleportEntity(@NotNull Entity entity, @NotNull Location location, @Nullable PlayerTeleportEvent.TeleportCause cause) {
-        if(cause == null){
+        if (cause == null) {
             entity.teleport(location);
-        }else{
-            entity.teleport(location,cause);
+        } else {
+            entity.teleport(location, cause);
         }
 
     }
@@ -48,7 +48,7 @@ public class SpigotWrapper implements BukkitAPIWrapper {
 
     @Override
     public void getChunkAt(@NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask) {
-        futureTask.complete(world.getChunkAt(x,z));
+        futureTask.complete(world.getChunkAt(x, z));
     }
 
     @Override

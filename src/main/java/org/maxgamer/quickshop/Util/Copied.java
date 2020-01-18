@@ -38,11 +38,11 @@ public final class Copied implements Consumer<InputStream> {
 
     @Override
     public void accept(@NotNull InputStream inputStream) {
-        try(final OutputStream out = new FileOutputStream(file)) {
+        try (final OutputStream out = new FileOutputStream(file)) {
             final byte[] buf = new byte[1024];
             int len;
 
-            while((len = inputStream.read(buf)) > 0) {
+            while ((len = inputStream.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
 

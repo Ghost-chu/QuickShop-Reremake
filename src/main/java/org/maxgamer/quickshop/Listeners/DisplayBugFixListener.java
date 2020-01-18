@@ -42,9 +42,9 @@ public class DisplayBugFixListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void canBuild(BlockCanBuildEvent e) {
         if (ListenerHelper.isDisabled(e.getClass()) ||
-            !plugin.isDisplay() ||
-            DisplayItem.getNowUsing() != DisplayType.ARMORSTAND ||
-            e.isBuildable()) {
+                !plugin.isDisplay() ||
+                DisplayItem.getNowUsing() != DisplayType.ARMORSTAND ||
+                e.isBuildable()) {
             return;
         }
 
@@ -52,7 +52,7 @@ public class DisplayBugFixListener implements Listener {
 
         for (Entity entity : entities) {
             if (!(entity instanceof ArmorStand) ||
-                !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
+                    !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
                 continue;
             }
 

@@ -30,12 +30,13 @@ import java.util.Queue;
 public class SignUpdateWatcher extends BukkitRunnable {
     private QuickShop plugin;
     private Queue<Shop> signUpdateQueue = new LinkedList<>();
-    public SignUpdateWatcher(QuickShop plugin){
+
+    public SignUpdateWatcher(QuickShop plugin) {
         this.plugin = plugin;
     }
 
-    public void scheduleSignUpdate(@NotNull Shop shop){
-        if(signUpdateQueue.contains(shop)){
+    public void scheduleSignUpdate(@NotNull Shop shop) {
+        if (signUpdateQueue.contains(shop)) {
             return; //Ignore
         }
         signUpdateQueue.add(shop);
@@ -44,7 +45,7 @@ public class SignUpdateWatcher extends BukkitRunnable {
     @Override
     public void run() {
         Shop shop = signUpdateQueue.poll();
-        while (shop !=null){
+        while (shop != null) {
             shop.setSignText();
             shop = signUpdateQueue.poll();
         }

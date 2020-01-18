@@ -130,8 +130,8 @@ public class SubCommand_Price implements CommandProcesser {
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
             if (shop == null ||
-                (!shop.getModerator().isModerator(((Player) sender).getUniqueId()) &&
-                    !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price"))) {
+                    (!shop.getModerator().isModerator(((Player) sender).getUniqueId()) &&
+                            !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price"))) {
                 continue;
             }
 
@@ -143,20 +143,20 @@ public class SubCommand_Price implements CommandProcesser {
 
             if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
                 sender.sendMessage(MsgUtil.getMessage("you-cant-afford-to-change-price", sender,
-                    plugin.getEconomy().format(fee)));
+                        plugin.getEconomy().format(fee)));
                 return;
             }
 
             if (fee > 0) {
                 sender.sendMessage(
-                    MsgUtil.getMessage("fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
+                        MsgUtil.getMessage("fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                 try {
                     plugin.getEconomy().deposit(plugin.getServer().getOfflinePlayer(Objects.requireNonNull(plugin.getConfig().getString("tax-account")))
-                        .getUniqueId(), fee);
+                            .getUniqueId(), fee);
                 } catch (Exception e) {
                     e.getMessage();
                     plugin.getLogger().log(Level.WARNING,
-                        "QuickShop can't pay tax to the account in config.yml, please set the tax account name to an existing player!");
+                            "QuickShop can't pay tax to the account in config.yml, please set the tax account name to an existing player!");
                 }
 
             }

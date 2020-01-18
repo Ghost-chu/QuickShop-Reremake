@@ -11,42 +11,42 @@ import java.nio.charset.StandardCharsets;
 public final class JSONFile extends FileEnvelope {
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath,
-                  boolean loadDefault) {
+                    boolean loadDefault) {
         super(
-            plugin,
-            file,
-            resourcePath.endsWith(".json")
-                ? resourcePath
-                : resourcePath + ".json",
-            loadDefault
+                plugin,
+                file,
+                resourcePath.endsWith(".json")
+                        ? resourcePath
+                        : resourcePath + ".json",
+                loadDefault
         );
     }
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath) {
         super(
-            plugin,
-            file,
-            resourcePath.endsWith(".json")
-                ? resourcePath
-                : resourcePath + ".json",
-            true
+                plugin,
+                file,
+                resourcePath.endsWith(".json")
+                        ? resourcePath
+                        : resourcePath + ".json",
+                true
         );
     }
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final String resourcePath, @NotNull final String fileName) {
         this(
-            plugin,
-            new File(
-                plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/")
-                    ? resourcePath
-                    : "/" + resourcePath),
-                fileName.endsWith(".json") ? fileName : fileName + ".json"
-            ),
-            resourcePath.isEmpty()
-                ? fileName
-                : resourcePath.endsWith("/")
-                ? resourcePath + fileName
-                : resourcePath + "/" + fileName
+                plugin,
+                new File(
+                        plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/")
+                                ? resourcePath
+                                : "/" + resourcePath),
+                        fileName.endsWith(".json") ? fileName : fileName + ".json"
+                ),
+                resourcePath.isEmpty()
+                        ? fileName
+                        : resourcePath.endsWith("/")
+                        ? resourcePath + fileName
+                        : resourcePath + "/" + fileName
         );
     }
 
@@ -59,12 +59,12 @@ public final class JSONFile extends FileEnvelope {
         fileConfiguration = JSONConfiguration.loadConfiguration(file);
         if (loadDefault) {
             fileConfiguration.setDefaults(
-                JSONConfiguration.loadConfiguration(
-                    new InputStreamReader(
-                        getInputStream(),
-                        StandardCharsets.UTF_8
+                    JSONConfiguration.loadConfiguration(
+                            new InputStreamReader(
+                                    getInputStream(),
+                                    StandardCharsets.UTF_8
+                            )
                     )
-                )
             );
         }
     }

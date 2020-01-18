@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum TownyFlags {
-    OWN,MODIFY,SHOPTYPE;
+    OWN, MODIFY, SHOPTYPE;
 
     public static List<TownyFlags> deserialize(List<String> list) {
         List<TownyFlags> result = new ArrayList<>();

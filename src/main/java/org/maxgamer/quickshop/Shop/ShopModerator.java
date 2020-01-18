@@ -33,20 +33,8 @@ import java.util.UUID;
  */
 @EqualsAndHashCode
 public class ShopModerator {
-    public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
-        //Use Gson deserialize data
-        Gson gson = new Gson();
-        return gson.fromJson(serilized, ShopModerator.class);
-    }
-
-    public static String serialize(@NotNull ShopModerator shopModerator) {
-        Gson gson = new Gson();
-        return gson.toJson(shopModerator); //Use Gson serialize this class
-    }
-
     @NonNull
     private UUID owner;
-
     @NonNull
     private ArrayList<UUID> staffs;
 
@@ -74,6 +62,17 @@ public class ShopModerator {
     public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
         this.owner = owner;
         this.staffs = staffs;
+    }
+
+    public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
+        //Use Gson deserialize data
+        Gson gson = new Gson();
+        return gson.fromJson(serilized, ShopModerator.class);
+    }
+
+    public static String serialize(@NotNull ShopModerator shopModerator) {
+        Gson gson = new Gson();
+        return gson.toJson(shopModerator); //Use Gson serialize this class
     }
 
     /**

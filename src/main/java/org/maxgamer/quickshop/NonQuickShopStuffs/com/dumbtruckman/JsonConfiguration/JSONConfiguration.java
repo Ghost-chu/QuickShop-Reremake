@@ -26,12 +26,40 @@ public final class JSONConfiguration extends FileConfiguration {
     protected static final String BLANK_CONFIG = "{}\n";
 
     @NotNull
+    public static JSONConfiguration loadConfiguration(@NotNull File file) {
+        final JSONConfiguration config = new JSONConfiguration();
+
+        try {
+            config.load(file);
+        } catch (FileNotFoundException ignored) {
+            // ignored...
+        } catch (IOException | InvalidConfigurationException ex) {
+            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
+        }
+
+        return config;
+    }
+
+    @NotNull
+    public static JSONConfiguration loadConfiguration(@NotNull Reader reader) {
+        final JSONConfiguration config = new JSONConfiguration();
+
+        try {
+            config.load(reader);
+        } catch (IOException | InvalidConfigurationException ex) {
+            Bukkit.getLogger().log(Level.SEVERE, "Cannot load configuration from stream", ex);
+        }
+
+        return config;
+    }
+
+    @NotNull
     @Override
     public String saveToString() {
         final GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
 
         //if (!options().prettyPrint()) {
-            gsonBuilder.setPrettyPrinting();
+        gsonBuilder.setPrettyPrinting();
         //}
         final Gson gson = gsonBuilder.create();
         final Object value = SerializationHelper.serialize(getValues(false));
@@ -54,10 +82,12 @@ public final class JSONConfiguration extends FileConfiguration {
 
         try {
             final Gson gson = new GsonBuilder()
-                .registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),
-                    new MapDeserializerDoubleAsIntFix())
-                .create();
-            input = gson.fromJson(contents, new TypeToken<Map<String, Object>>(){}.getType());
+                    .registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+                            }.getType(),
+                            new MapDeserializerDoubleAsIntFix())
+                    .create();
+            input = gson.fromJson(contents, new TypeToken<Map<String, Object>>() {
+            }.getType());
         } catch (JsonSyntaxException e) {
             throw new InvalidConfigurationException("Invalid JSON detected.", e);
         } catch (ClassCastException e) {
@@ -108,72 +138,45 @@ public final class JSONConfiguration extends FileConfiguration {
         return (JSONConfigurationOptions) options;
     }
 
-    @NotNull
-    public static JSONConfiguration loadConfiguration(@NotNull File file) {
-        final JSONConfiguration config = new JSONConfiguration();
-
-        try {
-            config.load(file);
-        } catch (FileNotFoundException ignored) {
-            // ignored...
-        } catch (IOException | InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
-        }
-
-        return config;
-    }
-
-    @NotNull
-    public static JSONConfiguration loadConfiguration(@NotNull Reader reader) {
-        final JSONConfiguration config = new JSONConfiguration();
-
-        try {
-            config.load(reader);
-        } catch (IOException | InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load configuration from stream", ex);
-        }
-
-        return config;
-    }
-
     public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>> {
 
-        @Override  @SuppressWarnings("unchecked")
+        @Override
+        @SuppressWarnings("unchecked")
         public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             return (Map<String, Object>) read(json);
         }
 
         public Object read(JsonElement in) {
 
-            if(in.isJsonArray()){
+            if (in.isJsonArray()) {
                 List<Object> list = new ArrayList<Object>();
                 JsonArray arr = in.getAsJsonArray();
                 for (JsonElement anArr : arr) {
                     list.add(read(anArr));
                 }
                 return list;
-            }else if(in.isJsonObject()){
+            } else if (in.isJsonObject()) {
                 Map<String, Object> map = new LinkedTreeMap<String, Object>();
                 JsonObject obj = in.getAsJsonObject();
                 Set<Map.Entry<String, JsonElement>> entitySet = obj.entrySet();
-                for(Map.Entry<String, JsonElement> entry: entitySet){
+                for (Map.Entry<String, JsonElement> entry : entitySet) {
                     map.put(entry.getKey(), read(entry.getValue()));
                 }
                 return map;
-            }else if( in.isJsonPrimitive()){
+            } else if (in.isJsonPrimitive()) {
                 JsonPrimitive prim = in.getAsJsonPrimitive();
-                if(prim.isBoolean()){
+                if (prim.isBoolean()) {
                     return prim.getAsBoolean();
-                }else if(prim.isString()){
+                } else if (prim.isString()) {
                     return prim.getAsString();
-                }else if(prim.isNumber()){
+                } else if (prim.isNumber()) {
                     Number num = prim.getAsNumber();
                     // here you can handle double int/long values
                     // and return any type you want
                     // this solution will transform 3.0 float to long values
-                    if(Math.ceil(num.doubleValue())  == num.longValue())
+                    if (Math.ceil(num.doubleValue()) == num.longValue())
                         return num.longValue();
-                    else{
+                    else {
                         return num.doubleValue();
                     }
                 }
