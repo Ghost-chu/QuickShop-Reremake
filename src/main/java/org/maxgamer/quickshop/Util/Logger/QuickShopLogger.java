@@ -64,9 +64,8 @@ public class QuickShopLogger extends PluginLogger {
 
     //private FileHandler debugLogFileHandler = null;
     private boolean AnsiSupported = true;
-    private String pluginName;
 
-    @SneakyThrows
+	@SneakyThrows
     public QuickShopLogger(Plugin plugin) {
 	super(plugin);
 
@@ -81,9 +80,9 @@ public class QuickShopLogger extends PluginLogger {
 
 	// Logger re-naming
 	String prefix = plugin.getDescription().getPrefix();
-	pluginName = prefix != null ?
-		"[" + ChatColor.YELLOW + prefix                            + ChatColor.RESET + "] ":
-		"[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ";
+		String pluginName = prefix != null ?
+				"[" + ChatColor.YELLOW + prefix + ChatColor.RESET + "] " :
+				"[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ";
 	pluginName = AnsiSupported ? applyStyles(pluginName) : pluginName;
 	
 	// Apply plugin name for BukkitLogger
