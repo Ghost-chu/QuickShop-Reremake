@@ -271,28 +271,6 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-//    private static void loadLangUtils(@NotNull String languageCode){
-//        try {
-//            //Load LangUtils support, before MsgUtil init.
-//            //Cause we maybe will use them all.
-//
-//            Plugin langUtilsPlugin = Bukkit.getPluginManager().getPlugin("LangUtils");
-//            if (langUtilsPlugin != null) {
-//                List<String> langLanguages = langUtilsPlugin.getConfig().getStringList("LoadLanguage");
-//                if (!langLanguages.contains(languageCode)) {
-//                    langLanguages.add(languageCode);
-//                    langUtilsPlugin.getConfig().set("LoadLanguage", langLanguages);
-//                    langUtilsPlugin.saveConfig();
-//                    langUtilsPlugin.reloadConfig();
-//                    langUtilsPlugin.onDisable();
-//                    langUtilsPlugin.onEnable();
-//                }
-//            }
-//        } catch (Throwable throwable) {
-//            plugin.getSentryErrorReporter().sendError(throwable,"LangUtils cannot load.");
-//        }
-//    }
-
     public static void loadGameLanguage(@NotNull String languageCode){
         gameLanguage = new GameLanguage(languageCode);
     }
@@ -380,12 +358,6 @@ public class MsgUtil {
                 continue;
             }
             String enchName = gameLanguage.getEnchantment(ench.getKey().getKey());
-//            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
-//                //noinspection ConstantConditions
-//                enchName = LanguageHelper.getEnchantmentName(ench, plugin.getConfig().getString("langutils-language", "en_us"));
-//            } else {
-//                enchName = Util.prettifyText(ench.getKey().getKey());
-//            }
             enchi18n.set("enchi18n." + ench.getKey().getKey(), enchName);
             plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
         }
@@ -421,13 +393,6 @@ public class MsgUtil {
                 continue;
             }
             String itemName = gameLanguage.getItem(material);
-//            if (Bukkit.getPluginManager().isPluginEnabled("LangUtils")) {
-//                //noinspection ConstantConditions
-//                itemName = LanguageHelper.getItemName(new ItemStack(material), plugin.getConfig()
-//                        .getString("langutils-language", "en_us"));
-//            } else {
-//                itemName = Util.prettifyText(material.name());
-//            }
             itemi18n.set("itemi18n." + material.name(), itemName);
             plugin.getLogger().info("Found new items/blocks [" + itemName + "] , adding it to the config...");
         }
