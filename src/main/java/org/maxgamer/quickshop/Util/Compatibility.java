@@ -33,10 +33,10 @@ import java.util.ArrayList;
  */
 public class Compatibility {
     private final ArrayList<RegisteredListener> disabledListeners = new ArrayList<>();
-    private QuickShop plugin;
+    //private QuickShop plugin;
 
     public Compatibility(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
     }
 
     private void disableListeners(@NotNull Player player) {
