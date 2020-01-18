@@ -21,7 +21,12 @@ package org.maxgamer.quickshop.Util.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLogger;
 import org.fusesource.jansi.Ansi;
+
+import com.bekvon.bukkit.residence.commands.sublist;
+
+import lombok.SneakyThrows;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,40 +42,37 @@ import static org.bukkit.ChatColor.*;
 
 /*
  * Originally take from Mypet which is a awesome project,
- * directly extends from the Logger due to the colorful logging prefix.
+ * extends PluginLogger in order to replace the default logger.
  * 
  * This is generally a new built logger system that
  * rely on the Java logger to provide better customization.
  * 
  * It is possible to switch to Log4j for better performance in the future.
  */
-public class QuickShopLogger extends Logger {
+public class QuickShopLogger extends PluginLogger {
 
     protected boolean debugSetup = false;
-    
+
     /**
      * Mapping from the text pattern of Bukkit color to the corresponding text format of Ansi
      */
     private Map<Pattern, String> bukkitToAnsi;
-    
+
     // below are non-static for secret optimization
     /**
      * Regex that indicates the case insensitive
      */
     private String IGNORE_CASE;
-    
+
     //private FileHandler debugLogFileHandler = null;
     private boolean AnsiSupported = true;
     private String pluginName = "QuickShop";
 
+    @SneakyThrows
     public QuickShopLogger(Plugin plugin) {
-	super(plugin.getClass().getCanonicalName(), null);
-	
-	// Basic settings
-        setParent(plugin.getServer().getLogger());
-        setLevel(Level.ALL);
-	
-        // Ansi setup
+	super(plugin);
+
+	// Ansi setup
 	try {
 	    if (Ansi.isEnabled())
 		registerStyles();
@@ -79,37 +81,37 @@ public class QuickShopLogger extends Logger {
 	    info("Your server doesn't support ANSI color, disabled color formatter.");
 	}
 
-	// Logger naming
+	// Logger re-naming
 	String prefix = plugin.getDescription().getPrefix();
 	pluginName = prefix != null ?
-		"[" + ChatColor.YELLOW + prefix                             + ChatColor.RESET + "] " :
+		"[" + ChatColor.YELLOW + prefix                            + ChatColor.RESET + "] ":
 		"[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ";
 	pluginName = AnsiSupported ? applyStyles(pluginName) : pluginName;
-	
+	super.getClass().getDeclaredField("pluginName").set(this, pluginName);
+
 	this.config();
 	//super.setUseParentHandlers(false);
     }
-    
+
     // Logging stuffs
+    @Override
     public void log(LogRecord logRecord) {
-	logRecord.setLoggerName("");
+	//logRecord.setLoggerName("");
 	String message = logRecord.getMessage();
-	if (message != null) {
-	    if (logRecord.getLevel() == Level.WARNING) {
+
+	if (message != null && AnsiSupported) {
+	    if (logRecord.getLevel() == Level.WARNING)
 		message = ChatColor.YELLOW + message;
-	    }
-	    if (logRecord.getLevel() == Level.SEVERE) {
+
+	    if (logRecord.getLevel() == Level.SEVERE)
 		message = ChatColor.RED + message;
-	    }
-	    if (AnsiSupported) {
-		message = applyStyles(message);
-	    }
-	    logRecord.setMessage(message);
+
+	    message = applyStyles(message);
 	}
 
 	super.log(logRecord);
     }
-    
+
     public void info(Object... params) {
 	this.info(Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" ")));
     }
@@ -148,7 +150,7 @@ public class QuickShopLogger extends Logger {
     public String applyStyles(String message) {
 	for (Entry<Pattern, String> entry : bukkitToAnsi.entrySet())
 	    message = entry.getKey().matcher(message).replaceAll(entry.getValue());
-	
+
 	return message.concat(Ansi.ansi().reset().toString());
     }
 
@@ -160,7 +162,7 @@ public class QuickShopLogger extends Logger {
 	// Initial here for secert optimization
 	bukkitToAnsi = new HashMap<Pattern, String>();
 	IGNORE_CASE = "(?i)";
-	
+
 	// Colors
 	regAnsiMapping(BLACK, Ansi.Color.BLACK);
 	regAnsiMapping(DARK_BLUE, Ansi.Color.BLUE);
@@ -194,7 +196,7 @@ public class QuickShopLogger extends Logger {
     private void regAnsiMapping(ChatColor bukkColor, Ansi.Color ansiColor) {
 	regAnsiMapping0(toPattern(bukkColor), toDesc(ansiColor));
     }
-    
+
     /*
      * Register a mapping from Bukkit color to Ansi
      */
