@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.Util.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.fusesource.jansi.Ansi;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class QuickShopLogger extends Logger {
 	// Logger naming
 	String prefix = plugin.getDescription().getPrefix();
 	pluginName = prefix != null ?
-		"[" + ChatColor.YELLOW + prefix                            + ChatColor.RESET + "] " :
+		"[" + ChatColor.YELLOW + prefix                             + ChatColor.RESET + "] " :
 		"[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ";
 	pluginName = AnsiSupported ? applyStyles(pluginName) : pluginName;
 	
@@ -106,7 +107,6 @@ public class QuickShopLogger extends Logger {
 	    logRecord.setMessage(message);
 	}
 
-        logRecord.setMessage(pluginName + logRecord.getMessage()); // extends from PluginLogger
 	super.log(logRecord);
     }
     
