@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.PluginsIntegration.PlotSquared;
 
-import com.github.intellectualsites.plotsquared.api.PlotAPI;
 import com.github.intellectualsites.plotsquared.plot.flag.BooleanFlag;
 import com.github.intellectualsites.plotsquared.plot.flag.Flags;
 import com.github.intellectualsites.plotsquared.plot.object.Plot;
@@ -36,14 +35,13 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegration implements IntegratedPlugin {
-    private PlotAPI plotAPI;
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
     private QuickShop plugin;
 
     public PlotSquaredIntegration(QuickShop plugin) {
         this.plugin = plugin;
-        this.plotAPI = new PlotAPI();
+        //PlotAPI plotAPI = new PlotAPI();
     }
 
     @Override
