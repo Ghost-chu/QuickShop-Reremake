@@ -289,6 +289,9 @@ public class QuickShop extends JavaPlugin {
                     Util.debugLog("No any economy provider selected.");
                     break;
             }
+            if(core == null){
+                return false;
+            }
             if (!core.isValid()) {
                 // getLogger().severe("Economy is not valid!");
                 bootError = BuiltInSolution.econError();
