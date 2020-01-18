@@ -56,7 +56,7 @@ hs_err_pid*
 QuickShop.iml
 
 #Eclipse
-./.settings/*
+.settings/
 .classpath
 .project
 
