@@ -19,15 +19,11 @@
 
 package org.maxgamer.quickshop.Util.Logger;
 
+import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.fusesource.jansi.Ansi;
-
-import com.bekvon.bukkit.residence.commands.sublist;
-import com.google.common.base.Strings;
-
-import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -68,7 +64,7 @@ public class QuickShopLogger extends PluginLogger {
 
     //private FileHandler debugLogFileHandler = null;
     private boolean AnsiSupported = true;
-    private String pluginName = "QuickShop";
+    private String pluginName;
 
     @SneakyThrows
     public QuickShopLogger(Plugin plugin) {
@@ -110,15 +106,15 @@ public class QuickShopLogger extends PluginLogger {
 	String message = logRecord.getMessage();
 
 	if (message != null && AnsiSupported) {
-	    if (logRecord.getLevel() == Level.WARNING)
-		message = ChatColor.YELLOW + message;
-
-	    if (logRecord.getLevel() == Level.SEVERE)
-		message = ChatColor.RED + message;
-
+	    if (logRecord.getLevel() == Level.WARNING) {
+			message = ChatColor.YELLOW + message;
+		}
+	    if (logRecord.getLevel() == Level.SEVERE) {
+			message = ChatColor.RED + message;
+		}
 	    message = applyStyles(message);
+	    logRecord.setMessage(message);
 	}
-
 	super.log(logRecord);
     }
     
