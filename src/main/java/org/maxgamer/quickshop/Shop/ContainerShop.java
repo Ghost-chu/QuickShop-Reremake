@@ -397,12 +397,10 @@ public class ContainerShop implements Shop {
 
     @Override
     public void checkDisplay() {
-        Util.debugLog("Checking the display...");
         if (!plugin.isDisplay()) {
             return;
         }
         if (!this.isLoaded) {
-            Util.debugLog("Shop not loaded, skipping...");
             return;
         }
         if (this.displayItem == null) {
