@@ -49,11 +49,11 @@ public class InventoryPreview implements Listener {
         if (stack == null) {
             return false;
         }
-        if (!stack.hasItemMeta() || !Objects.requireNonNull(stack.getItemMeta()).hasLore()) {
+        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
         List<String> lores = stack.getItemMeta().getLore();
-        for (String string : Objects.requireNonNull(lores)) {
+        for (String string : lores) {
             if ("QuickShop GUI preview item".equals(string)) {
                 return true;
             }
