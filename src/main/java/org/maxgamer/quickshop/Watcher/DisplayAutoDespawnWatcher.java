@@ -23,6 +23,8 @@ import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
@@ -48,16 +50,22 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                     shop.checkDisplay();
                 }
             } else if (shop.getDisplay().isSpawned()) {
-        	if (shop.getDisplay().isPendingRemoval()) {
-        	    // Actually remove the pending display
-                    Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-        	    shop.getDisplay().remove();
-                } else {
-                    // Delayed to next cycle
-                    Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
-                    shop.getDisplay().pendingRemoval();
-                }
+        	removeDisplayItemDelayed(shop);
             }
         });
+    }
+    
+    public boolean removeDisplayItemDelayed(Shop shop) {
+	if (shop.getDisplay().isPendingRemoval()) {
+	    // Actually remove the pending display
+            Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
+            shop.getDisplay().remove();
+            return true;
+        } else {
+            // Delayed to next calling
+            Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
+            shop.getDisplay().pendingRemoval();
+            return false;
+        }
     }
 }
