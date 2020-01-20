@@ -55,6 +55,7 @@ public class ContainerShop implements Shop {
     private final ItemStack item;
     @NotNull
     private final Location location;
+    @Nullable
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private boolean isLoaded = false;
@@ -565,7 +566,7 @@ public class ContainerShop implements Shop {
      *
      * @return The display item associated with this shop.
      */
-    @NotNull
+    @Nullable
     public DisplayItem getDisplayItem() {
         return this.displayItem;
     }
@@ -874,7 +875,7 @@ public class ContainerShop implements Shop {
         }
 
         this.isLoaded = true;
-        plugin.getShopManager().getLoadedShops().add(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
         // check price restriction
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());

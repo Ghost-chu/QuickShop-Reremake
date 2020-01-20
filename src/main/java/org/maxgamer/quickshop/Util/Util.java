@@ -206,7 +206,8 @@ public class Util {
             }
         }
         long startTime = System.currentTimeMillis();
-        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
+        String className = stackTraceElement.getClassName();
         try {
             Class<?> c = Class.forName(className);
             className = c.getSimpleName();
@@ -216,8 +217,8 @@ public class Util {
         } catch (ClassNotFoundException e) {
             //Ignore
         }
-        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
+        String methodName = stackTraceElement.getMethodName();
+        int codeLine = stackTraceElement.getLineNumber();
 
         for (String log : logs) {
             String text = "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN + codeLine + ChatColor.RESET + ") " + log;
@@ -254,7 +255,8 @@ public class Util {
             return;
         }
         long startTime = System.currentTimeMillis();
-        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
+        String className = stackTraceElement.getClassName();
         try {
             Class<?> c = Class.forName(className);
             className = c.getSimpleName();
@@ -264,8 +266,8 @@ public class Util {
         } catch (ClassNotFoundException e) {
             //Ignore
         }
-        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
+        String methodName = stackTraceElement.getMethodName();
+        int codeLine = stackTraceElement.getLineNumber();
 
         for (String log : logs) {
             String text = "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN + codeLine + ChatColor.RESET + ") " + log;
