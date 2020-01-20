@@ -47,14 +47,11 @@ public class DatabaseManager {
 
     @NotNull
     private final QuickShop plugin;
-
-    @Nullable
-    private BukkitTask task;
-
-    private boolean useQueue;
-
     @NotNull
     private final WarningSender warningSender;
+    @Nullable
+    private BukkitTask task;
+    private boolean useQueue;
 
     /**
      * Queued database manager.
@@ -143,10 +140,10 @@ public class DatabaseManager {
         }
         try {
             this.database.getConnection().commit();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             try {
                 this.database.getConnection().rollback();
-            }catch (SQLException ignored){
+            } catch (SQLException ignored) {
             }
         }
     }

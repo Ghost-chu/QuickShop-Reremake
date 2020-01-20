@@ -33,14 +33,14 @@ import java.util.Queue;
  */
 // unused, pending to remove
 public class ShopContainerWatcher extends BukkitRunnable {
-    private QuickShop plugin;
+    //private QuickShop plugin;
     private Queue<Shop> checkQueue = new LinkedList<>();
 
     public ShopContainerWatcher(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
     }
 
-    public void scheduleCheck(@NotNull Shop shop){
+    public void scheduleCheck(@NotNull Shop shop) {
         checkQueue.add(shop);
     }
 
@@ -49,10 +49,10 @@ public class ShopContainerWatcher extends BukkitRunnable {
         long beginTime = System.currentTimeMillis();
         Shop shop = checkQueue.poll();
         while (shop != null) {
-            if(shop instanceof ContainerShop){
+            if (shop instanceof ContainerShop) {
                 ((ContainerShop) shop).checkContainer();
             }
-            if(System.currentTimeMillis() - beginTime > 45){ //Don't let quickshop eat more than 45 ms per tick.
+            if (System.currentTimeMillis() - beginTime > 45) { //Don't let quickshop eat more than 45 ms per tick.
                 break;
             }
             shop = checkQueue.poll();

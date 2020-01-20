@@ -44,11 +44,6 @@ import java.util.Objects;
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
-    private static boolean isTool(Material material) {
-        String nlc = material.name().toLowerCase();
-        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
-    }
-
     @Nullable
     private ArmorStand armorStand;
     @Nullable
@@ -56,11 +51,15 @@ public class ArmorStandDisplayItem implements DisplayItem {
     private ItemStack originalItemStack;
     private QuickShop plugin = QuickShop.instance;
     private Shop shop;
-
     ArmorStandDisplayItem(@NotNull Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
         this.originalItemStack.setAmount(1);
+    }
+
+    private static boolean isTool(Material material) {
+        String nlc = material.name().toLowerCase();
+        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
     }
 
     @Override
@@ -151,7 +150,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
         armorStand.setItemInHand(guardedIstack);
         try {
             armorStand.getPersistentDataContainer().set(new NamespacedKey(plugin, "displayMark"), DisplayItemPersistentDataType.INSTANCE, DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
-        }catch (Throwable ignored){}
+        } catch (Throwable ignored) {
+        }
     }
 
     @Override
@@ -266,13 +266,13 @@ public class ArmorStandDisplayItem implements DisplayItem {
     @Override
     public void fixDisplayMoved() {
         Location location = this.getDisplayLocation();
-        if(this.armorStand != null){
-            if(location != null){
+        if (this.armorStand != null) {
+            if (location != null) {
                 this.armorStand.teleport(location);
-            }else{
+            } else {
                 fixDisplayMovedOld();
             }
-        }else{
+        } else {
             fixDisplayMovedOld();
         }
     }

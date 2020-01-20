@@ -29,11 +29,13 @@ import java.util.Queue;
 // unused, pending to remove
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
     private Queue<DisplayItem> checkQueue = new LinkedList<>();
+
     @Override
     public void run() {
         checkQueue.forEach(DisplayItem::removeDupe);
     }
-    public void add(@NotNull DisplayItem displayItem){
+
+    public void add(@NotNull DisplayItem displayItem) {
         checkQueue.offer(displayItem);
     }
 }

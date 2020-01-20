@@ -72,13 +72,13 @@ public class SubCommand_Find implements CommandProcesser {
         final int chunkRadius = (int) minDistance / 16 + 1;
         Shop closest = null;
         CompletableFuture<Chunk> future = new CompletableFuture<>();
-        plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(),loc, future);
+        plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(), loc, future);
         final Chunk c;
         try {
             c = future.get();
-        }catch (Exception asyncErr){
+        } catch (Exception asyncErr) {
             sender.sendMessage("Cannot execute the command, see console for details.");
-            plugin.getSentryErrorReporter().sendError(asyncErr,"Unknown errors");
+            plugin.getSentryErrorReporter().sendError(asyncErr, "Unknown errors");
             plugin.getSentryErrorReporter().ignoreThrow();
             asyncErr.printStackTrace();
             return;
@@ -111,12 +111,12 @@ public class SubCommand_Find implements CommandProcesser {
             sender.sendMessage(MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
             return;
         }
-        
+
         final Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
         // Hack fix to make /qs find not used by /back
-        plugin.getBukkitAPIWrapper().teleportEntity(p,Util.lookAt(loc, lookat).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
+        plugin.getBukkitAPIWrapper().teleportEntity(p, Util.lookAt(loc, lookat).add(0, -1.62, 0), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         p.sendMessage(
-            MsgUtil.getMessage("nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
+                MsgUtil.getMessage("nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
     }
 
 }

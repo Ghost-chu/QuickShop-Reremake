@@ -31,13 +31,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class PaperWrapper implements BukkitAPIWrapper{
+public class PaperWrapper implements BukkitAPIWrapper {
     @Override
     public void teleportEntity(@NotNull Entity entity, @NotNull Location location, @Nullable PlayerTeleportEvent.TeleportCause cause) {
-        if(cause == null) {
+        if (cause == null) {
             entity.teleportAsync(location);
-        }else {
-            entity.teleportAsync(location,cause);
+        } else {
+            entity.teleportAsync(location, cause);
         }
     }
 
@@ -53,9 +53,9 @@ public class PaperWrapper implements BukkitAPIWrapper{
     @Override
     public void getChunkAt(@NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask) {
         try {
-            futureTask.complete(world.getChunkAtAsync(x,z).get());
+            futureTask.complete(world.getChunkAtAsync(x, z).get());
         } catch (InterruptedException | ExecutionException e) {
-            futureTask.complete(world.getChunkAt(x,z));
+            futureTask.complete(world.getChunkAt(x, z));
         }
     }
 

@@ -52,7 +52,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
 
         final Player p = (Player) sender;
         final Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
-            Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
+                Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
 
         if (shop == null) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
@@ -60,7 +60,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         }
 
         if (!shop.getModerator().isModerator(p.getUniqueId()) &&
-            !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
+                !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
             sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
             return;
         }

@@ -28,9 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
 public class DisplayItemPersistentDataType implements PersistentDataType<String, ShopProtectionFlag> {
-    private static Gson gson = new Gson();
-
     static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
+    private static Gson gson = new Gson();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -47,7 +46,7 @@ public class DisplayItemPersistentDataType implements PersistentDataType<String,
     public String toPrimitive(@NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
         try {
             return gson.toJson(complex);
-        }catch (Throwable th){
+        } catch (Throwable th) {
             new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
             return "";
         }
@@ -58,7 +57,7 @@ public class DisplayItemPersistentDataType implements PersistentDataType<String,
     public ShopProtectionFlag fromPrimitive(@NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
             return gson.fromJson(primitive, ShopProtectionFlag.class);
-        }catch (Throwable th){
+        } catch (Throwable th) {
             new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
             return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
         }

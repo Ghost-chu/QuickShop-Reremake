@@ -60,9 +60,9 @@ import java.util.logging.Level;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
+    public static String invaildMsg = "Invaild message";
     private static YamlConfiguration builtInDefaultLanguage = YamlConfiguration.loadConfiguration(new InputStreamReader(QuickShop.instance.getLanguage()
             .getFile("en", "messages")));
-    public static String invaildMsg = "Invaild message";
     private static YamlConfiguration enchi18n;
     private static boolean inited;
     private static YamlConfiguration itemi18n;
@@ -129,7 +129,7 @@ public class MsgUtil {
      */
     public static boolean flush(@NotNull OfflinePlayer p) {
         Player player = p.getPlayer();
-        if (player!= null) {
+        if (player != null) {
             UUID pName = p.getUniqueId();
             LinkedList<String> msgs = player_messages.get(pName);
             if (msgs != null) {
@@ -208,7 +208,7 @@ public class MsgUtil {
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         Optional<String> raw = messagei18n.getString(loc);
         if (!raw.isPresent()) {
-            Util.debugLog("ERR: MsgUtil cannot find the the phrase at "+loc+", printing the all readed datas: "+messagei18n);
+            Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
 
             return invaildMsg + ": " + loc;
         }
@@ -218,11 +218,12 @@ public class MsgUtil {
                 try {
                     filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                     Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
-                }catch (Exception ignored){
-                    if(((OfflinePlayer) player).getPlayer() != null){
+                } catch (Exception ignored) {
+                    if (((OfflinePlayer) player).getPlayer() != null) {
                         try {
                             filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
-                        }catch (Exception ignore){}
+                        } catch (Exception ignore) {
+                        }
                     }
                 }
             }
@@ -271,7 +272,7 @@ public class MsgUtil {
         return Util.prettifyText(potionString);
     }
 
-    public static void loadGameLanguage(@NotNull String languageCode){
+    public static void loadGameLanguage(@NotNull String languageCode) {
         gameLanguage = new GameLanguage(languageCode);
     }
 
@@ -282,40 +283,41 @@ public class MsgUtil {
                 .getString("language", "en");
         //noinspection ConstantConditions
 
-        loadGameLanguage(plugin.getConfig().getString("game-language","default"));
+        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
         //Init nJson
         IFile nJson;
-        if(plugin.getResource("messages/"+languageCode+".json") == null){
-            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/en.json",true);
-        }else{
-            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(),"messages.json"),"messages/"+languageCode+".json",true);
+        if (plugin.getResource("messages/" + languageCode + ".json") == null) {
+            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(), "messages.json"), "messages/en.json", true);
+        } else {
+            nJson = new JSONFile(plugin, new File(plugin.getDataFolder(), "messages.json"), "messages/" + languageCode + ".json", true);
         }
 
         nJson.create();
 
 
         File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
-        if(oldMsgFile.exists()){ //Old messages file convert.
+        if (oldMsgFile.exists()) { //Old messages file convert.
             plugin.getLogger().info("Converting the old format message.yml to message.json...");
-            plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
+            plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
-            for (String key:oldMsgI18n.getKeys(true)){
+            for (String key : oldMsgI18n.getKeys(true)) {
                 oldMsgI18n.get(key);
             }
             nJson.save();
             try {
                 Files.move(oldMsgFile.toPath(), new File(plugin.getDataFolder(), "messages.yml.bak").toPath());
-            }catch (IOException ignore){}
-            if(oldMsgFile.exists()){
+            } catch (IOException ignore) {
+            }
+            if (oldMsgFile.exists()) {
                 oldMsgFile.delete();
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
-        }else{
+        } else {
             Util.debugLog("Loading language file from exist file...");
-           if(!new File(plugin.getDataFolder(),"messages.json").exists()){
-               plugin.getLanguage().saveFile(languageCode,"messages","messages.json");
-               nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(),"messages.json").getAbsolutePath()));
-           }
+            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+                nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+            }
         }
         messagei18n = nJson;
         /* Set default language vesion and update messages.yml */
@@ -425,7 +427,7 @@ public class MsgUtil {
                 continue;
             }
             String potionName = gameLanguage.getPotion(potion);
-            plugin.getLogger().info("Found new potion [" +potionName + "] , adding it to the config...");
+            plugin.getLogger().info("Found new potion [" + potionName + "] , adding it to the config...");
             potioni18n.set("potioni18n." + potion.getName(), potionName);
         }
         try {
@@ -839,7 +841,7 @@ public class MsgUtil {
             enchs = items.getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p,""));
+            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p, ""));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
             }
@@ -855,14 +857,14 @@ public class MsgUtil {
                 }
             }
         }
-        if(items.getItemMeta() instanceof PotionMeta){
-            PotionMeta potionMeta = (PotionMeta)items.getItemMeta();
+        if (items.getItemMeta() instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
             PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
-            if(potionEffectType != null){
+            if (potionEffectType != null) {
                 chatSheetPrinter.printLine(MsgUtil.getMessage("menu.effects", p));
-                chatSheetPrinter.printLine(ChatColor.YELLOW+MsgUtil.getPotioni18n(potionEffectType));
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
             }
-            potionMeta.getCustomEffects().forEach((potionEffect -> chatSheetPrinter.printLine(ChatColor.YELLOW+MsgUtil.getPotioni18n(potionEffect.getType()))));
+            potionMeta.getCustomEffects().forEach((potionEffect -> chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()))));
         }
         chatSheetPrinter.printFooter();
     }
@@ -872,8 +874,19 @@ public class MsgUtil {
     }
 
     @SuppressWarnings("UnusedAssignment")
-    private static void updateMessages(int selectedVersion) throws IOException {
-
+    private static void updateMessages(int selectedVersion) {
+        String languageName = plugin.getConfig()
+                .getString("language", "en");
+        if(!messagei18n.getString("language-name").isPresent()){
+            setAndUpdate("language-name",languageName);
+        }
+        if(!messagei18n.getString("language-name").get().equals(languageName)){
+            new File(plugin.getDataFolder(),"messages.json").delete();
+            try {
+                loadCfgMessages();
+            }catch (Exception ignore){}
+            return;
+        }
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
             setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
@@ -1143,6 +1156,7 @@ public class MsgUtil {
         }
         messagei18n.set(path, objFromBuiltIn);
     }
+
     public static IFile getI18nFile() {
         return messagei18n;
     }
