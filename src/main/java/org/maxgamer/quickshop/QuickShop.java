@@ -21,7 +21,6 @@ package org.maxgamer.quickshop;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.SQLException;
@@ -29,19 +28,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -1397,7 +1392,7 @@ public class QuickShop extends JavaPlugin {
    *
    * @return The fork name.
    */
-  public String getFork() {
+  public static String getFork() {
     return "Reremake";
   }
 
