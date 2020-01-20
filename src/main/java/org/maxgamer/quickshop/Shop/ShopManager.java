@@ -39,6 +39,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import com.google.common.collect.Sets;
+
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -50,7 +52,6 @@ import java.util.stream.Collectors;
 /**
  * Manage a lot of shops.
  */
-@SuppressWarnings("WeakerAccess")
 public class ShopManager {
 
     private HashMap<UUID, Info> actions = new HashMap<>();
@@ -59,7 +60,7 @@ public class ShopManager {
 
     private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
 
-    private Set<Shop> loadedShops = new CopyOnWriteArraySet<>();
+    private final Set<Shop> loadedShops = Sets.newHashSet();
 
     private boolean useFastShopSearchAlgorithm = false;
 
@@ -1086,7 +1087,8 @@ public class ShopManager {
      *
      * @return All loaded shops.
      */
-    public @Nullable Set<Shop> getLoadedShops() {
+    @NotNull
+    public Set<Shop> getLoadedShops() {
         return this.loadedShops;
     }
 
