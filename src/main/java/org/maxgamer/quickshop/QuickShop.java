@@ -24,6 +24,7 @@ import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -60,11 +61,13 @@ import org.maxgamer.quickshop.Watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -770,50 +773,49 @@ public class QuickShop extends JavaPlugin {
         return true;
     }
 
-//    public void configVaildate() {
-//        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
-//        Set<String> keysA = new HashSet<>(attached.getKeys(true));
-//        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
-//        Set<String> ignoreCheckKeys = new HashSet<>();
-//        ignoreCheckKeys.add("server-uuid");
-//        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
-//                ".....\n" +
-//                "%data%\n" +
-//                ".....\n" +
-//                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
-//        keysA.stream().filter((key) -> !keysB.contains(key)).filter((key) -> !ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss) -> {
-//            if(!getConfig().getBoolean("auto-fix-configuration",false)){
-//                String theMsg = msgForConfiguration;
-//                theMsg = theMsg.replace("%key%", miss);
-//                List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
-//                StringBuilder miss2Yaml = new StringBuilder();
-//                int spaces = 2;
-//                Iterator<String> iterator = tiers.iterator();
-//                while (true) {
-//                    String tier = iterator.next();
-//                    miss2Yaml.append(tier);
-//                    if (iterator.hasNext()) {
-//                        miss2Yaml.append(": ");
-//                        miss2Yaml.append("\n");
-//                        for (int i = 0; i < spaces; i++) {
-//                            miss2Yaml.append(" ");
-//                        }
-//                        spaces += 2;
-//                    } else {
-//                        miss2Yaml.append(": ");
-//                        miss2Yaml.append(attached.get(miss));
-//                        break;
-//                    }
-//                }
-//                theMsg = theMsg.replace("%data%", miss2Yaml.toString());
-//                getLogger().warning(theMsg);
-//            }else{
-//                getConfig().set(miss,attached.get(miss));
-//            }
-//
-//
-//        });
-//    }
+    public void configVaildate() {
+        YamlConfiguration attached = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))));
+        Set<String> keysA = new HashSet<>(attached.getKeys(true));
+        Set<String> keysB = new HashSet<>(getConfig().getKeys(true));
+        Set<String> ignoreCheckKeys = new HashSet<>();
+        ignoreCheckKeys.add("server-uuid");
+        final String msgForConfiguration = "Missing options in config.yml, the key [%key%] not exist in config.yml, it may cause plugin errors, please fix it! There is guide for you to fix: \n" +
+                ".....\n" +
+                "%data%\n" +
+                ".....\n" +
+                "Tips: Add \"auto-fix-configuration: true\" in config.yml to allow QuickShop automatic fix your configuration!";
+        keysA.stream().filter((key) -> !keysB.contains(key)).filter((key) -> !ignoreCheckKeys.contains(key)).collect(Collectors.toList()).forEach((miss) -> {
+            if(!getConfig().getBoolean("auto-fix-configuration",false)){
+                String theMsg = msgForConfiguration;
+                theMsg = theMsg.replace("%key%", miss);
+                List<String> tiers = new ArrayList<>(Arrays.asList(miss.split("\\.")));
+                StringBuilder miss2Yaml = new StringBuilder();
+                int spaces = 2;
+                Iterator<String> iterator = tiers.iterator();
+                while (true) {
+                    String tier = iterator.next();
+                    miss2Yaml.append(tier);
+                    if (iterator.hasNext()) {
+                        miss2Yaml.append(": ");
+                        miss2Yaml.append("\n");
+                        for (int i = 0; i < spaces; i++) {
+                            miss2Yaml.append(" ");
+                        }
+                        spaces += 2;
+                    } else {
+                        miss2Yaml.append(": ");
+                        miss2Yaml.append(attached.get(miss));                        break;
+                    }
+                }
+                theMsg = theMsg.replace("%data%", miss2Yaml.toString());
+                getLogger().warning(theMsg);
+            }else{
+                getConfig().set(miss,attached.get(miss));
+            }
+
+
+        });
+    }
 
     private void submitMeritcs() {
         if (!getConfig().getBoolean("disabled-metrics")) {
@@ -1371,7 +1373,7 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }
-        //configVaildate();
+        configVaildate();
     }
 
     /**
