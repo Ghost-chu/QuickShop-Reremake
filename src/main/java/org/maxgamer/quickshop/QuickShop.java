@@ -638,7 +638,7 @@ public class QuickShop extends JavaPlugin {
         if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
                 this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-                this.displayAutoDespawnWatcher.runTaskTimer(this, 0, getConfig().getInt("shop.display-check-time")); // not worth async
+                this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time")); // not worth async
             }
         }
         registerIntegrations();
