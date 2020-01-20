@@ -19,6 +19,23 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -35,11 +52,30 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandManager;
-import org.maxgamer.quickshop.Database.*;
+import org.maxgamer.quickshop.Database.Database;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Economy.*;
+import org.maxgamer.quickshop.Database.DatabaseCore;
+import org.maxgamer.quickshop.Database.DatabaseHelper;
+import org.maxgamer.quickshop.Database.DatabaseManager;
+import org.maxgamer.quickshop.Database.MySQLCore;
+import org.maxgamer.quickshop.Database.SQLiteCore;
+import org.maxgamer.quickshop.Economy.Economy;
+import org.maxgamer.quickshop.Economy.EconomyCore;
+import org.maxgamer.quickshop.Economy.EconomyType;
+import org.maxgamer.quickshop.Economy.Economy_Reserve;
+import org.maxgamer.quickshop.Economy.Economy_Vault;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
-import org.maxgamer.quickshop.Listeners.*;
+import org.maxgamer.quickshop.Listeners.BlockListener;
+import org.maxgamer.quickshop.Listeners.ChatListener;
+import org.maxgamer.quickshop.Listeners.ChunkListener;
+import org.maxgamer.quickshop.Listeners.ClearLaggListener;
+import org.maxgamer.quickshop.Listeners.CustomInventoryListener;
+import org.maxgamer.quickshop.Listeners.DisplayBugFixListener;
+import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
+import org.maxgamer.quickshop.Listeners.LockListener;
+import org.maxgamer.quickshop.Listeners.PlayerListener;
+import org.maxgamer.quickshop.Listeners.ShopProtectionListener;
+import org.maxgamer.quickshop.Listeners.WorldListener;
 import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.ReflectionUtil;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.PluginsIntegration.FactionsUUID.FactionsUUIDIntegration;
@@ -51,23 +87,30 @@ import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegratio
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
-import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Util.Compatibility;
+import org.maxgamer.quickshop.Util.FunnyEasterEgg;
+import org.maxgamer.quickshop.Util.IncompatibleChecker;
+import org.maxgamer.quickshop.Util.IntegrationHelper;
+import org.maxgamer.quickshop.Util.ItemMatcher;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
+import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.PermissionChecker;
+import org.maxgamer.quickshop.Util.ReflectFactory;
+import org.maxgamer.quickshop.Util.SentryErrorReporter;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
-import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
-import org.maxgamer.quickshop.Watcher.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import org.maxgamer.quickshop.Util.Timer;
+import org.maxgamer.quickshop.Util.Util;
+import org.maxgamer.quickshop.Watcher.DisplayAutoDespawnWatcher;
+import org.maxgamer.quickshop.Watcher.DisplayDupeRemoverWatcher;
+import org.maxgamer.quickshop.Watcher.DisplayWatcher;
+import org.maxgamer.quickshop.Watcher.LogWatcher;
+import org.maxgamer.quickshop.Watcher.OngoingFeeWatcher;
+import org.maxgamer.quickshop.Watcher.ShopContainerWatcher;
+import org.maxgamer.quickshop.Watcher.SignUpdateWatcher;
+import org.maxgamer.quickshop.Watcher.SyncTaskWatcher;
+import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -556,6 +599,10 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
 
+        signUpdateWatcher = new SignUpdateWatcher(this);
+        shopContainerWatcher = new ShopContainerWatcher(this);
+        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -578,9 +625,6 @@ public class QuickShop extends JavaPlugin {
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         lockListener = new LockListener(this);
         internalListener = new InternalListener(this);
-        signUpdateWatcher = new SignUpdateWatcher(this);
-        shopContainerWatcher = new ShopContainerWatcher(this);
-        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -626,7 +670,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
-            getLogger().info("Ongoine fee feature is enabled.");
+            getLogger().info("Ongoing fee feature is enabled.");
             // NOT SAFE FOR ASYNC
             if(getConfig().getBoolean("shop.ongoing-fee.async",true)){
                 ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
