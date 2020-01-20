@@ -615,7 +615,7 @@ public class QuickShop extends JavaPlugin {
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
         //shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(this, 0, 120);
+        signUpdateWatcher.runTaskTimer(this, 0, 10);
         //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
         //displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1); // This one definitely cannot run under async
         if (logWatcher != null) {
