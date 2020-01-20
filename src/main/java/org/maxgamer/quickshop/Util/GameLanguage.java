@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class GameLanguage extends Thread {
-    private @Nullable JsonObject lang = null;
+    private @Nullable JsonObject lang;
     private GameLanguageLoadThread loadThread;
 
     @SneakyThrows
