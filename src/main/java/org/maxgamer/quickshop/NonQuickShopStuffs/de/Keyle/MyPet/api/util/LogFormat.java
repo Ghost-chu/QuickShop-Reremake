@@ -29,32 +29,32 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class LogFormat extends Formatter {
-    @Override
-    public String format(LogRecord record) {
-        String text = "[" + new SimpleDateFormat("HH:mm:ss").format(new Date(record.getMillis()));
-        Level level = record.getLevel();
+  @Override
+  public String format(LogRecord record) {
+    String text = "[" + new SimpleDateFormat("HH:mm:ss").format(new Date(record.getMillis()));
+    Level level = record.getLevel();
 
-        if (level == Level.WARNING) {
-            text += " WARNING]";
-        } else if (level == Level.SEVERE) {
-            text += " SEVERE]";
-        } else {
-            text += " INFO]";
-        }
-
-        text += " " + record.getMessage();
-        text += "\r\n";
-
-        Throwable thrown = record.getThrown();
-        if (thrown != null) {
-            StringWriter stringWriter = new StringWriter();
-            thrown.printStackTrace(new PrintWriter(stringWriter));
-            text += stringWriter;
-        }
-
-        text = text.replaceAll("(\\u001b\\[\\d{1,3}(?:;\\d+)*m|(?:\\u001b\\[m)*)", "");
-        //text = Colorizer.stripColors(text);
-
-        return text;
+    if (level == Level.WARNING) {
+      text += " WARNING]";
+    } else if (level == Level.SEVERE) {
+      text += " SEVERE]";
+    } else {
+      text += " INFO]";
     }
+
+    text += " " + record.getMessage();
+    text += "\r\n";
+
+    Throwable thrown = record.getThrown();
+    if (thrown != null) {
+      StringWriter stringWriter = new StringWriter();
+      thrown.printStackTrace(new PrintWriter(stringWriter));
+      text += stringWriter;
+    }
+
+    text = text.replaceAll("(\\u001b\\[\\d{1,3}(?:;\\d+)*m|(?:\\u001b\\[m)*)", "");
+    // text = Colorizer.stripColors(text);
+
+    return text;
+  }
 }

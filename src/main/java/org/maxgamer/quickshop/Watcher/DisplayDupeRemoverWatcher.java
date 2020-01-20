@@ -19,23 +19,22 @@
 
 package org.maxgamer.quickshop.Watcher;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 // unused, pending to remove
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
-    private Queue<DisplayItem> checkQueue = new LinkedList<>();
+  private Queue<DisplayItem> checkQueue = new LinkedList<>();
 
-    @Override
-    public void run() {
-        checkQueue.forEach(DisplayItem::removeDupe);
-    }
+  @Override
+  public void run() {
+    checkQueue.forEach(DisplayItem::removeDupe);
+  }
 
-    public void add(@NotNull DisplayItem displayItem) {
-        checkQueue.offer(displayItem);
-    }
+  public void add(@NotNull DisplayItem displayItem) {
+    checkQueue.offer(displayItem);
+  }
 }
