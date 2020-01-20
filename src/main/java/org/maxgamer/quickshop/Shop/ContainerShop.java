@@ -436,6 +436,7 @@ public class ContainerShop implements Shop {
         /* Dupe is always need check, if enabled display */
         if (plugin.isDisplay()) {
             this.displayItem.removeDupe();
+            //plugin.getDisplayDupeRemoverWatcher().add(this.displayItem);
         }
     }
 
@@ -874,9 +875,7 @@ public class ContainerShop implements Shop {
 
         this.isLoaded = true;
         plugin.getShopManager().getLoadedShops().add(this);
-
-        checkContainer();
-
+        plugin.getShopContainerWatcher().scheduleCheck(this);
         // check price restriction
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
 
