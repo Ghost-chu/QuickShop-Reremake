@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Database;
 
+import lombok.Cleanup;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -121,6 +122,7 @@ public class DatabaseHelper {
      * @throws SQLException If the connection is invalid
      */
     private boolean createMessagesTable() throws SQLException {
+        @Cleanup
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
                 + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
@@ -156,6 +158,7 @@ public class DatabaseHelper {
      * @throws SQLException If the connection is invalid.
      */
     private void createShopsTable() throws SQLException {
+        @Cleanup
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance
                 .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
@@ -171,7 +174,7 @@ public class DatabaseHelper {
                 .getDbPrefix() + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db.getCore() instanceof MySQLCore ?
                 " LIMIT 1" :
                 "");
-
+        @Cleanup
         PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
         ps.setInt(1, x);
         ps.setInt(2, y);
@@ -181,12 +184,14 @@ public class DatabaseHelper {
     }
 
     public ResultSet selectAllMessages() throws SQLException {
+        @Cleanup
         Statement st = db.getConnection().createStatement();
         String selectAllShops = "SELECT * FROM " + QuickShop.instance.getDbPrefix() + "messages";
         return st.executeQuery(selectAllShops);
     }
 
     public ResultSet selectAllShops() throws SQLException {
+        @Cleanup
         Statement st = db.getConnection().createStatement();
         String selectAllShops = "SELECT * FROM " + QuickShop.instance.getDbPrefix() + "shops";
         return st.executeQuery(selectAllShops);
