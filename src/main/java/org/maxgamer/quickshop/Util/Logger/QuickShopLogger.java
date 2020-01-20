@@ -136,7 +136,7 @@ public class QuickShopLogger extends PluginLogger {
   /**
    * Collect params as a string with blank spaces between
    *
-   * @param params
+   * @param params Params
    * @return collected string
    */
   public String collectParams(Object... params) {

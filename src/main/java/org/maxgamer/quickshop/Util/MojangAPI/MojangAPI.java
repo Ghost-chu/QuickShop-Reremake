@@ -38,11 +38,6 @@ public class MojangAPI {
   final String pathTemplate = "minecraft/lang/{0}.json";
   final Gson gson = new Gson();
 
-  /**
-   * Return Minecraft version manifest.
-   *
-   * @return Version Manifest, may be null when failed to get.
-   */
   @Nullable
   public String getVersionManifest() throws IOException {
     QuickShop.instance.getLogger().info("Downloading version manifest...");
