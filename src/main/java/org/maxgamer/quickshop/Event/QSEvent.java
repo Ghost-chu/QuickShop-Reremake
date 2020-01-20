@@ -27,13 +27,13 @@ public abstract class QSEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
         return handlers;
     }
 

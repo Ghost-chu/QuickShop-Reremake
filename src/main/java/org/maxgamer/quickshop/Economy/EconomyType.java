@@ -29,6 +29,12 @@ public enum EconomyType {
      * */
     UNKNOWN(-1), VAULT(0), RESERVE(1), MIXED(2);
 
+    private int id;
+
+    EconomyType(int id) {
+        this.id = id;
+    }
+
     public static EconomyType fromID(int id) {
         for (EconomyType type : EconomyType.values()) {
             if (type.id == id) {
@@ -40,12 +46,6 @@ public enum EconomyType {
 
     public static int toID(@NotNull EconomyType economyType) {
         return economyType.id;
-    }
-
-    private int id;
-
-    EconomyType(int id) {
-        this.id = id;
     }
 
     public int toID() {

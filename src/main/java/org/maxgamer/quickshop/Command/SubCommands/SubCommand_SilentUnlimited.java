@@ -48,7 +48,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         }
 
         final Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
-            Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
+                Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
 
         if (shop == null) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));

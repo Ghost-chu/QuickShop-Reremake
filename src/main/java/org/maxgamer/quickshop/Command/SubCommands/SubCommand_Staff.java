@@ -140,13 +140,13 @@ public class SubCommand_Staff implements CommandProcesser {
 
                             if (staffs.isEmpty()) {
                                 sender.sendMessage(ChatColor.GREEN + MsgUtil
-                                    .getMessage("tableformat.left_begin", sender) + "Empty");
+                                        .getMessage("tableformat.left_begin", sender) + "Empty");
                                 return;
                             }
 
                             for (UUID uuid : staffs) {
                                 sender.sendMessage(ChatColor.GREEN + MsgUtil.getMessage("tableformat.left_begin", sender) + Bukkit
-                                    .getOfflinePlayer(uuid).getName());
+                                        .getOfflinePlayer(uuid).getName());
                             }
 
                             return;

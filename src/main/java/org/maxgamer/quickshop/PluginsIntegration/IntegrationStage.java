@@ -27,5 +27,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface IntegrationStage {
     IntegrateStage loadStage() default IntegrateStage.onEnableAfter;
+
     IntegrateStage unloadStage() default IntegrateStage.onUnloadBegin;
 }

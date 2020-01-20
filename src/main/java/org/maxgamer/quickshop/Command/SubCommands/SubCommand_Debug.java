@@ -79,15 +79,15 @@ public class SubCommand_Debug implements CommandProcesser {
                 RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 
                 List<String> arguments = runtimeMxBean.getInputArguments();
-                sender.sendMessage(ChatColor.GOLD+"Arguments: "+ChatColor.AQUA+ Util.list2String(arguments));
-                sender.sendMessage(ChatColor.GOLD+"Name: "+ChatColor.AQUA+ runtimeMxBean.getName());
-                sender.sendMessage(ChatColor.GOLD+"VM Name: "+ChatColor.AQUA+ runtimeMxBean.getVmName());
-                sender.sendMessage(ChatColor.GOLD+"Uptime: "+ChatColor.AQUA+ runtimeMxBean.getUptime());
-                sender.sendMessage(ChatColor.GOLD+"JVM Ver: "+ChatColor.AQUA+ runtimeMxBean.getVmVersion());
-                Map<String,String> sys = runtimeMxBean.getSystemProperties();
+                sender.sendMessage(ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
+                sender.sendMessage(ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
+                sender.sendMessage(ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
+                sender.sendMessage(ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
+                sender.sendMessage(ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
+                Map<String, String> sys = runtimeMxBean.getSystemProperties();
                 List<String> sysData = new ArrayList<>();
-                sys.keySet().forEach(key-> sysData.add(key+"="+sys.get(key)));
-                sender.sendMessage(ChatColor.GOLD+"Sys Pro: "+ChatColor.AQUA+ Util.list2String(sysData));
+                sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
+                sender.sendMessage(ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
                 break;
             default:
                 sender.sendMessage("Error, no correct args given.");

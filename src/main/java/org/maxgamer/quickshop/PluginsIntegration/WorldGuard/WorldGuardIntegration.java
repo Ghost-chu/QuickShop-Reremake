@@ -129,7 +129,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        for (WorldGuardFlags flag : createFlags) {
+        for (WorldGuardFlags flag : tradeFlags) {
             switch (flag) {
                 case BUILD:
                     if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {

@@ -52,7 +52,7 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     private boolean tradeRequireOwn;
     private boolean tradeRequireWarZone;
 
-    public FactionsUUIDIntegration(QuickShop plugin){
+    public FactionsUUIDIntegration(QuickShop plugin) {
         this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 
@@ -84,39 +84,39 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
-        if(faction == null){
+        if (faction == null) {
             return true;
         }
-        if(createRequireOpen && !faction.getOpen()){
+        if (createRequireOpen && !faction.getOpen()) {
             return false;
         }
-        if(createRequireSafeZone && !faction.isSafeZone()){
+        if (createRequireSafeZone && !faction.isSafeZone()) {
             return false;
         }
-        if(createRequirePermanent && !faction.isPermanent()){
+        if (createRequirePermanent && !faction.isPermanent()) {
             return false;
         }
-        if(createRequirePeaceful && !faction.isPeaceful()){
+        if (createRequirePeaceful && !faction.isPeaceful()) {
             return false;
         }
-        if(createRequireWilderness && !faction.isWilderness()){
+        if (createRequireWilderness && !faction.isWilderness()) {
             return false;
         }
-        if(createRequireOpen && !faction.getOpen()){
+        if (createRequireOpen && !faction.getOpen()) {
             return false;
         }
-        if(createRequireWarZone && !faction.isWarZone()){
+        if (createRequireWarZone && !faction.isWarZone()) {
             return false;
         }
-        if(createRequireNormal && !faction.isNormal()){
+        if (createRequireNormal && !faction.isNormal()) {
             return false;
         }
-        if(createRequireOwn && !faction.getOwnerList(new FLocation(location)).contains(player.getName())){
+        if (createRequireOwn && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
             return false;
         }
-        for (String flag:
-             createFlags) {
-            if(!faction.hasAccess(FPlayers.getInstance().getByPlayer(player),PermissibleAction.fromString(flag))){
+        for (String flag :
+                createFlags) {
+            if (!faction.hasAccess(FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
                 return false;
             }
 
@@ -128,39 +128,39 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
 
         Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
-        if(faction == null){
+        if (faction == null) {
             return true;
         }
-        if(tradeRequireOpen && !faction.getOpen()){
+        if (tradeRequireOpen && !faction.getOpen()) {
             return false;
         }
-        if(tradeRequireSafeZone && !faction.isSafeZone()){
+        if (tradeRequireSafeZone && !faction.isSafeZone()) {
             return false;
         }
-        if(tradeRequirePermanent && !faction.isPermanent()){
+        if (tradeRequirePermanent && !faction.isPermanent()) {
             return false;
         }
-        if(tradeRequirePeaceful && !faction.isPeaceful()){
+        if (tradeRequirePeaceful && !faction.isPeaceful()) {
             return false;
         }
-        if(tradeRequireWilderness && !faction.isWilderness()){
+        if (tradeRequireWilderness && !faction.isWilderness()) {
             return false;
         }
-        if(tradeRequireOpen && !faction.getOpen()){
+        if (tradeRequireOpen && !faction.getOpen()) {
             return false;
         }
-        if(tradeRequireWarZone && !faction.isWarZone()){
+        if (tradeRequireWarZone && !faction.isWarZone()) {
             return false;
         }
-        if(tradeRequireNormal && !faction.isNormal()){
+        if (tradeRequireNormal && !faction.isNormal()) {
             return false;
         }
-        if(tradeRequireOwn && !faction.getOwnerList(new FLocation(location)).contains(player.getName())){
+        if (tradeRequireOwn && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
             return false;
         }
-        for (String flag:
+        for (String flag :
                 tradeFlags) {
-            if(!faction.hasAccess(FPlayers.getInstance().getByPlayer(player),PermissibleAction.fromString(flag))){
+            if (!faction.hasAccess(FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
                 return false;
             }
 

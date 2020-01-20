@@ -63,6 +63,7 @@ public class Updater {
             return new UpdateInfomation(false, null);
         }
     }
+
     public static byte[] downloadUpdatedJar() throws IOException {
         @Nullable String uurl;
         long uurlSize;
@@ -70,7 +71,7 @@ public class Updater {
             ReleaseJsonContainer.AssetsBean bean = Objects.requireNonNull(new GithubAPI().getLatestRelease());
             uurl = bean.getBrowser_download_url();
             uurlSize = bean.getSize();
-        }catch (Throwable ig){
+        } catch (Throwable ig) {
             throw new IOException(ig.getMessage());
         }
 
@@ -78,12 +79,12 @@ public class Updater {
             throw new IOException("Failed read the URL, cause it is empty.");
         }
         Util.debugLog("Downloading from " + uurl);
-        InputStream is = HttpRequest.get(new URL(uurl)).header("User-Agent","QuickShop-Reremake " + QuickShop.getVersion()).execute().getInputStream();
+        InputStream is = HttpRequest.get(new URL(uurl)).header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion()).execute().getInputStream();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len;
         long downloaded = 0;
-        if(is == null){
+        if (is == null) {
             throw new IOException("Failed downloading: Cannot open connection with remote server.");
         }
         while ((len = is.read(buff)) != -1) {

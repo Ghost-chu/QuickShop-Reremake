@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.Util.Github;
 
 import java.util.List;
+
 public class ReleaseJsonContainer {
     /**
      * url : https://api.github.com/repos/octocat/Hello-World/releases/1
@@ -53,6 +54,7 @@ public class ReleaseJsonContainer {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }

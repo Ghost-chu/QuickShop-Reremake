@@ -70,11 +70,10 @@ public class SubCommand_SetOwner implements CommandProcesser {
                 continue;
             }
 
-            @SuppressWarnings("deprecation")
-            final OfflinePlayer p = plugin.getServer().getOfflinePlayer(cmdArg[0]);
+            @SuppressWarnings("deprecation") final OfflinePlayer p = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             final String shopOwner = plugin.getServer().getOfflinePlayer(shop.getOwner()).getName();
-            if(shopOwner == null){
-                sender.sendMessage(MsgUtil.getMessage("unknown-player",null));
+            if (shopOwner == null) {
+                sender.sendMessage(MsgUtil.getMessage("unknown-player", null));
                 return;
             }
             shop.setOwner(p.getUniqueId());
