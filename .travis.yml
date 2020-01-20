@@ -7,19 +7,21 @@ jdk:
 - openjdk8
 install: false
 script:
-- export PROJECT_NAME=QuickShop-Reremake
-- git clone https://github.com/Ghost-chu/$PROJECT_NAME.git
-- cd $PROJECT_NAME
-- mvn clean
-- mvn -T 4 install
+- export PROJECT_NAME=QuickShop-Reremake #Set project name
+- git clone https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
+- cd $PROJECT_NAME #Cd into project
+- mvn clean #Clean up
+- mvn -T 4 install #Install
 after_success:
-- rm -rf push
+- rm -rf push # GITHUB - CLEANUP
+#Script to release to Github Release
 - mkdir push
 - cp -r ./target/*.jar ./push/
 - rm -f ./push/original-*.jar
 - rm -f ./push/*-shaded.jar
 - rm -f ./push/*-sources.jar
 - mv -f ./push/*-javadoc.jar ./push/JavaDocument.zip
+  #Script to release to Bukkit Dev
 - mkdir devbukkit
 - cp -r ./target/*.jar ./devbukkit/
 - rm -f ./devbukkit/original-*.jar
@@ -40,10 +42,12 @@ deploy:
     tags: true
   overwrite: true
 after_deploy:
+#Confirm release to Bukkit Dev
 - chmod +x deploy.sh
 - "./deploy.sh $Curse_token"
 after_script:
-- git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git
+#Upload data to BinaryRepository
+- git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git BinaryRepository
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
 - cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
@@ -54,5 +58,14 @@ after_script:
 - git add .
 - git commit -m "Auto update by Bot"
 - git push --force
+- cd .. #Back root
+- echo "Finish upload to BinaryRepository"
+  #Deploy to the mvn-repo
+- echo "Deploying to the Github..."
+- git clone https://github.com/Ghost-chu/maven-repo.git maven-repo
+- mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
+- cd maven-repo
+- git commit -m "Auto update by Travis-CI bot"
+- git push --force
 - cd ..
-- echo "done"
+- echo "Finish upload to Maven Repository"
