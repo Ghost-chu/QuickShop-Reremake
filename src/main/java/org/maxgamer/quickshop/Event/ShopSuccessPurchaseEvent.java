@@ -28,23 +28,20 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
+    @NotNull
+    public final Shop shop;
+    @Getter
     private final int amount;
-
     @Getter
     @NotNull
     private final Player player;
-
-    @Getter
-    @NotNull
-    public final Shop shop;
-
     @Getter
     private final double tax;
 
     private final double total; //Don't use getter, we have important notice need told dev in javadoc.
 
     private boolean cancelled;
-   
+
 
     /**
      * Builds a new shop purchase event

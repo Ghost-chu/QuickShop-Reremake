@@ -64,6 +64,7 @@ import java.util.Map.Entry;
  */
 @SuppressWarnings("WeakerAccess")
 public class Util {
+    static short tookLongTimeCostTimes;
     private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
     @Getter
     private static List<String> debugLogs = new LinkedList<>();
@@ -192,8 +193,6 @@ public class Util {
         return space;
     }
 
-    static short tookLongTimeCostTimes;
-
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -221,7 +220,7 @@ public class Util {
         int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
 
         for (String log : logs) {
-            String text = "["+ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN  + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN  + codeLine + ChatColor.RESET + ") " + log;
+            String text = "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN + codeLine + ChatColor.RESET + ") " + log;
             debugLogs.add(Colorizer.stripColors(text));
             if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
                 debugLogs.remove(0);
@@ -243,6 +242,7 @@ public class Util {
             }
         }
     }
+
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -268,7 +268,7 @@ public class Util {
         int codeLine = Thread.currentThread().getStackTrace()[2].getLineNumber();
 
         for (String log : logs) {
-            String text = "["+ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN  + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN  + codeLine + ChatColor.RESET + ") " + log;
+            String text = "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "DEBUG" + ChatColor.RESET + "] [" + ChatColor.DARK_GREEN + className + ChatColor.RESET + "]" + " [" + ChatColor.DARK_GREEN + methodName + ChatColor.RESET + "] (" + ChatColor.DARK_GREEN + codeLine + ChatColor.RESET + ") " + log;
             debugLogs.add(Colorizer.stripColors(text));
             if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
                 debugLogs.remove(0);
@@ -1323,7 +1323,7 @@ public class Util {
             final MessageDigest instance = MessageDigest.getInstance("MD5");
             instance.update(s.getBytes(StandardCharsets.UTF_8));
             final byte[] digest = instance.digest();
-            final StringBuilder sb = new StringBuilder("");
+            final StringBuilder sb = new StringBuilder();
             for (int b : digest) {
                 int n = b;
                 if (n < 0) {

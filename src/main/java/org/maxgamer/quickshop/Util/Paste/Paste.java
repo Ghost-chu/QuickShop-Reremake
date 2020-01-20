@@ -82,7 +82,7 @@ public class Paste {
                     finalReport.append("Unknown").append("%").append("Unknown error");
                     break;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             finalReport.append("Unknown").append("%").append("Unknown error");
         }
 
@@ -106,17 +106,17 @@ public class Paste {
         List<String> arguments = runtimeMxBean.getInputArguments();
         finalReport.append("\tInput Args: ").append(Util.list2String(arguments)).append("\n");
         finalReport.append("\tVM Name: ").append(runtimeMxBean.getVmName()).append("\n");
-        Map<String,String> sys = runtimeMxBean.getSystemProperties();
+        Map<String, String> sys = runtimeMxBean.getSystemProperties();
         List<String> sysData = new ArrayList<>();
-        sys.keySet().forEach(key-> sysData.add(key+"="+sys.get(key)));
+        sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
         finalReport.append("\tSystem Properties: ").append(Util.list2String(sysData)).append("\n");
         finalReport.append("\tPlayers: ").append(Bukkit.getOnlinePlayers().size()).append("/").append(Bukkit.getMaxPlayers())
                 .append("\n");
         finalReport.append("\tOnlineMode: ").append(Bukkit.getOnlineMode()).append("\n");
         finalReport.append("\tBukkitVersion: ").append(Bukkit.getVersion()).append("\n");
         finalReport.append("\tWorldContainer: ").append(Bukkit.getWorldContainer()).append("\n");
-        List<String> modules = new ArrayList<>();;
-        plugin.getIntegrationHelper().getIntegrations().forEach(m->modules.add(m.getName()));
+        List<String> modules = new ArrayList<>();
+        plugin.getIntegrationHelper().getIntegrations().forEach(m -> modules.add(m.getName()));
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
@@ -243,23 +243,27 @@ public class Paste {
         }
         return report;
     }
+
     @Nullable
-    public String paste(@NotNull String content){
+    public String paste(@NotNull String content) {
         PasteInterface paster;
-        try{
+        try {
             //EngineHub Pastebin
             paster = new EngineHubPaster();
             return paster.pasteTheText(content);
-        }catch (Exception ignore){}
-        try{
+        } catch (Exception ignore) {
+        }
+        try {
             //Ubuntu Pastebin
             paster = new UbuntuPaster();
             return paster.pasteTheText(content);
-        }catch (Exception ignore){}
+        } catch (Exception ignore) {
+        }
         return null;
     }
+
     @Nullable
-    public String paste(@NotNull String content,int type){
+    public String paste(@NotNull String content, int type) {
         PasteInterface paster;
         if (type == 0) {
             try {

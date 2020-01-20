@@ -25,6 +25,12 @@ public enum ShopType {
     //SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0), BUYING(1);
 
+    private int id;
+
+    ShopType(int id) {
+        this.id = id;
+    }
+
     public static @NotNull ShopType fromID(int id) {
         for (ShopType type : ShopType.values()) {
             if (type.id == id) {
@@ -36,12 +42,6 @@ public enum ShopType {
 
     public static int toID(@NotNull ShopType shopType) {
         return shopType.id;
-    }
-
-    private int id;
-
-    ShopType(int id) {
-        this.id = id;
     }
 
     public int toID() {

@@ -41,6 +41,7 @@ import java.util.Objects;
  */
 public interface DisplayItem {
     Gson gson = new GsonBuilder().create();
+
     /**
      * Check the itemStack is contains protect flag.
      *
@@ -57,14 +58,14 @@ public interface DisplayItem {
             return false;
         }
         ItemMeta iMeta = itemStack.getItemMeta();
-        if(iMeta == null){
+        if (iMeta == null) {
             return false;
         }
         if (!iMeta.hasLore()) {
             return false;
         }
         List<String> lores = iMeta.getLore();
-        if(lores != null){
+        if (lores != null) {
             String defaultMark = ShopProtectionFlag.getDefaultMark();
             for (String lore : lores) {
                 try {
@@ -184,6 +185,15 @@ public interface DisplayItem {
     }
 
     /**
+     * Get plugin now is using which one DisplayType
+     *
+     * @return Using displayType.
+     */
+    static DisplayType getNowUsing() {
+        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
+    }
+
+    /**
      * Check the display is or not moved.
      *
      * @return Moved
@@ -259,15 +269,6 @@ public interface DisplayItem {
      * @return Should at
      */
     Location getDisplayLocation();
-
-    /**
-     * Get plugin now is using which one DisplayType
-     *
-     * @return Using displayType.
-     */
-    static DisplayType getNowUsing() {
-        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-    }
 
     /**
      * Check the display is or not already spawned

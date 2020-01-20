@@ -38,13 +38,13 @@ public class Economy implements EconomyCore {
         this.core = core;
     }
 
+    public static EconomyType getNowUsing() {
+        return EconomyType.fromID(QuickShop.instance.getConfig().getInt("economy-type"));
+    }
+
     @Override
     public String toString() {
         return core.getClass().getName().split("_")[1];
-    }
-
-    public static EconomyType getNowUsing() {
-        return EconomyType.fromID(QuickShop.instance.getConfig().getInt("economy-type"));
     }
 
     /**

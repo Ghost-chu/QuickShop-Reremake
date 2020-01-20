@@ -44,25 +44,25 @@ public class SubCommand_CleanGhost implements CommandProcesser {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if(cmdArg.length < 1){
-            sender.sendMessage(ChatColor.YELLOW+"This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
+        if (cmdArg.length < 1) {
+            sender.sendMessage(ChatColor.YELLOW + "This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
             return;
         }
 
-        if(!"confirm".equalsIgnoreCase(cmdArg[0])){
-            sender.sendMessage(ChatColor.YELLOW+"This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
+        if (!"confirm".equalsIgnoreCase(cmdArg[0])) {
+            sender.sendMessage(ChatColor.YELLOW + "This command will purge all data damaged shop, create in disallow world shop, create disallow sell items shop and IN NOT LOADED WORLD SHOPS, make sure you have backup your shops data, and use /qs cleanghost confirm to continue.");
             return;
         }
 
-        sender.sendMessage(ChatColor.GREEN+"Starting checking the shop be ghost, all does not exist shop will be removed...");
+        sender.sendMessage(ChatColor.GREEN + "Starting checking the shop be ghost, all does not exist shop will be removed...");
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                sender.sendMessage(ChatColor.GREEN+"Async thread is started, please wait...");
+                sender.sendMessage(ChatColor.GREEN + "Async thread is started, please wait...");
                 Util.backupDatabase(); //Already warn the user, don't care about backup result.
                 for (Shop shop : plugin.getShopLoader().getShopsInDatabase()) {
-                    sender.sendMessage(ChatColor.GRAY + "Checking the shop " + shop+" metadata and location block state...");
+                    sender.sendMessage(ChatColor.GRAY + "Checking the shop " + shop + " metadata and location block state...");
                     if (shop == null) {
                         continue; //WTF
                     }
@@ -98,7 +98,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     }
                     //Shop exist check
                     plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        Util.debugLog("Posted to main server thread to continue access Bukkit API for shop "+shop);
+                        Util.debugLog("Posted to main server thread to continue access Bukkit API for shop " + shop);
                         if (!Util.canBeShop(shop.getLocation().getBlock())) {
                             sender.sendMessage(ChatColor.YELLOW + "Shop " + shop + " removing cause target location nolonger is a shop or disallow create the shop.");
                             shop.delete();
@@ -110,7 +110,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                         e.printStackTrace();
                     }
                 }
-                sender.sendMessage(ChatColor.GREEN+"All shops completed checks.");
+                sender.sendMessage(ChatColor.GREEN + "All shops completed checks.");
             }
         }.runTaskAsynchronously(plugin);
     }

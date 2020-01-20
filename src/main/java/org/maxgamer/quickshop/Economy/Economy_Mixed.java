@@ -28,15 +28,17 @@ import java.util.UUID;
 
 public class Economy_Mixed implements EconomyCore {
     EconomyCore core;
-    public Economy_Mixed(){
+
+    public Economy_Mixed() {
         core = new Economy_Vault();
     }
+
     @Override
     public boolean deposit(UUID name, double amount) {
-        if(getBalance(name) < amount){
+        if (getBalance(name) < amount) {
             return false;
         }
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), MsgUtil.fillArgs(QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),Bukkit.getOfflinePlayer(name).getName(),String.valueOf(amount)));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), MsgUtil.fillArgs(QuickShop.instance.getConfig().getString("mixedeconomy.deposit"), Bukkit.getOfflinePlayer(name).getName(), String.valueOf(amount)));
         return true;
     }
 
@@ -53,28 +55,28 @@ public class Economy_Mixed implements EconomyCore {
     @Override
     public boolean transfer(UUID from, UUID to, double amount) {
         boolean result;
-        result = withdraw(from,amount);
-        if(!result){
-            deposit(from,amount);
+        result = withdraw(from, amount);
+        if (!result) {
+            deposit(from, amount);
         }
-        result = deposit(to,amount);
-        if(!result){
-            withdraw(to,amount);
+        result = deposit(to, amount);
+        if (!result) {
+            withdraw(to, amount);
         }
         return true;
     }
 
     @Override
     public boolean withdraw(UUID name, double amount) {
-        if(getBalance(name) > amount){
+        if (getBalance(name) > amount) {
             return false;
         }
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), MsgUtil.fillArgs(QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),Bukkit.getOfflinePlayer(name).getName(),String.valueOf(amount)));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), MsgUtil.fillArgs(QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"), Bukkit.getOfflinePlayer(name).getName(), String.valueOf(amount)));
         return true;
     }
 
     @Override
     public boolean isValid() {
-        return core.isValid() ;
+        return core.isValid();
     }
 }

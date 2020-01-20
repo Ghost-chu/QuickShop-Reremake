@@ -55,7 +55,7 @@ public class SubCommand_Help implements CommandProcesser {
                 for (String requirePermission : requirePermissions) {
                     // FIXME: 24/11/2019 You are already checked the null and empty
                     if (requirePermission != null && !requirePermission.isEmpty() &&
-                        !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
+                            !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
                         //noinspection UnnecessaryContinue
                         continue;
                     }
@@ -67,8 +67,8 @@ public class SubCommand_Help implements CommandProcesser {
             }
 
             s.sendMessage(ChatColor.GREEN + "/" + commandLabel + " " + container
-                .getPrefix() + ChatColor.YELLOW + " - "
-                + MsgUtil.getMessage("command.description." + container.getPrefix(), s));
+                    .getPrefix() + ChatColor.YELLOW + " - "
+                    + MsgUtil.getMessage("command.description." + container.getPrefix(), s));
         }
     }
 }

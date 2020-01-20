@@ -54,32 +54,32 @@ public class SubCommand_Reset implements CommandProcesser {
             return;
         }
 
-        switch (cmdArg[0]){
+        switch (cmdArg[0]) {
             case "lang":
-                File item = new File(plugin.getDataFolder(),"itemi18n.yml");
-                File ench = new File(plugin.getDataFolder(),"enchi18n.yml");
-                File potion = new File(plugin.getDataFolder(),"potioni18n.yml");
+                File item = new File(plugin.getDataFolder(), "itemi18n.yml");
+                File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
+                File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
                 item.delete();
                 ench.delete();
                 potion.delete();
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                sender.sendMessage(MsgUtil.getMessage("complete",sender));
+                sender.sendMessage(MsgUtil.getMessage("complete", sender));
                 break;
             case "config":
-                File config = new File(plugin.getDataFolder(),"config.yml");
+                File config = new File(plugin.getDataFolder(), "config.yml");
                 config.delete();
                 plugin.saveDefaultConfig();
                 Bukkit.getPluginManager().disablePlugin(plugin);
                 Bukkit.getPluginManager().enablePlugin(plugin);
-                sender.sendMessage(MsgUtil.getMessage("complete",sender));
+                sender.sendMessage(MsgUtil.getMessage("complete", sender));
                 break;
             case "messages":
-                File msgs = new File(plugin.getDataFolder(),"messages.json");
+                File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadCfgMessages();
-                sender.sendMessage(MsgUtil.getMessage("complete",sender));
+                sender.sendMessage(MsgUtil.getMessage("complete", sender));
                 break;
         }
     }

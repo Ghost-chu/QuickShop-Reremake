@@ -45,27 +45,10 @@ import java.util.Objects;
 @ToString
 public class InventoryPreview implements Listener {
 
-    public static boolean isPreviewItem(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-            return false;
-        }
-        List<String> lores = stack.getItemMeta().getLore();
-        for (String string : lores) {
-            if ("QuickShop GUI preview item".equals(string)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Nullable
     private Inventory inventory;
     private ItemStack itemStack;
     private Player player;
-
     /**
      * Create a preview item GUI for a player.
      *
@@ -88,6 +71,22 @@ public class InventoryPreview implements Listener {
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         }
+    }
+
+    public static boolean isPreviewItem(@Nullable ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+            return false;
+        }
+        List<String> lores = stack.getItemMeta().getLore();
+        for (String string : lores) {
+            if ("QuickShop GUI preview item".equals(string)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void close() {

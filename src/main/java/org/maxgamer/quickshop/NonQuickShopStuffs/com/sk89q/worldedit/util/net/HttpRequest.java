@@ -41,7 +41,7 @@ public class HttpRequest implements Closeable {
     private HttpURLConnection conn;
     private InputStream inputStream;
 
-    private long contentLength = -1;
+    //private long contentLength = -1;
     private long readBytes = 0;
 
     /**
@@ -53,6 +53,72 @@ public class HttpRequest implements Closeable {
     private HttpRequest(String method, URL url) {
         this.method = method;
         this.url = url;
+    }
+
+    /**
+     * Perform a GET request.
+     *
+     * @param url the URL
+     * @return a new request object
+     */
+    public static HttpRequest get(URL url) {
+        return request("GET", url);
+    }
+
+    /**
+     * Perform a POST request.
+     *
+     * @param url the URL
+     * @return a new request object
+     */
+    public static HttpRequest post(URL url) {
+        return request("POST", url);
+    }
+
+    /**
+     * Perform a request.
+     *
+     * @param method the method
+     * @param url    the URL
+     * @return a new request object
+     */
+    public static HttpRequest request(String method, URL url) {
+        return new HttpRequest(method, url);
+    }
+
+    /**
+     * Create a new {@link java.net.URL} and throw a {@link RuntimeException} if the URL
+     * is not valid.
+     *
+     * @param url the url
+     * @return a URL object
+     * @throws RuntimeException if the URL is invalid
+     */
+    public static URL url(String url) {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * URL may contain spaces and other nasties that will cause a failure.
+     *
+     * @param existing the existing URL to transform
+     * @return the new URL, or old one if there was a failure
+     */
+    private static URL reformat(URL existing) {
+        try {
+            URL url = new URL(existing.toString());
+            URI uri = new URI(
+                    url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
+                    url.getPath(), url.getQuery(), url.getRef());
+            url = uri.toURL();
+            return url;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return existing;
+        }
     }
 
     /**
@@ -96,7 +162,7 @@ public class HttpRequest implements Closeable {
 
     /**
      * Execute the request.
-     *
+     * <p>
      * After execution, {@link #close()} should be called.
      *
      * @return this object
@@ -198,7 +264,7 @@ public class HttpRequest implements Closeable {
      * Buffer the returned response.
      *
      * @return the buffered response
-     * @throws java.io.IOException  on I/O error
+     * @throws java.io.IOException on I/O error
      */
     public BufferedResponse returnContent() throws IOException {
         if (inputStream == null) {
@@ -222,7 +288,7 @@ public class HttpRequest implements Closeable {
      *
      * @param file the file
      * @return this object
-     * @throws java.io.IOException  on I/O error
+     * @throws java.io.IOException on I/O error
      */
     public HttpRequest saveContent(File file) throws IOException {
 
@@ -241,7 +307,7 @@ public class HttpRequest implements Closeable {
      *
      * @param out the output stream
      * @return this object
-     * @throws java.io.IOException  on I/O error
+     * @throws java.io.IOException on I/O error
      */
     public HttpRequest saveContent(OutputStream out) throws IOException {
         BufferedInputStream bis;
@@ -250,9 +316,9 @@ public class HttpRequest implements Closeable {
             String field = conn.getHeaderField("Content-Length");
             if (field != null) {
                 long len = Long.parseLong(field);
-                if (len >= 0) { // Let's just not deal with really big numbers
-                    contentLength = len;
-                }
+//                if (len >= 0) { // Let's just not deal with really big numbers
+//                    contentLength = len;
+//                }
             }
         } catch (NumberFormatException ignored) {
         }
@@ -279,78 +345,21 @@ public class HttpRequest implements Closeable {
     }
 
     /**
-     * Perform a GET request.
-     *
-     * @param url the URL
-     * @return a new request object
-     */
-    public static HttpRequest get(URL url) {
-        return request("GET", url);
-    }
-
-    /**
-     * Perform a POST request.
-     *
-     * @param url the URL
-     * @return a new request object
-     */
-    public static HttpRequest post(URL url) {
-        return request("POST", url);
-    }
-
-    /**
-     * Perform a request.
-     *
-     * @param method the method
-     * @param url    the URL
-     * @return a new request object
-     */
-    public static HttpRequest request(String method, URL url) {
-        return new HttpRequest(method, url);
-    }
-
-    /**
-     * Create a new {@link java.net.URL} and throw a {@link RuntimeException} if the URL
-     * is not valid.
-     *
-     * @param url the url
-     * @return a URL object
-     * @throws RuntimeException if the URL is invalid
-     */
-    public static URL url(String url) {
-        try {
-            return new URL(url);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * URL may contain spaces and other nasties that will cause a failure.
-     *
-     * @param existing the existing URL to transform
-     * @return the new URL, or old one if there was a failure
-     */
-    private static URL reformat(URL existing) {
-        try {
-            URL url = new URL(existing.toString());
-            URI uri = new URI(
-                    url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(),
-                    url.getPath(), url.getQuery(), url.getRef());
-            url = uri.toURL();
-            return url;
-        } catch (MalformedURLException | URISyntaxException e) {
-            return existing;
-        }
-    }
-
-    /**
      * Used with {@link #bodyForm(Form)}.
      */
     public final static class Form {
         public final List<String> elements = new ArrayList<>();
 
         private Form() {
+        }
+
+        /**
+         * Create a new form.
+         *
+         * @return a new form
+         */
+        public static Form create() {
+            return new Form();
         }
 
         /**
@@ -383,15 +392,6 @@ public class HttpRequest implements Closeable {
                 builder.append(element);
             }
             return builder.toString();
-        }
-
-        /**
-         * Create a new form.
-         *
-         * @return a new form
-         */
-        public static Form create() {
-            return new Form();
         }
     }
 
@@ -430,7 +430,7 @@ public class HttpRequest implements Closeable {
          *
          * @param file the file
          * @return this object
-         * @throws java.io.IOException  on I/O error
+         * @throws java.io.IOException on I/O error
          */
         public BufferedResponse saveContent(File file) throws IOException {
 
@@ -450,7 +450,7 @@ public class HttpRequest implements Closeable {
          *
          * @param out the output stream
          * @return this object
-         * @throws java.io.IOException  on I/O error
+         * @throws java.io.IOException on I/O error
          */
         public BufferedResponse saveContent(OutputStream out) throws IOException {
             out.write(data);

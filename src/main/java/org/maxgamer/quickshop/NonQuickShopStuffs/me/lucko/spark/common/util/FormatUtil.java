@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.NonQuickShopStuffs.me.lucko.spark.common.util;
 
 public enum FormatUtil {
     ;
+
     public static String percent(double value, double max) {
         double percent = (value * 100d) / max;
         return (int) percent + "%";

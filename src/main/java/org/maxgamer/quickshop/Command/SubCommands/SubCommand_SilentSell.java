@@ -51,7 +51,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
         }
 
         final Shop shop = plugin.getShopManager().getShop(new Location(plugin.getServer().getWorld(cmdArg[0]), Integer.parseInt(cmdArg[1]),
-            Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
+                Integer.parseInt(cmdArg[2]), Integer.parseInt(cmdArg[3])));
 
         if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
             sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
@@ -63,7 +63,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
         sender.sendMessage(MsgUtil
-            .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                .getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
 
     }
 
