@@ -56,17 +56,17 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 if (!allowLoan) {
                     //Disallow loan
                     if (plugin.getEconomy().getBalance(shopOwner) < cost) {
-                        removeShop(shop);
+                        this.removeShop(shop);
                         continue;
                     }
                 }
                 boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost);
                 if (!success) {
-                    removeShop(shop);
+                    this.removeShop(shop);
                     continue;
                 }
                 try {
-                    //noinspection ConstantConditions
+                    //noinspection ConstantConditions,deprecation
                     plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
                 } catch (Exception ignored) {
                 }
