@@ -277,4 +277,7 @@ public interface DisplayItem {
      */
     boolean isSpawned();
 
+    boolean pendingRemoval();
+    
+    boolean isPendingRemoval();
 }
