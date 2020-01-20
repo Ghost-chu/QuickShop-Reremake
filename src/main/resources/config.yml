@@ -178,10 +178,10 @@ shop:
   display-auto-despawn: false
 
   #When range region no players, the display will despawn.
-  display-despawn-range: 10
+  display-despawn-range: 20
 
   #How long ticks we should check the shops once to decide despawn/spawn display?
-  display-check-time: 10
+  display-check-time: 40
 
   #Use enhance display protect
   enchance-display-protect: false
