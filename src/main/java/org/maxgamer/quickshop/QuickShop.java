@@ -198,8 +198,8 @@ public class QuickShop extends JavaPlugin {
     private WorldListener worldListener;
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
-    //private ShopContainerWatcher shopContainerWatcher;
-    //private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
+    private ShopContainerWatcher shopContainerWatcher;
+    private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
     private boolean isUtilInited = false;
 
@@ -579,8 +579,8 @@ public class QuickShop extends JavaPlugin {
         lockListener = new LockListener(this);
         internalListener = new InternalListener(this);
         signUpdateWatcher = new SignUpdateWatcher(this);
-        //shopContainerWatcher = new ShopContainerWatcher(this);
-        //displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+        shopContainerWatcher = new ShopContainerWatcher(this);
+        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -619,7 +619,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Registering shop watcher...");
         //shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
-        //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
         //displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1); // This one definitely cannot run under async
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
@@ -628,7 +628,12 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoine fee feature is enabled.");
             // NOT SAFE FOR ASYNC
-            ongoingFeeWatcher.runTaskTimer(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            if(getConfig().getBoolean("shop.ongoing-fee.async",true)){
+                ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            }else{
+                getLogger().warning("You forcing execute ongoing-fee tasks on server thread, it may cause serious performance issue, turn off it if you got performance issue,");
+                ongoingFeeWatcher.runTaskTimer(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            }
         }
         if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
@@ -1361,6 +1366,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.factions.trade.require.own", false);
             getConfig().set("integration.factions.trade.require.warzone", false);
             getConfig().set("anonymous-metrics", null);
+            getConfig().set("shop.ongoing-fee.async",true);
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }

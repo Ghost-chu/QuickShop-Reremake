@@ -286,6 +286,9 @@ shop:
     cost-per-shop: 2
     #Should we ignore the unlimited shop?
     ignore-unlimited: true
+    #Should we do check and transfer on off-thread?
+    #Only turn off it when your economy system can't handle calls on off-thread.
+    async: true
   #Allow QuickShop use hack util to force load shops from higher Minecraft.
   #WARNING: It may destory your server data and QuickShop shops, backup before enable it!
   force-load-downgrade-items:
