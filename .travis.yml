@@ -65,6 +65,7 @@ after_script:
 - git clone https://github.com/Ghost-chu/maven-repo.git maven-repo
 - mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
 - cd maven-repo
+- git add .
 - git commit -m "Auto update by Travis-CI bot"
 - git push --force
 - cd ..
