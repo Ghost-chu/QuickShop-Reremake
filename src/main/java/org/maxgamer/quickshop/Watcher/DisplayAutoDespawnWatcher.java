@@ -31,26 +31,31 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
 
     @Override
     public void run() {
-        plugin.getShopManager().getLoadedShops().stream().forEach(shop -> {
+        int range = plugin.getConfig().getInt("shop.display-despawn-range");
+	
+        plugin.getShopManager().getLoadedShops().parallelStream()
+        					.filter(shop -> shop.getDisplay() != null)
+        					.forEach(shop -> {
             //Check the range has player?
-            int range = plugin.getConfig().getInt("shop.display-despawn-range");
             boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
                     .stream()
-                    .filter(player -> player.getWorld().equals(shop.getLocation().getWorld()))
+                    .filter(player -> player.getWorld() == shop.getLocation().getWorld())
                     .anyMatch(player -> player.getLocation().distance(shop.getLocation()) < range);
             
-            if (shop.getDisplay() == null) {
-                return;
-            }
             if (anyPlayerInRegion) {
                 if (!shop.getDisplay().isSpawned()) {
                     Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close it");
                     shop.checkDisplay();
                 }
-            } else {
-                if (shop.getDisplay().isSpawned()) {
+            } else if (shop.getDisplay().isSpawned()) {
+        	if (shop.getDisplay().isPendingRemoval()) {
+        	    // Actually remove the pending display
                     Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-                    shop.getDisplay().remove();
+        	    shop.getDisplay().remove();
+                } else {
+                    // Delayed to next cycle
+                    Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
+                    shop.getDisplay().pendingRemoval();
                 }
             }
         });
