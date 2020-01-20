@@ -242,4 +242,16 @@ public class RealDisplayItem implements DisplayItem {
         }
         return this.item.isValid();
     }
+    
+    boolean pendingRemoval;
+
+    @Override
+    public boolean pendingRemoval() {
+	return pendingRemoval = true;
+    }
+
+    @Override
+    public boolean isPendingRemoval() {
+	return pendingRemoval;
+    }
 }

@@ -304,4 +304,16 @@ public class ArmorStandDisplayItem implements DisplayItem {
         }
         return this.armorStand.isValid();
     }
+    
+    boolean pendingRemoval;
+
+    @Override
+    public boolean pendingRemoval() {
+	return pendingRemoval = true;
+    }
+
+    @Override
+    public boolean isPendingRemoval() {
+	return pendingRemoval;
+    }
 }
