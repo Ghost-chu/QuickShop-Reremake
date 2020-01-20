@@ -28,24 +28,9 @@ import org.maxgamer.quickshop.Shop.Shop;
 import java.util.ArrayList;
 import java.util.Objects;
 
-class DisplayRunnable implements Runnable {
-    @Override
-    public void run() {
-        @SuppressWarnings("unchecked") ArrayList<Shop> pendingCheckDisplayCopy = (ArrayList<Shop>) QuickShop.instance
-                .getDisplayWatcher().getPendingCheckDisplay().clone();
-        for (Shop shop : pendingCheckDisplayCopy) {
-            if (shop != null) {
-                shop.checkDisplay();
-            }
-        }
-        pendingCheckDisplayCopy.clear();
-        QuickShop.instance.getDisplayWatcher().getPendingCheckDisplay().clear();
-    }
-}
-
 @Data
 public class DisplayWatcher {
-    private ArrayList<Shop> pendingCheckDisplay = new ArrayList<>();
+    //private ArrayList<Shop> pendingCheckDisplay = new ArrayList<>();
     private QuickShop plugin;
 
     public DisplayWatcher(QuickShop plugin) {
@@ -75,12 +60,9 @@ public class DisplayWatcher {
 //                        if (!Util.isLoaded(shop.getLocation())) {
 //                            continue;
 //                        }
-                    pendingCheckDisplay.addAll(Objects.requireNonNull(plugin.getShopManager().getLoadedShops()));
-                    //}
-                    Bukkit.getScheduler().runTask(plugin, new DisplayRunnable());
+                    plugin.getShopManager().getLoadedShops().forEach(Shop::checkDisplay);
                 }
-            }.runTaskTimerAsynchronously(plugin, 1L, plugin.getDisplayItemCheckTicks());
+            }.runTaskTimer(plugin, 1L, plugin.getDisplayItemCheckTicks());
         }
     }
-
 }

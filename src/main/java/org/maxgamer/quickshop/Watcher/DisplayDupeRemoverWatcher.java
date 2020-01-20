@@ -26,6 +26,7 @@ import org.maxgamer.quickshop.Shop.DisplayItem;
 import java.util.LinkedList;
 import java.util.Queue;
 
+// unused, pending to remove
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
     private Queue<DisplayItem> checkQueue = new LinkedList<>();
     @Override

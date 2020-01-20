@@ -31,36 +31,28 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (plugin.getShopManager().getLoadedShops() == null) {
-            return;
-        }
-
-        plugin.getShopManager().getLoadedShops().parallelStream().forEach(shop -> {
+        plugin.getShopManager().getLoadedShops().stream().forEach(shop -> {
             //Check the range has player?
             int range = plugin.getConfig().getInt("shop.display-despawn-range");
             boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
-                    .parallelStream()
+                    .stream()
                     .filter(player -> player.getWorld().equals(shop.getLocation().getWorld()))
                     .anyMatch(player -> player.getLocation().distance(shop.getLocation()) < range);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (shop.getDisplay() == null) {
-                        return;
-                    }
-                    if (anyPlayerInRegion) {
-                        if (!shop.getDisplay().isSpawned()) {
-                            Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close it");
-                            shop.checkDisplay();
-                        }
-                    } else {
-                        if (shop.getDisplay().isSpawned()) {
-                            Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-                            shop.getDisplay().remove();
-                        }
-                    }
+            
+            if (shop.getDisplay() == null) {
+                return;
+            }
+            if (anyPlayerInRegion) {
+                if (!shop.getDisplay().isSpawned()) {
+                    Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close it");
+                    shop.checkDisplay();
                 }
-            }.runTask(QuickShop.instance);
+            } else {
+                if (shop.getDisplay().isSpawned()) {
+                    Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
+                    shop.getDisplay().remove();
+                }
+            }
         });
     }
 }

@@ -161,7 +161,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     }
 
     @Override
-    public Entity getDisplay() {
+    public @Nullable Entity getDisplay() {
         return this.armorStand;
     }
 

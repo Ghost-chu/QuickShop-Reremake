@@ -178,7 +178,7 @@ public class QuickShop extends JavaPlugin {
     private ShopManager shopManager;
     private ShopProtectionListener shopProtectListener;
     private SyncTaskWatcher syncTaskWatcher;
-    private ShopVaildWatcher shopVaildWatcher;
+    //private ShopVaildWatcher shopVaildWatcher;
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
     /**
      * Use SpoutPlugin to get item / block names
@@ -196,8 +196,8 @@ public class QuickShop extends JavaPlugin {
     private static PermissionManager permissionManager;
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
-    private ShopContainerWatcher shopContainerWatcher;
-    private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
+    //private ShopContainerWatcher shopContainerWatcher;
+    //private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
     private boolean isUtilInited = false;
 
@@ -381,7 +381,7 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
+            this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
         } catch (Throwable th) {
             //ignore, we didn't care that
         }
@@ -549,13 +549,13 @@ public class QuickShop extends JavaPlugin {
         shopProtectListener = new ShopProtectionListener(this);
         displayWatcher = new DisplayWatcher(this);
         syncTaskWatcher = new SyncTaskWatcher(this);
-        shopVaildWatcher = new ShopVaildWatcher(this);
+        //shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         lockListener = new LockListener(this);
         internalListener = new InternalListener(this);
         signUpdateWatcher = new SignUpdateWatcher(this);
-        shopContainerWatcher = new ShopContainerWatcher(this);
-        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+        //shopContainerWatcher = new ShopContainerWatcher(this);
+        //displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -592,22 +592,23 @@ public class QuickShop extends JavaPlugin {
             }
         }.runTaskLater(this, 1);
         Util.debugLog("Registering shop watcher...");
-        shopVaildWatcher.runTaskTimer(this, 0, 20 * 60);
+        //shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 120);
-        shopContainerWatcher.runTaskTimer(this, 0, 5);
-        displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1);
+        //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        //displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1); // This one definitely cannot run under async
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoine fee feature is enabled.");
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            // NOT SAFE FOR ASYNC
+            ongoingFeeWatcher.runTaskTimer(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
         }
         if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
                 this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-                this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.display-check-time"));
+                this.displayAutoDespawnWatcher.runTaskTimer(this, 0, getConfig().getInt("shop.display-check-time")); // not worth async
             }
         }
         registerIntegrations();

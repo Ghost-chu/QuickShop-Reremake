@@ -569,7 +569,8 @@ public class ContainerShop implements Shop {
      *
      * @return The display item associated with this shop.
      */
-    public @Nullable DisplayItem getDisplayItem() {
+    @NotNull
+    public DisplayItem getDisplayItem() {
         return this.displayItem;
     }
 
@@ -877,7 +878,7 @@ public class ContainerShop implements Shop {
         }
 
         this.isLoaded = true;
-        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
+        plugin.getShopManager().getLoadedShops().add(this);
 
         checkContainer();
 
@@ -910,7 +911,7 @@ public class ContainerShop implements Shop {
         }
         update();
         this.isLoaded = false;
-        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).remove(this);
+        plugin.getShopManager().getLoadedShops().remove(this);
         ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
         Bukkit.getPluginManager().callEvent(shopUnloadEvent);
     }
