@@ -625,7 +625,12 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             getLogger().info("Ongoine fee feature is enabled.");
             // NOT SAFE FOR ASYNC
-            ongoingFeeWatcher.runTaskTimer(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            if(getConfig().getBoolean("shop.ongoing-fee.async",true)){
+                ongoingFeeWatcher.runTaskTimerAsynchronously(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            }else{
+                getLogger().warning("You forcing execute ongoing-fee tasks on server thread, it may cause serious performance issue, turn off it if you got performance issue,");
+                ongoingFeeWatcher.runTaskTimer(this, getConfig().getInt("shop.ongoing-fee.ticks"), getConfig().getInt("shop.ongoing-fee.ticks"));
+            }
         }
         if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
@@ -1359,6 +1364,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.factions.trade.require.own", false);
             getConfig().set("integration.factions.trade.require.warzone", false);
             getConfig().set("anonymous-metrics", null);
+            getConfig().set("shop.ongoing-fee.async",true);
             getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
