@@ -45,6 +45,16 @@ after_deploy:
 #Confirm release to Bukkit Dev
 - chmod +x deploy.sh
 - "./deploy.sh $Curse_token"
+  #Deploy to the mvn-repo
+- echo "Deploying to the Github..."
+- git clone https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
+- mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
+- cd maven-repo
+- git add .
+- git commit -m "Auto update by Travis-CI bot"
+- git push --force
+- cd ..
+- echo "Finish upload to Maven Repository"
 after_script:
 #Upload data to BinaryRepository
 - git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git BinaryRepository
@@ -60,13 +70,3 @@ after_script:
 - git push --force
 - cd .. #Back root
 - echo "Finish upload to BinaryRepository"
-  #Deploy to the mvn-repo
-- echo "Deploying to the Github..."
-- git clone https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
-- mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
-- cd maven-repo
-- git add .
-- git commit -m "Auto update by Travis-CI bot"
-- git push --force
-- cd ..
-- echo "Finish upload to Maven Repository"
