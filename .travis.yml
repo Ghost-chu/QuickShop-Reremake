@@ -62,7 +62,7 @@ after_script:
 - echo "Finish upload to BinaryRepository"
   #Deploy to the mvn-repo
 - echo "Deploying to the Github..."
-- git clone https://github.com/Ghost-chu/maven-repo.git maven-repo
+- git clone https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
 - mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
 - cd maven-repo
 - git add .
