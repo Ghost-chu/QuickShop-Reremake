@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.PluginsIntegration.Towny;
 
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,81 +29,77 @@ import org.maxgamer.quickshop.PluginsIntegration.IntegratedPlugin;
 import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.List;
-
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class TownyIntegration implements IntegratedPlugin {
-    private List<TownyFlags> createFlags;
-    private List<TownyFlags> tradeFlags;
+  private List<TownyFlags> createFlags;
+  private List<TownyFlags> tradeFlags;
 
-    public TownyIntegration(QuickShop plugin) {
-        createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
-        tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+  public TownyIntegration(QuickShop plugin) {
+    createFlags =
+        TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
+    tradeFlags =
+        TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+  }
+
+  @Override
+  public @NotNull String getName() {
+    return "Towny";
+  }
+
+  @Override
+  public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+    for (TownyFlags flag : createFlags) {
+      switch (flag) {
+        case OWN:
+          if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+            return false;
+          }
+          break;
+        case MODIFY:
+          if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+            return false;
+          }
+          break;
+        case SHOPTYPE:
+          if (!ShopPlotUtil.isShopPlot(location)) {
+            return false;
+          }
+        default:
+          // Ignore
+      }
     }
+    return true;
+  }
 
-    @Override
-    public @NotNull String getName() {
-        return "Towny";
+  @Override
+  public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+    for (TownyFlags flag : tradeFlags) {
+      switch (flag) {
+        case OWN:
+          if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+            return false;
+          }
+          break;
+        case MODIFY:
+          if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+            return false;
+          }
+          break;
+        case SHOPTYPE:
+          if (!ShopPlotUtil.isShopPlot(location)) {
+            return false;
+          }
+        default:
+          // Ignore
+      }
     }
+    return true;
+  }
 
-    @Override
-    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        for (TownyFlags flag : createFlags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    //Ignore
-            }
-        }
-        return true;
-    }
+  @Override
+  public void load() {}
 
-    @Override
-    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        for (TownyFlags flag : tradeFlags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    //Ignore
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void load() {
-
-    }
-
-    @Override
-    public void unload() {
-
-    }
+  @Override
+  public void unload() {}
 }

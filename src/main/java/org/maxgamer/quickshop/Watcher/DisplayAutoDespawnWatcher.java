@@ -23,49 +23,56 @@ import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable {
-    private QuickShop plugin;
+  private QuickShop plugin;
 
-    @Override
-    public void run() {
-        int range = plugin.getConfig().getInt("shop.display-despawn-range");
-	
-        plugin.getShopManager().getLoadedShops().parallelStream()
-        					.filter(shop -> shop.getDisplay() != null)
-        					.forEach(shop -> {
-            //Check the range has player?
-            boolean anyPlayerInRegion = Bukkit.getOnlinePlayers()
-                    .stream()
-                    .filter(player -> player.getWorld() == shop.getLocation().getWorld())
-                    .anyMatch(player -> player.getLocation().distance(shop.getLocation()) < range);
-            
-            if (anyPlayerInRegion) {
+  @Override
+  public void run() {
+    int range = plugin.getConfig().getInt("shop.display-despawn-range");
+
+    plugin
+        .getShopManager()
+        .getLoadedShops()
+        .parallelStream()
+        .filter(shop -> shop.getDisplay() != null)
+        .forEach(
+            shop -> {
+              // Check the range has player?
+              boolean anyPlayerInRegion =
+                  Bukkit.getOnlinePlayers().stream()
+                      .filter(player -> player.getWorld() == shop.getLocation().getWorld())
+                      .anyMatch(
+                          player -> player.getLocation().distance(shop.getLocation()) < range);
+
+              if (anyPlayerInRegion) {
                 if (!shop.getDisplay().isSpawned()) {
-                    Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close it");
-                    shop.checkDisplay();
+                  Util.debugLog(
+                      "Respawning the shop "
+                          + shop
+                          + " the display, cause it was despawned and a player close it");
+                  shop.checkDisplay();
                 }
-            } else if (shop.getDisplay().isSpawned()) {
-        	removeDisplayItemDelayed(shop);
-            }
-        });
+              } else if (shop.getDisplay().isSpawned()) {
+                removeDisplayItemDelayed(shop);
+              }
+            });
+  }
+
+  public boolean removeDisplayItemDelayed(Shop shop) {
+    if (shop.getDisplay().isPendingRemoval()) {
+      // Actually remove the pending display
+      Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
+      shop.getDisplay().remove();
+      return true;
+    } else {
+      // Delayed to next calling
+      Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
+      shop.getDisplay().pendingRemoval();
+      return false;
     }
-    
-    public boolean removeDisplayItemDelayed(Shop shop) {
-	if (shop.getDisplay().isPendingRemoval()) {
-	    // Actually remove the pending display
-            Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-            shop.getDisplay().remove();
-            return true;
-        } else {
-            // Delayed to next calling
-            Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
-            shop.getDisplay().pendingRemoval();
-            return false;
-        }
-    }
+  }
 }
