@@ -875,7 +875,7 @@ public class ContainerShop implements Shop {
         }
 
         this.isLoaded = true;
-        plugin.getShopManager().getLoadedShops().add(this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
         // check price restriction
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
