@@ -195,8 +195,8 @@ public class QuickShop extends JavaPlugin {
     private WorldListener worldListener;
     private OngoingFeeWatcher ongoingFeeWatcher;
     private SignUpdateWatcher signUpdateWatcher;
-    //private ShopContainerWatcher shopContainerWatcher;
-    //private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
+    private ShopContainerWatcher shopContainerWatcher;
+    private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     private BukkitAPIWrapper bukkitAPIWrapper;
     private boolean isUtilInited = false;
 
@@ -576,8 +576,8 @@ public class QuickShop extends JavaPlugin {
         lockListener = new LockListener(this);
         internalListener = new InternalListener(this);
         signUpdateWatcher = new SignUpdateWatcher(this);
-        //shopContainerWatcher = new ShopContainerWatcher(this);
-        //displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+        shopContainerWatcher = new ShopContainerWatcher(this);
+        displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -616,7 +616,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Registering shop watcher...");
         //shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
-        //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
         //displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1); // This one definitely cannot run under async
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
