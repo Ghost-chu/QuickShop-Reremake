@@ -272,6 +272,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         CommandContainer.builder()
             .prefix("cleanghost")
             .permission("quickshop.cleanghost")
+            .hidden(true)
             .executor(new SubCommand_CleanGhost())
             .build());
     registerCmd(
