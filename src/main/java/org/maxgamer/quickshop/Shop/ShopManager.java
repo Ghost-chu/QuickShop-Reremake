@@ -1000,7 +1000,6 @@ public class ShopManager {
       Util.debugLog("Location is null.");
       return null;
     }
-    Util.debugLog("Start searching the shops...");
     @Nullable Shop shop;
     // Get location's chunk all shops
     @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
@@ -1057,7 +1056,6 @@ public class ShopManager {
       Util.debugLog("Location is null.");
       return null;
     }
-    Util.debugLog("Use fast shop search algorithm to searching the shops...");
     @Nullable Shop shop;
     shop = getShop(loc);
     if (shop != null) {
