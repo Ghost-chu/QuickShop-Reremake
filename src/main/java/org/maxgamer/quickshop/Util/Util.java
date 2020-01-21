@@ -291,55 +291,56 @@ public class Util {
    * @param logs logs
    */
   public static void debugLogHeavy(@NotNull String... logs) {
-    if (!QuickShop.instance.getConfig().getBoolean("dev-mode")) {
-      return;
-    }
-    long startTime = System.currentTimeMillis();
-    StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
-    String className = stackTraceElement.getClassName();
-    try {
-      Class<?> c = Class.forName(className);
-      className = c.getSimpleName();
-      if (!c.getSimpleName().isEmpty()) {
-        className = c.getSimpleName();
-      }
-    } catch (ClassNotFoundException e) {
-      // Ignore
-    }
-    String methodName = stackTraceElement.getMethodName();
-    int codeLine = stackTraceElement.getLineNumber();
-
-    for (String log : logs) {
-      String text =
-          "["
-              + ChatColor.DARK_GREEN
-              + ChatColor.BOLD
-              + "DEBUG"
-              + ChatColor.RESET
-              + "] ["
-              + ChatColor.DARK_GREEN
-              + className
-              + ChatColor.RESET
-              + "]"
-              + " ["
-              + ChatColor.DARK_GREEN
-              + methodName
-              + ChatColor.RESET
-              + "] ("
-              + ChatColor.DARK_GREEN
-              + codeLine
-              + ChatColor.RESET
-              + ") "
-              + log;
-      debugLogs.add(Colorizer.stripColors(text));
-      if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
-        debugLogs.remove(0);
-      }
-      if (QuickShop.instance.getConfig().getBoolean("dev-mode")) {
-        QuickShop.instance.getLogger().info(text);
-      }
-    }
-    long debugLogCost = System.currentTimeMillis() - startTime;
+    debugLog(logs);
+//    if (!QuickShop.instance.getConfig().getBoolean("dev-mode")) {
+//      return;
+//    }
+//    long startTime = System.currentTimeMillis();
+//    StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
+//    String className = stackTraceElement.getClassName();
+//    try {
+//      Class<?> c = Class.forName(className);
+//      className = c.getSimpleName();
+//      if (!c.getSimpleName().isEmpty()) {
+//        className = c.getSimpleName();
+//      }
+//    } catch (ClassNotFoundException e) {
+//      // Ignore
+//    }
+//    String methodName = stackTraceElement.getMethodName();
+//    int codeLine = stackTraceElement.getLineNumber();
+//
+//    for (String log : logs) {
+//      String text =
+//          "["
+//              + ChatColor.DARK_GREEN
+//              + ChatColor.BOLD
+//              + "DEBUG"
+//              + ChatColor.RESET
+//              + "] ["
+//              + ChatColor.DARK_GREEN
+//              + className
+//              + ChatColor.RESET
+//              + "]"
+//              + " ["
+//              + ChatColor.DARK_GREEN
+//              + methodName
+//              + ChatColor.RESET
+//              + "] ("
+//              + ChatColor.DARK_GREEN
+//              + codeLine
+//              + ChatColor.RESET
+//              + ") "
+//              + log;
+//      debugLogs.add(Colorizer.stripColors(text));
+//      if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
+//        debugLogs.remove(0);
+//      }
+//      if (QuickShop.instance.getConfig().getBoolean("dev-mode")) {
+//        QuickShop.instance.getLogger().info(text);
+//      }
+//    }
+//    long debugLogCost = System.currentTimeMillis() - startTime;
   }
 
   /**
