@@ -67,6 +67,10 @@
                             <!-- vvv Replace with the package of your plugin vvv -->
                             <shadedPattern>org.maxgamer.quickshop.commodore</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.sentry</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.relocation.sentry</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
