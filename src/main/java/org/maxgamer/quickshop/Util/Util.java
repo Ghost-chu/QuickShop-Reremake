@@ -87,7 +87,7 @@ public class Util {
   static short tookLongTimeCostTimes;
   private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
   @Getter private static List<String> debugLogs = new LinkedList<>();
-  private static boolean devMode = true;
+  private static boolean devMode = false;
   private static QuickShop plugin;
   private static EnumMap<Material, Entry<Double, Double>> restrictedPrices =
       new EnumMap<>(Material.class);
