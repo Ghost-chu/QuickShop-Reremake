@@ -1061,7 +1061,7 @@ public class ShopManager {
     if (shop != null) {
       return shop;
     }
-    @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+    @Nullable Block attachedBlock = Util.getSecondHalf(loc.getBlock());
     if (attachedBlock != null) {
       return getShop(attachedBlock.getLocation());
     } else {
