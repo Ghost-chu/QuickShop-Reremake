@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.Util;
 
+import io.sentry.Sentry;
 import io.sentry.SentryClient;
-import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
 import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
@@ -53,7 +53,7 @@ public class SentryErrorReporter {
   private Context context;
   private boolean disable;
   private boolean enabled;
-  private List<Class> ignoredException = new ArrayList<>();
+  private List<Class<?>> ignoredException = new ArrayList<>();
   private QuickShop plugin;
   /* Pre-init it if it called before the we create it... */
   private SentryClient sentryClient;
@@ -64,7 +64,7 @@ public class SentryErrorReporter {
     this.plugin = plugin;
     // sentryClient = Sentry.init(dsn);
     Util.debugLog("Loading SentryErrorReporter");
-    sentryClient = SentryClientFactory.sentryClient(this.dsn);
+    sentryClient = Sentry.init(dsn);;
     context = sentryClient.getContext();
     Util.debugLog("Setting basic report data...");
     // context.addTag("plugin_version", QuickShop.getVersion());
