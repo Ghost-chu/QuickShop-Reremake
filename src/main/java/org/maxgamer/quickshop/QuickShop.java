@@ -372,6 +372,7 @@ public class QuickShop extends JavaPlugin {
   @Override
   public void onLoad() {
     instance = this;
+    getDataFolder().mkdirs();
     replaceLogger();
 
     this.bootError = null;

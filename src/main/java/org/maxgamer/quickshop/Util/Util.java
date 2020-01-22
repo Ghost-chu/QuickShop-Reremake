@@ -600,7 +600,6 @@ public class Util {
   @Nullable
   public static Block getSecondHalf(@NotNull Block b) {
     if (!isDoubleChest(b)) {
-      Util.debugLog("Target block not a DoubleChest, ignored.");
       return null;
     }
     Chest oneSideOfChest = (Chest) b.getState();
@@ -613,18 +612,14 @@ public class Util {
       Chest rightC = (Chest) right;
       if (equalsBlockStateLocation(
           oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
-        Util.debugLog("The left side of the chest was found.");
         return Objects.requireNonNull(leftC).getBlock();
       }
       if (equalsBlockStateLocation(
           oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
-        Util.debugLog("The right side of the chest was found.");
         return rightC.getBlock();
       }
-      Util.debugLog("Bug detected, DoubleChest holder can't find the any one side chest.");
       return null;
     } else {
-      Util.debugLog("ChestHolder not a DoubleChest holder.");
       return null;
     }
   }
