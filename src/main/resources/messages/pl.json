@@ -1,9 +1,9 @@
 {
-    "translation-author": "&c&lT\u0142umacz: &b&lNieOGEL, NeonDmn i PLKaratusPL",
-    "translation-version": "Wspierana wersja: &b&lReremake",
-    "translation-contributors": "&c&Autor: &b&lGhost_chu | &c&lWsp\u00f3\u0142autorzy: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul",
-    "translation-country": "J\u0119zyk: &b&lPolski (pl_PL)",
-    "language-version": "24",
+    "translation-author": "T\u0142umacz: NieOGEL, NeonDmn i PLKaratusPL",
+    "translation-version": "Wspierana wersja: Reremake",
+    "translation-contributors": "Wsp\u00f3\u0142autorzy: Timtower, Netherfoam, KaiNoMood and Mgazul",
+    "translation-country": "J\u0119zyk: Polski (pl_PL)",
+    "language-version": "27",
     "not-looking-at-shop": "&cNie znaleziono sklepu, musisz patrze\u0107 si\u0119 na sklep.",
     "no-anythings-in-your-hand": "&cW twojej r\u0119ce nic nie ma.",
     "no-permission": "Nie masz na to uprawnie\u0144.",
@@ -88,7 +88,7 @@
         "damage-percent-remaining": "&e{0}% &aZosta\u0142o.",
         "this-shop-is-buying": "&aTen sklep &dSKUPUJE&a itemy.",
         "this-shop-is-selling": "&aTen sklep &bSPRZEDAJE&a itemy.",
-        "effects": "&aEfekty: &e{0}",
+        "effects": "&aEfekty",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
@@ -224,8 +224,11 @@
             "qualityverifyed": "[Jako\u015b\u0107]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Mistrz]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&cTw\u00f3j sklep w {0} zosta\u0142 usuni\u0119ty, poniewa\u017c nie mia\u0142e\u015b wystarczaj\u0105co du\u017co pieni\u0119dzy, aby go utrzyma\u0107!"
+    "shop-removed-cause-ongoing-fee": "&cTw\u00f3j sklep w {0} zosta\u0142 usuni\u0119ty, poniewa\u017c nie mia\u0142e\u015b wystarczaj\u0105co du\u017co pieni\u0119dzy, aby go utrzyma\u0107!",
+    "digits-reach-the-limit": "&cOsi\u0105gn\u0105\u0142e\u015b limit cyfr po kropce w cenie.",
+    "complete": "&aZako\u0144czony!"
 }
