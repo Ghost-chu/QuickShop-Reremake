@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.Shop;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
-import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -138,13 +137,13 @@ public interface DisplayItem {
     itemStack.setAmount(1);
     ItemMeta iMeta = itemStack.getItemMeta();
     if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-      if (Objects.requireNonNull(iMeta).hasDisplayName()) {
+      if (iMeta.hasDisplayName()) {
         iMeta.setDisplayName(iMeta.getDisplayName());
       } else {
         iMeta.setDisplayName(Util.getItemStackName(itemStack));
       }
     } else {
-      Objects.requireNonNull(iMeta).setDisplayName(null);
+      iMeta.setDisplayName(null);
     }
     java.util.List<String> lore = new ArrayList<>();
     ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
