@@ -127,8 +127,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
       return false;
     }
     boolean removed = false;
-    for (Entity entity : armorStand.getNearbyEntities(1, 1, 1)) {
-      if (!(entity instanceof ArmorStand)) {
+    for (Entity entity : armorStand.getNearbyEntities(1.5, 1.5, 1.5)) {
+      if (entity.getType() != EntityType.ARMOR_STAND) {
         continue;
       }
       ArmorStand eArmorStand = (ArmorStand) entity;

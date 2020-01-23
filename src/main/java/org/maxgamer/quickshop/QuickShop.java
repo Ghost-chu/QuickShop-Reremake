@@ -623,8 +623,7 @@ public class QuickShop extends JavaPlugin {
     // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
     signUpdateWatcher.runTaskTimer(this, 0, 10);
     shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-    // displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1); // This one definitely cannot
-    // run under async
+    displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1);
     if (logWatcher != null) {
       logWatcher.runTaskTimerAsynchronously(this, 10, 10);
       getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
