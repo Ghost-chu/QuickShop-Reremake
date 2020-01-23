@@ -62,9 +62,6 @@ public class PlayerListener implements Listener {
 
   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
   public void onClick(PlayerInteractEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
       if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -278,9 +275,6 @@ public class PlayerListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onInventoryClose(InventoryCloseEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     @Nullable Inventory inventory = e.getInventory(); // Possibly wrong tag
     @Nullable Location location = null;
@@ -302,9 +296,7 @@ public class PlayerListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onJoin(PlayerJoinEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
+
     // Notify the player any messages they were sent
     if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
       MsgUtil.flush(e.getPlayer());
@@ -316,9 +308,6 @@ public class PlayerListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onMove(PlayerMoveEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
 
@@ -344,18 +333,14 @@ public class PlayerListener implements Listener {
 
   @EventHandler(ignoreCancelled = true)
   public void onPlayerQuit(PlayerQuitEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
+
     // Remove them from the menu
     plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
   }
 
   @EventHandler(ignoreCancelled = true)
   public void onTeleport(PlayerTeleportEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
+
     PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
     onMove(me);
   }

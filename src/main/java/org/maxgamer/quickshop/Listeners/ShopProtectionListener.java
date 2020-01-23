@@ -51,6 +51,9 @@ public class ShopProtectionListener implements Listener {
 
   @NotNull private final QuickShop plugin;
   private final boolean useEnhanceProtection;
+  // Protect Minecart steal shop
+  Map.Entry<Location, Boolean> lastInventoryMoveItemCheck =
+      new AbstractMap.SimpleEntry<>(null, null);
 
   public ShopProtectionListener(@NotNull QuickShop plugin) {
     this.plugin = plugin;
@@ -59,9 +62,6 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockExplode(BlockExplodeEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     for (int i = 0; i < e.blockList().size(); i++) {
       final Block b = e.blockList().get(i);
@@ -137,9 +137,6 @@ public class ShopProtectionListener implements Listener {
    */
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onExplode(EntityExplodeEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     for (int i = 0; i < e.blockList().size(); i++) {
       final Block b = e.blockList().get(i);
@@ -156,8 +153,6 @@ public class ShopProtectionListener implements Listener {
     }
   }
 
-  // Protect Minecart steal shop
-  Map.Entry<Location,Boolean> lastInventoryMoveItemCheck = new AbstractMap.SimpleEntry<>(null, null);
   @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
   public void onInventoryMove(InventoryMoveItemEvent event) {
     if (ListenerHelper.isDisabled(event.getClass())) {
@@ -170,7 +165,7 @@ public class ShopProtectionListener implements Listener {
       return;
     }
 
-    if(!Util.isShoppables(loc.getBlock().getType())){
+    if (!Util.isShoppables(loc.getBlock().getType())) {
       return;
     }
 
@@ -194,8 +189,8 @@ public class ShopProtectionListener implements Listener {
       ((Entity) holder).remove();
     } else if (holder instanceof Block) {
       location.getBlock().breakNaturally();
-    }else{
-      Util.debugLog("Unknown location = "+loc);
+    } else {
+      Util.debugLog("Unknown location = " + loc);
     }
 
     if (plugin.getConfig().getBoolean("send-shop-protection-alert")) {

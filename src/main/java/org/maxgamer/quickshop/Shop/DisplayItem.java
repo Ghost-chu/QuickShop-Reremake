@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -51,42 +50,37 @@ public interface DisplayItem {
     if (itemStack == null) {
       return false;
     }
-    itemStack = itemStack.clone();
-    itemStack.setAmount(1);
+    //    itemStack = itemStack.clone();
+    //    itemStack.setAmount(1);
     if (!itemStack.hasItemMeta()) {
       return false;
     }
     ItemMeta iMeta = itemStack.getItemMeta();
-    if (iMeta == null) {
-      return false;
-    }
     if (!iMeta.hasLore()) {
       return false;
     }
-    List<String> lores = iMeta.getLore();
-    if (lores != null) {
-      String defaultMark = ShopProtectionFlag.getDefaultMark();
-      for (String lore : lores) {
-        try {
-          if (!lore.startsWith("{")) {
-            continue;
-          }
-          ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-          if (shopProtectionFlag == null) {
-            continue;
-          }
-          if (defaultMark.equals(shopProtectionFlag.getMark())) {
-            return true;
-          }
-          if (shopProtectionFlag.getShopLocation() != null) {
-            return true;
-          }
-          if (shopProtectionFlag.getItemStackString() != null) {
-            return true;
-          }
-        } catch (JsonSyntaxException e) {
-          // Ignore
+    String defaultMark = ShopProtectionFlag.getDefaultMark();
+    //noinspection ConstantConditions
+    for (String lore : iMeta.getLore()) {
+      try {
+        if (!lore.startsWith("{")) {
+          continue;
         }
+        ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+        if (shopProtectionFlag == null) {
+          continue;
+        }
+        if (defaultMark.equals(shopProtectionFlag.getMark())) {
+          return true;
+        }
+        if (shopProtectionFlag.getShopLocation() != null) {
+          return true;
+        }
+        if (shopProtectionFlag.getItemStackString() != null) {
+          return true;
+        }
+      } catch (JsonSyntaxException e) {
+        // Ignore
       }
     }
 
@@ -101,40 +95,33 @@ public interface DisplayItem {
    * @return Is target shop's display
    */
   static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-    itemStack = itemStack.clone();
-    itemStack.setAmount(1);
     if (!itemStack.hasItemMeta()) {
       return false;
     }
     ItemMeta iMeta = itemStack.getItemMeta();
-    if (iMeta == null) {
-      return false;
-    }
     if (!iMeta.hasLore()) {
       return false;
     }
-    List<String> lores = iMeta.getLore();
-    if (lores != null) {
-      String defaultMark = ShopProtectionFlag.getDefaultMark();
-      String shopLocation = shop.getLocation().toString();
-      for (String lore : lores) {
-        try {
-          if (!lore.startsWith("{")) {
-            continue;
-          }
-          ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-          if (shopProtectionFlag == null) {
-            continue;
-          }
-          if (!shopProtectionFlag.getMark().equals(defaultMark)) {
-            continue;
-          }
-          if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
-            return true;
-          }
-        } catch (JsonSyntaxException e) {
-          // Ignore
+    String defaultMark = ShopProtectionFlag.getDefaultMark();
+    String shopLocation = shop.getLocation().toString();
+    //noinspection ConstantConditions
+    for (String lore : iMeta.getLore()) {
+      try {
+        if (!lore.startsWith("{")) {
+          continue;
         }
+        ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+        if (shopProtectionFlag == null) {
+          continue;
+        }
+        if (!shopProtectionFlag.getMark().equals(defaultMark)) {
+          continue;
+        }
+        if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
+          return true;
+        }
+      } catch (JsonSyntaxException e) {
+        // Ignore
       }
     }
     return false;
