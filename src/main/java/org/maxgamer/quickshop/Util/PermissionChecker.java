@@ -67,7 +67,6 @@ public class PermissionChecker {
 
     beMainHand = new BlockBreakEvent(block, player);
     // Call for event for protection check start
-    ListenerHelper.disableEvent(beMainHand.getClass());
     Bukkit.getPluginManager()
         .callEvent(
             new ShopProtectionCheckEvent(
@@ -80,7 +79,6 @@ public class PermissionChecker {
         .callEvent(
             new ShopProtectionCheckEvent(
                 block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
-    ListenerHelper.enableEvent(beMainHand.getClass());
     return !beMainHand.isCancelled();
   }
 }

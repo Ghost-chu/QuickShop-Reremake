@@ -79,7 +79,7 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockFromTo(BlockFromToEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
 
@@ -95,7 +95,7 @@ public class ShopProtectionListener implements Listener {
   // Protect Redstone active shop
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockRedstoneChange(BlockRedstoneEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
 
@@ -114,7 +114,7 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onBlockSpread(BlockSpreadEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
 
@@ -155,9 +155,6 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
   public void onInventoryMove(InventoryMoveItemEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
 
     final Location loc = event.getSource().getLocation();
 
@@ -201,7 +198,7 @@ public class ShopProtectionListener implements Listener {
   // Protect Entity pickup shop
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onMobChangeBlock(EntityChangeBlockEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
 
@@ -222,7 +219,7 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onStructureGrow(StructureGrowEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
 
@@ -244,7 +241,7 @@ public class ShopProtectionListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onSpongeing(SpongeAbsorbEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass()) || !useEnhanceProtection) {
+    if (!useEnhanceProtection) {
       return;
     }
     List<BlockState> blocks = event.getBlocks();
