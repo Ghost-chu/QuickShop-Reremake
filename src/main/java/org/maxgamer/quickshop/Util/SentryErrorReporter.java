@@ -47,7 +47,7 @@ import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 /** Auto report errors to qs's sentry. */
 public class SentryErrorReporter {
   private final String dsn =
-      "https://6a7881aa07164412bcb84a0f76253ae9@sentry.io/1473041?"
+      "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
           + "stacktrace.app.packages=org.maxgamer.quickshop";
   private final ArrayList<String> reported = new ArrayList<>();
   private Context context;
@@ -64,7 +64,7 @@ public class SentryErrorReporter {
     this.plugin = plugin;
     // sentryClient = Sentry.init(dsn);
     Util.debugLog("Loading SentryErrorReporter");
-    sentryClient = Sentry.init(dsn);;
+    sentryClient = SentryClientFactory.create(dsn);;
     context = sentryClient.getContext();
     Util.debugLog("Setting basic report data...");
     // context.addTag("plugin_version", QuickShop.getVersion());
