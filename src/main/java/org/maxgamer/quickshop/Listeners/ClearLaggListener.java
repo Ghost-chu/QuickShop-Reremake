@@ -33,10 +33,6 @@ public class ClearLaggListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
   public void plugin(me.minebuilders.clearlag.events.EntityRemoveEvent clearlaggEvent) {
-    if (ListenerHelper.isDisabled(clearlaggEvent.getClass())) {
-      return;
-    }
-
     final List<Entity> entities = clearlaggEvent.getEntityList();
     final List<Entity> pendingExclude = new ArrayList<>();
 
