@@ -43,8 +43,8 @@ import org.maxgamer.quickshop.Util.Util;
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
-  boolean pendingRemoval;
-  @Nullable private ArmorStand armorStand;
+  volatile boolean pendingRemoval;
+  @Nullable private volatile ArmorStand armorStand;
   @Nullable private ItemStack guardedIstack;
   private ItemStack originalItemStack;
   private QuickShop plugin = QuickShop.instance;
@@ -81,43 +81,47 @@ public class ArmorStandDisplayItem implements DisplayItem {
       return;
     }
 
-    if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
-      Util.debugLog(
-          "Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
-      StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-      for (StackTraceElement trace : traces) {
+    synchronized (this) {
+      if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
         Util.debugLog(
-            trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+            "Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
+        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+        for (StackTraceElement trace : traces) {
+          Util.debugLog(
+              trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
       }
+      
+      ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
+          new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
+      Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+      if (shopDisplayItemSpawnEvent.isCancelled()) {
+        Util.debugLog(
+            "Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
+        return;
+      }
+      
+      this.armorStand =
+          (ArmorStand)
+              this.shop
+                  .getLocation()
+                  .getWorld()
+                  .spawnEntity(getDisplayLocation(), EntityType.ARMOR_STAND);
+      // Set basic armorstand datas.
+      this.armorStand.setArms(false);
+      this.armorStand.setBasePlate(false);
+      this.armorStand.setVisible(false);
+      this.armorStand.setGravity(false);
+      this.armorStand.setSilent(true);
+      this.armorStand.setAI(false);
+      this.armorStand.setCollidable(false);
+      this.armorStand.setCanPickupItems(false);
+      // this.armorStand.setSmall(true);
+      // Set safeGuard
+      safeGuard(this.armorStand);
+      // Set pose
+      setPoseForArmorStand();
     }
-    ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-        new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
-    Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-    if (shopDisplayItemSpawnEvent.isCancelled()) {
-      Util.debugLog(
-          "Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
-      return;
-    }
-    this.armorStand =
-        (ArmorStand)
-            this.shop
-                .getLocation()
-                .getWorld()
-                .spawnEntity(getDisplayLocation(), EntityType.ARMOR_STAND);
-    // Set basic armorstand datas.
-    this.armorStand.setArms(false);
-    this.armorStand.setBasePlate(false);
-    this.armorStand.setVisible(false);
-    this.armorStand.setGravity(false);
-    this.armorStand.setSilent(true);
-    this.armorStand.setAI(false);
-    this.armorStand.setCollidable(false);
-    this.armorStand.setCanPickupItems(false);
-    // this.armorStand.setSmall(true);
-    // Set safeGuard
-    safeGuard(this.armorStand);
-    // Set pose
-    setPoseForArmorStand();
   }
 
   @Override
@@ -183,7 +187,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
   }
 
   @Override
-  public void remove() {
+  public synchronized void remove() {
     if (this.armorStand == null) {
       Util.debugLog("Ignore the armorStand removing because the armorStand not spawned.");
       return;
@@ -320,11 +324,8 @@ public class ArmorStandDisplayItem implements DisplayItem {
   }
 
   @Override
-  public boolean isSpawned() {
-    if (this.armorStand == null) {
-      return false;
-    }
-    return this.armorStand.isValid();
+  public synchronized boolean isSpawned() {
+    return this.armorStand == null ? false : this.armorStand.isValid();
   }
 
   @Override
