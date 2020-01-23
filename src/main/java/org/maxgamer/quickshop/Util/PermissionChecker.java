@@ -27,7 +27,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.Event.ShopProtectionCheckEvent;
-import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
 
 public class PermissionChecker {

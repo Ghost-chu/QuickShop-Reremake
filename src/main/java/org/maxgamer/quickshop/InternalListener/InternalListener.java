@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.Event.ShopDeleteEvent;
 import org.maxgamer.quickshop.Event.ShopModeratorChangedEvent;
 import org.maxgamer.quickshop.Event.ShopPriceChangeEvent;
 import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
-import org.maxgamer.quickshop.Listeners.ListenerHelper;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ShopType;
 
