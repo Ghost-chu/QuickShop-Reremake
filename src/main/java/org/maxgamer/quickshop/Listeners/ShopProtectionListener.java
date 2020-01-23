@@ -153,7 +153,7 @@ public class ShopProtectionListener implements Listener {
     }
   }
 
-  @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+  @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
   public void onInventoryMove(InventoryMoveItemEvent event) {
 
     final Location loc = event.getSource().getLocation();
@@ -190,10 +190,11 @@ public class ShopProtectionListener implements Listener {
       Util.debugLog("Unknown location = " + loc);
     }
 
-    if (plugin.getConfig().getBoolean("send-shop-protection-alert")) {
+    if (sendProtectionAlert) {
       MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
     }
   }
+  private boolean sendProtectionAlert = QuickShop.instance.getConfig().getBoolean("send-shop-protection-alert",false);
 
   // Protect Entity pickup shop
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
