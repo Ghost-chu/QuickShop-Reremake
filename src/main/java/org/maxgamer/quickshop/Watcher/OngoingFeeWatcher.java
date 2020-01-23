@@ -19,8 +19,11 @@
 
 package org.maxgamer.quickshop.Watcher;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -50,29 +53,37 @@ public class OngoingFeeWatcher extends BukkitRunnable {
     int cost = plugin.getConfig().getInt("shop.ongoing-fee.cost-per-shop");
     boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
     boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
+    int perTaskFlow = 0;
+    int parallelTasks = 0;
     for (Shop shop : plugin.getShopManager().getAllShops()) {
       if (!shop.isUnlimited() || !ignoreUnlimited) {
         UUID shopOwner = shop.getOwner();
-        if (!allowLoan) {
-          // Disallow loan
-          if (plugin.getEconomy().getBalance(shopOwner) < cost) {
-            this.removeShop(shop);
-            continue;
+        parallelTasks++;
+        if (parallelTasks > Bukkit.getTPS()[0] * 5) {
+          perTaskFlow++;
+          parallelTasks = 0;
+        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          if (!allowLoan) {
+            // Disallow loan
+            if (plugin.getEconomy().getBalance(shopOwner) < cost) {
+              this.removeShop(shop);
+            }
           }
-        }
-        boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost);
-        if (!success) {
-          this.removeShop(shop);
-          continue;
-        }
-        try {
-          //noinspection ConstantConditions,deprecation
-          plugin
-              .getEconomy()
-              .deposit(
-                  Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
-        } catch (Exception ignored) {
-        }
+          boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost);
+          if (!success) {
+            this.removeShop(shop);
+          } else {
+            try {
+              //noinspection ConstantConditions,deprecation
+              plugin
+                  .getEconomy()
+                  .deposit(
+                      Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
+            } catch (Exception ignored) {
+            }
+          }
+        }, perTaskFlow);
       } else {
         Util.debugLog(
             "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "
