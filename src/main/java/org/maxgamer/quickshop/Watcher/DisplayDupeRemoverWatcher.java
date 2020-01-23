@@ -25,7 +25,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 
-// unused, pending to remove
+/**
+ * Deprecated for unused and inproper implementation,
+ * this is likely to be removed in a future version.
+ */
+@Deprecated
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
   private Queue<DisplayItem> checkQueue = new LinkedList<>();
 
