@@ -59,6 +59,7 @@ public class SentryErrorReporter {
   private SentryClient sentryClient;
   private boolean tempDisable;
   private String lastPaste;
+  private  IncompatibleChecker checker = new IncompatibleChecker();
 
   public SentryErrorReporter(@NotNull QuickShop plugin) {
     this.plugin = plugin;
@@ -132,11 +133,14 @@ public class SentryErrorReporter {
     if (UpdateWatcher.hasNewUpdate) { // We only receive latest reports.
       return false;
     }
-    if (new IncompatibleChecker()
+    if (checker
         .isIncompatible(
             Util
                 .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
                                      // version.
+      return false;
+    }
+    if(!checkWasCauseByQS(throwable)){
       return false;
     }
     StackTraceElement stackTraceElement;
@@ -185,7 +189,12 @@ public class SentryErrorReporter {
                 stackTraceElement ->
                     stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
             .count();
-    return element > 0;
+    if(element > 0){
+      return true;
+    }else if(throwable.getCause() != null){
+      return checkWasCauseByQS(throwable.getCause());
+    }
+    return false;
   }
 
   /** Set ignore throw. It will unlocked after accept a throw */
