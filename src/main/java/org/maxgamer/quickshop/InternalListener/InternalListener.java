@@ -37,9 +37,6 @@ public class InternalListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopCreate(ShopCreateEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     plugin.log(
         "Player "
             + event.getPlayer().getName()
@@ -49,17 +46,11 @@ public class InternalListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopDelete(ShopDeleteEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     plugin.log("Shop at " + event.getShop().getLocation() + " was removed.");
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopModeratorChanges(ShopModeratorChangedEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     plugin.log(
         "Shop at location "
             + event.getShop().getLocation()
@@ -69,9 +60,6 @@ public class InternalListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopPriceChanges(ShopPriceChangeEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     plugin.log(
         "Shop at location "
             + event.getShop().getLocation()
@@ -83,9 +71,6 @@ public class InternalListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void shopPurchase(ShopSuccessPurchaseEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (event.getShop().getShopType() == ShopType.BUYING) {
       plugin.log(
           "Player "
