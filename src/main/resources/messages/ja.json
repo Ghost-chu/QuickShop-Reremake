@@ -3,7 +3,7 @@
     "translation-version": "&c&l\u30b5\u30dd\u30fc\u30c8\u30d0\u30fc\u30b8\u30e7\u30f3: &b&lReremake",
     "translation-contributors": "&c&l\u8ca2\u732e\u8005: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul",
     "translation-country": "&c&l\u8a00\u8a9e\u570f: &b&l\u65e5\u672c\u8a9e (ja_JP)",
-    "language-version": "24",
+    "language-version": "27",
     "not-looking-at-shop": "&cQuickShop\u304c\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f\u3002\u898b\u3066\u3044\u308b\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059\u3002",
     "no-anythings-in-your-hand": "&c\u3042\u306a\u305f\u306e\u624b\u306b\u306f\u4f55\u3082\u3042\u308a\u307e\u305b\u3093\u3002",
     "no-permission": "&c\u3042\u306a\u305f\u306b\u306f\u8a31\u53ef\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002",
@@ -224,8 +224,11 @@
             "qualityverifyed": "[Quality]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Master]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&c{0}\u306e\u30b7\u30e7\u30c3\u30d7\u306f\u5341\u5206\u306a\u8cc7\u91d1\u304c\u306a\u304b\u3063\u305f\u305f\u3081\u524a\u9664\u3055\u308c\u307e\u3057\u305f"
+    "shop-removed-cause-ongoing-fee": "&c{0}\u306e\u30b7\u30e7\u30c3\u30d7\u306f\u5341\u5206\u306a\u8cc7\u91d1\u304c\u306a\u304b\u3063\u305f\u305f\u3081\u524a\u9664\u3055\u308c\u307e\u3057\u305f",
+    "digits-reach-the-limit": "&c\u4fa1\u683c\u306e\u5c0f\u6570\u70b9\u4ee5\u4e0b\u306e\u5236\u9650\u306b\u9054\u3057\u307e\u3057\u305f\u3002",
+    "complete": "&a\u5b8c\u4e86!"
 }

@@ -3,7 +3,7 @@
     "translation-version": "&c&lVersion suport\u00e9e: &b&lReremake",
     "translation-contributors": "&c&lContributeurs: &b&lTimtower, Netherfoam, KaiNoMood et Mgazul",
     "translation-country": "&c&lLangue: &b&lFran\u00e7ais (fr_FR)",
-    "language-version": "24",
+    "language-version": "27",
     "not-looking-at-shop": "&cAucune boutique trouv\u00e9. Tu dois en regarder un.",
     "no-anythings-in-your-hand": "&cTu ne poss\u00e8de aucun item dans ta main.",
     "no-permission": "&cTu n'as pas la permission de faire ceci.",
@@ -88,22 +88,22 @@
         "damage-percent-remaining": "&e{0}% &aRestant.",
         "this-shop-is-buying": "&aCette boutique &dACHETE&a des objets.",
         "this-shop-is-selling": "&aCeette boutique &dVEND&a des objets.",
-        "effects": "&aEffects: &e{0}",
+        "effects": "&aEffets",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
     },
-    "bypassing-lock": "&cBypassing a QuickShop lock!",
-    "that-is-locked": "&cThat shop is locked.",
-    "how-many-buy": "&aEnter how many you wish to &bBUY&a in chat. You can buy &e{0}&a. Enter &ball&a to buy them all.",
-    "how-many-sell": "&aEnter how many you wish to &dSELL&a in chat. You have &e{0}&a available. Enter &ball&a to sell them all.",
-    "not-allowed-to-create": "&cYou may not create a shop here.",
-    "blacklisted-item": "&cThat item is blacklisted. You may not sell it",
-    "how-much-to-trade-for": "&aEnter how much you wish to trade one &e{0}&a for in chat.",
+    "bypassing-lock": "&cContournement d'un verrou de QuickShop !",
+    "that-is-locked": "&cCe shop est verouill\u00e9.",
+    "how-many-buy": "\u00a7aEntrez le nombre d'items que vous souhaitez \u00a7bACHETER\u00a7a dans le chat. Vous en avez \u00a7e{0}\u00a7a dans votre inventaire. Entrez \u00a7ball\u00a7a pour tous les acheter.",
+    "how-many-sell": "\u00a7aEntrez le nombre d'items que vous souhaitez \u00a7bVENDRE\u00a7a dans le chat. Vous en avez \u00a7e{0}\u00a7a dans votre inventaire. Entrez \u00a7ball\u00a7a pour tous les vendres.",
+    "not-allowed-to-create": "&cVous ne pouvez pas cr\u00e9er un shop ici.",
+    "blacklisted-item": "&cCet item est blacklist\u00e9. Vous ne pouvez pas le vendre.",
+    "how-much-to-trade-for": "&aEntrez le prix contre lequel vous souhaitez \u00e9changer l'item &e{0}&a dans le chat.",
     "command": {
         "toggle-unlimited": {
-            "unlimited": "&aShop is now unlimited",
-            "limited": "&aShop is now limited"
+            "unlimited": "&aCe shop est d\u00e9sormais illimit\u00e9",
+            "limited": "&aCe shop est d\u00e9sormais limit\u00e9"
         },
         "no-owner-given": "&cNo owner given. Use &a\/qs setowner <player>&c",
         "new-owner": "&aNew owner: &e{0}",
@@ -224,8 +224,11 @@
             "qualityverifyed": "[Quality]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Master]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!"
+    "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
+    "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
+    "complete": "&aComplete!"
 }
