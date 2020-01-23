@@ -41,9 +41,9 @@ import org.maxgamer.quickshop.Util.Util;
 public class RealDisplayItem implements DisplayItem {
 
   private static QuickShop plugin = QuickShop.instance;
-  boolean pendingRemoval;
+  volatile boolean pendingRemoval;
   @Nullable private ItemStack guardedIstack;
-  @Nullable private Item item;
+  @Nullable private volatile Item item;
   private ItemStack originalItemStack;
   private Shop shop;
 
@@ -130,7 +130,7 @@ public class RealDisplayItem implements DisplayItem {
   }
 
   @Override
-  public void remove() {
+  public synchronized void remove() {
     if (this.item == null) {
       Util.debugLog("Ignore the Item removing because the Item is already gone.");
       return;
@@ -207,35 +207,40 @@ public class RealDisplayItem implements DisplayItem {
       Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
       return;
     }
-    if (item != null && item.isValid() && !item.isDead()) {
-      Util.debugLog(
-          "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
-      StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-      for (StackTraceElement trace : traces) {
-        Util.debugLog(
-            trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
-      }
-    }
+    
     if (!Util.isDisplayAllowBlock(
         Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
       Util.debugLog(
           "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
       return;
     }
+    
+    synchronized (this) {
+      if (item != null && item.isValid() && !item.isDead()) {
+        Util.debugLog(
+            "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+        for (StackTraceElement trace : traces) {
+          Util.debugLog(
+              trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
+      }
 
-    ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-        new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
-    Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-    if (shopDisplayItemSpawnEvent.isCancelled()) {
-      Util.debugLog(
-          "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
-      return;
+      ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
+          new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+      Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+      if (shopDisplayItemSpawnEvent.isCancelled()) {
+        Util.debugLog(
+            "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+        return;
+      }
+      
+      this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
+      this.item =
+          this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+      this.item.setItemStack(this.guardedIstack);
+      safeGuard(this.item);
     }
-    this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-    this.item =
-        this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
-    this.item.setItemStack(this.guardedIstack);
-    safeGuard(this.item);
   }
 
   @Override
@@ -249,11 +254,8 @@ public class RealDisplayItem implements DisplayItem {
   }
 
   @Override
-  public boolean isSpawned() {
-    if (this.item == null) {
-      return false;
-    }
-    return this.item.isValid();
+  public synchronized boolean isSpawned() {
+    return this.item == null ? false : this.item.isValid();
   }
 
   @Override
