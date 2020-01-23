@@ -198,7 +198,7 @@ public class QuickShop extends JavaPlugin {
   private OngoingFeeWatcher ongoingFeeWatcher;
   private SignUpdateWatcher signUpdateWatcher;
   private ShopContainerWatcher shopContainerWatcher;
-  private DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
+  private @Deprecated DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
   private BukkitAPIWrapper bukkitAPIWrapper;
   private boolean isUtilInited = false;
 
@@ -630,21 +630,10 @@ public class QuickShop extends JavaPlugin {
     }
     if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
       getLogger().info("Ongoing fee feature is enabled.");
-      // NOT SAFE FOR ASYNC
-      if (getConfig().getBoolean("shop.ongoing-fee.async", true)) {
-        ongoingFeeWatcher.runTaskTimerAsynchronously(
-            this,
-            getConfig().getInt("shop.ongoing-fee.ticks"),
-            getConfig().getInt("shop.ongoing-fee.ticks"));
-      } else {
-        getLogger()
-            .warning(
-                "You forcing execute ongoing-fee tasks on server thread, it may cause serious performance issue, turn off it if you got performance issue,");
-        ongoingFeeWatcher.runTaskTimer(
-            this,
-            getConfig().getInt("shop.ongoing-fee.ticks"),
-            getConfig().getInt("shop.ongoing-fee.ticks"));
-      }
+      ongoingFeeWatcher.runTaskTimerAsynchronously(
+          this,
+          0,
+          getConfig().getInt("shop.ongoing-fee.ticks"));
     }
     if (this.display) {
       if (getConfig().getBoolean("shop.display-auto-despawn")) {
