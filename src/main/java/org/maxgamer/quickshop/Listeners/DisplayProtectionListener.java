@@ -77,9 +77,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(BlockFromToEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -101,9 +98,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void portal(EntityPortalEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!(event.getEntity() instanceof Item)) {
       return;
     }
@@ -119,9 +113,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(BlockPistonExtendEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -159,9 +150,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(BlockPistonRetractEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -199,9 +187,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(BrewingStandFuelEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -217,9 +202,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(FurnaceBurnEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -240,9 +222,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void block(FurnaceSmeltEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -277,9 +256,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void entity(EntityPickupItemEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -305,9 +281,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void entity(EntityDamageEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!(event.getEntity() instanceof ArmorStand)) {
       return;
     }
@@ -319,9 +292,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void entity(EntityDeathEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -337,9 +307,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void entity(EntityInteractEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -364,17 +331,11 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void inventory(InventoryOpenEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     Util.inventoryCheck(event.getInventory());
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void inventory(InventoryClickEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -423,9 +384,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void inventory(InventoryPickupItemEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     ItemStack itemStack = event.getItem().getItemStack();
     if (!DisplayItem.checkIsGuardItemStack(itemStack)) {
       return; // We didn't care that
@@ -444,9 +402,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void inventory(InventoryDragEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -473,9 +428,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void inventory(InventoryCreativeEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -502,9 +454,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void item(PlayerItemHeldEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -534,22 +483,16 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void item(ItemDespawnEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     ItemStack itemStack = event.getEntity().getItemStack();
-    if (!DisplayItem.checkIsGuardItemStack(itemStack)) {
-      return; // We didn't care that
+    if (DisplayItem.checkIsGuardItemStack(itemStack)) {
+      event.setCancelled(true);
     }
-    event.setCancelled(true);
+
     // Util.debugLog("We canceled an Item from despawning because they are our display item.");
   }
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void player(CraftItemEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -595,9 +538,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void player(PlayerFishEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (event.getState() != State.CAUGHT_ENTITY) {
       return;
     }
@@ -625,9 +565,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void player(PlayerBucketEmptyEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!useEnhanceProtection) {
       return;
     }
@@ -646,9 +583,6 @@ public class DisplayProtectionListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
   public void player(PlayerArmorStandManipulateEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
     if (!DisplayItem.checkIsGuardItemStack(event.getArmorStandItem())) {
       return;
     }

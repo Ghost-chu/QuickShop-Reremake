@@ -39,9 +39,6 @@ public class ChunkListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onChunkLoad(ChunkLoadEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     if (e.isNewChunk()) {
       return;
@@ -65,9 +62,6 @@ public class ChunkListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onChunkUnload(ChunkUnloadEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
 

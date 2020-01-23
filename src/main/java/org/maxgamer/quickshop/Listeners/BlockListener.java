@@ -71,9 +71,6 @@ public class BlockListener implements Listener {
    */
   @EventHandler(priority = EventPriority.LOW)
   public void onBreak(BlockBreakEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final Block b = e.getBlock();
 
@@ -170,10 +167,6 @@ public class BlockListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onInventoryMove(InventoryMoveItemEvent event) {
-    if (ListenerHelper.isDisabled(event.getClass())) {
-      return;
-    }
-
     if (!plugin.getConfig().getBoolean("shop.update-sign-when-inventory-moving", true)) {
       return;
     }
@@ -197,9 +190,6 @@ public class BlockListener implements Listener {
    */
   @EventHandler(ignoreCancelled = true)
   public void onPlace(BlockPlaceEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final BlockState bs = e.getBlock().getState();
 

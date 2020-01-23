@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.Command.SubCommands;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -63,6 +64,7 @@ public class SubCommand_Reset implements CommandProcesser {
         item.delete();
         ench.delete();
         potion.delete();
+        MsgUtil.loadGameLanguage(Objects.requireNonNull(plugin.getConfig().getString("game-language", "default")));
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
@@ -72,6 +74,7 @@ public class SubCommand_Reset implements CommandProcesser {
         File config = new File(plugin.getDataFolder(), "config.yml");
         config.delete();
         plugin.saveDefaultConfig();
+        plugin.reloadConfig();
         Bukkit.getPluginManager().disablePlugin(plugin);
         Bukkit.getPluginManager().enablePlugin(plugin);
         sender.sendMessage(MsgUtil.getMessage("complete", sender));

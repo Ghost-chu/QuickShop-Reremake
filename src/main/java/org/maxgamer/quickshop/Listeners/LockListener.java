@@ -172,9 +172,6 @@ public class LockListener implements Listener {
 
   @EventHandler(ignoreCancelled = true)
   public void onClick(PlayerInteractEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final Block b = e.getClickedBlock();
 
@@ -235,9 +232,6 @@ public class LockListener implements Listener {
    */
   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
   public void onPlace(BlockPlaceEvent e) {
-    if (ListenerHelper.isDisabled(e.getClass())) {
-      return;
-    }
 
     final Block b = e.getBlock();
 
