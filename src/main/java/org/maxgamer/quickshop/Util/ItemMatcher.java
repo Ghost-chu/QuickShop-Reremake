@@ -209,6 +209,7 @@ class ItemMetaMatcher {
     if (!this.displayname) {
       return true;
     }
+    Util.debugLog("Checking displayname");
     if (!meta1.hasDisplayName()) {
       return true;
     } else {
