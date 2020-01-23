@@ -3,7 +3,7 @@
     "translation-version": "\u652f\u6301\u7248\u672c\uff1a&b&lReremake",
     "translation-contributors": "\u8d21\u732e\u8005\uff1a&b&l ",
     "translation-country": "\u672c\u5730\u5316\u8bed\u8a00\uff1a&b&l\u7b80\u4f53\u4e2d\u6587 (zh_CN)",
-    "language-version": "24",
+    "language-version": "27",
     "not-looking-at-shop": "&c\u6ca1\u6709\u627e\u5230\u5546\u5e97, \u4f60\u5fc5\u987b\u9009\u4e2d\u7bb1\u5b50\u624d\u884c\u3002",
     "no-anythings-in-your-hand": "&c\u4f60\u7684\u624b\u91cc\u6ca1\u6709\u4efb\u4f55\u7269\u54c1\u3002",
     "no-permission": "&c\u4f60\u6ca1\u6709\u6743\u9650\u8fd9\u6837\u505a\u3002",
@@ -224,8 +224,11 @@
             "qualityverifyed": "[Quality]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Master]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!"
+    "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
+    "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
+    "complete": "&aComplete!"
 }

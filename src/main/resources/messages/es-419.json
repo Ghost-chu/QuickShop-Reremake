@@ -2,8 +2,8 @@
     "translation-author": "&c&lTraductores: &b&lGhost_chu, LoudCloud,DorianXYZ, ERDUKE21 y Ant4rez",
     "translation-version": "&c&lVersi\u00f3n soportada: &b&lReremake",
     "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
-    "translation-country": "&c&lZona de lenguaje: &b&lEspa\u00f1ol (es_VE)",
-    "language-version": "24",
+    "translation-country": "&c&lZona de lenguaje: &b&lEspa\u00f1ol (es_LA)",
+    "language-version": "27",
     "not-looking-at-shop": "&cNo se encontr\u00f3 ninguna QuickShop, debes estar mirando una.",
     "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
     "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -88,7 +88,7 @@
         "damage-percent-remaining": "&e{0}% &aRestante.",
         "this-shop-is-buying": "&aEsta tienda est\u00e1 &dCOMPRANDO&a art\u00edculos.",
         "this-shop-is-selling": "&aEsta tienda est\u00e1 &dVENDIENDO&a art\u00edculos.",
-        "effects": "&aEfectos: &e{0}",
+        "effects": "&aEfectos",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
@@ -224,8 +224,11 @@
             "qualityverifyed": "[Calidad]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Maestro]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&c\u00a1Su tienda en {0} fue removida debido a que no tienes suficiente dinero para mantenerla!"
+    "shop-removed-cause-ongoing-fee": "&c\u00a1Su tienda en {0} fue removida debido a que no tienes suficiente dinero para mantenerla!",
+    "digits-reach-the-limit": "&cHas alcanzado el l\u00edmite de d\u00edgitos antes del punto decimal en el precio.",
+    "complete": "&a\u00a1Terminado!"
 }
