@@ -284,7 +284,7 @@ class GameLanguageLoadThread extends Thread {
   private String languageCode;
   private boolean mainThreadWaiting;
 
-  public void run(@NotNull String languageCode) {
+  public void run() {
     try {
       File cacheFile = new File(Util.getCacheFolder(), "lang.cache"); // Load cache file
       if (!cacheFile.exists()) {
