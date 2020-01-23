@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,7 +37,7 @@ import org.maxgamer.quickshop.Util.Util;
  *     with.
  */
 public interface DisplayItem {
-  Gson gson = new GsonBuilder().create();
+  Gson gson = new Gson();
 
   /**
    * Check the itemStack is contains protect flag.
@@ -148,7 +147,6 @@ public interface DisplayItem {
       Objects.requireNonNull(iMeta).setDisplayName(null);
     }
     java.util.List<String> lore = new ArrayList<>();
-    Gson gson = new Gson();
     ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
     String protectFlag = gson.toJson(shopProtectionFlag);
     for (int i = 0; i < 21; i++) {
