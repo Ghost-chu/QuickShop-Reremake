@@ -25,6 +25,7 @@ import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
@@ -151,8 +152,8 @@ public class RealDisplayItem implements DisplayItem {
 
     boolean removed = false;
     // Chunk chunk = shop.getLocation().getChunk();
-    for (Entity entity : item.getNearbyEntities(1, 1, 1)) {
-      if (!(entity instanceof Item)) {
+    for (Entity entity : item.getNearbyEntities(1.5, 1.5, 1.5)) {
+      if (entity.getType() != EntityType.DROPPED_ITEM) {
         continue;
       }
       Item eItem = (Item) entity;
