@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.Util;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.palmergames.bukkit.towny.event.NewDayEvent;
 import java.io.ByteArrayOutputStream;
@@ -1113,7 +1114,7 @@ public class Util {
    * @return Map1 match Map2
    */
   public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-    return map1.entrySet().stream().allMatch(e -> map2.get((Object) e.getKey()).equals(e.getValue()));
+    return map2.entrySet().containsAll(map1.entrySet());
   }
 
   /**
@@ -1124,12 +1125,7 @@ public class Util {
    * @return Map1 match Map2
    */
   public static boolean listMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
-    for (Object obj : list1) {
-      if (!list2.contains(obj)) {
-        return false;
-      }
-    }
-    return true;
+    return list2.containsAll(list1);
   }
 
   /**
