@@ -22,9 +22,11 @@ package org.maxgamer.quickshop.Util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +38,7 @@ import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import com.google.common.collect.Multimap;
 
 /** A util allow quickshop check item matches easy and quick. */
 public class ItemMatcher {
@@ -153,19 +156,11 @@ class ItemMetaMatcher {
       if (!meta2.hasAttributeModifiers()) {
         return false;
       }
-      Set<Attribute> set1 = Objects.requireNonNull(meta1.getAttributeModifiers()).keySet();
-      Set<Attribute> set2 = Objects.requireNonNull(meta2.getAttributeModifiers()).keySet();
-      for (Attribute att : set1) {
-        if (!set2.contains(att)) {
-          return false;
-        } else if (!meta1
-            .getAttributeModifiers()
-            .get(att)
-            .equals(meta2.getAttributeModifiers().get(att))) {
-          return false;
-        }
-      }
-      return true;
+      // Do not get modifier multiple times cause it use copyOf internally
+      Multimap<Attribute, AttributeModifier> mod2 = meta2.getAttributeModifiers(); 
+      return meta1.getAttributeModifiers()
+          .entries()
+          .stream().allMatch(e -> mod2.containsEntry(e.getKey(), e.getValue()));
     }
   }
 
