@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
+import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -104,14 +105,11 @@ public class Util {
    * @return str
    */
   public static String array2String(@NotNull String[] strArray) {
-    StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < strArray.length; i++) {
-      builder.append(strArray[i]);
-      if (i + 1 != strArray.length) {
-        builder.append(", ");
-      }
+    String concentration = strArray[0].concat(", "); // Init with zero index
+    for (int i = 1; i < strArray.length - 2; i++) { // Loop from index 1 (in) until -1 (in)
+      concentration = concentration.concat(strArray[i]).concat(", ");
     }
-    return builder.toString();
+    return concentration.concat(strArray[strArray.length - 1]); // Fin with end index
   }
 
   /**
