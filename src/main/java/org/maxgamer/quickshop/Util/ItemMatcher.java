@@ -144,60 +144,54 @@ class ItemMetaMatcher {
     this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
   }
 
-  private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
+  private boolean attributeModifiersMatches(ItemMeta required, ItemMeta test) {
     if (!this.attributes) {
       return true;
     }
     // requireStack doen't need require must have AM, skipping..
-    if (!meta1.hasAttributeModifiers()) {
+    if (!required.hasAttributeModifiers()) {
       return true;
     } else {
       // If require AM but hadn't, the item not matched.
-      if (!meta2.hasAttributeModifiers()) {
+      if (!test.hasAttributeModifiers()) {
         return false;
       }
       // Do not get modifier multiple times cause it use copyOf internally
-      Multimap<Attribute, AttributeModifier> mod2 = meta2.getAttributeModifiers(); 
-      return meta1.getAttributeModifiers()
+      Multimap<Attribute, AttributeModifier> mod2 = test.getAttributeModifiers(); 
+      return required.getAttributeModifiers()
           .entries()
           .stream().allMatch(e -> mod2.containsEntry(e.getKey(), e.getValue()));
     }
   }
 
-  private boolean customModelDataMatches(ItemMeta meta1, ItemMeta meta2) {
+  private boolean customModelDataMatches(ItemMeta required, ItemMeta test) {
     if (!this.custommodeldata) {
       return true;
     }
-    if (!meta1.hasCustomModelData()) {
+    if (!required.hasCustomModelData()) {
       return true;
     } else {
-      if (!meta2.hasCustomModelData()) {
+      if (!test.hasCustomModelData()) {
         return false;
       }
-      return meta1.getCustomModelData() == meta2.getCustomModelData();
+      return required.getCustomModelData() == test.getCustomModelData();
     }
   }
 
-  private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
+  private boolean damageMatches(ItemMeta required, ItemMeta test) {
     if (!this.damage) {
       return true;
     }
-    //            if (!(meta1 instanceof Damageable)) {
-    //                return true; //No damage need to check.
-    //            }
-    //            if(!(meta2 instanceof Damageable)){
-    //                return false;
-    //            }
-    Util.debugLog("Checking damage");
-    try {
-      Damageable damage1 = (Damageable) meta1;
-      Damageable damage2 = (Damageable) meta2;
-      // Check them damages, if givenDamage >= requireDamage, allow it.
-      return damage2.getDamage() <= damage1.getDamage();
-    } catch (Throwable th) {
-      th.printStackTrace();
-      return true;
+    if (!(required instanceof Damageable)) {
+      return true; //No damage need to check.
+    } else if (!(test instanceof Damageable)) {
+      return false;
     }
+    Util.debugLog("Checking damage");
+    Damageable requiredDamage = (Damageable) required;
+    Damageable testDamage     = (Damageable) test;
+    // Check them damages, if givenDamage >= requireDamage, allow it.
+    return testDamage.getDamage() >= requiredDamage.getDamage();
   }
 
   private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
