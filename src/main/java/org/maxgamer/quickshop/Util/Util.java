@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.Util;
 
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
+import com.palmergames.bukkit.towny.event.NewDayEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -1112,15 +1113,7 @@ public class Util {
    * @return Map1 match Map2
    */
   public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-    for (Object obj : map1.keySet()) {
-      if (!map2.containsKey(obj)) {
-        return false;
-      }
-      if (map1.get(obj) != map2.get(obj)) {
-        return false;
-      }
-    }
-    return true;
+    return map1.entrySet().stream().allMatch(e -> map2.get((Object) e.getKey()).equals(e.getValue()));
   }
 
   /**
