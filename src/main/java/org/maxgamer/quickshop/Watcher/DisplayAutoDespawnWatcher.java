@@ -54,7 +54,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                       "Respawning the shop "
                           + shop
                           + " the display, cause it was despawned and a player close it");
-                  shop.checkDisplay();
+                  Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
                 }
               } else if (shop.getDisplay().isSpawned()) {
                 removeDisplayItemDelayed(shop);
@@ -66,7 +66,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
     if (shop.getDisplay().isPendingRemoval()) {
       // Actually remove the pending display
       Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-      shop.getDisplay().remove();
+      Bukkit.getScheduler().runTask(plugin, () -> shop.getDisplay().remove());
       return true;
     } else {
       // Delayed to next calling
