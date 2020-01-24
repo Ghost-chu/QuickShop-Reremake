@@ -19,23 +19,19 @@
 
 package org.maxgamer.quickshop.Shop;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
@@ -66,9 +62,9 @@ import org.maxgamer.quickshop.Util.Util;
 /** Manage a lot of shops. */
 public class ShopManager {
 
-  private final ConcurrentHashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops =
-      new ConcurrentHashMap<>();
-  private final Set<Shop> loadedShops = Sets.newConcurrentHashSet();
+  private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops =
+      new HashMap<>();
+  private final Set<Shop> loadedShops = Sets.newHashSet();
   private HashMap<UUID, Info> actions = new HashMap<>();
   private QuickShop plugin;
   private boolean useFastShopSearchAlgorithm = false;
@@ -1193,10 +1189,13 @@ public class ShopManager {
    *
    * @return All shop in the database
    */
-  public List<Shop> getAllShops() {
-    List<Shop> shops = new ArrayList<>();
-    for (HashMap<ShopChunk, HashMap<Location, Shop>> shopChunkMap : this.shops.values()) {
-      for (HashMap<Location, Shop> shopData : shopChunkMap.values()) {
+  public Collection<Shop> getAllShops() {
+    //noinspection unchecked
+    HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap =
+        (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
+    Collection<Shop> shops = new ArrayList<>();
+    for (HashMap<ShopChunk, HashMap<Location, Shop>> shopMapData : worldsMap.values()) {
+      for (HashMap<Location, Shop> shopData : shopMapData.values()) {
         shops.addAll(shopData.values());
       }
     }
@@ -1209,7 +1208,7 @@ public class ShopManager {
    * @return a hashmap of World - Chunk - Shop
    */
   @NotNull
-  public ConcurrentHashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
+  public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
     return this.shops;
   }
 
@@ -1252,7 +1251,10 @@ public class ShopManager {
     private Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
     public ShopIterator() {
-      worlds = Collections.unmodifiableCollection(getShops().values()).iterator();
+      //noinspection unchecked
+      HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap =
+          (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
+      worlds = worldsMap.values().iterator();
     }
 
     /** Returns true if there is still more shops to iterate over. */
