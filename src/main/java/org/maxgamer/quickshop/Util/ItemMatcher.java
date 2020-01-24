@@ -194,44 +194,46 @@ class ItemMetaMatcher {
     return testDamage.getDamage() >= requiredDamage.getDamage();
   }
 
-  private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
+  private boolean displayMatches(ItemMeta required, ItemMeta test) {
     if (!this.displayname) {
       return true;
     }
     Util.debugLog("Checking displayname");
-    if (!meta1.hasDisplayName()) {
+    if (!required.hasDisplayName()) {
       return true;
-    } else {
-      if (!meta2.hasDisplayName()) {
-        return false;
-      }
-      return meta1.getDisplayName().equals(meta2.getDisplayName());
+    } else if (!test.hasDisplayName()) {
+      return false;
     }
+    return required.getDisplayName().equals(test.getDisplayName());
   }
 
-  private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
+  private boolean enchMatches(ItemMeta required, ItemMeta test) {
     if (!this.enchs) {
       return true;
     }
     Util.debugLog("Checking enchantments");
-    if (meta1.hasEnchants()) {
-      if (!meta2.hasEnchants()) {
+    
+    if (required.hasEnchants()) {
+      if (!test.hasEnchants()) {
         return false;
       }
-      Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
-      Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-      if (!Util.mapMatches(enchMap1, enchMap2)) {
-        return false;
-      }
+      
+      Map<Enchantment, Integer> enchMap1 = required.getEnchants();
+      Map<Enchantment, Integer> enchMap2 = test.getEnchants();
+      return Util.mapMatches(enchMap1, enchMap2);
     }
-    if ((meta1 instanceof EnchantmentStorageMeta)) {
-      if (!(meta2 instanceof EnchantmentStorageMeta)) {
+    
+    // Enchantment books
+    if ((required instanceof EnchantmentStorageMeta)) {
+      if (!(test instanceof EnchantmentStorageMeta)) {
         return false;
       }
-      Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
-      Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+      
+      Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) required).getStoredEnchants();
+      Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) test).getStoredEnchants();
       return Util.mapMatches(stor1, stor2);
     }
+    
     return true;
   }
 
