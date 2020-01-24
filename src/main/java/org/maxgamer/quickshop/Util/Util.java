@@ -56,12 +56,14 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -148,16 +150,20 @@ public class Util {
   public static boolean canBeShop(@NotNull Block b) {
     BlockState bs = b.getState();
 
+    // Specificed types by configuration
     if (!isShoppables(b.getType())) {
       return false;
     }
+    
     if (isBlacklistWorld(b.getWorld())) {
       return false;
     }
-    if (b.getType() == Material.ENDER_CHEST) {
+    
+    if (bs instanceof EnderChest) { // BlockState for Mod supporting
       return plugin.getOpenInvPlugin() != null;
     }
-    return bs instanceof InventoryHolder;
+    
+    return bs instanceof BlockInventoryHolder;
   }
 
   /**
