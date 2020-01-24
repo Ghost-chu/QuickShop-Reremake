@@ -43,7 +43,7 @@ import org.maxgamer.quickshop.Util.Util;
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
 
-  volatile boolean pendingRemoval;
+  boolean pendingRemoval;
   @Nullable private volatile ArmorStand armorStand;
   @Nullable private ItemStack guardedIstack;
   private ItemStack originalItemStack;
@@ -187,7 +187,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
   }
 
   @Override
-  public synchronized void remove() {
+  public void remove() {
     if (this.armorStand == null) {
       Util.debugLog("Ignore the armorStand removing because the armorStand not spawned.");
       return;
