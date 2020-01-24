@@ -64,7 +64,8 @@ public class ShopManager {
 
   private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops =
       new HashMap<>();
-  private final Set<Shop> loadedShops = Sets.newHashSet();
+  private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ?
+      Sets.newConcurrentHashSet() : Sets.newHashSet();
   private HashMap<UUID, Info> actions = new HashMap<>();
   private QuickShop plugin;
   private boolean useFastShopSearchAlgorithm = false;

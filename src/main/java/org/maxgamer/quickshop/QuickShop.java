@@ -201,6 +201,7 @@ public class QuickShop extends JavaPlugin {
   private @Deprecated DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
   private BukkitAPIWrapper bukkitAPIWrapper;
   private boolean isUtilInited = false;
+  private boolean enabledAsyncDisplayDespawn;
 
   /**
    * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
@@ -541,6 +542,15 @@ public class QuickShop extends JavaPlugin {
     /* Initalize the tools */
     // Create the shop manager.
     permissionManager = new PermissionManager(this);
+    // This should be inited before shop manager
+    if (this.display) {
+      if (getConfig().getBoolean("shop.display-auto-despawn")) {
+        this.enabledAsyncDisplayDespawn = true;
+        this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+        this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(
+            this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+      }
+    }
     this.shopManager = new ShopManager(this);
     this.databaseManager = new DatabaseManager(this, database);
     this.permissionChecker = new PermissionChecker(this);
@@ -634,13 +644,6 @@ public class QuickShop extends JavaPlugin {
           this,
           0,
           getConfig().getInt("shop.ongoing-fee.ticks"));
-    }
-    if (this.display) {
-      if (getConfig().getBoolean("shop.display-auto-despawn")) {
-        this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-        this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(
-            this, 0, getConfig().getInt("shop.display-check-time")); // not worth async
-      }
     }
     registerIntegrations();
     this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);

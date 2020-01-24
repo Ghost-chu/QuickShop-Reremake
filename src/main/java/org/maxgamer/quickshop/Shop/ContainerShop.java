@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
+import com.palmergames.bukkit.towny.event.NewDayEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,6 +69,7 @@ public class ContainerShop implements Shop {
   private double price;
   private ShopType shopType;
   private boolean unlimited;
+  private Object checkDisplayLock = new Object();
 
   private ContainerShop(@NotNull ContainerShop s) {
     this.displayItem = s.displayItem;
@@ -427,12 +429,10 @@ public class ContainerShop implements Shop {
 
   @Override
   public void checkDisplay() {
-    if (!plugin.isDisplay()) {
+    if (!plugin.isDisplay() || !this.isLoaded) { // FIXME: Reinit scheduler on reloading config
       return;
     }
-    if (!this.isLoaded) {
-      return;
-    }
+    
     if (this.displayItem == null) {
       Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
       Util.debugLog(
@@ -444,6 +444,7 @@ public class ContainerShop implements Shop {
               + Thread.currentThread().getStackTrace()[2].getLineNumber());
       return;
     }
+    
     if (!this.displayItem.isSpawned()) {
       /* Not spawned yet. */
       Util.debugLog("Target item not spawned, spawning...");
@@ -459,11 +460,10 @@ public class ContainerShop implements Shop {
         }
       }
     }
+    
     /* Dupe is always need check, if enabled display */
-    if (plugin.isDisplay()) {
-      this.displayItem.removeDupe();
-      // plugin.getDisplayDupeRemoverWatcher().add(this.displayItem);
-    }
+    this.displayItem.removeDupe();
+    // plugin.getDisplayDupeRemoverWatcher().add(this.displayItem);
   }
 
   @Override
@@ -870,7 +870,7 @@ public class ContainerShop implements Shop {
    */
   @Override
   public boolean isValid() {
-    checkDisplay();
+    this.checkDisplay();
     return Util.canBeShop(this.getLocation().getBlock());
   }
 
@@ -918,7 +918,7 @@ public class ContainerShop implements Shop {
         this.update();
       }
     }
-    checkDisplay();
+    this.checkDisplay();
   }
 
   /** Unload ContainerShop. */

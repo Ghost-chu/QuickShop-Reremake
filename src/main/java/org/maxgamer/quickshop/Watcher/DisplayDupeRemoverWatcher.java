@@ -34,11 +34,11 @@ public class DisplayDupeRemoverWatcher extends BukkitRunnable {
   private Queue<DisplayItem> checkQueue = new LinkedList<>();
 
   @Override
-  public void run() {
+  public @Deprecated void run() {
     checkQueue.forEach(DisplayItem::removeDupe);
   }
 
-  public void add(@NotNull DisplayItem displayItem) {
+  public @Deprecated void add(@NotNull DisplayItem displayItem) {
     checkQueue.offer(displayItem);
   }
 }
