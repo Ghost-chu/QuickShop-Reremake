@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
-import com.palmergames.bukkit.towny.event.NewDayEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +68,6 @@ public class ContainerShop implements Shop {
   private double price;
   private ShopType shopType;
   private boolean unlimited;
-  private Object checkDisplayLock = new Object();
 
   private ContainerShop(@NotNull ContainerShop s) {
     this.displayItem = s.displayItem;
