@@ -54,7 +54,7 @@ public class RealDisplayItem implements DisplayItem {
    */
   RealDisplayItem(@NotNull Shop shop) {
     this.shop = shop;
-    this.originalItemStack = shop.getItem().clone();
+    this.originalItemStack = new ItemStack(shop.getItem());
     this.originalItemStack.setAmount(1);
 
     // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
