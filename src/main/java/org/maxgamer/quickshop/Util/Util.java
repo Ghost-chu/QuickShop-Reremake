@@ -621,10 +621,8 @@ public class Util {
           oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
         return rightC.getBlock();
       }
-      return null;
-    } else {
-      return null;
     }
+    return null;
   }
 
   /**
