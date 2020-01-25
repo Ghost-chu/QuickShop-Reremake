@@ -133,7 +133,7 @@ public interface DisplayItem {
    * @return New itemStack with protect flag.
    */
   static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-    itemStack = itemStack.clone();
+    itemStack = new ItemStack(itemStack);
     itemStack.setAmount(1);
     ItemMeta iMeta = itemStack.getItemMeta();
     if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {

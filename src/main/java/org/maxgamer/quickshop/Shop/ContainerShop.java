@@ -102,7 +102,7 @@ public class ContainerShop implements Shop {
     this.location = location;
     this.price = price;
     this.moderator = moderator;
-    this.item = item.clone();
+    this.item = new ItemStack(item);
     this.plugin = QuickShop.instance;
     this.item.setAmount(1);
     this.shopType = type;
@@ -260,7 +260,7 @@ public class ContainerShop implements Shop {
   /** @return The durability of the item */
   @Override
   public short getDurability() {
-    return (short) ((Damageable) Objects.requireNonNull(this.item.getItemMeta())).getDamage();
+    return (short) ((Damageable) this.item.getItemMeta()).getDamage();
   }
 
   /** @return The name of the player who owns the shop. */
@@ -314,7 +314,7 @@ public class ContainerShop implements Shop {
       ItemStack[] contents = p.getInventory().getContents();
       for (int i = 0; amount1 > 0 && i < contents.length; i++) {
         ItemStack stack = contents[i];
-        if (stack == null) {
+        if (stack == null || stack.getType() == Material.AIR) {
           continue; // No item
         }
         if (matches(stack)) {
@@ -347,7 +347,7 @@ public class ContainerShop implements Shop {
         ItemStack item = playerContents[i];
         if (item != null && this.matches(item)) {
           // Copy it, we don't want to interfere
-          item = item.clone();
+          item = new ItemStack(item);
           // Amount = total, item.getAmount() = how many items in the
           // stack
           int stackSize = Math.min(amount1, item.getAmount());
@@ -526,7 +526,7 @@ public class ContainerShop implements Shop {
     ArrayList<ItemStack> floor = new ArrayList<>(5);
     Inventory pInv = p.getInventory();
     if (this.isUnlimited()) {
-      ItemStack item = this.item.clone();
+      ItemStack item = new ItemStack(this.item);
       while (amount > 0) {
         int stackSize = Math.min(amount, this.item.getMaxStackSize());
         item.setAmount(stackSize);
@@ -538,9 +538,9 @@ public class ContainerShop implements Shop {
       for (int i = 0; amount > 0 && i < chestContents.length; i++) {
         // Can't clone it here, it could be null
         ItemStack item = chestContents[i];
-        if (item != null && this.matches(item)) {
+        if (item != null && item.getType() != Material.AIR && this.matches(item)) {
           // Copy it, we don't want to interfere
-          item = item.clone();
+          item = new ItemStack(item);
           // Amount = total, item.getAmount() = how many items in the
           // stack
           int stackSize = Math.min(amount, item.getAmount());

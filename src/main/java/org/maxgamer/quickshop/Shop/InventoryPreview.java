@@ -52,7 +52,7 @@ public class InventoryPreview implements Listener {
    * @param player Target player.
    */
   public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
-    this.itemStack = itemStack.clone();
+    this.itemStack = new ItemStack(itemStack);
     this.player = player;
     if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
       ItemMeta itemMeta = this.itemStack.getItemMeta();
