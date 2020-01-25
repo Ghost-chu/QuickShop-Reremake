@@ -183,7 +183,7 @@ public class Util {
     int items = 0;
     for (ItemStack iStack : inv.getStorageContents()) {
       //noinspection ConstantConditions
-      if (iStack == null) {
+      if (iStack == null || iStack.getType() == Material.AIR) {
         continue;
       }
       if (plugin.getItemMatcher().matches(item, iStack)) {

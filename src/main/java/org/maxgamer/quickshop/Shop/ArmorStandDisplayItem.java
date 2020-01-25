@@ -52,7 +52,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
   ArmorStandDisplayItem(@NotNull Shop shop) {
     this.shop = shop;
-    this.originalItemStack = shop.getItem().clone();
+    this.originalItemStack = new ItemStack(shop.getItem());
     this.originalItemStack.setAmount(1);
   }
 

@@ -46,7 +46,6 @@ public class ItemMatcher {
    * @return true if the itemstacks match. (Material, durability, enchants, name)
    */
   public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
-
     if (requireStack == givenStack) {
       return true; // Referring to the same thing, or both are null.
     }
@@ -57,10 +56,10 @@ public class ItemMatcher {
       return false; // One of them is null (Can't be both, see above)
     }
 
-    requireStack = requireStack.clone();
-    requireStack.setAmount(1);
-    givenStack = givenStack.clone();
-    givenStack.setAmount(1);
+    //requireStack = requireStack.clone();
+    //requireStack.setAmount(1);
+    //givenStack = givenStack.clone();
+    //givenStack.setAmount(1);
 
     // if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
     // Util.debugLog("Execute strict match check...");
@@ -71,36 +70,21 @@ public class ItemMatcher {
     // }
     switch (plugin.getConfig().getInt("matcher.work-type")) {
       case 1:
-        return requireStack.isSimilar(givenStack);
       case 2:
-        return requireStack.equals(givenStack);
+        return requireStack.isSimilar(givenStack);
+      case 0:
+      default:
+        ;
     }
 
-    if (!typeMatches(requireStack, givenStack)) {
+    if (requireStack.getType() != givenStack.getType()) {
       Util.debugLog("Type not match.");
       return false;
     }
 
-    // if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
-    // Util.debugLog("Meta not matched");
-    // return false;
-
-    if (requireStack.hasItemMeta()) {
-      if (!givenStack.hasItemMeta()) {
-        Util.debugLog("Meta not match.");
-        return false;
-      }
-      return itemMetaMatcher.matches(requireStack, givenStack);
-    }
-
-    return true;
-  }
-
-  private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
-    return requireStack.getType().equals(givenStack.getType());
+    return itemMetaMatcher.matches(requireStack, givenStack);
   }
 }
-
 
 class ItemMetaMatcher {
   private boolean repaircost;
@@ -202,27 +186,36 @@ class ItemMetaMatcher {
   private boolean repairCostMatches(ItemMeta required, ItemMeta test) {
     Util.debugLog("Matching: Repair Cost");
     boolean requiredIs = required instanceof Repairable;
+    if (!canMatches(requiredIs, test instanceof Repairable)) {
+      return false;
+    } else if (!repaircost || !requiredIs) {
+      return true;
+    }
+    
     boolean requiredHas = requiredIs && ((Repairable) required).hasRepairCost();
-    return repaircost ? (canMatches(requiredIs, test instanceof Repairable)
-        && canMatches(requiredHas, ((Repairable) test).hasRepairCost()) ?
+    return canMatches(requiredHas, ((Repairable) test).hasRepairCost()) ?
 
             (requiredHas
                 ? ((Repairable) required).getRepairCost() == ((Repairable) test).getRepairCost()
                 : true)
             :
 
-            false)
-        : true;
+            false;
   }
 
   private boolean potionMatches(ItemMeta required, ItemMeta test) {
     Util.debugLog("Matching: Potion");
     boolean requiredIs = required instanceof PotionMeta;
+    if (!canMatches(requiredIs, test instanceof PotionMeta)) {
+      return false;
+    } else if (!potions || !requiredIs) {
+      return true;
+    }
+    
     boolean requiredHasColor = requiredIs && ((PotionMeta) required).hasColor();
     boolean requiredHasCustomEffects = requiredIs && ((PotionMeta) required).hasCustomEffects();
 
-    return potions ? (canMatches(requiredIs, test instanceof PotionMeta)
-        && canMatches(requiredHasColor, ((PotionMeta) test).hasColor())
+    return canMatches(requiredHasColor, ((PotionMeta) test).hasColor())
         && canMatches(requiredHasCustomEffects, ((PotionMeta) test).hasCustomEffects()) ?
 
             (requiredHasColor
@@ -238,8 +231,7 @@ class ItemMetaMatcher {
                         .equals(((PotionMeta) test).getBasePotionData())))
             :
 
-            false)
-        : true;
+            false;
   }
 
   boolean matches(ItemStack requiredStack, ItemStack testStack) {

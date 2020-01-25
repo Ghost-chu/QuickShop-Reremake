@@ -46,7 +46,7 @@ public class Info {
     this.action = action;
     this.last = last;
     if (item != null) {
-      this.item = item.clone();
+      this.item = new ItemStack(item);
     }
   }
 
@@ -60,7 +60,7 @@ public class Info {
     this.action = action;
     this.last = last;
     if (item != null) {
-      this.item = item.clone();
+      this.item = new ItemStack(item);
     }
     if (shop != null) {
       this.shop = shop.clone();
