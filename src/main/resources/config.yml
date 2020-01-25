@@ -89,6 +89,9 @@ send-shop-protection-alert: true
 #Disable the debug silent logger. This should can fix heavy lagging on some overloaded server, but AFTER ENABLE IT, YOU WILL LOSE OUR SUPPORT UNTIL YOU RE-ENABLE IT.
 disable-debuglogger: false
 
+# Log4j provides better logging performance, turn this off when you are suffering logging issues.
+enable-log4j: true
+
 #Force plugin running under a platform
 #0=AUTO
 #1=SPIGOT
