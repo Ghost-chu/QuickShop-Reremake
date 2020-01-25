@@ -238,61 +238,53 @@ class ItemMetaMatcher {
     String method = bukkit ? "Bukkit" : "QuickShop";
     Util.debugLog("Matching item by method " + method + " @ " + requiredStack.getType() + ", "
         + testStack.getType());
-
-    boolean result = matches0(requiredStack, testStack);
-    Util.debugLog("Matches result (" + method + "): " + String.valueOf(result).toUpperCase());
-    return result;
+    
+    if (bukkit) {
+      boolean bukkitResult = requiredStack.isSimilar(testStack);
+      Util.debugLog("Matches result (Bukkit): " + String.valueOf(bukkitResult).toUpperCase());
+      return bukkitResult;
+    }
+    
+    return matches0(requiredStack, testStack);
   }
 
   boolean matches0(ItemStack requiredStack, ItemStack testStack) {
-    if (bukkit) {
-      return requiredStack.isSimilar(testStack);
-    }
-
     boolean requiredHas = requiredStack.hasItemMeta();
     if (!canMatches(requiredHas, testStack.hasItemMeta())) {
+      Util.debugLog("Match failed: Meta @ Required " + String.valueOf(requiredHas).toUpperCase());
       return false;
     } else if (!requiredHas) {
+      Util.debugLog("Match passed (QuickShop): No meta");
       return true;
     }
 
     ItemMeta requiredMeta = requiredStack.getItemMeta();
     ItemMeta testMeta = testStack.getItemMeta();
 
-    if (!damageMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!repairCostMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!displayNameMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!loreMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!enchantsMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!potionMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!attributeModifiersMatches(requiredMeta, testMeta)) {
-      return false;
-    }
-    if (!itemFlagsMatches(requiredMeta, testMeta)) {
+    if (!damageMatches(requiredMeta, testMeta) ||
+        !repairCostMatches(requiredMeta, testMeta) ||
+        !displayNameMatches(requiredMeta, testMeta) ||
+        !loreMatches(requiredMeta, testMeta) ||
+        !enchantsMatches(requiredMeta, testMeta) ||
+        !potionMatches(requiredMeta, testMeta) ||
+        !attributeModifiersMatches(requiredMeta, testMeta) ||
+        !itemFlagsMatches(requiredMeta, testMeta)) {
+      
+      Util.debugLog("Match failed: Recent");
       return false;
     }
 
     try {
       if (!customModelDataMatches(requiredMeta, testMeta)) {
+        Util.debugLog("Match failed: CustomModelData");
         return false;
       }
     } catch (NoSuchMethodError err) {
-      Util.debugLog("Ignored custom model data.");
+      Util.debugLog("Ignored: CustomModelData");
       // Ignore, for 1.13 compatibility
     }
 
+    Util.debugLog("Match passed (QuickShop): Meta matched");
     return true;
   }
 }
