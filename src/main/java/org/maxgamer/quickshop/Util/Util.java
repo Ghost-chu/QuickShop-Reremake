@@ -19,10 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
 import com.google.common.io.Files;
-import com.palmergames.bukkit.towny.event.NewDayEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
