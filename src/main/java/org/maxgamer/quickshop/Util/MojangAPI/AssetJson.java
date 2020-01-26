@@ -38,6 +38,7 @@ public class AssetJson {
 
   @Nullable
   public String getLanguageHash(@NotNull String languageCode) {
+    languageCode = languageCode.replace("-","_").toLowerCase().trim();
     JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
     if (json == null || json.isJsonNull()) {
       Util.debugLog("Cannot parse the json: " + this.gameAssets);
@@ -56,6 +57,7 @@ public class AssetJson {
     JsonObject langObj = objs.getAsJsonObject(MsgUtil.fillArgs(pathTemplate, languageCode));
     if (langObj == null || langObj.isJsonNull()) {
       Util.debugLog("Cannot find request path.");
+      Util.debugLog(this.gameAssets);
       return null;
     }
     JsonPrimitive hashObj = langObj.getAsJsonPrimitive("hash");
