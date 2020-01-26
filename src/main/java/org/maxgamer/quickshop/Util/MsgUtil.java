@@ -364,11 +364,11 @@ public class MsgUtil {
     File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
     if (!enchi18nFile.exists()) {
       plugin.getLogger().info("Creating enchi18n.yml");
-      plugin.saveResource("enchi18n.yml", true);
+      plugin.saveResource("enchi18n.yml", false);
     }
     // Store it
     enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
-    enchi18n.options().copyDefaults(true);
+    enchi18n.options().copyDefaults(false);
     YamlConfiguration enchi18nYAML =
         YamlConfiguration.loadConfiguration(
             new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml"))));
@@ -402,11 +402,11 @@ public class MsgUtil {
     File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
     if (!itemi18nFile.exists()) {
       plugin.getLogger().info("Creating itemi18n.yml");
-      plugin.saveResource("itemi18n.yml", true);
+      plugin.saveResource("itemi18n.yml", false);
     }
     // Store it
     itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
-    itemi18n.options().copyDefaults(true);
+    itemi18n.options().copyDefaults(false);
     YamlConfiguration itemi18nYAML =
         YamlConfiguration.loadConfiguration(
             new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml"))));
@@ -442,11 +442,11 @@ public class MsgUtil {
     File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
     if (!potioni18nFile.exists()) {
       plugin.getLogger().info("Creating potioni18n.yml");
-      plugin.saveResource("potioni18n.yml", true);
+      plugin.saveResource("potioni18n.yml", false);
     }
     // Store it
     potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
-    potioni18n.options().copyDefaults(true);
+    potioni18n.options().copyDefaults(false);
     YamlConfiguration potioni18nYAML =
         YamlConfiguration.loadConfiguration(
             new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml"))));
