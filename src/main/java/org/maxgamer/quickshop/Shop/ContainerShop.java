@@ -109,7 +109,7 @@ public class ContainerShop implements Shop {
     this.unlimited = unlimited;
 
     if (plugin.isDisplay()) {
-      switch (DisplayItem.getNowUsing()) {
+      switch (DisplayItem.getNowUsing(this.item)) {
         case UNKNOWN:
           Util.debugLog(
               "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
@@ -427,6 +427,15 @@ public class ContainerShop implements Shop {
 
   @Override
   public void checkDisplay() {
+    try {
+      // Workaround for error tracing when this is executed by tasks
+      checkDisplay0();
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
+  }
+    
+  public void checkDisplay0() {
     if (!plugin.isDisplay() || !this.isLoaded) { // FIXME: Reinit scheduler on reloading config
       return;
     }

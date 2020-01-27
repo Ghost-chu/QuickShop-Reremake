@@ -1111,7 +1111,7 @@ public class ShopManager {
     final String message = ChatColor.stripColor(msg);
     // Use from the main thread, because Bukkit hates life
     Bukkit.getScheduler()
-        .scheduleSyncDelayedTask(
+        .runTask(
             plugin,
             () -> {
               HashMap<UUID, Info> actions = getActions();

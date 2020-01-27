@@ -39,6 +39,7 @@ import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+import com.bekvon.bukkit.residence.commands.contract;
 
 @ToString
 public class ArmorStandDisplayItem implements DisplayItem {
@@ -101,26 +102,29 @@ public class ArmorStandDisplayItem implements DisplayItem {
         return;
       }
       
+      Location location = getDisplayLocation();
       this.armorStand =
           (ArmorStand)
               this.shop
                   .getLocation()
-                  .getWorld()
-                  .spawnEntity(getDisplayLocation(), EntityType.ARMOR_STAND);
-      // Set basic armorstand datas.
-      this.armorStand.setArms(false);
-      this.armorStand.setBasePlate(false);
-      this.armorStand.setVisible(false);
-      this.armorStand.setGravity(false);
-      this.armorStand.setSilent(true);
-      this.armorStand.setAI(false);
-      this.armorStand.setCollidable(false);
-      this.armorStand.setCanPickupItems(false);
-      // this.armorStand.setSmall(true);
+                  .getWorld().spawn(location, ArmorStand.class, armorStand -> {
+                    // Set basic armorstand datas.
+                    armorStand.setGravity(false);
+                    armorStand.setVisible(false);
+                    armorStand.setMarker(true);
+                    armorStand.setCollidable(false);
+                    armorStand.setSmall(true);
+                    armorStand.setArms(false);
+                    armorStand.setBasePlate(false);
+                    armorStand.setSilent(true);
+                    armorStand.setAI(false);
+                    armorStand.setCanMove(false);
+                    armorStand.setCanPickupItems(false);
+                    // Set pose (this is for hand while we use helmet)
+                    // setPoseForArmorStand();
+                  });
       // Set safeGuard
-      safeGuard(this.armorStand);
-      // Set pose
-      setPoseForArmorStand();
+      safeGuard(this.armorStand); // Helmet must be set after spawning
     }
   }
 
@@ -163,7 +167,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     ArmorStand armorStand = (ArmorStand) entity;
     // Set item protect in the armorstand's hand
     this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-    armorStand.setItemInHand(guardedIstack);
+    armorStand.setHelmet(guardedIstack);
     try {
       armorStand
           .getPersistentDataContainer()
@@ -208,65 +212,70 @@ public class ArmorStandDisplayItem implements DisplayItem {
           ((Directional) this.shop.getLocation().getBlock().getBlockData())
               .getFacing(); // Replace by container face.
     }
-    Location asloc = this.shop.getLocation().clone();
+    // Fix specific block facing
+    Material type = this.shop.getLocation().getBlock().getType();
+    if (type.name().contains("ANVIL") || type.name().contains("FENCE") || type.name().contains("WALL") ) {
+      switch (containerBlockFace) {
+        case SOUTH:
+          containerBlockFace = BlockFace.WEST;
+          break;
+        case NORTH:
+          containerBlockFace = BlockFace.EAST;
+        case EAST:
+          containerBlockFace = BlockFace.NORTH;
+        case WEST:
+          containerBlockFace = BlockFace.SOUTH;
+        default:
+          break;
+      }
+    }
+    
+    Location asloc = getCenter(this.shop.getLocation());
     Util.debugLog("containerBlockFace " + containerBlockFace);
     if (this.originalItemStack.getType().isBlock()) {
-      asloc.add(0, 1, 0);
+      asloc.add(0, 0.5, 0);
     }
     switch (containerBlockFace) {
       case SOUTH:
-        if (isTool(this.originalItemStack.getType())) {
-          asloc.setYaw(90);
-          asloc.add(0.9, -0.4, 1);
-        } else if (originalItemStack.getType().isBlock()) {
-          asloc.add(0.87, -0.4, 0.2);
-        } else {
-          asloc.setYaw(0);
-          asloc.add(0.9, -0.4, 0);
-        }
+        asloc.add(0, -0.5, 0);
+        asloc.setYaw(0);
+        Util.debugLog("Block face as SOUTH");
         break;
       case WEST:
-        if (isTool(this.originalItemStack.getType())) {
-          asloc.add(0.9, -0.4, 0);
-        } else if (originalItemStack.getType().isBlock()) {
-          asloc.add(0.85, -0.4, 0.15);
-        } else {
-          asloc.setYaw(-90);
-          asloc.add(-0.1, -0.4, 0.15);
-        }
+        asloc.add(0, -0.5, 0);
+        asloc.setYaw(90);
+        Util.debugLog("Block face as WEST");
         break;
       case EAST:
-        if (isTool(this.originalItemStack.getType())) {
-          asloc.add(0.9, -0.4, 0);
-        } else if (originalItemStack.getType().isBlock()) {
-          asloc.setYaw(-90);
-          asloc.add(0.15, -0.4, 0.1);
-        } else {
-          asloc.setYaw(-90);
-          asloc.add(0, -0.4, 0.1);
-        }
+        asloc.add(0, -0.5, 0);
+        asloc.setYaw(-90);
+        Util.debugLog("Block face as EAST");
         break;
       case NORTH:
-        if (isTool(this.originalItemStack.getType())) {
-          asloc.setYaw(90);
-          asloc.add(1, -0.4, 1);
-        } else if (originalItemStack.getType().isBlock()) {
-          asloc.add(0.85, -0.4, 0.1);
-        } else {
-          asloc.add(0.9, -0.4, 0);
-        }
+        asloc.add(0, -0.5, 0);
+        asloc.setYaw(180);
+        Util.debugLog("Block face as NORTH");
         break;
       default:
         break;
     }
     return asloc;
   }
+  
+  public Location getCenter(Location loc) {
+    // This is always '+' instead of '-' even in negative pos
+    return new Location(loc.getWorld(),
+        loc.getBlockX() + .5,
+        loc.getBlockY() + .5,
+        loc.getBlockZ() + .5);
+  }
 
+  @Deprecated // no use, will be removed soon
   private void setPoseForArmorStand() {
     if (this.originalItemStack.getType().isBlock()) {
-      Objects.requireNonNull(this.armorStand).setRightArmPose(new EulerAngle(-0.2, 0, 0));
+      Objects.requireNonNull(armorStand).setRightArmPose(new EulerAngle(-0.2, 0, 0));
     } else {
-      Objects.requireNonNull(this.armorStand).setRightArmPose(new EulerAngle(-89.5, 0, 0));
+      Objects.requireNonNull(armorStand).setRightArmPose(new EulerAngle(-89.5, 0, 0));
     }
   }
 
