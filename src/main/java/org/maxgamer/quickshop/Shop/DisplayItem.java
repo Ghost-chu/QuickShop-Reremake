@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Shop;
 
+import com.bekvon.bukkit.residence.commands.contract;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -208,22 +209,40 @@ public interface DisplayItem {
         */
       // type id such as 0, 1, 2, 3.
       List<?> typeSections = 
-          QuickShop.instance.getConfig().getList("shop.display-type-specifics");
+          QuickShop.instance.getConfig().getList("shop.display-type-specifics", Lists.newArrayList());
+      if (typeSections.isEmpty()) {
+        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
+      }
       for (Object typeSection : typeSections) {
+        if (typeSection == null) {
+          continue;
+        }
         // id as key
         Util.debugLog(typeSection.toString() + " @ LEVEL 1, " + typeSection.getClass().getName());
         if (typeSection instanceof Map) {
           Map<?, ?> itemSections = Map.class.cast(typeSection);
           for (Entry<?, ?> itemSection : itemSections.entrySet()) {
+            if (itemSection == null) {
+              continue;
+            }
             // list
             Util.debugLog(itemSection.toString() + " @ LEVEL 2, " + itemSection.getClass().getName());
             if (itemSection.getValue() instanceof List) {
               List<?> infoSections = List.class.cast(itemSection.getValue());
+              if (infoSections == null) {
+                continue;
+              }
               for (Object $infoSection : infoSections) {
+                if ($infoSection == null) {
+                  continue;
+                }
                 // custom name as key
                 Util.debugLog($infoSection.toString() + " @ LEVEL 3, " + $infoSection.getClass().getName());
                 if ($infoSection instanceof Map) {
                   for (Object infoSectiont : Map.class.cast($infoSection).values()) {
+                    if (infoSectiont == null) {
+                      continue;
+                    }
                     Map<?, Object> infoSection = Map.class.cast(infoSectiont);
                     Util.debugLog(infoSection.toString() + " @ LEVEL 4, " + infoSection.getClass().getName());
                     List<Material> type = Lists.newArrayList();

@@ -176,14 +176,24 @@ shop:
   #The display type you want use.
   #0=Normal Dropped Item, 1=ArmorStand
   display-type: 0
-  
+
+  # Custom display type depending on item meta
   display-type-specifics:
     - 0:
-      - 'test':
-        type: GLASS
+      - customType0:
+          type: AIR
+          lore: []
+          strict: true
+      - customType1:
+        type:
+        - AIR_VOID
+        - AIR_CAVE
     - 1:
-      - 'test2':
-        type: GRASS
+      - demo:
+          type: AIR_VOID
+          lore:
+            - A demo item lore
+            - Another demo lore
 
   #Allow quickshop auto despawn-spawn the display when no-player or player close the shop.
   display-auto-despawn: false
