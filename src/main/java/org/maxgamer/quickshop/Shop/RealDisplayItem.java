@@ -207,36 +207,39 @@ public class RealDisplayItem implements DisplayItem {
       Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
       return;
     }
-    if (item != null && item.isValid() && !item.isDead()) {
-      Util.debugLog(
-          "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
-      StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-      for (StackTraceElement trace : traces) {
+    
+    synchronized (this) {
+      if (item != null && item.isValid() && !item.isDead()) {
         Util.debugLog(
-            trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+            "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
+        for (StackTraceElement trace : traces) {
+          Util.debugLog(
+              trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
       }
-    }
-    if (!Util.isDisplayAllowBlock(
-        getDisplayLocation().getBlock().getType())) {
-      Util.debugLog(
-          "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
-      return;
-    }
+      if (!Util.isDisplayAllowBlock(
+          getDisplayLocation().getBlock().getType())) {
+        Util.debugLog(
+            "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
+        return;
+      }
 
-    ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-        new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
-    Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-    if (shopDisplayItemSpawnEvent.isCancelled()) {
-      Util.debugLog(
-          "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
-      return;
+      ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
+          new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+      Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+      if (shopDisplayItemSpawnEvent.isCancelled()) {
+        Util.debugLog(
+            "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+        return;
+      }
+      this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
+      this.item =
+          this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+      Util.debugLog("Spawned item @ " + this.item.getLocation() + " with UUID " + this.item.getUniqueId());
+      this.item.setItemStack(this.guardedIstack);
+      safeGuard(this.item);
     }
-    this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-    this.item =
-        this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
-    Util.debugLog("Spawned item @ " + this.item.getLocation() + " with UUID " + this.item.getUniqueId());
-    this.item.setItemStack(this.guardedIstack);
-    safeGuard(this.item);
   }
 
   @Override

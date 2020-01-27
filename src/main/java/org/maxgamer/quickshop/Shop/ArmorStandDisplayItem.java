@@ -124,6 +124,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
                     // setPoseForArmorStand();
                   });
       // Set safeGuard
+      Util.debugLog("Spawned armor stand @ " + this.armorStand.getLocation() + " with UUID " + this.armorStand.getUniqueId());
       safeGuard(this.armorStand); // Helmet must be set after spawning
     }
   }
