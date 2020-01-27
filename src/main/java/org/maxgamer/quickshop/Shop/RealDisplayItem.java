@@ -67,8 +67,8 @@ public class RealDisplayItem implements DisplayItem {
     }
     // return !this.item.getLocation().equals(getDisplayLocation());
     /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
-    if (!Objects.requireNonNull(this.item.getLocation().getWorld())
-        .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
+    if (!this.item.getLocation().getWorld()
+        .equals(getDisplayLocation().getWorld())) {
       return true;
     }
     return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
@@ -117,8 +117,8 @@ public class RealDisplayItem implements DisplayItem {
             .getBukkitAPIWrapper()
             .teleportEntity(
                 eItem,
-                Objects.requireNonNull(getDisplayLocation()),
-                PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                getDisplayLocation(),
+                PlayerTeleportEvent.TeleportCause.PLUGIN);
         return;
       }
     }
@@ -217,7 +217,7 @@ public class RealDisplayItem implements DisplayItem {
       }
     }
     if (!Util.isDisplayAllowBlock(
-        Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
+        getDisplayLocation().getBlock().getType())) {
       Util.debugLog(
           "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
       return;
@@ -234,6 +234,7 @@ public class RealDisplayItem implements DisplayItem {
     this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
     this.item =
         this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+    Util.debugLog("Spawned item @ " + this.item.getLocation() + " with UUID " + this.item.getUniqueId());
     this.item.setItemStack(this.guardedIstack);
     safeGuard(this.item);
   }
@@ -244,7 +245,7 @@ public class RealDisplayItem implements DisplayItem {
   }
 
   @Override
-  public @Nullable Location getDisplayLocation() {
+  public @NotNull Location getDisplayLocation() {
     return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
   }
 
