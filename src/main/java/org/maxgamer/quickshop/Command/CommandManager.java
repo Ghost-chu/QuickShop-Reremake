@@ -356,6 +356,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
       @NotNull String commandLabel,
       @NotNull String[] cmdArg) {
     // No args, it shouldn't happend
+    if (QuickShop.instance.getBootError() != null) {
+      return null;
+    }
     if (sender instanceof Player) {
       if (QuickShop.instance.getConfig().getBoolean("effect.sound.ontabcomplete")) {
         Player player = (Player) sender;
