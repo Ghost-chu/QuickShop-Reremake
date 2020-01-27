@@ -60,7 +60,7 @@ public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable 
    */
   @Deprecated
   public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack) {
-    this(shop, itemStack, DisplayItem.getNowUsing());
+    this(shop, itemStack, DisplayItem.getNowUsing(itemStack));
   }
 
   @Override
