@@ -179,14 +179,8 @@ shop:
 
   # Custom display type depending on item meta
   display-type-specifics:
-    armor-stand:
-      - demo:
-          type:
-            - BOW
-            - GRASS
-    dropped-item:
-      - demo:
-          type: AIR
+    armor-stand: []
+    dropped-item: []
 
   #Allow quickshop auto despawn-spawn the display when no-player or player close the shop.
   display-auto-despawn: false
