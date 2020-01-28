@@ -19,18 +19,14 @@
 
 package org.maxgamer.quickshop.Shop;
 
-import com.bekvon.bukkit.residence.commands.contract;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -252,12 +248,9 @@ public interface DisplayItem {
               continue;
             }
             // list
-            Util.debugLog(itemSection.toString() + " @ LEVEL 2, " + itemSection.getClass().getName());
+            Util.debugLog(itemSection+ " @ LEVEL 2, " + itemSection.getClass().getName());
             if (itemSection.getValue() instanceof List) {
-              List<?> infoSections = List.class.cast(itemSection.getValue());
-              if (infoSections == null) {
-                continue;
-              }
+              List<?> infoSections = (List<?>) itemSection.getValue();
               for (Object $infoSection : infoSections) {
                 if ($infoSection == null) {
                   continue;
