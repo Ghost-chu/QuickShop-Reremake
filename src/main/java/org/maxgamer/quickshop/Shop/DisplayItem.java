@@ -185,27 +185,53 @@ public interface DisplayItem {
    * @return Using displayType.
    */
   static DisplayType getNowUsing(@Nullable ItemStack item) {
+    try {
     if (item != null) {
       /*
        * The below codes are massy like a shit (but not bad at function), need to cleanup
        * 
        * Nest structure as:
-       *   - 0:
-       *     - small_:
-       *       type: DEBUG_STICK
-       *       lore:
-       *         - mysterious item
-       *         - gift
-       *       strict: true
-       *     - small2:
+       *   1:
+       *     small_:
+       *       specific:
+       *         type: DEBUG_STICK
+       *         lore:
+       *           - mysterious item
+       *           - gift
+       *         strict: true
+       *       yaw: 180
+       *       pitch: 0
+       *       small: false
+       *       item-slot: HELMET
+       *       offset:
+       *         x: 1
+       *         y: 0.1
+       *         z: -1.1
+       *       pose-head:
+       *         x: 1
+       *       pose-body:
+       *         y: 0.2
+       *       pose-arm:
+       *         left:
+       *           z: 0.5
+       *       pose-leg:
+       *         left:
+       *           x: 0.14
+       *         right:
+       *           x: 0.3
+       *           y: 0.1
+       *           z: 0.3
+       *     small2:
+       *       specific:
        *       type:
        *         - GLASS
        *         - GRASS
        *         - GRASS_BLOCK
-       *   - 3:
-       *     - small:
-       *       type: BOW
-       *       lore: common mark
+       *   0:
+       *     small:
+       *       specific:
+       *         type: BOW
+       *         lore: common mark
         */
       // type id such as 0, 1, 2, 3.
       List<?> typeSections = 
@@ -246,7 +272,7 @@ public interface DisplayItem {
                     Map<?, Object> infoSection = Map.class.cast(infoSectiont);
                     Util.debugLog(infoSection.toString() + " @ LEVEL 4, " + infoSection.getClass().getName());
                     List<Material> type = Lists.newArrayList();
-                    boolean strictMeta = (boolean) infoSection.getOrDefault("strict-meta", false);
+                    boolean strictMeta = (boolean) infoSection.getOrDefault("strict", false);
                     String name = "";
                     List<String> lore = Lists.newArrayList();
                     int customModelData = -1;
@@ -335,6 +361,10 @@ public interface DisplayItem {
     }
     
     return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
+    } catch (Throwable e) {
+      e.printStackTrace();
+      return DisplayType.REALITEM;
+    }
   }
 
   /**
