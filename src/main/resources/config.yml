@@ -185,12 +185,12 @@ shop:
           lore: []
           strict: true
       - customType1:
-        type:
-        - AIR_VOID
-        - AIR_CAVE
+          type:
+            - AIR
+            - AIR
     - 1:
       - demo:
-          type: AIR_VOID
+          type: AIR
           lore:
             - A demo item lore
             - Another demo lore
