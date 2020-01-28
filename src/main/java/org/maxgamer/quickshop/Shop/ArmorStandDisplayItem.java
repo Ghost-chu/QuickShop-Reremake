@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.Shop;
 
 import java.util.Objects;
 import lombok.ToString;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,16 +46,25 @@ import com.bekvon.bukkit.residence.commands.contract;
 public class ArmorStandDisplayItem implements DisplayItem {
 
   boolean pendingRemoval;
-  @Nullable private volatile ArmorStand armorStand;
-  @Nullable private ItemStack guardedIstack;
+  @Nullable
+  private volatile ArmorStand armorStand;
+  @Nullable
+  private ItemStack guardedIstack;
   private ItemStack originalItemStack;
   private QuickShop plugin = QuickShop.instance;
   private Shop shop;
+  @NotNull
+  private DisplayData data;
 
   ArmorStandDisplayItem(@NotNull Shop shop) {
+    this(shop, new DisplayData(DisplayType.ARMORSTAND, false));
+  }
+    
+  ArmorStandDisplayItem(@NotNull Shop shop, @NotNull DisplayData data) {
     this.shop = shop;
     this.originalItemStack = new ItemStack(shop.getItem());
     this.originalItemStack.setAmount(1);
+    this.data = data;
   }
 
   private static boolean isTool(Material material) {
@@ -113,19 +123,62 @@ public class ArmorStandDisplayItem implements DisplayItem {
                     armorStand.setVisible(false);
                     armorStand.setMarker(true);
                     armorStand.setCollidable(false);
-                    armorStand.setSmall(true);
+                    armorStand.setSmall(getAttribute(DisplayAttribute.SMALL, true));
                     armorStand.setArms(false);
                     armorStand.setBasePlate(false);
                     armorStand.setSilent(true);
                     armorStand.setAI(false);
                     armorStand.setCanMove(false);
                     armorStand.setCanPickupItems(false);
-                    // Set pose (this is for hand while we use helmet)
-                    // setPoseForArmorStand();
+                    // Set pose
+                    setPoseForArmorStand(armorStand);
                   });
       // Set safeGuard
       Util.debugLog("Spawned armor stand @ " + this.armorStand.getLocation() + " with UUID " + this.armorStand.getUniqueId());
       safeGuard(this.armorStand); // Helmet must be set after spawning
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  private <T> T getAttribute(DisplayAttribute attr, T defaultValue) {
+    Object value = data.attribute.get(DisplayAttribute.SMALL);
+    if (value == null)
+      return defaultValue;
+    try {
+      if (value.equals(ObjectUtils.NULL))
+        return defaultValue;
+      
+      if (defaultValue instanceof String) {
+        return (T) String.class.cast(value);
+      }
+      
+      if (defaultValue instanceof EquipmentSlot) {
+        return (T) EquipmentSlot.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Boolean) {
+        return (T) Boolean.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Integer) {
+        return (T) Integer.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Float) {
+        return (T) Float.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Double) {
+        return (T) Double.valueOf(String.class.cast(value));
+      }
+      
+      return (T) value;
+    } catch (Throwable t) {
+      plugin.getLogger().warning("Error when processing attribute for " +
+          attr.name() + " with unexpected value " +
+          value.toString() + ", please check your config before reporting!");
+      t.printStackTrace();
+      return defaultValue;
     }
   }
 
@@ -168,7 +221,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
     ArmorStand armorStand = (ArmorStand) entity;
     // Set item protect in the armorstand's hand
     this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-    armorStand.setHelmet(guardedIstack);
+    armorStand.setItem(getAttribute(DisplayAttribute.SLOT, EquipmentSlot.HEAD), guardedIstack);
     try {
       armorStand
           .getPersistentDataContainer()
@@ -213,6 +266,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
           ((Directional) this.shop.getLocation().getBlock().getBlockData())
               .getFacing(); // Replace by container face.
     }
+    
     // Fix specific block facing
     Material type = this.shop.getLocation().getBlock().getType();
     if (type.name().contains("ANVIL") || type.name().contains("FENCE") || type.name().contains("WALL") ) {
@@ -233,9 +287,11 @@ public class ArmorStandDisplayItem implements DisplayItem {
     
     Location asloc = getCenter(this.shop.getLocation());
     Util.debugLog("containerBlockFace " + containerBlockFace);
+    
     if (this.originalItemStack.getType().isBlock()) {
       asloc.add(0, 0.5, 0);
     }
+    
     switch (containerBlockFace) {
       case SOUTH:
         asloc.add(0, -0.5, 0);
@@ -260,6 +316,14 @@ public class ArmorStandDisplayItem implements DisplayItem {
       default:
         break;
     }
+    
+    asloc.setYaw(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_YAW, 0));
+    asloc.setPitch(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_PITCH, 0));
+    asloc.add(
+        getAttribute(DisplayAttribute.OFFSET_X, 0),
+        getAttribute(DisplayAttribute.OFFSET_Y, 0),
+        getAttribute(DisplayAttribute.OFFSET_Z, 0));
+    
     return asloc;
   }
   
@@ -271,13 +335,36 @@ public class ArmorStandDisplayItem implements DisplayItem {
         loc.getBlockZ() + .5);
   }
 
-  @Deprecated // no use, will be removed soon
-  private void setPoseForArmorStand() {
-    if (this.originalItemStack.getType().isBlock()) {
-      Objects.requireNonNull(armorStand).setRightArmPose(new EulerAngle(-0.2, 0, 0));
-    } else {
-      Objects.requireNonNull(armorStand).setRightArmPose(new EulerAngle(-89.5, 0, 0));
-    }
+  private void setPoseForArmorStand(ArmorStand armorStand) {
+    armorStand.setBodyPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_BODY_X, 0),
+        getAttribute(DisplayAttribute.POSE_BODY_Y, 0),
+        getAttribute(DisplayAttribute.POSE_BODY_Z, 0)));
+    
+    armorStand.setHeadPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_HEAD_X, 0),
+        getAttribute(DisplayAttribute.POSE_HEAD_Y, 0),
+        getAttribute(DisplayAttribute.POSE_HEAD_Z, 0)));
+    
+    armorStand.setRightArmPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_X, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Z, 0)));
+    
+    armorStand.setLeftArmPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_X, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Z, 0)));
+    
+    armorStand.setRightLegPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_X, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Z, 0)));
+    
+    armorStand.setLeftLegPose(new EulerAngle(
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_X, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Z, 0)));
   }
 
   @Override
