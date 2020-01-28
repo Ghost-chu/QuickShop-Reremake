@@ -179,21 +179,14 @@ shop:
 
   # Custom display type depending on item meta
   display-type-specifics:
-    - 0:
-      - customType0:
-          type: AIR
-          lore: []
-          strict: true
-      - customType1:
+    armor-stand:
+      - demo:
           type:
-            - AIR
-            - AIR
-    - 1:
+            - BOW
+            - GRASS
+    dropped-item:
       - demo:
           type: AIR
-          lore:
-            - A demo item lore
-            - Another demo lore
 
   #Allow quickshop auto despawn-spawn the display when no-player or player close the shop.
   display-auto-despawn: false
