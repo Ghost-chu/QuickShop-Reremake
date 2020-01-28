@@ -19,16 +19,24 @@
 
 package org.maxgamer.quickshop.Shop;
 
+import com.bekvon.bukkit.residence.commands.contract;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.commons.lang.ObjectUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -180,184 +188,216 @@ public interface DisplayItem {
    *
    * @return Using displayType.
    */
-  static DisplayType getNowUsing(@Nullable ItemStack item) {
+  static DisplayData getNowUsing(@Nullable ItemStack item) {
     try {
-    if (item != null) {
       /*
-       * The below codes are massy like a shit (but not bad at function), need to cleanup
-       * 
        * Nest structure as:
-       *   1:
-       *     small_:
-       *       specific:
-       *         type: DEBUG_STICK
-       *         lore:
-       *           - mysterious item
-       *           - gift
-       *         strict: true
-       *       yaw: 180
-       *       pitch: 0
-       *       small: false
-       *       item-slot: HELMET
-       *       offset:
-       *         x: 1
-       *         y: 0.1
-       *         z: -1.1
-       *       pose-head:
-       *         x: 1
-       *       pose-body:
-       *         y: 0.2
-       *       pose-arm:
-       *         left:
-       *           z: 0.5
-       *       pose-leg:
-       *         left:
-       *           x: 0.14
-       *         right:
-       *           x: 0.3
+       *   armor-stand:
+       *     - myStick:
+       *       type: DEBUG_STICK
+       *       lore:
+       *         - mysterious item
+       *         - gift
+       *       strict: true
+       *       attribute:
+       *         yaw: 180
+       *         pitch: 0
+       *         small: false
+       *         item-slot: HELMET
+       *         offset:
+       *           x: 1
        *           y: 0.1
-       *           z: 0.3
-       *     small2:
-       *       specific:
+       *           z: -1.1
+       *         pose-head:
+       *           x: 1
+       *         pose-body:
+       *           y: 0.2
+       *         pose-arm:
+       *           left:
+       *             z: 0.5
+       *         pose-leg:
+       *           left:
+       *             x: 0.14
+       *           right:
+       *             x: 0.3
+       *             y: 0.1
+       *             z: 0.3
+       *     - grasses:
        *       type:
        *         - GLASS
        *         - GRASS
        *         - GRASS_BLOCK
-       *   0:
-       *     small:
-       *       specific:
-       *         type: BOW
-       *         lore: common mark
-        */
-      // type id such as 0, 1, 2, 3.
-      List<?> typeSections = 
-          QuickShop.instance.getConfig().getList("shop.display-type-specifics", Lists.newArrayList());
-      if (typeSections.isEmpty()) {
-        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-      }
-      for (Object typeSection : typeSections) {
-        if (typeSection == null) {
-          continue;
+       *   real-item:
+       *     - 0:
+       *       type: BOW
+       *       lore: common mark
+       */
+      
+      if (item != null) {
+        ConfigurationSection conf =
+            QuickShop.instance.getConfig().getConfigurationSection("shop.display-type-specifics");
+        
+        if (conf != null) {
+          DisplayData dataArmourStand = matchData(conf, "armor-stand", item, true);
+          if (dataArmourStand != null && !dataArmourStand.needVaildate)
+            return dataArmourStand;
+          
+          DisplayData dataDroppedItem = matchData(conf, "dropped-item", item, false);
+          if (dataDroppedItem != null)
+            return dataDroppedItem;
+          else if (dataArmourStand != null)
+            return dataArmourStand;
         }
-        // id as key
-        Util.debugLog(typeSection.toString() + " @ LEVEL 1, " + typeSection.getClass().getName());
-        if (typeSection instanceof Map) {
-          Map<?, ?> itemSections = Map.class.cast(typeSection);
-          for (Entry<?, ?> itemSection : itemSections.entrySet()) {
-            if (itemSection == null) {
+      }
+      
+      return new DisplayData(
+          DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type")), false);
+    } catch (Throwable e) {
+      e.printStackTrace();
+      return new DisplayData(DisplayType.REALITEM, false);
+    }
+  }
+
+  @Nullable
+  static DisplayData matchData(@NotNull ConfigurationSection conf, @NotNull String rootType, @NotNull ItemStack item, boolean armorStand) {
+    List<?> specifics = conf.getList(rootType);
+    //  <Map>
+    // Value: Specific Map
+    
+    if (specifics instanceof List) {
+      return matchData0(specifics, item, armorStand);
+    }
+    return null;
+  }
+  
+  @Nullable
+  static DisplayData matchData0(@NotNull List<?> specifics, @NotNull ItemStack item, boolean armorStand) {
+    for (Object o : specifics) {
+      Util.debugLog("Specific: " + o);
+      if (o instanceof Map) {
+        Map<?, ?> specificMap = Map.class.cast(o);
+        // <String, Map<String, ?>>
+        // Key:   Custom name of Specific
+        // Value: Attribute Map
+        
+        for (Object o_ : specificMap.values()) {
+          Map<?, ?> attrMap = Map.class.cast(o_);
+          
+          // Type matcher
+          Object temp = attrMap.get("type");
+          Util.debugLog("Type: " + temp);
+          Object type = temp == null ? Material.AIR : temp;
+          boolean needVaildate = false;
+
+          if (type != Material.AIR) {
+            if (type instanceof Collection) {
+              if (!Collection.class.cast(type).contains(item.getType().name())) {
+                continue;
+              }
+            } else if (type instanceof String) {
+              if (!item.getType().name().equals((type))) {
+                continue;
+              }
+            }
+          } else {
+            needVaildate = true;
+          }
+          
+          // Custom Model Data matcher
+          temp = attrMap.get("model-data");
+          Util.debugLog("Type: " + temp);
+          if (temp != null && item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
+            if ((int) temp != item.getItemMeta().getCustomModelData()) {
               continue;
             }
-            // list
-            Util.debugLog(itemSection+ " @ LEVEL 2, " + itemSection.getClass().getName());
-            if (itemSection.getValue() instanceof List) {
-              List<?> infoSections = (List<?>) itemSection.getValue();
-              for (Object $infoSection : infoSections) {
-                if ($infoSection == null) {
+          } else {
+            needVaildate = true;
+          }
+
+          // Lore matcher
+          temp = attrMap.get("strict");
+          Util.debugLog("Type: " + temp);
+          boolean strict = temp == null ? false : (boolean) temp;
+
+          temp = attrMap.get("lore");
+          Util.debugLog("Type: " + temp);
+          Object lore = temp == null ? "" : temp;
+
+          if (!lore.equals("") && item.hasItemMeta() && item.getItemMeta().hasLore()) {
+            if (lore instanceof Collection) {
+              Collection<?> specificLore = Collection.class.cast(type);
+              if (strict) {
+                if (!specificLore.equals(item.getLore())) {
                   continue;
                 }
-                // custom name as key
-                Util.debugLog($infoSection.toString() + " @ LEVEL 3, " + $infoSection.getClass().getName());
-                if ($infoSection instanceof Map) {
-                  for (Object infoSectiont : Map.class.cast($infoSection).values()) {
-                    if (infoSectiont == null) {
-                      continue;
+              } else {
+                boolean hasAny = false;
+
+                LOOP_LORE:
+                  for (String s : item.getLore()) {
+                    if (specificLore.contains(s)) {
+                      hasAny = true;
+                      break LOOP_LORE;
                     }
-                    Map<?, Object> infoSection = Map.class.cast(infoSectiont);
-                    Util.debugLog(infoSection.toString() + " @ LEVEL 4, " + infoSection.getClass().getName());
-                    List<Material> type = Lists.newArrayList();
-                    boolean strictMeta = (boolean) infoSection.getOrDefault("strict", false);
-                    String name = "";
-                    List<String> lore = Lists.newArrayList();
-                    int customModelData = -1;
-                    
-                    Object strOrListType = infoSection.getOrDefault("type", Lists.newArrayList());
-                    if (strOrListType instanceof List) {
-                      for (Object s : (List<?>) strOrListType) {
-                        if (s instanceof String) {
-                          type.add(Material.valueOf((String) s));
-                        }
-                      }
-                    } else {
-                      type = Collections.singletonList(Material.valueOf((String) strOrListType));
-                    }
-                    
-                    name = (String) infoSection.getOrDefault("name", "");
-                    
-                    Object strOrListLore = infoSection.getOrDefault("lore", Lists.newArrayList());
-                    if (strOrListLore instanceof List) {
-                      for (Object s : (List<?>) strOrListLore) {
-                        if (s instanceof String) {
-                          lore.add((String) s);
-                        }
-                      }
-                    } else {
-                      lore = Collections.singletonList((String) strOrListLore);
-                    }
-                    
-                    customModelData = (int) infoSection.getOrDefault("custom-model-data", -1);
-                    
-                    boolean meta = !name.isEmpty() || !lore.isEmpty() || customModelData != -1;
-                    if (type.isEmpty() || type.contains(item.getType())) {
-                      if (meta) {
-                        if (item.hasItemMeta()) {
-                          ItemMeta itemMeta = item.getItemMeta();
-                          
-                          if (!name.isEmpty()) {
-                            if (!(itemMeta.hasDisplayName() && name.equals(itemMeta.getDisplayName()))) {
-                              Util.debugLog("getNowUsing failed in name");
-                              return
-                                  DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                            }
-                          }
-                          
-                          if (!lore.isEmpty()) {
-                            boolean loreCheck = strictMeta ? lore.equals(itemMeta.getLore()) :
-                              lore.containsAll(itemMeta.getLore());
-                            if (!(itemMeta.hasLore() && loreCheck)) {
-                              Util.debugLog("getNowUsing failed in lore");
-                              return
-                                  DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                            }
-                          }
-                          
-                          try {
-                            if (customModelData != -1) {
-                              if (!(itemMeta.hasCustomModelData() &&
-                                  customModelData == itemMeta.getCustomModelData())) {
-                                Util.debugLog("getNowUsing failed in CMD");
-                                return
-                                    DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                              }
-                            }
-                          } catch (Exception e) {
-                            ;
-                          }
-                          
-                          Util.debugLog("getNowUsing passed thorough meta");
-                          return DisplayType.fromID((Integer) itemSection.getKey());
-                        } else {
-                          ;
-                        }
-                        
-                      } else {
-                        Util.debugLog("getNowUsing passed without meta");
-                        return DisplayType.fromID((Integer) itemSection.getKey());
-                      }
-                    }
+                  }
+
+                if (!hasAny) {
+                  continue;
+                } else {
+                  needVaildate = true;
+                }
+              }
+            } else if (lore instanceof String) {
+              if (strict) {
+                if (!item.getLore().equals(lore)) {
+                  continue;
+                }
+              } else {
+                if (!item.getLore().contains((lore))) {
+                  continue;
+                } else {
+                  needVaildate = true;
+                }
+              }
+            }
+          } else {
+            needVaildate = true;
+          }
+
+          DisplayData data = new DisplayData(
+              armorStand ? DisplayType.ARMORSTAND : DisplayType.REALITEM, needVaildate);
+          if (armorStand) {
+            temp = attrMap.get("attribute");
+            Util.debugLog("Type: " + temp);
+            
+            if (temp instanceof Map) {
+              for (DisplayAttribute attr : DisplayAttribute.values()) {
+                String[] attrKeys = attr.name().split("_");
+                String rootKey = attrKeys[0].toLowerCase(Locale.ROOT);
+                
+                if (attrKeys.length == 1) {
+                  temp = attrMap.get(rootKey);
+                  data.attribute.put(attr,
+                      temp == null ? ObjectUtils.NULL : temp);
+                } else {
+                  // Nested Map
+                  if ((temp = attrMap.get(rootKey)) instanceof Map) {
+                    String subKey = attrKeys[1].toLowerCase(Locale.ROOT);
+                    Object value = Map.class.cast(temp).get(subKey);
+
+                    data.attribute.put(attr,
+                        value == null ? ObjectUtils.NULL : value);
                   }
                 }
               }
             }
           }
+          
+          return data;
         }
       }
     }
-    
-    return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-    } catch (Throwable e) {
-      e.printStackTrace();
-      return DisplayType.REALITEM;
-    }
+    return null;
   }
 
   /**

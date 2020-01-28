@@ -23,6 +23,7 @@ import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -60,7 +61,7 @@ public class ShopDisplayItemDespawnEvent extends QSEvent implements Cancellable 
    */
   @Deprecated
   public ShopDisplayItemDespawnEvent(@NotNull Shop shop, @NotNull ItemStack itemStack) {
-    this(shop, itemStack, DisplayItem.getNowUsing(itemStack));
+    this(shop, itemStack, DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type")));
   }
 
   @Override
