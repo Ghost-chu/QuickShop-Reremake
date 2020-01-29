@@ -179,7 +179,122 @@ shop:
 
   # Custom display type depending on item meta
   display-type-specifics:
-    armor-stand: []
+    armor-stand:
+    - vanilla-fixes:
+        fixer: true
+        type:
+        - TAG:!BLOCK
+        - TYPE:!BONE
+        - TYPE:!CHAINMAIL_HELMET
+        - TYPE:!COD
+        - TYPE:!DIAMOND_HELMET
+        - TYPE:!LEAD
+        - TYPE:!SHIELD
+        - TYPE:!TRIDENT
+        - TYPE:!TURTLE_HELMET
+        - OAK_SAPLING
+        - SPRUCE_SAPLING
+        - BIRCH_SAPLING
+        - JUNGLE_SAPLING
+        - ACACIA_SAPLING
+        - DARK_OAK_SAPLING
+        - ACACIA_DOOR
+        - DARK_OAK_DOOR
+        - DARK_OAK_SAPLING
+        - DARK_OAK_SIGN
+        - IRON_DOOR
+        - OAK_DOOR
+        - BIRCH_DOOR
+        - JUNGLE_DOOR
+        - ACACIA_SIGN
+        - ACACIA_SAPLING
+        - ACTIVATOR_RAIL
+        - ALLIUM
+        - AZURE_BLUET
+        - BAMBOO
+        - BARRIER
+        - BELL
+        - BLUE_STAINED_GLASS_PANE
+        - BLUE_BANNER
+        - BLUE_ORCHID
+        - BRAIN_CORAL
+        - BRAIN_CORAL_FAN
+        - BREWING_STAND
+        - BROWN_MUSHROOM
+        - BUBBLE_CORAL
+        - BUBBLE_CORAL_FAN
+        - CAKE
+        - CAMPFIRE
+        - CAULDRON
+        - COBWEB
+        - COMPARATOR
+        - CORNFLOWER
+        - DANCELION
+        - DEAD_BRAIN_CORAL
+        - DEAD_BRAIN_CORAL_FAN
+        - DEAD_FIRE_CORAL
+        - DEAD_FIRE_CORAL_FAN
+        - DETECTOR_RAIL
+        - DRAGON_HEAD
+        - END_ROD
+        - FERN
+        - FIRE_CORAL
+        - DEAD_BUSH
+        - FIRE_CORAL_FAN
+        - FLOWER_POT
+        - GRASS
+        - HOPPER
+        - HORN_CORAL
+        - HORN_CORAL_FAN
+        - IRON_BARS
+        - KELP
+        - LADDER
+        - LIGHT_BLUE_BANNER
+        - NETHER_WART
+        - ORANGE_TULIP
+        - OXEYE_DAISY
+        - PEONY
+        - PINK_BANNER
+        - POPPY
+        - REDSTONE_TORCH
+        - RED_MUSHROOM
+        - REPEATER
+        - ROSE_BUSH
+        - STRUCTURE_VOID
+        - SUGAR_CANE
+        - SUNFLOWER
+        - BERRY_BUSH
+        - TORCH
+        - RIPWIRE_HOOK
+        - TURTLE_EGG
+        - VINE
+        - WHEAT
+        - WITHER_ROSE
+        attribute:
+          offset:
+            y: -0.5
+    - demo:
+        fixer: false
+        type: AIR
+        lore: []
+        model-data: 114514
+        attribute:
+          small: true
+          slot: HEAD
+          offset:
+            x: 0
+            y: 0
+            z: 0
+          pose:
+            head: []
+            body: []
+            arm:
+              left:
+                x: 0
+                y: 0
+                z: 0
+              right: []
+            leg: []
     dropped-item: []
 
   #Allow quickshop auto despawn-spawn the display when no-player or player close the shop.
