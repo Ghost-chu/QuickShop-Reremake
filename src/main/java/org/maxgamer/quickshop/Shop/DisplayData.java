@@ -27,5 +27,6 @@ import lombok.AllArgsConstructor;
 public class DisplayData {
   public final DisplayType type;
   public final Map<DisplayAttribute, Object> attribute = Maps.newEnumMap(DisplayAttribute.class);
-  public final boolean needVaildate;
+  @Deprecated public final boolean needVaildate; // Bad design
+  public final boolean fixer;
 }

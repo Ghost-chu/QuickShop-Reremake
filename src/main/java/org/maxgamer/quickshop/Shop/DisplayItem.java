@@ -233,6 +233,9 @@ public interface DisplayItem {
        *       lore: common mark
        */
       
+      DisplayData def = new DisplayData(
+          DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type")), false, false);
+      
       if (item != null) {
         ConfigurationSection conf =
             QuickShop.instance.getConfig().getConfigurationSection("shop.display-type-specifics");
@@ -240,21 +243,26 @@ public interface DisplayItem {
         if (conf != null) {
           DisplayData dataArmourStand = matchData(conf, "armor-stand", item, true);
           if (dataArmourStand != null && !dataArmourStand.needVaildate)
-            return dataArmourStand;
+            return dataArmourStand.fixer ?
+                (def.type == dataArmourStand.type ?
+                    dataArmourStand : def) : dataArmourStand;
           
           DisplayData dataDroppedItem = matchData(conf, "dropped-item", item, false);
           if (dataDroppedItem != null)
-            return dataDroppedItem;
+            return dataDroppedItem.fixer ?
+                (def.type == dataDroppedItem.type ?
+                    dataDroppedItem : def) : dataDroppedItem;
           else if (dataArmourStand != null)
-            return dataArmourStand;
+            return dataArmourStand.fixer ?
+                (def.type == dataArmourStand.type ?
+                    dataArmourStand : def) : dataArmourStand;
         }
       }
       
-      return new DisplayData(
-          DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type")), false);
+      return def;
     } catch (Throwable e) {
       e.printStackTrace();
-      return new DisplayData(DisplayType.REALITEM, false);
+      return new DisplayData(DisplayType.REALITEM, false, false);
     }
   }
 
@@ -267,11 +275,14 @@ public interface DisplayItem {
     if (specifics instanceof List) {
       return matchData0(specifics, item, armorStand);
     }
+    Util.debugLog("Specifics Is Not A List: " + specifics);
     return null;
   }
   
   @Nullable
   static DisplayData matchData0(@NotNull List<?> specifics, @NotNull ItemStack item, boolean armorStand) {
+    DisplayData vaildateData = null;
+    boolean needVaildate = false;
     for (Object o : specifics) {
       Util.debugLog("Specific: " + o);
       if (o instanceof Map) {
@@ -283,18 +294,59 @@ public interface DisplayItem {
         for (Object o_ : specificMap.values()) {
           Map<?, ?> attrMap = Map.class.cast(o_);
           
+          // Mode
+          Object temp = attrMap.get("fixer");
+          Object fixer = temp == null ? false : true;
+          
           // Type matcher
-          Object temp = attrMap.get("type");
-          Util.debugLog("Type: " + temp);
-          Object type = temp == null ? Material.AIR : temp;
-          boolean needVaildate = false;
+          temp = attrMap.get("type");
+          Object type = temp == null ? "TAG:ANY" : temp;
 
-          if (type != Material.AIR) {
+          if (!type.equals("TAG:ANY")) {
             if (type instanceof Collection) {
-              if (!Collection.class.cast(type).contains(item.getType().name())) {
+              Collection<?> c = Collection.class.cast(type);
+              boolean containsType = c.contains(item.getType().name());
+              
+              if (c.contains("TYPE:!".concat(item.getType().name()))) {
+                continue;
+              }
+              if (c.contains("TAG:BLOCK") && !containsType) {
+                if (!item.getType().isBlock()) {
+                  continue;
+                }
+                needVaildate = true;
+                break;
+              }
+              if (c.contains("TAG:!BLOCK") && !containsType) {
+                if (item.getType().isBlock()) {
+                  continue;
+                }
+                needVaildate = true;
+                break;
+              }
+
+              if (!containsType) {
                 continue;
               }
             } else if (type instanceof String) {
+              if (type.equals("TYPE:!".concat(item.getType().name()))) {
+                continue;
+              }
+              if (type.equals("TAG:BLOCK")) {
+                if (!item.getType().isBlock()) {
+                  continue;
+                }
+                needVaildate = true;
+                break;
+              }
+              if (type.equals("TAG:!BLOCK")) {
+                if (item.getType().isBlock()) {
+                  continue;
+                }
+                needVaildate = true;
+                break;
+              }
+              
               if (!item.getType().name().equals((type))) {
                 continue;
               }
@@ -304,10 +356,16 @@ public interface DisplayItem {
           }
           
           // Custom Model Data matcher
+          temp = attrMap.get("strict");
+          boolean strict = temp == null ? false : (boolean) temp;
+          
           temp = attrMap.get("model-data");
-          Util.debugLog("Type: " + temp);
-          if (temp != null && item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
-            if ((int) temp != item.getItemMeta().getCustomModelData()) {
+          if (temp != null) {
+            if (item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
+              if ((int) temp != item.getItemMeta().getCustomModelData()) {
+                continue;
+              }
+            } else {
               continue;
             }
           } else {
@@ -315,17 +373,12 @@ public interface DisplayItem {
           }
 
           // Lore matcher
-          temp = attrMap.get("strict");
-          Util.debugLog("Type: " + temp);
-          boolean strict = temp == null ? false : (boolean) temp;
-
           temp = attrMap.get("lore");
-          Util.debugLog("Type: " + temp);
           Object lore = temp == null ? "" : temp;
 
           if (!lore.equals("") && item.hasItemMeta() && item.getItemMeta().hasLore()) {
             if (lore instanceof Collection) {
-              Collection<?> specificLore = Collection.class.cast(type);
+              Collection<?> specificLore = Collection.class.cast(lore);
               if (strict) {
                 if (!specificLore.equals(item.getLore())) {
                   continue;
@@ -365,23 +418,22 @@ public interface DisplayItem {
           }
 
           DisplayData data = new DisplayData(
-              armorStand ? DisplayType.ARMORSTAND : DisplayType.REALITEM, needVaildate);
+              armorStand ? DisplayType.ARMORSTAND : DisplayType.REALITEM, needVaildate, (boolean) fixer);
           if (armorStand) {
-            temp = attrMap.get("attribute");
-            Util.debugLog("Type: " + temp);
+            Map<?, ?> attributes = Map.class.cast(attrMap.get("attribute"));
             
-            if (temp instanceof Map) {
+            if (attributes instanceof Map) {
               for (DisplayAttribute attr : DisplayAttribute.values()) {
                 String[] attrKeys = attr.name().split("_");
                 String rootKey = attrKeys[0].toLowerCase(Locale.ROOT);
                 
                 if (attrKeys.length == 1) {
-                  temp = attrMap.get(rootKey);
+                  temp = Map.class.cast(attributes).get(rootKey);
                   data.attribute.put(attr,
                       temp == null ? ObjectUtils.NULL : temp);
                 } else {
                   // Nested Map
-                  if ((temp = attrMap.get(rootKey)) instanceof Map) {
+                  if ((temp = Map.class.cast(attributes).get(rootKey)) instanceof Map) {
                     String subKey = attrKeys[1].toLowerCase(Locale.ROOT);
                     Object value = Map.class.cast(temp).get(subKey);
 
@@ -393,11 +445,15 @@ public interface DisplayItem {
             }
           }
           
-          return data;
+          if (needVaildate)
+            vaildateData = data;
+          else
+            return data;
         }
       }
     }
-    return null;
+    
+    return vaildateData;
   }
 
   /**
