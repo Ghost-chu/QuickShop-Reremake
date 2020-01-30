@@ -109,8 +109,7 @@ public class ContainerShop implements Shop {
     this.unlimited = unlimited;
 
     if (plugin.isDisplay()) {
-      DisplayData data = DisplayItem.getNowUsing(this.item);
-      switch (data.type) {
+      switch (DisplayItem.getNowUsing(this.item).type) {
         case UNKNOWN:
           Util.debugLog(
               "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
@@ -120,7 +119,7 @@ public class ContainerShop implements Shop {
           this.displayItem = new RealDisplayItem(this);
           break;
         case ARMORSTAND:
-          this.displayItem = new ArmorStandDisplayItem(this, data);
+          this.displayItem = new ArmorStandDisplayItem(this);
           break;
         default:
           Util.debugLog(

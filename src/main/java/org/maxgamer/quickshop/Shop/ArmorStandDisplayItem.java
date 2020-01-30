@@ -57,7 +57,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
   private DisplayData data;
 
   ArmorStandDisplayItem(@NotNull Shop shop) {
-    this(shop, new DisplayData(DisplayType.ARMORSTAND, false, false));
+    this(shop, new DisplayData(DisplayType.ARMORSTAND, false));
   }
     
   ArmorStandDisplayItem(@NotNull Shop shop, @NotNull DisplayData data) {
@@ -141,22 +141,35 @@ public class ArmorStandDisplayItem implements DisplayItem {
   
   @SuppressWarnings("unchecked")
   private <T> T getAttribute(DisplayAttribute attr, T defaultValue) {
-    Object value = data.attribute.get(attr);
-    if (value == ObjectUtils.NULL || value == null)
+    Object value = data.attribute.get(DisplayAttribute.SMALL);
+    if (value == null)
       return defaultValue;
-    Util.debugLog("Attribute to cast: " + value);
-    
     try {
+      if (value.equals(ObjectUtils.NULL))
+        return defaultValue;
+      
+      if (defaultValue instanceof String) {
+        return (T) String.class.cast(value);
+      }
+      
       if (defaultValue instanceof EquipmentSlot) {
         return (T) EquipmentSlot.valueOf(String.class.cast(value));
       }
       
-      if (value instanceof Integer) {
-        if (defaultValue instanceof Double)
-          return (T) Double.valueOf((int) value);
-        
-        if (defaultValue instanceof Float)
-          return (T) Float.valueOf((int) value);
+      if (defaultValue instanceof Boolean) {
+        return (T) Boolean.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Integer) {
+        return (T) Integer.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Float) {
+        return (T) Float.valueOf(String.class.cast(value));
+      }
+      
+      if (defaultValue instanceof Double) {
+        return (T) Double.valueOf(String.class.cast(value));
       }
       
       return (T) value;
@@ -304,12 +317,12 @@ public class ArmorStandDisplayItem implements DisplayItem {
         break;
     }
     
-    asloc.setYaw(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_YAW, 0f));
-    asloc.setPitch(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_PITCH, 0f));
+    asloc.setYaw(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_YAW, 0));
+    asloc.setPitch(asloc.getYaw() + getAttribute(DisplayAttribute.OFFSET_PITCH, 0));
     asloc.add(
-        getAttribute(DisplayAttribute.OFFSET_X, 0d),
-        getAttribute(DisplayAttribute.OFFSET_Y, 0d),
-        getAttribute(DisplayAttribute.OFFSET_Z, 0d));
+        getAttribute(DisplayAttribute.OFFSET_X, 0),
+        getAttribute(DisplayAttribute.OFFSET_Y, 0),
+        getAttribute(DisplayAttribute.OFFSET_Z, 0));
     
     return asloc;
   }
@@ -324,34 +337,34 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
   private void setPoseForArmorStand(ArmorStand armorStand) {
     armorStand.setBodyPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_BODY_X, 0d),
-        getAttribute(DisplayAttribute.POSE_BODY_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_BODY_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_BODY_X, 0),
+        getAttribute(DisplayAttribute.POSE_BODY_Y, 0),
+        getAttribute(DisplayAttribute.POSE_BODY_Z, 0)));
     
     armorStand.setHeadPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_HEAD_X, 0d),
-        getAttribute(DisplayAttribute.POSE_HEAD_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_HEAD_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_HEAD_X, 0),
+        getAttribute(DisplayAttribute.POSE_HEAD_Y, 0),
+        getAttribute(DisplayAttribute.POSE_HEAD_Z, 0)));
     
     armorStand.setRightArmPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_X, 0d),
-        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_X, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_RIGHT_Z, 0)));
     
     armorStand.setLeftArmPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_ARM_LEFT_X, 0d),
-        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_X, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_ARM_LEFT_Z, 0)));
     
     armorStand.setRightLegPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_X, 0d),
-        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_X, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_RIGHT_Z, 0)));
     
     armorStand.setLeftLegPose(new EulerAngle(
-        getAttribute(DisplayAttribute.POSE_LEG_LEFT_X, 0d),
-        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Y, 0d),
-        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Z, 0d)));
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_X, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Y, 0),
+        getAttribute(DisplayAttribute.POSE_LEG_LEFT_Z, 0)));
   }
 
   @Override
