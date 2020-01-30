@@ -19,19 +19,10 @@
 
 package org.maxgamer.quickshop.Shop;
 
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -183,138 +174,7 @@ public interface DisplayItem {
    *
    * @return Using displayType.
    */
-  static DisplayType getNowUsing(@Nullable ItemStack item) {
-    if (item != null) {
-      /*
-       * The below codes are massy like a shit (but not bad at function), need to cleanup
-       * 
-       * Nest structure as:
-       *   - 0:
-       *     - small_:
-       *       type: DEBUG_STICK
-       *       lore:
-       *         - mysterious item
-       *         - gift
-       *       strict: true
-       *     - small2:
-       *       type:
-       *         - GLASS
-       *         - GRASS
-       *         - GRASS_BLOCK
-       *   - 3:
-       *     - small:
-       *       type: BOW
-       *       lore: common mark
-        */
-      // type id such as 0, 1, 2, 3.
-      List<?> typeSections = 
-          QuickShop.instance.getConfig().getList("shop.display-type-specifics");
-      for (Object typeSection : typeSections) {
-        // id as key
-        Util.debugLog(typeSection.toString() + " @ LEVEL 1, " + typeSection.getClass().getName());
-        if (typeSection instanceof Map) {
-          Map<?, ?> itemSections = Map.class.cast(typeSection);
-          for (Entry<?, ?> itemSection : itemSections.entrySet()) {
-            // list
-            Util.debugLog(itemSection.toString() + " @ LEVEL 2, " + itemSection.getClass().getName());
-            if (itemSection.getValue() instanceof List) {
-              List<?> infoSections = List.class.cast(itemSection.getValue());
-              for (Object $infoSection : infoSections) {
-                // custom name as key
-                Util.debugLog($infoSection.toString() + " @ LEVEL 3, " + $infoSection.getClass().getName());
-                if ($infoSection instanceof Map) {
-                  for (Object infoSectiont : Map.class.cast($infoSection).values()) {
-                    Map<?, Object> infoSection = Map.class.cast(infoSectiont);
-                    Util.debugLog(infoSection.toString() + " @ LEVEL 4, " + infoSection.getClass().getName());
-                    List<Material> type = Lists.newArrayList();
-                    boolean strictMeta = (boolean) infoSection.getOrDefault("strict-meta", false);
-                    String name = "";
-                    List<String> lore = Lists.newArrayList();
-                    int customModelData = -1;
-                    
-                    Object strOrListType = infoSection.getOrDefault("type", Lists.newArrayList());
-                    if (strOrListType instanceof List) {
-                      for (Object s : (List<?>) strOrListType) {
-                        if (s instanceof String) {
-                          type.add(Material.valueOf((String) s));
-                        }
-                      }
-                    } else {
-                      type = Collections.singletonList(Material.valueOf((String) strOrListType));
-                    }
-                    
-                    name = (String) infoSection.getOrDefault("name", "");
-                    
-                    Object strOrListLore = infoSection.getOrDefault("lore", Lists.newArrayList());
-                    if (strOrListLore instanceof List) {
-                      for (Object s : (List<?>) strOrListLore) {
-                        if (s instanceof String) {
-                          lore.add((String) s);
-                        }
-                      }
-                    } else {
-                      lore = Collections.singletonList((String) strOrListLore);
-                    }
-                    
-                    customModelData = (int) infoSection.getOrDefault("custom-model-data", -1);
-                    
-                    boolean meta = !name.isEmpty() || !lore.isEmpty() || customModelData != -1;
-                    if (type.isEmpty() || type.contains(item.getType())) {
-                      if (meta) {
-                        if (item.hasItemMeta()) {
-                          ItemMeta itemMeta = item.getItemMeta();
-                          
-                          if (!name.isEmpty()) {
-                            if (!(itemMeta.hasDisplayName() && name.equals(itemMeta.getDisplayName()))) {
-                              Util.debugLog("getNowUsing failed in name");
-                              return
-                                  DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                            }
-                          }
-                          
-                          if (!lore.isEmpty()) {
-                            boolean loreCheck = strictMeta ? lore.equals(itemMeta.getLore()) :
-                              lore.containsAll(itemMeta.getLore());
-                            if (!(itemMeta.hasLore() && loreCheck)) {
-                              Util.debugLog("getNowUsing failed in lore");
-                              return
-                                  DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                            }
-                          }
-                          
-                          try {
-                            if (customModelData != -1) {
-                              if (!(itemMeta.hasCustomModelData() &&
-                                  customModelData == itemMeta.getCustomModelData())) {
-                                Util.debugLog("getNowUsing failed in CMD");
-                                return
-                                    DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-                              }
-                            }
-                          } catch (Exception e) {
-                            ;
-                          }
-                          
-                          Util.debugLog("getNowUsing passed thorough meta");
-                          return DisplayType.fromID((Integer) itemSection.getKey());
-                        } else {
-                          ;
-                        }
-                        
-                      } else {
-                        Util.debugLog("getNowUsing passed without meta");
-                        return DisplayType.fromID((Integer) itemSection.getKey());
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    
+  static DisplayType getNowUsing() {
     return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
   }
 
