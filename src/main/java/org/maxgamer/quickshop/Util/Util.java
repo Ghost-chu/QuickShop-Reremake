@@ -161,7 +161,7 @@ public class Util {
       return plugin.getOpenInvPlugin() != null;
     }
     
-    return bs instanceof InventoryHolder;
+    return bs instanceof BlockInventoryHolder;
   }
 
   /**
@@ -243,19 +243,20 @@ public class Util {
     for (String log : logs) {
       String text =
           "["
-              //+ ChatColor.DARK_GREEN
-              //+ ChatColor.BOLD
-              //+ "DEBUG"
-              //+ ChatColor.RESET
-              //+ "] ["
+              + ChatColor.DARK_GREEN
+              + ChatColor.BOLD
+              + "DEBUG"
+              + ChatColor.RESET
+              + "] ["
               + ChatColor.DARK_GREEN
               + className
               + ChatColor.RESET
-              + "] ("
-              /*+ " ["
+              + "]"
+              + " ["
               + ChatColor.DARK_GREEN
               + methodName
-              + ChatColor.RESET*/
+              + ChatColor.RESET
+              + "] ("
               + ChatColor.DARK_GREEN
               + codeLine
               + ChatColor.RESET

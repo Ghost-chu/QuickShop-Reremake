@@ -40,7 +40,7 @@ public class DisplayBugFixListener implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void canBuild(BlockCanBuildEvent e) {
     if (!plugin.isDisplay()
-        || DisplayItem.getNowUsing(null) != DisplayType.ARMORSTAND
+        || DisplayItem.getNowUsing() != DisplayType.ARMORSTAND
         || e.isBuildable()) {
       return;
     }
