@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.Util;
 
+import com.bekvon.bukkit.residence.commands.message;
+import com.bekvon.bukkit.residence.commands.shop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -151,15 +153,11 @@ public class MsgUtil {
             } catch (ArrayIndexOutOfBoundsException e2) {
               p.getPlayer().sendMessage(msg);
             }
-            plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
-            msgs.clear();
-            return true;
-          } else {
-            return false;
-          }
+            }
         }
         plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
         msgs.clear();
+        return true;
       }
     }
     return false;
