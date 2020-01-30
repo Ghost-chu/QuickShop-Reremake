@@ -263,8 +263,8 @@ public class Util {
               + ") "
               + log;
       debugLogs.add(Colorizer.stripColors(text));
-      if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
-        debugLogs.remove(0);
+      if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
+        debugLogs.clear();
       }
       if (devMode) {
         QuickShop.instance.getLogger().info(text);
@@ -274,7 +274,7 @@ public class Util {
     if (!devMode) {
       if (debugLogCost > 5) {
         tookLongTimeCostTimes++;
-        if (tookLongTimeCostTimes > 15000) {
+        if (tookLongTimeCostTimes > 500) {
           QuickShop.instance.getConfig().set("disable-debuglogger", true);
           disableDebugLogger = true;
           QuickShop.instance.saveConfig();
