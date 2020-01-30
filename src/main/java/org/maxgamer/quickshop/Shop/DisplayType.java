@@ -29,12 +29,10 @@ public enum DisplayType {
    * ARMORSTAND = USE ARMORSTAND DISPLAY
    * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
    * */
-  UNKNOWN(-1), // same as 0
-  
+  UNKNOWN(-1),
   REALITEM(0),
   ARMORSTAND(1),
-  
-  VIRTUALITEM(2); // not implement yet
+  VIRTUALITEM(2);
 
   private int id;
 
