@@ -1368,6 +1368,11 @@ public class QuickShop extends JavaPlugin {
       getConfig().set("config-version", 78);
       selectedVersion = 78;
     }
+    if (selectedVersion == 78) {
+      getConfig().set("shop.display-type-specifics", null);
+      getConfig().set("config-version", 79);
+      selectedVersion = 79;
+    }
     saveConfig();
     reloadConfig();
     File file = new File(getDataFolder(), "example.config.yml");
