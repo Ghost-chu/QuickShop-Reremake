@@ -161,7 +161,7 @@ public class Util {
       return plugin.getOpenInvPlugin() != null;
     }
     
-    return bs instanceof BlockInventoryHolder;
+    return bs instanceof InventoryHolder;
   }
 
   /**
