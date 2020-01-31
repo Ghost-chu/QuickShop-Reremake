@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.Watcher;
 
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -35,6 +37,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.UpdateInfomation;
 import org.maxgamer.quickshop.Util.Updater;
+import org.apache.commons.lang.math.NumberUtils;
 
 public class UpdateWatcher implements Listener {
   public static boolean hasNewUpdate = false;
@@ -47,7 +50,7 @@ public class UpdateWatcher implements Listener {
     return originalVer;
   }
   
-  // Match *.*.*, where * is numbers
+  // Match *.*.*, where * are numbers
   private static final Pattern VERSION_PATTERN = Pattern.compile("\\d+\\.\\d+\\.\\d+");
   
   private static boolean isHigherVersion(@NotNull String current, @NotNull String test) {
