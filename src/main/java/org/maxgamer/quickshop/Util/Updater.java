@@ -36,6 +36,7 @@ import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.Ht
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Github.GithubAPI;
 import org.maxgamer.quickshop.Util.Github.ReleaseJsonContainer;
+import com.google.common.collect.Lists;
 
 public class Updater {
   public static List<String> getHistoryVersions() throws IOException {
