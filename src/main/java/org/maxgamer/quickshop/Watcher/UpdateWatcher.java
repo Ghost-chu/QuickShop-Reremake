@@ -47,7 +47,7 @@ public class UpdateWatcher implements Listener {
     return originalVer;
   }
   
-  // Match *.*.*, where * is a number from 0 to 9
+  // Match *.*.*, where * is numbers
   private static final Pattern VERSION_PATTERN = Pattern.compile("\\d+\\.\\d+\\.\\d+");
   
   private static boolean isHigherVersion(@NotNull String current, @NotNull String test) {
