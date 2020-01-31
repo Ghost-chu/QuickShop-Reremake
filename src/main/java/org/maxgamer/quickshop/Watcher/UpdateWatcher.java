@@ -46,6 +46,29 @@ public class UpdateWatcher implements Listener {
     originalVer = originalVer.trim();
     return originalVer;
   }
+  
+  // Match *.*.*, where * is a number from 0 to 9
+  private static final Pattern VERSION_PATTERN = Pattern.compile("\\d+\\.\\d+\\.\\d+");
+  
+  private static boolean isHigherVersion(@NotNull String current, @NotNull String test) {
+    Matcher currentMatcher = VERSION_PATTERN.matcher(current);
+    Matcher testMatcher    = VERSION_PATTERN.matcher(test);
+    if (!currentMatcher.find() || !testMatcher.find())
+      return true;
+    
+    String[] currentVers = currentMatcher.group().split("\\.");
+    String[] testVers    = testMatcher.group().split("\\.");
+    
+    for (int i = 0; i < Math.min(currentVers.length, testVers.length); i++) {
+      int currentVer = NumberUtils.toInt(currentVers[i]), testVer = NumberUtils.toInt(testVers[i]);
+      if (testVer > currentVer)
+        return true;
+      else if (currentVer > testVer)
+        return false;
+    }
+    
+    return testVers.length > currentVers.length;
+  }
 
   public static void init() {
     cronTask =
@@ -60,7 +83,7 @@ public class UpdateWatcher implements Listener {
               return;
             }
 
-            if (info.getVersion().equals(QuickShop.getVersion())) {
+            if (!isHigherVersion(QuickShop.getVersion(), info.getVersion())) {
               hasNewUpdate = false;
               return;
             }
