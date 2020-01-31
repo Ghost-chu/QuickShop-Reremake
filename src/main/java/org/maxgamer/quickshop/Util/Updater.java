@@ -38,6 +38,30 @@ import org.maxgamer.quickshop.Util.Github.GithubAPI;
 import org.maxgamer.quickshop.Util.Github.ReleaseJsonContainer;
 
 public class Updater {
+  public static List<String> getHistoryVersions() throws IOException {
+    String hostUrl = "https://www.spigotmc.org/resources/62575/history";
+    HttpURLConnection conn = (HttpURLConnection) new URL(hostUrl).openConnection();
+    
+    conn.setDoInput(true);
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("User-Agent", "Chrome/79.0.3945.130");
+    
+    BufferedReader bufIn = new BufferedReader(
+        new InputStreamReader(conn.getInputStream()));
+    
+    List<String> list = Lists.newArrayList();
+    String header = "<td class=\"version\">";
+    String tailer = "</td>";
+    String line = null;
+    
+    while ((line = bufIn.readLine()) != null) {
+      if (line.startsWith(header) && line.endsWith(tailer))
+        list.add(line.substring(header.length(), line.indexOf(tailer)));
+    }
+    
+    return list;
+  }
+
   /**
    * Check new update
    *
@@ -48,21 +72,14 @@ public class Updater {
       return new UpdateInfomation(false, null);
     }
     try {
-
-      String localPluginVersion = QuickShop.instance.getDescription().getVersion();
-      String spigotPluginVersion =
-          HttpRequest.get(new URL("https://api.spigotmc.org/legacy/update.php?resource=62575"))
-              .execute()
-              .expectResponseCode(200)
-              .returnContent()
-              .asString("UTF-8")
-              .trim();
-      if (!spigotPluginVersion.isEmpty() && !spigotPluginVersion.equals(localPluginVersion)) {
-        Util.debugLog(spigotPluginVersion);
-        return new UpdateInfomation(
-            spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
-      }
-      return new UpdateInfomation(false, spigotPluginVersion);
+      List<String> versions = getHistoryVersions();
+      int curIndex = versions.indexOf(QuickShop.getVersion());
+      if (curIndex == -1 || curIndex == 0)
+        return new UpdateInfomation(false, QuickShop.getVersion());
+      
+      String latest = versions.get(0);
+      boolean beta = latest.toLowerCase().contains("beta");
+      return new UpdateInfomation(beta, latest);
     } catch (IOException e) {
       Bukkit.getConsoleSender()
           .sendMessage(
