@@ -105,11 +105,14 @@ public class Util {
    * @return str
    */
   public static String array2String(@NotNull String[] strArray) {
-    String concentration = strArray[0].concat(", "); // Init with zero index
-    for (int i = 1; i < strArray.length - 2; i++) { // Loop from index 1 (in) until -1 (in)
-      concentration = concentration.concat(strArray[i]).concat(", ");
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < strArray.length; i++) {
+      builder.append(strArray[i]);
+      if (i + 1 != strArray.length) {
+        builder.append(", ");
+      }
     }
-    return concentration.concat(strArray[strArray.length - 1]); // Fin with end index
+    return builder.toString();
   }
 
   /**
