@@ -1,8 +1,8 @@
 {
-    "translation-author": "Encode : UTF-8\n&c&l\ubc88\uc5ed\uc790 : &b&lWaterFrost,FLASH,ruddls030",
-    "translation-version": "&c&l\uc9c0\uc6d0 \ubc84\uc804: &b&lReremake",
-    "translation-contributors": "&c&l\uae30\uc5ec\uc790: &b&lTimtower, Netherfoam, KaiNoMood and Mgazul",
-    "translation-country": "&c&l\uc5b8\uc5b4 \uc9c0\uc5ed: &b&l\ud55c\uad6d\uc5b4 (Ko)",
+    "translation-author": "Encode : UTF-8\n\ubc88\uc5ed\uc790 : WaterFrost,FLASH,ruddls030",
+    "translation-version": "\uc9c0\uc6d0 \ubc84\uc804: Reremake",
+    "translation-contributors": "\uae30\uc5ec\uc790: Timtower, Netherfoam, KaiNoMood, Mgazul",
+    "translation-country": "\uc5b8\uc5b4 \uc9c0\uc5ed: \ud55c\uad6d\uc5b4 (Ko)",
     "language-version": "27",
     "not-looking-at-shop": "&c\ud035\uc0f5\uc744 \ucc3e\uc744\uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \ub2f9\uc2e0\uc740 \ubc18\ub4dc\uc2dc \uc0c1\uc810\uc744 \ubcf4\uace0\uc788\uc5b4\uc57c \ud569\ub2c8\ub2e4.",
     "no-anythings-in-your-hand": "&c\ub2f9\uc2e0\uc758 \uc190\uc5d0 \uc544\ubb34\uac83\ub3c4 \uc5c6\uc2b5\ub2c8\ub2e4.",
@@ -88,7 +88,7 @@
         "damage-percent-remaining": "&a\ub0a8\uc740 \ub0b4\uad6c\ub3c4 : &e{0}%",
         "this-shop-is-buying": "&a\uc774 \uc0c1\uc810\uc740 \uc544\uc774\ud15c\uc744 &d\uad6c\ub9e4&a\uc911\uc778 \uc0c1\uc810\uc785\ub2c8\ub2e4.",
         "this-shop-is-selling": "&a\uc774 \uc0c1\uc810\uc740 \uc544\uc774\ud15c\uc744 &d\ud310\ub9e4&a\uc911\uc778 \uc0c1\uc810\uc785\ub2c8\ub2e4.",
-        "effects": "&a\ud6a8\uacfc : &e{0}",
+        "effects": "&a\ud6a8\uacfc",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
@@ -229,6 +229,6 @@
         }
     },
     "shop-removed-cause-ongoing-fee": "&c{0} \uc704\uce58\uc5d0 \uc788\ub294 \ub2f9\uc2e0\uc758 \uc0c1\uc810\uc774 \uc720\uc9c0 \ube44\uc6a9\uc774 \uc5c6\uc5b4 \uc81c\uac70\ub418\uc5c8\uc2b5\ub2c8\ub2e4!",
-    "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
-    "complete": "&aComplete!"
+    "digits-reach-the-limit": "&c\uac00\uaca9\uc758 \uc18c\uc218\uc810 \ub4a4 \uc22b\uc790 \uac1c\uc218\uc758 \ud55c\uacc4\uc5d0 \ub3c4\ub2ec\ud588\uc2b5\ub2c8\ub2e4.",
+    "complete": "&a\uc644\ub8cc!"
 }

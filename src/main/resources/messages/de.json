@@ -197,7 +197,7 @@
     },
     "updatenotify": {
         "buttontitle": "[Jetzt Aktualisieren]",
-        "onekeybuttontitle": "[OneKey Update]",
+        "onekeybuttontitle": "[Ein Klick Update]",
         "list": [
             "{0} ist bereits ver\u00f6ffentlicht, du verwendest noch immer {1}!",
             "Boom! Neuse update {0} kommt, Aktualisiere!",
