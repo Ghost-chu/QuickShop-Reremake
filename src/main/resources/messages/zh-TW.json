@@ -1,7 +1,7 @@
 {
     "translation-author": "\u8b6f\u5e2b: &b&lmoontai0724 & Tsuna & \u97f3\u6a02",
-    "translation-version": "\u652f\u63f4\u7248\u672c: &b&lReremake",
-    "translation-contributors": "\u5354\u4f5c\u8005: Timtower, Netherfoam, KaiNoMood \u548c\nMgazul",
+    "translation-version": "\u652f\u63f4\u7248\u672c: Reremake",
+    "translation-contributors": "\u5354\u4f5c\u8005: Timtower, Netherfoam, KaiNoMood, Mgazul \u548cAndre_601",
     "translation-country": "\u8a9e\u8a00: &b&l\u7e41\u9ad4\u4e2d\u6587 Chinese Traditional (zh_TW)",
     "language-version": "27",
     "not-looking-at-shop": "&c\u6c92\u6709\u627e\u5230\u5546\u5e97, \u60a8\u5fc5\u9808\u770b\u8457\u4e00\u500b\u5546\u5e97!",
@@ -139,7 +139,7 @@
             "remove": "&e\u79fb\u9664\u60a8\u6240\u770b\u8457\u7684\u5546\u5e97",
             "amount": "&e\u5c07\u60a8\u7684\u52d5\u4f5c\u57f7\u884c\u6307\u5b9a\u7684\u6b21\u6578 (\u9069\u7528\u65bc\u804a\u5929\u63d2\u4ef6\u7684\u554f\u984c)",
             "about": "&e\u986f\u793a\u95dc\u65bc QuickShop \u7684\u8a0a\u606f",
-            "help": "&e\u986f\u793a QuickShop \u7684\u5e6b\u52a9\u8a0a\u606f",
+            "help": "&e\u986f\u793a QuickShop \u7684\u6307\u4ee4",
             "supercreate": "&e\u5275\u5efa\u4e00\u500b\u7565\u904e\u6240\u6709\u4fdd\u8b77\u6aa2\u67e5\u7684\u5546\u5e97"
         }
     },
