@@ -1,28 +1,40 @@
 /*
- * This file is a part of project QuickShop, the name is ItemMatcher.java Copyright (C) Ghost_chu
- * <https://github.com/Ghost-chu> Copyright (C) Bukkit Commons Studio and contributors
+ * This file is a part of project QuickShop, the name is ItemMatcher.java
+ * Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
+ * Copyright (C) Bukkit Commons Studio and contributors
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Lesser General Public License as published by the Free Software Foundation, either version 3
- * of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this program.
- * If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.maxgamer.quickshop.Util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
@@ -33,8 +45,9 @@ public class ItemMatcher {
 
   public ItemMatcher(QuickShop plugin) {
     this.plugin = plugin;
-    itemMetaMatcher = new ItemMetaMatcher(
-        Objects.requireNonNull(plugin.getConfig().getConfigurationSection("matcher.item")));
+    itemMetaMatcher =
+        new ItemMetaMatcher(
+            Objects.requireNonNull(plugin.getConfig().getConfigurationSection("matcher.item")));
   }
 
   /**
@@ -46,43 +59,55 @@ public class ItemMatcher {
    * @return true if the itemstacks match. (Material, durability, enchants, name)
    */
   public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
+
     if (requireStack == givenStack) {
       return true; // Referring to the same thing, or both are null.
     }
 
     if (requireStack == null || givenStack == null) {
-      Util.debugLog("Match failed: A stack is null: " + "requireStack[" + requireStack
-          + "] givenStack[" + givenStack + "]");
+      Util.debugLog(
+          "Match failed: A stack is null: "
+              + "requireStack["
+              + requireStack
+              + "] givenStack["
+              + givenStack
+              + "]");
       return false; // One of them is null (Can't be both, see above)
     }
 
-    //requireStack = requireStack.clone();
-    //requireStack.setAmount(1);
-    //givenStack = givenStack.clone();
-    //givenStack.setAmount(1);
-
-    // if (plugin.getConfig().getBoolean("shop.strict-matches-check")) {
-    // Util.debugLog("Execute strict match check...");
-    // return requireStack.equals(givenStack);
-    // }
-    // if(plugin.getConfig().getBoolean("matcher.use-bukkit-matcher")){
-    // return givenStack.isSimilar(requireStack);
-    // }
+    requireStack = requireStack.clone();
+    requireStack.setAmount(1);
+    givenStack = givenStack.clone();
+    givenStack.setAmount(1);
     switch (plugin.getConfig().getInt("matcher.work-type")) {
       case 1:
-      case 2:
         return requireStack.isSimilar(givenStack);
-      case 0:
-      default:
-        ;
+      case 2:
+        return requireStack.equals(givenStack);
     }
 
-    if (requireStack.getType() != givenStack.getType()) {
+    if (!typeMatches(requireStack, givenStack)) {
       Util.debugLog("Type not match.");
       return false;
     }
 
-    return itemMetaMatcher.matches(requireStack, givenStack);
+    //        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
+    //            Util.debugLog("Meta not matched");
+    //            return false;
+
+    if (requireStack.hasItemMeta()) {
+      if (!givenStack.hasItemMeta()) {
+        Util.debugLog("Meta not match.");
+        return false;
+      }
+      return itemMetaMatcher.matches(requireStack, givenStack);
+    }
+
+    return true;
+  }
+
+  private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
+    return requireStack.getType().equals(givenStack.getType());
   }
 }
 
@@ -96,7 +121,7 @@ class ItemMetaMatcher {
   private boolean itemflags;
   private boolean lores;
   private boolean potions;
-  private boolean bukkit;
+  private boolean book;
 
   public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
     this.damage = itemMatcherConfig.getBoolean("damage");
@@ -108,183 +133,331 @@ class ItemMetaMatcher {
     this.attributes = itemMatcherConfig.getBoolean("attributes");
     this.itemflags = itemMatcherConfig.getBoolean("itemflags");
     this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
-
-    this.bukkit = damage && repaircost && displayname && lores && enchs && potions && attributes
-        && itemflags && custommodeldata;
+    this.book = itemMatcherConfig.getBoolean("book");
   }
 
-  private boolean canMatches(boolean a, boolean b) {
-    return a == b;
+  private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.attributes) {
+      return true;
+    }
+    // requireStack doen't need require must have AM, skipping..
+    if (!meta1.hasAttributeModifiers()) {
+      return true;
+    } else {
+      // If require AM but hadn't, the item not matched.
+      if (!meta2.hasAttributeModifiers()) {
+        return false;
+      }
+      Set<Attribute> set1 = Objects.requireNonNull(meta1.getAttributeModifiers()).keySet();
+      Set<Attribute> set2 = Objects.requireNonNull(meta2.getAttributeModifiers()).keySet();
+      for (Attribute att : set1) {
+        if (!set2.contains(att)) {
+          return false;
+        } else if (!meta1
+            .getAttributeModifiers()
+            .get(att)
+            .equals(meta2.getAttributeModifiers().get(att))) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 
-  private boolean attributeModifiersMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Attribute Modifiers");
-    return attributes ?
-    // For non-exists, the default is same as null.
-        Objects.equals(required.getAttributeModifiers(), test.getAttributeModifiers()) : true;
+  private boolean customModelDataMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.custommodeldata) {
+      return true;
+    }
+    if (!meta1.hasCustomModelData()) {
+      return true;
+    } else {
+      if (!meta2.hasCustomModelData()) {
+        return false;
+      }
+      return meta1.getCustomModelData() == meta2.getCustomModelData();
+    }
   }
 
-  private boolean customModelDataMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Custom Model Data");
-    boolean requiredHas = required.hasCustomModelData();
-    return custommodeldata ? (canMatches(requiredHas, test.hasCustomModelData()) ?
-            
-        (requiredHas ?
-            required.getCustomModelData() == test.getCustomModelData() : true) :
-              
-        false) : true;
+  private boolean damageMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.damage) {
+      return true;
+    }
+    //            if (!(meta1 instanceof Damageable)) {
+    //                return true; //No damage need to check.
+    //            }
+    //            if(!(meta2 instanceof Damageable)){
+    //                return false;
+    //            }
+    Util.debugLog("Checking damage");
+    try {
+      Damageable damage1 = (Damageable) meta1;
+      Damageable damage2 = (Damageable) meta2;
+      // Check them damages, if givenDamage >= requireDamage, allow it.
+      return damage2.getDamage() <= damage1.getDamage();
+    } catch (Throwable th) {
+      th.printStackTrace();
+      return true;
+    }
   }
 
-  private boolean damageMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Damage");
-    boolean requiredIs = required instanceof Damageable;
-    return damage ? (canMatches(requiredIs, test instanceof Damageable) ?
-
-        (requiredIs ? ((Damageable) required).getDamage() == ((Damageable) test).getDamage() : true)
-        :
-
-        false) : true;
+  private boolean bookMatches(ItemMeta meta1, ItemMeta meta2){
+    if(!this.book){
+      return true;
+    }
+    Util.debugLog("Checking book meta");
+    if(!(meta1 instanceof BookMeta)){
+      return true;
+    }
+    if(!(meta2 instanceof BookMeta)){
+      return false;
+    }
+    BookMeta book1 = (BookMeta)meta1;
+    BookMeta book2 = (BookMeta)meta2;
+    if(book1.hasTitle()){
+      if(!book2.hasTitle()){
+        return false;
+      }
+      if(!Objects.equals(book1.getTitle(), book2.getTitle())){
+        return false;
+      }
+    }
+    if(book1.hasPages()){
+      if(!book2.hasPages()){
+        return false;
+      }
+      if(!book1.getPages().equals(book2.getPages())){
+        return false;
+      }
+    }
+    if(book1.hasAuthor()){
+      if(!book2.hasAuthor()){
+        return false;
+      }
+      if(!Objects.equals(book1.getAuthor(), book2.getAuthor())){
+        return false;
+      }
+    }
+    if(book1.hasGeneration()){
+      if(!book2.hasGeneration()){
+        return false;
+      }
+      return Objects.equals(book1.getGeneration(), book2.getGeneration());
+    }
+    return true;
   }
 
-  private boolean displayNameMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Display Name");
-    boolean requiredHas = required.hasDisplayName();
-    return displayname ? (canMatches(requiredHas, test.hasDisplayName()) ?
-
-        (requiredHas ? required.getDisplayName().equals(test.getDisplayName()) : true) :
-
-        false) : true;
+  private boolean displayMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.displayname) {
+      return true;
+    }
+    Util.debugLog("Checking displayname");
+    if (!meta1.hasDisplayName()) {
+      return true;
+    } else {
+      if (!meta2.hasDisplayName()) {
+        return false;
+      }
+      return meta1.getDisplayName().equals(meta2.getDisplayName());
+    }
   }
 
-  private boolean enchantsMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Enchants");
-    boolean requiredHas = required.hasEnchants();
-    return enchs ? (canMatches(requiredHas, test.hasEnchants()) ?
-
-        (requiredHas ? Util.mapMatches(required.getEnchants(), test.getEnchants()) : true) :
-
-        false) : true;
+  private boolean enchMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.enchs) {
+      return true;
+    }
+    Util.debugLog("Checking enchantments");
+    if (meta1.hasEnchants()) {
+      if (!meta2.hasEnchants()) {
+        return false;
+      }
+      Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
+      Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
+      if (!Util.mapMatches(enchMap1, enchMap2)) {
+        return false;
+      }
+    }
+    if ((meta1 instanceof EnchantmentStorageMeta)) {
+      if (!(meta2 instanceof EnchantmentStorageMeta)) {
+        return false;
+      }
+      Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+      Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
+      return Util.mapMatches(stor1, stor2);
+    }
+    return true;
   }
 
-  private boolean itemFlagsMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Item Flags");
-    return itemflags ? required.getItemFlags().equals(test.getItemFlags()) : true;
+  private boolean itemFlagsMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.itemflags) {
+      return true;
+    }
+    Util.debugLog("Checking itemflags");
+    if (meta1.getItemFlags().isEmpty()) {
+      return true;
+    } else {
+      if (meta2.getItemFlags().isEmpty()) {
+        return false;
+      }
+      return Arrays.deepEquals(meta1.getItemFlags().toArray(), meta2.getItemFlags().toArray());
+    }
   }
 
   // We didn't touch the loresMatches because many plugin use this check item.
-  // Re: Did you mean this method? I don't think there is actually any plugin use this as a helper.
-  private boolean loreMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Lore");
-    boolean requiredHas = required.hasLore();
-    return lores ? (canMatches(requiredHas, test.hasLore()) ?
-
-        (requiredHas ? required.getLore().equals(test.getLore()) : true) :
-
-        false) : true;
-  }
-
-  private boolean repairCostMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Repair Cost");
-    boolean requiredIs = required instanceof Repairable;
-    if (!canMatches(requiredIs, test instanceof Repairable)) {
-      return false;
-    } else if (!repaircost || !requiredIs) {
+  private boolean loresMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.lores) {
       return true;
     }
-    
-    boolean requiredHas = requiredIs && ((Repairable) required).hasRepairCost();
-    return canMatches(requiredHas, ((Repairable) test).hasRepairCost()) ?
-
-            (requiredHas
-                ? ((Repairable) required).getRepairCost() == ((Repairable) test).getRepairCost()
-                : true)
-            :
-
-            false;
-  }
-
-  private boolean potionMatches(ItemMeta required, ItemMeta test) {
-    Util.debugLog("Matching: Potion");
-    boolean requiredIs = required instanceof PotionMeta;
-    if (!canMatches(requiredIs, test instanceof PotionMeta)) {
-      return false;
-    } else if (!potions || !requiredIs) {
-      return true;
-    }
-    
-    boolean requiredHasColor = requiredIs && ((PotionMeta) required).hasColor();
-    boolean requiredHasCustomEffects = requiredIs && ((PotionMeta) required).hasCustomEffects();
-
-    return canMatches(requiredHasColor, ((PotionMeta) test).hasColor())
-        && canMatches(requiredHasCustomEffects, ((PotionMeta) test).hasCustomEffects()) ?
-
-            (requiredHasColor
-                ? ((PotionMeta) required).getColor().equals(((PotionMeta) test).getColor())
-                :
-
-                (requiredHasCustomEffects
-                    ? ((PotionMeta) required).getCustomEffects()
-                        .equals(((PotionMeta) test).getCustomEffects())
-                    : (
-
-                    ((PotionMeta) required).getBasePotionData())
-                        .equals(((PotionMeta) test).getBasePotionData())))
-            :
-
-            false;
-  }
-
-  boolean matches(ItemStack requiredStack, ItemStack testStack) {
-    String method = bukkit ? "Bukkit" : "QuickShop";
-    Util.debugLog("Matching item by method " + method + " @ " + requiredStack.getType() + ", "
-        + testStack.getType());
-    
-    if (bukkit) {
-      boolean bukkitResult = requiredStack.isSimilar(testStack);
-      Util.debugLog("Matches result (Bukkit): " + String.valueOf(bukkitResult).toUpperCase());
-      return bukkitResult;
-    }
-    
-    return matches0(requiredStack, testStack);
-  }
-
-  boolean matches0(ItemStack requiredStack, ItemStack testStack) {
-    boolean requiredHas = requiredStack.hasItemMeta();
-    if (!canMatches(requiredHas, testStack.hasItemMeta())) {
-      Util.debugLog("Match failed: Meta @ Required " + String.valueOf(requiredHas).toUpperCase());
-      return false;
-    } else if (!requiredHas) {
-      Util.debugLog("Match passed (QuickShop): No meta");
-      return true;
-    }
-
-    ItemMeta requiredMeta = requiredStack.getItemMeta();
-    ItemMeta testMeta = testStack.getItemMeta();
-
-    if (!damageMatches(requiredMeta, testMeta) ||
-        !repairCostMatches(requiredMeta, testMeta) ||
-        !displayNameMatches(requiredMeta, testMeta) ||
-        !loreMatches(requiredMeta, testMeta) ||
-        !enchantsMatches(requiredMeta, testMeta) ||
-        !potionMatches(requiredMeta, testMeta) ||
-        !attributeModifiersMatches(requiredMeta, testMeta) ||
-        !itemFlagsMatches(requiredMeta, testMeta)) {
-      
-      Util.debugLog("Match failed: Recent");
+    Util.debugLog("Checking lores");
+    if (meta1.hasLore() != meta2.hasLore()) {
       return false;
     }
+    if (!meta1.hasLore()) {
+      return true; // No lores need to be checked.
+    }
+    List<String> lores1 = meta1.getLore();
+    List<String> lores2 = meta2.getLore();
+    return Arrays.deepEquals(
+        Objects.requireNonNull(lores1).toArray(), Objects.requireNonNull(lores2).toArray());
+  }
 
+  boolean matches(ItemStack requireStack, ItemStack givenStack) {
+    Util.debugLog("Begin the item matches checking...");
+    if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
+      return false;
+    }
+    if (!requireStack.hasItemMeta()) {
+      return true; // Passed check. no meta need to check.
+    }
+    ItemMeta meta1 = requireStack.getItemMeta();
+    ItemMeta meta2 = givenStack.getItemMeta();
+    if ((meta1 == null) != (meta2 == null)) {
+      return false;
+    }
+    if (meta1 == null) {
+      Util.debugLog("Pass");
+      return true; // Both null...
+    }
+    if (!damageMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!repaircostMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!displayMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!loresMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!enchMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!potionMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!attributeModifiersMatches(meta1, meta2)) {
+      return false;
+    }
+    if (!itemFlagsMatches(meta1, meta2)) {
+      return false;
+    }
+    if(!bookMatches(meta1,meta2)){
+      return false;
+    }
     try {
-      if (!customModelDataMatches(requiredMeta, testMeta)) {
-        Util.debugLog("Match failed: CustomModelData");
+      if (!customModelDataMatches(meta1, meta2)) {
         return false;
       }
     } catch (NoSuchMethodError err) {
-      Util.debugLog("Ignored: CustomModelData");
       // Ignore, for 1.13 compatibility
     }
-
-    Util.debugLog("Match passed (QuickShop): Meta matched");
+    Util.debugLog("Pass");
     return true;
+  }
+
+  private boolean repaircostMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.repaircost) {
+      return true;
+    }
+    Util.debugLog("Checking the reportcost");
+    if (!(meta1 instanceof Repairable)) {
+      return true;
+    }
+    if (!(meta2 instanceof Repairable)) {
+      return false;
+    }
+    Repairable repairable1 = (Repairable) meta1;
+    Repairable repairable2 = (Repairable) meta2;
+    if (repairable1.hasRepairCost() != repairable2.hasRepairCost()) {
+      return false;
+    }
+    if (repairable1.hasRepairCost()) {
+      return repairable2.getRepairCost() <= repairable1.getRepairCost();
+    }
+    return true;
+  }
+
+  private boolean potionMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.potions) {
+      return true;
+    }
+    Util.debugLog("Checking potion effects");
+    if ((meta1 instanceof PotionMeta) != (meta2 instanceof PotionMeta)) {
+      return false;
+    }
+
+    if (!(meta1 instanceof PotionMeta)) {
+      return true; // No potion meta needs to be checked.
+    }
+
+    PotionMeta potion1 = (PotionMeta) meta1;
+    PotionMeta potion2 = (PotionMeta) meta2;
+
+    if (potion1.hasColor()) {
+      if (!potion2.hasColor()) {
+        return false;
+      } else {
+        if (!Objects.requireNonNull(potion1.getColor()).equals(potion2.getColor())) {
+          return false;
+        }
+      }
+    }
+    if (potion1.hasCustomEffects()) {
+      if (!potion2.hasCustomEffects()) {
+        return false;
+      }
+      if (!Arrays.deepEquals(
+          potion1.getCustomEffects().toArray(), potion2.getCustomEffects().toArray())) {
+        return false;
+      }
+      //                if
+      // (!Util.listMatches(potion1.getCustomEffects(),potion2.getCustomEffects())) {
+      //                    return false;
+      //                }
+    }
+    PotionData data1 = potion1.getBasePotionData();
+    PotionData data2 = potion2.getBasePotionData();
+    if (data2.equals(data1)) {
+      return true;
+    }
+    if (!data2.getType().equals(data1.getType())) {
+      return false;
+    }
+    if (data1.isExtended()) {
+      if (!data2.isExtended()) {
+        return false;
+      }
+    }
+    if (data1.isUpgraded()) {
+      //noinspection RedundantIfStatement
+      if (!data2.isUpgraded()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
+    return (meta1.hashCode() == meta2.hashCode());
   }
 }

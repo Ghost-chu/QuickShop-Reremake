@@ -1373,6 +1373,11 @@ public class QuickShop extends JavaPlugin {
       getConfig().set("config-version", 79);
       selectedVersion = 79;
     }
+    if (selectedVersion == 79) {
+      getConfig().set("matcher.item.books", true);
+      getConfig().set("config-version", 80);
+      selectedVersion = 80;
+    }
     saveConfig();
     reloadConfig();
     File file = new File(getDataFolder(), "example.config.yml");
