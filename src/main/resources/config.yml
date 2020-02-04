@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 79
+config-version: 80
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -466,6 +466,8 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
+    #Plugin should check the item bookmetas?
+    books: true
 cachingpool:
   # Did you want use caching pool?
   # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
