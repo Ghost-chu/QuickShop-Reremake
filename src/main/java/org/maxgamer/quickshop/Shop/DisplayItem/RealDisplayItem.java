@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.Shop;
+package org.maxgamer.quickshop.Shop.DisplayItem;
 
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -25,38 +25,30 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
-import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @ToString
-public class RealDisplayItem implements DisplayItem {
+public class RealDisplayItem extends DisplayItem {
 
-    private static QuickShop plugin = QuickShop.instance;
-    @Nullable
-    private ItemStack guardedIstack;
-    @Nullable
+
     private Item item;
-    private ItemStack originalItemStack;
-    private Shop shop;
 
     /**
      * ZZ Creates a new display item.
      *
      * @param shop The shop (See Shop)
      */
-    RealDisplayItem(@NotNull Shop shop) {
-        this.shop = shop;
-        this.originalItemStack = shop.getItem().clone();
-        this.originalItemStack.setAmount(1);
+    public RealDisplayItem(@NotNull Shop shop) {
+        super(shop);
 
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }

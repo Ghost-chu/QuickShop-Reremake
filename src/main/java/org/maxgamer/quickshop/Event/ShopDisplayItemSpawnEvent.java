@@ -23,8 +23,8 @@ import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop.DisplayItem;
-import org.maxgamer.quickshop.Shop.DisplayType;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
 
 /**

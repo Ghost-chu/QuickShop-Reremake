@@ -38,6 +38,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem.ArmorStandDisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.RealDisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.VirtualDisplayItem;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -111,6 +115,9 @@ public class ContainerShop implements Shop {
                     break;
                 case ARMORSTAND:
                     this.displayItem = new ArmorStandDisplayItem(this);
+                    break;
+                case VIRTUALITEM:
+                    this.displayItem= new VirtualDisplayItem(this);
                     break;
                 default:
                     Util.debugLog("Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");

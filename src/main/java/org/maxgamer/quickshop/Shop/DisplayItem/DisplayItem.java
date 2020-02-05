@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.Shop;
+package org.maxgamer.quickshop.Shop.DisplayItem;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,41 +29,49 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.ShopProtectionFlag;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static org.maxgamer.quickshop.Util.Util.getItemLore;
+
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and
  * cannot be interacted with.
  */
-public interface DisplayItem {
-    Gson gson = new GsonBuilder().create();
+public abstract class DisplayItem {
+
+    private static final Gson gson = new GsonBuilder().create();
+
+    @Nullable
+    protected ItemStack guardedIstack;
+    protected ItemStack originalItemStack;
+    protected QuickShop plugin = QuickShop.instance;
+    protected Shop shop;
+
+   protected DisplayItem(@NotNull Shop shop) {
+        this.shop = shop;
+        this.originalItemStack = shop.getItem().clone();
+        this.originalItemStack.setAmount(1);
+    }
+
+
     /**
      * Check the itemStack is contains protect flag.
      *
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
-    static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+    public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
         if (itemStack == null) {
             return false;
         }
-        itemStack = itemStack.clone();
-        itemStack.setAmount(1);
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta iMeta = itemStack.getItemMeta();
-        if(iMeta == null){
-            return false;
-        }
-        if (!iMeta.hasLore()) {
-            return false;
-        }
-        List<String> lores = iMeta.getLore();
+
+        List<String> lores = getItemLore(itemStack);
         if(lores != null){
             String defaultMark = ShopProtectionFlag.getDefaultMark();
             for (String lore : lores) {
@@ -100,20 +108,8 @@ public interface DisplayItem {
      * @param shop      Target shop
      * @return Is target shop's display
      */
-    static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-        itemStack = itemStack.clone();
-        itemStack.setAmount(1);
-        if (!itemStack.hasItemMeta()) {
-            return false;
-        }
-        ItemMeta iMeta = itemStack.getItemMeta();
-        if (iMeta == null) {
-            return false;
-        }
-        if (!iMeta.hasLore()) {
-            return false;
-        }
-        List<String> lores = iMeta.getLore();
+    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+        List<String> lores = getItemLore(itemStack);
         if (lores != null) {
             String defaultMark = ShopProtectionFlag.getDefaultMark();
             String shopLocation = shop.getLocation().toString();
@@ -147,7 +143,7 @@ public interface DisplayItem {
      * @param shop      The shop
      * @return New itemStack with protect flag.
      */
-    static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
@@ -179,7 +175,7 @@ public interface DisplayItem {
      * @param shop      The shop
      * @return ShopProtectionFlag obj
      */
-    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
@@ -188,14 +184,14 @@ public interface DisplayItem {
      *
      * @return Moved
      */
-    boolean checkDisplayIsMoved();
+    public abstract boolean checkDisplayIsMoved();
 
     /**
      * Check the display is or not need respawn
      *
      * @return Need
      */
-    boolean checkDisplayNeedRegen();
+    public abstract boolean checkDisplayNeedRegen();
 
     /**
      * Check target Entity is or not a QuickShop display Entity.
@@ -203,34 +199,34 @@ public interface DisplayItem {
      * @param entity Target entity
      * @return Is or not
      */
-    boolean checkIsShopEntity(Entity entity);
+    public abstract boolean checkIsShopEntity(Entity entity);
 
     /**
      * Fix the display moved issue.
      */
-    void fixDisplayMoved();
+    public abstract void fixDisplayMoved();
 
     /**
      * Fix display need respawn issue.
      */
-    void fixDisplayNeedRegen();
+    public abstract void fixDisplayNeedRegen();
 
     /**
      * Remove the display entity.
      */
-    void remove();
+    public abstract void remove();
 
     /**
      * Remove this shop's display in the whole world.(Not whole server)
      *
      * @return Success
      */
-    boolean removeDupe();
+    public abstract boolean removeDupe();
 
     /**
      * Respawn the displays, if it not exist, it will spawn new one.
      */
-    void respawn();
+    public abstract void respawn();
 
     /**
      * Add the protect flags for entity or entity's hand item.
@@ -238,19 +234,19 @@ public interface DisplayItem {
      *
      * @param entity Target entity
      */
-    void safeGuard(Entity entity);
+    public abstract void safeGuard(Entity entity);
 
     /**
      * Spawn new Displays
      */
-    void spawn();
+    public abstract void spawn();
 
     /**
      * Get the display entity
      *
      * @return Target entity
      */
-    Entity getDisplay();
+    public abstract Entity getDisplay();
 
     /**
      * Get display should at location.
@@ -258,14 +254,14 @@ public interface DisplayItem {
      *
      * @return Should at
      */
-    Location getDisplayLocation();
+    public abstract Location getDisplayLocation();
 
     /**
      * Get plugin now is using which one DisplayType
      *
      * @return Using displayType.
      */
-    static DisplayType getNowUsing() {
+    public static DisplayType getNowUsing() {
         return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
     }
 
@@ -274,6 +270,6 @@ public interface DisplayItem {
      *
      * @return Spawned
      */
-    boolean isSpawned();
+    public abstract boolean isSpawned();
 
 }

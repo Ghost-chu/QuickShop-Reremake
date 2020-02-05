@@ -42,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Database.MySQLCore;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Watcher.InventoryEditContainer;
 import org.yaml.snakeyaml.DumperOptions;
@@ -74,6 +74,33 @@ public class Util {
     private static Field tpsField;
     private static List<String> worldBlacklist = new ArrayList<>();
     private static boolean disableDebugLogger;
+
+
+    /**
+     * Get the Lore of this ItemStack
+     * @param itemStack Target ItemStack
+     * @return Lore list or null(if absent)
+     */
+    public static List<String> getItemLore(ItemStack itemStack) {
+        itemStack = itemStack.clone();
+        itemStack.setAmount(1);
+        if (!itemStack.hasItemMeta()) {
+            return null;
+        }
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (iMeta == null) {
+            return null;
+        }
+        if (!iMeta.hasLore()) {
+            return null;
+        }
+        return iMeta.getLore();
+    }
+
+
+
+
+
 
     /**
      * Convert strArray to String.
@@ -1280,7 +1307,7 @@ public class Util {
             final MessageDigest instance = MessageDigest.getInstance("MD5");
             instance.update(s.getBytes(StandardCharsets.UTF_8));
             final byte[] digest = instance.digest();
-            final StringBuilder sb = new StringBuilder("");
+            final StringBuilder sb = new StringBuilder();
             for (int b : digest) {
                 int n = b;
                 if (n < 0) {

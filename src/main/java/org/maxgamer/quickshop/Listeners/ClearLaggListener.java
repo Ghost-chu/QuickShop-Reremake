@@ -24,7 +24,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;

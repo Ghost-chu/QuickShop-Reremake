@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.Shop;
+package org.maxgamer.quickshop.Shop.DisplayItem;
 
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -30,19 +30,21 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
-import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItemPersistentDataType;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayType;
+import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.Objects;
 
 @ToString
-public class ArmorStandDisplayItem implements DisplayItem {
+public class ArmorStandDisplayItem extends DisplayItem {
 
     private static boolean isTool(Material material) {
         String nlc = material.name().toLowerCase();
@@ -51,16 +53,9 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
     @Nullable
     private ArmorStand armorStand;
-    @Nullable
-    private ItemStack guardedIstack;
-    private ItemStack originalItemStack;
-    private QuickShop plugin = QuickShop.instance;
-    private Shop shop;
 
-    ArmorStandDisplayItem(@NotNull Shop shop) {
-        this.shop = shop;
-        this.originalItemStack = shop.getItem().clone();
-        this.originalItemStack.setAmount(1);
+    public ArmorStandDisplayItem(@NotNull Shop shop) {
+        super(shop);
     }
 
     @Override
