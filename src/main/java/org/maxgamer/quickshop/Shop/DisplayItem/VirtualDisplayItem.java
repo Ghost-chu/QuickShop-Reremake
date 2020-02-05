@@ -63,7 +63,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
             //send the packet later to prevent chunk loading deadlock
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                if (shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
+                if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
                     packetSenders.add(event.getPlayer().getUniqueId());
                     sendFakeItem(event.getPlayer());
                 }
@@ -172,14 +172,14 @@ public class VirtualDisplayItem extends DisplayItem {
         sendPacket(player, fakeItemPacket);
         sendPacket(player, fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 25);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 50);
     }
 
     public void sendFakeItemtoAll() {
         sendPacketToAll(fakeItemPacket);
         sendPacketToAll(fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 25);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 50);
     }
 
     private void sendPacket(Player player, PacketContainer packet) {
@@ -208,7 +208,6 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void remove() {
         isDisplay = false;
-        protocolManager.removePacketListener(packetListener);
         sendPacketToAll(fakeItemDestroyPacket);
     }
 
@@ -219,7 +218,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void respawn() {
-        remove();
+        sendPacketToAll(fakeItemDestroyPacket);
         spawn();
     }
 
