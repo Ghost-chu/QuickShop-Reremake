@@ -46,6 +46,30 @@ public class VirtualDisplayItem extends DisplayItem {
     private Entity placeholder = new FakeItem();
     //unique EntityID
     private int entityID = counter.decrementAndGet();
+    //packetListener
+    private PacketAdapter packetListener = new PacketAdapter(plugin, ListenerPriority.NORMAL,
+            PacketType.Play.Server.MAP_CHUNK) {
+        @Override
+        public void onPacketSending(PacketEvent event) {
+            //is really full chunk data
+            boolean isFull = event.getPacket().getBooleans().read(0);
+            if (!isDisplay && !isFull) {
+                return;
+            }
+            //chunk x
+            int x = event.getPacket().getIntegers().read(0);
+            //chunk z
+            int z = event.getPacket().getIntegers().read(1);
+
+            //send the packet later to prevent chunk loading deadlock
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                if (shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
+                    packetSenders.add(event.getPlayer().getUniqueId());
+                    sendFakeItem(event.getPlayer());
+                }
+            }, 1);
+        }
+    };
     //packets
     private PacketContainer fakeItemPacket;
     private PacketContainer fakeItemMetaPacket;
@@ -59,29 +83,7 @@ public class VirtualDisplayItem extends DisplayItem {
         super(shop);
         initFakeDropItemPacket();
         packetSenders.addAll(shop.getLocation().getNearbyEntities(32, 256, 32).stream().filter(entity -> entity.getType() == EntityType.PLAYER).map(Entity::getUniqueId).collect(Collectors.toSet()));
-        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
-                PacketType.Play.Server.MAP_CHUNK) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                //is really full chunk data
-                boolean isFull = event.getPacket().getBooleans().read(0);
-                if (!isDisplay && !isFull) {
-                    return;
-                }
-                //chunk x
-                int x = event.getPacket().getIntegers().read(0);
-                //chunk z
-                int z = event.getPacket().getIntegers().read(1);
-
-                //send the packet later to prevent chunk loading deadlock
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    if (shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
-                        packetSenders.add(event.getPlayer().getUniqueId());
-                        sendFakeItem(event.getPlayer());
-                    }
-                }, 1);
-            }
-        });
+        protocolManager.addPacketListener(packetListener);
         spawn();
     }
 
@@ -170,14 +172,14 @@ public class VirtualDisplayItem extends DisplayItem {
         sendPacket(player, fakeItemPacket);
         sendPacket(player, fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 15);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 25);
     }
 
     public void sendFakeItemtoAll() {
         sendPacketToAll(fakeItemPacket);
         sendPacketToAll(fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 15);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 25);
     }
 
     private void sendPacket(Player player, PacketContainer packet) {
@@ -206,6 +208,7 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void remove() {
         isDisplay = false;
+        protocolManager.removePacketListener(packetListener);
         sendPacketToAll(fakeItemDestroyPacket);
     }
 
