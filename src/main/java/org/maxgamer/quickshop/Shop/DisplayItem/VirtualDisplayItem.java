@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class VirtualDisplayItem extends DisplayItem {
 
@@ -57,6 +58,7 @@ public class VirtualDisplayItem extends DisplayItem {
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
         initFakeDropItemPacket();
+        packetSenders.addAll(shop.getLocation().getNearbyEntities(32, 256, 32).stream().filter(entity -> entity.getType() == EntityType.PLAYER).map(Entity::getUniqueId).collect(Collectors.toSet()));
         protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
                 PacketType.Play.Server.MAP_CHUNK) {
             @Override
@@ -80,6 +82,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 }, 1);
             }
         });
+        spawn();
     }
 
     public void removeSenders(Player player) {
@@ -167,14 +170,14 @@ public class VirtualDisplayItem extends DisplayItem {
         sendPacket(player, fakeItemPacket);
         sendPacket(player, fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 5);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacket(player, fakeItemTeleportPacket), 15);
     }
 
     public void sendFakeItemtoAll() {
         sendPacketToAll(fakeItemPacket);
         sendPacketToAll(fakeItemMetaPacket);
         //send packet later to fix item location
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 5);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPacketToAll(fakeItemTeleportPacket), 15);
     }
 
     private void sendPacket(Player player, PacketContainer packet) {
