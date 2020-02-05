@@ -210,7 +210,7 @@
             <artifactId>OpenInv</artifactId>
             <version>3.3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/OpenInv.jar</systemPath>
+            <systemPath>${pom.basedir}/lib/OpenInv.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -242,7 +242,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.0.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Clearlag (2).jar</systemPath>
+            <systemPath>${pom.basedir}/lib/Clearlag.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.meowj</groupId>
@@ -273,7 +273,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
