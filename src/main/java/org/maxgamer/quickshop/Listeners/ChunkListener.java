@@ -27,7 +27,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -39,7 +38,6 @@ public class ChunkListener implements Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   public void onChunkLoad(ChunkLoadEvent e) {
-
     if (e.isNewChunk()) {
       return;
     }
@@ -49,15 +47,8 @@ public class ChunkListener implements Listener {
     if (inChunk == null || inChunk.isEmpty()) {
       return;
     }
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        //noinspection unchecked
-        ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onLoad);
-        // Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
-      }
-    }.runTaskLater(plugin, 1);
+    //noinspection unchecked
+    ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onLoad);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -68,13 +59,7 @@ public class ChunkListener implements Listener {
     if (inChunk == null || inChunk.isEmpty()) {
       return;
     }
-
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        //noinspection unchecked
-        ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onUnload);
-      }
-    }.runTaskLater(plugin, 1); // Delay 1 tick, hope can fix the magic bug in 1.14 spigot build.
+    //noinspection unchecked
+    ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onUnload);
   }
 }
