@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -78,8 +77,6 @@ public class MsgUtil {
   private static DecimalFormat decimalFormat =
       new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
   private static GameLanguage gameLanguage;
-  private static JsonConfiguration defaultLanguageFile;
-  private static JsonConfiguration i18nDefaultLanguageFile;
 
   /**
    * Translate boolean value to String, the symbon is changeable by language file.
