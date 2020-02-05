@@ -8,7 +8,7 @@ jdk:
 install: false
 script:
 - export PROJECT_NAME=QuickShop-Reremake #Set project name
-- git clone https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
+- git clone --depth=1 https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
 - cd $PROJECT_NAME #Cd into project
 - mvn clean #Clean up
 - mvn -T 4 install #Install
@@ -47,7 +47,7 @@ after_deploy:
 - "./deploy.sh $Curse_token"
   #Deploy to the mvn-repo
 - echo "Deploying to the Github..."
-- git clone https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
+- git clone --depth=1 https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
 - mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
 - cd maven-repo
 - git add .
@@ -57,7 +57,7 @@ after_deploy:
 - echo "Finish upload to Maven Repository"
 after_script:
 #Upload data to BinaryRepository
-- git clone https://$Github_token@github.com/Ghost-chu/BinaryRepository.git BinaryRepository
+- git clone --depth=1 https://$Github_token@github.com/Ghost-chu/BinaryRepository.git BinaryRepository
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER
 - mkdir -p ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
 - cp -r ./target/* ./BinaryRepository/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/target
