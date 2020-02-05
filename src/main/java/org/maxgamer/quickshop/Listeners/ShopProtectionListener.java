@@ -162,10 +162,6 @@ public class ShopProtectionListener implements Listener {
       return;
     }
 
-    if (!Util.isShoppables(loc.getBlock().getType())) {
-      return;
-    }
-
     final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
 
     if (shop == null) {

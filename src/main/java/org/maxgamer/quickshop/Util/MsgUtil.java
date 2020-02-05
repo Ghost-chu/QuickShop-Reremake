@@ -19,8 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
-import com.bekvon.bukkit.residence.commands.message;
-import com.bekvon.bukkit.residence.commands.shop;
+import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -69,9 +68,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
   public static String invaildMsg = "Invaild message";
-  private static YamlConfiguration builtInDefaultLanguage =
-      YamlConfiguration.loadConfiguration(
-          new InputStreamReader(QuickShop.instance.getLanguage().getFile("en", "messages")));
   private static YamlConfiguration enchi18n;
   private static boolean inited;
   private static YamlConfiguration itemi18n;
@@ -82,6 +78,8 @@ public class MsgUtil {
   private static DecimalFormat decimalFormat =
       new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
   private static GameLanguage gameLanguage;
+  private static JsonConfiguration defaultLanguageFile;
+  private static JsonConfiguration i18nDefaultLanguageFile;
 
   /**
    * Translate boolean value to String, the symbon is changeable by language file.
@@ -308,7 +306,6 @@ public class MsgUtil {
               "messages/" + languageCode + ".json",
               true);
     }
-
     nJson.create();
 
     File oldMsgFile = new File(plugin.getDataFolder(), "messages.yml");
@@ -1284,16 +1281,16 @@ public class MsgUtil {
     messagei18n.save();
   }
 
-  public static void setAndUpdate(@NotNull String path, @Nullable Object object) {
+  private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
     if (object == null) {
       messagei18n.set(path, null); // Removal
     }
-    Object objFromBuiltIn = builtInDefaultLanguage.get(path); // Apply english default
-    if (objFromBuiltIn == null) {
-      objFromBuiltIn =
-          object; // Apply hard-code default, maybe a language file i forgotten update??
-    }
-    messagei18n.set(path, objFromBuiltIn);
+//    Object objFromBuiltIn = builtInDefaultLanguage.get(path); // Apply english default
+//    if (objFromBuiltIn == null) {
+//      objFromBuiltIn =
+//          object; // Apply hard-code default, maybe a language file i forgotten update??
+//    }
+    messagei18n.set(path, object);
   }
 
   public static IFile getI18nFile() {

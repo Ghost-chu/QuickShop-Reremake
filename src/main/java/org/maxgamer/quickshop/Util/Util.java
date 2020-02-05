@@ -419,10 +419,7 @@ public class Util {
   private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
     return (b1.getBlockX() == b2.getBlockX())
         && (b1.getBlockY() == b2.getBlockY())
-        && (b1.getBlockZ() == b2.getBlockZ())
-        && (Objects.requireNonNull(b1.getWorld())
-            .getName()
-            .equals(Objects.requireNonNull(b2.getWorld()).getName()));
+        && (b1.getBlockZ() == b2.getBlockZ());
   }
 
   /**
@@ -477,7 +474,6 @@ public class Util {
     if (b.getBlockData() instanceof Directional) {
       Directional directional = (Directional) b.getBlockData();
       return b.getRelative(directional.getFacing().getOppositeFace());
-
     } else {
       return null;
     }
@@ -604,7 +600,7 @@ public class Util {
    */
   @Nullable
   public static Block getSecondHalf(@NotNull Block b) {
-    if (!isDoubleChest(b)) {
+    if(!(b.getState() instanceof Chest)){
       return null;
     }
     Chest oneSideOfChest = (Chest) b.getState();
