@@ -326,6 +326,7 @@ public class PlayerListener implements Listener {
         }
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
+
     }
 
     @EventHandler(ignoreCancelled = true)

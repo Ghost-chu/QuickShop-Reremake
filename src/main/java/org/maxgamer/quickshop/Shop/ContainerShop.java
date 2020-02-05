@@ -117,7 +117,7 @@ public class ContainerShop implements Shop {
                     this.displayItem = new ArmorStandDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    this.displayItem= new VirtualDisplayItem(this);
+                    this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
                     Util.debugLog("Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");

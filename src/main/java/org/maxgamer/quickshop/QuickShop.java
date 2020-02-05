@@ -41,6 +41,8 @@ import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.Permission.PermissionManager;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayItem.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -248,6 +250,14 @@ public class QuickShop extends JavaPlugin {
                         }
                     }
                 } catch (Throwable ignored) {
+                }
+            }
+            if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+                if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
+                    getLogger().warning("ProtocolLib is not found, fallback to Normal Item Display (0)!");
+                    getConfig().set("shop.display-type", 0);
+                } else {
+                    Bukkit.getPluginManager().getPlugin("Successfully loaded ProtocolLib support!");
                 }
             }
         }
