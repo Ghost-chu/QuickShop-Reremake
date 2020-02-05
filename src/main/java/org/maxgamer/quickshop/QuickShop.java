@@ -483,7 +483,7 @@ public class QuickShop extends JavaPlugin {
 
     /* It will generate a new UUID above updateConfig */
     /* Process Metrics and Sentry error reporter. */
-    metrics = new Metrics(this);
+    metrics = new Metrics(this,3320);
     //noinspection ConstantConditions
     serverUniqueID =
         UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
@@ -871,8 +871,7 @@ public class QuickShop extends JavaPlugin {
       metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
       metrics.addCustomChart(
           new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLoggger));
-      // Exp for stats, maybe i need improve this, so i add this.
-      metrics.submitData(); // Submit now!
+      // Exp for stats, maybe i need improve this, so i add this.// Submit now!
       getLogger().info("Metrics submitted.");
     } else {
       getLogger().info("You have disabled mertics, Skipping...");

@@ -996,11 +996,7 @@ public class ShopManager {
     }
   }
 
-  public @Nullable Shop getShopIncludeAttached_Classic(@Nullable Location loc) {
-    if (loc == null) {
-      Util.debugLog("Location is null.");
-      return null;
-    }
+  public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
     @Nullable Shop shop;
     // Get location's chunk all shops
     @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
@@ -1052,11 +1048,7 @@ public class ShopManager {
     return null;
   }
 
-  private @Nullable Shop getShopIncludeAttached_Fast(@Nullable Location loc) {
-    if (loc == null) {
-      Util.debugLog("Location is null.");
-      return null;
-    }
+  private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc) {
     @Nullable Shop shop;
     shop = getShop(loc);
     if (shop != null) {
