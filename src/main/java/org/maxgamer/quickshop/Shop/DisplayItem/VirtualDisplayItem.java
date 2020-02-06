@@ -38,7 +38,7 @@ public class VirtualDisplayItem extends DisplayItem {
         public void onPacketSending(PacketEvent event) {
             //is really full chunk data
             boolean isFull = event.getPacket().getBooleans().read(0);
-            if (shop.isDelete()) {
+            if (shop.isDeleted()) {
                 packetSenders.clear();
                 protocolManager.removePacketListener(packetListener);
                 return;
