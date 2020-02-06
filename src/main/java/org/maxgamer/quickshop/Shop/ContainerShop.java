@@ -58,6 +58,8 @@ public class ContainerShop implements Shop {
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
     private boolean isLoaded = false;
+    @EqualsAndHashCode.Exclude
+    private boolean isDeleted = false;
 
     @NotNull
     private final ItemStack item;
@@ -372,6 +374,7 @@ public class ContainerShop implements Shop {
         if (isLoaded) {
             this.onUnload();
         }
+        isDeleted = true;
         // Delete the display item
         if (this.getDisplayItem() != null) {
             this.getDisplayItem().remove();
@@ -400,6 +403,12 @@ public class ContainerShop implements Shop {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    @Override
+    public boolean isDelete() {
+        return false;
     }
 
     @Override
@@ -867,6 +876,10 @@ public class ContainerShop implements Shop {
             this.onUnload();
             this.delete();
         }
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     /**

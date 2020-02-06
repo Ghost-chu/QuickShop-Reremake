@@ -313,6 +313,13 @@ public interface Shop {
      */
     boolean isValid();
 
+
+    /**
+     * whether the shop is deleted
+     *
+     * @return status
+     */
+    boolean isDelete();
     /**
      * Get the shop display entity
      *
