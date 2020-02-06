@@ -19,74 +19,73 @@
 
 package org.maxgamer.quickshop.Economy;
 
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-import java.util.UUID;
-
 public class Economy_Mixed implements EconomyCore {
-    EconomyCore core;
+  EconomyCore core;
 
-    public Economy_Mixed() {
-        core = new Economy_Vault();
-    }
+  public Economy_Mixed() {
+    core = new Economy_Vault();
+  }
 
-    @Override
-    public boolean deposit(UUID name, double amount) {
-        if (getBalance(name) < amount) {
-            return false;
-        }
-        Bukkit.dispatchCommand(
-                Bukkit.getConsoleSender(),
-                MsgUtil.fillArgs(
-                        QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),
-                        Bukkit.getOfflinePlayer(name).getName(),
-                        String.valueOf(amount)));
-        return true;
+  @Override
+  public boolean deposit(UUID name, double amount) {
+    if (getBalance(name) < amount) {
+      return false;
     }
+    Bukkit.dispatchCommand(
+        Bukkit.getConsoleSender(),
+        MsgUtil.fillArgs(
+            QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),
+            Bukkit.getOfflinePlayer(name).getName(),
+            String.valueOf(amount)));
+    return true;
+  }
 
-    @Override
-    public String format(double balance) {
-        return Util.format(balance);
-    }
+  @Override
+  public String format(double balance) {
+    return Util.format(balance);
+  }
 
-    @Override
-    public double getBalance(UUID name) {
-        return core.getBalance(name);
-    }
+  @Override
+  public double getBalance(UUID name) {
+    return core.getBalance(name);
+  }
 
-    @Override
-    public boolean transfer(UUID from, UUID to, double amount) {
-        boolean result;
-        result = withdraw(from, amount);
-        if (!result) {
-            deposit(from, amount);
-        }
-        result = deposit(to, amount);
-        if (!result) {
-            withdraw(to, amount);
-        }
-        return true;
+  @Override
+  public boolean transfer(UUID from, UUID to, double amount) {
+    boolean result;
+    result = withdraw(from, amount);
+    if (!result) {
+      deposit(from, amount);
     }
+    result = deposit(to, amount);
+    if (!result) {
+      withdraw(to, amount);
+    }
+    return true;
+  }
 
-    @Override
-    public boolean withdraw(UUID name, double amount) {
-        if (getBalance(name) > amount) {
-            return false;
-        }
-        Bukkit.dispatchCommand(
-                Bukkit.getConsoleSender(),
-                MsgUtil.fillArgs(
-                        QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),
-                        Bukkit.getOfflinePlayer(name).getName(),
-                        String.valueOf(amount)));
-        return true;
+  @Override
+  public boolean withdraw(UUID name, double amount) {
+    if (getBalance(name) > amount) {
+      return false;
     }
+    Bukkit.dispatchCommand(
+        Bukkit.getConsoleSender(),
+        MsgUtil.fillArgs(
+            QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),
+            Bukkit.getOfflinePlayer(name).getName(),
+            String.valueOf(amount)));
+    return true;
+  }
 
-    @Override
-    public boolean isValid() {
-        return core.isValid();
-    }
+  @Override
+  public boolean isValid() {
+    return core.isValid();
+  }
 }

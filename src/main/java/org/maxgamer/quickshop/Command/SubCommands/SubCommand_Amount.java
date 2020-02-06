@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -26,44 +28,41 @@ import org.maxgamer.quickshop.Command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SubCommand_Amount implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+  private final QuickShop plugin = QuickShop.instance;
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        final ArrayList<String> list = new ArrayList<>();
+  @NotNull
+  @Override
+  public List<String> onTabComplete(
+      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    final ArrayList<String> list = new ArrayList<>();
 
-        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
+    list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
 
-        return list;
+    return list;
+  }
+
+  @Override
+  public void onCommand(
+      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    if (cmdArg.length < 1) {
+      sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
+      return;
     }
 
-    @Override
-    public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
-            return;
-        }
-
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can't be run by console");
-            return;
-        }
-
-        final Player player = (Player) sender;
-
-        if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-            sender.sendMessage(MsgUtil.getMessage("no-pending-action", sender));
-            return;
-        }
-
-        plugin.getShopManager().handleChat(player, cmdArg[0]);
+    if (!(sender instanceof Player)) {
+      sender.sendMessage("This command can't be run by console");
+      return;
     }
+
+    final Player player = (Player) sender;
+
+    if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
+      sender.sendMessage(MsgUtil.getMessage("no-pending-action", sender));
+      return;
+    }
+
+    plugin.getShopManager().handleChat(player, cmdArg[0]);
+  }
 }

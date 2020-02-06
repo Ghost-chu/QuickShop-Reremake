@@ -29,7 +29,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class ShopChunk {
-    private String world;
-    private int x;
-    private int z;
+  private String world;
+  private int x;
+  private int z;
 }

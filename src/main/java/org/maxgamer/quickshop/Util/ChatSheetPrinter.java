@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +31,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 @AllArgsConstructor
 @Getter
 @Setter
@@ -39,52 +38,54 @@ import java.util.Arrays;
  A utils for print sheet on chat.
 */
 public class ChatSheetPrinter {
-    final ChatColor chatColor = ChatColor.DARK_PURPLE;
-    private CommandSender p;
+  final ChatColor chatColor = ChatColor.DARK_PURPLE;
+  private CommandSender p;
 
-    public void printCenterLine(@NotNull String text) {
-        p.sendMessage(
-                chatColor
-                        + MsgUtil.getMessage("tableformat.left_half_line", p)
-                        + text
-                        + MsgUtil.getMessage("tableformat.right_half_line", p));
-    }
+  public void printCenterLine(@NotNull String text) {
+    p.sendMessage(
+        chatColor
+            + MsgUtil.getMessage("tableformat.left_half_line", p)
+            + text
+            + MsgUtil.getMessage("tableformat.right_half_line", p));
+  }
 
-    public void printExecuteableCmdLine(
-            @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
-        TextComponent message =
-                new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
-        message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
-        p.spigot().sendMessage(message);
-    }
+  public void printExecuteableCmdLine(
+      @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
+    TextComponent message =
+        new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
+    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
+    message.setHoverEvent(
+        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+    p.spigot().sendMessage(message);
+  }
 
-    public void printFooter() {
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
-    }
+  public void printFooter() {
+    p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+  }
 
-    public void printHeader() {
-        p.sendMessage("");
-        p.sendMessage("");
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
-    }
+  public void printHeader() {
+    p.sendMessage("");
+    p.sendMessage("");
+    p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+  }
 
-    public void printLine(@NotNull String text) {
-        String[] texts = text.split("\n");
-        Arrays.asList(texts)
-                .forEach(
-                        (str) -> p.sendMessage(
-                                chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str));
-    }
+  public void printLine(@NotNull String text) {
+    String[] texts = text.split("\n");
+    Arrays.asList(texts)
+        .forEach(
+            (str) -> {
+              p.sendMessage(
+                  chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str);
+            });
+  }
 
-    public void printSuggestableCmdLine(
-            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
-        TextComponent message =
-                new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
-        message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
-        p.spigot().sendMessage(message);
-    }
+  public void printSuggestableCmdLine(
+      @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
+    TextComponent message =
+        new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
+    message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
+    message.setHoverEvent(
+        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+    p.spigot().sendMessage(message);
+  }
 }
