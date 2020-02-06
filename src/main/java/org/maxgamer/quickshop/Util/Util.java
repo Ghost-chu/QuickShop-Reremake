@@ -56,6 +56,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.EnderChest;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -471,8 +472,9 @@ public class Util {
    */
   @Nullable
   public static Block getAttached(@NotNull Block b) {
-    if (b.getBlockData() instanceof Directional) {
-      Directional directional = (Directional) b.getBlockData();
+    BlockData blockData = b.getBlockData();
+    if (blockData instanceof Directional) {
+      Directional directional = (Directional) blockData;
       return b.getRelative(directional.getFacing().getOppositeFace());
     } else {
       return null;
@@ -600,10 +602,11 @@ public class Util {
    */
   @Nullable
   public static Block getSecondHalf(@NotNull Block b) {
-    if(!(b.getState() instanceof Chest)){
+    BlockState state = b.getState();
+    if(!(state instanceof Chest)){
       return null;
     }
-    Chest oneSideOfChest = (Chest) b.getState();
+    Chest oneSideOfChest = (Chest)state;
     InventoryHolder chestHolder = oneSideOfChest.getInventory().getHolder();
     if (chestHolder instanceof DoubleChest) {
       DoubleChest doubleChest = (DoubleChest) chestHolder;
