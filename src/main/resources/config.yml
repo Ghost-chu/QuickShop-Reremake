@@ -391,7 +391,7 @@ integration:
       #FLAG = Region must set quickshop-create flag available for players.
       #BUILD = Player must have ability to build at the target region.
       #CHEST_ACCESS = Player must can access chest.
-      #INTERACT = Player must have ability to interact in the target region.
+    #INTERACT = Player must have ability to interact in the target region.
     create:
       - FLAG
       - CHEST_ACCESS
@@ -402,7 +402,7 @@ integration:
         #Avaliable field:
         #FLAG = Region must set quickshop-trade flag available for players.
         #BUILD = Player must have ability to build at the target region.
-        #CHEST_ACCESS = Player must can access chest.
+      #CHEST_ACCESS = Player must can access chest.
       #INTERACT = Player must have ability to interact in the target region.
     trade: []
   plotsquared:
@@ -417,7 +417,7 @@ integration:
       #
       #Avaliable field:
       #FLAG = Region must set quickshop.create flag available for players.
-      #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
     create:
       - FLAG
       - interact
@@ -432,7 +432,7 @@ integration:
     trade: []
   factions:
     enable: false
-      #Player if want create a shop, player must pass which checks?
+    #Player if want create a shop, player must pass which checks?
     create:
       #Faction require the status must match with under:
       require:

@@ -24,21 +24,27 @@ import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
 
-/** Calling when shop sign update, Can't cancel */
+/**
+ * Calling when shop sign update, Can't cancel
+ */
 public class ShopSignUpdatedEvent extends QSEvent {
 
-  @Getter @NotNull private final Shop shop;
+    @Getter
+    @NotNull
+    private final Shop shop;
 
-  @Getter @NotNull private final Sign sign;
+    @Getter
+    @NotNull
+    private final Sign sign;
 
-  /**
-   * Will call when shop price was changed.
-   *
-   * @param shop Target shop
-   * @param sign Updated sign
-   */
-  public ShopSignUpdatedEvent(@NotNull Shop shop, @NotNull Sign sign) {
-    this.shop = shop;
-    this.sign = sign;
-  }
+    /**
+     * Will call when shop price was changed.
+     *
+     * @param shop Target shop
+     * @param sign Updated sign
+     */
+    public ShopSignUpdatedEvent(@NotNull Shop shop, @NotNull Sign sign) {
+        this.shop = shop;
+        this.sign = sign;
+    }
 }

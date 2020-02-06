@@ -23,85 +23,81 @@ import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.maxgamer.quickshop.Event.ShopCreateEvent;
-import org.maxgamer.quickshop.Event.ShopDeleteEvent;
-import org.maxgamer.quickshop.Event.ShopModeratorChangedEvent;
-import org.maxgamer.quickshop.Event.ShopPriceChangeEvent;
-import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
+import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ShopType;
 
 @AllArgsConstructor
 public class InternalListener implements Listener {
-  private QuickShop plugin;
+    private QuickShop plugin;
 
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopCreate(ShopCreateEvent event) {
-    plugin.log(
-        "Player "
-            + event.getPlayer().getName()
-            + " created a shop at location "
-            + event.getShop().getLocation());
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopDelete(ShopDeleteEvent event) {
-    plugin.log("Shop at " + event.getShop().getLocation() + " was removed.");
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopModeratorChanges(ShopModeratorChangedEvent event) {
-    plugin.log(
-        "Shop at location "
-            + event.getShop().getLocation()
-            + " moderator was changed to "
-            + event.getModerator());
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPriceChanges(ShopPriceChangeEvent event) {
-    plugin.log(
-        "Shop at location "
-            + event.getShop().getLocation()
-            + " price was changed from "
-            + event.getOldPrice()
-            + " to "
-            + event.getNewPrice());
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void shopPurchase(ShopSuccessPurchaseEvent event) {
-    if (event.getShop().getShopType() == ShopType.BUYING) {
-      plugin.log(
-          "Player "
-              + event.getPlayer().getName()
-              + " sold "
-              + event.getShop().ownerName()
-              + " shop "
-              + event.getShop()
-              + " for items x"
-              + event.getAmount()
-              + " for "
-              + plugin.getEconomy().format(event.getBalance())
-              + " ("
-              + plugin.getEconomy().format(event.getTax())
-              + " tax).");
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopCreate(ShopCreateEvent event) {
+        plugin.log(
+                "Player "
+                        + event.getPlayer().getName()
+                        + " created a shop at location "
+                        + event.getShop().getLocation());
     }
-    if (event.getShop().getShopType() == ShopType.SELLING) {
-      plugin.log(
-          "Player "
-              + event.getPlayer().getName()
-              + " bought "
-              + event.getShop().ownerName()
-              + " shop "
-              + event.getShop()
-              + " for items x"
-              + event.getAmount()
-              + " for "
-              + plugin.getEconomy().format(event.getBalance())
-              + " ("
-              + plugin.getEconomy().format(event.getTax())
-              + " tax).");
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopDelete(ShopDeleteEvent event) {
+        plugin.log("Shop at " + event.getShop().getLocation() + " was removed.");
     }
-  }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopModeratorChanges(ShopModeratorChangedEvent event) {
+        plugin.log(
+                "Shop at location "
+                        + event.getShop().getLocation()
+                        + " moderator was changed to "
+                        + event.getModerator());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopPriceChanges(ShopPriceChangeEvent event) {
+        plugin.log(
+                "Shop at location "
+                        + event.getShop().getLocation()
+                        + " price was changed from "
+                        + event.getOldPrice()
+                        + " to "
+                        + event.getNewPrice());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopPurchase(ShopSuccessPurchaseEvent event) {
+        if (event.getShop().getShopType() == ShopType.BUYING) {
+            plugin.log(
+                    "Player "
+                            + event.getPlayer().getName()
+                            + " sold "
+                            + event.getShop().ownerName()
+                            + " shop "
+                            + event.getShop()
+                            + " for items x"
+                            + event.getAmount()
+                            + " for "
+                            + plugin.getEconomy().format(event.getBalance())
+                            + " ("
+                            + plugin.getEconomy().format(event.getTax())
+                            + " tax).");
+        }
+        if (event.getShop().getShopType() == ShopType.SELLING) {
+            plugin.log(
+                    "Player "
+                            + event.getPlayer().getName()
+                            + " bought "
+                            + event.getShop().ownerName()
+                            + " shop "
+                            + event.getShop()
+                            + " for items x"
+                            + event.getAmount()
+                            + " for "
+                            + plugin.getEconomy().format(event.getBalance())
+                            + " ("
+                            + plugin.getEconomy().format(event.getTax())
+                            + " tax).");
+        }
+    }
 }

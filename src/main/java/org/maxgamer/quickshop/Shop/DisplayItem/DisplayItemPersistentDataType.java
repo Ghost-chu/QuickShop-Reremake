@@ -29,41 +29,41 @@ import org.maxgamer.quickshop.Shop.ShopProtectionFlag;
 import org.maxgamer.quickshop.Util.Util;
 
 public class DisplayItemPersistentDataType
-    implements PersistentDataType<String, ShopProtectionFlag> {
-  static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
-  private static Gson gson = new Gson();
+        implements PersistentDataType<String, ShopProtectionFlag> {
+    static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
+    private static Gson gson = new Gson();
 
-  @Override
-  public @NotNull Class<String> getPrimitiveType() {
-    return String.class;
-  }
-
-  @Override
-  public @NotNull Class<ShopProtectionFlag> getComplexType() {
-    return ShopProtectionFlag.class;
-  }
-
-  @NotNull
-  @Override
-  public String toPrimitive(
-      @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
-    try {
-      return gson.toJson(complex);
-    } catch (Throwable th) {
-      new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
-      return "";
+    @Override
+    public @NotNull Class<String> getPrimitiveType() {
+        return String.class;
     }
-  }
 
-  @NotNull
-  @Override
-  public ShopProtectionFlag fromPrimitive(
-      @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-    try {
-      return gson.fromJson(primitive, ShopProtectionFlag.class);
-    } catch (Throwable th) {
-      new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
-      return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
+    @Override
+    public @NotNull Class<ShopProtectionFlag> getComplexType() {
+        return ShopProtectionFlag.class;
     }
-  }
+
+    @NotNull
+    @Override
+    public String toPrimitive(
+            @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
+        try {
+            return gson.toJson(complex);
+        } catch (Throwable th) {
+            new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
+            return "";
+        }
+    }
+
+    @NotNull
+    @Override
+    public ShopProtectionFlag fromPrimitive(
+            @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
+        try {
+            return gson.fromJson(primitive, ShopProtectionFlag.class);
+        } catch (Throwable th) {
+            new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
+            return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
+        }
+    }
 }

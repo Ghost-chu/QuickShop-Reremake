@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -34,47 +32,50 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubCommand_Sell implements CommandProcesser {
 
-  private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin = QuickShop.instance;
 
-  @NotNull
-  @Override
-  public List<String> onTabComplete(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public void onCommand(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    if (!(sender instanceof Player)) {
-      sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
-      return;
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
     }
 
-    final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+    @Override
+    public void onCommand(
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
+            return;
+        }
 
-    if (!bIt.hasNext()) {
-      sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-      return;
+        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+
+        if (!bIt.hasNext()) {
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            return;
+        }
+
+        while (bIt.hasNext()) {
+            final Block b = bIt.next();
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+
+            if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+                continue;
+            }
+
+            shop.setShopType(ShopType.SELLING);
+            // shop.setSignText();
+            shop.update();
+            sender.sendMessage(
+                    MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+            return;
+        }
+        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
     }
-
-    while (bIt.hasNext()) {
-      final Block b = bIt.next();
-      final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-      if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-        continue;
-      }
-
-      shop.setShopType(ShopType.SELLING);
-      // shop.setSignText();
-      shop.update();
-      sender.sendMessage(
-          MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
-      return;
-    }
-    sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-  }
 }

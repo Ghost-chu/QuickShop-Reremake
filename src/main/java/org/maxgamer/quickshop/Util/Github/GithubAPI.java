@@ -21,38 +21,39 @@ package org.maxgamer.quickshop.Util.Github;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.net.URL;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 
-public class GithubAPI {
-  private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+import java.net.URL;
 
-  @Nullable
-  public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
-    String json =
-        HttpRequest.get(
-                new URL(
-                    "https://api.github.com/repos/Ghost-chu/QuickShop-Reremake/releases/latest"))
-            .execute()
-            .returnContent()
-            .asString("UTF-8");
-    ReleaseJsonContainer result = gson.fromJson(json, ReleaseJsonContainer.class);
-    for (ReleaseJsonContainer.AssetsBean asset : result.getAssets()) {
-      if (asset.getName().contains("original-")) {
-        continue;
-      }
-      if (asset.getName().contains("-javadoc")) {
-        continue;
-      }
-      if (asset.getName().contains("-sources")) {
-        continue;
-      }
-      if (asset.getName().contains("-shaded")) {
-        continue;
-      }
-      return asset;
+public class GithubAPI {
+    private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+
+    @Nullable
+    public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
+        String json =
+                HttpRequest.get(
+                        new URL(
+                                "https://api.github.com/repos/Ghost-chu/QuickShop-Reremake/releases/latest"))
+                        .execute()
+                        .returnContent()
+                        .asString("UTF-8");
+        ReleaseJsonContainer result = gson.fromJson(json, ReleaseJsonContainer.class);
+        for (ReleaseJsonContainer.AssetsBean asset : result.getAssets()) {
+            if (asset.getName().contains("original-")) {
+                continue;
+            }
+            if (asset.getName().contains("-javadoc")) {
+                continue;
+            }
+            if (asset.getName().contains("-sources")) {
+                continue;
+            }
+            if (asset.getName().contains("-shaded")) {
+                continue;
+            }
+            return asset;
+        }
+        return null;
     }
-    return null;
-  }
 }

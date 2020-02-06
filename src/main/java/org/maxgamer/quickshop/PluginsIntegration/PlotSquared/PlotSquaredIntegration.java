@@ -35,54 +35,55 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegration implements IntegratedPlugin {
-  private BooleanFlag createFlag;
-  private BooleanFlag tradeFlag;
-  private QuickShop plugin;
+    private BooleanFlag createFlag;
+    private BooleanFlag tradeFlag;
+    private QuickShop plugin;
 
-  public PlotSquaredIntegration(QuickShop plugin) {
-    this.plugin = plugin;
-    // PlotAPI plotAPI = new PlotAPI();
-  }
+    public PlotSquaredIntegration(QuickShop plugin) {
+        this.plugin = plugin;
+        // PlotAPI plotAPI = new PlotAPI();
+    }
 
-  @Override
-  public @NotNull String getName() {
-    return "PlotSquared";
-  }
+    @Override
+    public @NotNull String getName() {
+        return "PlotSquared";
+    }
 
-  @Override
-  public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-    com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
-        new com.github.intellectualsites.plotsquared.plot.object.Location(
-            location.getWorld().getName(),
-            location.getBlockX(),
-            location.getBlockY(),
-            location.getBlockZ());
-    Plot plot = pLocation.getPlot();
-    return this.createFlag.isTrue(plot);
-  }
+    @Override
+    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
+                new com.github.intellectualsites.plotsquared.plot.object.Location(
+                        location.getWorld().getName(),
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        return this.createFlag.isTrue(plot);
+    }
 
-  @Override
-  public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-    com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
-        new com.github.intellectualsites.plotsquared.plot.object.Location(
-            location.getWorld().getName(),
-            location.getBlockX(),
-            location.getBlockY(),
-            location.getBlockZ());
-    Plot plot = pLocation.getPlot();
-    return this.tradeFlag.isFalse(plot);
-  }
+    @Override
+    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
+                new com.github.intellectualsites.plotsquared.plot.object.Location(
+                        location.getWorld().getName(),
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        return this.tradeFlag.isFalse(plot);
+    }
 
-  @Override
-  public void load() {
-    this.createFlag = new BooleanFlag("quickshop-create");
-    this.tradeFlag = new BooleanFlag("quickshop-trade");
-    Flags.registerFlag(this.createFlag);
-    Flags.registerFlag(this.tradeFlag);
-    plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-    Util.debugLog("Success register " + getName() + " flags.");
-  }
+    @Override
+    public void load() {
+        this.createFlag = new BooleanFlag("quickshop-create");
+        this.tradeFlag = new BooleanFlag("quickshop-trade");
+        Flags.registerFlag(this.createFlag);
+        Flags.registerFlag(this.tradeFlag);
+        plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        Util.debugLog("Success register " + getName() + " flags.");
+    }
 
-  @Override
-  public void unload() {}
+    @Override
+    public void unload() {
+    }
 }
