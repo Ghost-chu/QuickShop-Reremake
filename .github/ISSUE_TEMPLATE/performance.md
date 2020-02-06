@@ -6,6 +6,12 @@ labels: 'performance'
 assignees: ''
 
 ---
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+README BEFORE REPORTING:  
+Don't upload timings, we only accept Spark sampler result. If you issue not upload spark sampler result, you issue will closed without any reply.  
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+
+
 **Describe the issue**
 A clear and concise description of what the bug is.
 
@@ -31,10 +37,6 @@ If applicable, add screenshots to help explain your problem.
 **Spark result link: (Require)**
  Install the spark at https://www.spigotmc.org/resources/spark.57242/, and execute /spark sampler --start to enable the spark sampler, wait 10mins and execute /spark sampler --stop to get sample result.
 - 【REPLACE ME TO SPARK PASTE LINK】
-
-**Timings link: (Optional)**
- Execute command /timings on to enable timings and wait for 10mins, then execute /timings paste to get timings link.
-- 【REPLACE ME TO TIMINGS PASTE LINK】
 
 
 **Additional context**

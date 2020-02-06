@@ -1,12 +1,29 @@
 name: ${name}
 main: ${package}.${name}
 version: ${project.version}
-authors: [BukkitCommonsStudio,Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
+authors: [BukkitCommonsStudio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
 #Now we only need Vault.
-softdepend: [Vault, Reserve, LangUtils, PlaceholderAPI, NoCheatPlus, LuckPerms, PermissionEx, GroupManager, ClearLag, ProtocolLib]
+softdepend:
+  - Vault
+  - Reserve
+  - PlaceholderAPI
+  - NoCheatPlus
+  - LuckPerms
+  - PermissionEx
+  - GroupManager
+  - ClearLag
+  - Essentials
+  - CMI
+  - PlotSquared
+  - Residence
+  - Towny
+  - WorldGuard
+  - Factions
+  - Essentials
+  - ProtocolLib
 
 api-version: 1.13
 
@@ -97,4 +114,10 @@ permissions:
     default: op
   quickshop.cleanghost:
     description: Permission to use /qs cleanghost
+    default: op
+  quickshop.reset:
+    description: Permission to use /qs reset
+    default: op
+  quickshop.bypasscreatefee:
+    description: Permission to bypass creation fee
     default: op

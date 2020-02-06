@@ -19,42 +19,44 @@
 
 package org.maxgamer.quickshop.Watcher;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
- * Check the shops after server booted up, make sure shop can correct self-deleted when container lost.
+ * Check the shops after server booted up, make sure shop can correct self-deleted when container
+ * lost.
  */
+// unused, pending to remove
 public class ShopContainerWatcher extends BukkitRunnable {
-    private QuickShop plugin;
-    private Queue<Shop> checkQueue = new LinkedList<>();
+  // private QuickShop plugin;
+  private Queue<Shop> checkQueue = new LinkedList<>();
 
-    public ShopContainerWatcher(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-    }
+  public ShopContainerWatcher(@NotNull QuickShop plugin) {
+    // this.plugin = plugin;
+  }
 
-    public void scheduleCheck(@NotNull Shop shop){
-        checkQueue.add(shop);
-    }
+  public void scheduleCheck(@NotNull Shop shop) {
+    checkQueue.add(shop);
+  }
 
-    @Override
-    public void run() {
-        long beginTime = System.currentTimeMillis();
-        Shop shop = checkQueue.poll();
-        while (shop != null) {
-            if(shop instanceof ContainerShop){
-                ((ContainerShop) shop).checkContainer();
-            }
-            if(System.currentTimeMillis() - beginTime > 45){ //Don't let quickshop eat more than 45 ms per tick.
-                break;
-            }
-            shop = checkQueue.poll();
-        }
+  @Override
+  public void run() {
+    long beginTime = System.currentTimeMillis();
+    Shop shop = checkQueue.poll();
+    while (shop != null) {
+      if (shop instanceof ContainerShop) {
+        ((ContainerShop) shop).checkContainer();
+      }
+      if (System.currentTimeMillis() - beginTime
+          > 45) { // Don't let quickshop eat more than 45 ms per tick.
+        break;
+      }
+      shop = checkQueue.poll();
     }
+  }
 }

@@ -19,16 +19,15 @@
 
 package org.maxgamer.quickshop.Database;
 
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Util.Util;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.Util;
 
 /**
  * A Util to execute all SQLs.
@@ -76,6 +75,17 @@ public class DatabaseHelper {
         } catch (SQLException e) {
             //ignore
         }
+        if (QuickShop.instance.getDatabase().getCore() instanceof MySQLCore) {
+            try {
+                ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
+                        .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
+                ps.execute();
+                ps.close();
+            } catch (SQLException e) {
+                //ignore
+            }
+        }
+
     }
 
     public void cleanMessage(long weekAgo) {
@@ -113,6 +123,10 @@ public class DatabaseHelper {
         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
                 + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+            createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
+        }
         return st.execute(createTable);
     }
 

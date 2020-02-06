@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 76
+config-version: 81
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -50,9 +50,6 @@ force-bukkit-chat-handler: false
 
 #Disallow QuickShop-Reremake to send metrics data to bStats.
 disabled-metrics: false
-#Use "Anonymous" to replace your server name, BUT it will make it so we cannot send important alerts.
-#Usually, if we have an important alert that needs to be sent. We will get your servers name from bStats and Google your servers discord and send an alert to the server administrators there.
-anonymous-metrics: false
 
 #Should QS be allowed to check for updates on SpigotMC.org?
 updater: true
@@ -86,8 +83,14 @@ decimal-format: "#,###.##"
 #Allow plugin send alert when something trying make a displayItem exploit
 send-display-item-protection-alert: true
 
+#Allow plugin send alert when something trying steal shop
+send-shop-protection-alert: true
+
 #Disable the debug silent logger. This should can fix heavy lagging on some overloaded server, but AFTER ENABLE IT, YOU WILL LOSE OUR SUPPORT UNTIL YOU RE-ENABLE IT.
 disable-debuglogger: false
+
+# Log4j provides better logging performance, turn this off when you are suffering logging issues.
+enable-log4j: true
 
 #Force plugin running under a platform
 #0=AUTO
@@ -108,6 +111,8 @@ database:
   prefix: none
   usessl: false
   queue: true
+  # Auto set table encoding to utf8mb4 (beta)
+  auto-fix-encoding-issue-in-database: false
 
 #Limits the number of shops a person can create and own at a single time.
 limits:
@@ -176,10 +181,10 @@ shop:
   display-auto-despawn: false
 
   #When range region no players, the display will despawn.
-  display-despawn-range: 10
+  display-despawn-range: 20
 
   #How long ticks we should check the shops once to decide despawn/spawn display?
-  display-check-time: 10
+  display-check-time: 40
 
   #Use enhance display protect
   enchance-display-protect: false
@@ -201,10 +206,6 @@ shop:
 
   #Ignore trade messages if the shop is unlimited
   ignore-unlimited-shop-messages: false
-
-  #Enable this if you only want players to create shops in a special region
-  #When you enable this, you only can create shop in the AreaShop's area
-  special-region-only: false
 
   #Allow auto fetching player shops, if you disable this, players need to use /qs fetchmessage to fetch the shops history messages. (Disabling it may cause database issues.)
   auto-fetch-shop-messages: true
@@ -272,6 +273,9 @@ shop:
   #THIS MAY BROKEN SOMETHING
   allow-free-shop: false
 
+  #Use fast algorithm for ShopManager#getShopIncludeAttached, it should improve HUGE performance on it. (BETA)
+  use-fast-shop-search-algorithm: false
+
   #The shop ongoing fee, if a shop's owner had no enough money, shop will auto-remove.
   ongoing-fee:
     enable: false
@@ -289,7 +293,8 @@ shop:
     #0=Call Bukkit try update the ItemStack
     #1=Call Bukkit direct load the ItemStack
     method: 0
-
+  #If a block/entity trigged protection, quickshop should break/kill it?
+  remove-protection-trigger: true
 #List of items that can't be sold in shops.  Anyone with quickshop.bypass.<itemID> can bypass it
 blacklist:
   - Bedrock
@@ -314,10 +319,9 @@ effect:
     onclick: true
 #Item matcher, don't touch it if you didn't know how to use it.
 matcher:
-  #Matcher type
-  #0=QuickShop user-friendly matcher.
-  #1=Bukkit standard item matcher.
-  #2=Java equals matcher.
+  # Matcher type
+  #0= QuickShop item matcher with configurable options below.
+  #1= Bukkit item matcher, can be more accurate.
   work-type: 0
   #For Item
   item:
@@ -339,6 +343,8 @@ matcher:
     itemflags: true
     #Plugin should check the item custommodeldata?
     custommodeldata: true
+    #Plugin should check the item bookmetas?
+    books: true
 cachingpool:
   # Did you want use caching pool?
   # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
@@ -349,3 +355,117 @@ cachingpool:
 mixedeconomy:
   deposit: "eco give {0} {1}"
   withdraw: "eco take {0} {1}"
+#Integration is under BETA stage, please report any bugs to our Issue Tracker.
+integration:
+  #Towny Integration Component
+  towny:
+    enable: false
+    #Player if want create a shop, player must pass which checks?
+    #You can use multi checks in same time.
+    #Priority: UP to DOWN.
+    #
+    #Avaliable field:
+    #OWN = Player must create the shop on their plot.
+    #MODIFY = Player must have ability to build at the target plot.
+    #SHOPTYPE = Player must create the shop on SHOP type plot.
+    create:
+      - SHOPTYPE
+      - MODIFY
+    #Player if want trade with the shop, player must pass which checks?
+    #You can use multi checks in same time.
+    #Priority: UP to DOWN.
+    #
+    #Avaliable field:
+    #OWN = Player must create the shop on their plot.
+    #MODIFY = Player must have ability to build at the target plot.
+    #SHOPTYPE = Player must create the shop on SHOP type plot.
+    trade: []
+  #WorldGuard Integration Component
+  worldguard:
+    enable: false
+      #Player if want create a shop, player must pass which checks?
+      #You can use multi checks in same time.
+      #Priority: UP to DOWN
+      #
+      #Avaliable field:
+      #FLAG = Region must set quickshop-create flag available for players.
+      #BUILD = Player must have ability to build at the target region.
+      #CHEST_ACCESS = Player must can access chest.
+      #INTERACT = Player must have ability to interact in the target region.
+    create:
+      - FLAG
+      - CHEST_ACCESS
+        #Player if want create a shop, player must pass which checks?
+        #You can use multi checks in same time.
+        #Priority: UP to DOWN
+        #
+        #Avaliable field:
+        #FLAG = Region must set quickshop-trade flag available for players.
+        #BUILD = Player must have ability to build at the target region.
+        #CHEST_ACCESS = Player must can access chest.
+      #INTERACT = Player must have ability to interact in the target region.
+    trade: []
+  plotsquared:
+    enable: false
+    #Player if want create a shop, player must have quickshop-create flag
+    #Player if want trade a shop, player must have quickshop-trade flag
+  residence:
+    enable: false
+      #Player if want create a shop, player must pass which checks?
+      #You can use multi checks in same time.
+      #Priority: UP to DOWN
+      #
+      #Avaliable field:
+      #FLAG = Region must set quickshop.create flag available for players.
+      #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    create:
+      - FLAG
+      - interact
+      - use
+      #Player if want trade a shop, player must pass which checks?
+      #You can use multi checks in same time.
+      #Priority: UP to DOWN
+      #
+      #Avaliable field:
+      #FLAG = Region must set quickshop.create flag available for players.
+      #<OTHER> = Other avaliable flags in Residence plugin or Residence addons registered flags.
+    trade: []
+  factions:
+    enable: false
+      #Player if want create a shop, player must pass which checks?
+    create:
+      #Faction require the status must match with under:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: true
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #Player must have flags in the faction:
+      flags:
+        - CONTAINER
+        - ECONOMY
+    #Faction require the status must match with under?
+    trade:
+      #Faction require:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: false
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #Player must have flags in the faction:
+      flags: []
+
+
+
+
+
+
+

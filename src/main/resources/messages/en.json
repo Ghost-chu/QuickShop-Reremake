@@ -3,7 +3,7 @@
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-version": "Support Version: Reremake",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": 25,
+  "language-version": 27,
   "not-looking-at-shop": "&cNo QuickShop was found, you must be looking at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -224,9 +224,11 @@
       "qualityverifyed": "[Quality]",
       "github": "[Github]",
       "spigotmc": "[SpigotMC]",
-      "bukkitdev": "[BukkitDev]"
+      "bukkitdev": "[BukkitDev]",
+      "master": "[Master]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
-  "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price."
+  "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
+  "complete": "&aComplete!"
 }

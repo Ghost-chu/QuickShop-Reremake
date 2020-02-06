@@ -1,15 +1,15 @@
 {
-    "translation-author": "\u7ffb\u8bd1\u8005\uff1a&b&lMashirl",
-    "translation-version": "\u652f\u6301\u7248\u672c\uff1a&b&lReremake",
-    "translation-contributors": "\u8d21\u732e\u8005\uff1a&b&l ",
-    "translation-country": "\u672c\u5730\u5316\u8bed\u8a00\uff1a&b&l\u7b80\u4f53\u4e2d\u6587 (zh_CN)",
-    "language-version": "24",
+    "translation-author": "\u7ffb\u8bd1\u8005\uff1a&b&lMashirl happyvalley yzhh You_wen",
+    "translation-version": "\u652f\u6301\u7248\u672c\uff1aReremake",
+    "translation-contributors": "\u5f00\u53d1\u8d21\u732e\u8005\uff1aTimtower, Netherfoam, KaiNoMood and Mgazul",
+    "translation-country": "\u672c\u5730\u5316\u8bed\u8a00\uff1a\u7b80\u4f53\u4e2d\u6587 (zh_CN)",
+    "language-version": "27",
     "not-looking-at-shop": "&c\u6ca1\u6709\u627e\u5230\u5546\u5e97, \u4f60\u5fc5\u987b\u9009\u4e2d\u7bb1\u5b50\u624d\u884c\u3002",
     "no-anythings-in-your-hand": "&c\u4f60\u7684\u624b\u91cc\u6ca1\u6709\u4efb\u4f55\u7269\u54c1\u3002",
     "no-permission": "&c\u4f60\u6ca1\u6709\u6743\u9650\u8fd9\u6837\u505a\u3002",
     "no-creative-break": "&c\u4f60\u4e0d\u80fd\u5728\u521b\u9020\u6a21\u5f0f\u7834\u574f\u5176\u5b83\u73a9\u5bb6\u7684\u5546\u5e97\uff0c\u8bf7\u4f7f\u7528\u751f\u5b58\u6a21\u5f0f\u3002",
     "no-double-chests": "&c\u4f60\u6ca1\u6709\u6743\u9650\u521b\u5efa\u5927\u7bb1\u5b50\u5546\u5e97\u3002",
-    "shop-already-owned": "&c\u8fd9\u5df2\u7ecf\u662f\u4e00\u4e2a\u5546\u5e97\u4e86",
+    "shop-already-owned": "&c\u8fd9\u5df2\u7ecf\u662f\u4e00\u4e2a\u5546\u5e97\u4e86\u3002",
     "chest-was-removed": "&c\u5f53\u524d\u7bb1\u5b50\u5df2\u88ab\u79fb\u9664\u3002",
     "price-too-cheap": "&c\u4ef7\u683c\u5fc5\u987b\u5927\u4e8e&e${0}",
     "no-price-change": "&c\u8fd9\u4e0d\u4f1a\u5bfc\u81f4\u4ef7\u683c\u53d8\u52a8\uff01",
@@ -88,7 +88,7 @@
         "damage-percent-remaining": "&e{0}% &a\u5269\u4f59",
         "this-shop-is-buying": "&a\u8fd9\u4e2a\u5546\u5e97&d\u6536\u8d2d&a\u7269\u54c1\u3002",
         "this-shop-is-selling": "&a\u8fd9\u4e2a\u5546\u5e97&d\u51fa\u552e&a\u7269\u54c1\u3002",
-        "effects": "&a\u6548\u679c: &e{0}",
+        "effects": "&a\u6548\u679c",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
@@ -203,29 +203,32 @@
             "\u5654\u5654\u549a\uff01\u65b0\u7248\u672c{0} \u5df2\u7ecf\u53d1\u5e03\uff0c\u5feb\u5347\u7ea7!",
             "\u5728\uff1f{0} \u6765\u4e86\uff0c\u4f60\u8fd8\u5728\u4f7f\u7528{1}",
             "\u770b\u8d77\u6765\u4f60\u9700\u8981\u66f4\u65b0\u4e86\uff0c{0} \u7248\u672c\u5df2\u7ecf\u53d1\u5e03\u4e86\uff01",
-            "Ooops! {0} is now released, you are on {1}!",
-            "I promise, QS has been updated to {0}, why have you not updated?",
-            "Fixing and re... Sorry {0} is released!",
-            "Err! Nope, this is not an error, {0} has just been released!",
-            "OMG! {0} came out! Why are you still using {1}?",
-            "Todays News: QuickShop has been updated to {0}!",
-            "Plugin K.I.A, You should update to {0}!",
-            "Fuze is fuzeing update {0}, save update!",
-            "There is an update commander, {0} has just come out!",
-            "Look me style---{0} updated, your still using {1}",
-            "Ahhhhhhh! New update {0}! Update!",
-            "What U thinking? {0} has been released! Update!"
+            "\u5662\uff01{0}\u5df2\u7ecf\u53d1\u5e03\u4e86\u5440,\u4f60\u8fd8\u5728\u7528 {1}!",
+            "\u6211\u4fdd\u8bc1\uff0cQS\u5df2\u7ecf\u5347\u7ea7\u5230\u4e86 {0},\u4f60\u4e3a\u4ec0\u4e48\u6ca1\u6709\u5347\u7ea7\uff1f",
+            "\u4fee\u590d\u5e76\u66f4\u65b0\u4e86...\u62b1\u6b49\u5176\u5b9e\u662f{0}\u7248\u672c\u5df2\u7ecf\u53d1\u5e03\uff01",
+            "\u9519\u8bef\uff01\u5176\u5b9e\u5e76\u6ca1\u6709\u9519\u8bef\uff0c\u53ea\u662f {0} \u7248\u672c\u5df2\u7ecf\u53d1\u5e03\u4e86\uff01",
+            "\u54e6\u4e70\u5676\uff01{0}\u5df2\u7ecf\u51fa\u4e86\u5440\uff01\u4f60\u4e3a\u4ec0\u4e48\u8fd8\u5728\u7528 {1}?",
+            "\u4eca\u65e5\u65b0\u95fb\uff1aQuickShop\u5df2\u7ecf\u66f4\u65b0\u81f3 {0} \uff01",
+            "\u63d2\u4ef6\u786e\u8ba4\u5df2\u9635\u4ea1\uff0c\u4f60\u73b0\u5728\u5e94\u8be5\u5347\u7ea7\u63d2\u4ef6\u5230 {0} \uff01",
+            "\u8fdb\u653b\u65b9\u6b63\u5728\u8fdb\u653b\u66f4\u65b0 {0}\uff0c\u6551\u6551\u66f4\u65b0\u5427\uff01",
+            "\u8fd9\u91cc\u662f\u5347\u7ea7\u6307\u6325\u5b98\uff0c{0}\u7248\u672c\u521a\u521a\u53d1\u5e03\u4e86\uff01",
+            "\u770b\u6211\u7684Style\u2192{0} \u51fa\u4e86, \u4f60\u4e3a\u4ec0\u4e48\u8fd8\u5728\u7528 {1}\u5462\uff1f",
+            "\u554a\u554a\u554a\u554a\u554a\u554a\u554a\u554a\u554a\u554a\uff01\u66f4\u65b0 {0} \u6765\u4e86\uff01\u5feb\u5347\u7ea7\uff01",
+            "\u4f60\u5728\u60f3\u4ec0\u4e48\u5462\uff1f{0}\u5df2\u7ecf\u53d1\u5e03\u4e86\uff01\u5feb\u66f4\u65b0\uff01"
         ],
-        "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.",
+        "remote-disable-warning": "&c\u8fd9\u4e2a\u7248\u672c\u7684QuickShop\u5df2\u7ecf\u88ab\u8fdc\u7a0b\u670d\u52a1\u5668\u505c\u7528\u4e86,\u8fd9\u610f\u5473\u7740\u8fd9\u4e2a\u7248\u672c\u7684QS\u53ef\u80fd\u5b58\u5728\u7740\u4e25\u91cd\u7684\u95ee\u9898\uff0c\u8bf7\u5728\u6211\u4eec\u7684SpigotMC\u63d2\u4ef6\u9875\u9762:{0}\u91cc\u5bfb\u627e\u8be6\u7ec6\u4fe1\u606f\u3002\u8fd9\u4e2a\u8b66\u544a\u4f1a\u51fa\u73b0\u6309\u5e76\u4e14\u5728\u4f60\u7684\u63a7\u5236\u53f0\u4e0a\u901a\u77e5\u76f4\u5230\u4f60\u4f7f\u7528\u5176\u4ed6\u6ca1\u6709\u88ab\u505c\u7528\u7684\u7248\u672c\u6765\u66ff\u6362\u8fd9\u4e2a\u7248\u672c\uff0c\u505c\u7528\u540e\u4e0d\u5f71\u54cd\u60a8\u7684\u670d\u52a1\u5668\u7684\u6b63\u5e38\u8fd0\u884c\u3002",
         "label": {
-            "unstable": "[Unstable]",
-            "stable": "[Stable]",
-            "lts": "[LTS]",
-            "qualityverifyed": "[Quality]",
+            "unstable": "[\u4e0d\u7a33\u5b9a]",
+            "stable": "[\u7a33\u5b9a]",
+            "lts": "[\u957f\u671f\u670d\u52a1]",
+            "qualityverifyed": "[\u8d28\u91cf]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[\u5927\u5e08]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!"
+    "shop-removed-cause-ongoing-fee": "&c\u4f60\u5728 {0} \u7684\u5546\u5e97\u5df2\u7ecf\u88ab\u79fb\u9664\u4e86\uff0c\u56e0\u4e3a\u4f60\u6ca1\u6709\u8db3\u591f\u7684\u8d44\u91d1\u53bb\u7ef4\u6301\u5b83\uff01",
+    "digits-reach-the-limit": "&c\u4f60\u8f93\u5165\u7684\u4ef7\u683c\u5c0f\u6570\u70b9\u540e\u9762\u7684\u6570\u5b57\u5df2\u7ecf\u8fbe\u5230\u4e86\u6781\u9650\u3002",
+    "complete": "&a\u5b8c\u6210\uff01"
 }

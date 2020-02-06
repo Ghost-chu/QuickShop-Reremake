@@ -1,9 +1,9 @@
 {
-    "translation-author": "\u7ffb\u8b6f\u8005: &b&lmoontai0724 & Tsuna",
-    "translation-version": "\u652f\u63f4\u7248\u672c: &b&lReremake",
-    "translation-contributors": "\u5354\u4f5c\u8005: &b&l",
-    "translation-country": "\u8a9e\u8a00: &b&l\u7e41\u9ad4\u4e2d\u6587 Traditional Chinese (zh_TW)",
-    "language-version": "24",
+    "translation-author": "\u8b6f\u5e2b: &b&lmoontai0724 & Tsuna & \u97f3\u6a02",
+    "translation-version": "\u652f\u63f4\u7248\u672c: Reremake",
+    "translation-contributors": "\u5354\u4f5c\u8005: Timtower, Netherfoam, KaiNoMood, Mgazul \u548cAndre_601",
+    "translation-country": "\u8a9e\u8a00: &b&l\u7e41\u9ad4\u4e2d\u6587 Chinese Traditional (zh_TW)",
+    "language-version": "27",
     "not-looking-at-shop": "&c\u6c92\u6709\u627e\u5230\u5546\u5e97, \u60a8\u5fc5\u9808\u770b\u8457\u4e00\u500b\u5546\u5e97!",
     "no-anythings-in-your-hand": "&c\u60a8\u7684\u624b\u4e2d\u662f\u7a7a\u7684\u3002",
     "no-permission": "&c\u60a8\u6c92\u6709\u6b0a\u9650\u57f7\u884c\u9019\u500b\u6307\u4ee4\u3002",
@@ -88,7 +88,7 @@
         "damage-percent-remaining": "&a\u8010\u4e45\u5ea6: &e\u5269\u9918 {0}%",
         "this-shop-is-buying": "&a\u6b64\u5546\u5e97\u662f &d\u6536\u8cfc\u7269\u54c1&a \u7684\u5546\u5e97\u3002",
         "this-shop-is-selling": "&a\u6b64\u5546\u5e97\u662f &b\u8ce3\u51fa\u7269\u54c1&a \u7684\u5546\u5e97\u3002",
-        "effects": "&a\u6548\u679c: &e{0}",
+        "effects": "&a\u85e5\u6c34\u6548\u679c: &e{0}",
         "commands": {
             "preview": "\/qs silentpreview {0} {1} {2} {3}"
         }
@@ -139,7 +139,7 @@
             "remove": "&e\u79fb\u9664\u60a8\u6240\u770b\u8457\u7684\u5546\u5e97",
             "amount": "&e\u5c07\u60a8\u7684\u52d5\u4f5c\u57f7\u884c\u6307\u5b9a\u7684\u6b21\u6578 (\u9069\u7528\u65bc\u804a\u5929\u63d2\u4ef6\u7684\u554f\u984c)",
             "about": "&e\u986f\u793a\u95dc\u65bc QuickShop \u7684\u8a0a\u606f",
-            "help": "&e\u986f\u793a QuickShop \u7684\u5e6b\u52a9\u8a0a\u606f",
+            "help": "&e\u986f\u793a QuickShop \u7684\u6307\u4ee4",
             "supercreate": "&e\u5275\u5efa\u4e00\u500b\u7565\u904e\u6240\u6709\u4fdd\u8b77\u6aa2\u67e5\u7684\u5546\u5e97"
         }
     },
@@ -224,8 +224,11 @@
             "qualityverifyed": "[\u54c1\u8cea\u8a8d\u8b49 Quality]",
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
-            "bukkitdev": "[BukkitDev]"
+            "bukkitdev": "[BukkitDev]",
+            "master": "[Master]"
         }
     },
-    "shop-removed-cause-ongoing-fee": "&c\u7531\u65bc\u60a8\u7684\u9918\u984d\u4e0d\u8db3, \u60a8\u5728 {0} \u7684\u5546\u5e97\u5df2\u7d93\u88ab\u79fb\u9664\u3002"
+    "shop-removed-cause-ongoing-fee": "&c\u7531\u65bc\u60a8\u7684\u9918\u984d\u4e0d\u8db3, \u60a8\u5728 {0} \u7684\u5546\u5e97\u5df2\u7d93\u88ab\u79fb\u9664\u3002",
+    "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
+    "complete": "&a\u5b8c\u6210!"
 }
