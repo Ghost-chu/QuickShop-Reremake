@@ -1110,7 +1110,15 @@ public class Util {
    * @return Map1 match Map2
    */
   public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-    return map2.entrySet().containsAll(map1.entrySet());
+    if(!map1.keySet().containsAll(map2.keySet())){
+      return false;
+    }
+    for (Object key : map1.keySet()){
+      if(!map2.get(key).equals(map1.get(key))){
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
