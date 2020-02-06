@@ -30,6 +30,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Shop.ShopProtectionFlag;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public abstract class DisplayItem {
     protected ItemStack originalItemStack;
     protected QuickShop plugin = QuickShop.instance;
     protected Shop shop;
+    protected boolean pendingRemoval;
 
    protected DisplayItem(@NotNull Shop shop) {
         this.shop = shop;
@@ -107,7 +110,7 @@ public abstract class DisplayItem {
      * @param shop      Target shop
      * @return Is target shop's display
      */
-    static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         List<String> lores = getItemLore(itemStack);
         if (lores != null) {
             String defaultMark = ShopProtectionFlag.getDefaultMark();
@@ -142,7 +145,7 @@ public abstract class DisplayItem {
      * @param shop      The shop
      * @return New itemStack with protect flag.
      */
-    static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
@@ -174,7 +177,7 @@ public abstract class DisplayItem {
      * @param shop      The shop
      * @return ShopProtectionFlag obj
      */
-    static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static ShopProtectionFlag createShopProtectionFlag(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
@@ -183,14 +186,14 @@ public abstract class DisplayItem {
      *
      * @return Moved
      */
-    boolean checkDisplayIsMoved();
+    public abstract boolean checkDisplayIsMoved();
 
     /**
      * Check the display is or not need respawn
      *
      * @return Need
      */
-    boolean checkDisplayNeedRegen();
+    public abstract boolean checkDisplayNeedRegen();
 
     /**
      * Check target Entity is or not a QuickShop display Entity.
@@ -198,34 +201,34 @@ public abstract class DisplayItem {
      * @param entity Target entity
      * @return Is or not
      */
-    boolean checkIsShopEntity(Entity entity);
+    public abstract boolean checkIsShopEntity(Entity entity);
 
     /**
      * Fix the display moved issue.
      */
-    void fixDisplayMoved();
+    public abstract void fixDisplayMoved();
 
     /**
      * Fix display need respawn issue.
      */
-    void fixDisplayNeedRegen();
+    public abstract void fixDisplayNeedRegen();
 
     /**
      * Remove the display entity.
      */
-    void remove();
+    public abstract void remove();
 
     /**
      * Remove this shop's display in the whole world.(Not whole server)
      *
      * @return Success
      */
-    boolean removeDupe();
+    public abstract boolean removeDupe();
 
     /**
      * Respawn the displays, if it not exist, it will spawn new one.
      */
-    void respawn();
+    public abstract void respawn();
 
     /**
      * Add the protect flags for entity or entity's hand item.
@@ -233,19 +236,19 @@ public abstract class DisplayItem {
      *
      * @param entity Target entity
      */
-    void safeGuard(Entity entity);
+    public abstract void safeGuard(Entity entity);
 
     /**
      * Spawn new Displays
      */
-    void spawn();
+    public abstract void spawn();
 
     /**
      * Get the display entity
      *
      * @return Target entity
      */
-    Entity getDisplay();
+    public abstract Entity getDisplay();
 
     /**
      * Get display should at location.
@@ -253,14 +256,14 @@ public abstract class DisplayItem {
      *
      * @return Should at
      */
-    Location getDisplayLocation();
+    public abstract Location getDisplayLocation();
 
     /**
      * Get plugin now is using which one DisplayType
      *
      * @return Using displayType.
      */
-    static DisplayType getNowUsing() {
+    public static DisplayType getNowUsing() {
         return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
     }
 
@@ -269,9 +272,9 @@ public abstract class DisplayItem {
      *
      * @return Spawned
      */
-    boolean isSpawned();
+    public abstract boolean isSpawned();
 
-  boolean pendingRemoval();
+    public abstract void pendingRemoval();
 
-  boolean isPendingRemoval();
+    public abstract boolean isPendingRemoval();
 }

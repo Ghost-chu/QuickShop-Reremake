@@ -251,8 +251,8 @@ public class RealDisplayItem extends DisplayItem {
   }
 
   @Override
-  public boolean pendingRemoval() {
-    return pendingRemoval = true;
+  public void pendingRemoval() {
+    pendingRemoval = true;
   }
 
   @Override

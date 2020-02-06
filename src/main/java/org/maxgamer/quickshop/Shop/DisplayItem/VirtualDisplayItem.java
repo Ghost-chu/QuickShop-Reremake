@@ -238,4 +238,14 @@ public class VirtualDisplayItem extends DisplayItem {
         return isDisplay;
     }
 
+    @Override
+    public void pendingRemoval() {
+        pendingRemoval=true;
+    }
+
+    @Override
+    public boolean isPendingRemoval() {
+        return pendingRemoval;
+    }
+
 }

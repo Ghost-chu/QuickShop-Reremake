@@ -302,7 +302,7 @@
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+            <systemPath>${pom.basedir}/lib/Towny-0.95.2.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -327,7 +327,7 @@
             <artifactId>Residence</artifactId>
             <version>4.4.8.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${pom.basedir}/lib/Residence4.8.8.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
