@@ -33,6 +33,7 @@ public interface IFile {
    * Loads from the data
    *
    * @param data the data
+   * @throws InvalidConfigurationException when config is invalid
    */
   void loadFromString(@NotNull String data) throws InvalidConfigurationException;
 
