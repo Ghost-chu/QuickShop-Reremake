@@ -131,8 +131,8 @@ public class BlockListener implements Listener {
       shop.delete();
       p.sendMessage(MsgUtil.getMessage("success-removed-shop", p));
     } else if (Util.isWallSign(b.getType())) {
-      if (b instanceof Sign) {
-        Sign sign = (Sign) b;
+      if (b.getState() instanceof Sign) {
+        Sign sign = (Sign) b.getState();
         if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
             || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
           // Ignore break lockette sign
