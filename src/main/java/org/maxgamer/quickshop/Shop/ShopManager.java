@@ -990,7 +990,7 @@ public class ShopManager {
     }
 
     if (this.useFastShopSearchAlgorithm) {
-      return getShopIncludeAttached_Fast(loc);
+      return getShopIncludeAttached_Fast(loc,false);
     } else {
       return getShopIncludeAttached_Classic(loc);
     }
@@ -1048,15 +1048,22 @@ public class ShopManager {
     return null;
   }
 
-  private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc) {
+  private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
     @Nullable Shop shop;
     shop = getShop(loc);
     if (shop != null) {
       return shop;
     }
-    @Nullable Block attachedBlock = Util.getSecondHalf(loc.getBlock());
-    if (attachedBlock != null) {
-      return getShop(attachedBlock.getLocation());
+    Block currentBlock = loc.getBlock();
+    if(!fromAttach && Util.isWallSign(currentBlock.getType())){
+      Block attached = Util.getAttached(currentBlock);
+      if(attached != null){
+        this.getShopIncludeAttached_Fast(attached.getLocation(),true);
+      }
+    }
+    @Nullable Block half = Util.getSecondHalf(currentBlock);
+    if (half != null) {
+      return getShop(half.getLocation());
     } else {
       return null;
     }
