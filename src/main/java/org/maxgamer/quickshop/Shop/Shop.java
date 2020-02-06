@@ -310,7 +310,8 @@ public interface Shop {
      *
      * @return status
      */
-    boolean isDelete();
+    boolean isDeleted();
+
     /**
      * Get the shop display entity
      *

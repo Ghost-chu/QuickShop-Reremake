@@ -892,10 +892,6 @@ public class ContainerShop implements Shop {
     return Util.canBeShop(this.getLocation().getBlock());
   }
 
-    @Override
-    public boolean isDelete() {
-        return false;
-    }
 
     @Override
   public @Nullable DisplayItem getDisplay() {
