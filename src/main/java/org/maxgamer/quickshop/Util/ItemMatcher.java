@@ -28,6 +28,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -112,6 +113,8 @@ public class ItemMatcher {
 }
 
 class ItemMetaMatcher {
+
+  private boolean banner;
   private boolean repaircost;
   private boolean attributes;
   private boolean custommodeldata;
@@ -134,6 +137,7 @@ class ItemMetaMatcher {
     this.itemflags = itemMatcherConfig.getBoolean("itemflags");
     this.custommodeldata = itemMatcherConfig.getBoolean("custommodeldata");
     this.book = itemMatcherConfig.getBoolean("book");
+    this.banner = itemMatcherConfig.getBoolean("banner");
   }
 
   private boolean attributeModifiersMatches(ItemMeta meta1, ItemMeta meta2) {
@@ -364,6 +368,9 @@ class ItemMetaMatcher {
     if(!bookMatches(meta1,meta2)){
       return false;
     }
+    if(!bannerMatches(meta1,meta2)){
+      return false;
+    }
     try {
       if (!customModelDataMatches(meta1, meta2)) {
         return false;
@@ -455,6 +462,24 @@ class ItemMetaMatcher {
       }
     }
     return true;
+  }
+  private boolean bannerMatches(ItemMeta meta1, ItemMeta meta2) {
+    if (!this.banner) {
+      return true;
+    }
+    Util.debugLog("Checking banner");
+    if((meta1 instanceof BannerMeta) != (meta2 instanceof BannerMeta)){
+      return false;
+    }
+    if(!(meta1 instanceof BannerMeta)){
+      return true;
+    }
+    BannerMeta bannerMeta1 = (BannerMeta)meta1;
+    BannerMeta bannerMeta2 = (BannerMeta)meta2;
+    if(bannerMeta1.numberOfPatterns() != bannerMeta2.numberOfPatterns()){
+      return false;
+    }
+    return Util.listMatches(bannerMeta1.getPatterns(), bannerMeta2.getPatterns());
   }
 
   private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
