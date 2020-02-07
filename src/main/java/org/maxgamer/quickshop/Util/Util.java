@@ -1109,17 +1109,18 @@ public class Util {
    * @param map2 Map2
    * @return Map1 match Map2
    */
-  public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
-    if(!map1.keySet().containsAll(map2.keySet())){
-      return false;
+public static boolean mapMatches(@NotNull Map<?,?> map1, @NotNull Map<?,?> map2) {
+        for (Object obj : map1.keySet()) {
+            if (!map2.containsKey(obj)) {
+                return false;
+            }
+            if (map1.get(obj) != map2.get(obj)) {
+                return false;
+            }
+        }
+        return true;
     }
-    for (Object key : map1.keySet()){
-      if(!map2.get(key).equals(map1.get(key))){
-        return false;
-      }
-    }
-    return true;
-  }
+
 
   /**
    * Match the list1 and list2
