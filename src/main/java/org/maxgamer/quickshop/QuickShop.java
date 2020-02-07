@@ -1382,6 +1382,11 @@ public class QuickShop extends JavaPlugin {
       getConfig().set("config-version", 81);
       selectedVersion = 81;
     }
+    if(selectedVersion == 81){
+      getConfig().set("matcher.item.banner",true);
+      getConfig().set("config-version", 82);
+      selectedVersion = 82;
+    }
     saveConfig();
     reloadConfig();
     File file = new File(getDataFolder(), "example.config.yml");
