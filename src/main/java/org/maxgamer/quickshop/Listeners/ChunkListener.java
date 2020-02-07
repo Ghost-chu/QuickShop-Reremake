@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.Listeners;
 
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -48,7 +49,7 @@ public class ChunkListener implements Listener {
       return;
     }
     //noinspection unchecked
-    ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onLoad);
+    Bukkit.getScheduler().runTaskLater(plugin,()-> ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onLoad),1);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
