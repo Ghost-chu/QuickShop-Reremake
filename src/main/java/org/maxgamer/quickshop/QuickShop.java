@@ -79,6 +79,7 @@ import org.maxgamer.quickshop.PluginsIntegration.PlotSquared.PlotSquaredIntegrat
 import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
+import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopLoader;
 import org.maxgamer.quickshop.Shop.ShopManager;
@@ -529,6 +530,8 @@ public class QuickShop extends JavaPlugin {
       runtimeCheck(this);
     } catch (RuntimeException e) {
       bootError = new BootError(e.getMessage());
+      //noinspection ConstantConditions
+      getCommand("qs").setTabCompleter(this); //Disable tab completer
       return;
     }
 
@@ -694,13 +697,29 @@ public class QuickShop extends JavaPlugin {
    *
    * @throws RuntimeException The error message, use this to create a BootError.
    */
-  private void runtimeCheck(QuickShop shop) throws RuntimeException {
+  private void runtimeCheck(QuickShop plugin) throws RuntimeException {
     if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
       getLogger()
           .severe(
               "FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
       throw new RuntimeException(
           "FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
+    }
+    String nmsVersion = Util.getNMSVersion();
+    IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
+    getLogger()
+        .info(
+            "Running QuickShop-Reremake on NMS version "
+                + nmsVersion
+                + " For Minecraft version "
+                + ReflectFactory.getServerVersion());
+    if (incompatibleChecker.isIncompatible(nmsVersion)) {
+      throw new RuntimeException(
+          "Your Minecraft version is nolonger supported: "
+              + ReflectFactory.getServerVersion()
+              + " ("
+              + nmsVersion
+              + ")");
     }
     try {
       getServer().spigot();
@@ -720,6 +739,20 @@ public class QuickShop extends JavaPlugin {
       }
       throw new RuntimeException("QuickShop doesn't support CatServer");
     }
+    if((getServer().getName().toLowerCase().contains("mohist")
+    ||Util.isClassAvailable("red.mohist.mohist"))){
+      //Because it passed compatible checker checks, Mohist version must is 1.13+.
+      //We doesn't need check the mohist is 1.12 or not.
+      //Because QuickShop doesn't support ANY 1.12 server.
+      int moi = 0;
+      while (moi < 3){
+        moi++;
+        getLogger().severe("WARN: QSRR compatibility on Mohist 1.13+ modded server currently unknown, report any issue to Mohist issue tracker or QuickShop issue tracker.");
+        if(DisplayType.fromID(getConfig().getInt("shop.display-type"))!=DisplayType.VIRTUALITEM){//Even VIRTUALITEM still WIP, but we should install checker first.
+          getLogger().warning("Switch to Virtual display item to make sure displays won't duped by mods.");
+        }
+      }
+    }
 
     if (Util.isDevEdition()) {
       getLogger().severe("WARNING: You are running QSRR in dev-mode");
@@ -735,22 +768,6 @@ public class QuickShop extends JavaPlugin {
         noopDisable = true;
         throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
       }
-    }
-    String nmsVersion = Util.getNMSVersion();
-    IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
-    getLogger()
-        .info(
-            "Running QuickShop-Reremake on NMS version "
-                + nmsVersion
-                + " For Minecraft version "
-                + ReflectFactory.getServerVersion());
-    if (incompatibleChecker.isIncompatible(nmsVersion)) {
-      throw new RuntimeException(
-          "Your Minecraft version is nolonger supported: "
-              + ReflectFactory.getServerVersion()
-              + " ("
-              + nmsVersion
-              + ")");
     }
   }
 
