@@ -290,7 +290,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
       @NotNull Command command,
       @NotNull String commandLabel,
       @NotNull String[] cmdArg) {
-    if (QuickShop.instance.getBootError() != null) {
+    if (QuickShop.instance.getBootError() != null && !cmdArg[0].equalsIgnoreCase("paste")) {
       QuickShop.instance.getBootError().printErrors(sender);
       return true;
     }
