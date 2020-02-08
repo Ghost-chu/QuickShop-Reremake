@@ -708,12 +708,16 @@ public class QuickShop extends JavaPlugin {
       getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
       throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
     }
-
     if (getServer().getName().toLowerCase().contains("catserver")
         || Util.isClassAvailable("moe.luohuayu.CatServer")
         || Util.isClassAvailable("catserver.server.CatServer")) {
       // Send FATAL ERROR TO CatServer's users.
-      getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async");
+      int csi = 0;
+      while (csi < 101){
+        csi++;
+        getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async, Go https://github.com/Luohuayu/QuickShop-Reremake to get CatServer Edition.");
+        getLogger().severe("FATAL: Don't report any bugs or other issues to QSRR repo.");
+      }
       throw new RuntimeException("QuickShop doen't support CatServer");
     }
 
