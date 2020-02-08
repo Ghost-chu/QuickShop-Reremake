@@ -735,14 +735,14 @@ public class QuickShop extends JavaPlugin {
       while (csi < 101){
         csi++;
         getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async, Go https://github.com/Luohuayu/QuickShop-Reremake to get CatServer Edition.");
-        getLogger().severe("FATAL: Don't report any bugs or other issues to QSRR repo.");
+        getLogger().severe("FATAL: Don't report any bugs or other issues to the Ghost-chu's QuickShop-Reremake repo as we do not support CatServer");
       }
       try {
         Thread.sleep(180000); //Make sure CS user 100% can see alert sent above.
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      this.bootError = new BootError("Cannot load on CatServer, go download CS edition, don't fucking asking us for support.","https://github.com/Luohuayu/QuickShop-Reremake");
+      this.bootError = new BootError("Cannot load on CatServer, go download CS edition, don't fucking asking us for support or we will send an army of angry bees your way.","https://github.com/Luohuayu/QuickShop-Reremake");
       return;
     }
     if((getServer().getName().toLowerCase().contains("mohist")
