@@ -32,7 +32,7 @@ public enum DisplayType {
   UNKNOWN(-1),
   REALITEM(0),
   ARMORSTAND(1),
-  VIRTUALITEM(2);
+  VIRTUALITEM(2); //WIP, pr later from sandtechnology
 
   private int id;
 
