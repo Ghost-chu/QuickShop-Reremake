@@ -718,7 +718,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async, Go https://github.com/Luohuayu/QuickShop-Reremake to get CatServer Edition.");
         getLogger().severe("FATAL: Don't report any bugs or other issues to QSRR repo.");
       }
-      throw new RuntimeException("QuickShop doen't support CatServer");
+      throw new RuntimeException("QuickShop doesn't support CatServer");
     }
 
     if (Util.isDevEdition()) {
