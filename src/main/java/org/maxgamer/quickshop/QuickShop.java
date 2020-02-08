@@ -408,7 +408,7 @@ public class QuickShop extends JavaPlugin {
     }
     Util.debugLog("Unloading all shops...");
     try {
-      this.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+      Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
     } catch (Throwable th) {
       // ignore, we didn't care that
     }
@@ -1431,8 +1431,14 @@ public class QuickShop extends JavaPlugin {
   private void replaceLogger() {
     try {
       Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
+
       if (logger != null) {
+        try{
         logger.set(this, new QuickShopLogger(this));
+        }catch (Throwable th){
+          logger.setAccessible(true);
+          logger.set(this, new QuickShopLogger(this));
+        }
       }
     } catch (Throwable e) {
       e.printStackTrace();
