@@ -767,7 +767,7 @@ public class ContainerShop implements Shop {
     blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
     OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
     final String signHeader =
-        MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
+        MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName());
 
     for (Block b : blocks) {
       if (b == null) {
