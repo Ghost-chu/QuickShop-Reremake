@@ -72,7 +72,7 @@ public class IntegrationHelper {
   public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
     integrations.forEach(
         integratedPlugin -> {
-          if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
+          if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
               == stage) {
             Util.debugLogHeavy("Calling for unload " + integratedPlugin.getName());
             integratedPlugin.unload();
