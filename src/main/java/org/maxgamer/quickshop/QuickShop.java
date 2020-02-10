@@ -665,6 +665,8 @@
 package org.maxgamer.quickshop;
 
 import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.ConditionFailedException;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.commands.QuickShopCommand;
@@ -697,11 +699,24 @@ public final class QuickShop extends JavaPlugin {
                 loader.ifPresent(quickShopLoader -> quickShopLoader.reloadPlugin(true))
             )
         );
-        loader.ifPresent(quickShopLoader ->
+        loader.ifPresent(quickShopLoader -> {
+            manager.getCommandConditions().addCondition(String[].class, "player", (c, exec, value) -> {
+                if (value == null || value.length == 0) {
+                    return;
+                }
+
+                final String playerName = value[c.getConfigValue("arg", 0)];
+
+                if (c.hasConfig("arg") && Bukkit.getPlayer(playerName) == null) {
+                    throw new ConditionFailedException(
+                        quickShopLoader.languageFile.error.player_not_found.build("%player_name%", () -> playerName)
+                    );
+                }
+            });
             manager.registerCommand(
                 new QuickShopCommand(quickShopLoader)
-            )
-        );
+            );
+        });
     }
 
     @Override

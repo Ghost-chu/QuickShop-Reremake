@@ -728,6 +728,28 @@ public final class LanguageFile extends BukkitLinkedManaged {
 
     }
 
+    @Instance
+    public final Errors error = new Errors();
+
+    @Section(path = "error")
+    public class Errors {
+
+        @Value
+        public Replaceable<String> player_not_found = match(s -> {
+            if (s.equals("en")) {
+                return Optional.of(
+                    Replaceable.of("%prefix% Player not found! (%player_name%)")
+                        .map(ColorUtil::colored)
+                        .replace(getPrefix())
+                        .replaces("%player_name%")
+                );
+            }
+
+            return Optional.empty();
+        });
+
+    }
+
     @Value
     public Replaceable<List<String>> help_messages = match(s -> {
         if (s.equals("en")) {
