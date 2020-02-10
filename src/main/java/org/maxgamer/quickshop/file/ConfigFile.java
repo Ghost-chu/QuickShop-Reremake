@@ -711,7 +711,7 @@ public final class ConfigFile extends BukkitManaged {
         private String storage_type = "sqlite";
 
         @Instance
-        public final MySQL mysql = new MySQL();
+        private final MySQL mysql = new MySQL();
 
         @Section(path = "mysql")
         public static class MySQL {
