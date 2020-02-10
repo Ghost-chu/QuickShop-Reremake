@@ -54,6 +54,13 @@ public final class QuickShopLoader {
 
     public void disablePlugin() {
         quickShop.getServer().getScheduler().cancelTasks(quickShop);
+
+
+        if (configFile.saving.save_when_plugin_disable) {
+            // TODO Add codes for saving data
+        }
+
+        sql.getDatabase().disconnect();
     }
 
 }
