@@ -5,17 +5,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.file.ConfigFile;
 
+import java.util.Optional;
+
 public final class QuickShop extends JavaPlugin {
 
-    @Nullable
-    private static QuickShop quickShop;
+    @NotNull
+    private static Optional<QuickShop> quickShop = Optional.empty();
 
-    @Nullable
-    private static QuickShopLoader loader;
+    @NotNull
+    private static Optional<QuickShopLoader> loader = Optional.empty();
 
     @Override
     public void onLoad() {
-        quickShop = this;
+        quickShop = Optional.of(this);
     }
 
     @Override
@@ -24,39 +26,30 @@ public final class QuickShop extends JavaPlugin {
 
         configFile.load();
 
-        loader = new QuickShopLoader(this, configFile);
+        loader = Optional.of(new QuickShopLoader(this, configFile));
 
         getServer().getScheduler().runTask(this, () ->
             getServer().getScheduler().runTaskAsynchronously(this, () ->
-                loader.reloadPlugin(true)
+                loader.ifPresent(quickShopLoader -> quickShopLoader.reloadPlugin(true))
             )
         );
     }
 
     @Override
     public void onDisable() {
-        if (loader != null) {
-            loader.disablePlugin();
-        }
+        loader.ifPresent(QuickShopLoader::disablePlugin);
     }
 
     @NotNull
     public static QuickShop getInstance() {
-        if (quickShop == null) {
-            throw new IllegalStateException("You cannot be used QuickShop plugin before its start!");
-        }
-
-        return quickShop;
+        return quickShop.orElseThrow(() ->
+            new IllegalStateException("You cannot be used QuickShop plugin before its start!"));
     }
 
     @NotNull
-    @SuppressWarnings("unused")
     public static QuickShopLoader getLoader() {
-        if (loader == null) {
-            throw new IllegalStateException("You cannot be used QuickShopLoader before its set!");
-        }
-
-        return loader;
+        return loader.orElseThrow(() ->
+            new IllegalStateException("You cannot be used QuickShopLoader before its set!"));
     }
 
 }
