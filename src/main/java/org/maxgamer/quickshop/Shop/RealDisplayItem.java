@@ -38,14 +38,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 @ToString
-public class RealDisplayItem implements DisplayItem {
+public class RealDisplayItem extends DisplayItem {
 
-  private static QuickShop plugin = QuickShop.instance;
-  boolean pendingRemoval;
-  @Nullable private ItemStack guardedIstack;
   @Nullable private Item item;
-  private ItemStack originalItemStack;
-  private Shop shop;
 
   /**
    * ZZ Creates a new display item.
@@ -53,9 +48,7 @@ public class RealDisplayItem implements DisplayItem {
    * @param shop The shop (See Shop)
    */
   RealDisplayItem(@NotNull Shop shop) {
-    this.shop = shop;
-    this.originalItemStack = new ItemStack(shop.getItem());
-    this.originalItemStack.setAmount(1);
+    super(shop);
 
     // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
   }
@@ -256,13 +249,4 @@ public class RealDisplayItem implements DisplayItem {
     return this.item.isValid();
   }
 
-  @Override
-  public boolean pendingRemoval() {
-    return pendingRemoval = true;
-  }
-
-  @Override
-  public boolean isPendingRemoval() {
-    return pendingRemoval;
-  }
 }

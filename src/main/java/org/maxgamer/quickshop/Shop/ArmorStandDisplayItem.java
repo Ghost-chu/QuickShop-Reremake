@@ -41,19 +41,13 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 @ToString
-public class ArmorStandDisplayItem implements DisplayItem {
+public class ArmorStandDisplayItem extends DisplayItem {
 
-  boolean pendingRemoval;
   @Nullable private volatile ArmorStand armorStand;
-  @Nullable private ItemStack guardedIstack;
-  private ItemStack originalItemStack;
-  private QuickShop plugin = QuickShop.instance;
-  private Shop shop;
+
 
   ArmorStandDisplayItem(@NotNull Shop shop) {
-    this.shop = shop;
-    this.originalItemStack = new ItemStack(shop.getItem());
-    this.originalItemStack.setAmount(1);
+    super(shop);
   }
 
   private static boolean isTool(Material material) {
@@ -340,16 +334,7 @@ public class ArmorStandDisplayItem implements DisplayItem {
 
   @Override
   public synchronized boolean isSpawned() {
-    return this.armorStand == null ? false : this.armorStand.isValid();
+    return this.armorStand != null && this.armorStand.isValid();
   }
 
-  @Override
-  public boolean pendingRemoval() {
-    return pendingRemoval = true;
-  }
-
-  @Override
-  public boolean isPendingRemoval() {
-    return pendingRemoval;
-  }
 }
