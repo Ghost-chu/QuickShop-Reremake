@@ -33,6 +33,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -63,7 +64,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 protocolManager.removePacketListener(packetListener);
                 return;
             }
-            if (!isDisplay && !isFull) {
+            if (!isDisplay && !isFull&&!Util.isLoaded(shop.getLocation())) {
                 return;
             }
             //chunk x
