@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
+import io.github.portlek.configs.util.ListToString;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShopLoader;
@@ -22,7 +23,17 @@ public final class QuickShopCommand extends BaseCommand {
     @Default
     @CommandPermission("quickshop.command.main")
     public void mainCommand(CommandSender sender) {
+        sender.sendMessage(
+            (String) loader.languageFile.help_messages.buildMap(list ->
+                new ListToString(list).value()
+            )
+        );
+    }
 
+    @Subcommand("help")
+    @CommandPermission("quickshop.command.help")
+    public void helpCommand(CommandSender sender) {
+        mainCommand(sender);
     }
 
     @Subcommand("reload")

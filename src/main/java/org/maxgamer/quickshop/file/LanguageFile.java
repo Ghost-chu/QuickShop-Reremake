@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import sun.java2d.loops.FillRect;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -63,5 +64,23 @@ public final class LanguageFile extends BukkitLinkedManaged {
         });
 
     }
+
+    @Value
+    public Replaceable<List<String>> help_messages = match(s -> {
+        if (s.equals("en")) {
+            return Optional.of(
+                Replaceable.of(
+                    "&a====== %prefix% &a======",
+                    "&7/qs &r> &eShows help message.",
+                    "&7/qs help &r> &eShows help message.",
+                    "&7/qs reload &r> &eReloads the plugin."
+                )
+                    .map(ColorUtil::colored)
+                    .replace(getPrefix())
+            );
+        }
+
+        return Optional.empty();
+    });
 
 }
