@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is BootError.java
+ * This file is a part of project QuickShop, the name is VirtualDisplayItem.java
  * Copyright (C) sandtechnology <https://github.com/sandtechnology>
  * Copyright (C) Bukkit Commons Studio and contributors
  *
