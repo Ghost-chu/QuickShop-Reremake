@@ -18,5 +18,5 @@ public final class ShopBasic implements Shop {
         this.uuid = uuid;
         this.location = location;
     }
-    
+
 }
