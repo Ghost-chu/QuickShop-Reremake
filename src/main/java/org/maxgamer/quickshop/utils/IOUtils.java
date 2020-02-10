@@ -7,7 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import org.jetbrains.annotations.NotNull;
 
-public class IOUtils {
+public final class IOUtils {
+
+    private IOUtils() {
+    }
+
     /**
      * Read the file to the String
      *

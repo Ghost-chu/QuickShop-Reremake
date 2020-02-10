@@ -7,8 +7,11 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class NMSUtils {
+public final class NMSUtils {
 
+    public NMSUtils() {
+    }
+    
     /**
      * Get the MinecraftServer class
      *

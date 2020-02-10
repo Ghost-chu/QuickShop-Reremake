@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public class MiscUtils {
+public final class MiscUtils {
+
+    private MiscUtils() {
+    }
+
     /**
      * Convert strArray to String. E.g "Foo, Bar"
      *

@@ -10,7 +10,11 @@ import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockUtils {
+public final class BlockUtils {
+
+    private BlockUtils() {
+    }
+
     /**
      * Fetches the block which the given sign is attached to
      *
