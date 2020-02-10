@@ -714,7 +714,7 @@ public final class QuickShop extends JavaPlugin {
                 }
             });
             manager.registerCommand(
-                new QuickShopCommand(quickShopLoader)
+                new QuickShopCommand()
             );
         });
     }
