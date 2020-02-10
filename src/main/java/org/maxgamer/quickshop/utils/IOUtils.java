@@ -16,16 +16,14 @@ public class IOUtils {
      */
     @NotNull
     public static String readToString(final @NotNull File file) {
-        final long filelength = file.length();
-        final byte[] filecontent = new byte[(int) filelength];
-        try {
-            FileInputStream in = new FileInputStream(file);
-            in.read(filecontent);
-            in.close();
+        final long fileLength = file.length();
+        final byte[] fileContent = new byte[(int) fileLength];
+        try(final FileInputStream in = new FileInputStream(file)) {
+            in.read(fileContent);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String(filecontent, StandardCharsets.UTF_8);
+        return new String(fileContent, StandardCharsets.UTF_8);
     }
 
     /**
