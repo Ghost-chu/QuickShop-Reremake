@@ -1,12 +1,12 @@
 package org.maxgamer.quickshop.utils;
 
 import java.util.Map;
+import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -19,8 +19,8 @@ public class ItemUtils {
    * @return ItemStack iStack
    * @throws InvalidConfigurationException when failed deserialize config
    */
-  @Nullable
-  public static ItemStack deserializeItemStack(@NotNull String config, final boolean forceLoad, final int mode) throws InvalidConfigurationException {
+  @NotNull
+  public static Optional<ItemStack> deserializeItemStack(@NotNull String config, final boolean forceLoad, final int mode) throws InvalidConfigurationException {
     final DumperOptions yamlOptions = new DumperOptions();
     yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
     yamlOptions.setIndent(2);
@@ -50,11 +50,11 @@ public class ItemUtils {
         }
       }
       yamlConfiguration.loadFromString(config);
-      return yamlConfiguration.getItemStack("item");
+      return Optional.ofNullable(yamlConfiguration.getItemStack("item"));
     } catch (Exception e) {
       e.printStackTrace();
       yamlConfiguration.loadFromString(config);
-      return yamlConfiguration.getItemStack("item");
+      return Optional.ofNullable(yamlConfiguration.getItemStack("item"));
     }
   }
 }
