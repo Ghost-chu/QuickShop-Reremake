@@ -70,6 +70,10 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+        <repository>
             <id>portlek</id>
             <url>https://dl.bintray.com/portlek/maven</url>
         </repository>
@@ -94,6 +98,17 @@
         <dependency>
             <groupId>io.github.portlek</groupId>
             <artifactId>configs-bukkit</artifactId>
+            <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>XSeries</artifactId>
+                    <groupId>com.github.cryptomorin</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.portlek</groupId>
+            <artifactId>Database</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
