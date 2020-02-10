@@ -677,16 +677,9 @@ import org.maxgamer.quickshop.QuickShopLoader;
 @CommandAlias("quickshop|qs")
 public final class QuickShopCommand extends BaseCommand {
 
-    @NotNull
-    private final QuickShopLoader loader;
-
-    public QuickShopCommand(@NotNull QuickShopLoader loader) {
-        this.loader = loader;
-    }
-
     @Default
     @CommandPermission("quickshop.command.main")
-    public void mainCommand(CommandSender sender) {
+    public void mainCommand(CommandSender sender, QuickShopLoader loader) {
         sender.sendMessage((String)
             loader.languageFile.help_messages.buildMap(list ->
                 new ListToString(list).value()
@@ -696,13 +689,13 @@ public final class QuickShopCommand extends BaseCommand {
 
     @Subcommand("help")
     @CommandPermission("quickshop.command.help")
-    public void helpCommand(CommandSender sender) {
-        mainCommand(sender);
+    public void helpCommand(CommandSender sender, QuickShopLoader loader) {
+        mainCommand(sender, loader);
     }
 
     @Subcommand("reload")
     @CommandPermission("quickshop.command.reload")
-    public void reloadCommand(CommandSender sender) {
+    public void reloadCommand(CommandSender sender, QuickShopLoader loader) {
         final long ms = System.currentTimeMillis();
 
         loader.reloadPlugin(false);
