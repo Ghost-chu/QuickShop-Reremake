@@ -178,6 +178,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>2.9.9</version>
@@ -221,7 +226,7 @@
             <artifactId>OpenInv</artifactId>
             <version>3.3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/OpenInv.jar</systemPath>
+            <systemPath>${project.basedir}/lib/OpenInv.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -253,7 +258,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.0.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Clearlag (2).jar</systemPath>
+            <systemPath>${project.basedir}/lib/Clearlag.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
@@ -271,7 +276,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -297,7 +302,7 @@
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Towny-0.95.2.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -322,7 +327,7 @@
             <artifactId>Residence</artifactId>
             <version>4.4.8.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Residence4.8.8.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
