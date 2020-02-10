@@ -665,10 +665,18 @@
 package org.maxgamer.quickshop.handle;
 
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShopLoader;
 import org.maxgamer.quickshop.Registry;
 import org.maxgamer.quickshop.ShopType;
 
 public final class RegistryBasic implements Registry {
+
+    @NotNull
+    private final QuickShopLoader loader;
+
+    public RegistryBasic(@NotNull QuickShopLoader loader) {
+        this.loader = loader;
+    }
 
     @Override
     public void registerShopType(@NotNull ShopType shopType) {
