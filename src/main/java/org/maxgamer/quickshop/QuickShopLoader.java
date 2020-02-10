@@ -668,6 +668,7 @@ import io.github.portlek.database.SQL;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
+import org.maxgamer.quickshop.handle.RegistryBasic;
 
 public final class QuickShopLoader {
 
@@ -683,11 +684,15 @@ public final class QuickShopLoader {
     @NotNull
     public SQL sql;
 
+    @NotNull
+    private final Registry registry;
+
     public QuickShopLoader(@NotNull QuickShop quickShop, @NotNull ConfigFile configFile) {
         this.quickShop = quickShop;
         this.configFile = configFile;
         this.languageFile = new LanguageFile(configFile);
         sql = configFile.createSQL();
+        registry = new RegistryBasic(this);
     }
 
     public void reloadPlugin(boolean firstTime) {
@@ -724,6 +729,11 @@ public final class QuickShopLoader {
         }
 
         sql.getDatabase().disconnect();
+    }
+
+    @NotNull
+    public Registry getRegistry() {
+        return registry;
     }
 
 }
