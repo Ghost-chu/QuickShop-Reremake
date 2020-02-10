@@ -665,10 +665,14 @@
 package org.maxgamer.quickshop;
 
 import io.github.portlek.database.SQL;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
 import org.maxgamer.quickshop.handle.RegistryBasic;
+import org.maxgamer.quickshop.utils.ListenerBasic;
+import org.maxgamer.quickshop.utils.UpdateChecker;
 
 public final class QuickShopLoader {
 
@@ -702,6 +706,11 @@ public final class QuickShopLoader {
         if (firstTime) {
 
             // TODO: Listeners should be here.
+            new ListenerBasic<>(
+                PlayerJoinEvent.class,
+                event -> event.getPlayer().hasPermission("quickshop.version"),
+                event -> checkForUpdate(event.getPlayer())
+            ).register(quickShop);
         } else {
             configFile.load();
             sql = configFile.createSQL();
@@ -718,6 +727,7 @@ public final class QuickShopLoader {
             );
         }
 
+        checkForUpdate(quickShop.getServer().getConsoleSender());
     }
 
     public void disablePlugin() {
@@ -734,6 +744,30 @@ public final class QuickShopLoader {
     @NotNull
     public Registry getRegistry() {
         return registry;
+    }
+
+    public void checkForUpdate(@NotNull CommandSender sender) {
+        if (!configFile.check_for_update) {
+            return;
+        }
+
+        final UpdateChecker updater = new UpdateChecker(quickShop, 62575);
+
+        try {
+            if (updater.checkForUpdates()) {
+                sender.sendMessage(
+                    languageFile.general.new_version_found
+                        .build("%version%", updater::getLatestVersion)
+                );
+            } else {
+                sender.sendMessage(
+                    languageFile.general.latest_version
+                        .build("%version%", updater::getLatestVersion)
+                );
+            }
+        } catch (Exception exception) {
+            quickShop.getLogger().warning("Update checker failed, could not connect to the API.");
+        }
     }
 
 }

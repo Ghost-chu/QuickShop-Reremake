@@ -726,6 +726,34 @@ public final class LanguageFile extends BukkitLinkedManaged {
             return Optional.empty();
         });
 
+        @Value
+        public Replaceable<String> new_version_found = match(s -> {
+            if (s.equals("en")) {
+                return Optional.of(
+                    Replaceable.of("%prefix% &eNew version found (v%version%)")
+                        .map(ColorUtil::colored)
+                        .replaces("%version%")
+                        .replace(getPrefix())
+                );
+            }
+
+            return Optional.empty();
+        });
+
+        @Value
+        public Replaceable<String> latest_version = match(s -> {
+            if (s.equals("en")) {
+                return Optional.of(
+                    Replaceable.of("%prefix% &aYou''re using the latest version (v%version%)")
+                        .map(ColorUtil::colored)
+                        .replaces("%version%")
+                        .replace(getPrefix())
+                );
+            }
+
+            return Optional.empty();
+        });
+
     }
 
     @Instance

@@ -670,10 +670,11 @@ import org.maxgamer.quickshop.Registry;
 import org.maxgamer.quickshop.ShopType;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class RegistryBasic implements Registry {
 
-    private final Map<String, ShopType> shopTypes = new HashMap<>();
+    private final Map<String, ShopType> shopTypes = new ConcurrentHashMap<>();
 
     @NotNull
     private final QuickShopLoader loader;

@@ -23,3 +23,6 @@ permissions:
           quickshop.command.reoad:
             description: ''
             default: op
+      quickshop.version:
+        description: ''
+        default: op

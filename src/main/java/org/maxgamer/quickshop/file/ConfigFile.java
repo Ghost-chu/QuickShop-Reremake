@@ -692,6 +692,9 @@ public final class ConfigFile extends BukkitManaged {
     public Replaceable<String> plugin_prefix = Replaceable.of("&6[&eQuickShop]&6")
         .map(ColorUtil::colored);
 
+    @Value
+    public boolean check_for_update = true;
+
     @Instance
     public final Saving saving = new Saving();
 
