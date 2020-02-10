@@ -16,7 +16,7 @@ public final class QuickShop extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        setInstance(Optional.of(this));
+        setInstance(this);
     }
 
     @Override
@@ -25,7 +25,7 @@ public final class QuickShop extends JavaPlugin {
 
         configFile.load();
 
-        setLoader(Optional.of(new QuickShopLoader(this, configFile)));
+        setLoader(new QuickShopLoader(this, configFile));
 
         getServer().getScheduler().runTask(this, () ->
             getServer().getScheduler().runTaskAsynchronously(this, () ->
@@ -51,12 +51,20 @@ public final class QuickShop extends JavaPlugin {
             new IllegalStateException("You cannot be used QuickShopLoader before its set!"));
     }
 
-    private void setInstance(@NotNull Optional<QuickShop> quickShop) {
-        QuickShop.quickShop = quickShop;
+    private void setInstance(@NotNull QuickShop quickShop) {
+        if (QuickShop.quickShop.isPresent()) {
+            throw new IllegalStateException("You can't use #setInstance method twice!");
+        }
+
+        QuickShop.quickShop = Optional.of(quickShop);
     }
 
-    private void setLoader(@NotNull Optional<QuickShopLoader> loader) {
-        QuickShop.loader = loader;
+    private void setLoader(@NotNull QuickShopLoader loader) {
+        if (QuickShop.loader.isPresent()) {
+            throw new IllegalStateException("You can't use #setLoader method twice!");
+        }
+
+        QuickShop.loader = Optional.of(loader);
     }
 
 }
