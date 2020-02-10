@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+import io.github.portlek.database.SQL;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
@@ -16,10 +17,14 @@ public final class QuickShopLoader {
     @NotNull
     public final LanguageFile languageFile;
 
+    @NotNull
+    public SQL sql;
+
     public QuickShopLoader(@NotNull QuickShop quickShop, @NotNull ConfigFile configFile) {
         this.quickShop = quickShop;
         this.configFile = configFile;
         this.languageFile = new LanguageFile(configFile);
+        sql = configFile.createSQL();
     }
 
     public void reloadPlugin(boolean firstTime) {
@@ -31,9 +36,19 @@ public final class QuickShopLoader {
             // TODO: Listeners should be here.
         } else {
             configFile.load();
-
+            sql = configFile.createSQL();
         }
 
+        if (configFile.saving.auto_save) {
+            quickShop.getServer().getScheduler().runTaskTimer(
+                quickShop,
+                () -> {
+                    // TODO Add codes for saving data as automatic
+                },
+                configFile.saving.auto_save_time * 20L,
+                configFile.saving.auto_save_time * 20L
+            );
+        }
 
     }
 
