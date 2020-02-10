@@ -2,7 +2,6 @@ package org.maxgamer.quickshop;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.file.ConfigFile;
 
 import java.util.Optional;
@@ -17,7 +16,7 @@ public final class QuickShop extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        quickShop = Optional.of(this);
+        setInstance(Optional.of(this));
     }
 
     @Override
@@ -26,7 +25,7 @@ public final class QuickShop extends JavaPlugin {
 
         configFile.load();
 
-        loader = Optional.of(new QuickShopLoader(this, configFile));
+        setLoader(Optional.of(new QuickShopLoader(this, configFile)));
 
         getServer().getScheduler().runTask(this, () ->
             getServer().getScheduler().runTaskAsynchronously(this, () ->
@@ -50,6 +49,14 @@ public final class QuickShop extends JavaPlugin {
     public static QuickShopLoader getLoader() {
         return loader.orElseThrow(() ->
             new IllegalStateException("You cannot be used QuickShopLoader before its set!"));
+    }
+
+    private void setInstance(@NotNull Optional<QuickShop> quickShop) {
+        QuickShop.quickShop = quickShop;
+    }
+
+    private void setLoader(@NotNull Optional<QuickShopLoader> loader) {
+        QuickShop.loader = loader;
     }
 
 }
