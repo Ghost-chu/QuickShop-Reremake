@@ -1,8 +1,9 @@
 package org.maxgamer.quickshop.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
 
 public final class MiscUtils {
 

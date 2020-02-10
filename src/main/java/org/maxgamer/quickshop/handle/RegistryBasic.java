@@ -669,7 +669,11 @@ import org.maxgamer.quickshop.QuickShopLoader;
 import org.maxgamer.quickshop.Registry;
 import org.maxgamer.quickshop.ShopType;
 
+import java.util.*;
+
 public final class RegistryBasic implements Registry {
+
+    private final Map<String, ShopType> shopTypes = new HashMap<>();
 
     @NotNull
     private final QuickShopLoader loader;
@@ -679,8 +683,20 @@ public final class RegistryBasic implements Registry {
     }
 
     @Override
-    public void registerShopType(@NotNull ShopType shopType) {
+    public void registerShopType(@NotNull String id, @NotNull ShopType shopType) {
+        shopTypes.put(id, shopType);
+    }
 
+    @NotNull
+    @Override
+    public Optional<ShopType> getShopTypeById(@NotNull String id) {
+        return Optional.ofNullable(shopTypes.get(id));
+    }
+
+    @NotNull
+    @Override
+    public Collection<ShopType> getShopTypes() {
+        return Collections.unmodifiableCollection(shopTypes.values());
     }
 
 }

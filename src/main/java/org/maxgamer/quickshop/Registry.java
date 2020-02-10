@@ -666,8 +666,17 @@ package org.maxgamer.quickshop;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.Optional;
+
 public interface Registry {
 
-    void registerShopType(@NotNull ShopType shopType);
+    void registerShopType(@NotNull String id, @NotNull ShopType shopType);
+
+    @NotNull
+    Optional<ShopType> getShopTypeById(@NotNull String id);
+
+    @NotNull
+    Collection<ShopType> getShopTypes();
 
 }

@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.utils;
 
-import java.util.Optional;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -9,6 +8,8 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public final class BlockUtils {
 

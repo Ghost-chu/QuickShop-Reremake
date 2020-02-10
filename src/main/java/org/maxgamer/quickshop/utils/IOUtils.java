@@ -1,11 +1,12 @@
 package org.maxgamer.quickshop.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import org.jetbrains.annotations.NotNull;
 
 public final class IOUtils {
 

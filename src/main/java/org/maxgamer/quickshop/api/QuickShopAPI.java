@@ -679,17 +679,17 @@ public final class QuickShopAPI {
     }
 
     @NotNull
-    public Optional<Shop> getShopByUUID(@NotNull UUID uuid) {
+    public static Optional<Shop> getShopByUUID(@NotNull UUID uuid) {
         return Optional.empty();
     }
 
     @NotNull
-    public List<Shop> getShopsOf(@NotNull Player player) {
+    public static List<Shop> getShopsOf(@NotNull Player player) {
         return Collections.emptyList();
     }
 
     @NotNull
-    public List<Shop> getShops() {
+    public static List<Shop> getShops() {
         return Collections.emptyList();
     }
 
