@@ -58,13 +58,13 @@ public class VirtualDisplayItem extends DisplayItem {
             //is really full chunk data
             boolean isFull = event.getPacket().getBooleans().read(0);
 
-            //if shop has delete, unregister myself to ensure will be collected by GC
+            //if shop has deleted, unregister myself to ensure will be collected by GC
             if (shop.isDeleted()) {
                 packetSenders.clear();
                 protocolManager.removePacketListener(packetListener);
                 return;
             }
-            if (!isDisplay && !isFull&&!Util.isLoaded(shop.getLocation())) {
+            if (!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
                 return;
             }
             //chunk x
