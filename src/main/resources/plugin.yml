@@ -4,3 +4,19 @@ version: ${project.version}
 description: ''
 api-version: '1.13'
 authors: []
+
+permissions:
+  quickshop.*:
+    description: ''
+    default: op
+    children:
+      quickshop.command.*:
+        description: ''
+        default: op
+        children:
+          quickshop.command.main:
+            description: ''
+            default: true
+          quickshop.command.reoad:
+            description: ''
+            default: op
