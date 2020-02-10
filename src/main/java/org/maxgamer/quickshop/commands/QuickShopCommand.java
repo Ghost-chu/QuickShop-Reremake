@@ -23,8 +23,8 @@ public final class QuickShopCommand extends BaseCommand {
     @Default
     @CommandPermission("quickshop.command.main")
     public void mainCommand(CommandSender sender) {
-        sender.sendMessage(
-            (String) loader.languageFile.help_messages.buildMap(list ->
+        sender.sendMessage((String)
+            loader.languageFile.help_messages.buildMap(list ->
                 new ListToString(list).value()
             )
         );
