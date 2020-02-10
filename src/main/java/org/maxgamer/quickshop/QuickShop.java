@@ -260,7 +260,7 @@ public class QuickShop extends JavaPlugin {
           getLogger().info("Successfully loaded ProtocolLib support!");
         } else {
           getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
-          getConfig().set("display-type",0);
+          getConfig().set("shop.display-type",0);
         }
       }
 
