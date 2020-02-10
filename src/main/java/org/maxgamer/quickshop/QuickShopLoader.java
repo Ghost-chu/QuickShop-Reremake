@@ -665,7 +665,6 @@
 package org.maxgamer.quickshop;
 
 import io.github.portlek.database.SQL;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
