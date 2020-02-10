@@ -667,25 +667,23 @@ package org.maxgamer.quickshop.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import io.github.portlek.configs.util.ListToString;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShopLoader;
 
+@RequiredArgsConstructor
 @CommandAlias("quickshop|qs")
 public final class QuickShopCommand extends BaseCommand {
 
     @NotNull
     private final QuickShopLoader loader;
 
-    public QuickShopCommand(@NotNull QuickShopLoader loader) {
-        this.loader = loader;
-    }
-
     @Default
     @CommandPermission("quickshop.command.main")
     public void mainCommand(CommandSender sender) {
         sender.sendMessage((String)
-            loader.languageFile.help_messages.buildMap(list ->
+            loader.getLanguageFile().help_messages.buildMap(list ->
                 new ListToString(list).value()
             )
         );
@@ -704,7 +702,7 @@ public final class QuickShopCommand extends BaseCommand {
 
         loader.reloadPlugin(false);
         sender.sendMessage(
-            loader.languageFile.general.reload_complete.build(
+            loader.getLanguageFile().general.reload_complete.build(
                 "%ms%", () -> String.valueOf(System.currentTimeMillis() - ms)
             )
         );

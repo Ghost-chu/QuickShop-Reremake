@@ -664,19 +664,17 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Permissible;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public final class PermissibleBasic implements Permissible {
 
     @NotNull
     private final UUID uuid;
-
-    public PermissibleBasic(@NotNull UUID uuid) {
-        this.uuid = uuid;
-    }
 
     @Override
     public boolean is(@NotNull UUID uuid) {

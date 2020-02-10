@@ -709,7 +709,7 @@ public final class QuickShop extends JavaPlugin {
 
                 if (c.hasConfig("arg") && Bukkit.getPlayer(playerName) == null) {
                     throw new ConditionFailedException(
-                        quickShopLoader.languageFile.error.player_not_found.build("%player_name%", () -> playerName)
+                        quickShopLoader.getLanguageFile().error.player_not_found.build("%player_name%", () -> playerName)
                     );
                 }
             });

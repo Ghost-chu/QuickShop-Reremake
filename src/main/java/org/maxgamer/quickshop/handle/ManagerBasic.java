@@ -664,6 +664,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Manager;
 import org.maxgamer.quickshop.Permissible;
@@ -671,6 +672,7 @@ import org.maxgamer.quickshop.Permissible;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public final class ManagerBasic implements Manager {
 
     @NotNull
@@ -678,11 +680,6 @@ public final class ManagerBasic implements Manager {
 
     @NotNull
     private final List<Permissible> coOwners;
-
-    public ManagerBasic(@NotNull Permissible owner, @NotNull List<Permissible> coOwners) {
-        this.owner = owner;
-        this.coOwners = coOwners;
-    }
 
     @Override
     public boolean isOwner(@NotNull UUID uuid) {

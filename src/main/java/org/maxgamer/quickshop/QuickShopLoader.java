@@ -665,6 +665,7 @@
 package org.maxgamer.quickshop;
 
 import io.github.portlek.database.SQL;
+import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
@@ -676,18 +677,23 @@ import org.maxgamer.quickshop.utils.UpdateChecker;
 
 public final class QuickShopLoader {
 
+    @Getter
     @NotNull
     private final QuickShop quickShop;
 
+    @Getter
     @NotNull
-    public final ConfigFile configFile;
+    private final ConfigFile configFile;
 
+    @Getter
     @NotNull
-    public final LanguageFile languageFile;
+    private final LanguageFile languageFile;
 
+    @Getter
     @NotNull
-    public SQL sql;
+    private SQL sql;
 
+    @Getter
     @NotNull
     private final Registry registry;
 
@@ -739,11 +745,6 @@ public final class QuickShopLoader {
         }
 
         sql.getDatabase().disconnect();
-    }
-
-    @NotNull
-    public Registry getRegistry() {
-        return registry;
     }
 
     public void checkForUpdate(@NotNull CommandSender sender) {

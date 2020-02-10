@@ -664,6 +664,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShopLoader;
 import org.maxgamer.quickshop.Registry;
@@ -672,16 +673,13 @@ import org.maxgamer.quickshop.ShopType;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@RequiredArgsConstructor
 public final class RegistryBasic implements Registry {
 
     private final Map<String, ShopType> shopTypes = new ConcurrentHashMap<>();
 
     @NotNull
     private final QuickShopLoader loader;
-
-    public RegistryBasic(@NotNull QuickShopLoader loader) {
-        this.loader = loader;
-    }
 
     @Override
     public void registerShopType(@NotNull String id, @NotNull ShopType shopType) {
