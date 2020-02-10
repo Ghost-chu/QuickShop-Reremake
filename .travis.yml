@@ -5,7 +5,7 @@ cache:
   - "$HOME/.m2/repository"
 jdk:
 - openjdk8
-install: false
+install: skip
 script:
 - export PROJECT_NAME=QuickShop-Reremake #Set project name
 - git clone --depth=1 https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
