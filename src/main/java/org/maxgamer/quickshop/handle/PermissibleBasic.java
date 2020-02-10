@@ -665,28 +665,22 @@
 package org.maxgamer.quickshop.handle;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Manager;
 import org.maxgamer.quickshop.Permissible;
 
-import java.util.List;
 import java.util.UUID;
 
-public final class ManagerBasic implements Manager {
+public final class PermissibleBasic implements Permissible {
 
     @NotNull
-    private final Permissible owner;
+    private final UUID uuid;
 
-    @NotNull
-    private final List<Permissible> coOwners;
-
-    public ManagerBasic(@NotNull Permissible owner, @NotNull List<Permissible> coOwners) {
-        this.owner = owner;
-        this.coOwners = coOwners;
+    public PermissibleBasic(@NotNull UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override
-    public boolean isOwner(@NotNull UUID uuid) {
-        return owner.is(uuid);
+    public boolean is(@NotNull UUID uuid) {
+        return this.uuid.equals(uuid);
     }
 
 }
