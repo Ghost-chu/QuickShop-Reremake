@@ -1,0 +1,6 @@
+name: ${project.name}
+main: ${project.groupId}.${project.name}
+version: ${project.version}
+description: ''
+api-version: '1.13'
+authors: []
