@@ -304,6 +304,13 @@ public interface Shop {
   boolean isValid();
 
   /**
+   * Shop is deleted
+   *
+   * @return true if deleted
+   */
+  boolean isDeleted();
+
+  /**
    * Get the shop display entity
    *
    * @return The entity for shop display.
