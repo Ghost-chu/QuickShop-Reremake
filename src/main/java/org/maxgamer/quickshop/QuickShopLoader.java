@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
@@ -22,6 +23,7 @@ public final class QuickShopLoader {
     }
 
     public void reloadPlugin(boolean firstTime) {
+        disablePlugin();
         languageFile.load();
 
         if (firstTime) {
@@ -32,11 +34,11 @@ public final class QuickShopLoader {
             // TODO: Listeners should be here.
         }
 
-        
+
     }
 
     public void disablePlugin() {
-
+        quickShop.getServer().getScheduler().cancelTasks(quickShop);
     }
 
 }
