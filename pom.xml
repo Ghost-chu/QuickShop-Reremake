@@ -22,6 +22,16 @@
             </roles>
             <timezone>+3</timezone>
         </developer>
+        <developer>
+            <id>Ghost_chu</id>
+            <name>Ghost_chu</name>
+            <url>https://github.com/Ghost-chu</url>
+            <email>2908803755@qq.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
     </developers>
 
     <properties>
