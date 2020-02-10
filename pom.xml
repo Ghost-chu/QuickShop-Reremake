@@ -8,8 +8,19 @@
     <artifactId>QuickShop-Era</artifactId>
     <version>4.0</version>
     <packaging>jar</packaging>
-
     <name>QuickShop</name>
+
+    <developers>
+        <developer>
+            <id>portlek</id>
+            <name>Hasan Demirtaş</name>
+            <url>https://github.com/portlek</url>
+            <roles>
+                <role>LeadDeveloper</role>
+                <role>Architect</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>1.8</java.version>
