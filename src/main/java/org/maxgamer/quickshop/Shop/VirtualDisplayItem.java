@@ -63,8 +63,7 @@ public class VirtualDisplayItem extends DisplayItem {
         super(shop);
         initFakeDropItemPacket();
         //Let nearby player can saw fake item
-        packetSenders.addAll(shop.getLocation().getNearbyEntities(32, 256, 32).stream().filter(entity -> entity.getType() == EntityType.PLAYER).map(Entity::getUniqueId).collect(Collectors.toSet()));
-
+        packetSenders.addAll(shop.getLocation().getNearbyPlayers(plugin.getServer().getViewDistance()*16,256).stream().map(Entity::getUniqueId).collect(Collectors.toSet()));
         protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
                 PacketType.Play.Server.MAP_CHUNK) {
             @Override
