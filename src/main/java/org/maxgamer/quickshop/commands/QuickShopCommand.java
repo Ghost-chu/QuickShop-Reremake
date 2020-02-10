@@ -13,10 +13,10 @@ import org.maxgamer.quickshop.QuickShopLoader;
 public final class QuickShopCommand extends BaseCommand {
 
     @NotNull
-    private final QuickShopLoader api;
+    private final QuickShopLoader loader;
 
-    public QuickShopCommand(@NotNull QuickShopLoader api) {
-        this.api = api;
+    public QuickShopCommand(@NotNull QuickShopLoader loader) {
+        this.loader = loader;
     }
 
     @Default
@@ -28,7 +28,14 @@ public final class QuickShopCommand extends BaseCommand {
     @Subcommand("reload")
     @CommandPermission("quickshop.command.reload")
     public void reloadCommand(CommandSender sender) {
+        final long ms = System.currentTimeMillis();
 
+        loader.reloadPlugin(false);
+        sender.sendMessage(
+            loader.languageFile.general.reload_complete.build(
+                "%ms%", () -> String.valueOf(System.currentTimeMillis() - ms)
+            )
+        );
     }
 
 }

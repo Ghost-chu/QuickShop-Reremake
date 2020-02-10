@@ -25,8 +25,8 @@ public final class LanguageFile extends BukkitLinkedManaged {
     @NotNull
     private final ConfigFile configFile;
 
-    public LanguageFile(@NotNull String chosenFileName, @NotNull ConfigFile configFile) {
-        super(chosenFileName);
+    public LanguageFile(@NotNull ConfigFile configFile) {
+        super(configFile.plugin_language);
         this.configFile = configFile;
     }
 
@@ -46,7 +46,7 @@ public final class LanguageFile extends BukkitLinkedManaged {
     public final Generals general = new Generals();
 
     @Section(path = "general")
-    private class Generals {
+    public class Generals {
 
         @Value
         public Replaceable<String> reload_complete = match(s -> {
