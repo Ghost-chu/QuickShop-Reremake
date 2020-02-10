@@ -1,7 +1,6 @@
 package org.maxgamer.quickshop.api;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Shop;
 
 import java.util.Optional;

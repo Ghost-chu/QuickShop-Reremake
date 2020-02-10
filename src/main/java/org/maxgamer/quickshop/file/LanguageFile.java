@@ -5,7 +5,6 @@ import io.github.portlek.configs.annotations.*;
 import io.github.portlek.configs.util.ColorUtil;
 import io.github.portlek.configs.util.Replaceable;
 import org.jetbrains.annotations.NotNull;
-import sun.java2d.loops.FillRect;
 
 import java.util.HashMap;
 import java.util.List;
