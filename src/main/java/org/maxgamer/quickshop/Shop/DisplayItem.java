@@ -35,8 +35,21 @@ import org.maxgamer.quickshop.Util.Util;
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
  *     with.
  */
-public interface DisplayItem {
-  Gson gson = new Gson();
+public abstract class DisplayItem {
+
+  private static final Gson gson = new Gson();
+  @Nullable protected ItemStack guardedIstack;
+  protected ItemStack originalItemStack;
+  protected static QuickShop plugin = QuickShop.instance;
+  protected Shop shop;
+  private boolean pendingRemoval;
+
+  protected DisplayItem(Shop shop){
+    this.shop = shop;
+    this.originalItemStack = new ItemStack(shop.getItem());
+    this.originalItemStack.setAmount(1);
+  }
+
 
   /**
    * Check the itemStack is contains protect flag.
@@ -44,7 +57,7 @@ public interface DisplayItem {
    * @param itemStack Target ItemStack
    * @return Contains protect flag.
    */
-  static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+  public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
     if (itemStack == null) {
       return false;
     }
@@ -92,7 +105,7 @@ public interface DisplayItem {
    * @param shop Target shop
    * @return Is target shop's display
    */
-  static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+  public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
     if (!itemStack.hasItemMeta()) {
       return false;
     }
@@ -132,7 +145,7 @@ public interface DisplayItem {
    * @param shop The shop
    * @return New itemStack with protect flag.
    */
-  static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+  public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
     itemStack = new ItemStack(itemStack);
     itemStack.setAmount(1);
     ItemMeta iMeta = itemStack.getItemMeta();
@@ -164,7 +177,7 @@ public interface DisplayItem {
    * @param shop The shop
    * @return ShopProtectionFlag obj
    */
-  static ShopProtectionFlag createShopProtectionFlag(
+  public static ShopProtectionFlag createShopProtectionFlag(
       @NotNull ItemStack itemStack, @NotNull Shop shop) {
     return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
   }
@@ -174,7 +187,7 @@ public interface DisplayItem {
    *
    * @return Using displayType.
    */
-  static DisplayType getNowUsing() {
+  public static DisplayType getNowUsing() {
     return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
   }
 
@@ -183,14 +196,14 @@ public interface DisplayItem {
    *
    * @return Moved
    */
-  boolean checkDisplayIsMoved();
+  public abstract boolean checkDisplayIsMoved();
 
   /**
    * Check the display is or not need respawn
    *
    * @return Need
    */
-  boolean checkDisplayNeedRegen();
+  public abstract boolean checkDisplayNeedRegen();
 
   /**
    * Check target Entity is or not a QuickShop display Entity.
@@ -198,26 +211,26 @@ public interface DisplayItem {
    * @param entity Target entity
    * @return Is or not
    */
-  boolean checkIsShopEntity(Entity entity);
+  public abstract boolean checkIsShopEntity(Entity entity);
 
   /** Fix the display moved issue. */
-  void fixDisplayMoved();
+  public abstract void fixDisplayMoved();
 
   /** Fix display need respawn issue. */
-  void fixDisplayNeedRegen();
+  public abstract void fixDisplayNeedRegen();
 
   /** Remove the display entity. */
-  void remove();
+  public abstract void remove();
 
   /**
    * Remove this shop's display in the whole world.(Not whole server)
    *
    * @return Success
    */
-  boolean removeDupe();
+  public abstract boolean removeDupe();
 
   /** Respawn the displays, if it not exist, it will spawn new one. */
-  void respawn();
+  public abstract void respawn();
 
   /**
    * Add the protect flags for entity or entity's hand item. Target entity will got protect by
@@ -225,33 +238,37 @@ public interface DisplayItem {
    *
    * @param entity Target entity
    */
-  void safeGuard(Entity entity);
+  public abstract void safeGuard(Entity entity);
 
   /** Spawn new Displays */
-  void spawn();
+  public abstract void spawn();
 
   /**
    * Get the display entity
    *
    * @return Target entity
    */
-  Entity getDisplay();
+  public abstract Entity getDisplay();
 
   /**
    * Get display should at location. Not display current location.
    *
    * @return Should at
    */
-  Location getDisplayLocation();
+  public abstract Location getDisplayLocation();
 
   /**
    * Check the display is or not already spawned
    *
    * @return Spawned
    */
-  boolean isSpawned();
+  public abstract boolean isSpawned();
 
-  boolean pendingRemoval();
+  public void pendingRemoval(){
+    pendingRemoval=true;
+  }
 
-  boolean isPendingRemoval();
+  public boolean isPendingRemoval(){
+    return pendingRemoval;
+  }
 }

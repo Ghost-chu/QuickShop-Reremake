@@ -79,10 +79,7 @@ import org.maxgamer.quickshop.PluginsIntegration.PlotSquared.PlotSquaredIntegrat
 import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
-import org.maxgamer.quickshop.Shop.DisplayType;
-import org.maxgamer.quickshop.Shop.Shop;
-import org.maxgamer.quickshop.Shop.ShopLoader;
-import org.maxgamer.quickshop.Shop.ShopManager;
+import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.Compatibility;
 import org.maxgamer.quickshop.Util.FunnyEasterEgg;
 import org.maxgamer.quickshop.Util.IncompatibleChecker;
@@ -256,7 +253,18 @@ public class QuickShop extends JavaPlugin {
       }
     }
     if (this.display) {
-      if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+      //VirtualItem support
+      if(DisplayItem.getNowUsing()==DisplayType.VIRTUALITEM) {
+        getLogger().info("Using Virtual item Display, loading ProtocolLib support...");
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+          getLogger().info("Successfully loaded ProtocolLib support!");
+        } else {
+          getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
+          getConfig().set("display-type",0);
+        }
+      }
+
+      if (DisplayItem.getNowUsing()!=DisplayType.VIRTUALITEM&&Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
         try {
           Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
           for (RegisteredListener clearLagListener :
