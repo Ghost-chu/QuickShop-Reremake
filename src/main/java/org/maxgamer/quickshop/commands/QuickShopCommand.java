@@ -7,15 +7,15 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShopAPI;
+import org.maxgamer.quickshop.QuickShopLoader;
 
 @CommandAlias("quickshop|qs")
 public final class QuickShopCommand extends BaseCommand {
 
     @NotNull
-    private final QuickShopAPI api;
+    private final QuickShopLoader api;
 
-    public QuickShopCommand(@NotNull QuickShopAPI api) {
+    public QuickShopCommand(@NotNull QuickShopLoader api) {
         this.api = api;
     }
 
