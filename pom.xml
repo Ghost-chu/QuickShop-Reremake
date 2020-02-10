@@ -15,9 +15,12 @@
             <id>portlek</id>
             <name>Hasan Demirtaş</name>
             <url>https://github.com/portlek</url>
+            <email>utsukushihito@outlook.com</email>
             <roles>
                 <role>Architect</role>
+                <role>Developer</role>
             </roles>
+            <timezone>+3</timezone>
         </developer>
     </developers>
 
