@@ -666,16 +666,32 @@ package org.maxgamer.quickshop;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
+import java.util.List;
 
 public interface Shop {
 
     /**
-     * Compares if given uuid is owner of the shop or not.
+     * Gives the manager
      *
-     * @param uuid the uuid that will compare
-     * @return returns true if the uuid is owner of the shop.
+     * @return the manager of the shop.
      */
-    boolean isOwner(@NotNull UUID uuid);
+    @NotNull
+    Manager getManager();
+
+    /**
+     * Gives the shop type
+     *
+     * @return the shop type of the shop.
+     */
+    @NotNull
+    ShopType getShopType();
+
+    /**
+     * Gives the stacks
+     *
+     * @return the stacks of the shop.
+     */
+    @NotNull
+    List<Stack> getStacks();
 
 }

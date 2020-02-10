@@ -662,20 +662,25 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.handle;
 
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Manager;
 
+import java.util.List;
 import java.util.UUID;
 
-public interface Manager {
+public final class ManagerBasic implements Manager {
 
-    /**
-     * Compares if given uuid is owner of the shop or not.
-     *
-     * @param uuid the uuid that will compare
-     * @return returns true if the uuid is owner of the shop.
-     */
-    boolean isOwner(@NotNull UUID uuid);
+    @NotNull
+    private final UUID owner;
+
+    @NotNull
+    private final List<UUID> coOwners;
+
+    public ManagerBasic(@NotNull UUID owner, @NotNull List<UUID> coOwners) {
+        this.owner = owner;
+        this.coOwners = coOwners;
+    }
 
 }
