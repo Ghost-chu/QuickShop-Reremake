@@ -95,8 +95,6 @@ public class VirtualDisplayItem extends DisplayItem {
                 }, 1);
             }
         });
-
-        spawn();
     }
     private void initFakeDropItemPacket() {
 
