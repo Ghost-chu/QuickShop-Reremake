@@ -43,7 +43,6 @@ public final class ConfigFile extends BukkitManaged {
         @Value
         public int auto_save_time = 60;
 
-        @NotNull
         @Value
         private String storage_type = "sqlite";
 
@@ -82,15 +81,12 @@ public final class ConfigFile extends BukkitManaged {
                 saving.mysql.port,
                 saving.mysql.database,
                 saving.mysql.username,
-                saving.mysql.password
-            );
+                saving.mysql.password);
         } else {
             database = new SQLite(QuickShop.getInstance(), "shops.db");
         }
 
-        return new SQLBasic(
-            database
-        );
+        return new SQLBasic(database);
     }
 
     private boolean isMySQL() {
