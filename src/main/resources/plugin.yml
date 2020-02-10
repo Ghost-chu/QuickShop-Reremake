@@ -17,6 +17,9 @@ permissions:
           quickshop.command.main:
             description: ''
             default: true
+          quickshop.command.help:
+            description: ''
+            default: true
           quickshop.command.reoad:
             description: ''
             default: op
