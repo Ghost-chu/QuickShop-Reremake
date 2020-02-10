@@ -23,6 +23,7 @@ softdepend:
   - WorldGuard
   - Factions
   - Essentials
+  - ProtocolLib
 
 api-version: 1.13
 
