@@ -23,10 +23,7 @@ public final class QuickShop extends JavaPlugin {
         final ConfigFile configFile = new ConfigFile();
 
         configFile.load();
-        loader = new QuickShopLoader(
-            this,
-            configFile
-        );
+        loader = new QuickShopLoader(this, configFile);
 
         getServer().getScheduler().runTask(this, () ->
             getServer().getScheduler().runTaskAsynchronously(this, () ->
