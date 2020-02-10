@@ -25,4 +25,8 @@ public final class QuickShopLoader {
 
     }
 
+    public void disablePlugin() {
+
+    }
+
 }
