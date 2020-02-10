@@ -22,7 +22,17 @@ public final class QuickShopLoader {
     }
 
     public void reloadPlugin(boolean firstTime) {
+        languageFile.load();
 
+        if (firstTime) {
+
+        } else {
+            configFile.load();
+
+            // TODO: Listeners should be here.
+        }
+
+        
     }
 
     public void disablePlugin() {
