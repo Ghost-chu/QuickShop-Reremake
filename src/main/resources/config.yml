@@ -174,7 +174,7 @@ shop:
   display-items-check-ticks: 6000
 
   #The display type you want use.
-  #0=Normal Dropped Item, 1=ArmorStand
+  #0=Normal Dropped Item, 1=ArmorStand, 2=Virtual Item(ProtocolLib needed)
   display-type: 0
 
   #Allow quickshop auto despawn-spawn the display when no-player or player close the shop.

@@ -68,6 +68,7 @@ public class ContainerShop implements Shop {
   private double price;
   private ShopType shopType;
   private boolean unlimited;
+  private boolean isDeleted;
 
   private ContainerShop(@NotNull ContainerShop s) {
     this.displayItem = s.displayItem;
@@ -120,6 +121,9 @@ public class ContainerShop implements Shop {
           break;
         case ARMORSTAND:
           this.displayItem = new ArmorStandDisplayItem(this);
+          break;
+        case VIRTUALITEM:
+          this.displayItem = new VirtualDisplayItem(this);
           break;
         default:
           Util.debugLog(
@@ -395,6 +399,7 @@ public class ContainerShop implements Shop {
     if (isLoaded) {
       this.onUnload();
     }
+    isDeleted=true;
     // Delete the display item
     if (this.getDisplayItem() != null) {
       this.getDisplayItem().remove();
@@ -870,6 +875,11 @@ public class ContainerShop implements Shop {
   public boolean isValid() {
     this.checkDisplay();
     return Util.canBeShop(this.getLocation().getBlock());
+  }
+
+  @Override
+  public boolean isDeleted() {
+    return isDeleted;
   }
 
   @Override

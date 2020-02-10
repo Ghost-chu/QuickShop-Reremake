@@ -32,7 +32,7 @@ public enum DisplayType {
   UNKNOWN(-1),
   REALITEM(0),
   ARMORSTAND(1),
-  VIRTUALITEM(2); //WIP, pr later from sandtechnology
+  VIRTUALITEM(2);
 
   private int id;
 
@@ -59,6 +59,9 @@ public enum DisplayType {
     }
     if (displayItem instanceof ArmorStandDisplayItem) {
       return ARMORSTAND;
+    }
+    if(displayItem instanceof VirtualDisplayItem){
+      return VIRTUALITEM;
     }
     return UNKNOWN;
   }
