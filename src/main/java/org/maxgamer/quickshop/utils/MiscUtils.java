@@ -10,6 +10,7 @@ public class MiscUtils {
    * @param strArray Target array
    * @return str
    */
+  @NotNull
   public static String array2String(final @NotNull String[] strArray) {
     final StringBuilder builder = new StringBuilder();
     for (int i = 0; i < strArray.length; i++) {
@@ -26,6 +27,7 @@ public class MiscUtils {
    * @param strList Target list
    * @return str
    */
+  @NotNull
   public static String list2String(final @NotNull List<String> strList) {
     final StringBuilder builder = new StringBuilder();
     for (int i = 0; i < strList.size(); i++) {

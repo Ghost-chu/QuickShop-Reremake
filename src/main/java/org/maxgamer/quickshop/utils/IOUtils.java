@@ -14,6 +14,7 @@ public class IOUtils {
    * @param file Target file.
    * @return Target file's content.
    */
+  @NotNull
   public static String readToString(final @NotNull File file) {
     final long filelength = file.length();
     final byte[] filecontent = new byte[(int) filelength];

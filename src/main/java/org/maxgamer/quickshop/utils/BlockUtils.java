@@ -32,6 +32,7 @@ public class BlockUtils {
    * @param b The block you want to check
    * @return Return the DoubleChestInventory if it is double chest, false for not.
    */
+  @Nullable
   public static DoubleChestInventory isDoubleChestAndGetInventory(@NotNull Block b) {
     return isDoubleChestAndGetInventory(b.getState());
   }
