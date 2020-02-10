@@ -14,7 +14,7 @@ public final class QuickShopAPI {
     }
 
     @NotNull
-    public Optional<Shop> getByUUID(@NotNull UUID uuid) {
+    public Optional<Shop> getShopByUUID(@NotNull UUID uuid) {
         return Optional.empty();
     }
 
