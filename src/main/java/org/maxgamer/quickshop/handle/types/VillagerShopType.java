@@ -662,7 +662,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.shop.types;
+package org.maxgamer.quickshop.handle.types;
 
 import org.maxgamer.quickshop.ShopType;
 

@@ -662,9 +662,48 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.shop.stacks;
+package org.maxgamer.quickshop.handle;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Manager;
+import org.maxgamer.quickshop.Shop;
+import org.maxgamer.quickshop.ShopType;
 import org.maxgamer.quickshop.Stack;
 
-public final class StackMoney implements Stack {
+import java.util.List;
+
+public final class ShopBasic implements Shop {
+
+    @NotNull
+    private final Manager manager;
+
+    @NotNull
+    private final ShopType shopType;
+
+    @NotNull
+    private final List<Stack> stacks;
+
+    public ShopBasic(@NotNull Manager manager, @NotNull ShopType shopType, @NotNull List<Stack> stacks) {
+        this.manager = manager;
+        this.shopType = shopType;
+        this.stacks = stacks;
+    }
+
+    @NotNull
+    @Override
+    public Manager getManager() {
+        return manager;
+    }
+
+    @NotNull
+    @Override
+    public ShopType getShopType() {
+        return shopType;
+    }
+
+    @NotNull
+    @Override
+    public List<Stack> getStacks() {
+        return stacks;
+    }
 }

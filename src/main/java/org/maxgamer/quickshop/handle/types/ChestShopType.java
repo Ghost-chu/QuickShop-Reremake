@@ -662,9 +662,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.shop.types;
+package org.maxgamer.quickshop.handle.types;
 
 import org.maxgamer.quickshop.ShopType;
 
-public final class EnderChestShopType implements ShopType {
+public final class ChestShopType implements ShopType {
 }

@@ -662,9 +662,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.shop.stacks;
+package org.maxgamer.quickshop.handle.types;
 
-import org.maxgamer.quickshop.Stack;
+import org.maxgamer.quickshop.ShopType;
 
-public final class StackItem implements Stack {
+public final class EnderChestShopType implements ShopType {
 }
