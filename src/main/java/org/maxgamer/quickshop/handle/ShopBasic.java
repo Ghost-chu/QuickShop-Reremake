@@ -664,6 +664,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Manager;
 import org.maxgamer.quickshop.Shop;
@@ -672,6 +673,7 @@ import org.maxgamer.quickshop.Stack;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public final class ShopBasic implements Shop {
 
     @NotNull
@@ -682,12 +684,6 @@ public final class ShopBasic implements Shop {
 
     @NotNull
     private final List<Stack> stacks;
-
-    public ShopBasic(@NotNull Manager manager, @NotNull ShopType shopType, @NotNull List<Stack> stacks) {
-        this.manager = manager;
-        this.shopType = shopType;
-        this.stacks = stacks;
-    }
 
     @NotNull
     @Override

@@ -683,7 +683,7 @@ public final class QuickShopCommand extends BaseCommand {
     @CommandPermission("quickshop.command.main")
     public void mainCommand(CommandSender sender) {
         sender.sendMessage((String)
-            loader.languageFile.help_messages.buildMap(list ->
+            loader.getLanguageFile().help_messages.buildMap(list ->
                 new ListToString(list).value()
             )
         );
@@ -702,7 +702,7 @@ public final class QuickShopCommand extends BaseCommand {
 
         loader.reloadPlugin(false);
         sender.sendMessage(
-            loader.languageFile.general.reload_complete.build(
+            loader.getLanguageFile().general.reload_complete.build(
                 "%ms%", () -> String.valueOf(System.currentTimeMillis() - ms)
             )
         );
