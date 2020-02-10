@@ -50,37 +50,6 @@ public class VirtualDisplayItem extends DisplayItem {
     private static final AtomicInteger counter = new AtomicInteger(0);
     //unique EntityID
     private int entityID = counter.decrementAndGet();
-    //packetListener
-    private PacketAdapter packetListener = new PacketAdapter(plugin, ListenerPriority.NORMAL,
-            PacketType.Play.Server.MAP_CHUNK) {
-        @Override
-        public void onPacketSending(PacketEvent event) {
-            //is really full chunk data
-            boolean isFull = event.getPacket().getBooleans().read(0);
-
-            //if shop has deleted, unregister myself to ensure will be collected by GC
-            if (shop.isDeleted()) {
-                packetSenders.clear();
-                protocolManager.removePacketListener(packetListener);
-                return;
-            }
-            if (!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
-                return;
-            }
-            //chunk x
-            int x = event.getPacket().getIntegers().read(0);
-            //chunk z
-            int z = event.getPacket().getIntegers().read(1);
-
-            //send the packet later to prevent chunk loading deadlock
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
-                    packetSenders.add(event.getPlayer().getUniqueId());
-                    sendFakeItem(event.getPlayer());
-                }
-            }, 1);
-        }
-    };
     //packets
     private PacketContainer fakeItemPacket;
     private PacketContainer fakeItemMetaPacket;
@@ -96,7 +65,37 @@ public class VirtualDisplayItem extends DisplayItem {
         //Let nearby player can saw fake item
         packetSenders.addAll(shop.getLocation().getNearbyEntities(32, 256, 32).stream().filter(entity -> entity.getType() == EntityType.PLAYER).map(Entity::getUniqueId).collect(Collectors.toSet()));
 
-        protocolManager.addPacketListener(packetListener);
+        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
+                PacketType.Play.Server.MAP_CHUNK) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                //is really full chunk data
+                boolean isFull = event.getPacket().getBooleans().read(0);
+
+                //if shop has deleted, unregister myself to ensure will be collected by GC
+                if (shop.isDeleted()) {
+                    packetSenders.clear();
+                    protocolManager.removePacketListener(this);
+                    return;
+                }
+                if (!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                    return;
+                }
+                //chunk x
+                int x = event.getPacket().getIntegers().read(0);
+                //chunk z
+                int z = event.getPacket().getIntegers().read(1);
+
+                //send the packet later to prevent chunk loading deadlock
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
+                        packetSenders.add(event.getPlayer().getUniqueId());
+                        sendFakeItem(event.getPlayer());
+                    }
+                }, 1);
+            }
+        });
+
         spawn();
     }
     private void initFakeDropItemPacket() {
