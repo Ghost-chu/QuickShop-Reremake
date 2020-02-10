@@ -664,8 +664,10 @@
 
 package org.maxgamer.quickshop;
 
+import co.aikar.commands.BukkitCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.commands.QuickShopCommand;
 import org.maxgamer.quickshop.file.ConfigFile;
 
 import java.util.Optional;
@@ -685,6 +687,7 @@ public final class QuickShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        final BukkitCommandManager manager = new BukkitCommandManager(this);
         final ConfigFile configFile = new ConfigFile();
 
         configFile.load();
@@ -692,6 +695,11 @@ public final class QuickShop extends JavaPlugin {
         getServer().getScheduler().runTask(this, () ->
             getServer().getScheduler().runTaskAsynchronously(this, () ->
                 loader.ifPresent(quickShopLoader -> quickShopLoader.reloadPlugin(true))
+            )
+        );
+        loader.ifPresent(quickShopLoader ->
+            manager.registerCommand(
+                new QuickShopCommand(quickShopLoader)
             )
         );
     }
