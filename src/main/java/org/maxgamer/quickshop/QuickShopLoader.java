@@ -28,10 +28,10 @@ public final class QuickShopLoader {
 
         if (firstTime) {
 
+            // TODO: Listeners should be here.
         } else {
             configFile.load();
 
-            // TODO: Listeners should be here.
         }
 
 
