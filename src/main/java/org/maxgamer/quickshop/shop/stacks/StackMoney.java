@@ -662,7 +662,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.shop.stacks;
 
-public interface Display {
+import org.maxgamer.quickshop.Stack;
+
+public final class StackMoney implements Stack {
 }

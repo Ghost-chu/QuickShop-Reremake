@@ -662,7 +662,7 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.stacks;
+package org.maxgamer.quickshop.shop.stacks;
 
 import org.maxgamer.quickshop.Stack;
 
