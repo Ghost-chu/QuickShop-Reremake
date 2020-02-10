@@ -706,4 +706,10 @@ public final class QuickShopCommand extends BaseCommand {
         );
     }
 
+    @Subcommand("version")
+    @CommandPermission("quickshop.command.version")
+    public void versionCommand(CommandSender sender, QuickShopLoader loader) {
+        loader.checkForUpdate(sender);
+    }
+
 }
