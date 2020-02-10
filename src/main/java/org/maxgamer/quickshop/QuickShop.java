@@ -56,7 +56,9 @@ public final class QuickShop extends JavaPlugin {
             throw new IllegalStateException("You can't use #setInstance method twice!");
         }
 
-        QuickShop.quickShop = Optional.of(quickShop);
+        synchronized (this) {
+            QuickShop.quickShop = Optional.of(quickShop);
+        }
     }
 
     private void setLoader(@NotNull QuickShopLoader loader) {
@@ -64,7 +66,9 @@ public final class QuickShop extends JavaPlugin {
             throw new IllegalStateException("You can't use #setLoader method twice!");
         }
 
-        QuickShop.loader = Optional.of(loader);
+        synchronized (this) {
+            QuickShop.loader = Optional.of(loader);
+        }
     }
 
 }
