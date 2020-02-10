@@ -32,7 +32,7 @@ public final class ConfigFile extends BukkitManaged {
     public final Saving saving = new Saving();
 
     @Section(path = "saving")
-    public class Saving {
+    public static class Saving {
 
         @Value
         public boolean save_when_plugin_disable = true;
@@ -50,7 +50,7 @@ public final class ConfigFile extends BukkitManaged {
         public final MySQL mysql = new MySQL();
 
         @Section(path = "mysql")
-        public class MySQL {
+        public static class MySQL {
 
             @Value
             private String host = "localhost";
