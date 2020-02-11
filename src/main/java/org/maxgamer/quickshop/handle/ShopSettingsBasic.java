@@ -32,25 +32,21 @@ import org.maxgamer.quickshop.handle.abs.Manager;
 import org.maxgamer.quickshop.handle.abs.ShopSettings;
 
 @RequiredArgsConstructor
+@Getter
 public final class ShopSettingsBasic implements ShopSettings {
 
-    @Getter
     @NotNull
     private final Manager manager;
 
-    @Getter
     @Setter
     private boolean display;
 
-    @Getter
     @Setter
     private boolean enable;
 
-    @Getter
     @Setter
     private boolean unlimited;
 
-    @Getter
     @Setter
     private boolean dynamic;
 
