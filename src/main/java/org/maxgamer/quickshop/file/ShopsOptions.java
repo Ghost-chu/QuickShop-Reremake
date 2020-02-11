@@ -51,7 +51,7 @@ public final class ShopsOptions {
             Arrays.asList(
                 MapEntry.of("id", "NOT NULL AUTO_INCREMENT"),
                 MapEntry.of("uuid", "NOT NULL"),
-
+                // TODO: 11.02.2020 Manager, ShopTypes, Stacks.
                 MapEntry.of("UNIQUE", "(`id`, `uuid`)")
             )
         );
