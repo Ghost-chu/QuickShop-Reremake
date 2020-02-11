@@ -26,7 +26,7 @@ package org.maxgamer.quickshop.handle;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Permissible;
+import org.maxgamer.quickshop.handle.abs.Permissible;
 
 import java.util.UUID;
 

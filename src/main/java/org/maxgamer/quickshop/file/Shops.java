@@ -26,7 +26,7 @@ package org.maxgamer.quickshop.file;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop;
+import org.maxgamer.quickshop.handle.abs.Shop;
 
 import java.util.Map;
 import java.util.Optional;

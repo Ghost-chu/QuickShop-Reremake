@@ -28,7 +28,7 @@ import io.github.portlek.configs.util.MapEntry;
 import io.github.portlek.database.SQL;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop;
+import org.maxgamer.quickshop.handle.abs.Shop;
 
 import java.util.Arrays;
 import java.util.Map;

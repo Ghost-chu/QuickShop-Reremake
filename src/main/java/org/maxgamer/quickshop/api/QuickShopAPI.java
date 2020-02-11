@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Shop;
+import org.maxgamer.quickshop.handle.abs.Shop;
 
 import java.util.Collections;
 import java.util.List;
