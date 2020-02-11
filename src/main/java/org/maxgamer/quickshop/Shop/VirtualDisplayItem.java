@@ -32,12 +32,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -56,14 +56,14 @@ public class VirtualDisplayItem extends DisplayItem {
     private PacketContainer fakeItemVelocityPacket;
     private PacketContainer fakeItemDestroyPacket;
     //The List which store packet sender
-    private HashSet<UUID> packetSenders = new HashSet<>();
+    private Set<UUID> packetSenders;
 
 
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
         initFakeDropItemPacket();
         //Let nearby player can saw fake item
-        packetSenders.addAll(shop.getLocation().getNearbyPlayers(plugin.getServer().getViewDistance()*16,256).stream().map(Entity::getUniqueId).collect(Collectors.toSet()));
+        packetSenders= shop.getLocation().getNearbyPlayers(plugin.getServer().getViewDistance() * 16, 256).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
         protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
                 PacketType.Play.Server.MAP_CHUNK) {
             @Override
@@ -87,7 +87,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
+                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z&&!packetSenders.contains(event.getPlayer().getUniqueId())) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
