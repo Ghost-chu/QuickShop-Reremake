@@ -24,7 +24,19 @@
 
 package org.maxgamer.quickshop.type.shoptypes;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.LiveStack;
 import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
+import java.util.Map;
+
 public final class ContainerShopType implements ShopType {
+
+    @NotNull
+    private final Map<Integer, LiveStack> shopItems;
+
+    public ContainerShopType(@NotNull Map<Integer, LiveStack> shopItems) {
+        this.shopItems = shopItems;
+    }
+
 }
