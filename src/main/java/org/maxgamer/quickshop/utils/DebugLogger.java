@@ -45,19 +45,21 @@ public class DebugLogger extends TimerTask {
     private BufferedWriter bufferedWriter;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[HH:mm:ss] ");
     private LinkedList<String> caching = new LinkedList<>();
+
     @SneakyThrows
-    public DebugLogger (@NotNull File logFile){
+    public DebugLogger(@NotNull File logFile) {
         this.logFile = logFile;
-        if(!this.logFile.exists()){
+        if (!this.logFile.exists()) {
             this.logFile.mkdirs();
             this.logFile.createNewFile();
         }
         OutputStream out;
-        bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile,false), StandardCharsets.UTF_8));
-        new Timer().scheduleAtFixedRate(this,0,10000);
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, false), StandardCharsets.UTF_8));
+        new Timer().scheduleAtFixedRate(this, 0, 10000);
     }
+
     @SneakyThrows
-    public void log(@NotNull String data){
+    public void log(@NotNull String data) {
         caching.add(simpleDateFormat.format(new Date(System.currentTimeMillis())) + data);
     }
 
@@ -67,11 +69,12 @@ public class DebugLogger extends TimerTask {
         //noinspection unchecked
         LinkedList<String> copy = (LinkedList<String>) caching.clone();
         caching = new LinkedList<>(); //Fast replace
-        for (String line : copy){
+        for (String line : copy) {
             try {
                 bufferedWriter.write(line);
                 bufferedWriter.newLine();
-            }catch (IOException ignored){}
+            } catch (IOException ignored) {
+            }
         }
     }
 }
