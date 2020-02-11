@@ -674,11 +674,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-
+@AllArgsConstructor
 public class IntegrateRegistry {
-    private Map<Plugin, List<RegisteredIntegration>> registry = new HashMap<>();
-
-    public void register(@NotNull Plugin plugin, @NotNull Callable<IntegratedPlugin> callback){
+    @NotNull private final Map<Plugin, List<RegisteredIntegration>> registry = new HashMap<>();
+    @NotNull private List<Plugin> blacklist;
+    public void register(@NotNull Plugin plugin, @NotNull Callable<IntegratedPlugin> callback) throws IllegalStateException{
+        if(blacklist.contains(plugin)){
+            throw new IllegalStateException("Cannot register this integration because user blacklisted this integration.");
+        }
         List<RegisteredIntegration> registeredIntegrations = this.registry.getOrDefault(plugin, Lists.newArrayList());
         registeredIntegrations.add(new RegisteredIntegration(plugin,callback));
         this.registry.put(plugin,registeredIntegrations);
