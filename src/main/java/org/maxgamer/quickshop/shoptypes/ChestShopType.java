@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.types;
+package org.maxgamer.quickshop.shoptypes;
 
 import org.maxgamer.quickshop.ShopType;
 
-public final class VillagerShopType implements ShopType {
+public final class ChestShopType implements ShopType {
 }

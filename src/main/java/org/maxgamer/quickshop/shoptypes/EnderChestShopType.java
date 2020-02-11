@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.types;
+package org.maxgamer.quickshop.shoptypes;
 
 import org.maxgamer.quickshop.ShopType;
 
-public final class GuiShopType implements ShopType {
+public final class EnderChestShopType implements ShopType {
 }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.types;
+package org.maxgamer.quickshop.shoptypes;
 
 import org.maxgamer.quickshop.ShopType;
 
