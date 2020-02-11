@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -36,5 +37,10 @@ public final class Shops {
 
     @NotNull
     private final Map<UUID, Shop> shops;
+
+    @NotNull
+    public Optional<Shop> getShopByUUID(@NotNull UUID uuid) {
+        return Optional.of(shops.get(uuid));
+    }
 
 }

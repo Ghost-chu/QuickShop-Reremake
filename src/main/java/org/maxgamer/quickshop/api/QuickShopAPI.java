@@ -28,6 +28,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop;
 
 import java.util.Collections;
@@ -42,7 +43,7 @@ public final class QuickShopAPI {
 
     @NotNull
     public static Optional<Shop> getShopByShopUUID(@NotNull UUID shopUuid) {
-        return Optional.empty();
+        return QuickShop.getLoader().getShops().getShopByUUID(shopUuid);
     }
 
     @NotNull
