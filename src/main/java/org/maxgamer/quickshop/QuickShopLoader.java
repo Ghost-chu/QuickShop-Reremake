@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
+import org.maxgamer.quickshop.file.Shops;
+import org.maxgamer.quickshop.file.ShopsOptions;
 import org.maxgamer.quickshop.handle.RegistryBasic;
 import org.maxgamer.quickshop.utils.ListenerBasic;
 import org.maxgamer.quickshop.utils.UpdateChecker;
@@ -51,18 +53,27 @@ public final class QuickShopLoader {
 
     @Getter
     @NotNull
-    private SQL sql;
+    private final Registry registry;
 
     @Getter
     @NotNull
-    private final Registry registry;
+    private SQL sql;
+
+    @NotNull
+    private final ShopsOptions shopsOptions;
+
+    @Getter
+    @NotNull
+    private Shops shops;
 
     public QuickShopLoader(@NotNull QuickShop quickShop, @NotNull ConfigFile configFile) {
         this.quickShop = quickShop;
         this.configFile = configFile;
         this.languageFile = new LanguageFile(configFile);
-        sql = configFile.createSQL();
         registry = new RegistryBasic(this);
+        sql = configFile.createSQL();
+        shopsOptions = new ShopsOptions(sql);
+        shops = shopsOptions.value();
     }
 
     public void reloadPlugin(boolean firstTime) {
@@ -80,6 +91,7 @@ public final class QuickShopLoader {
         } else {
             configFile.load();
             sql = configFile.createSQL();
+            shops = shopsOptions.value();
         }
 
         if (configFile.saving.auto_save) {
