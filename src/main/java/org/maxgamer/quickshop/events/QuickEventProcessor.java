@@ -671,7 +671,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -680,10 +679,8 @@ import java.util.List;
 import java.util.Map;
 
 public class QuickEventProcessor {
-    private PluginManager pluginManager;
     private Map<String, List<String>> blacklist;
-    public QuickEventProcessor(final @NotNull PluginManager pluginManager, final Map<String, List<String>> blacklist){
-        this.pluginManager = pluginManager;
+    public QuickEventProcessor(final @NotNull Map<String, List<String>> blacklist){
         this.blacklist = blacklist;
     }
     /**
