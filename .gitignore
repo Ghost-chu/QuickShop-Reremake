@@ -40,6 +40,7 @@ hs_err_pid*
 
 #IDEA
 .idea/
+.idea/codeStyles/Project.xml
 QuickShop.iml
 QuickShop-Era.iml
 
@@ -47,4 +48,3 @@ QuickShop-Era.iml
 .settings/
 .classpath
 .project
-
