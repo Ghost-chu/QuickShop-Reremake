@@ -74,4 +74,21 @@ public final class NMSUtils {
             return 20.0;
         }
     }
+
+    /**
+     * Get Minecraft server version
+     * @return The version like 1.15.2 1.14.4
+     */
+    public static String getServerVersion() {
+        try {
+            Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
+            consoleField.setAccessible(true); // protected
+            Object console = consoleField.get(Bukkit.getServer()); // dedicated server
+            return String.valueOf(
+                console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
 }
