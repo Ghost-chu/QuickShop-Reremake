@@ -26,4 +26,5 @@ package org.maxgamer.quickshop.utils;
 
 public final class DebugUtils {
 
+
 }
