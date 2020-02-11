@@ -22,43 +22,46 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle;
+package org.maxgamer.quickshop.handle.abs;
 
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShopLoader;
-import org.maxgamer.quickshop.handle.abs.Registry;
-import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.type.stacks.abs.Stack;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
+import java.util.UUID;
 
-@RequiredArgsConstructor
-public final class RegistryBasic implements Registry {
-
-    private final Map<String, ShopType> shopTypes = new ConcurrentHashMap<>();
+public interface Shop {
 
     @NotNull
-    private final QuickShopLoader loader;
+    UUID getUniqueId();
 
-    @Override
-    public void registerShopType(@NotNull String id, @NotNull ShopType shopType) {
-        shopTypes.put(id, shopType);
-    }
-
+    /**
+     * Gives the manager
+     *
+     * @return the manager of the shop.
+     */
     @NotNull
-    @Override
-    public Optional<ShopType> getShopTypeById(@NotNull String id) {
-        return Optional.ofNullable(shopTypes.get(id));
-    }
+    Manager getManager();
 
+    /**
+     * Gives the shop type
+     *
+     * @return the shop type of the shop.
+     */
     @NotNull
-    @Override
-    public Collection<ShopType> getShopTypes() {
-        return Collections.unmodifiableCollection(shopTypes.values());
-    }
+    ShopBase getShopType();
+
+    /**
+     * Gives the stacks
+     *
+     * @return the stacks of the shop.
+     */
+    @NotNull
+    List<Stack> getStacks();
+
+    /**
+     *
+     */
+    void save();
 
 }

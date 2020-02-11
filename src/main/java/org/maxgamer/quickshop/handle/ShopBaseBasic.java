@@ -22,9 +22,17 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.stacks;
+package org.maxgamer.quickshop.handle;
 
-import org.maxgamer.quickshop.Stack;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.ShopBase;
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-public final class StackItem implements Stack {
+@RequiredArgsConstructor
+public final class ShopBaseBasic implements ShopBase {
+
+    @NotNull
+    private final ShopType shopType;
+
 }

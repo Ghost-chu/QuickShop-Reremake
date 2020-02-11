@@ -22,21 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.type.shoptypes;
 
-import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-import java.util.Collection;
-import java.util.Optional;
-
-public interface Registry {
-
-    void registerShopType(@NotNull String id, @NotNull ShopType shopType);
-
-    @NotNull
-    Optional<ShopType> getShopTypeById(@NotNull String id);
-
-    @NotNull
-    Collection<ShopType> getShopTypes();
-
+public final class EntityShopType implements ShopType {
 }

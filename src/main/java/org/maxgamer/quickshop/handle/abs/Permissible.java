@@ -22,9 +22,20 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.stacks;
+package org.maxgamer.quickshop.handle.abs;
 
-import org.maxgamer.quickshop.Stack;
+import org.jetbrains.annotations.NotNull;
 
-public final class StackMoney implements Stack {
+import java.util.UUID;
+
+public interface Permissible {
+
+    /**
+     * Compares if given uuid is equal the own.
+     *
+     * @param uuid the uuid that will compare
+     * @return returns true if the uuid is equal the own.
+     */
+    boolean is(@NotNull UUID uuid);
+
 }

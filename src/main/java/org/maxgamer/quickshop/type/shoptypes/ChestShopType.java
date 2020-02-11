@@ -22,40 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.type.shoptypes;
 
-import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-import java.util.List;
-import java.util.UUID;
-
-public interface Shop {
-
-    @NotNull
-    UUID getUniqueId();
-
-    /**
-     * Gives the manager
-     *
-     * @return the manager of the shop.
-     */
-    @NotNull
-    Manager getManager();
-
-    /**
-     * Gives the shop type
-     *
-     * @return the shop type of the shop.
-     */
-    @NotNull
-    ShopType getShopType();
-
-    /**
-     * Gives the stacks
-     *
-     * @return the stacks of the shop.
-     */
-    @NotNull
-    List<Stack> getStacks();
-
+public final class ChestShopType implements ShopType {
 }

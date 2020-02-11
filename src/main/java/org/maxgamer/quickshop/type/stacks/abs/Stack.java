@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.shoptypes;
+package org.maxgamer.quickshop.type.stacks.abs;
 
-import org.maxgamer.quickshop.ShopType;
-
-public final class EntityShopType implements ShopType {
+public interface Stack {
 }

@@ -27,10 +27,10 @@ package org.maxgamer.quickshop.handle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Manager;
-import org.maxgamer.quickshop.Shop;
-import org.maxgamer.quickshop.ShopType;
-import org.maxgamer.quickshop.Stack;
+import org.maxgamer.quickshop.handle.abs.Manager;
+import org.maxgamer.quickshop.handle.abs.Shop;
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.type.stacks.abs.Stack;
 
 import java.util.List;
 import java.util.UUID;

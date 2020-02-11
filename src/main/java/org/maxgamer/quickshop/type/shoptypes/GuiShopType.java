@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.type.shoptypes;
 
-public interface ShopType {
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
+
+public final class GuiShopType implements ShopType {
 }

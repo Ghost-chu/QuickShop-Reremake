@@ -22,9 +22,20 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.shoptypes;
+package org.maxgamer.quickshop.handle.abs;
 
-import org.maxgamer.quickshop.ShopType;
+import org.jetbrains.annotations.NotNull;
 
-public final class ChestShopType implements ShopType {
+import java.util.UUID;
+
+public interface Manager {
+
+    /**
+     * Compares if given uuid is owner of the shop or not.
+     *
+     * @param uuid the uuid that will compare
+     * @return returns true if the uuid is owner of the shop.
+     */
+    boolean isOwner(@NotNull UUID uuid);
+
 }

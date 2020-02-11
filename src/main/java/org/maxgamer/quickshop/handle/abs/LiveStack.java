@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.shoptypes;
+package org.maxgamer.quickshop.handle.abs;
 
-import org.maxgamer.quickshop.ShopType;
-
-public final class EnderChestShopType implements ShopType {
+public interface LiveStack {
 }

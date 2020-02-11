@@ -22,43 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle;
+package org.maxgamer.quickshop.type.shoptypes;
 
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShopLoader;
-import org.maxgamer.quickshop.handle.abs.Registry;
 import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-
-@RequiredArgsConstructor
-public final class RegistryBasic implements Registry {
-
-    private final Map<String, ShopType> shopTypes = new ConcurrentHashMap<>();
-
-    @NotNull
-    private final QuickShopLoader loader;
-
-    @Override
-    public void registerShopType(@NotNull String id, @NotNull ShopType shopType) {
-        shopTypes.put(id, shopType);
-    }
-
-    @NotNull
-    @Override
-    public Optional<ShopType> getShopTypeById(@NotNull String id) {
-        return Optional.ofNullable(shopTypes.get(id));
-    }
-
-    @NotNull
-    @Override
-    public Collection<ShopType> getShopTypes() {
-        return Collections.unmodifiableCollection(shopTypes.values());
-    }
-
+public final class VillagerShopType implements ShopType {
 }

@@ -22,20 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop;
+package org.maxgamer.quickshop.type.shoptypes;
 
-import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-import java.util.UUID;
-
-public interface Permissible {
-
-    /**
-     * Compares if given uuid is equal the own.
-     *
-     * @param uuid the uuid that will compare
-     * @return returns true if the uuid is equal the own.
-     */
-    boolean is(@NotNull UUID uuid);
-
+public final class EnderChestShopType implements ShopType {
 }
