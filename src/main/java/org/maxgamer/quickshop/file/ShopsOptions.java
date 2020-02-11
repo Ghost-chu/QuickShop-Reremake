@@ -51,6 +51,7 @@ public final class ShopsOptions {
             Arrays.asList(
                 MapEntry.of("id", "NOT NULL AUTO_INCREMENT"),
                 MapEntry.of("uuid", "NOT NULL"),
+
                 MapEntry.of("UNIQUE", "(`id`, `uuid`)")
             )
         );

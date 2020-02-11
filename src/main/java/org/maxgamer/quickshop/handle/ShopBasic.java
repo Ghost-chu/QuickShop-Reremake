@@ -33,9 +33,14 @@ import org.maxgamer.quickshop.ShopType;
 import org.maxgamer.quickshop.Stack;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public final class ShopBasic implements Shop {
+
+    @Getter
+    @NotNull
+    private final UUID uniqueId;
 
     @Getter
     @NotNull

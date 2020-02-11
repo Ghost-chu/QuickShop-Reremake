@@ -27,8 +27,12 @@ package org.maxgamer.quickshop;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface Shop {
+
+    @NotNull
+    UUID getUniqueId();
 
     /**
      * Gives the manager
