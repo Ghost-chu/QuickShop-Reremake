@@ -50,4 +50,8 @@ public final class ShopSettingsBasic implements ShopSettings {
     @Setter
     private boolean unlimited;
 
+    @Getter
+    @Setter
+    private boolean dynamic;
+
 }
