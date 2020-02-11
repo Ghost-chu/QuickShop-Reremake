@@ -27,7 +27,7 @@ package org.maxgamer.quickshop.handle.types;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
-import org.maxgamer.quickshop.handle.types.abs.ShopType;
+import org.maxgamer.quickshop.handle.abs.ShopType;
 
 @RequiredArgsConstructor
 public final class SignShopType implements ShopType {

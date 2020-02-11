@@ -22,7 +22,19 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.types.abs;
+package org.maxgamer.quickshop.handle.abs;
 
-public interface ShopType {
+import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
+
+public interface Serializable {
+
+    /**
+     * Serializes the object
+     *
+     * @return the json of the object
+     */
+    @NotNull
+    JsonObject serialize();
+
 }

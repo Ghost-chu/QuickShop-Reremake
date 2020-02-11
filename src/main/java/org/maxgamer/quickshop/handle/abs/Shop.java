@@ -28,8 +28,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public interface Shop {
+public interface Shop extends Serializable {
 
+    /**
+     * Gives the uuid
+     *
+     * @return the uuid of the shop
+     */
     @NotNull
     UUID getUniqueId();
 

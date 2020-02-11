@@ -22,7 +22,18 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.stacks.abs;
+package org.maxgamer.quickshop.handle.abs;
 
-public interface Stack {
+import org.jetbrains.annotations.NotNull;
+
+public interface Perm {
+
+    /**
+     * Gives the id
+     *
+     * @return the id of the perm
+     */
+    @NotNull
+    String getId();
+
 }

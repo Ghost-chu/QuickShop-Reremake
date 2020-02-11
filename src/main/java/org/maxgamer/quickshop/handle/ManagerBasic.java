@@ -24,6 +24,8 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.Manager;
@@ -44,6 +46,21 @@ public final class ManagerBasic implements Manager {
     @Override
     public boolean isOwner(@NotNull UUID uuid) {
         return owner.is(uuid);
+    }
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.add("owner", owner.serialize());
+
+        final JsonArray parent = new JsonArray();
+
+        coOwners.forEach(permissible -> parent.add(permissible.serialize()));
+        jsonObject.add("co-owners", parent);
+
+        return jsonObject;
     }
 
 }

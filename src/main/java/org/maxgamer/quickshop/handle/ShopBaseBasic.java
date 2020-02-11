@@ -24,13 +24,18 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import io.github.portlek.location.StringOf;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.handle.abs.ShopBase;
 import org.maxgamer.quickshop.handle.abs.ShopSettings;
-import org.maxgamer.quickshop.handle.types.abs.ShopType;
+import org.maxgamer.quickshop.handle.abs.ShopType;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public final class ShopBaseBasic implements ShopBase {
@@ -43,5 +48,34 @@ public final class ShopBaseBasic implements ShopBase {
 
     @Nullable
     private final Location location;
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.add("shop-settings", shopSettings.serialize());
+        jsonObject.add("shop-type", shopType.serialize());
+
+        if (Optional.ofNullable(location).isPresent()) {
+            jsonObject.add(
+                "location",
+                new JsonPrimitive(
+                    new StringOf(
+                        location
+                    ).asKey()
+                )
+            );
+        } else {
+            jsonObject.add(
+                "location",
+                new JsonPrimitive(
+                    "none"
+                )
+            );
+        }
+
+        return jsonObject;
+    }
 
 }

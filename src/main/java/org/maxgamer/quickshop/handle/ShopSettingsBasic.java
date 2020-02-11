@@ -24,6 +24,8 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -49,5 +51,19 @@ public final class ShopSettingsBasic implements ShopSettings {
 
     @Setter
     private boolean dynamic;
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.add("managment", manager.serialize());
+        jsonObject.add("display", new JsonPrimitive(display));
+        jsonObject.add("enable", new JsonPrimitive(enable));
+        jsonObject.add("unlimited", new JsonPrimitive(unlimited));
+        jsonObject.add("dynamic", new JsonPrimitive(dynamic));
+
+        return jsonObject;
+    }
 
 }

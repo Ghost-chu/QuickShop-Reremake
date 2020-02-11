@@ -24,10 +24,15 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.Perm;
 import org.maxgamer.quickshop.handle.abs.Permissible;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -36,9 +41,27 @@ public final class PermissibleBasic implements Permissible {
     @NotNull
     private final UUID uuid;
 
+    @NotNull
+    private final List<Perm> perms;
+
     @Override
     public boolean is(@NotNull UUID uuid) {
         return this.uuid.equals(uuid);
+    }
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        jsonObject.add("uuid", new JsonPrimitive(uuid.toString()));
+
+        final JsonArray permissions = new JsonArray();
+
+        perms.forEach(perm -> permissions.add(perm.getId()));
+        jsonObject.add("permissions", permissions);
+
+        return jsonObject;
     }
 
 }

@@ -24,8 +24,5 @@
 
 package org.maxgamer.quickshop.handle.abs;
 
-public interface ShopSettings {
-
-
-
+public interface ShopSettings extends Serializable {
 }

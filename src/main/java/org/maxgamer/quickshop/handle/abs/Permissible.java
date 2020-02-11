@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public interface Permissible {
+public interface Permissible extends Serializable {
 
     /**
      * Compares if given uuid is equal the own.

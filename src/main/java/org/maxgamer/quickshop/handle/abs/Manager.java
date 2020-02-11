@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public interface Manager {
+public interface Manager extends Serializable {
 
     /**
      * Compares if given uuid is owner of the shop or not.

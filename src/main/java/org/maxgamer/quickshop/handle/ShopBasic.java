@@ -24,6 +24,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -42,5 +43,11 @@ public final class ShopBasic implements Shop {
     @Getter
     @NotNull
     private final ShopBase shopBase;
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        return shopBase.serialize();
+    }
 
 }

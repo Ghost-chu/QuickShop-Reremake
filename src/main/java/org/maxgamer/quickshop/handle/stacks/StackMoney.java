@@ -24,7 +24,7 @@
 
 package org.maxgamer.quickshop.handle.stacks;
 
-import org.maxgamer.quickshop.handle.stacks.abs.Stack;
+import org.maxgamer.quickshop.handle.abs.Stack;
 
 public final class StackMoney implements Stack {
 }
