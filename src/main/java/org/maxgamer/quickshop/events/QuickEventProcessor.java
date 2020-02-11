@@ -686,6 +686,11 @@ public class QuickEventProcessor {
         this.pluginManager = pluginManager;
         this.blacklist = blacklist;
     }
+    /**
+     * Calling a event on Bukkit Event Bus.
+     * @param event The event will be called.
+     * @return All plugins processed this event and results when processing a plugin.
+     */
     @NotNull
     public List<EventDataContainer> fireEvent(final @NotNull Event event){
         List<EventDataContainer> result = new ArrayList<>();
