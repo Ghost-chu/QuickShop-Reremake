@@ -699,6 +699,8 @@ public class QuickEventProcessor {
             }finally {
                 if(event instanceof Cancellable){
                     result.add(new EventDataContainer(plugin,registration,((Cancellable) event).isCancelled()));
+                }else{
+                    result.add(new EventDataContainer(plugin,registration,false));
                 }
             }
         }
