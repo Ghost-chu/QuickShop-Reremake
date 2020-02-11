@@ -25,4 +25,7 @@
 package org.maxgamer.quickshop.handle.abs;
 
 public interface ShopBase {
+
+
+
 }

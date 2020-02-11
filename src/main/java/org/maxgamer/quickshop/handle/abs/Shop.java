@@ -25,9 +25,7 @@
 package org.maxgamer.quickshop.handle.abs;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.type.stacks.abs.Stack;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface Shop {
@@ -50,14 +48,6 @@ public interface Shop {
      */
     @NotNull
     ShopBase getShopBase();
-
-    /**
-     * Gives the stacks
-     *
-     * @return the stacks of the shop.
-     */
-    @NotNull
-    List<LiveStack> getLiveStacks();
 
     /**
      * Gives the shop settings

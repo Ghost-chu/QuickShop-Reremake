@@ -27,9 +27,11 @@ package org.maxgamer.quickshop.handle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.handle.abs.*;
+import org.maxgamer.quickshop.handle.abs.Manager;
+import org.maxgamer.quickshop.handle.abs.Shop;
+import org.maxgamer.quickshop.handle.abs.ShopBase;
+import org.maxgamer.quickshop.handle.abs.ShopSettings;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -46,10 +48,6 @@ public final class ShopBasic implements Shop {
     @Getter
     @NotNull
     private final ShopBase shopBase;
-
-    @Getter
-    @NotNull
-    private final List<LiveStack> liveStacks;
 
     @Getter
     @NotNull

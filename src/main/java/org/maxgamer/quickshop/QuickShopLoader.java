@@ -33,8 +33,8 @@ import org.maxgamer.quickshop.file.ConfigFile;
 import org.maxgamer.quickshop.file.LanguageFile;
 import org.maxgamer.quickshop.file.Shops;
 import org.maxgamer.quickshop.file.ShopsOptions;
-import org.maxgamer.quickshop.handle.abs.Registry;
 import org.maxgamer.quickshop.handle.RegistryBasic;
+import org.maxgamer.quickshop.handle.abs.Registry;
 import org.maxgamer.quickshop.utils.ListenerBasic;
 import org.maxgamer.quickshop.utils.UpdateChecker;
 
