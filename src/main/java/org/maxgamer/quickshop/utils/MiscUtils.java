@@ -54,11 +54,11 @@ public final class MiscUtils {
      * @return Map1 match Map2
      */
     public static boolean mapMatches(final @NotNull Map<?, ?> map1, final @NotNull Map<?, ?> map2) {
-        for (final Object obj : map1.keySet()) {
-            if (!map2.containsKey(obj)) {
+        for (Map.Entry<?, ?> entry : map1.entrySet()) {
+            if (!map2.containsKey(entry.getKey())) {
                 return false;
             }
-            if (map1.get(obj) != map2.get(obj)) {
+            if (entry.getValue() != map2.get(entry.getKey())) {
                 return false;
             }
         }
