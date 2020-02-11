@@ -12,7 +12,7 @@ public final class NMSUtils {
 
     public NMSUtils() {
     }
-    
+
     /**
      * Get the MinecraftServer class
      *
@@ -40,11 +40,7 @@ public final class NMSUtils {
      */
     @NotNull
     public static String getNMSVersion() {
-        final String name = Bukkit.getServer().getClass().getPackage().getName();
-        // FIXME: 11.02.2020 name cannot be null!
-        if (name == null) {
-            return "Unknown";
-        }
+        final @NotNull String name = Bukkit.getServer().getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
     }
 
@@ -79,6 +75,7 @@ public final class NMSUtils {
 
     /**
      * Get Minecraft server version
+     *
      * @return The version like 1.15.2 1.14.4
      */
     public static String getServerVersion() {
