@@ -34,27 +34,11 @@ public interface Shop {
     UUID getUniqueId();
 
     /**
-     * Gives the manager
-     *
-     * @return the manager of the shop.
-     */
-    @NotNull
-    Manager getManager();
-
-    /**
      * Gives the shop type
      *
      * @return the shop type of the shop.
      */
     @NotNull
     ShopBase getShopBase();
-
-    /**
-     * Gives the shop settings
-     *
-     * @return the settings of the shop
-     */
-    @NotNull
-    ShopSettings getShopSettings();
 
 }

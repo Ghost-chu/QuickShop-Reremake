@@ -29,10 +29,14 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.handle.abs.ShopBase;
+import org.maxgamer.quickshop.handle.abs.ShopSettings;
 import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
 @RequiredArgsConstructor
 public final class ShopBaseBasic implements ShopBase {
+
+    @NotNull
+    private final ShopSettings shopSettings;
 
     @NotNull
     private final ShopType shopType;

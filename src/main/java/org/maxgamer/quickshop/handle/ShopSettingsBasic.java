@@ -24,7 +24,30 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.Manager;
 import org.maxgamer.quickshop.handle.abs.ShopSettings;
 
+@RequiredArgsConstructor
 public final class ShopSettingsBasic implements ShopSettings {
+
+    @Getter
+    @NotNull
+    private final Manager manager;
+
+    @Getter
+    @Setter
+    private boolean display;
+
+    @Getter
+    @Setter
+    private boolean enable;
+
+    @Getter
+    @Setter
+    private boolean unlimited;
+
 }
