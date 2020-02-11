@@ -46,15 +46,6 @@ public final class ShopsOptions {
         final Map<UUID, Shop> shops = new ConcurrentHashMap<>();
 
         // TODO: 11.02.2020 Load the shops from the sql.
-        sql.createTable(
-            "shops",
-            Arrays.asList(
-                MapEntry.of("id", "NOT NULL AUTO_INCREMENT"),
-                MapEntry.of("uuid", "NOT NULL"),
-                // TODO: 11.02.2020 Manager, ShopTypes, Stacks.
-                MapEntry.of("UNIQUE", "(`id`, `uuid`)")
-            )
-        );
 
         return new Shops(shops);
     }
