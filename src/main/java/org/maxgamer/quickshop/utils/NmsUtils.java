@@ -10,6 +10,9 @@ import java.util.Optional;
 
 public final class NmsUtils {
 
+    private NmsUtils() {
+    }
+
     /**
      * Get the MinecraftServer class
      *
