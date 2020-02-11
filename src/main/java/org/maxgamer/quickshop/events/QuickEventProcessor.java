@@ -680,7 +680,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class QuickEventProcessor {
+public final class QuickEventProcessor {
 
     @NotNull
     private final Map<String, List<String>> blacklist;
