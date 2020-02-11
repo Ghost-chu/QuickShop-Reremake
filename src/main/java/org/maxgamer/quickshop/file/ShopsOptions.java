@@ -26,6 +26,11 @@ package org.maxgamer.quickshop.file;
 
 import io.github.portlek.database.SQL;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Shop;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class ShopsOptions {
 
@@ -38,9 +43,11 @@ public final class ShopsOptions {
 
     @NotNull
     public Shops value() {
-        
+        final Map<UUID, Shop> shops = new ConcurrentHashMap<>();
 
-        return new Shops();
+        // TODO: 11.02.2020 Load the shops from the sql. 
+
+        return new Shops(shops);
     }
 
 }
