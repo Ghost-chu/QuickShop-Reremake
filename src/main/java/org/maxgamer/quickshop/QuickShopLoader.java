@@ -83,7 +83,7 @@ public final class QuickShopLoader {
         }
 
         if (configFile.saving.auto_save) {
-            quickShop.getServer().getScheduler().runTaskTimer(
+            quickShop.getServer().getScheduler().runTaskTimerAsynchronously(
                 quickShop,
                 () -> {
                     // TODO Add codes for saving data as automatic
