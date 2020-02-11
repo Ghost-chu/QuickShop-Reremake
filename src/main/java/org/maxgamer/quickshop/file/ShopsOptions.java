@@ -35,4 +35,12 @@ public final class ShopsOptions {
     public ShopsOptions(@NotNull SQL sql) {
         this.sql = sql;
     }
+
+    @NotNull
+    public Shops value() {
+        
+
+        return new Shops();
+    }
+
 }
