@@ -24,8 +24,19 @@
 
 package org.maxgamer.quickshop.file;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Shop;
+
+import java.util.Map;
+import java.util.UUID;
+
 public final class Shops {
 
+    @NotNull
+    private final Map<UUID, Shop> shops;
 
+    public Shops(@NotNull Map<UUID, Shop> shops) {
+        this.shops = shops;
+    }
 
 }
