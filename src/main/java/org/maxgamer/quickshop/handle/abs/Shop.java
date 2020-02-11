@@ -49,7 +49,7 @@ public interface Shop {
      * @return the shop type of the shop.
      */
     @NotNull
-    ShopBase getShopType();
+    ShopBase getShopBase();
 
     /**
      * Gives the stacks
@@ -57,11 +57,6 @@ public interface Shop {
      * @return the stacks of the shop.
      */
     @NotNull
-    List<Stack> getStacks();
-
-    /**
-     *
-     */
-    void save();
+    List<LiveStack> getLiveStacks();
 
 }

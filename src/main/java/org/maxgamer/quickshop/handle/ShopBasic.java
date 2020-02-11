@@ -27,10 +27,10 @@ package org.maxgamer.quickshop.handle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.LiveStack;
 import org.maxgamer.quickshop.handle.abs.Manager;
 import org.maxgamer.quickshop.handle.abs.Shop;
-import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
-import org.maxgamer.quickshop.type.stacks.abs.Stack;
+import org.maxgamer.quickshop.handle.abs.ShopBase;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,10 +48,10 @@ public final class ShopBasic implements Shop {
 
     @Getter
     @NotNull
-    private final ShopType shopType;
+    private final ShopBase shopBase;
 
     @Getter
     @NotNull
-    private final List<Stack> stacks;
+    private final List<LiveStack> liveStacks;
 
 }
