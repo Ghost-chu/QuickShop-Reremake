@@ -25,7 +25,7 @@
 package org.maxgamer.quickshop.handle.abs;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.handle.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.handle.types.abs.ShopType;
 
 import java.util.Collection;
 import java.util.Optional;

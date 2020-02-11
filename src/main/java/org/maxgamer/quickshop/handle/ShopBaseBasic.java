@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.handle.abs.ShopBase;
 import org.maxgamer.quickshop.handle.abs.ShopSettings;
-import org.maxgamer.quickshop.handle.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.handle.types.abs.ShopType;
 
 @RequiredArgsConstructor
 public final class ShopBaseBasic implements ShopBase {

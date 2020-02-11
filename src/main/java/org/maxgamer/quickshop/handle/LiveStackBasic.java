@@ -27,7 +27,7 @@ package org.maxgamer.quickshop.handle;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
-import org.maxgamer.quickshop.handle.type.stacks.abs.Stack;
+import org.maxgamer.quickshop.handle.stacks.abs.Stack;
 
 @RequiredArgsConstructor
 public final class LiveStackBasic implements LiveStack {

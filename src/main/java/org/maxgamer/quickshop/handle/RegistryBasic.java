@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShopLoader;
 import org.maxgamer.quickshop.handle.abs.Registry;
-import org.maxgamer.quickshop.handle.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.handle.types.abs.ShopType;
 
 import java.util.Collection;
 import java.util.Collections;
