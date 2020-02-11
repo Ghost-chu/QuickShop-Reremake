@@ -24,6 +24,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Manager;
@@ -36,30 +37,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class ShopBasic implements Shop {
 
+    @Getter
     @NotNull
     private final Manager manager;
 
+    @Getter
     @NotNull
     private final ShopType shopType;
 
+    @Getter
     @NotNull
     private final List<Stack> stacks;
 
-    @NotNull
-    @Override
-    public Manager getManager() {
-        return manager;
-    }
-
-    @NotNull
-    @Override
-    public ShopType getShopType() {
-        return shopType;
-    }
-
-    @NotNull
-    @Override
-    public List<Stack> getStacks() {
-        return stacks;
-    }
 }
