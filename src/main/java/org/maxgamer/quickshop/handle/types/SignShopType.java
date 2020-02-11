@@ -22,21 +22,17 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.shoptypes;
+package org.maxgamer.quickshop.handle.types;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
-import org.maxgamer.quickshop.handle.shoptypes.abs.ShopType;
+import org.maxgamer.quickshop.handle.types.abs.ShopType;
 
-import java.util.Map;
-
-public final class ContainerShopType implements ShopType {
+@RequiredArgsConstructor
+public final class SignShopType implements ShopType {
 
     @NotNull
-    private final Map<Integer, LiveStack> shopItems;
-
-    public ContainerShopType(@NotNull Map<Integer, LiveStack> shopItems) {
-        this.shopItems = shopItems;
-    }
+    private final LiveStack shopItem;
 
 }

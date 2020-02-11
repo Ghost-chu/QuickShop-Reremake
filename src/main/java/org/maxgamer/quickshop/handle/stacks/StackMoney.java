@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.type.stacks;
+package org.maxgamer.quickshop.handle.stacks;
 
-import org.maxgamer.quickshop.handle.type.stacks.abs.Stack;
+import org.maxgamer.quickshop.handle.stacks.abs.Stack;
 
-public final class StackItem implements Stack {
+public final class StackMoney implements Stack {
 }

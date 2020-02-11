@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.shoptypes.abs;
+package org.maxgamer.quickshop.handle.stacks;
 
-public interface ShopType {
+import org.maxgamer.quickshop.handle.stacks.abs.Stack;
+
+public final class StackNone implements Stack {
 }

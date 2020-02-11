@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.type.stacks.abs;
+package org.maxgamer.quickshop.handle.types.abs;
 
-public interface Stack {
+public interface ShopType {
 }

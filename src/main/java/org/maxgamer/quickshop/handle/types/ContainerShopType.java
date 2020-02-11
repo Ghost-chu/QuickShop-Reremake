@@ -22,9 +22,21 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.handle.type.stacks;
+package org.maxgamer.quickshop.handle.types;
 
-import org.maxgamer.quickshop.handle.type.stacks.abs.Stack;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.LiveStack;
+import org.maxgamer.quickshop.handle.types.abs.ShopType;
 
-public final class StackMoney implements Stack {
+import java.util.Map;
+
+public final class ContainerShopType implements ShopType {
+
+    @NotNull
+    private final Map<Integer, LiveStack> shopItems;
+
+    public ContainerShopType(@NotNull Map<Integer, LiveStack> shopItems) {
+        this.shopItems = shopItems;
+    }
+
 }
