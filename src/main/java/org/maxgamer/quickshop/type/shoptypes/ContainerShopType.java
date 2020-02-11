@@ -26,5 +26,5 @@ package org.maxgamer.quickshop.type.shoptypes;
 
 import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
-public final class EnderChestShopType implements ShopType {
+public final class ContainerShopType implements ShopType {
 }

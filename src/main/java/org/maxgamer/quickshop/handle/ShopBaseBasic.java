@@ -25,7 +25,9 @@
 package org.maxgamer.quickshop.handle;
 
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.handle.abs.ShopBase;
 import org.maxgamer.quickshop.type.shoptypes.abs.ShopType;
 
@@ -34,5 +36,8 @@ public final class ShopBaseBasic implements ShopBase {
 
     @NotNull
     private final ShopType shopType;
+
+    @Nullable
+    private final Location location;
 
 }
