@@ -24,11 +24,13 @@
 
 package org.maxgamer.quickshop.file;
 
+import io.github.portlek.configs.util.MapEntry;
 import io.github.portlek.database.SQL;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +46,14 @@ public final class ShopsOptions {
         final Map<UUID, Shop> shops = new ConcurrentHashMap<>();
 
         // TODO: 11.02.2020 Load the shops from the sql.
+        sql.createTable(
+            "shops",
+            Arrays.asList(
+                MapEntry.of("id", "NOT NULL AUTO_INCREMENT"),
+                MapEntry.of("uuid", "NOT NULL"),
+                MapEntry.of("UNIQUE", "(`id`, `uuid`)")
+            )
+        );
 
         return new Shops(shops);
     }
