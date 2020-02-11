@@ -664,6 +664,6 @@
 
 package org.maxgamer.quickshop.handle.types;
 
-public class NPCShopType {
+public class NpcShopType {
 
 }
