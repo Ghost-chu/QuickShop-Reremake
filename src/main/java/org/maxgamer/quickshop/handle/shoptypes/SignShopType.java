@@ -22,9 +22,17 @@
  * SOFTWARE.
  */
 
-package org.maxgamer.quickshop.type.stacks;
+package org.maxgamer.quickshop.handle.shoptypes;
 
-import org.maxgamer.quickshop.type.stacks.abs.Stack;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.handle.abs.LiveStack;
+import org.maxgamer.quickshop.handle.shoptypes.abs.ShopType;
 
-public final class StackNone implements Stack {
+@RequiredArgsConstructor
+public final class SignShopType implements ShopType {
+
+    @NotNull
+    private final LiveStack shopItem;
+
 }
