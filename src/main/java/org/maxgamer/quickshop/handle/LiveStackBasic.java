@@ -36,9 +36,9 @@ public final class LiveStackBasic implements LiveStack {
     private final Stack stack;
 
     @NotNull
-    private final LiveStack buyStack;
+    private final Stack buyStack;
 
     @NotNull
-    private final LiveStack sellStack;
+    private final Stack sellStack;
 
 }
