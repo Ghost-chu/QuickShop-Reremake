@@ -664,8 +664,10 @@
 
 package org.maxgamer.quickshop.api;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Shop;
 
 import java.util.Collections;
@@ -679,18 +681,23 @@ public final class QuickShopAPI {
     }
 
     @NotNull
-    public static Optional<Shop> getShopByUUID(@NotNull UUID uuid) {
+    public static Optional<Shop> getShopByShopUUID(@NotNull UUID shopUuid) {
         return Optional.empty();
     }
-
+    @NotNull
+    public static Optional<Shop> getShopByPlayerUUID(@NotNull UUID playerUuid) {
+        return Optional.empty();
+    }
     @NotNull
     public static List<Shop> getShopsOf(@NotNull Player player) {
         return Collections.emptyList();
     }
-
     @NotNull
     public static List<Shop> getShops() {
         return Collections.emptyList();
     }
+    @NotNull
+    public static List<Shop> getLoadedShops(@Nullable World world){return Collections.emptyList();}
+
 
 }
