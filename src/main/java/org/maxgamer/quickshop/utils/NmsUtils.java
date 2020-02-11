@@ -28,8 +28,7 @@ public final class NmsUtils {
         }
         final String name = Bukkit.getServer().getClass().getPackage().getName();
         final String version = name.substring(name.lastIndexOf('.') + 1);
-        // FIXME: 11.02.2020 Class.forName cannot return a null so use of insteadof ofNullable
-        return Optional.ofNullable(Class.forName("net.minecraft.server." + version + "." + className));
+        return Optional.of(Class.forName("net.minecraft.server." + version + "." + className));
     }
 
     /**
