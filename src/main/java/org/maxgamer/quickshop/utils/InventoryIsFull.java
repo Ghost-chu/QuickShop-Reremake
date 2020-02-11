@@ -26,7 +26,7 @@ public final class InventoryIsFull implements Function<ItemStack, Boolean> {
      * checks if player has enough space for the itemStack
      *
      * @param itemStack the item to check
-     * @return returns true if player has enough space for the itemStack.
+     * @return returns true if player has not enough space for the itemStack.
      */
     @Override
     public Boolean apply(@NotNull ItemStack itemStack) {
