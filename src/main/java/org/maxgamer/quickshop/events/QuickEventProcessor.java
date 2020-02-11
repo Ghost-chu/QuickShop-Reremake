@@ -666,6 +666,7 @@ package org.maxgamer.quickshop.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -678,60 +679,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class QuickEventProcessor {
-    private Map<String, List<String>> blacklist;
-    public QuickEventProcessor(final @NotNull Map<String, List<String>> blacklist){
-        this.blacklist = blacklist;
-    }
+@RequiredArgsConstructor
+public final class QuickEventProcessor {
+
+    @NotNull
+    private final Map<String, List<String>> blacklist;
+
     /**
      * Calling a event on Bukkit Event Bus.
+     *
      * @param event The event will be called.
      * @return All plugins processed this event and results when processing a plugin.
      */
     @NotNull
-    public List<EventDataContainer> fireEvent(final @NotNull Event event){
-        List<EventDataContainer> result = new ArrayList<>();
+    public List<EventDataContainer> fireEvent(@NotNull Event event) {
+        final List<EventDataContainer> result = new ArrayList<>();
         final HandlerList handlerList = event.getHandlers();
         final RegisteredListener[] listeners = handlerList.getRegisteredListeners();
+
         for (RegisteredListener registration : listeners) {
-            Plugin plugin = registration.getPlugin();
-            String pluginName = plugin.getName();
-            if(this.blacklist.containsKey(pluginName)){
+            final Plugin plugin = registration.getPlugin();
+            final String pluginName = plugin.getName();
+
+            if (blacklist.containsKey(pluginName) ||
+                blacklist.get(pluginName).contains(registration.getListener().getClass().getName())) {
                 continue;
             }
-            if(this.blacklist.get(pluginName).contains(registration.getListener().getClass().getName())){
-                continue;
-            }
+
             try {
                 registration.callEvent(event);
-            }catch (AuthorNagException ex){
+            } catch (AuthorNagException ex) {
                 plugin.setNaggable(false);
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 th.printStackTrace();
-            }finally {
-                if(event instanceof Cancellable){
-                    result.add(new EventDataContainer(plugin,registration,((Cancellable) event).isCancelled()));
-                }else{
-                    result.add(new EventDataContainer(plugin,registration,false));
+            } finally {
+                if (event instanceof Cancellable) {
+                    result.add(new EventDataContainer(plugin, registration, ((Cancellable) event).isCancelled()));
+                } else {
+                    result.add(new EventDataContainer(plugin, registration, false));
                 }
             }
         }
+
         return result;
     }
 }
 @AllArgsConstructor
 @Getter
-class EventDataContainer{
+final class EventDataContainer {
     /**
      * The plugin object
      */
-    private Plugin plugin;
+    @NotNull
+    private final Plugin plugin;
     /**
      * The listener object
      */
-    private RegisteredListener listener;
+    @NotNull
+    private final RegisteredListener listener;
     /**
      * If the event not is Cancellable, this value always is false
      */
-    private boolean isCancelled;
+    private final boolean isCancelled;
 }

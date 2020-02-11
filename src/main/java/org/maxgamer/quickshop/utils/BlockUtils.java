@@ -24,6 +24,7 @@ public final class BlockUtils {
      */
     @NotNull
     public static Optional<Block> getAttached(final @NotNull Block b) {
+        // FIXME: 11.02.2020 There is no BlockData and Directional classes in 1.8
         final BlockData blockData = b.getBlockData();
         if (blockData instanceof Directional) {
             return Optional.of(b.getRelative(((Directional) blockData).getFacing().getOppositeFace()));

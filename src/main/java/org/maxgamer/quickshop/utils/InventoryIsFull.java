@@ -1,35 +1,28 @@
 package org.maxgamer.quickshop.utils;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
-public final class InventoryIsFull implements Function<ItemStack, Boolean> {
+@RequiredArgsConstructor
+public final class InventoryIsFull implements Predicate<ItemStack> {
 
     @NotNull
     private final Player player;
 
     /**
-     * ctor.
-     *
-     * @param player the player to check
-     */
-    public InventoryIsFull(@NotNull Player player) {
-        this.player = player;
-    }
-
-    /**
      * checks if player has enough space for the itemStack
      *
      * @param itemStack the item to check
-     * @return returns true if player has enough space for the itemStack.
+     * @return returns true if player has not enough space for the itemStack.
      */
     @Override
-    public Boolean apply(@NotNull ItemStack itemStack) {
+    public boolean test(@NotNull ItemStack itemStack) {
         if (itemStack.getType() == Material.AIR) {
             return false;
         }
@@ -47,7 +40,7 @@ public final class InventoryIsFull implements Function<ItemStack, Boolean> {
 
             clone.setAmount(itemStack.getMaxStackSize());
 
-            final boolean check = apply(clone);
+            final boolean check = test(clone);
 
             if (check) {
                 return true;
@@ -55,7 +48,7 @@ public final class InventoryIsFull implements Function<ItemStack, Boolean> {
 
             clone.setAmount(itemStack.getAmount() - itemStack.getMaxStackSize());
 
-            return apply(clone);
+            return test(clone);
         }
 
         final Map<Integer, ? extends ItemStack> all = player.getInventory().all(itemStack.getType());

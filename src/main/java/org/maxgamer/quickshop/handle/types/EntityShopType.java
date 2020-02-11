@@ -664,6 +664,7 @@
 
 package org.maxgamer.quickshop.handle.types;
 
-public class EntityShopType {
+import org.maxgamer.quickshop.ShopType;
 
+public final class EntityShopType implements ShopType {
 }

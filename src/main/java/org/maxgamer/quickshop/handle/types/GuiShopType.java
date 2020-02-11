@@ -664,6 +664,7 @@
 
 package org.maxgamer.quickshop.handle.types;
 
-public class GuiShopType {
+import org.maxgamer.quickshop.ShopType;
 
+public final class GuiShopType implements ShopType {
 }
