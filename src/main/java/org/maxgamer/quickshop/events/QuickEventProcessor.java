@@ -677,11 +677,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class QuickEventProcessor {
     private PluginManager pluginManager;
-    public QuickEventProcessor(final @NotNull PluginManager pluginManager){
+    private Map<String, List<String>> blacklist;
+    public QuickEventProcessor(final @NotNull PluginManager pluginManager, final Map<String, List<String>> blacklist){
         this.pluginManager = pluginManager;
+        this.blacklist = blacklist;
     }
     @NotNull
     public List<EventDataContainer> fireEvent(final @NotNull Event event){
@@ -690,6 +693,13 @@ public class QuickEventProcessor {
         final RegisteredListener[] listeners = handlerList.getRegisteredListeners();
         for (RegisteredListener registration : listeners) {
             Plugin plugin = registration.getPlugin();
+            String pluginName = plugin.getName();
+            if(this.blacklist.containsKey(pluginName)){
+                continue;
+            }
+            if(this.blacklist.get(pluginName).contains(registration.getListener().getClass().getName())){
+                continue;
+            }
             try {
                 registration.callEvent(event);
             }catch (AuthorNagException ex){
