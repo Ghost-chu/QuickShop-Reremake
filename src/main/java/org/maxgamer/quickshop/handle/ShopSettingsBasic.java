@@ -57,7 +57,7 @@ public final class ShopSettingsBasic implements ShopSettings {
     public JsonObject serialize() {
         final JsonObject jsonObject = new JsonObject();
 
-        jsonObject.add("managment", manager.serialize());
+        jsonObject.add("management", manager.serialize());
         jsonObject.add("display", new JsonPrimitive(display));
         jsonObject.add("enable", new JsonPrimitive(enable));
         jsonObject.add("unlimited", new JsonPrimitive(unlimited));
