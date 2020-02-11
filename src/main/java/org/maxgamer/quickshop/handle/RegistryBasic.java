@@ -30,7 +30,10 @@ import org.maxgamer.quickshop.QuickShopLoader;
 import org.maxgamer.quickshop.Registry;
 import org.maxgamer.quickshop.ShopType;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
