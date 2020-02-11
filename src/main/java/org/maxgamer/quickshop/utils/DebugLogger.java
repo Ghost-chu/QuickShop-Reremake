@@ -73,6 +73,5 @@ public class DebugLogger extends TimerTask {
                 bufferedWriter.newLine();
             }catch (IOException ignored){}
         }
-
     }
 }
