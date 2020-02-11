@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 public final class NmsUtils {
 
     /**
