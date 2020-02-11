@@ -662,6 +662,8 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.permissions;
+package org.maxgamer.quickshop.permissions.exceptions;
 
-public class DoesntSupportPermissionControllerException extends RuntimeException{}
+public class DoesntSupportGroupException {
+
+}

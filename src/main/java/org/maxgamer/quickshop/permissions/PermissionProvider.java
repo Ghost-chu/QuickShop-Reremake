@@ -668,6 +668,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.permissions.exceptions.DoesntSupportOfflinePlayerException;
+import org.maxgamer.quickshop.permissions.exceptions.DoesntSupportPermissionControllerException;
 
 public interface PermissionProvider{
     boolean has(@NotNull CommandSender sender, @NotNull String permission);
