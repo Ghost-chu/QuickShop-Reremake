@@ -24,5 +24,5 @@
 
 package org.maxgamer.quickshop.handle.abs;
 
-public interface LiveStack {
+public interface LiveStack extends Serializable {
 }

@@ -24,6 +24,7 @@
 
 package org.maxgamer.quickshop.handle.types;
 
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
@@ -34,5 +35,15 @@ public final class SignShopType implements ShopType {
 
     @NotNull
     private final LiveStack shopItem;
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        // TODO
+
+        return jsonObject;
+    }
 
 }

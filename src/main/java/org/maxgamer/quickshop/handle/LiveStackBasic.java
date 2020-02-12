@@ -24,6 +24,7 @@
 
 package org.maxgamer.quickshop.handle;
 
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
@@ -40,5 +41,15 @@ public final class LiveStackBasic implements LiveStack {
 
     @NotNull
     private final Stack sellStack;
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        // TODO
+
+        return jsonObject;
+    }
 
 }

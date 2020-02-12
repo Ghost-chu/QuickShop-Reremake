@@ -24,7 +24,20 @@
 
 package org.maxgamer.quickshop.handle.stacks;
 
+import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.Stack;
 
 public final class StackItem implements Stack {
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        // TODO
+
+        return jsonObject;
+    }
+
 }

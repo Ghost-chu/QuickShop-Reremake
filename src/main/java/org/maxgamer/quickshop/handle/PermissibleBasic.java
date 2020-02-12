@@ -58,7 +58,7 @@ public final class PermissibleBasic implements Permissible {
 
         final JsonArray permissions = new JsonArray();
 
-        perms.forEach(perm -> permissions.add(perm.getId()));
+        perms.forEach(perm -> permissions.add(perm.serialize()));
         jsonObject.add("permissions", permissions);
 
         return jsonObject;

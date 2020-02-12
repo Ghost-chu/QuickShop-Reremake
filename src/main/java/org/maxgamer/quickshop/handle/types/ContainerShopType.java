@@ -24,6 +24,7 @@
 
 package org.maxgamer.quickshop.handle.types;
 
+import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.handle.abs.LiveStack;
 import org.maxgamer.quickshop.handle.abs.ShopType;
@@ -37,6 +38,16 @@ public final class ContainerShopType implements ShopType {
 
     public ContainerShopType(@NotNull Map<Integer, LiveStack> shopItems) {
         this.shopItems = shopItems;
+    }
+
+    @NotNull
+    @Override
+    public JsonObject serialize() {
+        final JsonObject jsonObject = new JsonObject();
+
+        // TODO
+
+        return jsonObject;
     }
 
 }

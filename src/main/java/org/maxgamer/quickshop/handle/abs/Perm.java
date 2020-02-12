@@ -26,7 +26,7 @@ package org.maxgamer.quickshop.handle.abs;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface Perm {
+public interface Perm extends Serializable {
 
     /**
      * Gives the id
