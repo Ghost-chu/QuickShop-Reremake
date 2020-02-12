@@ -26,6 +26,7 @@ package org.maxgamer.quickshop;
 
 import io.github.portlek.database.SQL;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
@@ -125,23 +126,24 @@ public final class QuickShopLoader {
             return;
         }
 
-        final UpdateChecker updater = new UpdateChecker(quickShop, 62575);
+        Bukkit.getScheduler().runTaskAsynchronously(quickShop, () -> {
+            final UpdateChecker updater = new UpdateChecker(quickShop, 62575);
 
-        try {
-            if (updater.checkForUpdates()) {
-                sender.sendMessage(
-                    languageFile.general.new_version_found
-                        .build("%version%", updater::getLatestVersion)
-                );
-            } else {
-                sender.sendMessage(
-                    languageFile.general.latest_version
-                        .build("%version%", updater::getLatestVersion)
-                );
+            try {
+                if (updater.checkForUpdates()) {
+                    sender.sendMessage(
+                            languageFile.general.new_version_found
+                                    .build("%version%", updater::getLatestVersion)
+                    );
+                } else {
+                    sender.sendMessage(
+                            languageFile.general.latest_version
+                                    .build("%version%", updater::getLatestVersion)
+                    );
+                }
+            } catch (Exception exception) {
+                quickShop.getLogger().warning("Update checker failed, could not connect to the API.");
             }
-        } catch (Exception exception) {
-            quickShop.getLogger().warning("Update checker failed, could not connect to the API.");
-        }
+        });
     }
-
 }
