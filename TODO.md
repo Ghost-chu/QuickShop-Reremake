@@ -1,1 +1,0 @@
-We may move plugin.yml to QuickShop, which is the main class, with plugin-annotations of the spigot.
