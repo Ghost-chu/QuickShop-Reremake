@@ -157,6 +157,12 @@
       <scope>provided</scope>
       <version>1.7</version>
     </dependency>
+    <dependency>
+      <groupId>io.sentry</groupId>
+      <artifactId>sentry</artifactId>
+      <version>1.7.27</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <developers>
     <developer>
