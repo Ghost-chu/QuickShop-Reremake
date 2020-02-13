@@ -1,7 +1,6 @@
 #!/bin/sh
 echo "Deploy jar to dev.bukkit.org"
 
-
 rm -rf push # GITHUB - CLEANUP
 #Script to release to Github Release
 mkdir push
@@ -18,7 +17,7 @@ rm -f ./devbukkit/*-javadoc.jar
 rm -f ./devbukkit/*-shaded.jar
 rm -f ./devbukkit/*-sources.jar
 rm -f ./target/original-*.jar
-ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+ls ./devbukkit -1 | grep ".jar$" >jarname.txt
 
 filename="./jarname.txt"
 

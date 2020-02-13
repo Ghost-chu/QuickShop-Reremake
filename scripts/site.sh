@@ -8,4 +8,3 @@ git commit -m "Auto update by Travis-CI bot"
 git push --force
 cd ..
 echo "Finish upload to Maven Repository"
-
