@@ -75,13 +75,12 @@
         <version>2.4</version>
       </plugin>
       <plugin>
-        <artifactId>maven-install-plugin</artifactId>
-        <configuration>
-
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>2.4</version>
-      </plugin>
+      <artifactId>maven-install-plugin</artifactId>
+      <configuration>
+      </configuration>
+      <groupId>org.apache.maven.plugins</groupId>
+      <version>2.4</version>
+    </plugin>
     </plugins>
     <resources>
       <resource>

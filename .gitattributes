@@ -2,3 +2,4 @@
 *.secret filter=git-crypt diff=git-crypt
 *.key filter=git-crypt diff=git-crypt
 proguard.cfg filter=git-crypt diff=git-crypt
+secret/* filter=git-crypt diff=git-crypt
