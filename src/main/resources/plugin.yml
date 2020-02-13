@@ -1,3 +1,4 @@
+# Fixme convert and move that file into QuickShop class with plugin-annotation dependency.
 name: ${project.name}
 main: ${project.groupId}.${project.name}
 version: ${project.version}
