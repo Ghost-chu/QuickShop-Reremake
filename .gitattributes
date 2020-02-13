@@ -1,3 +1,4 @@
 *.java filter=git-crypt diff=git-crypt
 *.secret filter=git-crypt diff=git-crypt
-src/main/java/org/maxgamer/quickshop/api/*.java -filter
+*.key filter=git-crypt diff=git-crypt
+proguard.cfg filter=git-crypt diff=git-crypt
