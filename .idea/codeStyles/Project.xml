@@ -32,8 +32,6 @@
       <option name="BINARY_OPERATION_WRAP" value="1" />
       <option name="TERNARY_OPERATION_WRAP" value="2" />
       <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
-      <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
-      <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
       <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
       <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
       <option name="ARRAY_INITIALIZER_WRAP" value="1" />
