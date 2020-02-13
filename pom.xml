@@ -157,12 +157,13 @@
       <scope>provided</scope>
       <version>1.7</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
     <dependency>
-      <groupId>io.sentry</groupId>
-      <artifactId>sentry</artifactId>
-      <version>1.7.27</version>
-      <scope>compile</scope>
+      <groupId>org.kohsuke</groupId>
+      <artifactId>github-api</artifactId>
+      <version>1.106</version>
     </dependency>
+
   </dependencies>
   <developers>
     <developer>
@@ -196,8 +197,8 @@
   </properties>
   <repositories>
     <repository>
-      <id>papermc-repo</id>
-      <url>https://papermc.io/repo/repository/maven-public/</url>
+      <id>spigotmc-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
       <id>jcenter</id>
