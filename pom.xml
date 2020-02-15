@@ -1,173 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright © 2020 Bukkit Commons Studio
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <groupId>org.maxgamer.quickshop</groupId>
+    <artifactId>quickshop-parent</artifactId>
+    <version>4.0</version>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>QuickShop-Era</artifactId>
+    <packaging>pom</packaging>
 
-    <build>
-        <defaultGoal>clean package install</defaultGoal>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.8.1</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
-                            <outputFile>${project.build.directory}/shade.jar</outputFile>
-                            <relocations>
-                                <relocation>
-                                    <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>org.maxgamer.quickshop.command</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.github.portlek.configs</pattern>
-                                    <shadedPattern>org.maxgamer.quickshop.file</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.2.1</version>
-            </plugin>
-            <plugin>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <configuration>
-                    <attach>false</attach>
-                    <attachArtifactClassifier>pg</attachArtifactClassifier>
-                    <injar>shade.jar</injar>
-                    <obfuscate>true</obfuscate>
-                    <outjar>${pom.artifactId}-${pom.version}-final.jar</outjar>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <proguardInclude>proguard.cfg</proguardInclude>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <groupId>com.github.wvengen</groupId>
-                <version>2.2.0</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>core</finalName>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.4</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-install-plugin</artifactId>
-                <configuration>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.4</version>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
-    <dependencies>
-        <dependency>
-            <artifactId>acf-bukkit</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>annotations</artifactId>
-                    <groupId>org.jetbrains</groupId>
-                </exclusion>
-            </exclusions>
-            <groupId>co.aikar</groupId>
-            <version>0.5.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>taskchain-bukkit</artifactId>
-            <version>3.7.2</version>
-        </dependency>
-        <dependency>
-            <artifactId>configs-bukkit</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>XSeries</artifactId>
-                    <groupId>com.github.cryptomorin</groupId>
-                </exclusion>
-            </exclusions>
-            <groupId>io.github.portlek</groupId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>Database</artifactId>
-            <groupId>io.github.portlek</groupId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <artifactId>location</artifactId>
-            <groupId>io.github.portlek</groupId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <artifactId>XSeries</artifactId>
-            <groupId>com.github.cryptomorin</groupId>
-            <version>5.3.1</version>
-        </dependency>
-        <dependency>
-            <artifactId>annotations</artifactId>
-            <groupId>org.jetbrains</groupId>
-            <version>18.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>plugin-annotations</artifactId>
-            <version>1.2.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <artifactId>bukkit</artifactId>
-            <groupId>org.bukkit</groupId>
-            <scope>provided</scope>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <artifactId>lombok</artifactId>
-            <groupId>org.projectlombok</groupId>
-            <scope>provided</scope>
-            <version>1.18.12</version>
-        </dependency>
-        <dependency>
-            <artifactId>VaultAPI</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-            </exclusions>
-            <groupId>com.github.MilkBowl</groupId>
-            <scope>provided</scope>
-            <version>1.7</version>
-        </dependency>
-    </dependencies>
+    <name>QuickShop</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>quickshop-api</module>
+        <module>quickshop-bukkit</module>
+    </modules>
+
     <developers>
         <developer>
             <email>utsukushihito@outlook.com</email>
@@ -191,35 +67,34 @@
             <url>https://github.com/Ghost-chu</url>
         </developer>
     </developers>
-    <groupId>org.maxgamer.quickshop</groupId>
-    <name>QuickShop</name>
-    <packaging>jar</packaging>
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
-        <repository>
-            <id>portlek</id>
-            <url>https://dl.bintray.com/portlek/maven</url>
-        </repository>
-        <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
-    <version>4.0</version>
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <artifactId>annotations</artifactId>
+            <groupId>org.jetbrains</groupId>
+            <version>18.0.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <scope>provided</scope>
+            <version>1.18.12</version>
+        </dependency>
+    </dependencies>
+
 </project>

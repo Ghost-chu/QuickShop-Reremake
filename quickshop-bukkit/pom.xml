@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright © 2020 Bukkit Commons Studio
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>quickshop-parent</artifactId>
+        <groupId>org.maxgamer.quickshop</groupId>
+        <version>4.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>quickshop-bukkit</artifactId>
+    <packaging>pom</packaging>
+    <version>4.0</version>
+
+    <modules>
+        <module>quickshop-bukkit-plugin</module>
+        <module>quickshop-bukkit-addon</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <configuration>
+                    <attach>false</attach>
+                    <attachArtifactClassifier>pg</attachArtifactClassifier>
+                    <injar>shade.jar</injar>
+                    <obfuscate>true</obfuscate>
+                    <outjar>${project.artifactId}-${project.version}-final.jar</outjar>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <proguardInclude>proguard.cfg</proguardInclude>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+        <repository>
+            <id>portlek</id>
+            <url>https://dl.bintray.com/portlek/maven</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.maxgamer.quickshop</groupId>
+            <artifactId>quickshop-api</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>configs-bukkit</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>XSeries</artifactId>
+                    <groupId>com.github.cryptomorin</groupId>
+                </exclusion>
+            </exclusions>
+            <groupId>io.github.portlek</groupId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>Database</artifactId>
+            <groupId>io.github.portlek</groupId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <artifactId>location</artifactId>
+            <groupId>io.github.portlek</groupId>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
+            <artifactId>XSeries</artifactId>
+            <groupId>com.github.cryptomorin</groupId>
+            <version>5.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>plugin-annotations</artifactId>
+            <version>1.2.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>bukkit</artifactId>
+            <groupId>org.bukkit</groupId>
+            <scope>provided</scope>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>
