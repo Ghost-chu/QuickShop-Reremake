@@ -126,7 +126,7 @@
         <dependency>
             <artifactId>location</artifactId>
             <groupId>io.github.portlek</groupId>
-            <version>1.4</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <artifactId>XSeries</artifactId>
