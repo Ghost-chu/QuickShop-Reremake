@@ -139,6 +139,11 @@
             <version>18.0.0</version>
         </dependency>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>plugin-annotations</artifactId>
+            <version>1.2.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <artifactId>bukkit</artifactId>
             <groupId>org.bukkit</groupId>
             <scope>provided</scope>
