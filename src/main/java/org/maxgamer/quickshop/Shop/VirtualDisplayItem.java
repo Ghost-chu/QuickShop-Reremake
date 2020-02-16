@@ -87,7 +87,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z&&!packetSenders.contains(event.getPlayer().getUniqueId())) {
+                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
