@@ -39,7 +39,6 @@
 
     <modules>
         <module>quickshop-bukkit-plugin</module>
-        <module>quickshop-bukkit-addon</module>
         <module>quickshop-bukkit-api</module>
     </modules>
 
