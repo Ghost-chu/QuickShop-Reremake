@@ -77,6 +77,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.maxgamer.quickshop</groupId>
+            <artifactId>quickshop-bukkit-api</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
             <artifactId>acf-bukkit</artifactId>
             <exclusions>
                 <exclusion>
