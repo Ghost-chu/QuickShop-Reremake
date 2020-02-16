@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>3.1.4</version>
+    <version>3.1.4.1</version>
 
     <licenses>
         <license>
@@ -94,10 +94,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                </plugin>
 
         </plugins>
         <resources>
@@ -226,7 +222,7 @@
             <artifactId>OpenInv</artifactId>
             <version>3.3.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/OpenInv.jar</systemPath>
+            <systemPath>${basedir}/lib/OpenInv.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -258,7 +254,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.0.6</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Clearlag.jar</systemPath>
+            <systemPath>${basedir}/lib/Clearlag.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
@@ -276,7 +272,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.6.0</version>
+            <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -302,7 +298,7 @@
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -327,7 +323,7 @@
             <artifactId>Residence</artifactId>
             <version>4.4.8.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>

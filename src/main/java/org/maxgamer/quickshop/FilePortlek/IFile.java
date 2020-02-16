@@ -1,8 +1,5 @@
-package org.maxgamer.quickshop.File;
+package org.maxgamer.quickshop.FilePortlek;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -11,23 +8,33 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Mock.MckFileConfiguration;
 
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
+
 public interface IFile {
 
-  /** Creates yml file on the path */
+  /**
+   * Creates yml file on the path
+   */
   void create();
 
-  @NotNull
-  InputStream getInputStream();
+  @NotNull InputStream getInputStream();
 
-  /** Reloads file */
+  /**
+   * Reloads file
+   */
   void reload();
 
-  /** Saves file */
+  /**
+   * Saves file
+   */
   void save();
 
-  /** @return the string of the file */
-  @NotNull
-  String saveToString();
+  /**
+   * @return the string of the file
+   */
+  @NotNull String saveToString();
 
   /**
    * Loads from the data
@@ -43,29 +50,26 @@ public interface IFile {
    * @param path object path to get
    * @return if path does not exist returns null
    */
-  @Nullable
-  Object get(@NotNull String path);
+  @Nullable Object get(@NotNull String path);
 
   /**
    * Gets the object with fallback
    *
-   * @param path object path to get
+   * @param path     object path to get
    * @param fallback fallback object to get if path does not exist
    * @return if path does not exist returns fallback object
    */
-  @Nullable
-  Object get(@NotNull String path, @Nullable Object fallback);
+  @Nullable Object get(@NotNull String path, @Nullable Object fallback);
 
   /**
    * Gets or sets the object
    *
-   * @param path object path to get
+   * @param path     object path to get
    * @param fallback fallback object to get if path does not exist
-   * @param <T> object type
+   * @param <T>      object type
    * @return if path does not exist returns and set the path with fallback object
    */
-  @NotNull
-  <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
+  @NotNull <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
 
   /**
    * Gets location
@@ -73,13 +77,12 @@ public interface IFile {
    * @param path location path to get
    * @return {@link Location}
    */
-  @NotNull
-  Location getLocation(@NotNull final String path);
+  @NotNull Location getLocation(@NotNull final String path);
 
   /**
    * Sets location into the path
    *
-   * @param path location path to set
+   * @param path     location path to set
    * @param location {@link Location}
    */
   void setLocation(@NotNull final String path, @NotNull final Location location);
@@ -93,13 +96,12 @@ public interface IFile {
    * @param path itemstack path to get
    * @return {@link ItemStack}
    */
-  @NotNull
-  ItemStack getCustomItemStack(@NotNull final String path);
+  @NotNull ItemStack getCustomItemStack(@NotNull final String path);
 
   /**
    * Sets custom itemstack to path
    *
-   * @param path itemstack path to set
+   * @param path      itemstack path to set
    * @param itemStack {@link ItemStack}
    */
   void setCustomItemStack(@NotNull final String path, @NotNull final ItemStack itemStack);
@@ -110,13 +112,12 @@ public interface IFile {
    * @param path string path to get
    * @return {@link String}
    */
-  @NotNull
-  Optional<String> getString(@NotNull final String path);
+  @NotNull Optional<String> getString(@NotNull final String path);
 
   /**
    * Sets object to path
    *
-   * @param path object path to set
+   * @param path   object path to set
    * @param object {@link Object}
    */
   void set(@NotNull final String path, @Nullable final Object object);
@@ -127,8 +128,7 @@ public interface IFile {
    * @param path string list path to get
    * @return string list
    */
-  @NotNull
-  List<String> getStringList(@NotNull final String path);
+  @NotNull List<String> getStringList(@NotNull final String path);
 
   /**
    * Gets int
@@ -184,8 +184,7 @@ public interface IFile {
    * @param path configuration section path to create
    * @return {@link ConfigurationSection}
    */
-  @NotNull
-  ConfigurationSection createSection(@NotNull String path);
+  @NotNull ConfigurationSection createSection(@NotNull String path);
 
   /**
    * Gets configuration section from path
@@ -193,8 +192,7 @@ public interface IFile {
    * @param path configurations section path to get
    * @return if there isn't section returns {@link MckFileConfiguration}
    */
-  @NotNull
-  ConfigurationSection getSection(@NotNull final String path);
+  @NotNull ConfigurationSection getSection(@NotNull final String path);
 
   /**
    * Gets configuration section from path if there is no section It will create
@@ -202,6 +200,6 @@ public interface IFile {
    * @param path configurations section path to get
    * @return {@link ConfigurationSection}
    */
-  @NotNull
-  ConfigurationSection getOrCreateSection(@NotNull final String path);
+  @NotNull ConfigurationSection getOrCreateSection(@NotNull final String path);
+
 }

@@ -1,10 +1,5 @@
-package org.maxgamer.quickshop.File;
+package org.maxgamer.quickshop.FilePortlek;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,21 +16,33 @@ import org.maxgamer.quickshop.Util.Location.LocationOf;
 import org.maxgamer.quickshop.Util.Location.StringOf;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 @ToString
 public abstract class FileEnvelope implements IFile {
 
-  @NotNull protected final File file;
-  protected final boolean loadDefault;
-  @NotNull private final Plugin plugin;
-  @NotNull private final Copied copied;
-  @NotNull private final String resourcePath;
-  @NotNull protected FileConfiguration fileConfiguration = new MckFileConfiguration();
+  @NotNull
+  protected final File file;
 
-  public FileEnvelope(
-      @NotNull Plugin plugin,
-      @NotNull File file,
-      @NotNull String resourcePath,
-      boolean loadDefault) {
+  protected final boolean loadDefault;
+
+  @NotNull
+  private final Plugin plugin;
+
+  @NotNull
+  private final Copied copied;
+
+  @NotNull
+  private final String resourcePath;
+
+  @NotNull
+  protected FileConfiguration fileConfiguration = new MckFileConfiguration();
+
+  public FileEnvelope(@NotNull Plugin plugin, @NotNull File file, @NotNull String resourcePath, boolean loadDefault) {
     this.plugin = plugin;
     this.file = file;
     this.copied = new Copied(file);
@@ -219,8 +226,7 @@ public abstract class FileEnvelope implements IFile {
   @NotNull
   @Override
   public ConfigurationSection getSection(@NotNull String path) {
-    final ConfigurationSection configurationSection =
-        fileConfiguration.getConfigurationSection(path);
+    final ConfigurationSection configurationSection = fileConfiguration.getConfigurationSection(path);
 
     return configurationSection == null ? new MckFileConfiguration() : configurationSection;
   }
@@ -236,4 +242,5 @@ public abstract class FileEnvelope implements IFile {
 
     return section;
   }
+
 }
