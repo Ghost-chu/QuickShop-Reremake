@@ -46,7 +46,7 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <minimizeJar>true</minimizeJar>
-                            <outputFile>${project.build.directory}/shade.jar</outputFile>
+<!--                            <outputFile>${project.build.directory}/shade.jar</outputFile>-->
                             <relocations>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
@@ -73,6 +73,10 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -96,6 +100,18 @@
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-bukkit</artifactId>
             <version>3.7.2</version>
+        </dependency>
+        <dependency>
+            <artifactId>VaultAPI</artifactId>
+            <groupId>com.github.MilkBowl</groupId>
+            <version>1.7</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

@@ -45,28 +45,28 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.2.0</version>
-                <configuration>
-                    <attach>false</attach>
-                    <attachArtifactClassifier>pg</attachArtifactClassifier>
-                    <injar>shade.jar</injar>
-                    <obfuscate>true</obfuscate>
-                    <outjar>${project.artifactId}-${project.version}-final.jar</outjar>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <proguardInclude>proguard.cfg</proguardInclude>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.github.wvengen</groupId>-->
+<!--                <artifactId>proguard-maven-plugin</artifactId>-->
+<!--                <version>2.2.0</version>-->
+<!--                <configuration>-->
+<!--                    <attach>false</attach>-->
+<!--                    <attachArtifactClassifier>pg</attachArtifactClassifier>-->
+<!--                    <injar>shade.jar</injar>-->
+<!--                    <obfuscate>true</obfuscate>-->
+<!--                    <outjar>${project.artifactId}-${project.version}-final.jar</outjar>-->
+<!--                    <outputDirectory>${project.build.directory}</outputDirectory>-->
+<!--                    <proguardInclude>proguard.cfg</proguardInclude>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>proguard</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>package</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
