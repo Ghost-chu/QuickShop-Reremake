@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.Shop;
 
-import java.util.Objects;
-import java.util.UUID;
 import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,14 +26,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @ToString
 public class RealDisplayItem extends DisplayItem {
@@ -181,12 +180,13 @@ public class RealDisplayItem extends DisplayItem {
     if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
       item.setCustomName(Util.getItemStackName(this.originalItemStack));
       item.setCustomNameVisible(true);
+    } else {
+      item.setCustomNameVisible(false);
     }
     item.setPickupDelay(Integer.MAX_VALUE);
     item.setSilent(true);
     item.setPortalCooldown(Integer.MAX_VALUE);
     item.setVelocity(new Vector(0, 0.1, 0));
-    item.setCustomNameVisible(false);
   }
 
   @Override
