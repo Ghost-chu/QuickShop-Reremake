@@ -38,22 +38,8 @@ buildNumber.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.idea/.gitignore
-.idea/.name
-.idea/codeStyles/
-.idea/compiler.xml
-!.idea/copyright/
-.idea/dbnavigator.xml
-.idea/discord.xml
-.idea/inspectionProfiles/
-.idea/jarRepositories.xml
-.idea/libraries/
-.idea/misc.xml
-.idea/modules.xml
-.idea/sqldialects.xml
-.idea/uiDesigner.xml
-.idea/vcs.xml
-QuickShop.iml
+.idea
+*.iml
 
 #Eclipse
 .settings/
