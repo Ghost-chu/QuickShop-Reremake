@@ -19,19 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -47,30 +34,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandManager;
-import org.maxgamer.quickshop.Database.Database;
+import org.maxgamer.quickshop.Database.*;
 import org.maxgamer.quickshop.Database.Database.ConnectionException;
-import org.maxgamer.quickshop.Database.DatabaseCore;
-import org.maxgamer.quickshop.Database.DatabaseHelper;
-import org.maxgamer.quickshop.Database.DatabaseManager;
-import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.Database.SQLiteCore;
-import org.maxgamer.quickshop.Economy.Economy;
-import org.maxgamer.quickshop.Economy.EconomyCore;
-import org.maxgamer.quickshop.Economy.EconomyType;
-import org.maxgamer.quickshop.Economy.Economy_Reserve;
-import org.maxgamer.quickshop.Economy.Economy_Vault;
+import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
-import org.maxgamer.quickshop.Listeners.BlockListener;
-import org.maxgamer.quickshop.Listeners.ChatListener;
-import org.maxgamer.quickshop.Listeners.ChunkListener;
-import org.maxgamer.quickshop.Listeners.ClearLaggListener;
-import org.maxgamer.quickshop.Listeners.CustomInventoryListener;
-import org.maxgamer.quickshop.Listeners.DisplayBugFixListener;
-import org.maxgamer.quickshop.Listeners.DisplayProtectionListener;
-import org.maxgamer.quickshop.Listeners.LockListener;
-import org.maxgamer.quickshop.Listeners.PlayerListener;
-import org.maxgamer.quickshop.Listeners.ShopProtectionListener;
-import org.maxgamer.quickshop.Listeners.WorldListener;
+import org.maxgamer.quickshop.Listeners.*;
 import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.ReflectionUtil;
 import org.maxgamer.quickshop.Permission.PermissionManager;
 import org.maxgamer.quickshop.PluginsIntegration.FactionsUUID.FactionsUUIDIntegration;
@@ -80,30 +48,21 @@ import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.*;
-import org.maxgamer.quickshop.Util.Compatibility;
-import org.maxgamer.quickshop.Util.FunnyEasterEgg;
-import org.maxgamer.quickshop.Util.IncompatibleChecker;
-import org.maxgamer.quickshop.Util.IntegrationHelper;
-import org.maxgamer.quickshop.Util.ItemMatcher;
+import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
-import org.maxgamer.quickshop.Util.MsgUtil;
-import org.maxgamer.quickshop.Util.PermissionChecker;
-import org.maxgamer.quickshop.Util.ReflectFactory;
-import org.maxgamer.quickshop.Util.SentryErrorReporter;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
-import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Util.Timer;
-import org.maxgamer.quickshop.Util.Util;
-import org.maxgamer.quickshop.Watcher.DisplayAutoDespawnWatcher;
-import org.maxgamer.quickshop.Watcher.DisplayDupeRemoverWatcher;
-import org.maxgamer.quickshop.Watcher.DisplayWatcher;
-import org.maxgamer.quickshop.Watcher.LogWatcher;
-import org.maxgamer.quickshop.Watcher.OngoingFeeWatcher;
-import org.maxgamer.quickshop.Watcher.ShopContainerWatcher;
-import org.maxgamer.quickshop.Watcher.SignUpdateWatcher;
-import org.maxgamer.quickshop.Watcher.SyncTaskWatcher;
-import org.maxgamer.quickshop.Watcher.UpdateWatcher;
+import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
+import org.maxgamer.quickshop.Watcher.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -554,12 +513,11 @@ public class QuickShop extends JavaPlugin {
     // Create the shop manager.
     permissionManager = new PermissionManager(this);
     // This should be inited before shop manager
-    if (this.display) {
+    if (this.display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
       if (getConfig().getBoolean("shop.display-auto-despawn")) {
         this.enabledAsyncDisplayDespawn = true;
         this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-        this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(
-            this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+        this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
       }
     }
     this.shopManager = new ShopManager(this);
@@ -575,13 +533,14 @@ public class QuickShop extends JavaPlugin {
       }
     }
     if (getConfig().getInt("shop.find-distance") > 100) {
-      getLogger()
-          .severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+      getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
     }
 
     signUpdateWatcher = new SignUpdateWatcher(this);
     shopContainerWatcher = new ShopContainerWatcher(this);
-    displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+    if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+      displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
+    }
 
     /* Load all shops. */
     shopLoader = new ShopLoader(this);
@@ -644,17 +603,16 @@ public class QuickShop extends JavaPlugin {
     // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
     signUpdateWatcher.runTaskTimer(this, 0, 10);
     shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-    displayDupeRemoverWatcher.runTaskTimerAsynchronously(this,0,1);
+    if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+      displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
+    }
     if (logWatcher != null) {
       logWatcher.runTaskTimerAsynchronously(this, 10, 10);
       getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
     }
     if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
       getLogger().info("Ongoing fee feature is enabled.");
-      ongoingFeeWatcher.runTaskTimerAsynchronously(
-          this,
-          0,
-          getConfig().getInt("shop.ongoing-fee.ticks"));
+      ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
     }
     registerIntegrations();
     this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
