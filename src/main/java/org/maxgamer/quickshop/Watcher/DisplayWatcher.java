@@ -22,6 +22,8 @@ package org.maxgamer.quickshop.Watcher;
 import lombok.Data;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Shop.DisplayItem;
+import org.maxgamer.quickshop.Shop.DisplayType;
 import org.maxgamer.quickshop.Shop.Shop;
 
 @Data
@@ -36,15 +38,15 @@ public class DisplayWatcher {
 
   private void registerTask() {
     plugin.getLogger().info("Registering DisplayCheck task....");
+    if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+      return;
+    }
     if (plugin.isDisplay() && plugin.getDisplayItemCheckTicks() > 0) {
       new BukkitRunnable() {
         @Override
         public void run() {
           if (plugin.getConfig().getInt("shop.display-items-check-ticks") < 3000) {
-            plugin
-                .getLogger()
-                .severe(
-                    "Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+            plugin.getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
           }
           //                    Iterator<Shop> it = plugin.getShopManager().getShopIterator();
           //                    while (it.hasNext()) {
