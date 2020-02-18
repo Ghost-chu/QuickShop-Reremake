@@ -1,3 +1,5 @@
 architect:
   - portlek
   - Ghost-chu
+merge:
+  script: mvn clean install
