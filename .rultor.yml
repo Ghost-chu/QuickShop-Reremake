@@ -1,2 +1,4 @@
 architect:
   - portlek
+merge:
+  script: mvn clean install
