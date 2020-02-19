@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -62,8 +63,13 @@ public class VirtualDisplayItem extends DisplayItem {
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
         initFakeDropItemPacket();
-        //Let nearby player can saw fake item
-        packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), 256).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        //some time shop can be loaded when world isn't loaded
+        if(Util.isLoaded(shop.getLocation())){
+            //Let nearby player can saw fake item
+            packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        }else {
+            packetSenders=new ConcurrentSkipListSet<>();
+        }
         protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK) {
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -86,7 +92,10 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    if (shop.isLoaded() && shop.getLocation().getChunk().getX() == x && shop.getLocation().getChunk().getZ() == z) {
+                    if (shop.isLoaded()
+                            && shop.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())
+                            && shop.getLocation().getChunk().getX() == x
+                            && shop.getLocation().getChunk().getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
@@ -197,8 +206,15 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     private void sendPacketToAll(PacketContainer packet) {
-        packetSenders.removeIf(uuid -> Bukkit.getPlayer(uuid) == null);
-        packetSenders.forEach(uuid -> sendPacket(Bukkit.getPlayer(uuid), packet));
+        Iterator<UUID> iterator=packetSenders.iterator();
+        while (iterator.hasNext()){
+            Player nextPlayer=Bukkit.getPlayer(iterator.next());
+            if(nextPlayer==null){
+                iterator.remove();
+            }else {
+                sendPacket(nextPlayer, packet);
+            }
+        }
     }
 
     @Override
