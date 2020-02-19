@@ -67,6 +67,8 @@ public class VirtualDisplayItem extends DisplayItem {
         if(Util.isLoaded(shop.getLocation())){
             //Let nearby player can saw fake item
             packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        }else {
+            packetSenders=new ConcurrentSkipListSet<>();
         }
         protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK) {
             @Override
