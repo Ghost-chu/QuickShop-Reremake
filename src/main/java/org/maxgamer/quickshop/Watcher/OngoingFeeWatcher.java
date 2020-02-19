@@ -19,11 +19,6 @@
 
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +26,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Check the shops after server booted up, make sure shop can correct self-deleted when container
@@ -58,12 +56,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
     for (Shop shop : plugin.getShopManager().getAllShops()) {
       if (!shop.isUnlimited() || !ignoreUnlimited) {
         UUID shopOwner = shop.getOwner();
-        parallelTasks++;
-        if (parallelTasks > Bukkit.getTPS()[0] * 5) {
-          perTaskFlow++;
-          parallelTasks = 0;
-        }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
           if (!allowLoan) {
             // Disallow loan
             if (plugin.getEconomy().getBalance(shopOwner) < cost) {
@@ -76,14 +69,11 @@ public class OngoingFeeWatcher extends BukkitRunnable {
           } else {
             try {
               //noinspection ConstantConditions,deprecation
-              plugin
-                  .getEconomy()
-                  .deposit(
-                      Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
+              plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
             } catch (Exception ignored) {
             }
           }
-        }, perTaskFlow);
+        });
       } else {
         Util.debugLog(
             "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "

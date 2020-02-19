@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Shop;
 
-import java.util.Objects;
 import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,15 +29,14 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.Event.ShopDisplayItemSpawnEvent;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.Objects;
 
 @ToString
 public class ArmorStandDisplayItem extends DisplayItem {
@@ -113,7 +111,6 @@ public class ArmorStandDisplayItem extends DisplayItem {
                         armorStand.setBasePlate(false);
                         armorStand.setSilent(true);
                         armorStand.setAI(false);
-                        armorStand.setCanMove(false);
                         armorStand.setCanPickupItems(false);
                         // Set pose (this is for hand while we use helmet)
                         // setPoseForArmorStand();
@@ -142,13 +139,8 @@ public class ArmorStandDisplayItem extends DisplayItem {
       ArmorStand eArmorStand = (ArmorStand) entity;
 
       if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-        if (DisplayItem.checkIsTargetShopDisplay(
-            eArmorStand.getItem(EquipmentSlot.HAND), this.shop)) {
-          Util.debugLog(
-              "Removing dupes ArmorEntity "
-                  + eArmorStand.getUniqueId()
-                  + " at "
-                  + eArmorStand.getLocation());
+        if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+          Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId() + " at " + eArmorStand.getLocation());
           entity.remove();
           removed = true;
         }
