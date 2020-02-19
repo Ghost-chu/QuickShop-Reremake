@@ -63,9 +63,8 @@ public class VirtualDisplayItem extends DisplayItem {
         super(shop);
         initFakeDropItemPacket();
         //Let nearby player can saw fake item
-        packetSenders= shop.getLocation().getNearbyPlayers(plugin.getServer().getViewDistance() * 16, 256).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
-        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL,
-                PacketType.Play.Server.MAP_CHUNK) {
+        packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), 256).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
+        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 //is really full chunk data
