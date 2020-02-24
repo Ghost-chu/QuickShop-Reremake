@@ -66,6 +66,8 @@ public class PermissionChecker {
     if (!usePermissionChecker) {
       return true;
     }
+    final AtomicBoolean isCanBuild=new AtomicBoolean(false);
+
     BlockBreakEvent beMainHand;
     // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0),
     // player.getInventory()
@@ -78,13 +80,28 @@ public class PermissionChecker {
             new ShopProtectionCheckEvent(
                 block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
     beMainHand.setDropItems(false);
-    beMainHand.setExpToDrop(-1);
+    beMainHand.setExpToDrop(0);
+
+    //register a listener to cancel test event
+    Bukkit.getPluginManager().registerEvents(new Listener() {
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onTestEvent(BlockBreakEvent event){
+      if(event==beMainHand) {
+        // Call for event for protection check end
+        Bukkit.getPluginManager().callEvent(
+                        new ShopProtectionCheckEvent(
+                                block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
+        if(!event.isCancelled()) {
+          //Ensure this test will no be logged by some plugin
+          beMainHand.setCancelled(true);
+          isCanBuild.set(true);
+        }
+        HandlerList.unregisterAll(this);
+      } }
+    }, plugin);
+
     Bukkit.getPluginManager().callEvent(beMainHand);
-    // Call for event for protection check end
-    Bukkit.getPluginManager()
-        .callEvent(
-            new ShopProtectionCheckEvent(
-                block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
-    return !beMainHand.isCancelled();
+
+    return isCanBuild.get();
   }
 }
