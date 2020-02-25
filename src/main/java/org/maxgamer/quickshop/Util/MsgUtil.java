@@ -321,14 +321,25 @@ public class MsgUtil {
       Util.debugLog("Loading language file from exist file...");
       if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
         plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
-        nJson.loadFromString(
-            Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+        nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
       }
     }
     messagei18n = nJson;
     /* Set default language vesion and update messages.yml */
-    if (messagei18n.getInt("language-version") == 0) {
+    Optional<String> ver = messagei18n.getString("language-version");
+    int versi = 0;
+    if (ver.isPresent()) {
+      String vers = ver.get();
+      try {
+        versi = Integer.parseInt(vers);
+      } catch (NumberFormatException ignore) {
+
+      }
+    }
+    if (messagei18n.getInt("language-version") == 0 && versi == 0) {
       messagei18n.set("language-version", 1);
+    } else {
+      messagei18n.set("language-version", versi);
     }
     updateMessages(messagei18n.getInt("language-version"));
     messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));

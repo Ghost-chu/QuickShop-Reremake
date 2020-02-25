@@ -20,26 +20,7 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.common.collect.Sets;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -59,24 +40,38 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-/** Manage a lot of shops. */
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
+/**
+ * Manage a lot of shops.
+ */
 public class ShopManager {
 
-  private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops =
-      new HashMap<>();
-  private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ?
-      Sets.newConcurrentHashSet() : Sets.newHashSet();
+  private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
+
+  private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ? Sets.newConcurrentHashSet() : Sets.newHashSet();
+
   private HashMap<UUID, Info> actions = new HashMap<>();
+
   private QuickShop plugin;
+
   private boolean useFastShopSearchAlgorithm = false;
+
+  private UUID cacheTaxAccount;
 
   public ShopManager(@NotNull QuickShop plugin) {
     this.plugin = plugin;
-    this.useFastShopSearchAlgorithm =
-        plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
+    this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
+    String taxAccount = plugin.getConfig().getString("tax-account");
+    //noinspection ConstantConditions
+    this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
   }
 
-  @SuppressWarnings("deprecation")
   private void actionBuy(
       @NotNull Player p,
       @NotNull Economy eco,
@@ -185,9 +180,8 @@ public class ShopManager {
     }
     // Purchase successfully
     if (tax != 0) {
-      String taxAccount = plugin.getConfig().getString("tax-account");
-      if (taxAccount != null) {
-        eco.deposit(Bukkit.getOfflinePlayer(taxAccount).getUniqueId(), total * tax);
+      if (cacheTaxAccount != null) {
+        eco.deposit(cacheTaxAccount, total * tax);
       }
     }
     // Notify the owner of the purchase.
@@ -392,11 +386,8 @@ public class ShopManager {
           return;
         }
         try {
-          String taxAccount = plugin.getConfig().getString("tax-account");
-          if (taxAccount != null) {
-            plugin
-                .getEconomy()
-                .deposit(Bukkit.getOfflinePlayer(taxAccount).getUniqueId(), createCost);
+          if (cacheTaxAccount != null) {
+            plugin.getEconomy().deposit(cacheTaxAccount, createCost);
           }
         } catch (Exception e2) {
           e2.printStackTrace();
