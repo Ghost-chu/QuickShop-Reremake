@@ -201,33 +201,35 @@ public class MsgUtil {
    */
   public static String getMessage(
       @NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
-    Optional<String> raw = messagei18n.getString(loc);
-    if (!raw.isPresent()) {
-      Util.debugLog(
-          "ERR: MsgUtil cannot find the the phrase at "
-              + loc
-              + ", printing the all readed datas: "
-              + messagei18n);
+    try {
+      Optional<String> raw = messagei18n.getString(loc);
+      if (!raw.isPresent()) {
+        Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
 
-      return invaildMsg + ": " + loc;
-    }
-    String filled = fillArgs(raw.get(), args);
-    if (player instanceof OfflinePlayer) {
-      if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
-        try {
-          filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-          Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
-        } catch (Exception ignored) {
-          if (((OfflinePlayer) player).getPlayer() != null) {
-            try {
-              filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
-            } catch (Exception ignore) {
+        return invaildMsg + ": " + loc;
+      }
+      String filled = fillArgs(raw.get(), args);
+      if (player instanceof OfflinePlayer) {
+        if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+          try {
+            filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+            Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+          } catch (Exception ignored) {
+            if (((OfflinePlayer) player).getPlayer() != null) {
+              try {
+                filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
+              } catch (Exception ignore) {
+              }
             }
           }
         }
       }
+      return filled;
+    } catch (Throwable th) {
+      plugin.getSentryErrorReporter().ignoreThrow();
+      th.printStackTrace();
+      return "Cannot load language key: " + loc + " because something not right, check the console for details.";
     }
-    return filled;
   }
 
   /**
@@ -240,18 +242,24 @@ public class MsgUtil {
    */
   public static String getMessageOfflinePlayer(
       @NotNull String loc, @Nullable OfflinePlayer player, @NotNull String... args) {
-    Optional<String> raw = messagei18n.getString(loc);
-    if (!raw.isPresent()) {
-      return invaildMsg + ": " + loc;
-    }
-    String filled = fillArgs(raw.get(), args);
-    if (player != null) {
-      if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
-        filled = PlaceholderAPI.setPlaceholders(player, filled);
-        Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+    try {
+      Optional<String> raw = messagei18n.getString(loc);
+      if (!raw.isPresent()) {
+        return invaildMsg + ": " + loc;
       }
+      String filled = fillArgs(raw.get(), args);
+      if (player != null) {
+        if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+          filled = PlaceholderAPI.setPlaceholders(player, filled);
+          Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+        }
+      }
+      return filled;
+    } catch (Throwable th) {
+      plugin.getSentryErrorReporter().ignoreThrow();
+      th.printStackTrace();
+      return "Cannot load language key: " + loc + " because something not right, check the console for details.";
     }
-    return filled;
   }
 
   /**
