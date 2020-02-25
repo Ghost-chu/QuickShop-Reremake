@@ -48,8 +48,9 @@ public class ChunkListener implements Listener {
     if (inChunk == null || inChunk.isEmpty()) {
       return;
     }
-    //noinspection unchecked
-    Bukkit.getScheduler().runTaskLater(plugin,()-> ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onLoad),1);
+    Bukkit.getScheduler().runTaskLater(plugin,()-> {
+      //noinspection unchecked
+      for(Shop shop:((HashMap<Location, Shop>) inChunk.clone()).values()){shop.onLoad();}},1);
   }
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -61,6 +62,6 @@ public class ChunkListener implements Listener {
       return;
     }
     //noinspection unchecked
-    ((HashMap<Location, Shop>) inChunk.clone()).values().forEach(Shop::onUnload);
+    for(Shop shop:((HashMap<Location, Shop>) inChunk.clone()).values()){shop.onUnload();};
   }
 }
