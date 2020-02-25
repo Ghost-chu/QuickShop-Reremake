@@ -279,7 +279,7 @@ public class MsgUtil {
   public static void loadCfgMessages() throws InvalidConfigurationException {
     /* Check & Load & Create default messages.yml */
     // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
-    String languageCode = plugin.getConfig().getString("language", "en");
+    String languageCode = plugin.getConfig().getString("language", "en-US");
     //noinspection ConstantConditions
 
     loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
