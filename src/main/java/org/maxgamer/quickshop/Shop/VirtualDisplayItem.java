@@ -27,18 +27,23 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -82,7 +87,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     protocolManager.removePacketListener(this);
                     return;
                 }
-                if (!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                if (!shop.isLoaded()||!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
                     return;
                 }
                 //chunk x
@@ -92,10 +97,18 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    if (shop.isLoaded()
-                            && shop.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())
-                            && shop.getLocation().getChunk().getX() == x
-                            && shop.getLocation().getChunk().getZ() == z) {
+                    World world=shop.getLocation().getWorld();
+                    Chunk chunk;
+                    CompletableFuture<Chunk> chunkCompletableFuture=new CompletableFuture<>();
+                    QuickShop.instance.getBukkitAPIWrapper().getChunkAt(world,shop.getLocation(),chunkCompletableFuture);
+                        try {
+                            chunk=chunkCompletableFuture.get();
+                        } catch (InterruptedException | ExecutionException ignore) {
+                            return;
+                        }
+                            if(world.getName().equals(event.getPlayer().getWorld().getName())
+                            && chunk.getX() == x
+                            && chunk.getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
