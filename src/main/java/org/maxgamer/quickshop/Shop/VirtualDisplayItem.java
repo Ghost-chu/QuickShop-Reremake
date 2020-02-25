@@ -98,14 +98,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                     World world=shop.getLocation().getWorld();
-                    Chunk chunk;
-                    CompletableFuture<Chunk> chunkCompletableFuture=new CompletableFuture<>();
-                    QuickShop.instance.getBukkitAPIWrapper().getChunkAt(world,shop.getLocation(),chunkCompletableFuture);
-                        try {
-                            chunk=chunkCompletableFuture.get();
-                        } catch (InterruptedException | ExecutionException ignore) {
-                            return;
-                        }
+                    Chunk chunk=shop.getLocation().getChunk();
                             if(world.getName().equals(event.getPlayer().getWorld().getName())
                             && chunk.getX() == x
                             && chunk.getZ() == z) {
