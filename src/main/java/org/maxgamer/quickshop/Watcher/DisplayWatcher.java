@@ -60,7 +60,9 @@ public class DisplayWatcher {
           //                        if (!Util.isLoaded(shop.getLocation())) {
           //                            continue;
           //                        }
-          plugin.getShopManager().getLoadedShops().forEach(Shop::checkDisplay);
+          for (Shop shop : plugin.getShopManager().getLoadedShops()) {
+            shop.checkDisplay();
+          }
         }
       }.runTaskTimer(plugin, 1L, plugin.getDisplayItemCheckTicks());
     }
