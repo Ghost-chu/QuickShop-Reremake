@@ -554,11 +554,11 @@ public class QuickShop extends JavaPlugin {
     worldListener = new WorldListener(this);
     chatListener = new ChatListener(this);
     chunkListener = new ChunkListener(this);
-    inventoryListener = new DisplayProtectionListener(this);
+
     customInventoryListener = new CustomInventoryListener(this);
-    displayBugFixListener = new DisplayBugFixListener(this);
+
     shopProtectListener = new ShopProtectionListener(this);
-    displayWatcher = new DisplayWatcher(this);
+
     syncTaskWatcher = new SyncTaskWatcher(this);
     // shopVaildWatcher = new ShopVaildWatcher(this);
     ongoingFeeWatcher = new OngoingFeeWatcher(this);
@@ -568,14 +568,23 @@ public class QuickShop extends JavaPlugin {
     Bukkit.getPluginManager().registerEvents(blockListener, this);
     Bukkit.getPluginManager().registerEvents(playerListener, this);
     Bukkit.getPluginManager().registerEvents(chatListener, this);
-    Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+
     Bukkit.getPluginManager().registerEvents(chunkListener, this);
     Bukkit.getPluginManager().registerEvents(worldListener, this);
     Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
-    Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
+
     Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
-    Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
+    ;
     Bukkit.getPluginManager().registerEvents(internalListener, this);
+
+    if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+      displayWatcher = new DisplayWatcher(this);
+      displayBugFixListener = new DisplayBugFixListener(this);
+      Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
+      inventoryListener = new DisplayProtectionListener(this);
+      Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+    }
+
     if (getConfig().getBoolean("shop.lock")) {
       Bukkit.getPluginManager().registerEvents(lockListener, this);
     }
