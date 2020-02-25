@@ -72,7 +72,6 @@ public class ShopManager {
     this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
   }
 
-  @SuppressWarnings("deprecation")
   private void actionBuy(
       @NotNull Player p,
       @NotNull Economy eco,
