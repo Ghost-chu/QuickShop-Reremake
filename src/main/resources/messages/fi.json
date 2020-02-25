@@ -225,10 +225,10 @@
             "github": "[Github]",
             "spigotmc": "[SpigotMC]",
             "bukkitdev": "[BukkitDev]",
-            "master": "[Master]"
+            "master": "[master]"
         }
     },
     "shop-removed-cause-ongoing-fee": "&cKauppasi ({0}) poistettiin, sill\u00e4 sinulla ei ollut varaa yll\u00e4pit\u00e4\u00e4 sit\u00e4!",
     "digits-reach-the-limit": "&cOlet saavuttanut desimaalirajan.",
-    "complete": "&aComplete!"
+    "complete": "&aValmis!"
 }
