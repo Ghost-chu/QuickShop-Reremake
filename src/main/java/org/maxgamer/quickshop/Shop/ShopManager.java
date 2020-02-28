@@ -208,13 +208,13 @@ public class ShopManager {
 
             if (plugin.getConfig().getBoolean("shop.auto-sign")) {
                 if (info.getSignBlock() == null) {
-                    if (!plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
+                    if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                         p.sendMessage(MsgUtil.getMessage("failed-to-put-sign", p));
                         return;
                     }
                 }
                 Material signType = info.getSignBlock().getType();
-                if (!Util.isAir(signType) && signType != Material.WATER && !plugin.getConfig().getBoolean("allow-shop-without-space-for-sign")) {
+                if (!Util.isAir(signType) && signType != Material.WATER && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     p.sendMessage(MsgUtil.getMessage("failed-to-put-sign", p));
                     return;
                 }
