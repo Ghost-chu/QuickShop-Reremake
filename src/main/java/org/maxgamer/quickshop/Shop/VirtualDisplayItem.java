@@ -49,7 +49,6 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     private volatile boolean isDisplay;
-    private volatile boolean isLoaded;
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
     //server main version (1_13_R2->13)
@@ -92,11 +91,6 @@ public class VirtualDisplayItem extends DisplayItem {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
 
-                    //if shop has deleted, unregister myself to ensure will be collected by GC
-                    if (!shop.isDeleted()) {
-                        unload();
-                        return;
-                    }
                     if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
                         return;
                     }
@@ -104,7 +98,6 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = event.getPacket().getIntegers().read(0);
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
-
 
                     World world = shop.getLocation().getWorld();
                     Chunk chunk = shop.getLocation().getChunk();
