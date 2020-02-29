@@ -264,6 +264,7 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void remove() {
         sendPacketToAll(fakeItemDestroyPacket);
+        unload();
         isDisplay = false;
     }
 
