@@ -172,7 +172,8 @@ public class VirtualDisplayItem extends DisplayItem {
         //Create a DataWatcher
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-        wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+        //For 1.13 is 6, and 1.14+ is 7
+        wpw.setObject((version==13 ? 6:7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
         //Add it
         fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
 
