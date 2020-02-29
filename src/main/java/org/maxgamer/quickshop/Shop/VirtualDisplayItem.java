@@ -92,10 +92,9 @@ public class VirtualDisplayItem extends DisplayItem {
                     //is really full chunk data
                     boolean isFull = event.getPacket().getBooleans().read(0);
 
-                    //if shop has deleted or unloaded, unregister myself to ensure will be collected by GC
-                    if (!shop.isDeleted() || !isLoaded) {
-                        packetSenders.clear();
-                        protocolManager.removePacketListener(this);
+                    //if shop has deleted, unregister myself to ensure will be collected by GC
+                    if (!shop.isDeleted()) {
+                        unload();
                         return;
                     }
                     if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
@@ -121,6 +120,10 @@ public class VirtualDisplayItem extends DisplayItem {
         protocolManager.addPacketListener(packetAdapter);
     }
 
+    private void unload(){
+        packetSenders.clear();
+        protocolManager.removePacketListener(packetAdapter);
+    }
     private void initFakeDropItemPacket() {
 
         //First, create a new packet to spawn item
@@ -262,7 +265,6 @@ public class VirtualDisplayItem extends DisplayItem {
     public void remove() {
         sendPacketToAll(fakeItemDestroyPacket);
         isDisplay = false;
-        isLoaded = false;
     }
 
     @Override
@@ -273,7 +275,7 @@ public class VirtualDisplayItem extends DisplayItem {
     @Override
     public void respawn() {
         sendPacketToAll(fakeItemDestroyPacket);
-        spawn();
+        sendFakeItemToAll();
     }
 
     @Override
@@ -283,10 +285,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
-        if (!isLoaded) {
-            load();
-            isLoaded = true;
-        }
+        load();
         sendFakeItemToAll();
         isDisplay = true;
     }
