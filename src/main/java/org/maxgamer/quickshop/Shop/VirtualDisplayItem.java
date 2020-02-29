@@ -37,19 +37,19 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class VirtualDisplayItem extends DisplayItem {
 
 
     private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     private volatile boolean isDisplay;
-    private volatile boolean isInit;
+    private volatile boolean isLoaded;
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
     //server main version (1_13_R2->13)
@@ -61,8 +61,10 @@ public class VirtualDisplayItem extends DisplayItem {
     private PacketContainer fakeItemMetaPacket;
     private PacketContainer fakeItemVelocityPacket;
     private PacketContainer fakeItemDestroyPacket;
+    //packetListener
+    private PacketAdapter packetAdapter;
     //The List which store packet sender
-    private Set<UUID> packetSenders;
+    private Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
 
     public VirtualDisplayItem(@NotNull Shop shop) {
@@ -71,50 +73,52 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     //Due to the delay task in ChunkListener
-    //We must move init task to first spawn to prevent some bug and make the check lesser
-    private void preSpawnInit() {
+    //We must move load task to first spawn to prevent some bug and make the check lesser
+    private void load() {
         //some time shop can be loaded when world isn't loaded
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
-            packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
-        } else {
-            packetSenders = new ConcurrentSkipListSet<>();
+            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
+            for (Entity entity : entityCollection) {
+                if (entity instanceof Player) {
+                    packetSenders.add(entity.getUniqueId());
+                }
+            }
         }
-        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                //is really full chunk data
-                boolean isFull = event.getPacket().getBooleans().read(0);
+        if (packetAdapter == null) {
+            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+                @Override
+                public void onPacketSending(PacketEvent event) {
+                    //is really full chunk data
+                    boolean isFull = event.getPacket().getBooleans().read(0);
 
-                //if shop has deleted, unregister myself to ensure will be collected by GC
-                if (shop.isDeleted()) {
-                    packetSenders.clear();
-                    protocolManager.removePacketListener(this);
-                    return;
-                }
-                if (!isFull || !Util.isLoaded(shop.getLocation())) {
-                    return;
-                }
-                //chunk x
-                int x = event.getPacket().getIntegers().read(0);
-                //chunk z
-                int z = event.getPacket().getIntegers().read(1);
+                    //if shop has deleted or unloaded, unregister myself to ensure will be collected by GC
+                    if (!shop.isDeleted() || !isLoaded) {
+                        packetSenders.clear();
+                        protocolManager.removePacketListener(this);
+                        return;
+                    }
+                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                        return;
+                    }
+                    //chunk x
+                    int x = event.getPacket().getIntegers().read(0);
+                    //chunk z
+                    int z = event.getPacket().getIntegers().read(1);
 
-                //send the packet later to prevent chunk loading deadlock
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+
                     World world = shop.getLocation().getWorld();
                     Chunk chunk = shop.getLocation().getChunk();
-                    if (shop.isLoaded()
-                            &&isDisplay
-                            &&world.getName().equals(event.getPlayer().getWorld().getName())
+                    if (world.getName().equals(event.getPlayer().getWorld().getName())
                             && chunk.getX() == x
                             && chunk.getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
-                }, 2);
-            }
-        });
+                }
+            };
+        }
+        protocolManager.addPacketListener(packetAdapter);
     }
 
     private void initFakeDropItemPacket() {
@@ -175,7 +179,7 @@ public class VirtualDisplayItem extends DisplayItem {
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
         //For 1.13 is 6, and 1.14+ is 7
-        wpw.setObject((version==13 ? 6:7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
         //Add it
         fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
 
@@ -258,6 +262,7 @@ public class VirtualDisplayItem extends DisplayItem {
     public void remove() {
         sendPacketToAll(fakeItemDestroyPacket);
         isDisplay = false;
+        isLoaded = false;
     }
 
     @Override
@@ -278,9 +283,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
-        if (!isInit) {
-            preSpawnInit();
-            isInit = true;
+        if (!isLoaded) {
+            load();
+            isLoaded = true;
         }
         sendFakeItemToAll();
         isDisplay = true;
