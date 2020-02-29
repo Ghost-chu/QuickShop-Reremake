@@ -71,7 +71,7 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     //Due to the delay task in ChunkListener
-    //We must move init task to first spawn to prevent some bug
+    //We must move init task to first spawn to prevent some bug and make the check lesser
     private void preSpawnInit() {
         //some time shop can be loaded when world isn't loaded
         if (Util.isLoaded(shop.getLocation())) {
@@ -92,7 +92,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     protocolManager.removePacketListener(this);
                     return;
                 }
-                if (!isFull || !isDisplay || !shop.isLoaded() || !Util.isLoaded(shop.getLocation())) {
+                if (!isFull || !Util.isLoaded(shop.getLocation())) {
                     return;
                 }
                 //chunk x
@@ -104,13 +104,15 @@ public class VirtualDisplayItem extends DisplayItem {
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                     World world = shop.getLocation().getWorld();
                     Chunk chunk = shop.getLocation().getChunk();
-                    if (world.getName().equals(event.getPlayer().getWorld().getName())
+                    if (shop.isLoaded()
+                            &&isDisplay
+                            &&world.getName().equals(event.getPlayer().getWorld().getName())
                             && chunk.getX() == x
                             && chunk.getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
-                }, 1);
+                }, 2);
             }
         });
     }
