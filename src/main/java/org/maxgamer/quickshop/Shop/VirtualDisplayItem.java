@@ -98,7 +98,8 @@ public class VirtualDisplayItem extends DisplayItem {
                     int x = event.getPacket().getIntegers().read(0);
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
-
+                    //check later to prevent deadlock
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,()->{
                     World world = shop.getLocation().getWorld();
                     Chunk chunk = shop.getLocation().getChunk();
                     if (world.getName().equals(event.getPlayer().getWorld().getName())
@@ -107,8 +108,8 @@ public class VirtualDisplayItem extends DisplayItem {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
-                }
-            };
+                },1);
+        }};
         }
         protocolManager.addPacketListener(packetAdapter);
     }
