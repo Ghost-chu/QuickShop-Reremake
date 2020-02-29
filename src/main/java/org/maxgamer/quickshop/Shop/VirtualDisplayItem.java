@@ -34,16 +34,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -52,8 +49,11 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
     private volatile boolean isDisplay;
+    private volatile boolean isInit;
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
+    //server main version (1_13_R2->13)
+    private static final int version = Integer.parseInt(Util.getNMSVersion().split("_")[1]);
     //unique EntityID
     private int entityID = counter.decrementAndGet();
     //packets
@@ -68,14 +68,19 @@ public class VirtualDisplayItem extends DisplayItem {
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
         initFakeDropItemPacket();
+    }
+
+    //Due to the delay task in ChunkListener
+    //We must move init task to first spawn to prevent some bug
+    private void preSpawnInit() {
         //some time shop can be loaded when world isn't loaded
-        if(Util.isLoaded(shop.getLocation())){
+        if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
             packetSenders = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16).stream().map(Entity::getUniqueId).collect(Collectors.toCollection(ConcurrentSkipListSet::new));
-        }else {
-            packetSenders=new ConcurrentSkipListSet<>();
+        } else {
+            packetSenders = new ConcurrentSkipListSet<>();
         }
-        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK) {
+        protocolManager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 //is really full chunk data
@@ -87,7 +92,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     protocolManager.removePacketListener(this);
                     return;
                 }
-                if (!shop.isLoaded()||!isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                if (!isFull || !isDisplay || !shop.isLoaded() || !Util.isLoaded(shop.getLocation())) {
                     return;
                 }
                 //chunk x
@@ -97,9 +102,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //send the packet later to prevent chunk loading deadlock
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    World world=shop.getLocation().getWorld();
-                    Chunk chunk=shop.getLocation().getChunk();
-                            if(world.getName().equals(event.getPlayer().getWorld().getName())
+                    World world = shop.getLocation().getWorld();
+                    Chunk chunk = shop.getLocation().getChunk();
+                    if (world.getName().equals(event.getPlayer().getWorld().getName())
                             && chunk.getX() == x
                             && chunk.getZ() == z) {
                         packetSenders.add(event.getPlayer().getUniqueId());
@@ -109,6 +114,7 @@ public class VirtualDisplayItem extends DisplayItem {
             }
         });
     }
+
     private void initFakeDropItemPacket() {
 
         //First, create a new packet to spawn item
@@ -119,31 +125,43 @@ public class VirtualDisplayItem extends DisplayItem {
 
         //and add data based on packet class in NMS  (global scope variable)
         //Reference: https://wiki.vg/Protocol#Spawn_Object
-        fakeItemPacket.getModifier()
+        fakeItemPacket.getIntegers()
                 //Entity ID
                 .write(0, entityID)
-                //UUID
-                .write(1,UUID.randomUUID())
-                //X
-                .write(2, location.getX())
-                //Y
-                .write(3, location.getY())
-                //Z
-                .write(4, location.getZ())
                 //Velocity x
-                .write(5,0)
+                .write(1, 0)
                 //Velocity y
-                .write(6,0)
+                .write(2, 0)
                 //Velocity z
-                .write(7,0)
+                .write(3, 0)
                 //Pitch
-                .write(8,0)
+                .write(4, 0)
                 //Yaw
-                .write(9,0)
-                //int data to mark
-                .write(11, 1);
-        //EntityType
-        fakeItemPacket.getEntityTypeModifier().write(0,EntityType.DROPPED_ITEM);
+                .write(5, 0);
+
+
+        if (version == 13) {
+            //for 1.13, we should use type id to represent the EntityType
+            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
+            fakeItemPacket.getIntegers().write(6, 2);
+            //int data to mark
+            fakeItemPacket.getIntegers().write(7, 1);
+        } else {
+            //for 1.14+, we should use EntityType
+            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+            //int data to mark
+            fakeItemPacket.getIntegers().write(6, 1);
+        }
+        //UUID
+        fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
+        //Location
+        fakeItemPacket.getDoubles()
+                //X
+                .write(0, location.getX())
+                //Y
+                .write(1, location.getY())
+                //Z
+                .write(2, location.getZ());
 
         //Next, create a new packet to update item data (default is empty)
         fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
@@ -153,22 +171,23 @@ public class VirtualDisplayItem extends DisplayItem {
         //List<DataWatcher$Item> Type are more complex
         //Create a DataWatcher
         WrappedDataWatcher wpw = new WrappedDataWatcher();
-        //Must in the seventh slot:https://wiki.vg/Entity_metadata#Item
-        wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+        //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
+        //For 1.13 is 6, and 1.14+ is 7
+        wpw.setObject((version==13 ? 6:7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
         //Add it
         fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
 
         //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
-        fakeItemVelocityPacket=protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
+        fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
         fakeItemVelocityPacket.getIntegers()
                 //Entity ID
-                .write(0,entityID)
+                .write(0, entityID)
                 //Velocity x
-                .write(1,0)
+                .write(1, 0)
                 //Velocity y
-                .write(2,0)
+                .write(2, 0)
                 //Velocity z
-                .write(3,0);
+                .write(3, 0);
 
         //Also make a DestroyPacket to remove it
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
@@ -193,14 +212,14 @@ public class VirtualDisplayItem extends DisplayItem {
 
     public void sendFakeItem(Player player) {
         sendPacket(player, fakeItemPacket);
-        sendPacket(player, fakeItemVelocityPacket);
         sendPacket(player, fakeItemMetaPacket);
+        sendPacket(player, fakeItemVelocityPacket);
     }
 
-    public void sendFakeItemtoAll() {
+    public void sendFakeItemToAll() {
         sendPacketToAll(fakeItemPacket);
-        sendPacketToAll(fakeItemVelocityPacket);
         sendPacketToAll(fakeItemMetaPacket);
+        sendPacketToAll(fakeItemVelocityPacket);
     }
 
     private void sendPacket(Player player, PacketContainer packet) {
@@ -212,12 +231,12 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     private void sendPacketToAll(PacketContainer packet) {
-        Iterator<UUID> iterator=packetSenders.iterator();
-        while (iterator.hasNext()){
-            Player nextPlayer=Bukkit.getPlayer(iterator.next());
-            if(nextPlayer==null){
+        Iterator<UUID> iterator = packetSenders.iterator();
+        while (iterator.hasNext()) {
+            Player nextPlayer = Bukkit.getPlayer(iterator.next());
+            if (nextPlayer == null) {
                 iterator.remove();
-            }else {
+            } else {
                 sendPacket(nextPlayer, packet);
             }
         }
@@ -235,8 +254,8 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void remove() {
-        isDisplay = false;
         sendPacketToAll(fakeItemDestroyPacket);
+        isDisplay = false;
     }
 
     @Override
@@ -257,8 +276,12 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        if (!isInit) {
+            preSpawnInit();
+            isInit = true;
+        }
+        sendFakeItemToAll();
         isDisplay = true;
-        sendFakeItemtoAll();
     }
 
     @Override
