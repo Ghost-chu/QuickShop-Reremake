@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.Util.Util;
 /** A class allow plugin load shops fast and simply. */
 public class ShopLoader {
   private final ArrayList<Long> loadTimes = new ArrayList<>();
-  Map<Timer, Double> costCache = new HashMap<>();
+  private Map<Timer, Double> costCache = new HashMap<>();
   private int errors;
   private int loadAfterChunkLoaded = 0;
   private int loadAfterWorldLoaded = 0;
