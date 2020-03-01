@@ -761,8 +761,8 @@ public class ShopManager {
      * @param loc The location to get the shop from
      * @return The shop at that location
      */
-    public @Nullable Shop getShop(@NotNull Location loc, boolean skinShopableChecking) {
-        if (!skinShopableChecking) {
+    public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
+        if (!skipShopableChecking) {
             if (!Util.isShoppables(loc.getBlock().getType())) {
                 return null;
             }
