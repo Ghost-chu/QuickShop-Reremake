@@ -28,9 +28,12 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.PluginsIntegration.IntegrateStage;
 import org.maxgamer.quickshop.PluginsIntegration.IntegratedPlugin;
+import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 import org.maxgamer.quickshop.QuickShop;
 
+@IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class FactionsUUIDIntegration implements IntegratedPlugin {
   private List<String> createFlags;
   private List<String> tradeFlags;

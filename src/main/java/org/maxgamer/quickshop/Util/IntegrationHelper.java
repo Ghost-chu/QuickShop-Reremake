@@ -35,7 +35,7 @@ public class IntegrationHelper {
 
   public void register(@NotNull IntegratedPlugin clazz) {
     if (!isIntegrationClass(clazz)) {
-      throw new InvaildIntegratedPluginClass();
+      throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
     }
     Util.debugLogHeavy("Registering " + clazz.getName());
     integrations.add(clazz);
@@ -62,9 +62,9 @@ public class IntegrationHelper {
                     + integratedPlugin.getName()
                     + " stage is "
                     + integratedPlugin
-                        .getClass()
-                        .getDeclaredAnnotation(IntegrationStage.class)
-                        .loadStage());
+                    .getClass()
+                    .getDeclaredAnnotation(IntegrationStage.class)
+                    .loadStage());
           }
         });
   }
@@ -82,9 +82,9 @@ public class IntegrationHelper {
                     + integratedPlugin.getName()
                     + " stage is "
                     + integratedPlugin
-                        .getClass()
-                        .getDeclaredAnnotation(IntegrationStage.class)
-                        .loadStage());
+                    .getClass()
+                    .getDeclaredAnnotation(IntegrationStage.class)
+                    .loadStage());
           }
         });
   }
@@ -112,6 +112,16 @@ public class IntegrationHelper {
   private boolean isIntegrationClass(@NotNull IntegratedPlugin clazz) {
     return clazz.getClass().getDeclaredAnnotation(IntegrationStage.class) != null;
   }
+
 }
 
-class InvaildIntegratedPluginClass extends IllegalArgumentException {}
+class InvaildIntegratedPluginClass extends IllegalArgumentException {
+  public InvaildIntegratedPluginClass() {
+    super();
+  }
+
+  public InvaildIntegratedPluginClass(String s) {
+    super(s);
+  }
+
+}
