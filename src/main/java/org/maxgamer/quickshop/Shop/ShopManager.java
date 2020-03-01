@@ -762,19 +762,13 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc, boolean skinShopableChecking) {
-        boolean hit = plugin.getCachingPool().shopCaching.containsKey(loc);
-        if (hit) {
-            return plugin.getCachingPool().shopCaching.get(loc);
-        }
         if (!skinShopableChecking) {
             if (!Util.isShoppables(loc.getBlock().getType())) {
-                plugin.getCachingPool().shopCaching.put(loc, null);
                 return null;
             }
         }
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
-            plugin.getCachingPool().shopCaching.put(loc, null);
             return null;
         }
         loc = loc.clone();
@@ -784,9 +778,7 @@ public class ShopManager {
         loc.setZ(loc.getBlockZ());
         // We can do this because WorldListener updates the world reference so
         // the world in loc is the same as world in inChunk.get(loc)
-        Shop result = inChunk.get(loc);
-        plugin.getCachingPool().shopCaching.put(loc, result);
-        return result;
+        return inChunk.get(loc);
     }
 
     /**
