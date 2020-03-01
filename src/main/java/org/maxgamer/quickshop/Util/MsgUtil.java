@@ -19,6 +19,16 @@
 
 package org.maxgamer.quickshop.Util;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -46,17 +56,6 @@ import org.maxgamer.quickshop.FilePortlek.IFile;
 import org.maxgamer.quickshop.FilePortlek.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
@@ -136,7 +135,11 @@ public class MsgUtil {
             Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
             String[] msgData = msg.split("##########");
             try {
-              sendItemholochat(player, msgData[0], Util.deserialize(msgData[1]), msgData[2]);
+              ItemStack data = Util.deserialize(msgData[1]);
+              if (data == null) {
+                throw new InvalidConfigurationException();
+              }
+              sendItemholochat(player, msgData[0], data, msgData[2]);
             } catch (InvalidConfigurationException e) {
               p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
             } catch (ArrayIndexOutOfBoundsException e2) {
