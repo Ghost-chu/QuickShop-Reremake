@@ -32,7 +32,7 @@ public class BootError {
 
   private String[] errors;
 
-  BootError(@NotNull String... errors) {
+  public BootError(@NotNull String... errors) {
     this.errors = errors;
     for (String err : errors) {
       QuickShop.instance.getLogger().severe(err);
