@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.bukkit.World;
 
 @Getter
 @EqualsAndHashCode
@@ -32,4 +33,12 @@ public class ShopChunk {
   private String world;
   private int x;
   private int z;
+
+  public boolean isSame(World world, int x, int z){
+    return isSame(world.getName(),x,z);
+  }
+
+  public boolean isSame(String world,int x,int z){
+    return this.x==x&&this.z==z&&this.world.equals(world);
+  }
 }
