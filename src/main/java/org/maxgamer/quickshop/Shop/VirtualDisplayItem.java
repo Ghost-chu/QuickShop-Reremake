@@ -27,10 +27,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.Bukkit;
@@ -40,6 +37,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -76,6 +75,10 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
+    private Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
+
+    private BukkitTask asyncSendingTask;
+
 
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
@@ -110,7 +113,7 @@ public class VirtualDisplayItem extends DisplayItem {
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
                     //check later to prevent deadlock
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    asyncPacketSendQueue.offer(() -> {
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk = shop.getLocation().getChunk();
@@ -120,16 +123,46 @@ public class VirtualDisplayItem extends DisplayItem {
                             packetSenders.add(event.getPlayer().getUniqueId());
                             sendFakeItem(event.getPlayer());
                         }
-                    }, 1);
+                    });
+//                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+//                        if (chunkLocation == null) {
+//                            World world = shop.getLocation().getWorld();
+//                            Chunk chunk = shop.getLocation().getChunk();
+//                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+//                        }
+//                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
+//                            packetSenders.add(event.getPlayer().getUniqueId());
+//                            sendFakeItem(event.getPlayer());
+//                        }
+//                    }, 1);
                 }
             };
         }
         protocolManager.addPacketListener(packetAdapter);
+
+        asyncSendingTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                long startTime = System.nanoTime();
+                long packets = 0;
+                Runnable runnable = asyncPacketSendQueue.poll();
+                while (runnable != null) {
+                    packets++;
+                    runnable.run();
+                    runnable = asyncPacketSendQueue.poll();
+                }
+                Util.debugLog("Sended " + packets + " virtual item with " + (System.nanoTime() - startTime) + "ns");
+
+                //FIXME: Remove debug log code when releasing, only for performance testing.
+            }
+        }.runTaskLaterAsynchronously(plugin, 1);
+
     }
 
     private void unload() {
         packetSenders.clear();
         protocolManager.removePacketListener(packetAdapter);
+        asyncSendingTask.cancel();
     }
 
     private void initFakeDropItemPacket() {
