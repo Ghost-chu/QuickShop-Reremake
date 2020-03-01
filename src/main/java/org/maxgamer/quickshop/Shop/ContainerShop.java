@@ -766,14 +766,11 @@ public class ContainerShop implements Shop {
         plugin.getLogger().warning("Null signs in the queue, skipping");
         continue;
       }
-      Material mat = b.getType();
-      if (!Util.isWallSign(mat)) {
+
+      if (!(b.getState() instanceof Sign)) {
         continue;
       }
       if (!isAttached(b)) {
-        continue;
-      }
-      if (!(b.getState() instanceof Sign)) {
         continue;
       }
       org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
