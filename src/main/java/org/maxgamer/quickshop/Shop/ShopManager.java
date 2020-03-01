@@ -37,6 +37,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Event.ShopCreateEvent;
 import org.maxgamer.quickshop.Event.ShopPreCreateEvent;
@@ -67,8 +68,15 @@ public class ShopManager {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         String taxAccount = plugin.getConfig().getString("tax-account");
-        //noinspection ConstantConditions
-        this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
+        for(OfflinePlayer player:Bukkit.getOfflinePlayers()){
+            if(player.getName()!=null&&player.getName().equalsIgnoreCase(taxAccount)){
+                cacheTaxAccount=player.getUniqueId();
+            }
+        }
+        if(cacheTaxAccount==null){
+            new BootError("Tax account never join the server","you should set a player which have joined the server in config.yml");
+            throw new RuntimeException("Tax account never join the server!");
+        }
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
