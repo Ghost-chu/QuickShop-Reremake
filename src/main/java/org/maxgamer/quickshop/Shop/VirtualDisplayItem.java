@@ -155,7 +155,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
                 //FIXME: Remove debug log code when releasing, only for performance testing.
             }
-        }.runTaskLaterAsynchronously(plugin, 1);
+        }.runTaskTimerAsynchronously(plugin, 0, 1);
 
     }
 
