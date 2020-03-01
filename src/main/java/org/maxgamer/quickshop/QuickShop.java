@@ -814,6 +814,7 @@ public class QuickShop extends JavaPlugin {
         }
         getLogger().info("Checking the tax account infos...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
+        //noinspection ConstantConditions
         if (!Bukkit.getOfflinePlayer(taxAccount).hasPlayedBefore()) {
             getLogger().warning("Tax account's player never played server before, that may cause server lagg or economy system error, you should change that name.");
         }
