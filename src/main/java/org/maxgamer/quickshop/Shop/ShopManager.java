@@ -37,7 +37,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.Economy.Economy;
 import org.maxgamer.quickshop.Event.ShopCreateEvent;
 import org.maxgamer.quickshop.Event.ShopPreCreateEvent;
@@ -67,16 +66,8 @@ public class ShopManager {
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
-        String taxAccount = plugin.getConfig().getString("tax-account");
-        for(OfflinePlayer player:Bukkit.getOfflinePlayers()){
-            if(player.getName()!=null&&player.getName().equalsIgnoreCase(taxAccount)){
-                cacheTaxAccount=player.getUniqueId();
-            }
-        }
-        if(cacheTaxAccount==null){
-            new BootError("Tax account never join the server","you should set a player which have joined the server in config.yml");
-            throw new RuntimeException("Tax account never join the server!");
-        }
+        //noinspection ConstantConditions
+        this.cacheTaxAccount = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax")).getUniqueId();
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
@@ -152,9 +143,7 @@ public class ShopManager {
         }
         // Purchase successfully
         if (tax != 0) {
-            if (cacheTaxAccount != null) {
-                eco.deposit(cacheTaxAccount, total * tax);
-            }
+            eco.deposit(cacheTaxAccount, total * tax);
         }
         // Notify the owner of the purchase.
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
@@ -307,9 +296,7 @@ public class ShopManager {
                     return;
                 }
                 try {
-                    if (cacheTaxAccount != null) {
-                        plugin.getEconomy().deposit(cacheTaxAccount, createCost);
-                    }
+                    plugin.getEconomy().deposit(cacheTaxAccount, createCost);
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
@@ -573,7 +560,7 @@ public class ShopManager {
      * yourself
      *
      * @param world The name of the world
-     * @param shop  The shop to add
+     * @param shop The shop to add
      */
     public void addShop(@NotNull String world, @NotNull Shop shop) {
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new HashMap<>(3));
@@ -597,8 +584,8 @@ public class ShopManager {
     /**
      * Checks other plugins to make sure they can use the chest they're making a shop.
      *
-     * @param p  The player to check
-     * @param b  The block to check
+     * @param p The player to check
+     * @param b The block to check
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
@@ -947,7 +934,7 @@ public class ShopManager {
      * not use this method to create a shop.
      *
      * @param world The world the shop is in
-     * @param shop  The shop to load
+     * @param shop The shop to load
      */
     public void loadShop(@NotNull String world, @NotNull Shop shop) {
         this.addShop(world, shop);
