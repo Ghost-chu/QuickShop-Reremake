@@ -67,7 +67,10 @@ public class ShopManager {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         //noinspection ConstantConditions
-        this.cacheTaxAccount = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax")).getUniqueId();
+        OfflinePlayer taxPlayer=Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
+        if(taxPlayer.hasPlayedBefore()) {
+            this.cacheTaxAccount = taxPlayer.getUniqueId();
+        }
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
@@ -142,7 +145,7 @@ public class ShopManager {
             return;
         }
         // Purchase successfully
-        if (tax != 0) {
+        if (tax != 0&&cacheTaxAccount!=null) {
             eco.deposit(cacheTaxAccount, total * tax);
         }
         // Notify the owner of the purchase.
@@ -296,7 +299,9 @@ public class ShopManager {
                     return;
                 }
                 try {
-                    plugin.getEconomy().deposit(cacheTaxAccount, createCost);
+                    if(cacheTaxAccount!=null) {
+                        plugin.getEconomy().deposit(cacheTaxAccount, createCost);
+                    }
                 } catch (Exception e2) {
                     e2.printStackTrace();
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
