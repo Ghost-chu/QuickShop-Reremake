@@ -37,7 +37,7 @@ public class IntegrationHelper {
     if (!isIntegrationClass(clazz)) {
       throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
     }
-    Util.debugLogHeavy("Registering " + clazz.getName());
+    Util.debugLog("Registering " + clazz.getName());
     integrations.add(clazz);
   }
 
@@ -45,7 +45,7 @@ public class IntegrationHelper {
     if (!isIntegrationClass(clazz)) {
       throw new InvaildIntegratedPluginClass();
     }
-    Util.debugLogHeavy("Unregistering " + clazz.getName());
+    Util.debugLog("Unregistering " + clazz.getName());
     integrations.remove(clazz);
   }
 
@@ -54,10 +54,10 @@ public class IntegrationHelper {
         integratedPlugin -> {
           if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
               == stage) {
-            Util.debugLogHeavy("Calling for load " + integratedPlugin.getName());
+            Util.debugLog("Calling for load " + integratedPlugin.getName());
             integratedPlugin.load();
           } else {
-            Util.debugLogHeavy(
+            Util.debugLog(
                 "Ignored calling because "
                     + integratedPlugin.getName()
                     + " stage is "
@@ -74,10 +74,10 @@ public class IntegrationHelper {
         integratedPlugin -> {
           if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
               == stage) {
-            Util.debugLogHeavy("Calling for unload " + integratedPlugin.getName());
+            Util.debugLog("Calling for unload " + integratedPlugin.getName());
             integratedPlugin.unload();
           } else {
-            Util.debugLogHeavy(
+            Util.debugLog(
                 "Ignored calling because "
                     + integratedPlugin.getName()
                     + " stage is "
@@ -92,7 +92,7 @@ public class IntegrationHelper {
   public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
     for (IntegratedPlugin plugin : integrations) {
       if (!plugin.canCreateShopHere(player, location)) {
-        Util.debugLogHeavy("Cancelled by " + plugin.getName());
+        Util.debugLog("Cancelled by " + plugin.getName());
         return false;
       }
     }
@@ -102,7 +102,7 @@ public class IntegrationHelper {
   public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
     for (IntegratedPlugin plugin : integrations) {
       if (!plugin.canTradeShopHere(player, location)) {
-        Util.debugLogHeavy("Cancelled by " + plugin.getName());
+        Util.debugLog("Cancelled by " + plugin.getName());
         return false;
       }
     }

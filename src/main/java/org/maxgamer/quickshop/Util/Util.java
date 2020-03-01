@@ -20,42 +20,18 @@
 package org.maxgamer.quickshop.Util;
 
 import com.google.common.io.Files;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.Container;
-import org.bukkit.block.DoubleChest;
-import org.bukkit.block.EnderChest;
+import org.bukkit.*;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -232,15 +208,6 @@ public class Util {
     long startTime = System.currentTimeMillis();
     StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
     String className = stackTraceElement.getClassName();
-    try {
-      Class<?> c = Class.forName(className);
-      className = c.getSimpleName();
-      if (!c.getSimpleName().isEmpty()) {
-        className = c.getSimpleName();
-      }
-    } catch (ClassNotFoundException e) {
-      // Ignore
-    }
     String methodName = stackTraceElement.getMethodName();
     int codeLine = stackTraceElement.getLineNumber();
 
@@ -290,65 +257,6 @@ public class Util {
       }
     }
   }
-
-  /**
-   * Print debug log when plugin running on dev mode.
-   *
-   * @param logs logs
-   */
-  public static void debugLogHeavy(@NotNull String... logs) {
-    debugLog(logs);
-//    if (!QuickShop.instance.getConfig().getBoolean("dev-mode")) {
-//      return;
-//    }
-//    long startTime = System.currentTimeMillis();
-//    StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
-//    String className = stackTraceElement.getClassName();
-//    try {
-//      Class<?> c = Class.forName(className);
-//      className = c.getSimpleName();
-//      if (!c.getSimpleName().isEmpty()) {
-//        className = c.getSimpleName();
-//      }
-//    } catch (ClassNotFoundException e) {
-//      // Ignore
-//    }
-//    String methodName = stackTraceElement.getMethodName();
-//    int codeLine = stackTraceElement.getLineNumber();
-//
-//    for (String log : logs) {
-//      String text =
-//          "["
-//              + ChatColor.DARK_GREEN
-//              + ChatColor.BOLD
-//              + "DEBUG"
-//              + ChatColor.RESET
-//              + "] ["
-//              + ChatColor.DARK_GREEN
-//              + className
-//              + ChatColor.RESET
-//              + "]"
-//              + " ["
-//              + ChatColor.DARK_GREEN
-//              + methodName
-//              + ChatColor.RESET
-//              + "] ("
-//              + ChatColor.DARK_GREEN
-//              + codeLine
-//              + ChatColor.RESET
-//              + ") "
-//              + log;
-//      debugLogs.add(Colorizer.stripColors(text));
-//      if (debugLogs.size() > 500000) /* Keep debugLogs max can have 500k lines. */ {
-//        debugLogs.remove(0);
-//      }
-//      if (QuickShop.instance.getConfig().getBoolean("dev-mode")) {
-//        QuickShop.instance.getLogger().info(text);
-//      }
-//    }
-//    long debugLogCost = System.currentTimeMillis() - startTime;
-  }
-
   /**
    * Covert YAML string to ItemStack.
    *
