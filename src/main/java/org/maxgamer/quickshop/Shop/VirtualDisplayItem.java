@@ -26,6 +26,13 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -36,34 +43,37 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Util.Util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class VirtualDisplayItem extends DisplayItem {
 
 
     private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+
     private volatile boolean isDisplay;
+
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
+
     //server main version (1_13_R2->13)
     private static final int version = Integer.parseInt(Util.getNMSVersion().split("_")[1]);
+
     //unique EntityID
     private int entityID = counter.decrementAndGet();
+
     //packets
     private PacketContainer fakeItemPacket;
+
     private PacketContainer fakeItemMetaPacket;
+
     private PacketContainer fakeItemVelocityPacket;
+
     private PacketContainer fakeItemDestroyPacket;
+
     //packetListener
     private PacketAdapter packetAdapter;
+
     //cache chunk x and z
     private ShopChunk chunkLocation;
+
     //The List which store packet sender
     private Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
@@ -101,26 +111,28 @@ public class VirtualDisplayItem extends DisplayItem {
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
                     //check later to prevent deadlock
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,()->{
-                    if(chunkLocation==null){
-                        World world = shop.getLocation().getWorld();
-                        Chunk chunk = shop.getLocation().getChunk();
-                        chunkLocation=new ShopChunk(world.getName(),chunk.getX(),chunk.getZ());
-                    }
-                    if (chunkLocation.isSame(event.getPlayer().getWorld().getName(),x,z)) {
-                        packetSenders.add(event.getPlayer().getUniqueId());
-                        sendFakeItem(event.getPlayer());
-                    }
-                },1);
-        }};
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                        if (chunkLocation == null) {
+                            World world = shop.getLocation().getWorld();
+                            Chunk chunk = shop.getLocation().getChunk();
+                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+                        }
+                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
+                            packetSenders.add(event.getPlayer().getUniqueId());
+                            sendFakeItem(event.getPlayer());
+                        }
+                    }, 1);
+                }
+            };
         }
         protocolManager.addPacketListener(packetAdapter);
     }
 
-    private void unload(){
+    private void unload() {
         packetSenders.clear();
         protocolManager.removePacketListener(packetAdapter);
     }
+
     private void initFakeDropItemPacket() {
 
         //First, create a new packet to spawn item
@@ -132,18 +144,18 @@ public class VirtualDisplayItem extends DisplayItem {
         //and add data based on packet class in NMS  (global scope variable)
         //Reference: https://wiki.vg/Protocol#Spawn_Object
         fakeItemPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID)
-                //Velocity x
-                .write(1, 0)
-                //Velocity y
-                .write(2, 0)
-                //Velocity z
-                .write(3, 0)
-                //Pitch
-                .write(4, 0)
-                //Yaw
-                .write(5, 0);
+            //Entity ID
+            .write(0, entityID)
+            //Velocity x
+            .write(1, 0)
+            //Velocity y
+            .write(2, 0)
+            //Velocity z
+            .write(3, 0)
+            //Pitch
+            .write(4, 0)
+            //Yaw
+            .write(5, 0);
 
 
         if (version == 13) {
@@ -162,12 +174,12 @@ public class VirtualDisplayItem extends DisplayItem {
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location
         fakeItemPacket.getDoubles()
-                //X
-                .write(0, location.getX())
-                //Y
-                .write(1, location.getY())
-                //Z
-                .write(2, location.getZ());
+            //X
+            .write(0, location.getX())
+            //Y
+            .write(1, location.getY())
+            //Z
+            .write(2, location.getZ());
 
         //Next, create a new packet to update item data (default is empty)
         fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
@@ -186,14 +198,14 @@ public class VirtualDisplayItem extends DisplayItem {
         //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
         fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
         fakeItemVelocityPacket.getIntegers()
-                //Entity ID
-                .write(0, entityID)
-                //Velocity x
-                .write(1, 0)
-                //Velocity y
-                .write(2, 0)
-                //Velocity z
-                .write(3, 0);
+            //Entity ID
+            .write(0, entityID)
+            //Velocity x
+            .write(1, 0)
+            //Velocity y
+            .write(2, 0)
+            //Velocity z
+            .write(3, 0);
 
         //Also make a DestroyPacket to remove it
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);

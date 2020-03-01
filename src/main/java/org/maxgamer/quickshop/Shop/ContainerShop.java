@@ -21,13 +21,8 @@ package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.logging.Level;
 import lombok.EqualsAndHashCode;
 import org.bukkit.Bukkit;
@@ -45,13 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.Event.ShopClickEvent;
-import org.maxgamer.quickshop.Event.ShopDeleteEvent;
-import org.maxgamer.quickshop.Event.ShopLoadEvent;
-import org.maxgamer.quickshop.Event.ShopModeratorChangedEvent;
-import org.maxgamer.quickshop.Event.ShopPriceChangeEvent;
-import org.maxgamer.quickshop.Event.ShopUnloadEvent;
-import org.maxgamer.quickshop.Event.ShopUpdateEvent;
+import org.maxgamer.quickshop.Event.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
@@ -903,13 +892,11 @@ public class ContainerShop implements Shop {
     if (Util.fireCancellableEvent(shopLoadEvent)) {
       return;
     }
-
     this.isLoaded = true;
     Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
     plugin.getShopContainerWatcher().scheduleCheck(this);
     // check price restriction
     Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
-
     if (priceRestriction != null) {
       if (price < priceRestriction.getKey()) {
         price = priceRestriction.getKey();
