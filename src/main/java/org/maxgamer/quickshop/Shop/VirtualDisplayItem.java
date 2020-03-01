@@ -62,6 +62,8 @@ public class VirtualDisplayItem extends DisplayItem {
     private PacketContainer fakeItemDestroyPacket;
     //packetListener
     private PacketAdapter packetAdapter;
+    //cache chunk x and z
+    private ShopChunk chunkLocation;
     //The List which store packet sender
     private Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
@@ -100,11 +102,12 @@ public class VirtualDisplayItem extends DisplayItem {
                     int z = event.getPacket().getIntegers().read(1);
                     //check later to prevent deadlock
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,()->{
-                    World world = shop.getLocation().getWorld();
-                    Chunk chunk = shop.getLocation().getChunk();
-                    if (world.getName().equals(event.getPlayer().getWorld().getName())
-                            && chunk.getX() == x
-                            && chunk.getZ() == z) {
+                    if(chunkLocation==null){
+                        World world = shop.getLocation().getWorld();
+                        Chunk chunk = shop.getLocation().getChunk();
+                        chunkLocation=new ShopChunk(world.getName(),chunk.getX(),chunk.getZ());
+                    }
+                    if (chunkLocation.isSame(event.getPlayer().getWorld().getName(),x,z)) {
                         packetSenders.add(event.getPlayer().getUniqueId());
                         sendFakeItem(event.getPlayer());
                     }
