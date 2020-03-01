@@ -19,22 +19,12 @@
 
 package org.maxgamer.quickshop.Util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -88,7 +78,6 @@ public class ItemMatcher {
     }
 
     if (!typeMatches(requireStack, givenStack)) {
-      Util.debugLog("Type not match.");
       return false;
     }
 
@@ -98,7 +87,6 @@ public class ItemMatcher {
 
     if (requireStack.hasItemMeta()) {
       if (!givenStack.hasItemMeta()) {
-        Util.debugLog("Meta not match.");
         return false;
       }
       return itemMetaMatcher.matches(requireStack, givenStack);
@@ -192,7 +180,6 @@ class ItemMetaMatcher {
     //            if(!(meta2 instanceof Damageable)){
     //                return false;
     //            }
-    Util.debugLog("Checking damage");
     try {
       Damageable damage1 = (Damageable) meta1;
       Damageable damage2 = (Damageable) meta2;
@@ -208,7 +195,6 @@ class ItemMetaMatcher {
     if(!this.book){
       return true;
     }
-    Util.debugLog("Checking book meta");
     if(!(meta1 instanceof BookMeta)){
       return true;
     }
@@ -254,7 +240,6 @@ class ItemMetaMatcher {
     if (!this.displayname) {
       return true;
     }
-    Util.debugLog("Checking displayname");
     if (!meta1.hasDisplayName()) {
       return true;
     } else {
@@ -269,7 +254,6 @@ class ItemMetaMatcher {
     if (!this.enchs) {
       return true;
     }
-    Util.debugLog("Checking enchantments");
     if (meta1.hasEnchants()) {
       if (!meta2.hasEnchants()) {
         return false;
@@ -295,7 +279,6 @@ class ItemMetaMatcher {
     if (!this.itemflags) {
       return true;
     }
-    Util.debugLog("Checking itemflags");
     if (meta1.getItemFlags().isEmpty()) {
       return true;
     } else {
@@ -311,7 +294,6 @@ class ItemMetaMatcher {
     if (!this.lores) {
       return true;
     }
-    Util.debugLog("Checking lores");
     if (meta1.hasLore() != meta2.hasLore()) {
       return false;
     }
@@ -325,7 +307,6 @@ class ItemMetaMatcher {
   }
 
   boolean matches(ItemStack requireStack, ItemStack givenStack) {
-    Util.debugLog("Begin the item matches checking...");
     if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
       return false;
     }
@@ -338,7 +319,6 @@ class ItemMetaMatcher {
       return false;
     }
     if (meta1 == null) {
-      Util.debugLog("Pass");
       return true; // Both null...
     }
     if (!damageMatches(meta1, meta2)) {
@@ -378,7 +358,6 @@ class ItemMetaMatcher {
     } catch (NoSuchMethodError err) {
       // Ignore, for 1.13 compatibility
     }
-    Util.debugLog("Pass");
     return true;
   }
 
@@ -386,7 +365,6 @@ class ItemMetaMatcher {
     if (!this.repaircost) {
       return true;
     }
-    Util.debugLog("Checking the reportcost");
     if (!(meta1 instanceof Repairable)) {
       return true;
     }
@@ -408,7 +386,6 @@ class ItemMetaMatcher {
     if (!this.potions) {
       return true;
     }
-    Util.debugLog("Checking potion effects");
     if ((meta1 instanceof PotionMeta) != (meta2 instanceof PotionMeta)) {
       return false;
     }
@@ -467,7 +444,6 @@ class ItemMetaMatcher {
     if (!this.banner) {
       return true;
     }
-    Util.debugLog("Checking banner");
     if((meta1 instanceof BannerMeta) != (meta2 instanceof BannerMeta)){
       return false;
     }
