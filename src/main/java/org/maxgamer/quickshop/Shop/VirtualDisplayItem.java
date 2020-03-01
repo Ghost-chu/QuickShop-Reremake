@@ -53,8 +53,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
 
-    //server main version (1_13_R2->13)
-    private static final int version = Integer.parseInt(Util.getNMSVersion().split("_")[1]);
+    private static final String version = Util.getNMSVersion();
 
     //unique EntityID
     private int entityID = counter.decrementAndGet();
@@ -157,19 +156,32 @@ public class VirtualDisplayItem extends DisplayItem {
             //Yaw
             .write(5, 0);
 
-
-        if (version == 13) {
-            //for 1.13, we should use type id to represent the EntityType
-            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
-            fakeItemPacket.getIntegers().write(6, 2);
+        switch (version) {
+            case "v1_13_R1":
+            case "v1_13_R2":
+                fakeItemPacket.getIntegers().write(6, 2);
+                //int data to mark
+                fakeItemPacket.getIntegers().write(7, 1);
+                break;
             //int data to mark
-            fakeItemPacket.getIntegers().write(7, 1);
-        } else {
-            //for 1.14+, we should use EntityType
-            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-            //int data to mark
-            fakeItemPacket.getIntegers().write(6, 1);
+            default:
+                //for 1.14+, we should use EntityType
+                fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+                //int data to mark
+                fakeItemPacket.getIntegers().write(6, 1);
         }
+//        if (version == 13) {
+//            //for 1.13, we should use type id to represent the EntityType
+//            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
+//            fakeItemPacket.getIntegers().write(6, 2);
+//            //int data to mark
+//            fakeItemPacket.getIntegers().write(7, 1);
+//        } else {
+//            //for 1.14+, we should use EntityType
+//            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+//            //int data to mark
+//            fakeItemPacket.getIntegers().write(6, 1);
+//        }
         //UUID
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location
@@ -191,7 +203,16 @@ public class VirtualDisplayItem extends DisplayItem {
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
         //For 1.13 is 6, and 1.14+ is 7
-        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+        switch (version) {
+            case "v1_13_R1":
+            case "v1_13_R2":
+                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                break;
+            default:
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                break;
+        }
+//        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
         //Add it
         fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
 
