@@ -438,9 +438,9 @@ public class QuickShop extends JavaPlugin {
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            Util.debugLogHeavy("Check WG plugin...");
+            Util.debugLog("Check WG plugin...");
             if (wg != null) {
-                Util.debugLogHeavy("Loading WG modules.");
+                Util.debugLog("Loading WG modules.");
                 this.integrationHelper.register(new WorldGuardIntegration(this)); // WG require register flags when onLoad called.
             }
         }
