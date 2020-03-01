@@ -35,33 +35,36 @@ import org.maxgamer.quickshop.Shop.Shop;
 @AllArgsConstructor
 public class ChunkListener implements Listener {
 
-  @NotNull private final QuickShop plugin;
+    @NotNull
+    private final QuickShop plugin;
 
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onChunkLoad(ChunkLoadEvent e) {
-    if (e.isNewChunk()) {
-      return;
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onChunkLoad(ChunkLoadEvent e) {
+        if (e.isNewChunk()) {
+            return;
+        }
+        final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+        if (inChunk == null || inChunk.isEmpty()) {
+            return;
+        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Shop shop : new HashMap<>(inChunk).values()) {
+                shop.onLoad();
+            }
+        }, 1);
     }
 
-    final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onChunkUnload(ChunkUnloadEvent e) {
 
-    if (inChunk == null || inChunk.isEmpty()) {
-      return;
+        final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+
+        if (inChunk == null || inChunk.isEmpty()) {
+            return;
+        }
+        for (Shop shop : new HashMap<>(inChunk).values()) {
+            shop.onUnload();
+        }
     }
-    Bukkit.getScheduler().runTaskLater(plugin,()-> {
-      //noinspection unchecked
-      for(Shop shop:((HashMap<Location, Shop>) inChunk.clone()).values()){shop.onLoad();}},1);
-  }
 
-  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  public void onChunkUnload(ChunkUnloadEvent e) {
-
-    final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-
-    if (inChunk == null || inChunk.isEmpty()) {
-      return;
-    }
-    //noinspection unchecked
-    for(Shop shop:((HashMap<Location, Shop>) inChunk.clone()).values()){shop.onUnload();};
-  }
 }

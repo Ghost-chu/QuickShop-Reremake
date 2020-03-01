@@ -19,6 +19,13 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -55,14 +62,6 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.Map.Entry;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -812,6 +811,11 @@ public class QuickShop extends JavaPlugin {
                 noopDisable = true;
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
+        }
+        getLogger().info("Checking the tax account infos...");
+        String taxAccount = plugin.getConfig().getString("tax-account", "tax");
+        if (!Bukkit.getOfflinePlayer(taxAccount).hasPlayedBefore()) {
+            getLogger().warning("Tax account's player never played server before, that may cause server lagg or economy system error, you should change that name.");
         }
     }
 
