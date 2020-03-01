@@ -20,6 +20,12 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.common.collect.Sets;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,13 +45,6 @@ import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
-
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -753,6 +752,21 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc) {
+        return getShop(loc, false);
+    }
+
+    /**
+     * Gets a shop in a specific location
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    public @Nullable Shop getShop(@NotNull Location loc, boolean skinShopableChecking) {
+        if (!skinShopableChecking) {
+            if (!Util.isShoppables(loc.getBlock().getType())) {
+                return null;
+            }
+        }
         HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
