@@ -897,8 +897,7 @@ public class ShopManager {
         if (inWorld == null) {
             return null;
         }
-        ShopChunk shopChunk = new ShopChunk(world, chunkX, chunkZ);
-        return inWorld.get(shopChunk);
+        return inWorld.get(new ShopChunk(world, chunkX, chunkZ));
     }
 
     public void handleChat(@NotNull Player p, @NotNull String msg) {
