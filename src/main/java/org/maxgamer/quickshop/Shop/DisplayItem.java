@@ -58,6 +58,14 @@ public abstract class DisplayItem {
    * @return Contains protect flag.
    */
   public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+
+    if (!plugin.isDisplay()) {
+      return false;
+    }
+    if (getNowUsing() == DisplayType.VIRTUALITEM) {
+      return false;
+    }
+
     if (itemStack == null) {
       return false;
     }
@@ -106,6 +114,13 @@ public abstract class DisplayItem {
    * @return Is target shop's display
    */
   public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    if (!plugin.isDisplay()) {
+      return false;
+    }
+    if (getNowUsing() == DisplayType.VIRTUALITEM) {
+      return false;
+    }
+
     if (!itemStack.hasItemMeta()) {
       return false;
     }
@@ -238,7 +253,7 @@ public abstract class DisplayItem {
    *
    * @param entity Target entity
    */
-  public abstract void safeGuard(Entity entity);
+  public abstract void safeGuard(@NotNull Entity entity);
 
   /** Spawn new Displays */
   public abstract void spawn();
