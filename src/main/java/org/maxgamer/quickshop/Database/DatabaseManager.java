@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Database;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,7 +38,7 @@ import org.maxgamer.quickshop.Util.WarningSender;
  */
 public class DatabaseManager {
 
-    private final Queue<Runnable> sqlQueue = new LinkedBlockingQueue<>();
+    private final Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
 
     @NotNull
     private final Database database;
@@ -48,10 +49,10 @@ public class DatabaseManager {
     @NotNull
     private final WarningSender warningSender;
 
-    private final boolean useQueue;
-
     @Nullable
     private BukkitTask task;
+
+    private boolean useQueue;
 
     /**
      * Queued database manager. Use queue to solve run SQL make server lagg issue.
@@ -82,6 +83,23 @@ public class DatabaseManager {
     }
 
     /**
+     * Add preparedStatement to queue waiting flush to database,
+     *
+     * @param ps The ps you want add in queue.
+     */
+    public void add(@NotNull PreparedStatement ps) {
+        if (useQueue) {
+            sqlQueue.offer(ps);
+        } else {
+            try {
+                ps.execute();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Internal method, runTasks in queue.
      */
     private void runTask() {
@@ -99,11 +117,24 @@ public class DatabaseManager {
                 plugin.getSentryErrorReporter().ignoreThrow();
                 sqle.printStackTrace();
             }
-            Runnable runnable = sqlQueue.poll();
-            if (runnable == null) {
-                return;
+            PreparedStatement statement = sqlQueue.poll();
+            if (statement == null) {
+                break;
             }
-            runnable.run();
+            try {
+                Util.debugLog("Executing the SQL task: " + statement);
+                statement.execute();
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                sqle.printStackTrace();
+            }
+            // Close statement anyway.
+            try {
+                statement.close();
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                sqle.printStackTrace();
+            }
             long tookTime = timer.endTimer();
             if (tookTime > 5000) {
                 warningSender.sendWarn(
@@ -123,19 +154,6 @@ public class DatabaseManager {
     }
 
     /**
-     * Add preparedStatement to queue waiting flush to database,
-     *
-     * @param databaseTask The ps you want add in queue.
-     */
-    public void add(@NotNull Runnable databaseTask) {
-        if (useQueue) {
-            sqlQueue.offer(databaseTask);
-        } else {
-            databaseTask.run();
-        }
-    }
-
-    /**
      * Unload the DatabaseManager, run at onDisable()
      */
     public void unInit() {
@@ -145,5 +163,4 @@ public class DatabaseManager {
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
     }
-
 }
