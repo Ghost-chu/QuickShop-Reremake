@@ -26,7 +26,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 import lombok.Data;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,10 +57,8 @@ public class ShopLoader {
     private int totalLoaded = 0;
 
     /* This may contains broken shop, must use null check before load it. */
-    @Getter
     private List<Shop> shopsInDatabase = new ArrayList<>();
 
-    @Getter
     private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new ArrayList<>();
 
     /**
@@ -300,6 +297,16 @@ public class ShopLoader {
             logger.severe(
                 "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
         }
+    }
+
+    @NotNull
+    public List<Shop> getShopsInDatabase() {
+        return new ArrayList<>(shopsInDatabase);
+    }
+
+    @NotNull
+    public List<ShopDatabaseInfoOrigin> getOriginShopsInDatabase() {
+        return new ArrayList<>(originShopsInDatabase);
     }
 
     @Data

@@ -318,8 +318,8 @@ public class Paste {
         finalReport.append("Shops in Mem:\n");
         plugin
             .getShopLoader()
-            .getShopsInDatabase()
-            .forEach((shop -> finalReport.append("\t").append(shop).append("\n")));
+            .getOriginShopsInDatabase()
+            .forEach((shop -> finalReport.append(shop).append("\n")));
         finalReport
             .append("Total: ")
             .append(plugin.getShopLoader().getShopsInDatabase().size())
