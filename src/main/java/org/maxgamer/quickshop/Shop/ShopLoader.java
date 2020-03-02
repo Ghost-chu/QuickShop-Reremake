@@ -25,7 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -100,8 +101,11 @@ public class ShopLoader {
                     continue;
                 }
                 // Load to RAM
-                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
-                shop.update();
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                    shop.update();
+                });
+
                 success = true;
             } catch (JsonSyntaxException ignore) {
             }
@@ -309,7 +313,8 @@ public class ShopLoader {
         return new ArrayList<>(originShopsInDatabase);
     }
 
-    @Data
+    @Getter
+    @Setter
     public class ShopDatabaseInfo {
         private ItemStack item;
 
@@ -381,7 +386,8 @@ public class ShopLoader {
 
     }
 
-    @Data
+    @Getter
+    @Setter
     public class ShopDatabaseInfoOrigin {
         private String item;
 
