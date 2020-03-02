@@ -226,32 +226,25 @@ public class SentryErrorReporter {
         return null; // Don't report any errors if boot failed.
       }
       if (tempDisable) {
-        Util.debugLog("Ignore a throw, cause this throw flagged not reporting.");
         this.tempDisable = true;
         return null;
       }
       if (disable) {
-        Util.debugLog("Ignore a throw, cause report now is disabled.");
         this.disable = true;
         return null;
       }
-      Util.debugLog("Preparing for reporting errors...");
       if (!enabled) {
-        Util.debugLog("Errors not sended, cause ErrorReport not enabled.");
         return null;
       }
 
       if (!checkWasCauseByQS(throwable)) {
-        Util.debugLog("Errors not sended, cause it not throw by QuickShop");
         return null;
       }
 
       if (!canReport(throwable)) {
-        Util.debugLog("This errors not sended, cause it disallow send.(Already sended?)");
         return null;
       }
       if (ignoredException.contains(throwable.getClass())) {
-        Util.debugLog("Errors not sended, cause type is blocked.");
         return null;
       }
       for (String record : context) {
@@ -352,7 +345,6 @@ public class SentryErrorReporter {
         return true;
       }
       if (record.getThrown() == null) {
-        Util.debugLog("Error not sended cause thrown is null");
         return true;
       }
       if (Util.isDevMode()) {

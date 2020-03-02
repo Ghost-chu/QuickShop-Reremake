@@ -35,11 +35,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
@@ -241,7 +237,7 @@ public class PlayerListener implements Listener {
       Already checked above*/
 
       if (Util.isWallSign(b.getType())) {
-        Util.debugLog("WallSign check failed.");
+//        Util.debugLog("WallSign check failed.");
         return;
       }
       // Finds out where the sign should be placed for the shop
