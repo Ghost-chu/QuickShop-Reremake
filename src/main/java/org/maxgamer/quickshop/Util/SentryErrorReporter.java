@@ -226,11 +226,10 @@ public class SentryErrorReporter {
         return null; // Don't report any errors if boot failed.
       }
       if (tempDisable) {
-        this.tempDisable = true;
+        this.tempDisable = false;
         return null;
       }
       if (disable) {
-        this.disable = true;
         return null;
       }
       if (!enabled) {
