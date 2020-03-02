@@ -53,6 +53,45 @@ public class DatabaseHelper {
     }
 
     /**
+     * Creates the database table 'shops'.
+     */
+    private void createShopsTable() {
+        plugin.getDatabaseManager().add(() -> {
+            try {
+                Statement st = db.getConnection().createStatement();
+                String createTable = "CREATE TABLE " + QuickShop.instance
+                    .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+                st.execute(createTable);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Creates the database table 'messages'
+     *
+     * @return Create failed or successed.
+     * @throws SQLException If the connection is invalid
+     */
+    private void createMessagesTable() throws SQLException {
+        plugin.getDatabaseManager().add(() -> {
+            try {
+                Statement st = db.getConnection().createStatement();
+                String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+                if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+                    createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                        + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
+                }
+                st.execute(createTable);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
      * Verifies that all required columns exist.
      */
     private void checkColumns() {
@@ -119,29 +158,6 @@ public class DatabaseHelper {
         });
     }
 
-    /**
-     * Creates the database table 'messages'
-     *
-     * @return Create failed or successed.
-     * @throws SQLException If the connection is invalid
-     */
-    private void createMessagesTable() throws SQLException {
-        plugin.getDatabaseManager().add(() -> {
-            try {
-                Statement st = db.getConnection().createStatement();
-                String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-                if (plugin.getDatabase().getCore() instanceof MySQLCore) {
-                    createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                        + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
-                }
-                st.execute(createTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
     public boolean createShop(@NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z) {
         try {
             removeShop(x, y, z, world); //First purge old exist shop before create new shop.
@@ -163,22 +179,6 @@ public class DatabaseHelper {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * Creates the database table 'shops'.
-     */
-    private void createShopsTable() {
-        plugin.getDatabaseManager().add(() -> {
-            try {
-                Statement st = db.getConnection().createStatement();
-                String createTable = "CREATE TABLE " + QuickShop.instance
-                    .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
-                st.execute(createTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public void removeShop(int x, int y, int z, @NotNull String worldName) throws SQLException {
@@ -281,4 +281,5 @@ public class DatabaseHelper {
             }
         });
     }
+
 }

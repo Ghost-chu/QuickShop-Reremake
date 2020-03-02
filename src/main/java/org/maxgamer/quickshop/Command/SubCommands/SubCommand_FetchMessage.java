@@ -31,26 +31,28 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 
 public class SubCommand_FetchMessage implements CommandProcesser {
 
-  @NotNull private final QuickShop plugin = QuickShop.instance;
+    @NotNull
+    private final QuickShop plugin = QuickShop.instance;
 
-  @NotNull
-  @Override
-  public List<String> onTabComplete(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    return new ArrayList<>();
-  }
+    @Override
+    public void onCommand(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "Only players may use that command.");
+            return;
+        }
 
-  @Override
-  public void onCommand(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    if (!(sender instanceof Player)) {
-      sender.sendMessage(ChatColor.RED + "Only players may use that command.");
-      return;
+        plugin
+            .getServer()
+            .getScheduler()
+            .runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
     }
 
-    plugin
-        .getServer()
-        .getScheduler()
-        .runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
-  }
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
+    }
+
 }

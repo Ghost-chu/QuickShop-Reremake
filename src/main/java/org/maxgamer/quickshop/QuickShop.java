@@ -262,15 +262,6 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
-    /**
      * Get the Player's Shop limit.
      *
      * @param p The player you want get limit.
@@ -284,6 +275,15 @@ public class QuickShop extends JavaPlugin {
             }
         }
         return max;
+    }
+
+    /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
     }
 
     /**

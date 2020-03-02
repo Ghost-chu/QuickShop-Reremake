@@ -31,47 +31,48 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PaperWrapper implements BukkitAPIWrapper {
-  @Override
-  public void teleportEntity(
-      @NotNull Entity entity,
-      @NotNull Location location,
-      @Nullable PlayerTeleportEvent.TeleportCause cause) {
-    if (cause == null) {
-      entity.teleportAsync(location);
-    } else {
-      entity.teleportAsync(location, cause);
+    @Override
+    public void teleportEntity(
+        @NotNull Entity entity,
+        @NotNull Location location,
+        @Nullable PlayerTeleportEvent.TeleportCause cause) {
+        if (cause == null) {
+            entity.teleportAsync(location);
+        } else {
+            entity.teleportAsync(location, cause);
+        }
     }
-  }
 
-  @Override
-  public void getChunkAt(
-      @NotNull World world,
-      @NotNull Location location,
-      @NotNull CompletableFuture<Chunk> futureTask) {
-    try {
-      futureTask.complete(world.getChunkAtAsync(location).get());
-    } catch (InterruptedException | ExecutionException e) {
-      futureTask.complete(world.getChunkAt(location));
+    @Override
+    public void getChunkAt(
+        @NotNull World world,
+        @NotNull Location location,
+        @NotNull CompletableFuture<Chunk> futureTask) {
+        try {
+            futureTask.complete(world.getChunkAtAsync(location).get());
+        } catch (InterruptedException | ExecutionException e) {
+            futureTask.complete(world.getChunkAt(location));
+        }
     }
-  }
 
-  @Override
-  public void getChunkAt(
-      @NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask) {
-    try {
-      futureTask.complete(world.getChunkAtAsync(x, z).get());
-    } catch (InterruptedException | ExecutionException e) {
-      futureTask.complete(world.getChunkAt(x, z));
+    @Override
+    public void getChunkAt(
+        @NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask) {
+        try {
+            futureTask.complete(world.getChunkAtAsync(x, z).get());
+        } catch (InterruptedException | ExecutionException e) {
+            futureTask.complete(world.getChunkAt(x, z));
+        }
     }
-  }
 
-  @Override
-  public void getChunkAt(
-      @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask) {
-    try {
-      futureTask.complete(world.getChunkAtAsync(block).get());
-    } catch (InterruptedException | ExecutionException e) {
-      futureTask.complete(world.getChunkAt(block));
+    @Override
+    public void getChunkAt(
+        @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask) {
+        try {
+            futureTask.complete(world.getChunkAtAsync(block).get());
+        } catch (InterruptedException | ExecutionException e) {
+            futureTask.complete(world.getChunkAt(block));
+        }
     }
-  }
+
 }

@@ -24,14 +24,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public interface IntegratedPlugin {
-  @NotNull
-  String getName();
+    @NotNull
+    String getName();
 
-  boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
+    boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
 
-  boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
+    boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
 
-  void load();
+    void load();
 
-  void unload();
+    void unload();
+
 }

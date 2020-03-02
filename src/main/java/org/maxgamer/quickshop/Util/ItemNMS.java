@@ -30,51 +30,54 @@ import org.maxgamer.quickshop.QuickShop;
 
 @Getter
 public abstract class ItemNMS {
-  private static Method craftItemStack_asNMSCopyMethod;
-  private static Method itemStack_saveMethod;
-  private static Class<?> nbtTagCompoundClass;
+    private static Method craftItemStack_asNMSCopyMethod;
 
-  static {
-    String name = Bukkit.getServer().getClass().getPackage().getName();
-    String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+    private static Method itemStack_saveMethod;
 
-    try {
-      craftItemStack_asNMSCopyMethod =
-          Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
-              .getDeclaredMethod("asNMSCopy", ItemStack.class);
+    private static Class<?> nbtTagCompoundClass;
 
-      nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+    static {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
 
-      itemStack_saveMethod =
-          Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
-              .getDeclaredMethod("save", nbtTagCompoundClass);
+        try {
+            craftItemStack_asNMSCopyMethod =
+                Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
+                    .getDeclaredMethod("asNMSCopy", ItemStack.class);
 
-    } catch (Throwable t) {
-      QuickShop.instance.getLogger().info("A error happend:");
-      t.printStackTrace();
-      QuickShop.instance
-          .getLogger()
-          .info(
-              "Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
+            nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
+
+            itemStack_saveMethod =
+                Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
+                    .getDeclaredMethod("save", nbtTagCompoundClass);
+
+        } catch (Throwable t) {
+            QuickShop.instance.getLogger().info("A error happend:");
+            t.printStackTrace();
+            QuickShop.instance
+                .getLogger()
+                .info(
+                    "Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
+        }
     }
-  }
 
-  /**
-   * Save ItemStack to Json passthrough the NMS.
-   *
-   * @param bStack ItemStack
-   * @return The json for ItemStack.
-   * @throws Throwable throws
-   */
-  @Nullable
-  public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
-    if (bStack.getType() == Material.AIR) {
-      return null;
+    /**
+     * Save ItemStack to Json passthrough the NMS.
+     *
+     * @param bStack ItemStack
+     * @return The json for ItemStack.
+     * @throws Throwable throws
+     */
+    @Nullable
+    public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
+        if (bStack.getType() == Material.AIR) {
+            return null;
+        }
+        Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
+        Object nbtTagCompound = nbtTagCompoundClass.newInstance();
+
+        itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
+        return nbtTagCompound.toString();
     }
-    Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
-    Object nbtTagCompound = nbtTagCompoundClass.newInstance();
 
-    itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
-    return nbtTagCompound.toString();
-  }
 }

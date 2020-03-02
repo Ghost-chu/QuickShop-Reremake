@@ -20,10 +20,10 @@
 package org.maxgamer.quickshop.PluginsIntegration;
 
 public enum IntegrateStage {
-  onLoadBegin,
-  onLoadAfter,
-  onEnableBegin,
-  onEnableAfter,
-  onUnloadBegin,
-  onUnloadAfter
+    onLoadBegin,
+    onLoadAfter,
+    onEnableBegin,
+    onEnableAfter,
+    onUnloadBegin,
+    onUnloadAfter
 }

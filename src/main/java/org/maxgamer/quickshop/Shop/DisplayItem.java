@@ -37,259 +37,270 @@ import org.maxgamer.quickshop.Util.Util;
  */
 public abstract class DisplayItem {
 
-  private static final Gson gson = new Gson();
+    protected static final QuickShop plugin = QuickShop.instance;
 
-  @Nullable
-  protected ItemStack guardedIstack;
+    private static final Gson gson = new Gson();
 
-  protected final ItemStack originalItemStack;
+    protected final ItemStack originalItemStack;
 
-  protected static final QuickShop plugin = QuickShop.instance;
+    protected final Shop shop;
 
-  protected final Shop shop;
+    @Nullable
+    protected ItemStack guardedIstack;
 
-  private boolean pendingRemoval;
+    private boolean pendingRemoval;
 
-  protected DisplayItem(Shop shop) {
-    this.shop = shop;
-    this.originalItemStack = new ItemStack(shop.getItem());
-    this.originalItemStack.setAmount(1);
-  }
-
-
-  /**
-   * Check the itemStack is contains protect flag.
-   *
-   * @param itemStack Target ItemStack
-   * @return Contains protect flag.
-   */
-  public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
-
-    if (!plugin.isDisplay()) {
-      return false;
-    }
-    if (getNowUsing() == DisplayType.VIRTUALITEM) {
-      return false;
+    protected DisplayItem(Shop shop) {
+        this.shop = shop;
+        this.originalItemStack = new ItemStack(shop.getItem());
+        this.originalItemStack.setAmount(1);
     }
 
-    if (itemStack == null) {
-      return false;
-    }
-    //    itemStack = itemStack.clone();
-    //    itemStack.setAmount(1);
-    if (!itemStack.hasItemMeta()) {
-      return false;
-    }
-    ItemMeta iMeta = itemStack.getItemMeta();
-    if (!iMeta.hasLore()) {
-      return false;
-    }
-    String defaultMark = ShopProtectionFlag.getDefaultMark();
-    //noinspection ConstantConditions
-    for (String lore : iMeta.getLore()) {
-      try {
-        if (!lore.startsWith("{")) {
-          continue;
+
+    /**
+     * Check the itemStack is contains protect flag.
+     *
+     * @param itemStack Target ItemStack
+     * @return Contains protect flag.
+     */
+    public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+
+        if (!plugin.isDisplay()) {
+            return false;
         }
-        ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-        if (shopProtectionFlag == null) {
-          continue;
+        if (getNowUsing() == DisplayType.VIRTUALITEM) {
+            return false;
         }
-        if (defaultMark.equals(shopProtectionFlag.getMark())) {
-          return true;
+
+        if (itemStack == null) {
+            return false;
         }
-        if (shopProtectionFlag.getShopLocation() != null) {
-          return true;
+        //    itemStack = itemStack.clone();
+        //    itemStack.setAmount(1);
+        if (!itemStack.hasItemMeta()) {
+            return false;
         }
-        if (shopProtectionFlag.getItemStackString() != null) {
-          return true;
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (!iMeta.hasLore()) {
+            return false;
         }
-      } catch (JsonSyntaxException e) {
-        // Ignore
-      }
+        String defaultMark = ShopProtectionFlag.getDefaultMark();
+        //noinspection ConstantConditions
+        for (String lore : iMeta.getLore()) {
+            try {
+                if (!lore.startsWith("{")) {
+                    continue;
+                }
+                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                if (shopProtectionFlag == null) {
+                    continue;
+                }
+                if (defaultMark.equals(shopProtectionFlag.getMark())) {
+                    return true;
+                }
+                if (shopProtectionFlag.getShopLocation() != null) {
+                    return true;
+                }
+                if (shopProtectionFlag.getItemStackString() != null) {
+                    return true;
+                }
+            } catch (JsonSyntaxException e) {
+                // Ignore
+            }
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  /**
-   * Check the itemStack is target shop's display
-   *
-   * @param itemStack Target ItemStack
-   * @param shop Target shop
-   * @return Is target shop's display
-   */
-  public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-    if (!plugin.isDisplay()) {
-      return false;
-    }
-    if (getNowUsing() == DisplayType.VIRTUALITEM) {
-      return false;
+    /**
+     * Get plugin now is using which one DisplayType
+     *
+     * @return Using displayType.
+     */
+    public static DisplayType getNowUsing() {
+        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
     }
 
-    if (!itemStack.hasItemMeta()) {
-      return false;
-    }
-    ItemMeta iMeta = itemStack.getItemMeta();
-    if (!iMeta.hasLore()) {
-      return false;
-    }
-    String defaultMark = ShopProtectionFlag.getDefaultMark();
-    String shopLocation = shop.getLocation().toString();
-    //noinspection ConstantConditions
-    for (String lore : iMeta.getLore()) {
-      try {
-        if (!lore.startsWith("{")) {
-          continue;
+    /**
+     * Check the itemStack is target shop's display
+     *
+     * @param itemStack Target ItemStack
+     * @param shop Target shop
+     * @return Is target shop's display
+     */
+    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+        if (!plugin.isDisplay()) {
+            return false;
         }
-        ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
-        if (shopProtectionFlag == null) {
-          continue;
+        if (getNowUsing() == DisplayType.VIRTUALITEM) {
+            return false;
         }
-        if (!shopProtectionFlag.getMark().equals(defaultMark)) {
-          continue;
+
+        if (!itemStack.hasItemMeta()) {
+            return false;
         }
-        if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
-          return true;
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (!iMeta.hasLore()) {
+            return false;
         }
-      } catch (JsonSyntaxException e) {
-        // Ignore
-      }
+        String defaultMark = ShopProtectionFlag.getDefaultMark();
+        String shopLocation = shop.getLocation().toString();
+        //noinspection ConstantConditions
+        for (String lore : iMeta.getLore()) {
+            try {
+                if (!lore.startsWith("{")) {
+                    continue;
+                }
+                ShopProtectionFlag shopProtectionFlag = gson.fromJson(lore, ShopProtectionFlag.class);
+                if (shopProtectionFlag == null) {
+                    continue;
+                }
+                if (!shopProtectionFlag.getMark().equals(defaultMark)) {
+                    continue;
+                }
+                if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
+                    return true;
+                }
+            } catch (JsonSyntaxException e) {
+                // Ignore
+            }
+        }
+        return false;
     }
-    return false;
-  }
 
-  /**
-   * Create a new itemStack with protect flag.
-   *
-   * @param itemStack Old itemStack
-   * @param shop The shop
-   * @return New itemStack with protect flag.
-   */
-  public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-    itemStack = new ItemStack(itemStack);
-    itemStack.setAmount(1);
-    ItemMeta iMeta = itemStack.getItemMeta();
-    if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
-      if (iMeta.hasDisplayName()) {
-        iMeta.setDisplayName(iMeta.getDisplayName());
-      } else {
-        iMeta.setDisplayName(Util.getItemStackName(itemStack));
-      }
-    } else {
-      iMeta.setDisplayName(null);
+    /**
+     * Create a new itemStack with protect flag.
+     *
+     * @param itemStack Old itemStack
+     * @param shop The shop
+     * @return New itemStack with protect flag.
+     */
+    public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+        itemStack = new ItemStack(itemStack);
+        itemStack.setAmount(1);
+        ItemMeta iMeta = itemStack.getItemMeta();
+        if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
+            if (iMeta.hasDisplayName()) {
+                iMeta.setDisplayName(iMeta.getDisplayName());
+            } else {
+                iMeta.setDisplayName(Util.getItemStackName(itemStack));
+            }
+        } else {
+            iMeta.setDisplayName(null);
+        }
+        java.util.List<String> lore = new ArrayList<>();
+        ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
+        String protectFlag = gson.toJson(shopProtectionFlag);
+        for (int i = 0; i < 21; i++) {
+            lore.add(
+                protectFlag); // Create 20 lines lore to make sure no stupid plugin accident remove mark.
+        }
+        iMeta.setLore(lore);
+        itemStack.setItemMeta(iMeta);
+        return itemStack;
     }
-    java.util.List<String> lore = new ArrayList<>();
-    ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
-    String protectFlag = gson.toJson(shopProtectionFlag);
-    for (int i = 0; i < 21; i++) {
-      lore.add(
-          protectFlag); // Create 20 lines lore to make sure no stupid plugin accident remove mark.
+
+    /**
+     * Create the shop protection flag for display item.
+     *
+     * @param itemStack The item stack
+     * @param shop The shop
+     * @return ShopProtectionFlag obj
+     */
+    public static ShopProtectionFlag createShopProtectionFlag(
+        @NotNull ItemStack itemStack, @NotNull Shop shop) {
+        return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
-    iMeta.setLore(lore);
-    itemStack.setItemMeta(iMeta);
-    return itemStack;
-  }
 
-  /**
-   * Create the shop protection flag for display item.
-   *
-   * @param itemStack The item stack
-   * @param shop The shop
-   * @return ShopProtectionFlag obj
-   */
-  public static ShopProtectionFlag createShopProtectionFlag(
-      @NotNull ItemStack itemStack, @NotNull Shop shop) {
-    return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
-  }
+    /**
+     * Check the display is or not moved.
+     *
+     * @return Moved
+     */
+    public abstract boolean checkDisplayIsMoved();
 
-  /**
-   * Get plugin now is using which one DisplayType
-   *
-   * @return Using displayType.
-   */
-  public static DisplayType getNowUsing() {
-    return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
-  }
+    /**
+     * Check the display is or not need respawn
+     *
+     * @return Need
+     */
+    public abstract boolean checkDisplayNeedRegen();
 
-  /**
-   * Check the display is or not moved.
-   *
-   * @return Moved
-   */
-  public abstract boolean checkDisplayIsMoved();
+    /**
+     * Check target Entity is or not a QuickShop display Entity.
+     *
+     * @param entity Target entity
+     * @return Is or not
+     */
+    public abstract boolean checkIsShopEntity(Entity entity);
 
-  /**
-   * Check the display is or not need respawn
-   *
-   * @return Need
-   */
-  public abstract boolean checkDisplayNeedRegen();
+    /**
+     * Fix the display moved issue.
+     */
+    public abstract void fixDisplayMoved();
 
-  /**
-   * Check target Entity is or not a QuickShop display Entity.
-   *
-   * @param entity Target entity
-   * @return Is or not
-   */
-  public abstract boolean checkIsShopEntity(Entity entity);
+    /**
+     * Fix display need respawn issue.
+     */
+    public abstract void fixDisplayNeedRegen();
 
-  /** Fix the display moved issue. */
-  public abstract void fixDisplayMoved();
+    /**
+     * Remove the display entity.
+     */
+    public abstract void remove();
 
-  /** Fix display need respawn issue. */
-  public abstract void fixDisplayNeedRegen();
+    /**
+     * Remove this shop's display in the whole world.(Not whole server)
+     *
+     * @return Success
+     */
+    public abstract boolean removeDupe();
 
-  /** Remove the display entity. */
-  public abstract void remove();
+    /**
+     * Respawn the displays, if it not exist, it will spawn new one.
+     */
+    public abstract void respawn();
 
-  /**
-   * Remove this shop's display in the whole world.(Not whole server)
-   *
-   * @return Success
-   */
-  public abstract boolean removeDupe();
+    /**
+     * Add the protect flags for entity or entity's hand item. Target entity will got protect by
+     * QuickShop
+     *
+     * @param entity Target entity
+     */
+    public abstract void safeGuard(@NotNull Entity entity);
 
-  /** Respawn the displays, if it not exist, it will spawn new one. */
-  public abstract void respawn();
+    /**
+     * Spawn new Displays
+     */
+    public abstract void spawn();
 
-  /**
-   * Add the protect flags for entity or entity's hand item. Target entity will got protect by
-   * QuickShop
-   *
-   * @param entity Target entity
-   */
-  public abstract void safeGuard(@NotNull Entity entity);
+    /**
+     * Get the display entity
+     *
+     * @return Target entity
+     */
+    public abstract Entity getDisplay();
 
-  /** Spawn new Displays */
-  public abstract void spawn();
+    /**
+     * Get display should at location. Not display current location.
+     *
+     * @return Should at
+     */
+    public abstract Location getDisplayLocation();
 
-  /**
-   * Get the display entity
-   *
-   * @return Target entity
-   */
-  public abstract Entity getDisplay();
+    /**
+     * Check the display is or not already spawned
+     *
+     * @return Spawned
+     */
+    public abstract boolean isSpawned();
 
-  /**
-   * Get display should at location. Not display current location.
-   *
-   * @return Should at
-   */
-  public abstract Location getDisplayLocation();
+    public void pendingRemoval() {
+        pendingRemoval = true;
+    }
 
-  /**
-   * Check the display is or not already spawned
-   *
-   * @return Spawned
-   */
-  public abstract boolean isSpawned();
+    public boolean isPendingRemoval() {
+        return pendingRemoval;
+    }
 
-  public void pendingRemoval(){
-    pendingRemoval=true;
-  }
-
-  public boolean isPendingRemoval(){
-    return pendingRemoval;
-  }
 }

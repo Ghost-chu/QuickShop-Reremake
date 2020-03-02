@@ -34,32 +34,33 @@ import org.maxgamer.quickshop.Util.Util;
 // unused, pending to remove
 @Deprecated
 public class ShopVaildWatcher extends BukkitRunnable {
-  private final QuickShop plugin;
+    private final QuickShop plugin;
 
-  private final Queue<Shop> checkQueue = new LinkedList<>();
+    private final Queue<Shop> checkQueue = new LinkedList<>();
 
-  public ShopVaildWatcher(@NotNull QuickShop plugin) {
-    this.plugin = plugin;
-  }
-
-  @Override
-  public void run() {
-    int checkedShops = 0;
-    int maxCheckShops = plugin.getConfig().getInt("shop.max-shops-checks-in-once");
-    Shop shop = checkQueue.poll();
-    while (shop != null) {
-      if (shop.isLoaded() && !shop.isValid()) {
-        shop.delete();
-        Util.debugLog(
-            "Removed shop at "
-                + shop.getLocation()
-                + " cause the container is missing or not a usable container.");
-      }
-      checkedShops++;
-      if (checkedShops >= maxCheckShops) {
-        Util.debugLog("Shop check reached the limit, force exit and wait next check window.");
-      }
-      shop = checkQueue.poll();
+    public ShopVaildWatcher(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
     }
-  }
+
+    @Override
+    public void run() {
+        int checkedShops = 0;
+        int maxCheckShops = plugin.getConfig().getInt("shop.max-shops-checks-in-once");
+        Shop shop = checkQueue.poll();
+        while (shop != null) {
+            if (shop.isLoaded() && !shop.isValid()) {
+                shop.delete();
+                Util.debugLog(
+                    "Removed shop at "
+                        + shop.getLocation()
+                        + " cause the container is missing or not a usable container.");
+            }
+            checkedShops++;
+            if (checkedShops >= maxCheckShops) {
+                Util.debugLog("Shop check reached the limit, force exit and wait next check window.");
+            }
+            shop = checkQueue.poll();
+        }
+    }
+
 }

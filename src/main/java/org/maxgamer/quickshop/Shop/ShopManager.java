@@ -67,10 +67,461 @@ public class ShopManager {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         //noinspection ConstantConditions
-        OfflinePlayer taxPlayer=Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
-        if(taxPlayer.hasPlayedBefore()) {
+        OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
+        if (taxPlayer.hasPlayedBefore()) {
             this.cacheTaxAccount = taxPlayer.getUniqueId();
         }
+    }
+
+    /**
+     * Checks other plugins to make sure they can use the chest they're making a shop.
+     *
+     * @param p The player to check
+     * @param b The block to check
+     * @param bf The blockface to check
+     * @return True if they're allowed to place a shop there.
+     */
+    public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
+        try {
+            plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
+
+            if (plugin.isLimit()) {
+                int owned = 0;
+                if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
+                    for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
+                        for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
+                            for (Shop shop : shopLocs.values()) {
+                                if (shop.getOwner().equals(p.getUniqueId()) && !shop.isUnlimited()) {
+                                    owned++;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Iterator<Shop> it = getShopIterator();
+                    while (it.hasNext()) {
+                        if (it.next().getOwner().equals(p.getUniqueId())) {
+                            owned++;
+                        }
+                    }
+                }
+
+                int max = plugin.getShopLimit(p);
+                if (owned + 1 > max) {
+                    p.sendMessage(MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
+                    return false;
+                }
+            }
+            if (!plugin.getPermissionChecker().canBuild(p, b)) {
+                Util.debugLog("PermissionChecker canceled shop creation");
+                return false;
+            }
+            ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
+            Bukkit.getPluginManager().callEvent(spce);
+            if (Util.fireCancellableEvent(spce)) {
+                return false;
+            }
+        } finally {
+            plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns a hashmap of World - Chunk - Shop
+     *
+     * @return a hashmap of World - Chunk - Shop
+     */
+    @NotNull
+    public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
+        return this.shops;
+    }
+
+    /**
+     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
+     * through a 3D hashmap.
+     *
+     * @return a new shop iterator object.
+     */
+    public Iterator<Shop> getShopIterator() {
+        return new ShopIterator();
+    }
+
+    /**
+     * Removes all shops from memory and the world. Does not delete them from the database. Call this
+     * on plugin disable ONLY.
+     */
+    public void clear() {
+        if (plugin.isDisplay()) {
+            for (World world : Bukkit.getWorlds()) {
+                for (Chunk chunk : world.getLoadedChunks()) {
+                    HashMap<Location, Shop> inChunk = this.getShops(chunk);
+                    if (inChunk == null || inChunk.isEmpty()) {
+                        continue;
+                    }
+                    for (Shop shop : inChunk.values()) {
+                        shop.onUnload();
+                    }
+                }
+            }
+        }
+        this.actions.clear();
+        this.shops.clear();
+    }
+
+    /**
+     * Returns a hashmap of Shops
+     *
+     * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are used.
+     * @return Shops
+     */
+    public @Nullable HashMap<Location, Shop> getShops(@NotNull Chunk c) {
+        // long start = System.nanoTime();
+        return getShops(c.getWorld().getName(), c.getX(), c.getZ());
+        // long end = System.nanoTime();
+        // plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
+        // "ms.");
+    }
+
+    public @Nullable HashMap<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
+        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops(world);
+        if (inWorld == null) {
+            return null;
+        }
+        return inWorld.get(new ShopChunk(world, chunkX, chunkZ));
+    }
+
+    /**
+     * Returns a hashmap of Chunk - Shop
+     *
+     * @param world The name of the world (case sensitive) to get the list of shops from
+     * @return a hashmap of Chunk - Shop
+     */
+    public @Nullable HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
+        return this.shops.get(world);
+    }
+
+    /**
+     * Create a shop use Shop and Info object.
+     *
+     * @param shop The shop object
+     * @param info The info object
+     */
+    public void createShop(@NotNull Shop shop, @NotNull Info info) {
+        Player player = Bukkit.getPlayer(shop.getOwner());
+        if (player == null) {
+            throw new IllegalStateException("The owner creating the shop is offline or not exist");
+        }
+        ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
+        if (Util.fireCancellableEvent(ssShopCreateEvent)) {
+            Util.debugLog("Cancelled by plugin");
+            return;
+        }
+        Location loc = shop.getLocation();
+
+        if (plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+            addShop(loc.getWorld().getName(), shop);
+        } else {
+            plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
+            boolean backupSuccess = Util.backupDatabase();
+            try {
+                if (backupSuccess) {
+                    plugin.getDatabaseHelper().removeShop(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
+                } else {
+                    plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
+                }
+            } catch (SQLException error2) {
+                // Failed removing
+                plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
+                error2.printStackTrace();
+            }
+        }
+        // Create sign
+        if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+            if (!Util.isAir(info.getSignBlock().getType())) {
+                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
+                return;
+            }
+            boolean isWaterLogged = false;
+            if (info.getSignBlock().getType() == Material.WATER) {
+                isWaterLogged = true;
+            }
+
+            info.getSignBlock().setType(Util.getSignMaterial());
+            BlockState bs = info.getSignBlock().getState();
+            if (isWaterLogged) {
+                if (bs.getBlockData() instanceof Waterlogged) {
+                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                    waterable.setWaterlogged(true); // Looks like sign directly put in water
+                }
+            }
+            if (bs.getBlockData() instanceof WallSign) {
+                org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
+                BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+                if (bf != null) {
+                    signBlockDataType.setFacing(bf);
+                    bs.setBlockData(signBlockDataType);
+                }
+            } else {
+                plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
+            }
+            bs.update(true);
+            shop.setSignText();
+        }
+    }
+
+    /**
+     * Format the price use economy system
+     *
+     * @param d price
+     * @return formated price
+     */
+    public @Nullable String format(double d) {
+        return plugin.getEconomy().format(d);
+    }
+
+    /**
+     * Gets a shop in a specific location
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    public @Nullable Shop getShop(@NotNull Location loc) {
+        return getShop(loc, false);
+    }
+
+    /**
+     * Gets a shop in a specific location
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
+        if (!skipShopableChecking) {
+            if (!Util.isShoppables(loc.getBlock().getType())) {
+                return null;
+            }
+        }
+        HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        if (inChunk == null) {
+            return null;
+        }
+        loc = loc.clone();
+        // Fix double chest XYZ issue
+        loc.setX(loc.getBlockX());
+        loc.setY(loc.getBlockY());
+        loc.setZ(loc.getBlockZ());
+        // We can do this because WorldListener updates the world reference so
+        // the world in loc is the same as world in inChunk.get(loc)
+        return inChunk.get(loc);
+    }
+
+    /**
+     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
+     *
+     * @param loc The location to get the shop from
+     * @return The shop at that location
+     */
+    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
+        if (loc == null) {
+            Util.debugLog("Location is null.");
+            return null;
+        }
+
+        if (this.useFastShopSearchAlgorithm) {
+            return getShopIncludeAttached_Fast(loc, false);
+        } else {
+            return getShopIncludeAttached_Classic(loc);
+        }
+    }
+
+    public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
+        @Nullable Shop shop;
+        // Get location's chunk all shops
+        @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        // Found some shops in this chunk.
+        if (inChunk != null) {
+            shop = inChunk.get(loc);
+            if (shop != null) {
+                // Okay, shop was founded.
+                return shop;
+            }
+            // Ooops, not founded that shop in this chunk.
+        }
+        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
+        if (secondHalfShop != null) {
+            inChunk = getShops(secondHalfShop.getChunk());
+            if (inChunk != null) {
+                shop = inChunk.get(secondHalfShop.getLocation());
+                if (shop != null) {
+                    // Okay, shop was founded.
+                    return shop;
+                }
+                // Oooops, no any shops matched.
+            }
+        }
+        // If that chunk nothing we founded, we should check it is attached.
+        @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+        // Check is attached on some block.
+        if (attachedBlock == null) {
+            // Nope
+            return null;
+        } else {
+            // Okay we know it on some blocks.
+            // We need set new location and chunk.
+            inChunk = getShops(attachedBlock.getChunk());
+            // Found some shops in this chunk
+            if (inChunk != null) {
+                shop = inChunk.get(attachedBlock.getLocation());
+                // Okay, shop was founded.
+                return shop;
+                // Oooops, no any shops matched.
+            }
+        }
+        return null;
+    }
+
+    public void handleChat(@NotNull Player p, @NotNull String msg) {
+        handleChat(p, msg, false);
+    }
+
+    public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
+        final String message = ChatColor.stripColor(msg);
+        // Use from the main thread, because Bukkit hates life
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            HashMap<UUID, Info> actions = getActions();
+            // They wanted to do something.
+            Info info = actions.remove(p.getUniqueId());
+            if (info == null) {
+                return; // multithreaded means this can happen
+            }
+
+            if (info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25) {
+                p.sendMessage(MsgUtil.getMessage("not-looking-at-shop", p));
+                return;
+            }
+            if (info.getAction() == ShopAction.CREATE) {
+                actionCreate(p, actions, info, message, bypassProtectionChecks);
+            }
+            if (info.getAction() == ShopAction.BUY) {
+                actionTrade(p, actions, info, message);
+            }
+        });
+    }
+
+    /**
+     * Loads the given shop into storage. This method is used for loading data from the database. Do
+     * not use this method to create a shop.
+     *
+     * @param world The world the shop is in
+     * @param shop The shop to load
+     */
+    public void loadShop(@NotNull String world, @NotNull Shop shop) {
+        this.addShop(world, shop);
+    }
+
+    /**
+     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad by
+     * yourself
+     *
+     * @param world The name of the world
+     * @param shop The shop to add
+     */
+    public void addShop(@NotNull String world, @NotNull Shop shop) {
+        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new HashMap<>(3));
+        // There's no world storage yet. We need to create that hashmap.
+        // Put it in the data universe
+        // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
+        // location rounded to the nearest 16.
+        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
+        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
+        // Get the chunk set from the world info
+        ShopChunk shopChunk = new ShopChunk(world, x, z);
+        HashMap<Location, Shop> inChunk = inWorld.computeIfAbsent(shopChunk, k -> new HashMap<>(1));
+        // That chunk data hasn't been created yet - Create it!
+        // Put it in the world
+        // Put the shop in its location in the chunk list.
+        inChunk.put(shop.getLocation(), shop);
+        // shop.onLoad();
+
+    }
+
+    /**
+     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world to
+     * be loaded Call shop.onUnload by your self.
+     *
+     * @param shop The shop to remove
+     */
+    public void removeShop(@NotNull Shop shop) {
+        // shop.onUnload();
+        Location loc = shop.getLocation();
+        String world = Objects.requireNonNull(loc.getWorld()).getName();
+        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
+        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
+        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
+        ShopChunk shopChunk = new ShopChunk(world, x, z);
+        HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
+        if (inChunk == null) {
+            return;
+        }
+        inChunk.remove(loc);
+        // shop.onUnload();
+    }
+
+    /**
+     * @return Returns the HashMap. Info contains what their last question etc was.
+     */
+    public HashMap<UUID, Info> getActions() {
+        return this.actions;
+    }
+
+    /**
+     * Get all loaded shops.
+     *
+     * @return All loaded shops.
+     */
+    public @Nullable Set<Shop> getLoadedShops() {
+        return this.loadedShops;
+    }
+
+    /**
+     * Get a players all shops.
+     *
+     * @param playerUUID The player's uuid.
+     * @return The list have this player's all shops.
+     */
+    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
+        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all shops in the whole database, include unloaded.
+     *
+     * <p>Make sure you have caching this, because this need a while to get all shops
+     *
+     * @return All shop in the database
+     */
+    public Collection<Shop> getAllShops() {
+        //noinspection unchecked
+        HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
+        Collection<Shop> shops = new ArrayList<>();
+        for (HashMap<ShopChunk, HashMap<Location, Shop>> shopMapData : worldsMap.values()) {
+            for (HashMap<Location, Shop> shopData : shopMapData.values()) {
+                shops.addAll(shopData.values());
+            }
+        }
+        return shops;
+    }
+
+    /**
+     * Get the all shops in the world.
+     *
+     * @param world The world you want get the shops.
+     * @return The list have this world all shops
+     */
+    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
+        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
@@ -145,7 +596,7 @@ public class ShopManager {
             return;
         }
         // Purchase successfully
-        if (tax != 0&&cacheTaxAccount!=null) {
+        if (tax != 0 && cacheTaxAccount != null) {
             eco.deposit(cacheTaxAccount, total * tax);
         }
         // Notify the owner of the purchase.
@@ -299,7 +750,7 @@ public class ShopManager {
                     return;
                 }
                 try {
-                    if(cacheTaxAccount!=null) {
+                    if (cacheTaxAccount != null) {
                         plugin.getEconomy().deposit(cacheTaxAccount, createCost);
                     }
                 } catch (Exception e2) {
@@ -560,289 +1011,6 @@ public class ShopManager {
         }
     }
 
-    /**
-     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad by
-     * yourself
-     *
-     * @param world The name of the world
-     * @param shop The shop to add
-     */
-    public void addShop(@NotNull String world, @NotNull Shop shop) {
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new HashMap<>(3));
-        // There's no world storage yet. We need to create that hashmap.
-        // Put it in the data universe
-        // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
-        // location rounded to the nearest 16.
-        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
-        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
-        // Get the chunk set from the world info
-        ShopChunk shopChunk = new ShopChunk(world, x, z);
-        HashMap<Location, Shop> inChunk = inWorld.computeIfAbsent(shopChunk, k -> new HashMap<>(1));
-        // That chunk data hasn't been created yet - Create it!
-        // Put it in the world
-        // Put the shop in its location in the chunk list.
-        inChunk.put(shop.getLocation(), shop);
-        // shop.onLoad();
-
-    }
-
-    /**
-     * Checks other plugins to make sure they can use the chest they're making a shop.
-     *
-     * @param p The player to check
-     * @param b The block to check
-     * @param bf The blockface to check
-     * @return True if they're allowed to place a shop there.
-     */
-    public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-        try {
-            plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
-
-            if (plugin.isLimit()) {
-                int owned = 0;
-                if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
-                    for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
-                        for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
-                            for (Shop shop : shopLocs.values()) {
-                                if (shop.getOwner().equals(p.getUniqueId()) && !shop.isUnlimited()) {
-                                    owned++;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Iterator<Shop> it = getShopIterator();
-                    while (it.hasNext()) {
-                        if (it.next().getOwner().equals(p.getUniqueId())) {
-                            owned++;
-                        }
-                    }
-                }
-
-                int max = plugin.getShopLimit(p);
-                if (owned + 1 > max) {
-                    p.sendMessage(MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
-                    return false;
-                }
-            }
-            if (!plugin.getPermissionChecker().canBuild(p, b)) {
-                Util.debugLog("PermissionChecker canceled shop creation");
-                return false;
-            }
-            ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
-            Bukkit.getPluginManager().callEvent(spce);
-            if (Util.fireCancellableEvent(spce)) {
-                return false;
-            }
-        } finally {
-            plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
-        }
-
-        return true;
-    }
-
-    /**
-     * Removes all shops from memory and the world. Does not delete them from the database. Call this
-     * on plugin disable ONLY.
-     */
-    public void clear() {
-        if (plugin.isDisplay()) {
-            for (World world : Bukkit.getWorlds()) {
-                for (Chunk chunk : world.getLoadedChunks()) {
-                    HashMap<Location, Shop> inChunk = this.getShops(chunk);
-                    if (inChunk == null || inChunk.isEmpty()) {
-                        continue;
-                    }
-                    for (Shop shop : inChunk.values()) {
-                        shop.onUnload();
-                    }
-                }
-            }
-        }
-        this.actions.clear();
-        this.shops.clear();
-    }
-
-    /**
-     * Create a shop use Shop and Info object.
-     *
-     * @param shop The shop object
-     * @param info The info object
-     */
-    public void createShop(@NotNull Shop shop, @NotNull Info info) {
-        Player player = Bukkit.getPlayer(shop.getOwner());
-        if (player == null) {
-            throw new IllegalStateException("The owner creating the shop is offline or not exist");
-        }
-        ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
-        if (Util.fireCancellableEvent(ssShopCreateEvent)) {
-            Util.debugLog("Cancelled by plugin");
-            return;
-        }
-        Location loc = shop.getLocation();
-
-        if (plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
-            addShop(loc.getWorld().getName(), shop);
-        } else {
-            plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
-            boolean backupSuccess = Util.backupDatabase();
-            try {
-                if (backupSuccess) {
-                    plugin.getDatabaseHelper().removeShop(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
-                } else {
-                    plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
-                }
-            } catch (SQLException error2) {
-                // Failed removing
-                plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
-                error2.printStackTrace();
-            }
-        }
-        // Create sign
-        if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-            if (!Util.isAir(info.getSignBlock().getType())) {
-                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                return;
-            }
-            boolean isWaterLogged = false;
-            if (info.getSignBlock().getType() == Material.WATER) {
-                isWaterLogged = true;
-            }
-
-            info.getSignBlock().setType(Util.getSignMaterial());
-            BlockState bs = info.getSignBlock().getState();
-            if (isWaterLogged) {
-                if (bs.getBlockData() instanceof Waterlogged) {
-                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                    waterable.setWaterlogged(true); // Looks like sign directly put in water
-                }
-            }
-            if (bs.getBlockData() instanceof WallSign) {
-                org.bukkit.block.data.type.WallSign signBlockDataType = (org.bukkit.block.data.type.WallSign) bs.getBlockData();
-                BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-                if (bf != null) {
-                    signBlockDataType.setFacing(bf);
-                    bs.setBlockData(signBlockDataType);
-                }
-            } else {
-                plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
-            }
-            bs.update(true);
-            shop.setSignText();
-        }
-    }
-
-    /**
-     * Format the price use economy system
-     *
-     * @param d price
-     * @return formated price
-     */
-    public @Nullable String format(double d) {
-        return plugin.getEconomy().format(d);
-    }
-
-    /**
-     * Gets a shop in a specific location
-     *
-     * @param loc The location to get the shop from
-     * @return The shop at that location
-     */
-    public @Nullable Shop getShop(@NotNull Location loc) {
-        return getShop(loc, false);
-    }
-
-    /**
-     * Gets a shop in a specific location
-     *
-     * @param loc The location to get the shop from
-     * @return The shop at that location
-     */
-    public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking) {
-            if (!Util.isShoppables(loc.getBlock().getType())) {
-                return null;
-            }
-        }
-        HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
-        if (inChunk == null) {
-            return null;
-        }
-        loc = loc.clone();
-        // Fix double chest XYZ issue
-        loc.setX(loc.getBlockX());
-        loc.setY(loc.getBlockY());
-        loc.setZ(loc.getBlockZ());
-        // We can do this because WorldListener updates the world reference so
-        // the world in loc is the same as world in inChunk.get(loc)
-        return inChunk.get(loc);
-    }
-
-    /**
-     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
-     *
-     * @param loc The location to get the shop from
-     * @return The shop at that location
-     */
-    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
-        if (loc == null) {
-            Util.debugLog("Location is null.");
-            return null;
-        }
-
-        if (this.useFastShopSearchAlgorithm) {
-            return getShopIncludeAttached_Fast(loc, false);
-        } else {
-            return getShopIncludeAttached_Classic(loc);
-        }
-    }
-
-    public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
-        @Nullable Shop shop;
-        // Get location's chunk all shops
-        @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
-        // Found some shops in this chunk.
-        if (inChunk != null) {
-            shop = inChunk.get(loc);
-            if (shop != null) {
-                // Okay, shop was founded.
-                return shop;
-            }
-            // Ooops, not founded that shop in this chunk.
-        }
-        @Nullable Block secondHalfShop = Util.getSecondHalf(loc.getBlock());
-        if (secondHalfShop != null) {
-            inChunk = getShops(secondHalfShop.getChunk());
-            if (inChunk != null) {
-                shop = inChunk.get(secondHalfShop.getLocation());
-                if (shop != null) {
-                    // Okay, shop was founded.
-                    return shop;
-                }
-                // Oooops, no any shops matched.
-            }
-        }
-        // If that chunk nothing we founded, we should check it is attached.
-        @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
-        // Check is attached on some block.
-        if (attachedBlock == null) {
-            // Nope
-            return null;
-        } else {
-            // Okay we know it on some blocks.
-            // We need set new location and chunk.
-            inChunk = getShops(attachedBlock.getChunk());
-            // Found some shops in this chunk
-            if (inChunk != null) {
-                shop = inChunk.get(attachedBlock.getLocation());
-                // Okay, shop was founded.
-                return shop;
-                // Oooops, no any shops matched.
-            }
-        }
-        return null;
-    }
-
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
         @Nullable Shop shop;
         shop = getShop(loc);
@@ -864,181 +1032,13 @@ public class ShopManager {
         }
     }
 
-    /**
-     * Returns a hashmap of Chunk - Shop
-     *
-     * @param world The name of the world (case sensitive) to get the list of shops from
-     * @return a hashmap of Chunk - Shop
-     */
-    public @Nullable HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
-        return this.shops.get(world);
-    }
-
-    /**
-     * Returns a hashmap of Shops
-     *
-     * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are used.
-     * @return Shops
-     */
-    public @Nullable HashMap<Location, Shop> getShops(@NotNull Chunk c) {
-        // long start = System.nanoTime();
-        return getShops(c.getWorld().getName(), c.getX(), c.getZ());
-        // long end = System.nanoTime();
-        // plugin.getLogger().log(Level.WARNING, "Chunk lookup in " + ((end - start)/1000000.0) +
-        // "ms.");
-    }
-
-    public @Nullable HashMap<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops(world);
-        if (inWorld == null) {
-            return null;
-        }
-        return inWorld.get(new ShopChunk(world, chunkX, chunkZ));
-    }
-
-    public void handleChat(@NotNull Player p, @NotNull String msg) {
-        handleChat(p, msg, false);
-    }
-
-    public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
-        final String message = ChatColor.stripColor(msg);
-        // Use from the main thread, because Bukkit hates life
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            HashMap<UUID, Info> actions = getActions();
-            // They wanted to do something.
-            Info info = actions.remove(p.getUniqueId());
-            if (info == null) {
-                return; // multithreaded means this can happen
-            }
-
-            if (info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                p.sendMessage(MsgUtil.getMessage("not-looking-at-shop", p));
-                return;
-            }
-            if (info.getAction() == ShopAction.CREATE) {
-                actionCreate(p, actions, info, message, bypassProtectionChecks);
-            }
-            if (info.getAction() == ShopAction.BUY) {
-                actionTrade(p, actions, info, message);
-            }
-        });
-    }
-
-    /**
-     * Loads the given shop into storage. This method is used for loading data from the database. Do
-     * not use this method to create a shop.
-     *
-     * @param world The world the shop is in
-     * @param shop The shop to load
-     */
-    public void loadShop(@NotNull String world, @NotNull Shop shop) {
-        this.addShop(world, shop);
-    }
-
-    /**
-     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world to
-     * be loaded Call shop.onUnload by your self.
-     *
-     * @param shop The shop to remove
-     */
-    public void removeShop(@NotNull Shop shop) {
-        // shop.onUnload();
-        Location loc = shop.getLocation();
-        String world = Objects.requireNonNull(loc.getWorld()).getName();
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
-        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
-        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
-        ShopChunk shopChunk = new ShopChunk(world, x, z);
-        HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
-        if (inChunk == null) {
-            return;
-        }
-        inChunk.remove(loc);
-        // shop.onUnload();
-    }
-
-    /**
-     * @return Returns the HashMap. Info contains what their last question etc was.
-     */
-    public HashMap<UUID, Info> getActions() {
-        return this.actions;
-    }
-
-    /**
-     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
-     * through a 3D hashmap.
-     *
-     * @return a new shop iterator object.
-     */
-    public Iterator<Shop> getShopIterator() {
-        return new ShopIterator();
-    }
-
-    /**
-     * Returns all shops in the whole database, include unloaded.
-     *
-     * <p>Make sure you have caching this, because this need a while to get all shops
-     *
-     * @return All shop in the database
-     */
-    public Collection<Shop> getAllShops() {
-        //noinspection unchecked
-        HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
-        Collection<Shop> shops = new ArrayList<>();
-        for (HashMap<ShopChunk, HashMap<Location, Shop>> shopMapData : worldsMap.values()) {
-            for (HashMap<Location, Shop> shopData : shopMapData.values()) {
-                shops.addAll(shopData.values());
-            }
-        }
-        return shops;
-    }
-
-    /**
-     * Returns a hashmap of World - Chunk - Shop
-     *
-     * @return a hashmap of World - Chunk - Shop
-     */
-    @NotNull
-    public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
-        return this.shops;
-    }
-
-    /**
-     * Get all loaded shops.
-     *
-     * @return All loaded shops.
-     */
-    public @Nullable Set<Shop> getLoadedShops() {
-        return this.loadedShops;
-    }
-
-    /**
-     * Get a players all shops.
-     *
-     * @param playerUUID The player's uuid.
-     * @return The list have this player's all shops.
-     */
-    public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
-        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
-    }
-
-    /**
-     * Get the all shops in the world.
-     *
-     * @param world The world you want get the shops.
-     * @return The list have this world all shops
-     */
-    public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
-    }
-
     public class ShopIterator implements Iterator<Shop> {
+
+        private final Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
         private Iterator<HashMap<Location, Shop>> chunks;
 
         private Iterator<Shop> shops;
-
-        private final Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
         public ShopIterator() {
             //noinspection unchecked

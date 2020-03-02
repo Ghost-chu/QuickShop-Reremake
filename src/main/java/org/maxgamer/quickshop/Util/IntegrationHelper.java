@@ -31,97 +31,97 @@ import org.maxgamer.quickshop.PluginsIntegration.IntegrationStage;
 
 @Getter
 public class IntegrationHelper {
-  private Set<IntegratedPlugin> integrations = new HashSet<>();
+    private Set<IntegratedPlugin> integrations = new HashSet<>();
 
-  public void register(@NotNull IntegratedPlugin clazz) {
-    if (!isIntegrationClass(clazz)) {
-      throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
+    public void register(@NotNull IntegratedPlugin clazz) {
+        if (!isIntegrationClass(clazz)) {
+            throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
+        }
+        Util.debugLog("Registering " + clazz.getName());
+        integrations.add(clazz);
     }
-    Util.debugLog("Registering " + clazz.getName());
-    integrations.add(clazz);
-  }
 
-  public void unregister(@NotNull IntegratedPlugin clazz) {
-    if (!isIntegrationClass(clazz)) {
-      throw new InvaildIntegratedPluginClass();
+    private boolean isIntegrationClass(@NotNull IntegratedPlugin clazz) {
+        return clazz.getClass().getDeclaredAnnotation(IntegrationStage.class) != null;
     }
-    Util.debugLog("Unregistering " + clazz.getName());
-    integrations.remove(clazz);
-  }
 
-  public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
-    integrations.forEach(
-        integratedPlugin -> {
-          if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
-              == stage) {
-            Util.debugLog("Calling for load " + integratedPlugin.getName());
-            integratedPlugin.load();
-          } else {
-            Util.debugLog(
-                "Ignored calling because "
-                    + integratedPlugin.getName()
-                    + " stage is "
-                    + integratedPlugin
-                    .getClass()
-                    .getDeclaredAnnotation(IntegrationStage.class)
-                    .loadStage());
-          }
-        });
-  }
-
-  public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
-    integrations.forEach(
-        integratedPlugin -> {
-          if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
-              == stage) {
-            Util.debugLog("Calling for unload " + integratedPlugin.getName());
-            integratedPlugin.unload();
-          } else {
-            Util.debugLog(
-                "Ignored calling because "
-                    + integratedPlugin.getName()
-                    + " stage is "
-                    + integratedPlugin
-                    .getClass()
-                    .getDeclaredAnnotation(IntegrationStage.class)
-                    .loadStage());
-          }
-        });
-  }
-
-  public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
-    for (IntegratedPlugin plugin : integrations) {
-      if (!plugin.canCreateShopHere(player, location)) {
-        Util.debugLog("Cancelled by " + plugin.getName());
-        return false;
-      }
+    public void unregister(@NotNull IntegratedPlugin clazz) {
+        if (!isIntegrationClass(clazz)) {
+            throw new InvaildIntegratedPluginClass();
+        }
+        Util.debugLog("Unregistering " + clazz.getName());
+        integrations.remove(clazz);
     }
-    return true;
-  }
 
-  public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
-    for (IntegratedPlugin plugin : integrations) {
-      if (!plugin.canTradeShopHere(player, location)) {
-        Util.debugLog("Cancelled by " + plugin.getName());
-        return false;
-      }
+    public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
+        integrations.forEach(
+            integratedPlugin -> {
+                if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
+                    == stage) {
+                    Util.debugLog("Calling for load " + integratedPlugin.getName());
+                    integratedPlugin.load();
+                } else {
+                    Util.debugLog(
+                        "Ignored calling because "
+                            + integratedPlugin.getName()
+                            + " stage is "
+                            + integratedPlugin
+                            .getClass()
+                            .getDeclaredAnnotation(IntegrationStage.class)
+                            .loadStage());
+                }
+            });
     }
-    return true;
-  }
 
-  private boolean isIntegrationClass(@NotNull IntegratedPlugin clazz) {
-    return clazz.getClass().getDeclaredAnnotation(IntegrationStage.class) != null;
-  }
+    public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
+        integrations.forEach(
+            integratedPlugin -> {
+                if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
+                    == stage) {
+                    Util.debugLog("Calling for unload " + integratedPlugin.getName());
+                    integratedPlugin.unload();
+                } else {
+                    Util.debugLog(
+                        "Ignored calling because "
+                            + integratedPlugin.getName()
+                            + " stage is "
+                            + integratedPlugin
+                            .getClass()
+                            .getDeclaredAnnotation(IntegrationStage.class)
+                            .loadStage());
+                }
+            });
+    }
+
+    public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
+        for (IntegratedPlugin plugin : integrations) {
+            if (!plugin.canCreateShopHere(player, location)) {
+                Util.debugLog("Cancelled by " + plugin.getName());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
+        for (IntegratedPlugin plugin : integrations) {
+            if (!plugin.canTradeShopHere(player, location)) {
+                Util.debugLog("Cancelled by " + plugin.getName());
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
 
 class InvaildIntegratedPluginClass extends IllegalArgumentException {
-  public InvaildIntegratedPluginClass() {
-    super();
-  }
+    public InvaildIntegratedPluginClass() {
+        super();
+    }
 
-  public InvaildIntegratedPluginClass(String s) {
-    super(s);
-  }
+    public InvaildIntegratedPluginClass(String s) {
+        super(s);
+    }
 
 }

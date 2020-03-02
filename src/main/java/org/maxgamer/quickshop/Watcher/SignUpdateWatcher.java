@@ -27,26 +27,27 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
 public class SignUpdateWatcher extends BukkitRunnable {
-  // private QuickShop plugin;
-  private final Queue<Shop> signUpdateQueue = new LinkedList<>();
+    // private QuickShop plugin;
+    private final Queue<Shop> signUpdateQueue = new LinkedList<>();
 
-  public SignUpdateWatcher(QuickShop plugin) {
-    // this.plugin = plugin;
-  }
-
-  public void scheduleSignUpdate(@NotNull Shop shop) {
-    if (signUpdateQueue.contains(shop)) {
-      return; // Ignore
+    public SignUpdateWatcher(QuickShop plugin) {
+        // this.plugin = plugin;
     }
-    signUpdateQueue.add(shop);
-  }
 
-  @Override
-  public void run() {
-    Shop shop = signUpdateQueue.poll();
-    while (shop != null) {
-      shop.setSignText();
-      shop = signUpdateQueue.poll();
+    public void scheduleSignUpdate(@NotNull Shop shop) {
+        if (signUpdateQueue.contains(shop)) {
+            return; // Ignore
+        }
+        signUpdateQueue.add(shop);
     }
-  }
+
+    @Override
+    public void run() {
+        Shop shop = signUpdateQueue.poll();
+        while (shop != null) {
+            shop.setSignText();
+            shop = signUpdateQueue.poll();
+        }
+    }
+
 }
