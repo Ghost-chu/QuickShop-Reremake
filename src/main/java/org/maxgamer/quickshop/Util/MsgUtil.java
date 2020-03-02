@@ -52,8 +52,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.FilePortlek.old.IFile;
-import org.maxgamer.quickshop.FilePortlek.old.JSONFile;
+import org.maxgamer.quickshop.FilePortlek.IFile;
+import org.maxgamer.quickshop.FilePortlek.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 

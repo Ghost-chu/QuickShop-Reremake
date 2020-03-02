@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.FilePortlek.old;
+package org.maxgamer.quickshop.FilePortlek;
 
 import java.io.File;
 import java.io.InputStreamReader;
