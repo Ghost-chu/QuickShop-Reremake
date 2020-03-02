@@ -19,23 +19,8 @@ package org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net;
  */
 
 import com.google.common.io.Closer;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,16 +28,24 @@ import java.util.Map;
 
 public class HttpRequest implements Closeable {
 
-  private static final int CONNECT_TIMEOUT = 1000 * 15;
-  private static final int READ_TIMEOUT = 1000 * 30;
+  private static final int CONNECT_TIMEOUT = 1000 * 10;
+
+  private static final int READ_TIMEOUT = 1000 * 17;
+
   private static final int READ_BUFFER_SIZE = 1024 * 8;
 
   private final Map<String, String> headers = new HashMap<>();
+
   private final String method;
+
   private final URL url;
+
   private String contentType;
+
   private byte[] body;
+
   private HttpURLConnection conn;
+
   private InputStream inputStream;
 
   // private long contentLength = -1;
