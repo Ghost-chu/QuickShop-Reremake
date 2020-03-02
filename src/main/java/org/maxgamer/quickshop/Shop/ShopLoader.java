@@ -77,6 +77,41 @@ public class ShopLoader {
         loadShops(null);
     }
 
+    public synchronized void recoverFromFile(@NotNull String fileContent) {
+        plugin.getLogger().info("Processing the shop data...");
+        String[] shopsPlain = fileContent.split("\n");
+        plugin.getLogger().info("Recovering shops...");
+        Gson gson = new Gson();
+        int total = shopsPlain.length;
+        for (int i = 0; i < total; i++) {
+            String shopStr = shopsPlain[i];
+            boolean success = false;
+            try {
+                ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
+                originShopsInDatabase.add(shopDatabaseInfoOrigin);
+                ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
+                Shop shop =
+                    new ContainerShop(
+                        data.getLocation(),
+                        data.getPrice(),
+                        data.getItem(),
+                        data.getModerators(),
+                        data.isUnlimited(),
+                        data.getType());
+                shopsInDatabase.add(shop);
+                if (shopNullCheck(shop)) {
+                    continue;
+                }
+                // Load to RAM
+                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                shop.update();
+                success = true;
+            } catch (JsonSyntaxException ignore) {
+            }
+            plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
+        }
+    }
+
     /**
      * Load all shops
      *
@@ -373,6 +408,18 @@ public class ShopLoader {
             } catch (SQLException sqlex) {
                 exceptionHandler(sqlex, null);
             }
+        }
+
+        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+            this.item = itemConfig;
+            this.moderators = owner;
+            this.price = price;
+            this.type = type;
+            this.unlimited = unlimited;
         }
 
         @Override
