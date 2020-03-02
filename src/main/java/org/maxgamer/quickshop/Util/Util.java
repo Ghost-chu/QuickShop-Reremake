@@ -64,8 +64,11 @@ import org.yaml.snakeyaml.Yaml;
 public class Util {
   static short tookLongTimeCostTimes;
   private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-  @Getter private static List<String> debugLogs = new LinkedList<>();
-  private static boolean devMode = false;
+
+    @Getter
+    private static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
+
+    private static boolean devMode = false;
   private static QuickShop plugin;
   private static EnumMap<Material, Entry<Double, Double>> restrictedPrices =
       new EnumMap<>(Material.class);
@@ -201,16 +204,12 @@ public class Util {
    */
   public static void debugLog(@NotNull String... logs) {
     if (!devMode) {
-      if (disableDebugLogger) {
         return;
-      }
     }
-    long startTime = System.currentTimeMillis();
-    StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
-    String className = stackTraceElement.getClassName();
+      StackTraceElement stackTraceElement = new Throwable().getStackTrace()[2];
+      String className = stackTraceElement.getClassName();
     String methodName = stackTraceElement.getMethodName();
     int codeLine = stackTraceElement.getLineNumber();
-
     for (String log : logs) {
       String text =
           "["
@@ -237,24 +236,7 @@ public class Util {
       if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
         debugLogs.clear();
       }
-      if (devMode) {
         QuickShop.instance.getLogger().info(text);
-      }
-    }
-    long debugLogCost = System.currentTimeMillis() - startTime;
-    if (!devMode) {
-      if (debugLogCost > 5) {
-        tookLongTimeCostTimes++;
-        if (tookLongTimeCostTimes > 500) {
-          QuickShop.instance.getConfig().set("disable-debuglogger", true);
-          disableDebugLogger = true;
-          QuickShop.instance.saveConfig();
-          QuickShop.instance
-              .getLogger()
-              .warning(
-                  "Detected the debug logger tooked time keep too lang, QuickShop already auto-disable debug logger, your server performance should back to normal. But you must re-enable it if you want to report any bugs.");
-        }
-      }
     }
   }
   /**
