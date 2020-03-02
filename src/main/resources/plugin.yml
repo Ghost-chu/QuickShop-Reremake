@@ -121,3 +121,6 @@ permissions:
   quickshop.bypasscreatefee:
     description: Permission to bypass creation fee
     default: op
+  quickshop.recovery:
+    description: Permission to use /qs recovery, WARNING DO NOT EXECUTE THIS COMMAND IF YOU DID NOT KNOW WHAT WILL HAPPEND
+    default: false
