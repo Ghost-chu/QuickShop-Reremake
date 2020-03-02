@@ -218,10 +218,11 @@ public class ShopManager {
             Util.debugLog("Cancelled by plugin");
             return;
         }
+        //sync add to prevent compete issue
+        addShop(shop.getLocation().getWorld().getName(), shop);
         plugin.getDatabaseHelper().createShop(
                 shop,
                 () -> Bukkit.getScheduler().runTask(plugin, () -> {
-                    addShop(shop.getLocation().getWorld().getName(), shop);
                     // Create sign
                     if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
                         if (!Util.isAir(info.getSignBlock().getType())) {
@@ -256,18 +257,14 @@ public class ShopManager {
                     }
                 }),
                 e -> Bukkit.getScheduler().runTask(plugin, () -> {
+                    //also remove when failed
+                    removeShop(shop);
                     plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
                     boolean backupSuccess = Util.backupDatabase();
-                    try {
-                        if (backupSuccess) {
-                            plugin.getDatabaseHelper().removeShop(shop);
-                        } else {
-                            plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
-                        }
-                    } catch (SQLException error2) {
-                        // Failed removing
-                        plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
-                        error2.printStackTrace();
+                    if (backupSuccess) {
+                        plugin.getDatabaseHelper().removeShop(shop);
+                    } else {
+                        plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
                     }
                 }));
     }
