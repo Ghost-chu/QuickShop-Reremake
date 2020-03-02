@@ -30,7 +30,9 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class AssetJson {
   final String pathTemplate = "minecraft/lang/{0}.json";
-  @NotNull String gameAssets;
+
+  @NotNull
+  final String gameAssets;
 
   public AssetJson(@NotNull String json) {
     this.gameAssets = json;
@@ -38,7 +40,7 @@ public class AssetJson {
 
   @Nullable
   public String getLanguageHash(@NotNull String languageCode) {
-    languageCode = languageCode.replace("-","_").toLowerCase().trim();
+    languageCode = languageCode.replace("-", "_").toLowerCase().trim();
     JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
     if (json == null || json.isJsonNull()) {
       Util.debugLog("Cannot parse the json: " + this.gameAssets);

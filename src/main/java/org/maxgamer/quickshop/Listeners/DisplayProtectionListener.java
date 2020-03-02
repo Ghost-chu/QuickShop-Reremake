@@ -35,21 +35,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.inventory.BrewingStandFuelEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCreativeEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -67,8 +54,9 @@ import org.maxgamer.quickshop.Util.Util;
 
 @SuppressWarnings("DuplicatedCode")
 public class DisplayProtectionListener implements Listener {
-  private QuickShop plugin;
-  private boolean useEnhanceProtection;
+  private final QuickShop plugin;
+
+  private final boolean useEnhanceProtection;
 
   public DisplayProtectionListener(QuickShop plugin) {
     this.plugin = plugin;

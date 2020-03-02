@@ -42,7 +42,7 @@ public class SubCommand_About implements CommandProcesser {
   public void onCommand(
       @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
     sender.sendMessage(
-        ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.instance.getFork());
+        ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
     sender.sendMessage(
         ChatColor.AQUA
             + "Ver "

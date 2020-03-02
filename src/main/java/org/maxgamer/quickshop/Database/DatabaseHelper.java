@@ -125,47 +125,50 @@ public class DatabaseHelper {
      * @return Create failed or successed.
      * @throws SQLException If the connection is invalid
      */
-    private boolean createMessagesTable() throws SQLException {
-        Statement st = db.getConnection().createStatement();
-        String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
-            createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
-        }
-        return st.execute(createTable);
-    }
-
-    public void createShop(@NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z) {
+    private void createMessagesTable() throws SQLException {
         plugin.getDatabaseManager().add(() -> {
             try {
-                removeShop(x, y, z, world); //First purge old exist shop before create new shop.
-                String sqlString = "INSERT INTO " + QuickShop.instance
-                    .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
-                PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
-                ps.setString(1, owner);
-                ps.setDouble(2, price);
-                ps.setString(3, Util.serialize(item));
-                ps.setInt(4, x);
-                ps.setInt(5, y);
-                ps.setInt(6, z);
-                ps.setString(7, world);
-                ps.setInt(8, unlimited);
-                ps.setInt(9, shopType);
-                ps.execute();
+                Statement st = db.getConnection().createStatement();
+                String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+                if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+                    createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                        + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
+                }
+                st.execute(createTable);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
     }
 
+    public boolean createShop(@NotNull String owner, double price, @NotNull ItemStack item, int unlimited, int shopType, @NotNull String world, int x, int y, int z) {
+        try {
+            removeShop(x, y, z, world); //First purge old exist shop before create new shop.
+            String sqlString = "INSERT INTO " + QuickShop.instance
+                .getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
+            PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
+            ps.setString(1, owner);
+            ps.setDouble(2, price);
+            ps.setString(3, Util.serialize(item));
+            ps.setInt(4, x);
+            ps.setInt(5, y);
+            ps.setInt(6, z);
+            ps.setString(7, world);
+            ps.setInt(8, unlimited);
+            ps.setInt(9, shopType);
+            return ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /**
      * Creates the database table 'shops'.
-     *
-     * @throws SQLException If the connection is invalid.
      */
-    private void createShopsTable() throws SQLException {
+    private void createShopsTable() {
         plugin.getDatabaseManager().add(() -> {
             try {
                 Statement st = db.getConnection().createStatement();
@@ -178,22 +181,29 @@ public class DatabaseHelper {
         });
     }
 
-    public boolean removeShop(int x, int y, int z, @NotNull String worldName) throws SQLException {
+    public void removeShop(int x, int y, int z, @NotNull String worldName) throws SQLException {
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
 //						+ " AND z = " + z + " AND world = \"" + worldName + "\""
 //						+ (db.getCore() instanceof MySQLCore ? " LIMIT 1" : ""));
-        String sqlString = "DELETE FROM " + QuickShop.instance
-                .getDbPrefix() + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db.getCore() instanceof MySQLCore ?
-                " LIMIT 1" :
-                "");
+        plugin.getDatabaseManager().add(() -> {
+                try {
+                    String sqlString = "DELETE FROM " + QuickShop.instance
+                        .getDbPrefix() + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db.getCore() instanceof MySQLCore ?
+                        " LIMIT 1" :
+                        "");
 
-        PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
-        ps.setInt(1, x);
-        ps.setInt(2, y);
-        ps.setInt(3, z);
-        ps.setString(4, worldName);
-        return ps.execute();
+                    PreparedStatement ps = db.getConnection().prepareStatement(sqlString);
+                    ps.setInt(1, x);
+                    ps.setInt(2, y);
+                    ps.setInt(3, z);
+                    ps.setString(4, worldName);
+                    ps.execute();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        );
     }
 
     public ResultSet selectAllMessages() throws SQLException {
@@ -225,8 +235,7 @@ public class DatabaseHelper {
         });
     }
 
-    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName)
-            throws SQLException {
+    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
         //QuickShop.instance.getDB().getConnection().createStatement()
         //         .executeUpdate("UPDATE " + QuickShop.instance.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
         //                 + "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z

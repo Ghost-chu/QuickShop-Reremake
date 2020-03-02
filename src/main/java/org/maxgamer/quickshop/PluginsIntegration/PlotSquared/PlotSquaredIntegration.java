@@ -36,8 +36,10 @@ import org.maxgamer.quickshop.Util.Util;
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegration implements IntegratedPlugin {
   private BooleanFlag createFlag;
+
   private BooleanFlag tradeFlag;
-  private QuickShop plugin;
+
+  private final QuickShop plugin;
 
   public PlotSquaredIntegration(QuickShop plugin) {
     this.plugin = plugin;

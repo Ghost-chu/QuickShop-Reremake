@@ -32,17 +32,26 @@ import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Util.WarningSender;
 
-/** Queued database manager. Use queue to solve run SQL make server lagg issue. */
+/**
+ * Queued database manager. Use queue to solve run SQL make server lagg issue.
+ */
 public class DatabaseManager {
 
   private final Queue<Runnable> sqlQueue = new LinkedBlockingQueue<>();
 
-  @NotNull private final Database database;
+  @NotNull
+  private final Database database;
 
-  @NotNull private final QuickShop plugin;
-  @NotNull private final WarningSender warningSender;
-  @Nullable private BukkitTask task;
-  private boolean useQueue;
+  @NotNull
+  private final QuickShop plugin;
+
+  @NotNull
+  private final WarningSender warningSender;
+
+  @Nullable
+  private BukkitTask task;
+
+  private final boolean useQueue;
 
   /**
    * Queued database manager. Use queue to solve run SQL make server lagg issue.

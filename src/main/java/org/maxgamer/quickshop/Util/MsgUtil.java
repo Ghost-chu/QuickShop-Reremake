@@ -59,16 +59,25 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 @SuppressWarnings("WeakerAccess")
 public class MsgUtil {
-  public static String invaildMsg = "Invaild message";
+  public static final String invaildMsg = "Invaild message";
+
   private static YamlConfiguration enchi18n;
+
   private static boolean inited;
+
   private static YamlConfiguration itemi18n;
+
   private static IFile messagei18n;
-  private static HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
-  private static QuickShop plugin = QuickShop.instance;
+
+  private static final HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
+
+  private static final QuickShop plugin = QuickShop.instance;
+
   private static YamlConfiguration potioni18n;
-  private static DecimalFormat decimalFormat =
+
+  private static final DecimalFormat decimalFormat =
       new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
+
   private static GameLanguage gameLanguage;
 
   /**

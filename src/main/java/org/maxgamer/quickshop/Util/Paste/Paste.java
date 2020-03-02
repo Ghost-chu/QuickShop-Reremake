@@ -62,7 +62,7 @@ public class Paste {
     finalReport.append("================================================\n");
     finalReport.append("QuickShop:\n");
     finalReport.append("\tVersion: ").append(QuickShop.getVersion()).append("\n");
-    finalReport.append("\tFork: ").append(plugin.getFork()).append("\n");
+    finalReport.append("\tFork: ").append(QuickShop.getFork()).append("\n");
     finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID()).append("\n");
     finalReport
         .append("\tOpenInv Hook: ")

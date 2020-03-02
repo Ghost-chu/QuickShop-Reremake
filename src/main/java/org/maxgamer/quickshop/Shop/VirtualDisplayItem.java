@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.Util.Util;
 public class VirtualDisplayItem extends DisplayItem {
 
 
-    private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+    private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
     private volatile boolean isDisplay;
 
@@ -56,7 +56,7 @@ public class VirtualDisplayItem extends DisplayItem {
     private static final String version = Util.getNMSVersion();
 
     //unique EntityID
-    private int entityID = counter.decrementAndGet();
+    private final int entityID = counter.decrementAndGet();
 
     //packets
     private PacketContainer fakeItemPacket;
@@ -74,9 +74,9 @@ public class VirtualDisplayItem extends DisplayItem {
     private ShopChunk chunkLocation;
 
     //The List which store packet sender
-    private Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
+    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
-    private Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
+    private final Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
 
     @Nullable
     private BukkitTask asyncSendingTask;

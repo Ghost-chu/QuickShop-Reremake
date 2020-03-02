@@ -26,7 +26,7 @@ import org.bukkit.ChatColor;
 
 public class Colorizer {
 
-  private static Map<String, String> colorCodes = new HashMap<>();
+  private static final Map<String, String> colorCodes = new HashMap<>();
 
   static {
     for (ChatColor color : ChatColor.values()) {
