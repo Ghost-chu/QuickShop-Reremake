@@ -206,8 +206,8 @@ public class Util {
     if (!devMode) {
         return;
     }
-      StackTraceElement stackTraceElement = new Throwable().getStackTrace()[2];
-      String className = stackTraceElement.getClassName();
+      StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
+    String className = stackTraceElement.getClassName();
     String methodName = stackTraceElement.getMethodName();
     int codeLine = stackTraceElement.getLineNumber();
     for (String log : logs) {
