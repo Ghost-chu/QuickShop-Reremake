@@ -47,6 +47,8 @@ public class UbuntuPaster implements PasteInterface {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36");
         conn.setDoOutput(true);
         conn.setDoInput(true);
+        conn.setConnectTimeout(50000);
+        conn.setReadTimeout(100000);
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // poster=aaaaaaa&syntax=text&expiration=&content=%21%40
         String builder =
