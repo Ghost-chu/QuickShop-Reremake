@@ -287,7 +287,7 @@ class LunarCalendar {
     /**
      * 使用指定日历日期构造一个农历日历
      *
-     * @param cal
+     * @param cal 要构造的日历日期
      */
     public LunarCalendar(Calendar cal) {
         @SuppressWarnings("unused")
@@ -434,7 +434,7 @@ class LunarCalendar {
     /**
      * 获得表示农历年月日的日期对象
      *
-     * @return
+     * @return 表示日期的对象
      */
     public Date getDate() {
         Calendar calendar = Calendar.getInstance();

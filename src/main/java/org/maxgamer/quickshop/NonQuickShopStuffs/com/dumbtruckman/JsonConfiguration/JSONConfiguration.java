@@ -155,14 +155,14 @@ public final class JSONConfiguration extends FileConfiguration {
         public Object read(JsonElement in) {
 
             if (in.isJsonArray()) {
-                List<Object> list = new ArrayList<Object>();
+                List<Object> list = new ArrayList<>();
                 JsonArray arr = in.getAsJsonArray();
                 for (JsonElement anArr : arr) {
                     list.add(read(anArr));
                 }
                 return list;
             } else if (in.isJsonObject()) {
-                Map<String, Object> map = new LinkedTreeMap<String, Object>();
+                Map<String, Object> map = new LinkedTreeMap<>();
                 JsonObject obj = in.getAsJsonObject();
                 Set<Map.Entry<String, JsonElement>> entitySet = obj.entrySet();
                 for (Map.Entry<String, JsonElement> entry : entitySet) {

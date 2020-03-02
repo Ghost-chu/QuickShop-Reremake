@@ -74,7 +74,7 @@ public class SerializationHelper {
      * @return the object that deserialize
      */
     public static Object deserialize(@NotNull final Map<?, ?> input) {
-        final Map<String, Object> output = new LinkedHashMap<String, Object>(input.size());
+        final Map<String, Object> output = new LinkedHashMap<>(input.size());
         for (final Map.Entry<?, ?> e : input.entrySet()) {
             if (e.getValue() instanceof Map) {
                 output.put(e.getKey().toString(), deserialize((Map<?, ?>) e.getValue()));
@@ -110,7 +110,7 @@ public class SerializationHelper {
      */
     @NotNull
     private static Map<String, Object> buildMap(@NotNull final Map<?, ?> map) {
-        final Map<String, Object> result = new LinkedHashMap<String, Object>(map.size());
+        final Map<String, Object> result = new LinkedHashMap<>(map.size());
         try {
             for (final Map.Entry<?, ?> entry : map.entrySet()) {
                 result.put(entry.getKey().toString(), serialize(entry.getValue()));
@@ -135,7 +135,7 @@ public class SerializationHelper {
      * else: stores it as is in the returned List.
      */
     private static List<Object> buildList(@NotNull final Collection<?> collection) {
-        final List<Object> result = new ArrayList<Object>(collection.size());
+        final List<Object> result = new ArrayList<>(collection.size());
         try {
             for (Object o : collection) {
                 result.add(serialize(o));
@@ -154,7 +154,7 @@ public class SerializationHelper {
      * within lists and maps within lists.
      */
     private static Object deserialize(@NotNull final List<?> input) {
-        final List<Object> output = new ArrayList<Object>(input.size());
+        final List<Object> output = new ArrayList<>(input.size());
         for (final Object o : input) {
             if (o instanceof Map) {
                 output.add(deserialize((Map<?, ?>) o));

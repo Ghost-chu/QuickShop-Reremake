@@ -218,7 +218,6 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
             Location location = getDisplayLocation();
             this.armorStand =
-                (ArmorStand)
                     this.shop
                         .getLocation()
                         .getWorld()
