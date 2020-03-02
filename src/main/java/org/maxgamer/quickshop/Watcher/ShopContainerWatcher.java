@@ -33,30 +33,31 @@ import org.maxgamer.quickshop.Shop.Shop;
  */
 // unused, pending to remove
 public class ShopContainerWatcher extends BukkitRunnable {
-  // private QuickShop plugin;
-  private final Queue<Shop> checkQueue = new LinkedList<>();
+    // private QuickShop plugin;
+    private final Queue<Shop> checkQueue = new LinkedList<>();
 
-  public ShopContainerWatcher(@NotNull QuickShop plugin) {
-    // this.plugin = plugin;
-  }
-
-  public void scheduleCheck(@NotNull Shop shop) {
-    checkQueue.add(shop);
-  }
-
-  @Override
-  public void run() {
-    long beginTime = System.currentTimeMillis();
-    Shop shop = checkQueue.poll();
-    while (shop != null) {
-      if (shop instanceof ContainerShop) {
-        ((ContainerShop) shop).checkContainer();
-      }
-      if (System.currentTimeMillis() - beginTime
-          > 45) { // Don't let quickshop eat more than 45 ms per tick.
-        break;
-      }
-      shop = checkQueue.poll();
+    public ShopContainerWatcher(@NotNull QuickShop plugin) {
+        // this.plugin = plugin;
     }
-  }
+
+    public void scheduleCheck(@NotNull Shop shop) {
+        checkQueue.add(shop);
+    }
+
+    @Override
+    public void run() {
+        long beginTime = System.currentTimeMillis();
+        Shop shop = checkQueue.poll();
+        while (shop != null) {
+            if (shop instanceof ContainerShop) {
+                ((ContainerShop) shop).checkContainer();
+            }
+            if (System.currentTimeMillis() - beginTime
+                > 45) { // Don't let quickshop eat more than 45 ms per tick.
+                break;
+            }
+            shop = checkQueue.poll();
+        }
+    }
+
 }

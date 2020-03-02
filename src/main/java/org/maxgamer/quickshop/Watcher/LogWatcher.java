@@ -33,67 +33,68 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class LogWatcher extends BukkitRunnable {
-  private final Queue<String> logs = new ConcurrentLinkedQueue<>();
+    private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
-  private FileWriter logFileWriter = null;
+    private FileWriter logFileWriter = null;
 
-  private PrintWriter pw;
+    private PrintWriter pw;
 
-  public LogWatcher(QuickShop plugin, File log) {
-    try {
-      if (!log.exists()) {
-        log.createNewFile();
-      }
-      logFileWriter = new FileWriter(log, true);
-      pw = new PrintWriter(logFileWriter);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      plugin.getLogger().severe("Log file was not found!");
-    } catch (IOException e) {
-      e.printStackTrace();
-      plugin.getLogger().severe("Could not create the log file!");
-    }
-  }
-
-  public void add(@NotNull String s) {
-    logs.add(s);
-  }
-
-  @SneakyThrows
-  public void close() {
-    if (logFileWriter != null) {
-      logFileWriter.flush();
-      logFileWriter.close();
-    }
-  }
-
-  public void log(@NonNull String log) {
-    Date date = Calendar.getInstance().getTime();
-    Timestamp time = new Timestamp(date.getTime());
-    this.add("[" + time + "] " + log);
-  }
-
-  @Override
-  public void run() {
-    for (String log : logs) {
-      if (logFileWriter == null) {
-        continue;
-      }
-      if (pw == null) {
-        continue;
-      }
-      pw.println(log);
-    }
-    logs.clear();
-    if (logFileWriter != null) {
-      try {
-        if (pw != null) {
-          pw.flush();
+    public LogWatcher(QuickShop plugin, File log) {
+        try {
+            if (!log.exists()) {
+                log.createNewFile();
+            }
+            logFileWriter = new FileWriter(log, true);
+            pw = new PrintWriter(logFileWriter);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            plugin.getLogger().severe("Log file was not found!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().severe("Could not create the log file!");
         }
-        logFileWriter.flush();
-      } catch (IOException ioe) {
-        Util.debugLog("Failed to flush log to disk: " + ioe.getMessage());
-      }
     }
-  }
+
+    @SneakyThrows
+    public void close() {
+        if (logFileWriter != null) {
+            logFileWriter.flush();
+            logFileWriter.close();
+        }
+    }
+
+    public void log(@NonNull String log) {
+        Date date = Calendar.getInstance().getTime();
+        Timestamp time = new Timestamp(date.getTime());
+        this.add("[" + time + "] " + log);
+    }
+
+    public void add(@NotNull String s) {
+        logs.add(s);
+    }
+
+    @Override
+    public void run() {
+        for (String log : logs) {
+            if (logFileWriter == null) {
+                continue;
+            }
+            if (pw == null) {
+                continue;
+            }
+            pw.println(log);
+        }
+        logs.clear();
+        if (logFileWriter != null) {
+            try {
+                if (pw != null) {
+                    pw.flush();
+                }
+                logFileWriter.flush();
+            } catch (IOException ioe) {
+                Util.debugLog("Failed to flush log to disk: " + ioe.getMessage());
+            }
+        }
+    }
+
 }

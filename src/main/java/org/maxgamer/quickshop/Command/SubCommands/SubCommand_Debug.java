@@ -37,108 +37,109 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_Debug implements CommandProcesser {
 
-  private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin = QuickShop.instance;
 
-  @NotNull
-  @Override
-  public List<String> onTabComplete(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    final ArrayList<String> list = new ArrayList<>();
-
-    list.add("debug");
-    list.add("dev");
-    list.add("devmode");
-    list.add("handlerlist");
-    list.add("jvm");
-
-    return list;
-  }
-
-  @Override
-  public void onCommand(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    if (cmdArg.length < 1) {
-      switchDebug(sender);
-      return;
-    }
-
-    switch (cmdArg[0]) {
-      case "debug":
-      case "dev":
-      case "devmode":
-        switchDebug(sender);
-        break;
-      case "handlerlist":
-        if (cmdArg.length < 2) {
-          sender.sendMessage("You must given a event");
-          break;
+    @Override
+    public void onCommand(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            switchDebug(sender);
+            return;
         }
 
-        printHandlerList(sender, cmdArg[1]);
-        break;
-      case "jvm":
-        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+        switch (cmdArg[0]) {
+            case "debug":
+            case "dev":
+            case "devmode":
+                switchDebug(sender);
+                break;
+            case "handlerlist":
+                if (cmdArg.length < 2) {
+                    sender.sendMessage("You must given a event");
+                    break;
+                }
 
-        List<String> arguments = runtimeMxBean.getInputArguments();
-        sender.sendMessage(
-            ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
-        sender.sendMessage(ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
-        sender.sendMessage(
-            ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
-        sender.sendMessage(
-            ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
-        sender.sendMessage(
-            ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
-        Map<String, String> sys = runtimeMxBean.getSystemProperties();
-        List<String> sysData = new ArrayList<>();
-        sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
-        sender.sendMessage(
-            ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
-        break;
-      default:
-        sender.sendMessage("Error, no correct args given.");
-        break;
+                printHandlerList(sender, cmdArg[1]);
+                break;
+            case "jvm":
+                RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+
+                List<String> arguments = runtimeMxBean.getInputArguments();
+                sender.sendMessage(
+                    ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
+                sender.sendMessage(ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
+                sender.sendMessage(
+                    ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
+                sender.sendMessage(
+                    ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
+                sender.sendMessage(
+                    ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
+                Map<String, String> sys = runtimeMxBean.getSystemProperties();
+                List<String> sysData = new ArrayList<>();
+                sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
+                sender.sendMessage(
+                    ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
+                break;
+            default:
+                sender.sendMessage("Error, no correct args given.");
+                break;
+        }
     }
-  }
 
-  public void switchDebug(@NotNull CommandSender sender) {
-    final boolean debug = plugin.getConfig().getBoolean("dev-mode");
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        final ArrayList<String> list = new ArrayList<>();
 
-    if (debug) {
-      plugin.getConfig().set("dev-mode", false);
-      plugin.saveConfig();
-      plugin.getServer().getPluginManager().disablePlugin(plugin);
-      plugin.getServer().getPluginManager().enablePlugin(plugin);
-      sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging", sender));
-      return;
+        list.add("debug");
+        list.add("dev");
+        list.add("devmode");
+        list.add("handlerlist");
+        list.add("jvm");
+
+        return list;
     }
 
-    plugin.getConfig().set("dev-mode", true);
-    plugin.saveConfig();
-    plugin.getServer().getPluginManager().disablePlugin(plugin);
-    plugin.getServer().getPluginManager().enablePlugin(plugin);
-    sender.sendMessage(MsgUtil.getMessage("command.now-debuging", sender));
-  }
+    public void switchDebug(@NotNull CommandSender sender) {
+        final boolean debug = plugin.getConfig().getBoolean("dev-mode");
 
-  public void printHandlerList(@NotNull CommandSender sender, String event) {
-    try {
-      final Class clazz = Class.forName(event);
-      final Method method = clazz.getMethod("getHandlerList");
-      final Object[] obj = new Object[0];
-      final HandlerList list = (HandlerList) method.invoke(null, obj);
+        if (debug) {
+            plugin.getConfig().set("dev-mode", false);
+            plugin.saveConfig();
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            plugin.getServer().getPluginManager().enablePlugin(plugin);
+            sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging", sender));
+            return;
+        }
 
-      for (RegisteredListener listener1 : list.getRegisteredListeners()) {
-        sender.sendMessage(
-            ChatColor.AQUA
-                + listener1.getPlugin().getName()
-                + ChatColor.YELLOW
-                + " # "
-                + ChatColor.GREEN
-                + listener1.getListener().getClass().getCanonicalName());
-      }
-    } catch (Throwable th) {
-      sender.sendMessage("ERR " + th.getMessage());
-      th.printStackTrace();
+        plugin.getConfig().set("dev-mode", true);
+        plugin.saveConfig();
+        plugin.getServer().getPluginManager().disablePlugin(plugin);
+        plugin.getServer().getPluginManager().enablePlugin(plugin);
+        sender.sendMessage(MsgUtil.getMessage("command.now-debuging", sender));
     }
-  }
+
+    public void printHandlerList(@NotNull CommandSender sender, String event) {
+        try {
+            final Class clazz = Class.forName(event);
+            final Method method = clazz.getMethod("getHandlerList");
+            final Object[] obj = new Object[0];
+            final HandlerList list = (HandlerList) method.invoke(null, obj);
+
+            for (RegisteredListener listener1 : list.getRegisteredListeners()) {
+                sender.sendMessage(
+                    ChatColor.AQUA
+                        + listener1.getPlugin().getName()
+                        + ChatColor.YELLOW
+                        + " # "
+                        + ChatColor.GREEN
+                        + listener1.getListener().getClass().getCanonicalName());
+            }
+        } catch (Throwable th) {
+            sender.sendMessage("ERR " + th.getMessage());
+            th.printStackTrace();
+        }
+    }
+
 }

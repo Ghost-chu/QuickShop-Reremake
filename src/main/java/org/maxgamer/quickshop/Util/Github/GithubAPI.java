@@ -26,33 +26,34 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 
 public class GithubAPI {
-  private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+    private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
-  @Nullable
-  public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
-    String json =
-        HttpRequest.get(
+    @Nullable
+    public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
+        String json =
+            HttpRequest.get(
                 new URL(
                     "https://api.github.com/repos/Ghost-chu/QuickShop-Reremake/releases/latest"))
-            .execute()
-            .returnContent()
-            .asString("UTF-8");
-    ReleaseJsonContainer result = gson.fromJson(json, ReleaseJsonContainer.class);
-    for (ReleaseJsonContainer.AssetsBean asset : result.getAssets()) {
-      if (asset.getName().contains("original-")) {
-        continue;
-      }
-      if (asset.getName().contains("-javadoc")) {
-        continue;
-      }
-      if (asset.getName().contains("-sources")) {
-        continue;
-      }
-      if (asset.getName().contains("-shaded")) {
-        continue;
-      }
-      return asset;
+                .execute()
+                .returnContent()
+                .asString("UTF-8");
+        ReleaseJsonContainer result = gson.fromJson(json, ReleaseJsonContainer.class);
+        for (ReleaseJsonContainer.AssetsBean asset : result.getAssets()) {
+            if (asset.getName().contains("original-")) {
+                continue;
+            }
+            if (asset.getName().contains("-javadoc")) {
+                continue;
+            }
+            if (asset.getName().contains("-sources")) {
+                continue;
+            }
+            if (asset.getName().contains("-shaded")) {
+                continue;
+            }
+            return asset;
+        }
+        return null;
     }
-    return null;
-  }
+
 }

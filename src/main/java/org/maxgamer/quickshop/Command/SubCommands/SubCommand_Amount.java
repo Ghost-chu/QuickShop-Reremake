@@ -30,39 +30,40 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 
 public class SubCommand_Amount implements CommandProcesser {
 
-  private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin = QuickShop.instance;
 
-  @NotNull
-  @Override
-  public List<String> onTabComplete(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    final ArrayList<String> list = new ArrayList<>();
+    @Override
+    public void onCommand(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
+            return;
+        }
 
-    list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command can't be run by console");
+            return;
+        }
 
-    return list;
-  }
+        final Player player = (Player) sender;
 
-  @Override
-  public void onCommand(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    if (cmdArg.length < 1) {
-      sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
-      return;
+        if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
+            sender.sendMessage(MsgUtil.getMessage("no-pending-action", sender));
+            return;
+        }
+
+        plugin.getShopManager().handleChat(player, cmdArg[0]);
     }
 
-    if (!(sender instanceof Player)) {
-      sender.sendMessage("This command can't be run by console");
-      return;
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        final ArrayList<String> list = new ArrayList<>();
+
+        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
+
+        return list;
     }
 
-    final Player player = (Player) sender;
-
-    if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-      sender.sendMessage(MsgUtil.getMessage("no-pending-action", sender));
-      return;
-    }
-
-    plugin.getShopManager().handleChat(player, cmdArg[0]);
-  }
 }

@@ -31,21 +31,22 @@ import org.maxgamer.quickshop.Util.Util;
 
 public class ClearLaggListener implements Listener {
 
-  @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-  public void plugin(me.minebuilders.clearlag.events.EntityRemoveEvent clearlaggEvent) {
-    final List<Entity> entities = clearlaggEvent.getEntityList();
-    final List<Entity> pendingExclude = new ArrayList<>();
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    public void plugin(me.minebuilders.clearlag.events.EntityRemoveEvent clearlaggEvent) {
+        final List<Entity> entities = clearlaggEvent.getEntityList();
+        final List<Entity> pendingExclude = new ArrayList<>();
 
-    for (Entity entity : entities) {
-      if (!(entity instanceof Item)
-          || !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
-        continue;
-      }
+        for (Entity entity : entities) {
+            if (!(entity instanceof Item)
+                || !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
+                continue;
+            }
 
-      pendingExclude.add(entity);
+            pendingExclude.add(entity);
+        }
+
+        pendingExclude.forEach(clearlaggEvent::removeEntity);
+        Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
 
-    pendingExclude.forEach(clearlaggEvent::removeEntity);
-    Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
-  }
 }

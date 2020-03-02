@@ -30,18 +30,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface BukkitAPIWrapper {
-  void teleportEntity(
-      @NotNull Entity entity,
-      @NotNull Location location,
-      @Nullable PlayerTeleportEvent.TeleportCause cause);
+    void teleportEntity(
+        @NotNull Entity entity,
+        @NotNull Location location,
+        @Nullable PlayerTeleportEvent.TeleportCause cause);
 
-  void getChunkAt(
-      @NotNull World world,
-      @NotNull Location location,
-      @NotNull CompletableFuture<Chunk> futureTask);
+    void getChunkAt(
+        @NotNull World world,
+        @NotNull Location location,
+        @NotNull CompletableFuture<Chunk> futureTask);
 
-  void getChunkAt(@NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask);
+    void getChunkAt(@NotNull World world, int x, int z, @NotNull CompletableFuture<Chunk> futureTask);
 
-  void getChunkAt(
-      @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask);
+    void getChunkAt(
+        @NotNull World world, @NotNull Block block, @NotNull CompletableFuture<Chunk> futureTask);
+
 }

@@ -22,34 +22,34 @@ package org.maxgamer.quickshop.Shop;
 import org.jetbrains.annotations.NotNull;
 
 public enum MatcherWorkMode {
-  QSMATCHER(0),
-  BUKKITMATCHER(1),
-  JAVAMATCHER(2);
+    QSMATCHER(0),
+    BUKKITMATCHER(1),
+    JAVAMATCHER(2);
 
-  private final int id;
+    private final int id;
 
-  MatcherWorkMode(int id) {
-    this.id = id;
-  }
-
-  public static @NotNull MatcherWorkMode fromID(int id) {
-    for (MatcherWorkMode workMode : MatcherWorkMode.values()) {
-      if (workMode.id == id) {
-        return workMode;
-      }
+    MatcherWorkMode(int id) {
+        this.id = id;
     }
-    return QSMATCHER;
-  }
 
-  public static int toID(@NotNull MatcherWorkMode workMode) {
-    return workMode.id;
-  }
+    public static @NotNull MatcherWorkMode fromID(int id) {
+        for (MatcherWorkMode workMode : MatcherWorkMode.values()) {
+            if (workMode.id == id) {
+                return workMode;
+            }
+        }
+        return QSMATCHER;
+    }
 
-  public int toID() {
-    return id;
-  }
+    public static int toID(@NotNull MatcherWorkMode workMode) {
+        return workMode.id;
+    }
 
-  public int getId() {
-    return id;
-  }
+    public int toID() {
+        return id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

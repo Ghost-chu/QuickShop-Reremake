@@ -31,14 +31,17 @@ import org.maxgamer.quickshop.Shop.DisplayItem;
  */
 @Deprecated
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
-  private final Queue<DisplayItem> checkQueue = new LinkedList<>();
+    private final Queue<DisplayItem> checkQueue = new LinkedList<>();
 
-  @Override
-  public @Deprecated void run() {
-    checkQueue.forEach(DisplayItem::removeDupe);
-  }
+    @Override
+    public @Deprecated
+    void run() {
+        checkQueue.forEach(DisplayItem::removeDupe);
+    }
 
-  public @Deprecated void add(@NotNull DisplayItem displayItem) {
-    checkQueue.offer(displayItem);
-  }
+    public @Deprecated
+    void add(@NotNull DisplayItem displayItem) {
+        checkQueue.offer(displayItem);
+    }
+
 }
