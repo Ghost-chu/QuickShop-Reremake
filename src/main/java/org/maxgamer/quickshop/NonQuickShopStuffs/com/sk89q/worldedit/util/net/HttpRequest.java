@@ -156,6 +156,19 @@ public class HttpRequest implements Closeable {
      * @throws java.io.IOException on I/O error
      */
     public HttpRequest execute() throws IOException {
+        return execute(-1);
+    }
+
+
+    /**
+     * Execute the request.
+     *
+     * <p>After execution, {@link #close()} should be called.
+     *
+     * @return this object
+     * @throws java.io.IOException on I/O error
+     */
+    public HttpRequest execute(int timeout) throws IOException {
         boolean successful = false;
 
         try {
@@ -180,7 +193,12 @@ public class HttpRequest implements Closeable {
             conn.setUseCaches(false);
             conn.setDoOutput(true);
             conn.setConnectTimeout(CONNECT_TIMEOUT);
-            conn.setReadTimeout(READ_TIMEOUT);
+            if (timeout != -1) {
+                conn.setReadTimeout(timeout);
+            } else {
+                conn.setReadTimeout(READ_TIMEOUT);
+            }
+
 
             conn.connect();
 
