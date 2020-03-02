@@ -296,6 +296,7 @@ public class ShopManager {
      * Gets a shop in a specific location
      *
      * @param loc The location to get the shop from
+     * @param skipShopableChecking whether to check is shopable
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
