@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 public class SignUpdateWatcher extends BukkitRunnable {
   // private QuickShop plugin;
-  private Queue<Shop> signUpdateQueue = new LinkedList<>();
+  private final Queue<Shop> signUpdateQueue = new LinkedList<>();
 
   public SignUpdateWatcher(QuickShop plugin) {
     // this.plugin = plugin;

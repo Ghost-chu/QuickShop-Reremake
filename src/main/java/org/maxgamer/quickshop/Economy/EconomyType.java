@@ -32,7 +32,7 @@ public enum EconomyType {
   RESERVE(1),
   MIXED(2);
 
-  private int id;
+  private final int id;
 
   EconomyType(int id) {
     this.id = id;

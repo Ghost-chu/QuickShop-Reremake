@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Util;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -33,11 +34,10 @@ import org.maxgamer.quickshop.Event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.Event.ShopProtectionCheckEvent;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class PermissionChecker {
-  private QuickShop plugin;
-  private boolean usePermissionChecker;
+  private final QuickShop plugin;
+
+  private final boolean usePermissionChecker;
 
   public PermissionChecker(@NotNull QuickShop plugin) {
     this.plugin = plugin;

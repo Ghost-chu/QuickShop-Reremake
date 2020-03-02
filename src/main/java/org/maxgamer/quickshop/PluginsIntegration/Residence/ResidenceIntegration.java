@@ -35,8 +35,9 @@ import org.maxgamer.quickshop.QuickShop;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class ResidenceIntegration implements IntegratedPlugin {
-  List<String> createLimits;
-  List<String> tradeLimits;
+  final List<String> createLimits;
+
+  final List<String> tradeLimits;
 
   public ResidenceIntegration(QuickShop plugin) {
     this.createLimits = plugin.getConfig().getStringList("integration.residence.create");

@@ -34,7 +34,7 @@ public enum DisplayType {
   ARMORSTAND(1),
   VIRTUALITEM(2);
 
-  private int id;
+  private final int id;
 
   DisplayType(int id) {
     this.id = id;

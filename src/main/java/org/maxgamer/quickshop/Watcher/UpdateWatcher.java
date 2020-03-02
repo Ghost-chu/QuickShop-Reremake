@@ -42,7 +42,7 @@ public class UpdateWatcher implements Listener {
   private static UpdateInfomation info = null;
 
   public static String fixVer(@NotNull String originalVer) {
-    originalVer = originalVer.replaceAll(QuickShop.instance.getFork(), "");
+    originalVer = originalVer.replaceAll(QuickShop.getFork(), "");
     originalVer = originalVer.trim();
     return originalVer;
   }

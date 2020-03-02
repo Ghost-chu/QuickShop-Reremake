@@ -55,31 +55,31 @@ public class SentryErrorReporter {
 
   private final ArrayList<String> reported = new ArrayList<>();
 
-  private Context context;
+  private final Context context;
 
   private boolean disable;
 
   @Getter
   private boolean enabled;
 
-  private List<Class<?>> ignoredException = new ArrayList<>();
+  private final List<Class<?>> ignoredException = new ArrayList<>();
 
-  private QuickShop plugin;
+  private final QuickShop plugin;
 
   /* Pre-init it if it called before the we create it... */
-  private SentryClient sentryClient;
+  private final SentryClient sentryClient;
 
   private boolean tempDisable;
 
   private String lastPaste;
 
-  private IncompatibleChecker checker = new IncompatibleChecker();
+  private final IncompatibleChecker checker = new IncompatibleChecker();
 
   public SentryErrorReporter(@NotNull QuickShop plugin) {
     this.plugin = plugin;
     // sentryClient = Sentry.init(dsn);
     Util.debugLog("Loading SentryErrorReporter");
-    sentryClient = SentryClientFactory.sentryClient(dsn);;
+    sentryClient = SentryClientFactory.sentryClient(dsn);
     context = sentryClient.getContext();
     Util.debugLog("Setting basic report data...");
     // context.addTag("plugin_version", QuickShop.getVersion());

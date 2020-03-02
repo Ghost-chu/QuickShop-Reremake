@@ -29,10 +29,13 @@ import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
-/** A util allow quickshop check item matches easy and quick. */
+/**
+ * A util allow quickshop check item matches easy and quick.
+ */
 public class ItemMatcher {
-  private ItemMetaMatcher itemMetaMatcher;
-  private QuickShop plugin;
+  private final ItemMetaMatcher itemMetaMatcher;
+
+  private final QuickShop plugin;
 
   public ItemMatcher(QuickShop plugin) {
     this.plugin = plugin;
@@ -98,21 +101,32 @@ public class ItemMatcher {
   private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
     return requireStack.getType().equals(givenStack.getType());
   }
+
 }
 
 class ItemMetaMatcher {
 
-  private boolean banner;
-  private boolean repaircost;
-  private boolean attributes;
-  private boolean custommodeldata;
-  private boolean damage;
-  private boolean displayname;
-  private boolean enchs;
-  private boolean itemflags;
-  private boolean lores;
-  private boolean potions;
-  private boolean book;
+  private final boolean banner;
+
+  private final boolean repaircost;
+
+  private final boolean attributes;
+
+  private final boolean custommodeldata;
+
+  private final boolean damage;
+
+  private final boolean displayname;
+
+  private final boolean enchs;
+
+  private final boolean itemflags;
+
+  private final boolean lores;
+
+  private final boolean potions;
+
+  private final boolean book;
 
   public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
     this.damage = itemMatcherConfig.getBoolean("damage");

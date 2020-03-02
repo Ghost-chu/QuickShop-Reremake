@@ -55,9 +55,9 @@ public class ShopManager {
 
     private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ? Sets.newConcurrentHashSet() : Sets.newHashSet();
 
-    private HashMap<UUID, Info> actions = new HashMap<>();
+    private final HashMap<UUID, Info> actions = new HashMap<>();
 
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     private boolean useFastShopSearchAlgorithm = false;
 
@@ -680,13 +680,11 @@ public class ShopManager {
             return;
         }
         Location loc = shop.getLocation();
-        try {
-            // Write it to the database
-            plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-            // Add it to the world
+
+        if (plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
             addShop(loc.getWorld().getName(), shop);
-        } catch (SQLException error) {
-            plugin.getLogger().warning("SQLException detected, trying to auto fix the database...");
+        } else {
+            plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
             boolean backupSuccess = Util.backupDatabase();
             try {
                 if (backupSuccess) {
@@ -699,7 +697,6 @@ public class ShopManager {
                 plugin.getLogger().warning("Failed to autofix the database, all changes will revert after a reboot.");
                 error2.printStackTrace();
             }
-            error.printStackTrace();
         }
         // Create sign
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
@@ -838,10 +835,8 @@ public class ShopManager {
             // Found some shops in this chunk
             if (inChunk != null) {
                 shop = inChunk.get(attachedBlock.getLocation());
-                if (shop != null) {
-                    // Okay, shop was founded.
-                    return shop;
-                }
+                // Okay, shop was founded.
+                return shop;
                 // Oooops, no any shops matched.
             }
         }
@@ -1043,7 +1038,7 @@ public class ShopManager {
 
         private Iterator<Shop> shops;
 
-        private Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
+        private final Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
 
         public ShopIterator() {
             //noinspection unchecked

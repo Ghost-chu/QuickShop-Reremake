@@ -16,29 +16,8 @@
 
 package org.maxgamer.quickshop.Util.Logger;
 
-import static org.bukkit.ChatColor.AQUA;
-import static org.bukkit.ChatColor.BLACK;
-import static org.bukkit.ChatColor.BLUE;
-import static org.bukkit.ChatColor.BOLD;
-import static org.bukkit.ChatColor.DARK_AQUA;
-import static org.bukkit.ChatColor.DARK_BLUE;
-import static org.bukkit.ChatColor.DARK_GRAY;
-import static org.bukkit.ChatColor.DARK_GREEN;
-import static org.bukkit.ChatColor.DARK_PURPLE;
-import static org.bukkit.ChatColor.DARK_RED;
-import static org.bukkit.ChatColor.GOLD;
-import static org.bukkit.ChatColor.GRAY;
-import static org.bukkit.ChatColor.GREEN;
-import static org.bukkit.ChatColor.ITALIC;
-import static org.bukkit.ChatColor.LIGHT_PURPLE;
-import static org.bukkit.ChatColor.MAGIC;
-import static org.bukkit.ChatColor.RED;
-import static org.bukkit.ChatColor.RESET;
-import static org.bukkit.ChatColor.STRIKETHROUGH;
-import static org.bukkit.ChatColor.UNDERLINE;
-import static org.bukkit.ChatColor.WHITE;
-import static org.bukkit.ChatColor.YELLOW;
-
+import static org.bukkit.ChatColor.*;
+import com.google.common.collect.Maps;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,9 +34,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.ReflectionUtil;
-import org.maxgamer.quickshop.Util.Util;
-import com.google.common.collect.Maps;
 
 /*
  * Originally take from Mypet which is a awesome project, extends PluginLogger in order to replace
@@ -94,19 +70,24 @@ public class QuickShopLogger extends PluginLogger {
   }
 
   // below are non-static for secret optimization
-  /** Regex that indicates the case insensitive */
+
+  /**
+   * Regex that indicates the case insensitive
+   */
   private String IGNORE_CASE;
 
   // private FileHandler debugLogFileHandler = null;
   private boolean hasAnsi = true;
+
   private boolean hasJline = true;
-  private boolean useLog4j;
+
+  private final boolean useLog4j;
 
   @SneakyThrows
   public QuickShopLogger(Plugin plugin) {
     super(plugin);
     registerStyles();
-    
+
     // Logger re-naming
     String prefix = plugin.getDescription().getPrefix();
     String pluginName = (useLog4j = plugin.getConfig().getBoolean("enable-log4j")) ?
