@@ -47,8 +47,12 @@ public class SubCommand_Recovery implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Util.backupDatabase();
-                plugin.getShopLoader().recoverFromFile(Util.readToString(file));
+                try {
+                    Util.backupDatabase();
+                    plugin.getShopLoader().recoverFromFile(Util.readToString(file));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
         }.runTaskAsynchronously(plugin);
 
