@@ -372,6 +372,7 @@ public class Paste {
         return null;
     }
 
+
     @Nullable
     public String paste(@NotNull String content, int type) {
         PasteInterface paster;
@@ -392,5 +393,4 @@ public class Paste {
         }
         return null;
     }
-
 }
