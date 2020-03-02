@@ -40,6 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Util.Util;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -77,6 +78,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
 
+    @Nullable
     private BukkitTask asyncSendingTask;
 
 
@@ -101,7 +103,7 @@ public class VirtualDisplayItem extends DisplayItem {
         if (packetAdapter == null) {
             packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                 @Override
-                public void onPacketSending(PacketEvent event) {
+                public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
                     asyncPacketSendQueue.offer(() -> {
                         boolean isFull = event.getPacket().getBooleans().read(0);
@@ -119,9 +121,14 @@ public class VirtualDisplayItem extends DisplayItem {
                             Chunk chunk = shop.getLocation().getChunk();
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
                         }
-                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
-                            packetSenders.add(event.getPlayer().getUniqueId());
-                            sendFakeItem(event.getPlayer());
+                        Player player = event.getPlayer();
+                        if (player == null || !player.isOnline()) {
+                            Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
+                            return;
+                        }
+                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                            packetSenders.add(player.getUniqueId());
+                            sendFakeItem(player);
                         }
                     });
 //                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -272,11 +279,11 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public boolean checkIsShopEntity(Entity entity) {
+    public boolean checkIsShopEntity(@NotNull Entity entity) {
         return false;
     }
 
-    public void sendFakeItem(Player player) {
+    public void sendFakeItem(@NotNull Player player) {
         sendPacket(player, fakeItemPacket);
         sendPacket(player, fakeItemMetaPacket);
         sendPacket(player, fakeItemVelocityPacket);
@@ -288,7 +295,7 @@ public class VirtualDisplayItem extends DisplayItem {
         sendPacketToAll(fakeItemVelocityPacket);
     }
 
-    private void sendPacket(Player player, PacketContainer packet) {
+    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
         try {
             protocolManager.sendServerPacket(player, packet);
         } catch (InvocationTargetException e) {
@@ -296,7 +303,7 @@ public class VirtualDisplayItem extends DisplayItem {
         }
     }
 
-    private void sendPacketToAll(PacketContainer packet) {
+    private void sendPacketToAll(@NotNull PacketContainer packet) {
         Iterator<UUID> iterator = packetSenders.iterator();
         while (iterator.hasNext()) {
             Player nextPlayer = Bukkit.getPlayer(iterator.next());
@@ -337,7 +344,7 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public void safeGuard(Entity entity) {
+    public void safeGuard(@NotNull Entity entity) {
 
     }
 
