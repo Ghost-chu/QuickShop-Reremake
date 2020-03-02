@@ -22,6 +22,7 @@ Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 - Enchantment displayname i18n! [Reremake]
 - A cool item preview [Reremake]
 - Friendly for region and world protect plugin [Reremake]
+- ProtocolLib based Virtual DisplayItem support [Reremake]
 
 
 ## Builds
