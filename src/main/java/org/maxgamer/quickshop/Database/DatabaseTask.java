@@ -1,21 +1,38 @@
 package org.maxgamer.quickshop.Database;
 
+import lombok.AllArgsConstructor;
+import org.maxgamer.quickshop.QuickShop;
+
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface DatabaseTask {
 
-    default void run(){
-        try {
-            execute();
-            onSuccess();
+public class DatabaseTask {
+
+    private static final Database database= QuickShop.instance.getDatabase();
+    private String statement;
+    private Task task;
+
+    public DatabaseTask(String statement,Task task){
+        this.statement=statement;
+        this.task=task;
+    }
+
+    public void run(){
+        try (PreparedStatement ps=database.getConnection().prepareStatement(statement);){
+             task.edit(ps);
+             ps.execute();
+             task.onSuccess();
         }catch (SQLException e){
-            onFailed(e);
+            task.onFailed(e);
         }
     }
 
-    void execute() throws SQLException;
-    default void onSuccess(){}
-    default void onFailed(SQLException e){
-        e.printStackTrace();
+   interface Task{
+       void edit(PreparedStatement ps) throws SQLException;
+       default void onSuccess(){}
+       default void onFailed(SQLException e){
+            e.printStackTrace();
+        }
     }
 }
