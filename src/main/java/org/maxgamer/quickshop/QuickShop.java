@@ -671,13 +671,13 @@ public class QuickShop extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
             inventoryListener = new DisplayProtectionListener(this);
             Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+            if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+                Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
+            }
         }
 
         if (getConfig().getBoolean("shop.lock")) {
             Bukkit.getPluginManager().registerEvents(lockListener, this);
-        }
-        if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-            Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
