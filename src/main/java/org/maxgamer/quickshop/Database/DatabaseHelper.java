@@ -166,7 +166,7 @@ public class DatabaseHelper {
         st.execute(createTable);
     }
 
-    public void removeShop(Shop shop) throws SQLException {
+    public void removeShop(Shop shop) {
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + QuickShop.instance.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
 //						+ " AND z = " + z + " AND world = \"" + worldName + "\""

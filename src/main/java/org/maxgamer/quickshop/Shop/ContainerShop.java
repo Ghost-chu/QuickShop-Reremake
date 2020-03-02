@@ -338,12 +338,8 @@ public class ContainerShop implements Shop {
             // Delete it from memory
             plugin.getShopManager().removeShop(this);
         } else {
-            try {
-                plugin.getShopManager().removeShop(this);
-                plugin.getDatabaseHelper().removeShop(this);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            plugin.getShopManager().removeShop(this);
+            plugin.getDatabaseHelper().removeShop(this);
         }
     }
 
