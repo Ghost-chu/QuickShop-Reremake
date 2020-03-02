@@ -170,18 +170,9 @@
             <id>EnderZone</id>
             <url>http://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
-        <repository>
-            <id>portlek</id>
-            <url>https://dl.bintray.com/portlek/maven</url>
-        </repository>
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>io.github.portlek</groupId>
-            <artifactId>configs-bukkit</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
