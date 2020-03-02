@@ -40,7 +40,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -292,7 +291,7 @@ public class ShopManager {
     /**
      * Gets a shop in a specific location
      *
-     * @param loc The location to get the shop from
+     * @param loc                  The location to get the shop from
      * @param skipShopableChecking whether to check is shopable
      * @return The shop at that location
      */
