@@ -84,7 +84,7 @@ public class PermissionChecker {
 
         //register a listener to cancel test event
         Bukkit.getPluginManager().registerEvents(new Listener() {
-            @EventHandler(priority = EventPriority.LOWEST)
+            @EventHandler(priority = EventPriority.HIGHEST)
             public void onTestEvent(BlockBreakEvent event) {
                 if (event == beMainHand) {
                     // Call for event for protection check end
