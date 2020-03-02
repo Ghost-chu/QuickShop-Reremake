@@ -344,7 +344,7 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public void safeGuard(@NotNull Entity entity) {
+    public void safeGuard(@Nullable Entity entity) {
 
     }
 
@@ -356,12 +356,12 @@ public class VirtualDisplayItem extends DisplayItem {
     }
 
     @Override
-    public Entity getDisplay() {
+    public @Nullable Entity getDisplay() {
         return null;
     }
 
     @Override
-    public Location getDisplayLocation() {
+    public @NotNull Location getDisplayLocation() {
         return shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
