@@ -220,9 +220,10 @@ public class ShopManager {
         }
         Location loc = shop.getLocation();
 
-        if (plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+        try {
+            plugin.getDatabaseHelper().createShop(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), shop.getItem(), (shop.isUnlimited() ? 1 : 0), shop.getShopType().toID(), Objects.requireNonNull(loc.getWorld()).getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             addShop(loc.getWorld().getName(), shop);
-        } else {
+        } catch (SQLException e) {
             plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
             boolean backupSuccess = Util.backupDatabase();
             try {
@@ -614,7 +615,8 @@ public class ShopManager {
     }
 
     @SuppressWarnings("deprecation")
-    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, boolean bypassProtectionChecks) {
+    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String
+        message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;
