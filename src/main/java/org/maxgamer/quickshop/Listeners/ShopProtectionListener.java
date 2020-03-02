@@ -37,6 +37,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
@@ -61,8 +62,10 @@ public class ShopProtectionListener implements Listener {
 
     for (int i = 0; i < e.blockList().size(); i++) {
       final Block b = e.blockList().get(i);
-      final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
-
+      Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+      if (shop == null) {
+        shop = getShopNextTo(b.getLocation());
+      }
       if (shop != null) {
         if (plugin.getConfig().getBoolean("protect.explode")) {
           e.setCancelled(true);
@@ -71,6 +74,23 @@ public class ShopProtectionListener implements Listener {
         }
       }
     }
+  }
+
+  /**
+   * Gets the shop a sign is attached to
+   *
+   * @param loc The location of the sign
+   * @return The shop
+   */
+  @Nullable
+  private Shop getShopNextTo(@NotNull Location loc) {
+    final Block b = Util.getAttached(loc.getBlock());
+    // Util.getAttached(b)
+    if (b == null) {
+      return null;
+    }
+
+    return plugin.getShopManager().getShop(b.getLocation());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
