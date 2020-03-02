@@ -118,7 +118,7 @@
     "now-nolonger-debuging": "&aプロダクションモードに切り替え成功、QuickShopをリロードしています。",
     "wrong-args": "&cパラメーターが一致しません。\/qs help を使用してヘルプを確認してください。",
     "description": {
-      "title": "&aQuickShop Help",
+      "title": "&aQuickShop ヘルプ",
       "unlimited": "&eショップを無制限にします。",
       "setowner": "&eショップの所有者を変更します。",
       "owner": "&eショップの所有者を変更",
