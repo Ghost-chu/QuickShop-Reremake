@@ -56,77 +56,69 @@ public class DatabaseHelper {
      * Creates the database table 'shops'.
      */
     private void createShopsTable() {
-        plugin.getDatabaseManager().add(() -> {
-            try {
-                Statement st = db.getConnection().createStatement();
-                String createTable = "CREATE TABLE " + QuickShop.instance
-                    .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
-                st.execute(createTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            Statement st = db.getConnection().createStatement();
+            String createTable = "CREATE TABLE " + QuickShop.instance
+                .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+            st.execute(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Creates the database table 'messages'
      *
      * @return Create failed or successed.
-     * @throws SQLException If the connection is invalid
      */
-    private void createMessagesTable() throws SQLException {
-        plugin.getDatabaseManager().add(() -> {
-            try {
-                Statement st = db.getConnection().createStatement();
-                String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-                if (plugin.getDatabase().getCore() instanceof MySQLCore) {
-                    createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
-                        + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
-                }
-                st.execute(createTable);
-            } catch (SQLException e) {
-                e.printStackTrace();
+    private void createMessagesTable() {
+        try {
+            Statement st = db.getConnection().createStatement();
+            String createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
+            if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+                createTable = "CREATE TABLE " + QuickShop.instance.getDbPrefix()
+                    + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
             }
-        });
+            st.execute(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Verifies that all required columns exist.
      */
     private void checkColumns() {
-        plugin.getDatabaseManager().add(() -> {
-            PreparedStatement ps;
+        PreparedStatement ps;
+        try {
+            // V3.4.2
+            ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
+                .getDbPrefix() + "shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            //ignore
+        }
+        try {
+            // V3.4.3
+            ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
+                .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message");
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            //ignore
+        }
+        if (QuickShop.instance.getDatabase().getCore() instanceof MySQLCore) {
             try {
-                // V3.4.2
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
-                    .getDbPrefix() + "shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
+                    .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
                 ps.execute();
                 ps.close();
             } catch (SQLException e) {
                 //ignore
             }
-            try {
-                // V3.4.3
-                ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
-                    .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message");
-                ps.execute();
-                ps.close();
-            } catch (SQLException e) {
-                //ignore
-            }
-            if (QuickShop.instance.getDatabase().getCore() instanceof MySQLCore) {
-                try {
-                    ps = db.getConnection().prepareStatement("ALTER TABLE " + QuickShop.instance
-                        .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
-                    ps.execute();
-                    ps.close();
-                } catch (SQLException e) {
-                    //ignore
-                }
-            }
-        });
-
+        }
     }
 
     public void cleanMessage(long weekAgo) {
