@@ -1455,6 +1455,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 85);
             selectedVersion = 85;
         }
+        if (selectedVersion == 85) {
+            getConfig().set("shop.use-fast-shop-search-algorithm", null);
+            getConfig().set("config-version", 86);
+            selectedVersion = 86;
+        }
+
 
         saveConfig();
         reloadConfig();
