@@ -35,24 +35,41 @@ import org.maxgamer.quickshop.QuickShop;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class FactionsUUIDIntegration implements IntegratedPlugin {
-  private List<String> createFlags;
-  private List<String> tradeFlags;
-  private boolean createRequireOpen;
-  private boolean createRequireNormal;
-  private boolean createRequireWilderness;
-  private boolean createRequirePeaceful;
-  private boolean createRequirePermanent;
-  private boolean createRequireSafeZone;
-  private boolean createRequireOwn;
-  private boolean createRequireWarZone;
-  private boolean tradeRequireOpen;
-  private boolean tradeRequireNormal;
-  private boolean tradeRequireWilderness;
-  private boolean tradeRequirePeaceful;
-  private boolean tradeRequirePermanent;
-  private boolean tradeRequireSafeZone;
-  private boolean tradeRequireOwn;
-  private boolean tradeRequireWarZone;
+  private final List<String> createFlags;
+
+  private final List<String> tradeFlags;
+
+  private final boolean createRequireOpen;
+
+  private final boolean createRequireNormal;
+
+  private final boolean createRequireWilderness;
+
+  private final boolean createRequirePeaceful;
+
+  private final boolean createRequirePermanent;
+
+  private final boolean createRequireSafeZone;
+
+  private final boolean createRequireOwn;
+
+  private final boolean createRequireWarZone;
+
+  private final boolean tradeRequireOpen;
+
+  private final boolean tradeRequireNormal;
+
+  private final boolean tradeRequireWilderness;
+
+  private final boolean tradeRequirePeaceful;
+
+  private final boolean tradeRequirePermanent;
+
+  private final boolean tradeRequireSafeZone;
+
+  private final boolean tradeRequireOwn;
+
+  private final boolean tradeRequireWarZone;
 
   public FactionsUUIDIntegration(QuickShop plugin) {
     this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");

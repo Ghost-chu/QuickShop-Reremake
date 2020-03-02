@@ -205,7 +205,7 @@ public class ShopProtectionListener implements Listener {
       MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
     }
   }
-  private boolean sendProtectionAlert = QuickShop.instance.getConfig().getBoolean("send-shop-protection-alert",false);
+  private final boolean sendProtectionAlert = QuickShop.instance.getConfig().getBoolean("send-shop-protection-alert", false);
 
   // Protect Entity pickup shop
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

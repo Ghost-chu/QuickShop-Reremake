@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.Shop.DisplayItem;
  */
 @Deprecated
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
-  private Queue<DisplayItem> checkQueue = new LinkedList<>();
+  private final Queue<DisplayItem> checkQueue = new LinkedList<>();
 
   @Override
   public @Deprecated void run() {

@@ -26,7 +26,7 @@ public enum MatcherWorkMode {
   BUKKITMATCHER(1),
   JAVAMATCHER(2);
 
-  private int id;
+  private final int id;
 
   MatcherWorkMode(int id) {
     this.id = id;

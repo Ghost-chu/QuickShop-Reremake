@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.Util.Copied;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Language {
-  private QuickShop plugin;
+  private final QuickShop plugin;
   // private List<String> languages = new ArrayList<>();
 
   Language(QuickShop plugin) {

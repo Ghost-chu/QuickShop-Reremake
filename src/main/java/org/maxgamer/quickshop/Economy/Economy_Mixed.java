@@ -26,7 +26,7 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class Economy_Mixed implements EconomyCore {
-  EconomyCore core;
+  final EconomyCore core;
 
   public Economy_Mixed() {
     core = new Economy_Vault();

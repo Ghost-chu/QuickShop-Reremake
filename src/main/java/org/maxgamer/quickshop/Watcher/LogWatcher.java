@@ -19,11 +19,7 @@
 
 package org.maxgamer.quickshop.Watcher;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,8 +33,10 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
 
 public class LogWatcher extends BukkitRunnable {
-  private Queue<String> logs = new ConcurrentLinkedQueue<>();
+  private final Queue<String> logs = new ConcurrentLinkedQueue<>();
+
   private FileWriter logFileWriter = null;
+
   private PrintWriter pw;
 
   public LogWatcher(QuickShop plugin, File log) {

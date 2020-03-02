@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.HttpRequest;
 
 public class GithubAPI {
-  private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+  private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
   @Nullable
   public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {

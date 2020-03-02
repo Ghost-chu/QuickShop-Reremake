@@ -43,11 +43,15 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration implements IntegratedPlugin {
-  private List<WorldGuardFlags> createFlags;
-  private List<WorldGuardFlags> tradeFlags;
-  private StateFlag createFlag = new StateFlag("quickshop-create", false);
-  private StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
-  private QuickShop plugin;
+  private final List<WorldGuardFlags> createFlags;
+
+  private final List<WorldGuardFlags> tradeFlags;
+
+  private final StateFlag createFlag = new StateFlag("quickshop-create", false);
+
+  private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
+
+  private final QuickShop plugin;
 
   public WorldGuardIntegration(QuickShop plugin) {
     this.plugin = plugin;

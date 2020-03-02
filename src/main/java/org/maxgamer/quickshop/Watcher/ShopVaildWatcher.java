@@ -34,8 +34,9 @@ import org.maxgamer.quickshop.Util.Util;
 // unused, pending to remove
 @Deprecated
 public class ShopVaildWatcher extends BukkitRunnable {
-  private QuickShop plugin;
-  private Queue<Shop> checkQueue = new LinkedList<>();
+  private final QuickShop plugin;
+
+  private final Queue<Shop> checkQueue = new LinkedList<>();
 
   public ShopVaildWatcher(@NotNull QuickShop plugin) {
     this.plugin = plugin;

@@ -39,18 +39,30 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 
-/** A class allow plugin load shops fast and simply. */
+/**
+ * A class allow plugin load shops fast and simply.
+ */
 public class ShopLoader {
   private final ArrayList<Long> loadTimes = new ArrayList<>();
-  private Map<Timer, Double> costCache = new HashMap<>();
+
+  private final Map<Timer, Double> costCache = new HashMap<>();
+
   private int errors;
+
   private int loadAfterChunkLoaded = 0;
+
   private int loadAfterWorldLoaded = 0;
-  private QuickShop plugin;
+
+  private final QuickShop plugin;
+
   private int totalLoaded = 0;
+
   /* This may contains broken shop, must use null check before load it. */
-  @Getter private List<Shop> shopsInDatabase = new ArrayList<>();
-  @Getter private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new ArrayList<>();
+  @Getter
+  private List<Shop> shopsInDatabase = new ArrayList<>();
+
+  @Getter
+  private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new ArrayList<>();
 
   /**
    * The shop load allow plugin load shops fast and simply.

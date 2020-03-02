@@ -32,8 +32,9 @@ import org.maxgamer.quickshop.QuickShop;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class TownyIntegration implements IntegratedPlugin {
-  private List<TownyFlags> createFlags;
-  private List<TownyFlags> tradeFlags;
+  private final List<TownyFlags> createFlags;
+
+  private final List<TownyFlags> tradeFlags;
 
   public TownyIntegration(QuickShop plugin) {
     createFlags =

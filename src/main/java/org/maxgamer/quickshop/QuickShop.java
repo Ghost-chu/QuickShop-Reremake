@@ -663,7 +663,6 @@ public class QuickShop extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
 
         Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
-        ;
         Bukkit.getPluginManager().registerEvents(internalListener, this);
 
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {

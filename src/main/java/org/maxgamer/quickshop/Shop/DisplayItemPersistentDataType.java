@@ -30,7 +30,8 @@ import org.maxgamer.quickshop.Util.Util;
 public class DisplayItemPersistentDataType
     implements PersistentDataType<String, ShopProtectionFlag> {
   static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
-  private static Gson gson = new Gson();
+
+  private static final Gson gson = new Gson();
 
   @Override
   public @NotNull Class<String> getPrimitiveType() {

@@ -59,23 +59,33 @@ import org.maxgamer.quickshop.Watcher.InventoryEditContainer;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-/** @author MACHENIKE */
+/**
+ * @author MACHENIKE
+ */
 @SuppressWarnings("WeakerAccess")
 public class Util {
   static short tookLongTimeCostTimes;
-  private static EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
-    @Getter
-    private static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
+  private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
-    private static boolean devMode = false;
+  @Getter
+  private static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
+
+  private static boolean devMode = false;
+
   private static QuickShop plugin;
-  private static EnumMap<Material, Entry<Double, Double>> restrictedPrices =
+
+  private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
       new EnumMap<>(Material.class);
+
   private static Object serverInstance;
-  private static EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
+
+  private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
+
   private static Field tpsField;
+
   private static List<String> worldBlacklist = new ArrayList<>();
+
   private static boolean disableDebugLogger = false;
 
   /**

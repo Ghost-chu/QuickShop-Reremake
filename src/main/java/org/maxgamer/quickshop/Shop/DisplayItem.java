@@ -33,18 +33,24 @@ import org.maxgamer.quickshop.Util.Util;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
- *     with.
+ * with.
  */
 public abstract class DisplayItem {
 
   private static final Gson gson = new Gson();
-  @Nullable protected ItemStack guardedIstack;
-  protected ItemStack originalItemStack;
-  protected static QuickShop plugin = QuickShop.instance;
-  protected Shop shop;
+
+  @Nullable
+  protected ItemStack guardedIstack;
+
+  protected final ItemStack originalItemStack;
+
+  protected static final QuickShop plugin = QuickShop.instance;
+
+  protected final Shop shop;
+
   private boolean pendingRemoval;
 
-  protected DisplayItem(Shop shop){
+  protected DisplayItem(Shop shop) {
     this.shop = shop;
     this.originalItemStack = new ItemStack(shop.getItem());
     this.originalItemStack.setAmount(1);
