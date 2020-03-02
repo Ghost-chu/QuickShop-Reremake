@@ -90,7 +90,7 @@ permissions:
     default: op
   quickshop.export:
     description: Allows exporting the database to a plain file
-    default: op
+    default: false
   quickshop.alerts:
     description: Alert the player when someone tries to cheat with the display item
     default: op
