@@ -233,7 +233,7 @@ public class Util {
               + ") "
               + log;
       debugLogs.add(Colorizer.stripColors(text));
-      if (debugLogs.size() > 5000) /* Keep debugLogs max can have 5k lines. */ {
+      if (debugLogs.size() > 2000) /* Keep debugLogs max can have 2k lines. */ {
         debugLogs.clear();
       }
         QuickShop.instance.getLogger().info(text);
