@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Database;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,7 +37,7 @@ import org.maxgamer.quickshop.Util.WarningSender;
  */
 public class DatabaseManager {
 
-    private final Queue<PreparedStatement> sqlQueue = new LinkedBlockingQueue<>();
+    private final Queue<DatabaseTask> sqlQueue = new LinkedBlockingQueue<>();
 
     @NotNull
     private final Database database;
@@ -83,19 +82,15 @@ public class DatabaseManager {
     }
 
     /**
-     * Add preparedStatement to queue waiting flush to database,
+     * Add DatabaseTask to queue waiting flush to database,
      *
-     * @param ps The ps you want add in queue.
+     * @param task The DatabaseTask you want add in queue.
      */
-    public void add(@NotNull PreparedStatement ps) {
+    public void add(DatabaseTask task) {
         if (useQueue) {
-            sqlQueue.offer(ps);
+            sqlQueue.offer(task);
         } else {
-            try {
-                ps.execute();
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            }
+                task.run();
         }
     }
 
@@ -117,24 +112,12 @@ public class DatabaseManager {
                 plugin.getSentryErrorReporter().ignoreThrow();
                 sqle.printStackTrace();
             }
-            PreparedStatement statement = sqlQueue.poll();
-            if (statement == null) {
+            DatabaseTask task = sqlQueue.poll();
+            if (task == null) {
                 break;
             }
-            try {
-                Util.debugLog("Executing the SQL task: " + statement);
-                statement.execute();
-            } catch (SQLException sqle) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-                sqle.printStackTrace();
-            }
-            // Close statement anyway.
-            try {
-                statement.close();
-            } catch (SQLException sqle) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-                sqle.printStackTrace();
-            }
+                Util.debugLog("Executing the SQL task: " + task);
+                task.run();
             long tookTime = timer.endTimer();
             if (tookTime > 5000) {
                 warningSender.sendWarn(
