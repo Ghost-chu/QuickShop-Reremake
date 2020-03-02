@@ -103,17 +103,17 @@ public class VirtualDisplayItem extends DisplayItem {
                 @Override
                 public void onPacketSending(PacketEvent event) {
                     //is really full chunk data
-                    boolean isFull = event.getPacket().getBooleans().read(0);
-
-                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
-                        return;
-                    }
-                    //chunk x
-                    int x = event.getPacket().getIntegers().read(0);
-                    //chunk z
-                    int z = event.getPacket().getIntegers().read(1);
-                    //check later to prevent deadlock
                     asyncPacketSendQueue.offer(() -> {
+                        boolean isFull = event.getPacket().getBooleans().read(0);
+
+                        if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                            return;
+                        }
+                        //chunk x
+                        int x = event.getPacket().getIntegers().read(0);
+                        //chunk z
+                        int z = event.getPacket().getIntegers().read(1);
+                        //check later to prevent deadlock
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
                             Chunk chunk = shop.getLocation().getChunk();
@@ -139,30 +139,24 @@ public class VirtualDisplayItem extends DisplayItem {
             };
         }
         protocolManager.addPacketListener(packetAdapter);
-
         asyncSendingTask = new BukkitRunnable() {
             @Override
             public void run() {
-                long startTime = System.nanoTime();
-                long packets = 0;
                 Runnable runnable = asyncPacketSendQueue.poll();
                 while (runnable != null) {
-                    packets++;
                     runnable.run();
                     runnable = asyncPacketSendQueue.poll();
                 }
-                Util.debugLog("Sended " + packets + " virtual item with " + (System.nanoTime() - startTime) + "ns");
-
-                //FIXME: Remove debug log code when releasing, only for performance testing.
             }
         }.runTaskTimerAsynchronously(plugin, 0, 1);
-
     }
 
     private void unload() {
         packetSenders.clear();
         protocolManager.removePacketListener(packetAdapter);
-        asyncSendingTask.cancel();
+        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
+            asyncSendingTask.cancel();
+        }
     }
 
     private void initFakeDropItemPacket() {
