@@ -57,8 +57,8 @@ public class SubCommand_Export implements CommandProcesser {
                 StringBuilder finalReport = new StringBuilder();
                 plugin
                     .getShopLoader()
-                    .getShopsInDatabase()
-                    .forEach((shop -> finalReport.append("\t").append(shop).append("\n")));
+                    .getOriginShopsInDatabase()
+                    .forEach((shop -> finalReport.append(shop).append("\n")));
                 BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
                 outputStream.write(finalReport.toString());
                 outputStream.close();
