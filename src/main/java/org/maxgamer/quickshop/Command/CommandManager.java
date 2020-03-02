@@ -253,6 +253,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.reset")
                 .executor(new SubCommand_Reset())
                 .build());
+        registerCmd(
+            CommandContainer.builder()
+                .prefix("recovery")
+                .hidden(true)
+                .permission("quickshop.recovery")
+                .executor(new SubCommand_Recovery())
+                .build());
     }
 
     private void registerCmd(CommandContainer container) {
