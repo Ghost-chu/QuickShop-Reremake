@@ -89,7 +89,7 @@ permissions:
     description: Switch to or from developer mode
     default: op
   quickshop.export:
-    description: Allows exporting the database to mysql or sqlite
+    description: Allows exporting the database to a plain file
     default: op
   quickshop.alerts:
     description: Alert the player when someone tries to cheat with the display item
