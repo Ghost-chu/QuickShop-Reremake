@@ -84,7 +84,7 @@ public class ShopLoader {
         Gson gson = new Gson();
         int total = shopsPlain.length;
         for (int i = 0; i < total; i++) {
-            String shopStr = shopsPlain[i];
+            String shopStr = shopsPlain[i].trim();
             boolean success = false;
             try {
                 ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
