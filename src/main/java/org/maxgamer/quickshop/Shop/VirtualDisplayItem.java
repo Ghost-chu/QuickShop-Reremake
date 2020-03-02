@@ -28,6 +28,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.Bukkit;
@@ -59,7 +60,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //The List which store packet sender
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
 
-    private final Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
+    private final Queue<Runnable> asyncPacketSendQueue = new ConcurrentLinkedQueue<>();
 
     private volatile boolean isDisplay;
 
