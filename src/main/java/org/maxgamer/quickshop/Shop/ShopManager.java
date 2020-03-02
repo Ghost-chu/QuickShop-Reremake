@@ -830,7 +830,6 @@ public class ShopManager {
         // Check is attached on some block.
         if (attachedBlock == null) {
             // Nope
-            Util.debugLog("No attached block.");
             return null;
         } else {
             // Okay we know it on some blocks.
@@ -846,9 +845,6 @@ public class ShopManager {
                 // Oooops, no any shops matched.
             }
         }
-
-        Util.debugLog("Not found shops use the attached util.");
-
         return null;
     }
 
