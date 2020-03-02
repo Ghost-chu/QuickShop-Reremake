@@ -29,44 +29,45 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class AssetJson {
-  final String pathTemplate = "minecraft/lang/{0}.json";
+    final String pathTemplate = "minecraft/lang/{0}.json";
 
-  @NotNull
-  final String gameAssets;
+    @NotNull
+    final String gameAssets;
 
-  public AssetJson(@NotNull String json) {
-    this.gameAssets = json;
-  }
+    public AssetJson(@NotNull String json) {
+        this.gameAssets = json;
+    }
 
-  @Nullable
-  public String getLanguageHash(@NotNull String languageCode) {
-    languageCode = languageCode.replace("-", "_").toLowerCase().trim();
-    JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
-    if (json == null || json.isJsonNull()) {
-      Util.debugLog("Cannot parse the json: " + this.gameAssets);
-      return null;
+    @Nullable
+    public String getLanguageHash(@NotNull String languageCode) {
+        languageCode = languageCode.replace("-", "_").toLowerCase().trim();
+        JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
+        if (json == null || json.isJsonNull()) {
+            Util.debugLog("Cannot parse the json: " + this.gameAssets);
+            return null;
+        }
+        JsonElement obje = json.get("objects");
+        if (obje == null) {
+            Util.debugLog("Json element is null for json " + this.gameAssets);
+            return null;
+        }
+        JsonObject objs = obje.getAsJsonObject();
+        if (objs == null || objs.isJsonNull()) {
+            Util.debugLog("Json object is null.");
+            return null;
+        }
+        JsonObject langObj = objs.getAsJsonObject(MsgUtil.fillArgs(pathTemplate, languageCode));
+        if (langObj == null || langObj.isJsonNull()) {
+            Util.debugLog("Cannot find request path.");
+            Util.debugLog(this.gameAssets);
+            return null;
+        }
+        JsonPrimitive hashObj = langObj.getAsJsonPrimitive("hash");
+        if (hashObj == null || hashObj.isJsonNull()) {
+            Util.debugLog("Cannot get hash.");
+            return null;
+        }
+        return hashObj.getAsString();
     }
-    JsonElement obje = json.get("objects");
-    if (obje == null) {
-      Util.debugLog("Json element is null for json " + this.gameAssets);
-      return null;
-    }
-    JsonObject objs = obje.getAsJsonObject();
-    if (objs == null || objs.isJsonNull()) {
-      Util.debugLog("Json object is null.");
-      return null;
-    }
-    JsonObject langObj = objs.getAsJsonObject(MsgUtil.fillArgs(pathTemplate, languageCode));
-    if (langObj == null || langObj.isJsonNull()) {
-      Util.debugLog("Cannot find request path.");
-      Util.debugLog(this.gameAssets);
-      return null;
-    }
-    JsonPrimitive hashObj = langObj.getAsJsonPrimitive("hash");
-    if (hashObj == null || hashObj.isJsonNull()) {
-      Util.debugLog("Cannot get hash.");
-      return null;
-    }
-    return hashObj.getAsString();
-  }
+
 }

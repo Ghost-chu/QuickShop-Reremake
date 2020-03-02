@@ -23,20 +23,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum WorldGuardFlags {
-  FLAG,
-  BUILD,
-  CHEST_ACCESS,
-  INTERACT;
+    FLAG,
+    BUILD,
+    CHEST_ACCESS,
+    INTERACT;
 
-  public static List<WorldGuardFlags> deserialize(List<String> list) {
-    List<WorldGuardFlags> result = new ArrayList<>();
-    list.forEach(v -> result.add(WorldGuardFlags.valueOf(v.toUpperCase())));
-    return result;
-  }
+    public static List<WorldGuardFlags> deserialize(List<String> list) {
+        List<WorldGuardFlags> result = new ArrayList<>();
+        list.forEach(v -> result.add(WorldGuardFlags.valueOf(v.toUpperCase())));
+        return result;
+    }
 
-  public static List<String> serialize(List<WorldGuardFlags> list) {
-    List<String> result = new ArrayList<>();
-    list.forEach(v -> result.add(v.name()));
-    return result;
-  }
+    public static List<String> serialize(List<WorldGuardFlags> list) {
+        List<String> result = new ArrayList<>();
+        list.forEach(v -> result.add(v.name()));
+        return result;
+    }
 }

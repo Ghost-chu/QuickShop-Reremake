@@ -31,48 +31,49 @@ import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_SilentUnlimited implements CommandProcesser {
-  private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin = QuickShop.instance;
 
-  @NotNull
-  @Override
-  public List<String> onTabComplete(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    return new ArrayList<>();
-  }
+    @Override
+    public void onCommand(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 4) {
+            Util.debugLog("Exception on command, cancel.");
+            return;
+        }
 
-  @Override
-  public void onCommand(
-      @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-    if (cmdArg.length < 4) {
-      Util.debugLog("Exception on command, cancel.");
-      return;
+        final Shop shop =
+            plugin
+                .getShopManager()
+                .getShop(
+                    new Location(
+                        plugin.getServer().getWorld(cmdArg[0]),
+                        Integer.parseInt(cmdArg[1]),
+                        Integer.parseInt(cmdArg[2]),
+                        Integer.parseInt(cmdArg[3])));
+
+        if (shop == null) {
+            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            return;
+        }
+
+        shop.setUnlimited(!shop.isUnlimited());
+        // shop.setSignText();
+        shop.update();
+        MsgUtil.sendControlPanelInfo(sender, shop);
+
+        if (shop.isUnlimited()) {
+            sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
+            return;
+        }
+
+        sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
     }
 
-    final Shop shop =
-        plugin
-            .getShopManager()
-            .getShop(
-                new Location(
-                    plugin.getServer().getWorld(cmdArg[0]),
-                    Integer.parseInt(cmdArg[1]),
-                    Integer.parseInt(cmdArg[2]),
-                    Integer.parseInt(cmdArg[3])));
-
-    if (shop == null) {
-      sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
-      return;
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return new ArrayList<>();
     }
 
-    shop.setUnlimited(!shop.isUnlimited());
-    // shop.setSignText();
-    shop.update();
-    MsgUtil.sendControlPanelInfo(sender, shop);
-
-    if (shop.isUnlimited()) {
-      sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
-      return;
-    }
-
-    sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
-  }
 }

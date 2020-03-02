@@ -29,16 +29,19 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-  private String itemStackString;
-  private String mark = "QuickShop DisplayItem";
-  private String shopLocation;
+    private String itemStackString;
 
-  public ShopProtectionFlag(String shopLocation, String itemStackString) {
-    this.shopLocation = shopLocation;
-    this.itemStackString = itemStackString;
-  }
+    private String mark = "QuickShop DisplayItem";
 
-  public static String getDefaultMark() {
-    return "QuickShop DisplayItem";
-  }
+    private String shopLocation;
+
+    public ShopProtectionFlag(String shopLocation, String itemStackString) {
+        this.shopLocation = shopLocation;
+        this.itemStackString = itemStackString;
+    }
+
+    public static String getDefaultMark() {
+        return "QuickShop DisplayItem";
+    }
+
 }

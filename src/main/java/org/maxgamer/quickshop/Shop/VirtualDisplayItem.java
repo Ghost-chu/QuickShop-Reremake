@@ -48,8 +48,6 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
-    private volatile boolean isDisplay;
-
     //counter for ensuring ID is unique
     private static final AtomicInteger counter = new AtomicInteger(0);
 
@@ -57,6 +55,13 @@ public class VirtualDisplayItem extends DisplayItem {
 
     //unique EntityID
     private final int entityID = counter.decrementAndGet();
+
+    //The List which store packet sender
+    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
+
+    private final Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
+
+    private volatile boolean isDisplay;
 
     //packets
     private PacketContainer fakeItemPacket;
@@ -73,11 +78,6 @@ public class VirtualDisplayItem extends DisplayItem {
     //cache chunk x and z
     private ShopChunk chunkLocation;
 
-    //The List which store packet sender
-    private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
-
-    private final Queue<Runnable> asyncPacketSendQueue = new LinkedList<>();
-
     @Nullable
     private BukkitTask asyncSendingTask;
 
@@ -85,85 +85,6 @@ public class VirtualDisplayItem extends DisplayItem {
     public VirtualDisplayItem(@NotNull Shop shop) {
         super(shop);
         initFakeDropItemPacket();
-    }
-
-    //Due to the delay task in ChunkListener
-    //We must move load task to first spawn to prevent some bug and make the check lesser
-    private void load() {
-        //some time shop can be loaded when world isn't loaded
-        if (Util.isLoaded(shop.getLocation())) {
-            //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
-            for (Entity entity : entityCollection) {
-                if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId());
-                }
-            }
-        }
-        if (packetAdapter == null) {
-            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
-                @Override
-                public void onPacketSending(@NotNull PacketEvent event) {
-                    //is really full chunk data
-                    asyncPacketSendQueue.offer(() -> {
-                        boolean isFull = event.getPacket().getBooleans().read(0);
-
-                        if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
-                            return;
-                        }
-                        //chunk x
-                        int x = event.getPacket().getIntegers().read(0);
-                        //chunk z
-                        int z = event.getPacket().getIntegers().read(1);
-                        //check later to prevent deadlock
-                        if (chunkLocation == null) {
-                            World world = shop.getLocation().getWorld();
-                            Chunk chunk = shop.getLocation().getChunk();
-                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-                        }
-                        Player player = event.getPlayer();
-                        if (player == null || !player.isOnline()) {
-                            Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
-                            return;
-                        }
-                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
-                            packetSenders.add(player.getUniqueId());
-                            sendFakeItem(player);
-                        }
-                    });
-//                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-//                        if (chunkLocation == null) {
-//                            World world = shop.getLocation().getWorld();
-//                            Chunk chunk = shop.getLocation().getChunk();
-//                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
-//                        }
-//                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
-//                            packetSenders.add(event.getPlayer().getUniqueId());
-//                            sendFakeItem(event.getPlayer());
-//                        }
-//                    }, 1);
-                }
-            };
-        }
-        protocolManager.addPacketListener(packetAdapter);
-        asyncSendingTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                Runnable runnable = asyncPacketSendQueue.poll();
-                while (runnable != null) {
-                    runnable.run();
-                    runnable = asyncPacketSendQueue.poll();
-                }
-            }
-        }.runTaskTimerAsynchronously(plugin, 0, 1);
-    }
-
-    private void unload() {
-        packetSenders.clear();
-        protocolManager.removePacketListener(packetAdapter);
-        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
-            asyncSendingTask.cancel();
-        }
     }
 
     private void initFakeDropItemPacket() {
@@ -283,38 +204,6 @@ public class VirtualDisplayItem extends DisplayItem {
         return false;
     }
 
-    public void sendFakeItem(@NotNull Player player) {
-        sendPacket(player, fakeItemPacket);
-        sendPacket(player, fakeItemMetaPacket);
-        sendPacket(player, fakeItemVelocityPacket);
-    }
-
-    public void sendFakeItemToAll() {
-        sendPacketToAll(fakeItemPacket);
-        sendPacketToAll(fakeItemMetaPacket);
-        sendPacketToAll(fakeItemVelocityPacket);
-    }
-
-    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
-        try {
-            protocolManager.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("An error occurred when sending a packet", e);
-        }
-    }
-
-    private void sendPacketToAll(@NotNull PacketContainer packet) {
-        Iterator<UUID> iterator = packetSenders.iterator();
-        while (iterator.hasNext()) {
-            Player nextPlayer = Bukkit.getPlayer(iterator.next());
-            if (nextPlayer == null) {
-                iterator.remove();
-            } else {
-                sendPacket(nextPlayer, packet);
-            }
-        }
-    }
-
     @Override
     public void fixDisplayMoved() {
 
@@ -332,6 +221,34 @@ public class VirtualDisplayItem extends DisplayItem {
         isDisplay = false;
     }
 
+    private void sendPacketToAll(@NotNull PacketContainer packet) {
+        Iterator<UUID> iterator = packetSenders.iterator();
+        while (iterator.hasNext()) {
+            Player nextPlayer = Bukkit.getPlayer(iterator.next());
+            if (nextPlayer == null) {
+                iterator.remove();
+            } else {
+                sendPacket(nextPlayer, packet);
+            }
+        }
+    }
+
+    private void unload() {
+        packetSenders.clear();
+        protocolManager.removePacketListener(packetAdapter);
+        if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
+            asyncSendingTask.cancel();
+        }
+    }
+
+    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
+        try {
+            protocolManager.sendServerPacket(player, packet);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("An error occurred when sending a packet", e);
+        }
+    }
+
     @Override
     public boolean removeDupe() {
         return false;
@@ -341,6 +258,12 @@ public class VirtualDisplayItem extends DisplayItem {
     public void respawn() {
         sendPacketToAll(fakeItemDestroyPacket);
         sendFakeItemToAll();
+    }
+
+    public void sendFakeItemToAll() {
+        sendPacketToAll(fakeItemPacket);
+        sendPacketToAll(fakeItemMetaPacket);
+        sendPacketToAll(fakeItemVelocityPacket);
     }
 
     @Override
@@ -353,6 +276,83 @@ public class VirtualDisplayItem extends DisplayItem {
         load();
         sendFakeItemToAll();
         isDisplay = true;
+    }
+
+    //Due to the delay task in ChunkListener
+    //We must move load task to first spawn to prevent some bug and make the check lesser
+    private void load() {
+        //some time shop can be loaded when world isn't loaded
+        if (Util.isLoaded(shop.getLocation())) {
+            //Let nearby player can saw fake item
+            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), plugin.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), plugin.getServer().getViewDistance() * 16);
+            for (Entity entity : entityCollection) {
+                if (entity instanceof Player) {
+                    packetSenders.add(entity.getUniqueId());
+                }
+            }
+        }
+        if (packetAdapter == null) {
+            packetAdapter = new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+                @Override
+                public void onPacketSending(@NotNull PacketEvent event) {
+                    //is really full chunk data
+                    asyncPacketSendQueue.offer(() -> {
+                        boolean isFull = event.getPacket().getBooleans().read(0);
+
+                        if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                            return;
+                        }
+                        //chunk x
+                        int x = event.getPacket().getIntegers().read(0);
+                        //chunk z
+                        int z = event.getPacket().getIntegers().read(1);
+                        //check later to prevent deadlock
+                        if (chunkLocation == null) {
+                            World world = shop.getLocation().getWorld();
+                            Chunk chunk = shop.getLocation().getChunk();
+                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+                        }
+                        Player player = event.getPlayer();
+                        if (player == null || !player.isOnline()) {
+                            Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
+                            return;
+                        }
+                        if (chunkLocation.isSame(player.getWorld().getName(), x, z)) {
+                            packetSenders.add(player.getUniqueId());
+                            sendFakeItem(player);
+                        }
+                    });
+//                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+//                        if (chunkLocation == null) {
+//                            World world = shop.getLocation().getWorld();
+//                            Chunk chunk = shop.getLocation().getChunk();
+//                            chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
+//                        }
+//                        if (chunkLocation.isSame(event.getPlayer().getWorld().getName(), x, z)) {
+//                            packetSenders.add(event.getPlayer().getUniqueId());
+//                            sendFakeItem(event.getPlayer());
+//                        }
+//                    }, 1);
+                }
+            };
+        }
+        protocolManager.addPacketListener(packetAdapter);
+        asyncSendingTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Runnable runnable = asyncPacketSendQueue.poll();
+                while (runnable != null) {
+                    runnable.run();
+                    runnable = asyncPacketSendQueue.poll();
+                }
+            }
+        }.runTaskTimerAsynchronously(plugin, 0, 1);
+    }
+
+    public void sendFakeItem(@NotNull Player player) {
+        sendPacket(player, fakeItemPacket);
+        sendPacket(player, fakeItemMetaPacket);
+        sendPacket(player, fakeItemVelocityPacket);
     }
 
     @Override

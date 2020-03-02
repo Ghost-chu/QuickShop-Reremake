@@ -23,16 +23,17 @@ import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
 
 public class ReflectFactory {
-  public static String getServerVersion() {
-    try {
-      Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
-      consoleField.setAccessible(true); // protected
-      Object console = consoleField.get(Bukkit.getServer()); // dedicated server
-      return String.valueOf(
-          console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
-    } catch (Exception e) {
-      e.printStackTrace();
-      return "Unknown";
+    public static String getServerVersion() {
+        try {
+            Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
+            consoleField.setAccessible(true); // protected
+            Object console = consoleField.get(Bukkit.getServer()); // dedicated server
+            return String.valueOf(
+                console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
     }
-  }
+
 }

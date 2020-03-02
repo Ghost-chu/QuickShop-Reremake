@@ -37,108 +37,113 @@ import org.maxgamer.quickshop.Util.WarningSender;
  */
 public class DatabaseManager {
 
-  private final Queue<Runnable> sqlQueue = new LinkedBlockingQueue<>();
+    private final Queue<Runnable> sqlQueue = new LinkedBlockingQueue<>();
 
-  @NotNull
-  private final Database database;
+    @NotNull
+    private final Database database;
 
-  @NotNull
-  private final QuickShop plugin;
+    @NotNull
+    private final QuickShop plugin;
 
-  @NotNull
-  private final WarningSender warningSender;
+    @NotNull
+    private final WarningSender warningSender;
 
-  @Nullable
-  private BukkitTask task;
+    private final boolean useQueue;
 
-  private final boolean useQueue;
+    @Nullable
+    private BukkitTask task;
 
-  /**
-   * Queued database manager. Use queue to solve run SQL make server lagg issue.
-   *
-   * @param plugin plugin main class
-   * @param db database
-   */
-  public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
-    this.plugin = plugin;
-    this.warningSender = new WarningSender(plugin, 600000);
-    this.database = db;
-    this.useQueue = plugin.getConfig().getBoolean("database.queue");
-    if (!useQueue) {
-      return;
-    }
-    try {
-      task =
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              plugin.getDatabaseManager().runTask();
-            }
-          }.runTaskTimerAsynchronously(plugin, 1, 200);
-    } catch (IllegalPluginAccessException e) {
-      Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
-      plugin.getDatabaseManager().runTask();
-    }
-  }
-
-  /**
-   * Add preparedStatement to queue waiting flush to database,
-   *
-   * @param databaseTask The ps you want add in queue.
-   */
-  public void add(@NotNull Runnable databaseTask) {
-    if (useQueue) {
-      sqlQueue.offer(databaseTask);
-    } else {
-      databaseTask.run();
-    }
-  }
-
-  /** Internal method, runTasks in queue. */
-  private void runTask() {
-    while (true) {
-      Timer timer = new Timer(true);
-      try {
-        if (!this.database.getConnection().isValid(3000)) {
-          this.plugin
-              .getLogger()
-              .warning(
-                  "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-          break; // Waiting next crycle and hope it success reconnected.
+    /**
+     * Queued database manager. Use queue to solve run SQL make server lagg issue.
+     *
+     * @param plugin plugin main class
+     * @param db database
+     */
+    public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
+        this.plugin = plugin;
+        this.warningSender = new WarningSender(plugin, 600000);
+        this.database = db;
+        this.useQueue = plugin.getConfig().getBoolean("database.queue");
+        if (!useQueue) {
+            return;
         }
-      } catch (SQLException sqle) {
-        plugin.getSentryErrorReporter().ignoreThrow();
-        sqle.printStackTrace();
-      }
-      Runnable runnable = sqlQueue.poll();
-      if (runnable == null) {
-        return;
-      }
-      runnable.run();
-      long tookTime = timer.endTimer();
-      if (tookTime > 5000) {
-        warningSender.sendWarn(
-            "Database performance warning: It took too long time ("
-                + tookTime
-                + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
-      }
+        try {
+            task =
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        plugin.getDatabaseManager().runTask();
+                    }
+                }.runTaskTimerAsynchronously(plugin, 1, 200);
+        } catch (IllegalPluginAccessException e) {
+            Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
+            plugin.getDatabaseManager().runTask();
+        }
     }
-    try {
-      this.database.getConnection().commit();
-    } catch (SQLException e) {
-      try {
-        this.database.getConnection().rollback();
-      } catch (SQLException ignored) {
-      }
-    }
-  }
 
-  /** Unload the DatabaseManager, run at onDisable() */
-  public void unInit() {
-    if (task != null && !task.isCancelled()) {
-      task.cancel();
+    /**
+     * Internal method, runTasks in queue.
+     */
+    private void runTask() {
+        while (true) {
+            Timer timer = new Timer(true);
+            try {
+                if (!this.database.getConnection().isValid(3000)) {
+                    this.plugin
+                        .getLogger()
+                        .warning(
+                            "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                    break; // Waiting next crycle and hope it success reconnected.
+                }
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                sqle.printStackTrace();
+            }
+            Runnable runnable = sqlQueue.poll();
+            if (runnable == null) {
+                return;
+            }
+            runnable.run();
+            long tookTime = timer.endTimer();
+            if (tookTime > 5000) {
+                warningSender.sendWarn(
+                    "Database performance warning: It took too long time ("
+                        + tookTime
+                        + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
+            }
+        }
+        try {
+            this.database.getConnection().commit();
+        } catch (SQLException e) {
+            try {
+                this.database.getConnection().rollback();
+            } catch (SQLException ignored) {
+            }
+        }
     }
-    plugin.getLogger().info("Please wait for the data to flush its data...");
-    runTask();
-  }
+
+    /**
+     * Add preparedStatement to queue waiting flush to database,
+     *
+     * @param databaseTask The ps you want add in queue.
+     */
+    public void add(@NotNull Runnable databaseTask) {
+        if (useQueue) {
+            sqlQueue.offer(databaseTask);
+        } else {
+            databaseTask.run();
+        }
+    }
+
+    /**
+     * Unload the DatabaseManager, run at onDisable()
+     */
+    public void unInit() {
+        if (task != null && !task.isCancelled()) {
+            task.cancel();
+        }
+        plugin.getLogger().info("Please wait for the data to flush its data...");
+        runTask();
+    }
+
 }

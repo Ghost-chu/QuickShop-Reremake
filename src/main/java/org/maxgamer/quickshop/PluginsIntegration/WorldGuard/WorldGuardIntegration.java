@@ -43,136 +43,138 @@ import org.maxgamer.quickshop.Util.Util;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration implements IntegratedPlugin {
-  private final List<WorldGuardFlags> createFlags;
+    private final List<WorldGuardFlags> createFlags;
 
-  private final List<WorldGuardFlags> tradeFlags;
+    private final List<WorldGuardFlags> tradeFlags;
 
-  private final StateFlag createFlag = new StateFlag("quickshop-create", false);
+    private final StateFlag createFlag = new StateFlag("quickshop-create", false);
 
-  private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
+    private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
-  private final QuickShop plugin;
+    private final QuickShop plugin;
 
-  public WorldGuardIntegration(QuickShop plugin) {
-    this.plugin = plugin;
-    createFlags =
-        WorldGuardFlags.deserialize(
-            plugin.getConfig().getStringList("integration.worldguard.create"));
-    tradeFlags =
-        WorldGuardFlags.deserialize(
-            plugin.getConfig().getStringList("integration.worldguard.trade"));
-  }
-
-  @Override
-  public void load() {
-    FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-    try {
-      // create a flag with the name "my-custom-flag", defaulting to true
-      registry.register(this.createFlag);
-      registry.register(this.tradeFlag);
-      plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-      Util.debugLog("Success register " + getName() + " flags.");
-    } catch (FlagConflictException e) {
-      e.printStackTrace();
+    public WorldGuardIntegration(QuickShop plugin) {
+        this.plugin = plugin;
+        createFlags =
+            WorldGuardFlags.deserialize(
+                plugin.getConfig().getStringList("integration.worldguard.create"));
+        tradeFlags =
+            WorldGuardFlags.deserialize(
+                plugin.getConfig().getStringList("integration.worldguard.trade"));
     }
-  }
 
-  @Override
-  public void unload() {}
-
-  @Override
-  public @NotNull String getName() {
-    return "WorldGuard";
-  }
-
-  @Override
-  public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-    LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-    com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
-    boolean canBypass =
-        WorldGuard.getInstance()
-            .getPlatform()
-            .getSessionManager()
-            .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
-    if (canBypass) {
-      Util.debugLog(
-          "Player "
-              + player.getName()
-              + " bypassing the protection checks, because player have bypass permission in WorldGuard");
-      return true;
+    @Override
+    public void load() {
+        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+        try {
+            // create a flag with the name "my-custom-flag", defaulting to true
+            registry.register(this.createFlag);
+            registry.register(this.tradeFlag);
+            plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+            Util.debugLog("Success register " + getName() + " flags.");
+        } catch (FlagConflictException e) {
+            e.printStackTrace();
+        }
     }
-    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionQuery query = container.createQuery();
-    for (WorldGuardFlags flag : createFlags) {
-      switch (flag) {
-        case BUILD:
-          if (query.queryState(wgLoc, localPlayer, Flags.BUILD) == StateFlag.State.DENY) {
-            return false;
-          }
-          break;
-        case FLAG:
-          if (query.queryState(wgLoc, localPlayer, this.createFlag) == StateFlag.State.DENY) {
-            return false;
-          }
-          break;
-        case CHEST_ACCESS:
-          if (query.queryState(wgLoc, localPlayer, Flags.CHEST_ACCESS) == StateFlag.State.DENY) {
-            return false;
-          }
-          break;
-        case INTERACT:
-          if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
-            return false;
-          }
-          break;
-      }
-    }
-    return true;
-  }
 
-  @Override
-  public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-    LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-    com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
-    boolean canBypass =
-        WorldGuard.getInstance()
-            .getPlatform()
-            .getSessionManager()
-            .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
-    if (canBypass) {
-      Util.debugLog(
-          "Player "
-              + player.getName()
-              + " bypassing the protection checks, because player have bypass permission in WorldGuard");
-      return true;
+    @Override
+    public void unload() {
     }
-    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionQuery query = container.createQuery();
-    for (WorldGuardFlags flag : tradeFlags) {
-      switch (flag) {
-        case BUILD:
-          if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {
-            return false;
-          }
 
-          break;
-        case FLAG:
-          if (!query.testState(wgLoc, localPlayer, this.tradeFlag)) {
-            return false;
-          }
-          break;
-        case CHEST_ACCESS:
-          if (!query.testState(wgLoc, localPlayer, Flags.CHEST_ACCESS)) {
-            return false;
-          }
-          break;
-        case INTERACT:
-          if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
-            return false;
-          }
-          break;
-      }
+    @Override
+    public @NotNull String getName() {
+        return "WorldGuard";
     }
-    return true;
-  }
+
+    @Override
+    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
+        boolean canBypass =
+            WorldGuard.getInstance()
+                .getPlatform()
+                .getSessionManager()
+                .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
+        if (canBypass) {
+            Util.debugLog(
+                "Player "
+                    + player.getName()
+                    + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+            return true;
+        }
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        for (WorldGuardFlags flag : createFlags) {
+            switch (flag) {
+                case BUILD:
+                    if (query.queryState(wgLoc, localPlayer, Flags.BUILD) == StateFlag.State.DENY) {
+                        return false;
+                    }
+                    break;
+                case FLAG:
+                    if (query.queryState(wgLoc, localPlayer, this.createFlag) == StateFlag.State.DENY) {
+                        return false;
+                    }
+                    break;
+                case CHEST_ACCESS:
+                    if (query.queryState(wgLoc, localPlayer, Flags.CHEST_ACCESS) == StateFlag.State.DENY) {
+                        return false;
+                    }
+                    break;
+                case INTERACT:
+                    if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+        com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
+        boolean canBypass =
+            WorldGuard.getInstance()
+                .getPlatform()
+                .getSessionManager()
+                .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
+        if (canBypass) {
+            Util.debugLog(
+                "Player "
+                    + player.getName()
+                    + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+            return true;
+        }
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        for (WorldGuardFlags flag : tradeFlags) {
+            switch (flag) {
+                case BUILD:
+                    if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {
+                        return false;
+                    }
+
+                    break;
+                case FLAG:
+                    if (!query.testState(wgLoc, localPlayer, this.tradeFlag)) {
+                        return false;
+                    }
+                    break;
+                case CHEST_ACCESS:
+                    if (!query.testState(wgLoc, localPlayer, Flags.CHEST_ACCESS)) {
+                        return false;
+                    }
+                    break;
+                case INTERACT:
+                    if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+        return true;
+    }
+
 }

@@ -40,9 +40,9 @@ import org.maxgamer.quickshop.Util.MojangAPI.AssetJson;
 import org.maxgamer.quickshop.Util.MojangAPI.MojangAPI;
 
 public class GameLanguage extends Thread {
-    private @Nullable JsonObject lang;
-
     private final GameLanguageLoadThread loadThread;
+
+    private @Nullable JsonObject lang;
 
     @SneakyThrows
     public GameLanguage(@NotNull String languageCode) {
