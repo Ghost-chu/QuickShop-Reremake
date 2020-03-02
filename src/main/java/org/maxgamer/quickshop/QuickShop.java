@@ -57,6 +57,7 @@ import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegratio
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
+import org.maxgamer.quickshop.Util.Paste.Paste;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
@@ -455,7 +456,13 @@ public class QuickShop extends JavaPlugin {
         }
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-
+        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
+            Paste paste = new Paste(this);
+            String lastPaste = paste.paste(paste.genNewPaste(), 1);
+            if (lastPaste != null) {
+                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+            }
+        }
         Util.debugLog("Closing all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
