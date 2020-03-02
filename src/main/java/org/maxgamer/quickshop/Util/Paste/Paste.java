@@ -216,10 +216,17 @@ public class Paste {
       finalReport.append("\t*********************************\n");
       finalReport.append("\t*********************************\n");
       finalReport.append("\tInternal Debug Log:\n");
-      finalReport
-          .append("\t\t\n")
-          .append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n"))
-          .append("\n");
+      if (Util.isDevMode()) {
+        finalReport
+            .append("\t\t\n")
+            .append(Util.list2String(Util.getDebugLogs()).replaceAll(",", "\n"))
+            .append("\n");
+      } else {
+        finalReport
+            .append("\t\t\n")
+            .append("Disabled.")
+            .append("\n");
+      }
       finalReport.append("\t*********************************\n");
       //            try {
       //                finalReport.append("\t*********************************\n");

@@ -34,6 +34,7 @@ import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -44,22 +45,35 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Paste.Paste;
 import org.maxgamer.quickshop.Watcher.UpdateWatcher;
 
-/** Auto report errors to qs's sentry. */
+/**
+ * Auto report errors to qs's sentry.
+ */
 public class SentryErrorReporter {
   private final String dsn =
       "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
           + "stacktrace.app.packages=org.maxgamer.quickshop";
+
   private final ArrayList<String> reported = new ArrayList<>();
+
   private Context context;
+
   private boolean disable;
+
+  @Getter
   private boolean enabled;
+
   private List<Class<?>> ignoredException = new ArrayList<>();
+
   private QuickShop plugin;
+
   /* Pre-init it if it called before the we create it... */
   private SentryClient sentryClient;
+
   private boolean tempDisable;
+
   private String lastPaste;
-  private  IncompatibleChecker checker = new IncompatibleChecker();
+
+  private IncompatibleChecker checker = new IncompatibleChecker();
 
   public SentryErrorReporter(@NotNull QuickShop plugin) {
     this.plugin = plugin;
@@ -116,6 +130,9 @@ public class SentryErrorReporter {
       public void run() {
         Paste paste = new Paste(plugin);
         lastPaste = paste.paste(paste.genNewPaste(), 1);
+        if (lastPaste != null) {
+          plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+        }
       }
     }.runTaskAsynchronously(plugin);
   }
