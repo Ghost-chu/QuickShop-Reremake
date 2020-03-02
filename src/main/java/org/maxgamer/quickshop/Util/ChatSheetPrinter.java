@@ -74,10 +74,8 @@ public class ChatSheetPrinter {
         String[] texts = text.split("\n");
         Arrays.asList(texts)
             .forEach(
-                (str) -> {
-                    p.sendMessage(
-                        chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str);
-                });
+                (str) -> p.sendMessage(
+                    chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str));
     }
 
     public void printSuggestableCmdLine(

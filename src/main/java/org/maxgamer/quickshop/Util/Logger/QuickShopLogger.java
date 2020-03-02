@@ -258,7 +258,7 @@ public class QuickShopLogger extends PluginLogger {
      */
     private void registerStyles() {
         // Initial here for secert optimization
-        bukkitToAnsi = new HashMap<Pattern, String>();
+        bukkitToAnsi = new HashMap<>();
         IGNORE_CASE = "(?i)";
 
         // Colors
@@ -341,7 +341,7 @@ public class QuickShopLogger extends PluginLogger {
     /**
      * To populate a Ansi with a reset attribute ahead
      *
-     * @param ansiColor
+     * @param ansiColor the Ansi need to add reset attribute
      * @return Ansi with reset ahead
      */
     private org.fusesource.jansi.Ansi resetWith(org.fusesource.jansi.Ansi.Color ansiColor) {
