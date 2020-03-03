@@ -90,7 +90,7 @@
     "this-shop-is-selling": "&aTämä kauppa &c&lMYY &atavaroita.",
     "effects": "&aEfektit: &e{0}",
     "commands": {
-      "preview": "\/qs silentpreview {0} {1} {2} {3}"
+      "preview": "\/qs hiljainenkatselu {0} {1} {2} {3}"
     }
   },
   "bypassing-lock": "&cOhitetaan QuickShopin lukitus!",
@@ -172,12 +172,12 @@
     "commands": {
       "setowner": "\/qs setowner [Pelaaja]",
       "unlimited": "\/qs slientunlimited {0} {1} {2} {3}",
-      "buy": "\/qs silentbuy {0} {1} {2} {3}",
-      "sell": "\/qs silentsell {0} {1} {2} {3}",
+      "buy": "\/qs hiljainenosto {0} {1} {2} {3}",
+      "sell": "\/qs hiljainenmyynti {0} {1} {2} {3}",
       "price": "\/qs price [Uusi hinta]",
       "refill": "\/qs refill [summa]",
-      "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "empty": "\/qs hiljainentyhjennys {0} {1} {2} {3}",
+      "remove": "\/qs hiljainenpoisto {0} {1} {2} {3}"
     }
   },
   "tableformat": {
