@@ -46,7 +46,7 @@
   "not-enough-space": "&cMasz miejsce tylko na kolejne {0} przedmiotów!",
   "refill-success": "&aNapełniono",
   "empty-success": "&aWyczyszczono",
-  "admin-shop": "AdminShop",
+  "admin-shop": "Sklep Administracyjny",
   "unknown-owner": "Nieznany",
   "owner-bypass-check": "&eWszystkie sprawdzania zostały pominięte. Wymiana udana! (Jesteś właścicielem sklepu)",
   "reached-maximum-can-create": "&cJuż posiadasz maksymalną liczbę sklepów: {0}\/{1}",
