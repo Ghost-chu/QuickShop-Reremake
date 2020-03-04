@@ -274,6 +274,7 @@ public class MsgUtil {
             if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
                 plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
                 nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
+                nJson.set("language-name", languageCode);
             }
         }
         messagei18n = nJson;
