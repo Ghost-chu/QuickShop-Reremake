@@ -233,6 +233,7 @@ public class MsgUtil {
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         String languageCode = plugin.getConfig().getString("language", "en-US");
+        languageCode = languageCode.replace("_", "-");
         //noinspection ConstantConditions
 
         loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
