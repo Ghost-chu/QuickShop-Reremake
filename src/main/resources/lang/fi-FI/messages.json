@@ -3,7 +3,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Ohjelmointi-apu: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "27",
+  "language-version": "28",
   "not-looking-at-shop": "&cKauppaa ei löytynyt. Sinun pitää katsoa muokattavaa kauppaa päin.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -230,5 +230,6 @@
   },
   "shop-removed-cause-ongoing-fee": "&cKauppasi ({0}) poistettiin, sillä sinulla ei ollut varaa ylläpitää sitä!",
   "digits-reach-the-limit": "&cOlet saavuttanut desimaalirajan.",
-  "complete": "&aValmis!"
+  "complete": "&aValmis!",
+  "quickshop-gui-preview": "QuickShop GUI Preview Item"
 }
