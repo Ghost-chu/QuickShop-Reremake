@@ -229,6 +229,7 @@ public class MsgUtil {
     }
 
     public static void loadCfgMessages() throws InvalidConfigurationException {
+        plugin.getLogger().info("Loading plugin translations files...");
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
         String languageCode = plugin.getConfig().getString("language", "en-US");
@@ -306,7 +307,7 @@ public class MsgUtil {
             inited = true;
         }
         /* Save the upgraded messages.yml */
-
+        plugin.getLogger().info("Completed to load plugin translations files.");
     }
 
     public static void loadEnchi18n() {
