@@ -3,7 +3,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
-  "language-version": "27",
+  "language-version": "28",
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -230,5 +230,6 @@
   },
   "shop-removed-cause-ongoing-fee": "&c¡Su tienda en {0} fue removida debido a que no tienes suficiente dinero para mantenerla!",
   "digits-reach-the-limit": "&cHas alcanzado el límite de dígitos antes del punto decimal en el precio.",
-  "complete": "&a¡Terminado!"
+  "complete": "&a¡Terminado!",
+  "quickshop-gui-preview": "QuickShop GUI Preview Item"
 }
