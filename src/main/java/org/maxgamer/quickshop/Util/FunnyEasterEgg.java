@@ -330,22 +330,22 @@ class LunarCalendar {
         int iMonth, daysOfMonth = 0;
         for (iMonth = 1; iMonth < 13 && offset > 0; iMonth++) {
             // 闰月
-          if (leapMonth > 0 && iMonth == (leapMonth + 1) && !leap) {
-            --iMonth;
-            leap = true;
-            daysOfMonth = leapDays(year);
-          } else {
-            daysOfMonth = monthDays(year, iMonth);
-          }
+            if (leapMonth > 0 && iMonth == (leapMonth + 1) && !leap) {
+                --iMonth;
+                leap = true;
+                daysOfMonth = leapDays(year);
+            } else {
+                daysOfMonth = monthDays(year, iMonth);
+            }
 
             offset -= daysOfMonth;
             // 解除闰月
-          if (leap && iMonth == (leapMonth + 1)) {
-            leap = false;
-          }
-          if (!leap) {
-            monCyl++;
-          }
+            if (leap && iMonth == (leapMonth + 1)) {
+                leap = false;
+            }
+            if (!leap) {
+                monCyl++;
+            }
         }
         // offset为0时，并且刚才计算的月份是闰月，要校正
         if (offset == 0 && leapMonth > 0 && iMonth == leapMonth + 1) {
@@ -451,14 +451,14 @@ class LunarCalendar {
     public static String getChinaDayString(int day) {
         String[] chineseTen = {"初", "十", "廿", "卅"};
         int n = day % 10 == 0 ? 9 : day % 10 - 1;
-      if (day > 30) {
-        return "";
-      }
-      if (day == 10) {
-        return "初十";
-      } else {
-        return chineseTen[day / 10] + chineseNumber[n];
-      }
+        if (day > 30) {
+            return "";
+        }
+        if (day == 10) {
+            return "初十";
+        } else {
+            return chineseTen[day / 10] + chineseNumber[n];
+        }
     }
 
 }

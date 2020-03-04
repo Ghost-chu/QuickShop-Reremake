@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.lishid.openinv.OpenInv;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
