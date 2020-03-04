@@ -3,7 +3,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Hiç Kimse",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "27",
+  "language-version": "28",
   "not-looking-at-shop": "&cQuickShop bulunamadı, birine bakıyor olmalısın.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -230,5 +230,6 @@
   },
   "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
   "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
-  "complete": "&aComplete!"
+  "complete": "&aComplete!",
+  "quickshop-gui-preview": "QuickShop GUI Preview Item"
 }
