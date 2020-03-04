@@ -244,7 +244,7 @@ public class MsgUtil {
                 new JSONFile(
                     plugin,
                     new File(plugin.getDataFolder(), "messages.json"),
-                    "lang/" + languageCode + "./messages.json",
+                    "lang/" + languageCode + "/messages.json",
                     true);
         }
         nJson.create();
