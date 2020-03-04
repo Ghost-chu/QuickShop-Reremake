@@ -3,7 +3,7 @@
   "translation-version": "支援版本: Reremake",
   "translation-contributors": "協作者: Timtower, Netherfoam, KaiNoMood, Mgazul 和Andre_601",
   "translation-country": "語言: &b&l繁體中文 Chinese Traditional (zh_TW)",
-  "language-version": "27",
+  "language-version": "28",
   "not-looking-at-shop": "&c沒有找到商店, 您必須看著一個商店!",
   "no-anythings-in-your-hand": "&c您的手中是空的。",
   "no-permission": "&c您沒有權限執行這個指令。",
@@ -230,5 +230,6 @@
   },
   "shop-removed-cause-ongoing-fee": "&c由於您的餘額不足, 您在 {0} 的商店已經被移除。",
   "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
-  "complete": "&a完成!"
+  "complete": "&a完成!",
+  "quickshop-gui-preview": "QuickShop GUI Preview Item"
 }
