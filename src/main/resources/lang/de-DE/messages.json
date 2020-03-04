@@ -1,5 +1,5 @@
 {
-  "translation-author": "Übersetzer: Jason897",
+  "translation-author": "Übersetzer: Jason897, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Unterstützer: Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
@@ -8,17 +8,17 @@
   "no-anythings-in-your-hand": "&cEs befindet sich kein Gegenstand in deiner Hand.",
   "no-permission": "&cDu hast keine Berechtigung, dies zu tun.",
   "no-creative-break": "&cDu kannst Shops von anderen Spielern nicht im Kreativmodus abbauen. Bitte wechsel in den Überlebensmodus.",
-  "no-double-chests": "&cDu kannst den Doppelkisten-Shop nicht erstellen.",
-  "shop-already-owned": "&cDas ist bereits ein Shop.",
-  "chest-was-removed": "&cDie Kiste wurde entfernt.",
+  "no-double-chests": "&cDu kannst keinen Doppeltruhen-Shop nicht erstellen.",
+  "shop-already-owned": "&cDies ist bereits ein Shop.",
+  "chest-was-removed": "&cDie Truhe wurde entfernt.",
   "price-too-cheap": "&cDer Preis muss höher als &e${0} sein",
   "no-price-change": "&cDer Preis würde sich nicht ändern!",
   "you-cant-afford-a-new-shop": "&cDu benötigst {0}, um einen neuen Shop zu erstellen.",
   "player-bought-from-your-store-tax": "&c{0} hat {1} {2} in deinem Shop eingekauft. Dabei wurden {3} Steuern fällig.",
   "you-cant-afford-to-change-price": "&cEs kostet {0}, um den Preis zu verändern.",
-  "success-created-shop": "&aShop wurde erstellt.",
-  "success-removed-shop": "&aShop wurde entfernt.",
-  "shops-arent-locked": "&cNicht vergessen, dass Shops NICHT gegen Diebstahl gesichert sind! Wenn du Diebe aufhalten willst, musst du sie mit LWC, Lockette, etc. schützen!",
+  "success-created-shop": "&aShop erstellt.",
+  "success-removed-shop": "&aShop entfernt.",
+  "shops-arent-locked": "&cVergiss nicht, dass Shops NICHT gegen Diebstahl gesichert sind! Wenn du Diebe aufhalten willst, musst du sie mit LWC, Lockette, o.ä. schützen!",
   "shop-creation-cancelled": "&cErstellung abgebrochen.",
   "shop-purchase-cancelled": "&cKauf abgebrochen.",
   "shop-stock-too-low": "&cDer Shop verfügt nur noch über {0} {1}",
@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&cDein Shop bei den Koordinaten {0} wurde entfernt, da du nicht genug Geld hattest um ihn zu behalten!",
   "digits-reach-the-limit": "&cDu hast das Limit an Nachkommastellen für den Preis erreicht.",
   "complete": "&aAbgeschlossen!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI Vorschau Item"
 }
