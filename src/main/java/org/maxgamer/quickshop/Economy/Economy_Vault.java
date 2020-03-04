@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Economy;
 
+
 import java.util.Objects;
 import java.util.UUID;
 import lombok.Getter;
@@ -42,16 +43,16 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Getter
     @Setter
     @Nullable
-    private Economy vault;
+    private net.milkbowl.vault.economy.Economy vault;
 
     public Economy_Vault() {
         setupEconomy();
     }
 
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider;
+        RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
-            economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+            economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         } catch (Throwable e) {
             return false;
         }
@@ -84,7 +85,7 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @EventHandler
     public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!(event.getProvider() instanceof Economy)) {
+        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
             return;
         }
         setupEconomy();
@@ -92,7 +93,7 @@ public class Economy_Vault implements EconomyCore, Listener {
 
     @EventHandler
     public void onServiceRegister(ServiceUnregisterEvent event) {
-        if (!(event.getProvider() instanceof Economy)) {
+        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
             return;
         }
         setupEconomy();
