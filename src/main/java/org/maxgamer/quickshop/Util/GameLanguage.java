@@ -47,6 +47,7 @@ public class GameLanguage extends Thread {
     @SneakyThrows
     public GameLanguage(@NotNull String languageCode) {
         loadThread = new GameLanguageLoadThread();
+        languageCode = languageCode.replace("-", "_");
         loadThread.setLanguageCode(languageCode);
         loadThread.setMainThreadWaiting(true); // Told thread we're waiting him
         loadThread.start();
