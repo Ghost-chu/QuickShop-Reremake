@@ -82,19 +82,6 @@ public class DatabaseManager {
     }
 
     /**
-     * Add DatabaseTask to queue waiting flush to database,
-     *
-     * @param task The DatabaseTask you want add in queue.
-     */
-    public void add(DatabaseTask task) {
-        if (useQueue) {
-            sqlQueue.offer(task);
-        } else {
-                task.run();
-        }
-    }
-
-    /**
      * Internal method, runTasks in queue.
      */
     private void runTask() {
@@ -116,8 +103,8 @@ public class DatabaseManager {
             if (task == null) {
                 break;
             }
-                Util.debugLog("Executing the SQL task: " + task);
-                task.run();
+            Util.debugLog("Executing the SQL task: " + task);
+            task.run();
             long tookTime = timer.endTimer();
             if (tookTime > 5000) {
                 warningSender.sendWarn(
@@ -137,6 +124,19 @@ public class DatabaseManager {
     }
 
     /**
+     * Add DatabaseTask to queue waiting flush to database,
+     *
+     * @param task The DatabaseTask you want add in queue.
+     */
+    public void add(DatabaseTask task) {
+        if (useQueue) {
+            sqlQueue.offer(task);
+        } else {
+            task.run();
+        }
+    }
+
+    /**
      * Unload the DatabaseManager, run at onDisable()
      */
     public void unInit() {
@@ -146,4 +146,5 @@ public class DatabaseManager {
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
     }
+
 }

@@ -20,6 +20,10 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.common.collect.Sets;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,11 +43,6 @@ import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
-
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -75,8 +74,8 @@ public class ShopManager {
     /**
      * Checks other plugins to make sure they can use the chest they're making a shop.
      *
-     * @param p  The player to check
-     * @param b  The block to check
+     * @param p The player to check
+     * @param b The block to check
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
@@ -220,52 +219,52 @@ public class ShopManager {
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
         plugin.getDatabaseHelper().createShop(
-                shop,
-                () -> Bukkit.getScheduler().runTask(plugin, () -> {
-                    // Create sign
-                    if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-                        if (!Util.isAir(info.getSignBlock().getType())) {
-                            Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                            return;
-                        }
-                        boolean isWaterLogged = false;
-                        if (info.getSignBlock().getType() == Material.WATER) {
-                            isWaterLogged = true;
-                        }
+            shop,
+            () -> Bukkit.getScheduler().runTask(plugin, () -> {
+                // Create sign
+                if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+                    if (!Util.isAir(info.getSignBlock().getType())) {
+                        Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
+                        return;
+                    }
+                    boolean isWaterLogged = false;
+                    if (info.getSignBlock().getType() == Material.WATER) {
+                        isWaterLogged = true;
+                    }
 
-                        info.getSignBlock().setType(Util.getSignMaterial());
-                        BlockState bs = info.getSignBlock().getState();
-                        if (isWaterLogged) {
-                            if (bs.getBlockData() instanceof Waterlogged) {
-                                Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                                waterable.setWaterlogged(true); // Looks like sign directly put in water
-                            }
+                    info.getSignBlock().setType(Util.getSignMaterial());
+                    BlockState bs = info.getSignBlock().getState();
+                    if (isWaterLogged) {
+                        if (bs.getBlockData() instanceof Waterlogged) {
+                            Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                            waterable.setWaterlogged(true); // Looks like sign directly put in water
                         }
-                        if (bs.getBlockData() instanceof WallSign) {
-                            WallSign signBlockDataType = (WallSign) bs.getBlockData();
-                            BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-                            if (bf != null) {
-                                signBlockDataType.setFacing(bf);
-                                bs.setBlockData(signBlockDataType);
-                            }
-                        } else {
-                            plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
-                        }
-                        bs.update(true);
-                        shop.setSignText();
                     }
-                }),
-                e -> Bukkit.getScheduler().runTask(plugin, () -> {
-                    //also remove when failed
-                    removeShop(shop);
-                    plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
-                    boolean backupSuccess = Util.backupDatabase();
-                    if (backupSuccess) {
-                        plugin.getDatabaseHelper().removeShop(shop);
+                    if (bs.getBlockData() instanceof WallSign) {
+                        WallSign signBlockDataType = (WallSign) bs.getBlockData();
+                        BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+                        if (bf != null) {
+                            signBlockDataType.setFacing(bf);
+                            bs.setBlockData(signBlockDataType);
+                        }
                     } else {
-                        plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
+                        plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
                     }
-                }));
+                    bs.update(true);
+                    shop.setSignText();
+                }
+            }),
+            e -> Bukkit.getScheduler().runTask(plugin, () -> {
+                //also remove when failed
+                removeShop(shop);
+                plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
+                boolean backupSuccess = Util.backupDatabase();
+                if (backupSuccess) {
+                    plugin.getDatabaseHelper().removeShop(shop);
+                } else {
+                    plugin.getLogger().warning("Failed to backup the database, all changes will revert after a reboot.");
+                }
+            }));
     }
 
     /**
@@ -291,7 +290,7 @@ public class ShopManager {
     /**
      * Gets a shop in a specific location
      *
-     * @param loc                  The location to get the shop from
+     * @param loc The location to get the shop from
      * @param skipShopableChecking whether to check is shopable
      * @return The shop at that location
      */
@@ -413,7 +412,7 @@ public class ShopManager {
      * not use this method to create a shop.
      *
      * @param world The world the shop is in
-     * @param shop  The shop to load
+     * @param shop The shop to load
      */
     public void loadShop(@NotNull String world, @NotNull Shop shop) {
         this.addShop(world, shop);
@@ -424,7 +423,7 @@ public class ShopManager {
      * yourself
      *
      * @param world The name of the world
-     * @param shop  The shop to add
+     * @param shop The shop to add
      */
     public void addShop(@NotNull String world, @NotNull Shop shop) {
         HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new HashMap<>(3));
@@ -613,7 +612,7 @@ public class ShopManager {
 
     @SuppressWarnings("deprecation")
     private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String
-            message, boolean bypassProtectionChecks) {
+        message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
             return;

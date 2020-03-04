@@ -75,44 +75,6 @@ public class ShopLoader {
         loadShops(null);
     }
 
-    public synchronized void recoverFromFile(@NotNull String fileContent) {
-        plugin.getLogger().info("Processing the shop data...");
-        String[] shopsPlain = fileContent.split("\n");
-        plugin.getLogger().info("Recovering shops...");
-        Gson gson = new Gson();
-        int total = shopsPlain.length;
-        for (int i = 0; i < total; i++) {
-            String shopStr = shopsPlain[i].trim();
-            boolean success = false;
-            try {
-                ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
-                originShopsInDatabase.add(shopDatabaseInfoOrigin);
-                ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
-                Shop shop =
-                    new ContainerShop(
-                        data.getLocation(),
-                        data.getPrice(),
-                        data.getItem(),
-                        data.getModerators(),
-                        data.isUnlimited(),
-                        data.getType());
-                shopsInDatabase.add(shop);
-                if (shopNullCheck(shop)) {
-                    continue;
-                }
-                // Load to RAM
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
-                    shop.update();
-                });
-
-                success = true;
-            } catch (JsonSyntaxException ignore) {
-            }
-            plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
-        }
-    }
-
     /**
      * Load all shops
      *
@@ -294,6 +256,44 @@ public class ShopLoader {
         if (errors > 10) {
             logger.severe(
                 "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+        }
+    }
+
+    public synchronized void recoverFromFile(@NotNull String fileContent) {
+        plugin.getLogger().info("Processing the shop data...");
+        String[] shopsPlain = fileContent.split("\n");
+        plugin.getLogger().info("Recovering shops...");
+        Gson gson = new Gson();
+        int total = shopsPlain.length;
+        for (int i = 0; i < total; i++) {
+            String shopStr = shopsPlain[i].trim();
+            boolean success = false;
+            try {
+                ShopDatabaseInfoOrigin shopDatabaseInfoOrigin = gson.fromJson(shopStr, ShopDatabaseInfoOrigin.class);
+                originShopsInDatabase.add(shopDatabaseInfoOrigin);
+                ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
+                Shop shop =
+                    new ContainerShop(
+                        data.getLocation(),
+                        data.getPrice(),
+                        data.getItem(),
+                        data.getModerators(),
+                        data.isUnlimited(),
+                        data.getType());
+                shopsInDatabase.add(shop);
+                if (shopNullCheck(shop)) {
+                    continue;
+                }
+                // Load to RAM
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
+                    shop.update();
+                });
+
+                success = true;
+            } catch (JsonSyntaxException ignore) {
+            }
+            plugin.getLogger().info("Processed " + i + "/" + total + " - [" + success + "]");
         }
     }
 

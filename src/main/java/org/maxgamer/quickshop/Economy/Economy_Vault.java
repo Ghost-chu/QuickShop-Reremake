@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
@@ -120,13 +119,6 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
     }
 
-    public String getProviderName() {
-        if (this.vault == null) {
-            return "Provider not found.";
-        }
-        return String.valueOf(this.vault.getName());
-    }
-
     @Override
     public String format(double balance) {
         if (!checkValid()) {
@@ -141,16 +133,6 @@ public class Economy_Vault implements EconomyCore, Listener {
             return formatedBalance;
         } catch (Exception e) {
             return formatInternal(balance);
-        }
-    }
-
-    public boolean checkValid() {
-        if (this.vault == null) {
-            Bukkit.getPluginManager().disablePlugin(plugin);
-            plugin.getLogger().severe("FATAL: Economy system not ready.");
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -253,6 +235,23 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Override
     public boolean isValid() {
         return this.vault != null;
+    }
+
+    public boolean checkValid() {
+        if (this.vault == null) {
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            plugin.getLogger().severe("FATAL: Economy system not ready.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public String getProviderName() {
+        if (this.vault == null) {
+            return "Provider not found.";
+        }
+        return String.valueOf(this.vault.getName());
     }
 
 }

@@ -235,7 +235,7 @@ public class MsgUtil {
         loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
         // Init nJson
         IFile nJson;
-        if (plugin.getResource("messages/" + languageCode + ".json") == null) {
+        if (plugin.getResource("lang/" + languageCode + "/messages.json") == null) {
             nJson =
                 new JSONFile(
                     plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
@@ -244,7 +244,7 @@ public class MsgUtil {
                 new JSONFile(
                     plugin,
                     new File(plugin.getDataFolder(), "messages.json"),
-                    "messages/" + languageCode + ".json",
+                    "lang/" + languageCode + "./messages.json",
                     true);
         }
         nJson.create();
