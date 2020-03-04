@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.Util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,7 +80,7 @@ public class MsgUtil {
 
     private static GameLanguage gameLanguage;
 
-    private static YamlConfiguration builtInLang;
+    private static IFile builtInLang;
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -1044,7 +1043,8 @@ public class MsgUtil {
             }
             return;
         }
-        builtInLang = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage().getFile(languageName, "messages"), StandardCharsets.UTF_8));
+
+        builtInLang = new JSONFile(plugin, "lang/" + languageName + "/messages.json");
 
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
