@@ -297,12 +297,11 @@ public class VirtualDisplayItem extends DisplayItem {
                 @Override
                 public void onPacketSending(@NotNull PacketEvent event) {
                     //is really full chunk data
+                    boolean isFull = event.getPacket().getBooleans().read(0);
+                    if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
+                        return;
+                    }
                     asyncPacketSendQueue.offer(() -> {
-                        boolean isFull = event.getPacket().getBooleans().read(0);
-
-                        if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
-                            return;
-                        }
                         //chunk x
                         int x = event.getPacket().getIntegers().read(0);
                         //chunk z
