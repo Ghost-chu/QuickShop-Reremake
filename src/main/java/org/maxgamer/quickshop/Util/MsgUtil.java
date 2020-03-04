@@ -1030,11 +1030,13 @@ public class MsgUtil {
             setAndUpdate("language-name", languageName);
         }
         if (!messagei18n.getString("language-name").get().equals(languageName)) {
+            Util.debugLog("Language name " + messagei18n.getString("language-name").get() + " not matched with " + languageName);
             File pendingDelete = new File(plugin.getDataFolder(), "messages.json");
             try {
                 Files.copy(pendingDelete.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
             } catch (IOException ignored) {
             }
+            pendingDelete.delete();
             try {
                 loadCfgMessages();
             } catch (Exception ignore) {
