@@ -301,11 +301,12 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
                         return;
                     }
+                    int x = event.getPacket().getIntegers().read(0);
+                    //chunk z
+                    int z = event.getPacket().getIntegers().read(1);
                     asyncPacketSendQueue.offer(() -> {
                         //chunk x
-                        int x = event.getPacket().getIntegers().read(0);
-                        //chunk z
-                        int z = event.getPacket().getIntegers().read(1);
+
                         //check later to prevent deadlock
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
