@@ -80,6 +80,8 @@ public class MsgUtil {
 
     private static GameLanguage gameLanguage;
 
+    private static YamlConfiguration builtInLang;
+
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
      */
@@ -1027,13 +1029,20 @@ public class MsgUtil {
             setAndUpdate("language-name", languageName);
         }
         if (!messagei18n.getString("language-name").get().equals(languageName)) {
-            new File(plugin.getDataFolder(), "messages.json").delete();
+            File pendingDelete = new File(plugin.getDataFolder(), "messages.json");
+            try {
+                Files.copy(pendingDelete.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
+            } catch (IOException ignored) {
+            }
             try {
                 loadCfgMessages();
             } catch (Exception ignore) {
             }
             return;
         }
+
+        builtInLang = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getLanguage().getFile(languageName, "messages")));
+
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
             setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
@@ -1316,13 +1325,22 @@ public class MsgUtil {
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
         if (object == null) {
             messagei18n.set(path, null); // Removal
+            return;
+        }
+        Object alt = null;
+        if (builtInLang != null) {
+            alt = builtInLang.get(path, object);
+        }
+        if (alt == null) {
+            messagei18n.set(path, object);
+        } else {
+            messagei18n.set(path, alt);
         }
 //    Object objFromBuiltIn = builtInDefaultLanguage.get(path); // Apply english default
 //    if (objFromBuiltIn == null) {
 //      objFromBuiltIn =
 //          object; // Apply hard-code default, maybe a language file i forgotten update??
 //    }
-        messagei18n.set(path, object);
     }
 
 }
