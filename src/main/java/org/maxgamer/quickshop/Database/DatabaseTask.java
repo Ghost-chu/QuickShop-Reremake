@@ -1,17 +1,18 @@
 package org.maxgamer.quickshop.Database;
 
 
-import lombok.ToString;
-import org.maxgamer.quickshop.QuickShop;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import lombok.ToString;
+import org.maxgamer.quickshop.QuickShop;
 
 @ToString()
 public class DatabaseTask {
 
     private static final Database database = QuickShop.instance.getDatabase();
+
     private String statement;
+
     private Task task;
 
     public DatabaseTask(String statement, Task task) {
@@ -38,5 +39,7 @@ public class DatabaseTask {
         default void onFailed(SQLException e) {
             e.printStackTrace();
         }
+
     }
+
 }

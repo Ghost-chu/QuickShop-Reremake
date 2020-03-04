@@ -251,9 +251,9 @@ public class HttpRequest implements Closeable {
 
     @Override
     public void close() {
-      if (conn != null) {
-        conn.disconnect();
-      }
+        if (conn != null) {
+            conn.disconnect();
+        }
     }
 
     /**

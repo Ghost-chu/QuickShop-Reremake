@@ -24,15 +24,15 @@ public final class LocationOf {
     public Location value() {
         final Matcher match = PATTERN.matcher(text.replaceAll("_", "\\."));
 
-      if (match.matches()) {
-        return new Location(
-            Bukkit.getWorld(match.group("world")),
-            Double.parseDouble(match.group("x")),
-            Double.parseDouble(match.group("y")),
-            Double.parseDouble(match.group("z")),
-            match.group("yaw") != null ? Float.parseFloat(match.group("yaw")) : 0F,
-            match.group("pitch") != null ? Float.parseFloat(match.group("pitch")) : 0F);
-      }
+        if (match.matches()) {
+            return new Location(
+                Bukkit.getWorld(match.group("world")),
+                Double.parseDouble(match.group("x")),
+                Double.parseDouble(match.group("y")),
+                Double.parseDouble(match.group("z")),
+                match.group("yaw") != null ? Float.parseFloat(match.group("yaw")) : 0F,
+                match.group("pitch") != null ? Float.parseFloat(match.group("pitch")) : 0F);
+        }
 
         throw new IllegalStateException("Location string has wrong style!");
     }

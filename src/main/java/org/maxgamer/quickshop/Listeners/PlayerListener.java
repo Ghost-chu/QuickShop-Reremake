@@ -284,15 +284,15 @@ public class PlayerListener implements Listener {
             return; // ignored as workaround, GH-303
         }
 
-      if (location == null) {
-        return;
-      }
+        if (location == null) {
+            return;
+        }
 
         final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
 
-      if (shop != null) {
-        shop.setSignText();
-      }
+        if (shop != null) {
+            shop.setSignText();
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

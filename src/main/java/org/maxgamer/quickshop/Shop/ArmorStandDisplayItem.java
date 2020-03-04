@@ -218,27 +218,27 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
             Location location = getDisplayLocation();
             this.armorStand =
-                    this.shop
-                        .getLocation()
-                        .getWorld()
-                        .spawn(
-                            location,
-                            ArmorStand.class,
-                            armorStand -> {
-                                // Set basic armorstand datas.
-                                armorStand.setGravity(false);
-                                armorStand.setVisible(false);
-                                armorStand.setMarker(true);
-                                armorStand.setCollidable(false);
-                                armorStand.setSmall(true);
-                                armorStand.setArms(false);
-                                armorStand.setBasePlate(false);
-                                armorStand.setSilent(true);
-                                armorStand.setAI(false);
-                                armorStand.setCanPickupItems(false);
-                                // Set pose (this is for hand while we use helmet)
-                                // setPoseForArmorStand();
-                            });
+                this.shop
+                    .getLocation()
+                    .getWorld()
+                    .spawn(
+                        location,
+                        ArmorStand.class,
+                        armorStand -> {
+                            // Set basic armorstand datas.
+                            armorStand.setGravity(false);
+                            armorStand.setVisible(false);
+                            armorStand.setMarker(true);
+                            armorStand.setCollidable(false);
+                            armorStand.setSmall(true);
+                            armorStand.setArms(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setSilent(true);
+                            armorStand.setAI(false);
+                            armorStand.setCanPickupItems(false);
+                            // Set pose (this is for hand while we use helmet)
+                            // setPoseForArmorStand();
+                        });
             // Set safeGuard
             Util.debugLog(
                 "Spawned armor stand @ "
