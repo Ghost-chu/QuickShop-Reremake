@@ -313,12 +313,18 @@ public interface Shop {
     void setUnlimited(boolean paramBoolean);
 
     /**
-     * Shop is valid
+     * Whether Shop is valid
      *
      * @return status
      */
     boolean isValid();
 
+    /**
+     * Whether Shop is deleted
+     *
+     * @return status
+     */
+    boolean isDeleted();
 
     /**
      * Get the shop display entity

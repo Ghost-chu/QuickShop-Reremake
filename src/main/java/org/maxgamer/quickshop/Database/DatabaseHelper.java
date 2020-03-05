@@ -155,7 +155,9 @@ public class DatabaseHelper {
 
             @Override
             public void onSuccess() {
-                onSuccess.run();
+                if(!shop.isDeleted()) {
+                    onSuccess.run();
+                }
             }
 
             @Override
