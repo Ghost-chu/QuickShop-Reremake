@@ -135,12 +135,12 @@ public class DatabaseHelper {
     }
 
     public void createShop(Shop shop, Runnable onSuccess, Consumer<SQLException> onFailed) {
+        plugin.getDatabaseHelper().removeShop(shop); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + QuickShop.instance.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         plugin.getDatabaseManager().add(new DatabaseTask(sqlString, new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) throws SQLException {
                 Location location = shop.getLocation();
-                plugin.getDatabaseHelper().removeShop(shop); //First purge old exist shop before create new shop.
                 //QuickShop.instance.getDB().execute(q, owner, price, Util.serialize(item), x, y, z, world, unlimited, shopType);
                 ps.setString(1, ShopModerator.serialize(shop.getModerator()));
                 ps.setDouble(2, shop.getPrice());
