@@ -59,7 +59,10 @@ public class ContainerShop implements Shop {
     private DisplayItem displayItem;
 
     @EqualsAndHashCode.Exclude
-    private boolean isLoaded = false;
+    private volatile boolean isLoaded = false;
+
+    @EqualsAndHashCode.Exclude
+    private volatile boolean isDeleted= false;
 
     private ShopModerator moderator;
 
@@ -316,6 +319,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
+        isDeleted=true;
         // Unload the shop
         if (isLoaded) {
             this.onUnload();
@@ -851,6 +855,11 @@ public class ContainerShop implements Shop {
     public boolean isValid() {
         this.checkDisplay();
         return Util.canBeShop(this.getLocation().getBlock());
+    }
+
+    @Override
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     @Override
