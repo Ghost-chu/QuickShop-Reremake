@@ -255,8 +255,8 @@ public class ShopManager {
                 }
             }),
             e -> Bukkit.getScheduler().runTask(plugin, () -> {
-                //also remove when failed
-                removeShop(shop);
+                //also remove from memory when failed
+                shop.delete(true);
                 plugin.getLogger().warning("Shop create failed, trying to auto fix the database...");
                 boolean backupSuccess = Util.backupDatabase();
                 if (backupSuccess) {
