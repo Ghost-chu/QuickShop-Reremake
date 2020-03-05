@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&c{0}のショップは十分な資金がなかったため削除されました",
   "digits-reach-the-limit": "&c価格の小数点以下の制限に達しました。",
   "complete": "&a完了!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI プレビューアイテム"
 }
