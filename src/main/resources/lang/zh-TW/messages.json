@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&c由於您的餘額不足, 您在 {0} 的商店已經被移除。",
   "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
   "complete": "&a完成!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "商店物品預覽"
 }

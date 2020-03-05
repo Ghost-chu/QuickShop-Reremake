@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&cTwój sklep w {0} został usunięty, ponieważ nie miałeś wystarczająco dużo pieniędzy, aby go utrzymać!",
   "digits-reach-the-limit": "&cOsiągnąłeś limit cyfr po kropce w cenie.",
   "complete": "&aZakończony!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "Podgląd produktu QuickShop"
 }
