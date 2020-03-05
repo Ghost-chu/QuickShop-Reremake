@@ -206,8 +206,8 @@ public class PlayerListener implements Listener {
             && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell")
             && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Result.DENY
-                || plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()
-                || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
+                || plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()){
+                /*|| !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())*/
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
