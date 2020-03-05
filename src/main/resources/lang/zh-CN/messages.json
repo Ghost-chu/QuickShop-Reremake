@@ -187,8 +187,8 @@
     "left_begin": "| "
   },
   "booleanformat": {
-    "success": "&a✔",
-    "failed": "&c✘"
+    "success": "&a√",
+    "failed": "&c×"
   },
   "tabcomplete": {
     "price": "[价格]",
@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
   "digits-reach-the-limit": "&c你输入的价格小数点后面的数字已经达到了极限。",
   "complete": "&a完成！",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI预览商品"
 }
