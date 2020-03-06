@@ -231,5 +231,5 @@
   "shop-removed-cause-ongoing-fee": "&c¡Su tienda en {0} fue removida debido a que no tienes suficiente dinero para mantenerla!",
   "digits-reach-the-limit": "&cHas alcanzado el límite de dígitos antes del punto decimal en el precio.",
   "complete": "&a¡Terminado!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI Previsualizar Objeto"
 }
