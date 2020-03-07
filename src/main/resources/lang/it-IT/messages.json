@@ -9,6 +9,7 @@
   "no-permission": "&c Non hai i permessi per questo.",
   "no-creative-break": "&cPuoi rompere i negozi solo in modalità sopravvivenza.",
   "no-double-chests": "&cNon puoi creare un negozio Doppia Cassa.",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&cQuesto già è un negozio.",
   "chest-was-removed": "&cIl cartello è stato rimosso.",
   "price-too-cheap": "&cIl prezzo deve essere superiore a &e ${0}",
