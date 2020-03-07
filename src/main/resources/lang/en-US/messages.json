@@ -9,6 +9,7 @@
   "no-permission": "&cYou do not have permission to do that.",
   "no-creative-break": "&cYou cannot break other players shops in creative mode.  Use survival instead.",
   "no-double-chests": "&cYou cannot create the DoubleChest shop.",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&cThat is already a shop.",
   "chest-was-removed": "&cThe chest was removed.",
   "price-too-cheap": "&cPrice must be greater than &e${0}",
