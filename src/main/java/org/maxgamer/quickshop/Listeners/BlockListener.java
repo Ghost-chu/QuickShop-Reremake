@@ -205,7 +205,8 @@ public class BlockListener implements Listener {
         Block chest = null;
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
-            if (e.getBlockAgainst().getType() == Material.CHEST &&placingBlock.getFace(e.getBlockAgainst())!=BlockFace.UP&&placingBlock.getFace(e.getBlockAgainst())!=BlockFace.DOWN) {
+            Block blockAgainst=e.getBlockAgainst();
+            if (blockAgainst.getType() == Material.CHEST &&placingBlock.getFace(blockAgainst)!=BlockFace.UP&&placingBlock.getFace(blockAgainst)!=BlockFace.DOWN&&!(((Chest)blockAgainst.getState()).getInventory() instanceof DoubleChestInventory)) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
