@@ -9,6 +9,7 @@
   "no-permission": "&c権限を持っていないため実行できません。",
   "no-creative-break": "&cクリエイティブモードで他のプレイヤーショップを壊すことはできません。 代わりにサバイバルを使用してください。",
   "no-double-chests": "&cダブルチェストショップを作成することはできません。",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&cすでにショップです。",
   "chest-was-removed": "&cチェストが削除されました。",
   "price-too-cheap": "&c価格は&e${0}&c以上である必要があります。",
