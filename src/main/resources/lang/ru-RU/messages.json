@@ -9,6 +9,7 @@
   "no-permission": "&cУ вас нет прав на это.",
   "no-creative-break": "&cВы не можете ломать магазины других игроков в креативном режиме. Делайте это в выживании.",
   "no-double-chests": "&cВы не можете создавать магазин из двойного сундука.",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&cЭто уже магазин.",
   "chest-was-removed": "&cСундук был удален.",
   "price-too-cheap": "&cЦена должна быть больше &e${0}",
