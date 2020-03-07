@@ -9,6 +9,7 @@
   "no-permission": "&cBunu yapmaya iznin yok.",
   "no-creative-break": "&cYaratıcı modda diğer oyuncuların marketlerini kıramazsınız. Bunun yerine hayatta kalma modunu kullanın.",
   "no-double-chests": "&cÇifte sandık ile market oluşturamazsınız.",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&cBu zaten bir market.",
   "chest-was-removed": "&cSandık kaldırıldı.",
   "price-too-cheap": "&cFiyat &e${0}&c'dan büyük olmalıdır.",
