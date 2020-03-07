@@ -30,6 +30,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -85,6 +86,8 @@ public class Util {
     private static Field tpsField;
 
     private static List<String> worldBlacklist = new ArrayList<>();
+
+    private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
 
     private static boolean disableDebugLogger = false;
 
@@ -350,6 +353,36 @@ public class Util {
                 "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
         }
+    }
+
+
+    /**
+     * return the right side for given blockFace
+     * @param blockFace given blockFace
+     * @return the right side for given blockFace, UP and DOWN will return itself
+     */
+    public static BlockFace getRightSide(@NonNull BlockFace blockFace) {
+        switch (blockFace) {
+            case EAST:
+                return BlockFace.SOUTH;
+            case NORTH:
+                return BlockFace.EAST;
+            case SOUTH:
+                return BlockFace.WEST;
+            case WEST:
+                return BlockFace.NORTH;
+            default:
+                return blockFace;
+        }
+    }
+
+
+    /**
+     * Get vertical BlockFace list
+     * @return vertical BlockFace list (unmodifiable)
+     */
+    public static List<BlockFace> getVerticalFacing() {
+        return verticalFacing;
     }
 
     /**
