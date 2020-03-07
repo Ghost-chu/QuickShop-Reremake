@@ -205,28 +205,28 @@ public class BlockListener implements Listener {
         Block chest = null;
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
-            if (e.getBlockAgainst().getType() == Material.CHEST) {
+            if (e.getBlockAgainst().getType() == Material.CHEST &&placingBlock.getFace(e.getBlockAgainst())!=BlockFace.UP&&placingBlock.getFace(e.getBlockAgainst())!=BlockFace.DOWN) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
             }
         } else {
             //Get all chest in vertical Location
-            BlockFace placedChestFacing = ((Directional) (placingBlock.getState().getBlockData())).getFacing();
+            BlockFace placingChestFacing = ((Directional) (placingBlock.getState().getBlockData())).getFacing();
             for (BlockFace face : Util.getVerticalFacing()) {
                 //just check the right side and left side
-                if (face != placedChestFacing && face != placedChestFacing.getOppositeFace()) {
+                if (face != placingChestFacing && face != placingChestFacing.getOppositeFace()) {
                     Block nearByBlock = placingBlock.getRelative(face);
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest
                             && !(((Chest) nearByBlock.getState()).getInventory() instanceof DoubleChestInventory)
                             //same facing
-                            && placedChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
+                            && placingChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
                         if (chest == null) {
                             chest = nearByBlock;
                         } else {
                             //when multiply chests competed, minecraft will always combine with right side
-                            if (placingBlock.getFace(nearByBlock) == Util.getRightSide(placedChestFacing)) {
+                            if (placingBlock.getFace(nearByBlock) == Util.getRightSide(placingChestFacing)) {
                                 chest = nearByBlock;
                             }
                         }
