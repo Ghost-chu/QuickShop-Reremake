@@ -28,6 +28,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
@@ -358,22 +359,26 @@ public class ShopManager {
                 // Oooops, no any shops matched.
             }
         }
-// If that chunk nothing we founded, we should check it is attached.
-        @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
-        // Check is attached on some block.
-        if (attachedBlock == null) {
-            // Nope
-            return null;
-        } else {
-            // Okay we know it on some blocks.
-            // We need set new location and chunk.
-            inChunk = getShops(attachedBlock.getChunk());
-            // Found some shops in this chunk
-            if (inChunk != null) {
-                shop = inChunk.get(attachedBlock.getLocation());
-                // Okay, shop was founded.
-                return shop;
-                // Oooops, no any shops matched.
+
+        //only check if is sign
+        if(loc.getBlock().getState() instanceof Sign) {
+            // If that chunk nothing we founded, we should check it is attached.
+            @Nullable Block attachedBlock = Util.getAttached(loc.getBlock());
+            // Check is attached on some block.
+            if (attachedBlock == null) {
+                // Nope
+                return null;
+            } else {
+                // Okay we know it on some blocks.
+                // We need set new location and chunk.
+                inChunk = getShops(attachedBlock.getChunk());
+                // Found some shops in this chunk
+                if (inChunk != null) {
+                    shop = inChunk.get(attachedBlock.getLocation());
+                    // Okay, shop was founded.
+                    return shop;
+                    // Oooops, no any shops matched.
+                }
             }
         }
         return null;
