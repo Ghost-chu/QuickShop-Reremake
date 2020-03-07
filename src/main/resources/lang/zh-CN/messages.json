@@ -9,6 +9,7 @@
   "no-permission": "&c你没有权限这样做。",
   "no-creative-break": "&c你不能在创造模式破坏其它玩家的商店，请使用生存模式。",
   "no-double-chests": "&c你没有权限创建大箱子商店。",
+  "not-managed-shop": "You isn't the owner or moderator of the shop",
   "shop-already-owned": "&c这已经是一个商店了。",
   "chest-was-removed": "&c当前箱子已被移除。",
   "price-too-cheap": "&c价格必须大于&e${0}",
