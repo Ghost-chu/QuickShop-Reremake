@@ -205,8 +205,8 @@ public class BlockListener implements Listener {
         Block chest = null;
         //Chest combine mechanic based checking
         if (player.isSneaking()) {
-            Block blockAgainst=e.getBlockAgainst();
-            if (blockAgainst.getType() == Material.CHEST &&placingBlock.getFace(blockAgainst)!=BlockFace.UP&&placingBlock.getFace(blockAgainst)!=BlockFace.DOWN&&!(((Chest)blockAgainst.getState()).getInventory() instanceof DoubleChestInventory)) {
+            Block blockAgainst = e.getBlockAgainst();
+            if (blockAgainst.getType() == Material.CHEST && placingBlock.getFace(blockAgainst) != BlockFace.UP && placingBlock.getFace(blockAgainst) != BlockFace.DOWN && !(((Chest) blockAgainst.getState()).getInventory() instanceof DoubleChestInventory)) {
                 chest = e.getBlockAgainst();
             } else {
                 return;
@@ -244,9 +244,10 @@ public class BlockListener implements Listener {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
                 player.sendMessage(MsgUtil.getMessage("no-double-chests", player));
-            } else if (!shop.getOwner().equals(player.getUniqueId())) {
+
+            } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
                 e.setCancelled(true);
-                player.sendMessage(MsgUtil.getMessage("that-is-locked", player));
+                player.sendMessage(MsgUtil.getMessage("not-managed-shop", player));
             }
         }
     }

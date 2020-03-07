@@ -899,12 +899,10 @@ public class Util {
             InventoryHolder right = doubleChest.getRightSide();
             Chest leftC = (Chest) left;
             Chest rightC = (Chest) right;
-            if (equalsBlockStateLocation(
-                oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
+            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(rightC).getLocation())) {
                 return Objects.requireNonNull(leftC).getBlock();
             }
-            if (equalsBlockStateLocation(
-                oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
+            if (equalsBlockStateLocation(oneSideOfChest.getLocation(), Objects.requireNonNull(leftC).getLocation())) {
                 return rightC.getBlock();
             }
         }
