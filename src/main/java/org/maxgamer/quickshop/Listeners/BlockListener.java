@@ -24,9 +24,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.DoubleChest;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,6 +35,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,12 +63,12 @@ public class BlockListener implements Listener {
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
             if (plugin.getConfig().getBoolean("lockette.enable")
-                && sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                    && sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
+                    || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
                 plugin
-                    .getLogger()
-                    .info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
+                        .getLogger()
+                        .info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
             }
         }
@@ -87,8 +89,8 @@ public class BlockListener implements Listener {
                 }
                 e.setCancelled(true);
                 p.sendMessage(
-                    MsgUtil.getMessage(
-                        "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                        MsgUtil.getMessage(
+                                "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
 
@@ -99,7 +101,7 @@ public class BlockListener implements Listener {
             }
 
             if (!shop.getModerator().isOwner(p.getUniqueId())
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 p.sendMessage(MsgUtil.getMessage("no-permission", p));
                 return;
@@ -118,7 +120,7 @@ public class BlockListener implements Listener {
             if (b.getState() instanceof Sign) {
                 Sign sign = (Sign) b.getState();
                 if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                        || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -140,8 +142,8 @@ public class BlockListener implements Listener {
                 }
                 e.setCancelled(true);
                 p.sendMessage(
-                    MsgUtil.getMessage(
-                        "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                        MsgUtil.getMessage(
+                                "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
 
             Util.debugLog("Cannot break the sign.");
@@ -186,27 +188,65 @@ public class BlockListener implements Listener {
         }
     }
 
+
     /*
      * Listens for chest placement, so a doublechest shop can't be created.
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlace(BlockPlaceEvent e) {
 
-        final BlockState bs = e.getBlock().getState();
+        final Material type = e.getBlock().getType();
+        final Block placingBlock = e.getBlock();
+        final Player player = e.getPlayer();
 
-        if (!(bs instanceof DoubleChest)) {
+        if (type != Material.CHEST) {
+            return;
+        }
+        Block chest = null;
+        //Chest combine mechanic based checking
+        if (player.isSneaking()) {
+            if (e.getBlockAgainst().getType() == Material.CHEST) {
+                chest = e.getBlockAgainst();
+            } else {
+                return;
+            }
+        } else {
+            //Get all chest in vertical Location
+            BlockFace placedChestFacing = ((Directional) (placingBlock.getState().getBlockData())).getFacing();
+            for (BlockFace face : Util.getVerticalFacing()) {
+                //just check the right side and left side
+                if (face != placedChestFacing && face != placedChestFacing.getOppositeFace()) {
+                    Block nearByBlock = placingBlock.getRelative(face);
+                    if (nearByBlock.getType() == Material.CHEST
+                            //non double chest
+                            && !(((Chest) nearByBlock.getState()).getInventory() instanceof DoubleChestInventory)
+                            //same facing
+                            && placedChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
+                        if (chest == null) {
+                            chest = nearByBlock;
+                        } else {
+                            //when multiply chests competed, minecraft will always combine with right side
+                            if (placingBlock.getFace(nearByBlock) == Util.getRightSide(placedChestFacing)) {
+                                chest = nearByBlock;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (chest == null) {
             return;
         }
 
-        final Block b = e.getBlock();
-        final Player p = e.getPlayer();
-        final Block chest = Util.getSecondHalf(b);
-
-        if (chest != null
-            && plugin.getShopManager().getShop(chest.getLocation()) != null
-            && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-            e.setCancelled(true);
-            p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
+        Shop shop = plugin.getShopManager().getShop(chest.getLocation());
+        if (shop != null) {
+            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
+                e.setCancelled(true);
+                player.sendMessage(MsgUtil.getMessage("no-double-chests", player));
+            } else if (!shop.getOwner().equals(player.getUniqueId())) {
+                e.setCancelled(true);
+                player.sendMessage(MsgUtil.getMessage("that-is-locked", player));
+            }
         }
     }
 
