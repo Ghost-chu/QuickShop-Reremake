@@ -9,7 +9,7 @@
   "no-permission": "&cNo tienes permiso para hacer eso.",
   "no-creative-break": "&cNo puedes destruir las tiendas de otros jugadores en modo Creativo. Debes usar el modo Supervivencia.",
   "no-double-chests": "&cNo puedes crear tiendas de cofres dobles.",
-  "not-managed-shop": "No eres el dueño o moderador de la tienda",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cEso ya es una tienda.",
   "chest-was-removed": "&cEl cofre ha sido removido.",
   "price-too-cheap": "&cEl precio debe ser mayor a &e${0}",
