@@ -9,7 +9,7 @@
   "no-permission": "&c당신에게는 권한이 없습니다.",
   "no-creative-break": "&c당신은 크리에이티브 모드일 때 다른사람의 상점을 부술 수 없습니다. 서바이벌 모드로 바꾸십시오.",
   "no-double-chests": "&c당신은 DoubleChest 상점을 만들 수 없습니다.",
-  "not-managed-shop": "You isn't the owner or moderator of the shop",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&c상점이 이미 있습니다.",
   "chest-was-removed": "&c상자는 제거되었습니다.",
   "price-too-cheap": "&c가격은 반드시 &e${0} &c보다 높아야합니다.",
