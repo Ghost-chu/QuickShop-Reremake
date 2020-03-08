@@ -19,13 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -63,6 +56,14 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 @Getter
 public class QuickShop extends JavaPlugin {
@@ -594,8 +595,9 @@ public class QuickShop extends JavaPlugin {
         /* Load 3rd party supports */
         load3rdParty();
 
+        //Load the database
         setupDBonEnableding = true;
-        setupDatabase(); // Load the database
+        setupDatabase();
         setupDBonEnableding = false;
 
         /* Initalize the tools */
@@ -864,7 +866,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().severe("Error connecting to the database.");
             }
             return false;
-        } catch (SQLException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
