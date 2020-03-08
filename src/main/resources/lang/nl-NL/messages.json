@@ -9,7 +9,7 @@
   "no-permission": "&cJe hebt hiervoor geen rechten.",
   "no-creative-break": "&cJe kan andere spelers hun winkels niet breken in creatieve modus. Gebruik overleving.",
   "no-double-chests": "&cJe kunt de Dubbele Kist winkel niet aanmaken.",
-  "not-managed-shop": "You isn't the owner or moderator of the shop",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cDat is al een winkel.",
   "chest-was-removed": "&cDe kist is verwijderd.",
   "price-too-cheap": "&cPrice moet groter zijn dan &e${0}",
