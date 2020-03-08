@@ -1329,6 +1329,10 @@ public class MsgUtil {
             setAndUpdate("not-managed-shop", "You isn't the owner or moderator of the shop");
             selectedVersion = 28;
         }
+        if(selectedVersion==28){
+            setAndUpdate("not-managed-shop","&cYou are not the owner or moderator of the shop");
+            selectedVersion = 29;
+        }
         messagei18n.save();
     }
 
