@@ -9,7 +9,7 @@
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
   "no-creative-break": "&cEt voi rikkoa muiden pelaajien kauppoja luovassa tilassa. Käytä ennemmin seikkailutilaa.",
   "no-double-chests": "&cEt voi luoda tupla-arkkukauppaa",
-  "not-managed-shop": "You isn't the owner or moderator of the shop",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cTuo on jo kauppa!",
   "chest-was-removed": "&cKauppa poistettiin onnisteuneesti.",
   "price-too-cheap": "&cHinnan pitää olla korkeampi kuin &e${0}",
