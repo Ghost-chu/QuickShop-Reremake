@@ -9,7 +9,7 @@
   "no-permission": "&cDu hast keine Berechtigung, dies zu tun.",
   "no-creative-break": "&cDu kannst Shops von anderen Spielern nicht im Kreativmodus abbauen. Bitte wechsel in den Überlebensmodus.",
   "no-double-chests": "&cDu kannst keinen Doppeltruhen-Shop nicht erstellen.",
-  "not-managed-shop": "You isn't the owner or moderator of the shop",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cDies ist bereits ein Shop.",
   "chest-was-removed": "&cDie Truhe wurde entfernt.",
   "price-too-cheap": "&cDer Preis muss höher als &e${0} sein",
