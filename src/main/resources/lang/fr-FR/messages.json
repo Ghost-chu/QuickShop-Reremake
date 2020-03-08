@@ -9,7 +9,7 @@
   "no-permission": "&cTu n'as pas la permission de faire ceci.",
   "no-creative-break": "&cTu ne peux pas casser la boutique d'un autre joueur en mode creatif. Utilise le mode survie.",
   "no-double-chests": "&cTu ne peux pas créer de boutique avec un double doffre.",
-  "not-managed-shop": "You isn't the owner or moderator of the shop",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cCe coffre est déjà un coffre de shop.",
   "chest-was-removed": "&cLe coffre a été supprimé",
   "price-too-cheap": "&cLe prix doit être supérieur à &e${0}",
