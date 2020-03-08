@@ -569,6 +569,10 @@ public class ShopManager {
             tax = 0;
             Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
         }
+        if(tax >= 1.0){
+            tax= 0;
+            plugin.getLogger().warning("Tax setting is invalid, it should be in 0.0-1.0 (now is "+tax+")");
+        }
         if (tax < 0) {
             tax = 0; // Tax was disabled.
         }
