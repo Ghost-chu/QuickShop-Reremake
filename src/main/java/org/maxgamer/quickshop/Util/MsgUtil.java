@@ -1324,6 +1324,13 @@ public class MsgUtil {
             setAndUpdate("language-version", 27);
             selectedVersion = 27;
         }
+        if (selectedVersion == 27) {
+            setAndUpdate("quickshop-gui-preview", "QuickShop GUI Preview Item");
+            setAndUpdate("language-version", 28);
+            selectedVersion = 28;
+        }
+
+
         messagei18n.save();
     }
 
