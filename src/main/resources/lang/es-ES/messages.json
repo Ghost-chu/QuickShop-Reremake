@@ -240,10 +240,10 @@
   "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
   "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
   "language-info-panel": {
-    "name": "Language: ",
-    "code": "Code: ",
-    "progress": "Progress: ",
-    "help": "Help Us: ",
+    "name": "Idioma: ",
+    "code": "Código: ",
+    "progress": "Progreso: ",
+    "help": "Ayúdanos: ",
     "translate-on-crowdin": "[Translate on Crowdin]"
   }
 }
