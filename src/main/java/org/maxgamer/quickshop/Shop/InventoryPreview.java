@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Event.ShopInventoryPreviewEvent;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
@@ -63,13 +64,13 @@ public class InventoryPreview implements Listener {
         if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             List<String> lores = itemMeta.getLore();
-            Objects.requireNonNull(lores).add("QuickShop GUI preview item");
+            Objects.requireNonNull(lores).add(QuickShop.instance.getPreviewProtectionLore());
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         } else {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             List<String> lores = new ArrayList<>();
-            lores.add("QuickShop GUI preview item");
+            lores.add(QuickShop.instance.getPreviewProtectionLore());
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         }
@@ -84,7 +85,7 @@ public class InventoryPreview implements Listener {
         }
         List<String> lores = stack.getItemMeta().getLore();
         for (String string : lores) {
-            if ("QuickShop GUI preview item".equals(string)) {
+            if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
                 return true;
             }
         }
@@ -130,6 +131,7 @@ public class InventoryPreview implements Listener {
         if (inventory == null) {
             return;
         }
+        Resolved preview feature request
         for (HumanEntity player : inventory.getViewers()) {
             player.closeInventory();
         }

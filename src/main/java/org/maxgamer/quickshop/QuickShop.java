@@ -251,6 +251,8 @@ public class QuickShop extends JavaPlugin {
 
     private boolean enabledAsyncDisplayDespawn;
 
+    private String previewProtectionLore;
+
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
      * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
@@ -416,6 +418,8 @@ public class QuickShop extends JavaPlugin {
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
+        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
+        ;
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("log-actions")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
