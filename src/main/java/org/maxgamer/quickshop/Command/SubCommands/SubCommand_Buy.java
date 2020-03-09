@@ -57,14 +57,17 @@ public class SubCommand_Buy implements CommandProcesser {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
-            if (shop != null && shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-                shop.setShopType(ShopType.BUYING);
-                // shop.setSignText();
-                shop.update();
-                sender.sendMessage(
-                    MsgUtil.getMessage(
-                        "command.now-buying", sender, Util.getItemStackName(shop.getItem())));
-                return;
+            if (shop != null) {
+                if (shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
+                    shop.setShopType(ShopType.BUYING);
+                    // shop.setSignText();
+                    shop.update();
+                    sender.sendMessage(MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
+                    return;
+                } else {
+                    MsgUtil.getMessage("not-managed-shop", sender);
+                    return;
+                }
             }
         }
 
