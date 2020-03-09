@@ -598,8 +598,9 @@ public class QuickShop extends JavaPlugin {
         /* Load 3rd party supports */
         load3rdParty();
 
+        //Load the database
         setupDBonEnableding = true;
-        setupDatabase(); // Load the database
+        setupDatabase();
         setupDBonEnableding = false;
 
         /* Initalize the tools */
@@ -868,7 +869,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().severe("Error connecting to the database.");
             }
             return false;
-        } catch (SQLException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
@@ -1464,7 +1465,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 86);
             selectedVersion = 86;
         }
-
+        if (selectedVersion == 86) {
+            getConfig().set("shop.use-fast-shop-search-algorithm", true);
+            getConfig().set("config-version", 87);
+            selectedVersion = 87;
+        }
 
         saveConfig();
         reloadConfig();

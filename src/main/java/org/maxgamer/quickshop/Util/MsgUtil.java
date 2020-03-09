@@ -1337,11 +1337,27 @@ public class MsgUtil {
             setAndUpdate("language-info-panel.progress", "Progress: ");
             setAndUpdate("language-info-panel.help", "Help Us: ");
             setAndUpdate("language-info-panel.translate-on-crowdin", "[Translate on Crowdin]");
-
+            setAndUpdate("not-managed-shop", "You isn't the owner or moderator of the shop");
             setAndUpdate("language-version", 28);
             selectedVersion = 28;
         }
-
+        if (selectedVersion == 28) {
+            setAndUpdate("quickshop-gui-preview", "QuickShop GUI Preview Item");
+            setAndUpdate("shops-recovering", "Recovering shops from backup...");
+            setAndUpdate("shops-backingup", "Backing up the shops from database...");
+            setAndUpdate("saved-to-path", "The backup file was saved to {0} .");
+            setAndUpdate("backup-failed", "Cannot backup the database, check the console for details.");
+            setAndUpdate("translate-not-completed-yet-click", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!");
+            setAndUpdate("translate-not-completed-yet-url", "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}");
+            setAndUpdate("language-info-panel.name", "Language: ");
+            setAndUpdate("language-info-panel.code", "Code: ");
+            setAndUpdate("language-info-panel.progress", "Progress: ");
+            setAndUpdate("language-info-panel.help", "Help Us: ");
+            setAndUpdate("language-info-panel.translate-on-crowdin", "[Translate on Crowdin]");
+            setAndUpdate("not-managed-shop", "You isn't the owner or moderator of the shop");
+            setAndUpdate("language-version", 29);
+            selectedVersion = 29;
+        }
 
         messagei18n.save();
     }
