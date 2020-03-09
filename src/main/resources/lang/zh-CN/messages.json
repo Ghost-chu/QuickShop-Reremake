@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&c没有找到商店, 你必须选中箱子才行。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -232,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
   "digits-reach-the-limit": "&c你输入的价格小数点后面的数字已经达到了极限。",
   "complete": "&a完成！",
-  "quickshop-gui-preview": "QuickShop GUI预览商品"
+  "quickshop-gui-preview": "QuickShop GUI预览商品",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
