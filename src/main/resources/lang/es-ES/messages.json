@@ -3,7 +3,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -232,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&c¡Su tienda en {0} fue removida debido a que no tienes suficiente dinero para mantenerla!",
   "digits-reach-the-limit": "&cHas alcanzado el límite de dígitos antes del punto decimal en el precio.",
   "complete": "&a¡Terminado!",
-  "quickshop-gui-preview": "QuickShop GUI Previsualizar Objeto"
+  "quickshop-gui-preview": "QuickShop GUI Previsualizar Objeto",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
