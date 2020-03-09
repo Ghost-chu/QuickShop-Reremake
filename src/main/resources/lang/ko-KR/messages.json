@@ -3,7 +3,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 당신은 반드시 상점을 보고있어야 합니다.",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c당신에게는 권한이 없습니다.",
@@ -232,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&c{0} 위치에 있는 당신의 상점이 유지 비용이 없어 제거되었습니다!",
   "digits-reach-the-limit": "&c가격의 소수점 뒤 숫자 개수의 한계에 도달했습니다.",
   "complete": "&a완료!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI Preview Item",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
