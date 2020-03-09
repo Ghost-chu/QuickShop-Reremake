@@ -131,7 +131,6 @@ public class InventoryPreview implements Listener {
         if (inventory == null) {
             return;
         }
-        Resolved preview feature request
         for (HumanEntity player : inventory.getViewers()) {
             player.closeInventory();
         }
