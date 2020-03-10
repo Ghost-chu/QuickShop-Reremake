@@ -418,8 +418,6 @@ public class QuickShop extends JavaPlugin {
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
-        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
-        ;
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("log-actions")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -584,7 +582,7 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
-
+        this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
         /* Check the running envs is support or not. */
         try {
             runtimeCheck(this);
@@ -687,6 +685,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
+
         getLogger().info("Registering UpdateWatcher...");
         UpdateWatcher.init();
         getLogger().info("Registering BStats Mertics...");
