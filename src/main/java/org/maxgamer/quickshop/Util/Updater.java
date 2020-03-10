@@ -82,7 +82,7 @@ public class Updater {
         if (uurl == null) {
             throw new IOException("Failed read the URL, cause it is empty.");
         }
-        Util.debugLog("Downloading from " + uurl);
+        QuickShop.instance.getLogger().info("Downloading from " + uurl);
         InputStream is =
             HttpRequest.get(new URL(uurl))
                 .header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion())
@@ -103,6 +103,7 @@ public class Updater {
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
         if (!(uurlSize < 1) && downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");
+            QuickShop.instance.getLogger().info("Failed to download update: Size not match, downloaded: " + downloaded + " excepted: " + uurlSize);
             throw new IOException("Size not match, download mayb broken, aborting.");
         }
         Util.debugLog("Download complete.");
