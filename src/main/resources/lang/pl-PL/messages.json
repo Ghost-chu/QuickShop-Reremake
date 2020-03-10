@@ -233,17 +233,17 @@
   "digits-reach-the-limit": "&cOsiągnąłeś limit cyfr po kropce w cenie.",
   "complete": "&aZakończony!",
   "quickshop-gui-preview": "Podgląd produktu QuickShop",
-  "shops-recovering": "Recovering shops from backup...",
-  "shops-backingup": "Backing up the shops from database... ",
-  "saved-to-path": "The backup file was saved to {0} .",
-  "backup-failed": "Cannot backup the database, check the console for details.",
-  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
-  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "shops-recovering": "Odzyskiwanie sklepów z kopii zapasowej...",
+  "shops-backingup": "Tworzenie kopii zapasowej sklepów z bazy danych... ",
+  "saved-to-path": "Plik kopii zapasowej został zapisany w {0}.",
+  "backup-failed": "Nie można wykonać kopii zapasowej bazy danych, sprawdź konsolę, aby uzyskać szczegóły.",
+  "translate-not-completed-yet-click": "Tłumaczenie języka {0} zostało ukończone w {1}, Chcesz pomóc nam ulepszyć tłumaczenie? Kliknij tutaj!",
+  "translate-not-completed-yet-url": "Tłumaczenie języka {0} zostało ukończone w {1}, Chcesz pomóc nam ulepszyć tłumaczenie? Przeglądaj: {2}",
   "language-info-panel": {
-    "name": "Language: ",
-    "code": "Code: ",
-    "progress": "Progress: ",
-    "help": "Help Us: ",
-    "translate-on-crowdin": "[Translate on Crowdin]"
+    "name": "Język: ",
+    "code": "Kod: ",
+    "progress": "Postęp: ",
+    "help": "Pomóż nam: ",
+    "translate-on-crowdin": "[Tłumacz na Crowdin]"
   }
 }
