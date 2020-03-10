@@ -368,5 +368,12 @@
             <artifactId>jansi</artifactId>
             <version>1.17</version>
         </dependency>
+        <dependency>
+            <groupId>org.primesoft.blockshub</groupId>
+            <artifactId>BlockHub</artifactId>
+            <version>3.1.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
