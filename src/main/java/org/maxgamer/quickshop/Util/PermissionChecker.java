@@ -73,9 +73,11 @@ public class PermissionChecker {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
             if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
+                Util.debugLog("BlockHub only mode response: " + bhCanBuild);
                 return bhCanBuild;
             } else {
                 if (!bhCanBuild) {
+                    Util.debugLog("BlockHub reporting player no permission to access this region.");
                     return false;
                 }
             }
