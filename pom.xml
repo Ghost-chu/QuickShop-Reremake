@@ -67,7 +67,7 @@
                             <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.dumptrackman.bukkit.configuration</pattern>
+                            <pattern>com.dumptruckman.bukkit.configuration</pattern>
                             <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest.json</shadedPattern>
                         </relocation>
                     </relocations>
