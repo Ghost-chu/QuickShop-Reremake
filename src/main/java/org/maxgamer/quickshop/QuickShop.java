@@ -732,6 +732,15 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Throwable ignore) {
         }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<String> debugLogs = Util.getDebugLogs();
+                while (debugLogs.size() > 2000) {
+                    debugLogs.remove(debugLogs.size() - 1);
+                }
+            }
+        }.runTaskTimerAsynchronously(this, 0, 20 * 60 * 60);
     }
 
     private void registerIntegrations() {

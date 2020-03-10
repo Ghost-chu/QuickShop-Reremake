@@ -52,7 +52,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Database.MySQLCore;
-import org.maxgamer.quickshop.NonQuickShopStuffs.de.Keyle.MyPet.api.util.Colorizer;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -75,7 +74,7 @@ public class Util {
     static short tookLongTimeCostTimes;
 
     @Getter
-    private static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
+    public static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
 
     private static boolean devMode = false;
 
@@ -292,6 +291,9 @@ public class Util {
      */
     public static void debugLog(@NotNull String... logs) {
         if (!devMode) {
+            for (String log : logs) {
+                debugLogs.add("[DEBUG] " + log);
+            }
             return;
         }
         StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
@@ -299,32 +301,8 @@ public class Util {
         String methodName = stackTraceElement.getMethodName();
         int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
-            String text =
-                "["
-                    + ChatColor.DARK_GREEN
-                    + ChatColor.BOLD
-                    + "DEBUG"
-                    + ChatColor.RESET
-                    + "] ["
-                    + ChatColor.DARK_GREEN
-                    + className
-                    + ChatColor.RESET
-                    + "]"
-                    + " ["
-                    + ChatColor.DARK_GREEN
-                    + methodName
-                    + ChatColor.RESET
-                    + "] ("
-                    + ChatColor.DARK_GREEN
-                    + codeLine
-                    + ChatColor.RESET
-                    + ") "
-                    + log;
-            debugLogs.add(Colorizer.stripColors(text));
-            if (debugLogs.size() > 2000) /* Keep debugLogs max can have 2k lines. */ {
-                debugLogs.clear();
-            }
-            QuickShop.instance.getLogger().info(text);
+            debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            QuickShop.instance.getLogger().info(log);
         }
     }
 
