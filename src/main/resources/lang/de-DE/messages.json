@@ -3,12 +3,13 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Unterstützer: Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cEs wurde kein Shop gefunden. Bitte schau auf einen Shop, um diese Aktion auszuführen.",
   "no-anythings-in-your-hand": "&cEs befindet sich kein Gegenstand in deiner Hand.",
   "no-permission": "&cDu hast keine Berechtigung, dies zu tun.",
   "no-creative-break": "&cDu kannst Shops von anderen Spielern nicht im Kreativmodus abbauen. Bitte wechsel in den Überlebensmodus.",
   "no-double-chests": "&cDu kannst keinen Doppeltruhen-Shop nicht erstellen.",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cDies ist bereits ein Shop.",
   "chest-was-removed": "&cDie Truhe wurde entfernt.",
   "price-too-cheap": "&cDer Preis muss höher als &e${0} sein",
@@ -231,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&cDein Shop bei den Koordinaten {0} wurde entfernt, da du nicht genug Geld hattest um ihn zu behalten!",
   "digits-reach-the-limit": "&cDu hast das Limit an Nachkommastellen für den Preis erreicht.",
   "complete": "&aAbgeschlossen!",
-  "quickshop-gui-preview": "QuickShop GUI Vorschau Item"
+  "quickshop-gui-preview": "QuickShop GUI Vorschau Item",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
