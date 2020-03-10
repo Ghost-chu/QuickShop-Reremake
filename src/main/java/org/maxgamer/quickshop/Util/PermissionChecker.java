@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.Event.ShopProtectionCheckEvent;
 import org.maxgamer.quickshop.QuickShop;
+import org.primesoft.blockshub.BlocksHubBukkit;
 
 public class PermissionChecker {
     private final QuickShop plugin;
@@ -67,6 +68,18 @@ public class PermissionChecker {
             return true;
         }
         final AtomicBoolean isCanBuild = new AtomicBoolean(false);
+
+        if (plugin.getBlockHubPlugin() != null) {
+            BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
+            boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
+            if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
+                return bhCanBuild;
+            } else {
+                if (!bhCanBuild) {
+                    return false;
+                }
+            }
+        }
 
         BlockBreakEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0),

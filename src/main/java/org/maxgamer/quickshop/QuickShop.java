@@ -253,6 +253,8 @@ public class QuickShop extends JavaPlugin {
 
     private String previewProtectionLore;
 
+    private Plugin blockHubPlugin;
+
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
      * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
@@ -304,6 +306,12 @@ public class QuickShop extends JavaPlugin {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
+            }
+        }
+        if (getConfig().getBoolean("plugin.BlockHub")) {
+            this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
+            if (this.blockHubPlugin != null) {
+                getLogger().info("Successfully loaded BlockHub support!");
             }
         }
         if (this.display) {
@@ -1469,7 +1477,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 87);
             selectedVersion = 87;
         }
-
+        if (selectedVersion == 87) {
+            getConfig().set("plugin.BlockHub.enable", true);
+            getConfig().set("plugin.BlockHub.only", false);
+            getConfig().set("config-version", 88);
+            selectedVersion = 88;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
