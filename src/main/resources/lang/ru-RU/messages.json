@@ -3,12 +3,13 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Авторы: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cQuickShop не найден. Вы должны смотреть на сундук.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руках.",
   "no-permission": "&cУ вас нет прав на это.",
   "no-creative-break": "&cВы не можете ломать магазины других игроков в креативном режиме. Делайте это в выживании.",
   "no-double-chests": "&cВы не можете создавать магазин из двойного сундука.",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cЭто уже магазин.",
   "chest-was-removed": "&cСундук был удален.",
   "price-too-cheap": "&cЦена должна быть больше &e${0}",
@@ -137,7 +138,7 @@
       "paste": "&eАвтоматически загружать серверную информацию в Pastebin",
       "staff": "&eУправление совладельцами магазина",
       "remove": "&eУдалить магазин на который вы смотрите",
-      "amount": "&eExecute for your actions with amount(For chat plugin issue)",
+      "amount": "&eИспользуйте эту команду, чтобы ввести цену или число в случае проблем с вводом данных в чат",
       "about": "&eО QuickShop",
       "help": "&eПоказать подсказку QuickShop",
       "supercreate": "&eСоздать магазин в обход всех проверок защиты"
@@ -220,9 +221,9 @@
     "label": {
       "unstable": "[Не стабильный]",
       "stable": "[Стабильный]",
-      "lts": "[LTS]",
+      "lts": "[LTS - Долгосрочная стабильная версия]",
       "qualityverifyed": "[Качество]",
-      "github": "[Github]",
+      "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
       "master": "[Главная ветка]"
@@ -231,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&cВаш магазин на {0} был удален т.к. у вас не достаточно денег чтобы его оплачивать!",
   "digits-reach-the-limit": "&cДостигнут лимит количества цифр после запятой.",
   "complete": "&aВыполнено!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "Предосмотр вещи QuickShop",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }

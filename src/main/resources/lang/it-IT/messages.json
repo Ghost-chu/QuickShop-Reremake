@@ -3,12 +3,13 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Rightdenied",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cNon è stato trovato nessun QuickShop, devi guardarne uno",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
   "no-creative-break": "&cPuoi rompere i negozi solo in modalità sopravvivenza.",
   "no-double-chests": "&cNon puoi creare un negozio Doppia Cassa.",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cQuesto già è un negozio.",
   "chest-was-removed": "&cIl cartello è stato rimosso.",
   "price-too-cheap": "&cIl prezzo deve essere superiore a &e ${0}",
@@ -231,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
   "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
   "complete": "&aComplete!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI Preview Item",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
