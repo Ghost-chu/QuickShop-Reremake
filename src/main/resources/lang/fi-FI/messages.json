@@ -3,12 +3,13 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Ohjelmointi-apu: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cKauppaa ei löytynyt. Sinun pitää katsoa muokattavaa kauppaa päin.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
   "no-creative-break": "&cEt voi rikkoa muiden pelaajien kauppoja luovassa tilassa. Käytä ennemmin seikkailutilaa.",
   "no-double-chests": "&cEt voi luoda tupla-arkkukauppaa",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cTuo on jo kauppa!",
   "chest-was-removed": "&cKauppa poistettiin onnisteuneesti.",
   "price-too-cheap": "&cHinnan pitää olla korkeampi kuin &e${0}",
@@ -231,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&cKauppasi ({0}) poistettiin, sillä sinulla ei ollut varaa ylläpitää sitä!",
   "digits-reach-the-limit": "&cOlet saavuttanut desimaalirajan.",
   "complete": "&aValmis!",
-  "quickshop-gui-preview": "QuickShiop GUI-esikatselu"
+  "quickshop-gui-preview": "QuickShiop GUI-esikatselu",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }

@@ -3,12 +3,13 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "28",
+  "language-version": "29",
   "not-looking-at-shop": "&cAucun coffre de shop trouvé. Tu dois en regarder un.",
   "no-anythings-in-your-hand": "&cTu ne possède aucun item dans ta main.",
   "no-permission": "&cTu n'as pas la permission de faire ceci.",
   "no-creative-break": "&cTu ne peux pas casser la boutique d'un autre joueur en mode creatif. Utilise le mode survie.",
   "no-double-chests": "&cTu ne peux pas créer de boutique avec un double doffre.",
+  "not-managed-shop": "&cYou are not the owner or moderator of the shop",
   "shop-already-owned": "&cCe coffre est déjà un coffre de shop.",
   "chest-was-removed": "&cLe coffre a été supprimé",
   "price-too-cheap": "&cLe prix doit être supérieur à &e${0}",
@@ -231,5 +232,18 @@
   "shop-removed-cause-ongoing-fee": "&cTon coffre de shop aux coordonnées {0} a été supprimé car tu n'avais plus assez d'argent pour le garder !",
   "digits-reach-the-limit": "&cTu as atteint la limite de décimales dans le prix.",
   "complete": "&aAction effectuée",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item"
+  "quickshop-gui-preview": "QuickShop GUI Preview Item",
+  "shops-recovering": "Recovering shops from backup...",
+  "shops-backingup": "Backing up the shops from database... ",
+  "saved-to-path": "The backup file was saved to {0} .",
+  "backup-failed": "Cannot backup the database, check the console for details.",
+  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
+  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "language-info-panel": {
+    "name": "Language: ",
+    "code": "Code: ",
+    "progress": "Progress: ",
+    "help": "Help Us: ",
+    "translate-on-crowdin": "[Translate on Crowdin]"
+  }
 }
