@@ -64,7 +64,7 @@
                     <relocations>
                         <relocation>
                             <pattern>io.github.portlek.configs</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest.configs</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
