@@ -323,6 +323,8 @@ public class QuickShop extends JavaPlugin {
                 } else {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
                     getConfig().set("shop.display-type", 0);
+                    saveConfig();
+                    reloadConfig();
                 }
             }
 
@@ -1489,6 +1491,9 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 87) {
             getConfig().set("plugin.BlockHub.enable", true);
             getConfig().set("plugin.BlockHub.only", false);
+            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+                getConfig().set("shop.display-type", 2);
+            }
             getConfig().set("config-version", 88);
             selectedVersion = 88;
         }
