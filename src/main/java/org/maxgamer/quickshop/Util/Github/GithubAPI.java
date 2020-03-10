@@ -51,6 +51,9 @@ public class GithubAPI {
             if (asset.getName().contains("-shaded")) {
                 continue;
             }
+            if (asset.getName().contains("Document") || asset.getName().contains("document")) {
+                continue;
+            }
             return asset;
         }
         return null;
