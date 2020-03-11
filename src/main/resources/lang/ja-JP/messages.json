@@ -233,17 +233,17 @@
   "digits-reach-the-limit": "&c価格の小数点以下の制限に達しました。",
   "complete": "&a完了!",
   "quickshop-gui-preview": "QuickShop GUI プレビューアイテム",
-  "shops-recovering": "Recovering shops from backup...",
-  "shops-backingup": "Backing up the shops from database... ",
-  "saved-to-path": "The backup file was saved to {0} .",
-  "backup-failed": "Cannot backup the database, check the console for details.",
-  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
-  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "shops-recovering": "バックアップからショップを復元しています...",
+  "shops-backingup": "データベースからショップをバックアップしています... ",
+  "saved-to-path": "バックアップファイルは {0} に保存されました。",
+  "backup-failed": "データベースをバックアップできません。詳細についてはコンソールを確認してください。",
+  "translate-not-completed-yet-click": "言語 {0} の翻訳は {1} が完了しています。翻訳の改善に協力いただけますか？ここをクリック！",
+  "translate-not-completed-yet-url": "言語 {0} の翻訳は {1} が完了しています。翻訳の改善に協力いただけますか？参照: {2}",
   "language-info-panel": {
-    "name": "Language: ",
-    "code": "Code: ",
-    "progress": "Progress: ",
-    "help": "Help Us: ",
-    "translate-on-crowdin": "[Translate on Crowdin]"
+    "name": "言語: ",
+    "code": "コード: ",
+    "progress": "進行状況: ",
+    "help": "ヘルプ: ",
+    "translate-on-crowdin": "[Crowdinで翻訳]"
   }
 }
