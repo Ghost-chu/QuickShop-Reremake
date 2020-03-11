@@ -72,7 +72,7 @@ public class Language {
      */
     public InputStream getFile(@Nullable String language, @Nullable String type) {
         if (language == null) {
-            language = "en";
+            language = "en-US";
             Util.debugLog("Using the default language (EN) cause language is null.");
         }
         if (type == null || type.isEmpty()) {
@@ -81,7 +81,7 @@ public class Language {
         InputStream inputStream = plugin.getResource("lang/" + language + "/" + type + ".json");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
-            inputStream = plugin.getResource("lang/en/" + type + ".json");
+            inputStream = plugin.getResource("lang/en-US/" + type + ".json");
         }
         return inputStream;
         // File name should call    type-language.yml    ---> config-zh.yml
