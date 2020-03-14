@@ -910,28 +910,7 @@ public class MsgUtil {
         } else {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-selling", p));
         }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (items.hasItemMeta() && Objects.requireNonNull(items.getItemMeta()).hasEnchants()) {
-            enchs = items.getItemMeta().getEnchants();
-        }
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p, ""));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(
-                    ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
-            }
-        }
-        if (items.getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) items.getItemMeta();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printLine(MsgUtil.getMessage("menu.stored-enchants", p));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(
-                        ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
-                }
-            }
-        }
+        printEnchantment(p,shop,chatSheetPrinter);
         if (items.getItemMeta() instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
             PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
