@@ -1497,6 +1497,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 88);
             selectedVersion = 88;
         }
+        if(selectedVersion==88){
+            getConfig().set("respect-item-flag",true);
+            getConfig().set("config-version", 89);
+            selectedVersion = 89;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
