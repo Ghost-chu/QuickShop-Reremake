@@ -111,10 +111,6 @@ public class ShopManager {
                     return false;
                 }
             }
-            if (!plugin.getPermissionChecker().canBuild(p, b)) {
-                Util.debugLog("PermissionChecker canceled shop creation");
-                return false;
-            }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
             Bukkit.getPluginManager().callEvent(spce);
             if (Util.fireCancellableEvent(spce)) {
@@ -631,6 +627,7 @@ public class ShopManager {
             // Checking the shop can be created
             Util.debugLog("Calling for protection check...");
             // Fix openInv compatiable issue
+
 
             if (!bypassProtectionChecks) {
                 plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
