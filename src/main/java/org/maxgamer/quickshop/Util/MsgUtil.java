@@ -45,6 +45,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -772,28 +773,7 @@ public class MsgUtil {
                 "" + amount,
                 Util.getItemStackName(shop.getItem()),
                 Util.format((amount * shop.getPrice()))));
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta()
-            && Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        }
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-            }
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
-                }
-            }
-        }
+        printEnchantment(p, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -845,9 +825,16 @@ public class MsgUtil {
                 }
             }
         }
+        printEnchantment(p, shop, chatSheetPrinter);
+        chatSheetPrinter.printFooter();
+    }
+
+    private static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
+        if(shop.getItem().hasItemFlag(ItemFlag.HIDE_ENCHANTS)&&plugin.getConfig().getBoolean("respect-item-flag")){
+            return;
+        }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta()
-            && Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
+        if (shop.getItem().hasItemMeta()&& Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
@@ -867,7 +854,6 @@ public class MsgUtil {
                 }
             }
         }
-        chatSheetPrinter.printFooter();
     }
 
     /**

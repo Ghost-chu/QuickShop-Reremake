@@ -39,6 +39,9 @@ tax-account: tax
 #Whether or not to show taxes paid when selling to a shop
 show-tax: false
 
+#Whether or not to respect item flag (e.g. hide the enchantment info when item have HIDE_ENCHANTS flag)
+respect-item-flag: true
+
 #Should we log transactions/creations to Bukkit\Plugins\QuickShop\qs.log?
 log-actions: true
 
