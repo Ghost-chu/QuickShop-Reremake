@@ -385,6 +385,9 @@ public class ShopManager {
     }
 
     public void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks) {
+        if (!plugin.getShopManager().getActions().containsKey(p.getUniqueId())) {
+            return;
+        }
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
