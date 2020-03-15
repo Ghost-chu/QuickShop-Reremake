@@ -73,7 +73,7 @@ public class SentryErrorReporter {
 
     private boolean tempDisable;
 
-    private String lastPaste;
+    private String lastPaste = "Failed to paste.";
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
