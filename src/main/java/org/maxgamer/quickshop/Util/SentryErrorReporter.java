@@ -315,6 +315,8 @@ public class SentryErrorReporter {
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
             plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            Util.debugLog(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
             if (Util.isDevMode()) {
                 throwable.printStackTrace();
             }
