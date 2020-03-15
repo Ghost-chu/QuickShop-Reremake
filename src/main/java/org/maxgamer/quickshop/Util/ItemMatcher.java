@@ -53,9 +53,8 @@ public class ItemMatcher {
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
     public boolean matches(@Nullable ItemStack requireStack, @Nullable ItemStack givenStack) {
-
-        if (requireStack == givenStack) {
-            return true; // Referring to the same thing, or both are null.
+        if (requireStack == null && givenStack == null) {
+            return true;
         }
 
         if (requireStack == null || givenStack == null) {
@@ -151,12 +150,6 @@ class ItemMetaMatcher {
         }
         ItemMeta meta1 = requireStack.getItemMeta();
         ItemMeta meta2 = givenStack.getItemMeta();
-        if ((meta1 == null) != (meta2 == null)) {
-            return false;
-        }
-        if (meta1 == null) {
-            return true; // Both null...
-        }
         if (!damageMatches(meta1, meta2)) {
             return false;
         }
