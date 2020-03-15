@@ -125,6 +125,9 @@ public class ShopLoader {
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                         if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
                             backupedDatabaseInDeleteProcess = Util.backupDatabase();
+                            if (backupedDatabaseInDeleteProcess) {
+                                plugin.getDatabaseHelper().removeShop(shop);
+                            }
                         } else {
                             plugin.getDatabaseHelper().removeShop(shop);
                         }
