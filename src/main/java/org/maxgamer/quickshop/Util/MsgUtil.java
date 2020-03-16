@@ -830,11 +830,11 @@ public class MsgUtil {
     }
 
     private static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
+        if (shop.getItem().hasItemMeta()&&shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta()&& Objects.requireNonNull(shop.getItem().getItemMeta()).hasEnchants()) {
+        if (shop.getItem().hasItemMeta()&& shop.getItem().getItemMeta().hasEnchants()) {
             enchs = shop.getItem().getItemMeta().getEnchants();
         }
         if (!enchs.isEmpty()) {
