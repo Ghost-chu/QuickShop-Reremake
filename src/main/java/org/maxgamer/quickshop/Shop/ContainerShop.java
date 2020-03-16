@@ -250,13 +250,14 @@ public class ContainerShop implements Shop {
 
         if (this.displayItem == null) {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
+            StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
             Util.debugLog(
                 "Call from: "
-                    + Thread.currentThread().getStackTrace()[2].getClassName()
+                    + traceElements.getClassName()
                     + "#"
-                    + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + traceElements.getMethodName()
                     + "%"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    + traceElements.getLineNumber());
             return;
         }
 
