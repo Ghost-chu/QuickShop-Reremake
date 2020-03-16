@@ -779,12 +779,7 @@ public class ShopManager {
             /* The shop has hereforth been successfully created */
             createShop(shop, info);
             if (!plugin.getConfig().getBoolean("shop.lock")) {
-                // Warn them if they haven't been warned since
-                // reboot
-                if (!plugin.getWarnings().contains(p.getName())) {
                     p.sendMessage(MsgUtil.getMessage("shops-arent-locked", p));
-                    plugin.getWarnings().add(p.getName());
-                }
             }
             // Figures out which way we should put the sign on and
             // sets its text.
