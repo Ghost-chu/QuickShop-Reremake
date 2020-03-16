@@ -744,9 +744,12 @@ public class Util {
             return false;
         }
         for (String lore : Objects.requireNonNull(stack.getItemMeta().getLore())) {
-            if (plugin.getConfig().getStringList("shop.blacklist-lores").contains(lore)) {
-                return true;
-            }
+			List<String> blacklistLores = plugin.getConfig().getStringList("shop.blacklist-lores");
+			for (String blacklistLore : blacklistLores) {
+				if (lore.contains(blacklistLore)) {
+					return true;
+				}
+			}
         }
         return false;
     }
