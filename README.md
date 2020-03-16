@@ -48,7 +48,6 @@ If you're a developer, you can contribute to the QuickShop code! Just make a for
    <groupId>org.maxgamer.quickshop</groupId>
    <artifactId>QuickShop</artifactId>
    <version>{VERSION}</version>
-   scope>provided</scope>
+   <scope>provided</scope>
 </dependency>
-
 ```
