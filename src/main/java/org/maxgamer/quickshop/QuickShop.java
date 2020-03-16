@@ -64,12 +64,13 @@ import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
 
-@Getter
+
 public class QuickShop extends JavaPlugin {
 
     /**
      * The active instance of QuickShop
      */
+    @Getter
     public static QuickShop instance;
 
     /**
@@ -77,6 +78,7 @@ public class QuickShop extends JavaPlugin {
      */
     private static PermissionManager permissionManager;
 
+    @Getter
     private IntegrationHelper integrationHelper;
 
     // Listeners (These don't)
@@ -86,6 +88,7 @@ public class QuickShop extends JavaPlugin {
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
     @Nullable
+    @Getter
     private BootError bootError;
 
     // Listeners - We decide which one to use at runtime
@@ -93,11 +96,13 @@ public class QuickShop extends JavaPlugin {
 
     private ChunkListener chunkListener;
 
+    @Getter
     private CommandManager commandManager;
 
     /**
      * WIP
      */
+    @Getter
     private Compatibility compatibilityTool = new Compatibility(this);
 
     private CustomInventoryListener customInventoryListener;
@@ -105,62 +110,75 @@ public class QuickShop extends JavaPlugin {
     /**
      * The database for storing all our data for persistence
      */
+    @Getter
     private Database database;
 
     /**
      * Contains all SQL tasks
      */
+    @Getter
     private DatabaseHelper databaseHelper;
 
     /**
      * Queued database manager
      */
+    @Getter
     private DatabaseManager databaseManager;
 
     /**
      * Default database prefix, can overwrite by config
      */
+    @Getter
     private String dbPrefix = "";
 
     /**
      * Whether we should use display items or not
      */
+    @Getter
     private boolean display = true;
 
     private DisplayBugFixListener displayBugFixListener;
 
+    @Getter
     private int displayItemCheckTicks;
 
+    @Getter
     private DisplayWatcher displayWatcher;
 
     /**
      * The economy we hook into for transactions
      */
+    @Getter
     private Economy economy;
 
     private DisplayProtectionListener inventoryListener;
 
+    @Getter
     private ItemMatcher itemMatcher;
 
     /**
      * Language manager, to select which language will loaded.
      */
+    @Getter
     private Language language;
 
     /**
      * Whether or not to limit players shop amounts
      */
+    @Getter
     private boolean limit = false;
 
     /**
      * The shop limites.
      */
+    @Getter
     private HashMap<String, Integer> limits = new HashMap<>();
 
     private LockListener lockListener;
 
     // private BukkitTask itemWatcherTask;
     @Nullable
+    @Getter
     private LogWatcher logWatcher;
 
     /**
@@ -173,16 +191,19 @@ public class QuickShop extends JavaPlugin {
     /**
      * The plugin OpenInv (null if not present)
      */
+    @Getter
     private Plugin openInvPlugin;
 
     /**
      * The plugin PlaceHolderAPI(null if not present)
      */
+    @Getter
     private Plugin placeHolderAPI;
 
     /**
      * A util to call to check some actions permission
      */
+    @Getter
     private PermissionChecker permissionChecker;
 
     private PlayerListener playerListener;
@@ -193,16 +214,19 @@ public class QuickShop extends JavaPlugin {
      * Whether we players are charged a fee to change the price on their shop (To help deter endless
      * undercutting
      */
+    @Getter
     private boolean priceChangeRequiresFee = false;
 
     /**
      * The error reporter to help devs report errors to Sentry.io
      */
+    @Getter
     private SentryErrorReporter sentryErrorReporter;
 
     /**
      * The server UniqueID, use to the ErrorReporter
      */
+    @Getter
     private UUID serverUniqueID;
 
     private boolean setupDBonEnableding = false;
@@ -210,49 +234,51 @@ public class QuickShop extends JavaPlugin {
     /**
      * Rewrited shoploader, more faster.
      */
+    @Getter
     private ShopLoader shopLoader;
 
     /**
      * The Shop Manager used to store shops
      */
+    @Getter
     private ShopManager shopManager;
 
     private ShopProtectionListener shopProtectListener;
 
+    @Getter
     private SyncTaskWatcher syncTaskWatcher;
 
     // private ShopVaildWatcher shopVaildWatcher;
+    @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
-
-    /**
-     * Use SpoutPlugin to get item / block names
-     */
-    private boolean useSpout = false;
-
-    /**
-     * A set of players who have been warned ("Your shop isn't automatically locked")
-     */
-    private HashSet<String> warnings = new HashSet<>();
 
     private WorldListener worldListener;
 
+    @Getter
     private OngoingFeeWatcher ongoingFeeWatcher;
 
+    @Getter
     private SignUpdateWatcher signUpdateWatcher;
 
+    @Getter
     private ShopContainerWatcher shopContainerWatcher;
 
+    @Getter
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
 
+    @Getter
     private BukkitAPIWrapper bukkitAPIWrapper;
 
     private boolean isUtilInited = false;
 
+    @Getter
     private boolean enabledAsyncDisplayDespawn;
 
+    @Getter
     private String previewProtectionLore;
 
+    @Getter
     private Plugin blockHubPlugin;
 
     /**
@@ -515,9 +541,6 @@ public class QuickShop extends JavaPlugin {
                 }
                 e.printStackTrace();
             }
-        }
-        if (warnings != null) {
-            warnings.clear();
         }
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
