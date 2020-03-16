@@ -260,7 +260,7 @@ public class MsgUtil {
             plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
             YamlConfiguration oldMsgI18n = YamlConfiguration.loadConfiguration(oldMsgFile);
             for (String key : oldMsgI18n.getKeys(true)) {
-                oldMsgI18n.get(key);
+                nJson.set(key, oldMsgI18n.get(key));
             }
             nJson.save();
             try {
