@@ -36,3 +36,18 @@ Github projects have a "releases" link on their home page. If you still don't se
 
 ## Contribute
 If you're a developer, you can contribute to the QuickShop code! Just make a fork, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+
+## Maven
+```XML
+<repository>
+   <id>quickshop-repo</id>
+   <url>https://raw.githubusercontent.com/Ghost-chu/maven-repo/master/</url>
+</repository>
+
+<dependency>
+   <groupId>org.maxgamer.quickshop</groupId>
+   <artifactId>QuickShop</artifactId>
+   <version>{VERSION}</version>
+   <scope>provided</scope>
+</dependency>
+```
