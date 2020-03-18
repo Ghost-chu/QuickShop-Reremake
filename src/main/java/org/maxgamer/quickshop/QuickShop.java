@@ -551,6 +551,17 @@ public class QuickShop extends JavaPlugin {
         getCommand("qs").setTabCompleter(commandManager);
 
         getLogger().info("Quickshop " + getFork());
+
+        /* Check the running envs is support or not. */
+        try {
+            runtimeCheck(this);
+        } catch (RuntimeException e) {
+            bootError = new BootError(e.getMessage());
+            //noinspection ConstantConditions
+            getCommand("qs").setTabCompleter(this); //Disable tab completer
+            return;
+        }
+
         getLogger().info("Reading the configuration...");
         /* Process the config */
         saveDefaultConfig();
@@ -606,15 +617,7 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
         this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
-        /* Check the running envs is support or not. */
-        try {
-            runtimeCheck(this);
-        } catch (RuntimeException e) {
-            bootError = new BootError(e.getMessage());
-            //noinspection ConstantConditions
-            getCommand("qs").setTabCompleter(this); //Disable tab completer
-            return;
-        }
+
 
         /* Load 3rd party supports */
         load3rdParty();
