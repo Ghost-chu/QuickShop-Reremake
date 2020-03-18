@@ -1,5 +1,5 @@
 {
-  "translation-author": "翻译者：&b&lMashirl happyvalley yzhh You_wen",
+  "translation-author": "翻译者：&b&lMashirl happyvalley yzhh You_wen sandtechnology",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
@@ -237,13 +237,13 @@
   "shops-backingup": "正在备份数据库中的商店... ",
   "saved-to-path": "备份文件已保存到 {0}。",
   "backup-failed": "无法备份数据库，请查看控制台以获取详细信息。",
-  "translate-not-completed-yet-click": "语言 {0} 的翻译已完成 {1}，您想帮助我们改进翻译吗？点击这里！",
-  "translate-not-completed-yet-url": "翻译 {0} 已完成 {1}，您想帮助我们改进翻译吗？来这里吧： {2}",
+  "translate-not-completed-yet-click": "{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？点击这里！",
+  "translate-not-completed-yet-url": "{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： {2}",
   "language-info-panel": {
     "name": "语言：",
     "code": "语言代码：",
     "progress": "进度：",
     "help": "帮助我们： ",
-    "translate-on-crowdin": "[Translate on Crowdin]"
+    "translate-on-crowdin": "[在 Crowdin 上翻译]"
   }
 }
