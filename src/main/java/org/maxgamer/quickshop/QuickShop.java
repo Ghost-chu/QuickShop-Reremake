@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import lombok.Getter;
@@ -57,7 +56,6 @@ import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegratio
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
-import org.maxgamer.quickshop.Util.Paste.Paste;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
@@ -492,15 +490,15 @@ public class QuickShop extends JavaPlugin {
         if (noopDisable) {
             return;
         }
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onUnloadBegin);
+        this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
-            Paste paste = new Paste(this);
-            String lastPaste = paste.paste(paste.genNewPaste(), 1);
-            if (lastPaste != null) {
-                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-            }
-        }
+//        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
+//            Paste paste = new Paste(this);
+//            String lastPaste = paste.paste(paste.genNewPaste(), 1);
+//            if (lastPaste != null) {
+//                log("Plugin unloaded, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+//            }
+//        }
         Util.debugLog("Closing all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
@@ -532,15 +530,7 @@ public class QuickShop extends JavaPlugin {
         }
         /* Close Database */
         if (database != null) {
-            try {
-                this.database.getConnection().close();
-                this.database.close();
-            } catch (SQLException e) {
-                if (getSentryErrorReporter() != null) {
-                    this.getSentryErrorReporter().ignoreThrow();
-                }
-                e.printStackTrace();
-            }
+            this.database.close();
         }
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
@@ -1520,8 +1510,8 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 88);
             selectedVersion = 88;
         }
-        if(selectedVersion==88){
-            getConfig().set("respect-item-flag",true);
+        if (selectedVersion == 88) {
+            getConfig().set("respect-item-flag", true);
             getConfig().set("config-version", 89);
             selectedVersion = 89;
         }
