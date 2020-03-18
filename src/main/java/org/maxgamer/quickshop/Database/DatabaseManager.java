@@ -106,7 +106,7 @@ public class DatabaseManager {
             Util.debugLog("Executing the SQL task: " + task);
             task.run();
             long tookTime = timer.endTimer();
-            if (tookTime > 5000) {
+            if (tookTime > 500) {
                 warningSender.sendWarn(
                     "Database performance warning: It took too long time ("
                         + tookTime
