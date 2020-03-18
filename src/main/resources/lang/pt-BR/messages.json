@@ -38,7 +38,7 @@
   "price-is-now": "&aO novo preço da loja é &e{0}",
   "thats-not-a-number": "&cNumero inválido",
   "no-price-given": "&cPor favor, insira um preço válido.",
-  "average-price-nearby": "&aAverage Price Nearby: &e{0}",
+  "average-price-nearby": "&aPreço médio ao redor: &e{0}",
   "shop-has-changed": "&cThe shop you tried to use has changed since you clicked it!",
   "shop-not-exist": "&cThere had no shop.",
   "nearby-shop-this-way": "&aShop is {0} blocks away from you.",
