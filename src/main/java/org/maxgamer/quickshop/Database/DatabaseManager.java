@@ -85,20 +85,20 @@ public class DatabaseManager {
      * Internal method, runTasks in queue.
      */
     private void runTask() {
+        try {
+            if (!this.database.getConnection().isValid(3000)) {
+                this.plugin
+                    .getLogger()
+                    .warning(
+                        "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                return; // Waiting next crycle and hope it success reconnected.
+            }
+        } catch (SQLException sqle) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            sqle.printStackTrace();
+        }
         while (true) {
             Timer timer = new Timer(true);
-            try {
-                if (!this.database.getConnection().isValid(3000)) {
-                    this.plugin
-                        .getLogger()
-                        .warning(
-                            "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                    break; // Waiting next crycle and hope it success reconnected.
-                }
-            } catch (SQLException sqle) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-                sqle.printStackTrace();
-            }
             DatabaseTask task = sqlQueue.poll();
             if (task == null) {
                 break;
