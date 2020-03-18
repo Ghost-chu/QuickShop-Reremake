@@ -48,7 +48,7 @@
   "refill-success": "&a성공적으로 채웠습니다.",
   "empty-success": "&a성공적으로 비웠습니다.",
   "admin-shop": "관리자 상점",
-  "unknown-owner": "알 수 없는 주인",
+  "unknown-owner": "알 수 없음",
   "owner-bypass-check": "&e모든 조사를 통과하여, 거래를 완료했습니다! (당신은 상점 주인입니다.)",
   "reached-maximum-can-create": "&c당신은 이미 최대  {0}\/{1}개의 상점을 생성했습니다!",
   "restricted-prices": "&c{0}에 대한 가격이 제한되었습니다. 최소 {1}원, 최대 {2}원",
@@ -153,7 +153,7 @@
     "unlimited": "무제한"
   },
   "controlpanel": {
-    "setowner": "&a주인: &b{0} &e[d&l바꾸기&e]",
+    "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
     "infomation": "&a상점 제어판:",
     "setowner-hover": "&e눌러서 주인 변경",
     "unlimited": "&a무제한:{0} &e[&d&l변경&e]",
