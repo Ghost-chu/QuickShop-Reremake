@@ -57,7 +57,6 @@ import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
-import org.maxgamer.quickshop.Util.ServerForkWrapper.PaperWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
@@ -593,17 +592,17 @@ public class QuickShop extends JavaPlugin {
             case 1:
                 bukkitAPIWrapper = new SpigotWrapper();
                 getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
-            case 2:
-                bukkitAPIWrapper = new PaperWrapper();
-                getLogger().info("Plugin now running under Paper mode.");
+//            case 2:
+//                bukkitAPIWrapper = new PaperWrapper();
+//                getLogger().info("Plugin now running under Paper mode.");
             default: // AUTO
-                if (Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")) {
-                    bukkitAPIWrapper = new PaperWrapper();
-                    getLogger().info("Plugin now running under Paper mode.");
-                } else {
-                    bukkitAPIWrapper = new SpigotWrapper();
-                    getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
-                }
+//                if (Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")) {
+//                    bukkitAPIWrapper = new PaperWrapper();
+//                    getLogger().info("Plugin now running under Paper mode.");
+//                } else {
+                bukkitAPIWrapper = new SpigotWrapper();
+                getLogger().info("Plugin now running under Spigot mode.");
+//                }
         }
 
         /* Initalize the Utils */
@@ -657,7 +656,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
 
-        this.protectionCache = new Cache(this);
+        this.shopCache = new Cache(this);
 
         signUpdateWatcher = new SignUpdateWatcher(this);
         shopContainerWatcher = new ShopContainerWatcher(this);
