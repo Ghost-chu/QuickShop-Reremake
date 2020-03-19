@@ -1487,7 +1487,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 82);
             selectedVersion = 82;
         }
-        if (selectedVersion == 83) {
+        if (selectedVersion == 82) {
+            getConfig().set("matcher.item.banner", true);
+            getConfig().set("config-version", 83);
+            selectedVersion = 83;
+        }
+        if (selectedVersion == 82) {
             getConfig().set("matcher.item.banner", true);
             getConfig().set("protect.explode", true);
             getConfig().set("config-version", 84);
