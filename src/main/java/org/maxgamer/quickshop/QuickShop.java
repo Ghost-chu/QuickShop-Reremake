@@ -1528,7 +1528,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 89;
         }
         if (selectedVersion == 89) {
-            getConfig().set("use-caching", true);
+            getConfig().set("use-caching", false);
             getConfig().set("config-version", 90);
             selectedVersion = 90;
         }
