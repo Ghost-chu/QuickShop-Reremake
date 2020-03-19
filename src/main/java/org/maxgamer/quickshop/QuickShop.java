@@ -279,6 +279,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private Plugin blockHubPlugin;
 
+    @Getter
+    private Cache shopCache;
+
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
      * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
@@ -653,6 +656,8 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("shop.find-distance") > 100) {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
+
+        this.protectionCache = new Cache(this);
 
         signUpdateWatcher = new SignUpdateWatcher(this);
         shopContainerWatcher = new ShopContainerWatcher(this);
@@ -1517,6 +1522,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("respect-item-flag", true);
             getConfig().set("config-version", 89);
             selectedVersion = 89;
+        }
+        if (selectedVersion == 89) {
+            getConfig().set("use-caching", true);
+            getConfig().set("config-version", 90);
+            selectedVersion = 90;
         }
         saveConfig();
         reloadConfig();
