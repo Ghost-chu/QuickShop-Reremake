@@ -103,8 +103,8 @@
   "how-much-to-trade-for": "&a채팅에 &e{0}&a와 교환할 금액을 입력해주세요.",
   "command": {
     "toggle-unlimited": {
-      "unlimited": "&상점의 재고가 무제한이 되었습니다.",
-      "limited": "&a상점의 재고가 한정되었습니다."
+      "unlimited": "&a상점의 재고를 무제한으로 설정했습니다. (관리자 상점으로 설정됩니다.)",
+      "limited": "&a상점의 재고를 제한으로 설정했습니다. (유저 상점으로 설정됩니다.)"
     },
     "no-owner-given": "&c주인이 없습니다. &a\/qs setowner <플레이어 이름>&c을 사용하여 주인을 지정하세요.",
     "new-owner": "&a새 주인 : &e{0}",
