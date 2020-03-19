@@ -1014,23 +1014,31 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-        @Nullable Shop shop;
-        shop = getShop(loc);
-        if (shop != null) {
-            return shop;
-        }
-        Block currentBlock = loc.getBlock();
-        if (!fromAttach && Util.isWallSign(currentBlock.getType())) {
-            Block attached = Util.getAttached(currentBlock);
-            if (attached != null) {
-                this.getShopIncludeAttached_Fast(attached.getLocation(), true);
-            }
-        }
-        @Nullable Block half = Util.getSecondHalf(currentBlock);
-        if (half != null) {
-            return getShop(half.getLocation());
+
+        if (plugin.getShopCache().hasValidCache(loc)) {
+            return plugin.getShopCache().getCachingShop(loc);
         } else {
-            return null;
+            @Nullable Shop shop;
+            shop = getShop(loc);
+            if (shop != null) {
+                plugin.getShopCache().setCache(loc, shop);
+                return shop;
+            }
+            Block currentBlock = loc.getBlock();
+            if (!fromAttach && Util.isWallSign(currentBlock.getType())) {
+                Block attached = Util.getAttached(currentBlock);
+                if (attached != null) {
+                    this.getShopIncludeAttached_Fast(attached.getLocation(), true);
+                }
+            }
+            @Nullable Block half = Util.getSecondHalf(currentBlock);
+            if (half != null) {
+                plugin.getShopCache().setCache(loc, getShop(half.getLocation()));
+                return getShop(half.getLocation());
+            } else {
+                plugin.getShopCache().setCache(loc, null);
+                return null;
+            }
         }
     }
 
