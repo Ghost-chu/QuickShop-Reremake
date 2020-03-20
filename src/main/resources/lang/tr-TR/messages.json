@@ -1,7 +1,7 @@
 {
   "translation-author": "Çevirmen: DazzGranto",
-  "translation-version": "Support Version: Reremake",
-  "translation-contributors": "Katkıda Bulunanlar: Hiç Kimse",
+  "translation-version": "Destek Versiyonu: Reremake",
+  "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
   "language-version": "29",
   "not-looking-at-shop": "&cQuickShop bulunamadı, birine bakıyor olmalısın.",
@@ -26,7 +26,7 @@
   "you-cant-afford-to-buy": "&cBu ${0}'a mâl oluyor ama sende ${1} var.",
   "negative-amount": "&cSaf! Negatif miktarlarda işlem yapamazsın.",
   "not-a-number": "&cYalnızca sayı kullanabilirsiniz ama siz {0} girdiniz.",
-  "not-a-integer": "&cYalnızca tamsayı kullanabilirsiniz ama siz {0} girdiniz.",
+  "not-a-integer": "&cYalnızca tamsayı olabilir ama siz {0} girdiniz.",
   "player-bought-from-your-store": "&c{0} marketinden {1} tane {2} satın aldı.",
   "shop-out-of-stock": "&5{0},{1},{2}'deki marketinizde {3} tükendi",
   "shop-has-no-space": "&cDükkanda sadece {0} için daha fazla {1} yer var.",
@@ -40,7 +40,7 @@
   "no-price-given": "&cLütfen geçerli bir fiyat verin.",
   "average-price-nearby": "&aYakındaki Ortalama Fiyat: &e${0}",
   "shop-has-changed": "&cKullanmaya çalıştığınız market, tıkladığınızdan beri değişti.",
-  "shop-not-exist": "&cOrada market yoktu.",
+  "shop-not-exist": "&cOrada market yok.",
   "nearby-shop-this-way": "&aMarket sizden {0} blok uzakta.",
   "no-nearby-shop": "&cYakında {0} ile eşleşen market yok.",
   "buying-more-than-selling": "&cUYARI: Sattığınızdan fazla ürün satın alıyorsunuz.",
@@ -240,10 +240,10 @@
   "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
   "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
   "language-info-panel": {
-    "name": "Language: ",
-    "code": "Code: ",
-    "progress": "Progress: ",
-    "help": "Help Us: ",
-    "translate-on-crowdin": "[Translate on Crowdin]"
+    "name": "Dil: ",
+    "code": "Kod: ",
+    "progress": "İlerleme: ",
+    "help": "Bize Yardım Edin: ",
+    "translate-on-crowdin": "[Crowdin'de Çevirin]]"
   }
 }
