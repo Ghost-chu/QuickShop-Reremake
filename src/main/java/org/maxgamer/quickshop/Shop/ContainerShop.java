@@ -321,12 +321,11 @@ public class ContainerShop implements Shop {
     /**
      * Deletes the shop from the list of shops and queues it for database deletion
      *
-     * @param fromMemory True if you are *NOT* iterating over this currently, *false if you are
-     * iterating*
+     * @param memoryOnly whether to delete from database
      */
     @Override
-    public void delete(boolean fromMemory) {
-        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, fromMemory);
+    public void delete(boolean memoryOnly) {
+        ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
             return;
@@ -349,7 +348,7 @@ public class ContainerShop implements Shop {
         if (plugin.getConfig().getBoolean("shop.refund")) {
             plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
         }
-        if (fromMemory) {
+        if (memoryOnly) {
             // Delete it from memory
             plugin.getShopManager().removeShop(this);
         } else {
