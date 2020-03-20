@@ -28,9 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -945,16 +943,14 @@ public class ContainerShop implements Shop {
             Util.debugLog(e.getMessage());
             return null;
         }
-        InventoryHolder container;
-        try {
-            container = (InventoryHolder) this.location.getBlock().getState();
-            return container.getInventory();
-        } catch (Exception e) {
-            this.onUnload();
-            this.delete();
-            Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
-            return null;
-        }
+            BlockState state=this.location.getBlock().getState();
+            if(state instanceof Container){
+                return ((Container) state).getInventory();
+            }else {
+                this.delete();
+                Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+                return null;
+            }
     }
 
     /**
