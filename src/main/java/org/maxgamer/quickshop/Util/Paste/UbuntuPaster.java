@@ -55,7 +55,7 @@ public class UbuntuPaster implements PasteInterface {
             "poster="
                 + "QuickShop Paster"
                 + "&syntax=text"
-                + "&expiration=month"
+                + "&expiration=week"
                 + "&content="
                 + URLEncoder.encode(text, "UTF-8");
         out.print(builder);
