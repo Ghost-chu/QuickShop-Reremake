@@ -137,11 +137,11 @@
       "info": "&eQuickShop İstatistiklerini Göster",
       "paste": "&eSunucu verilerini Pastebin'e otomatik yükle",
       "staff": "&eMağaza personellerinizi yönetin",
-      "remove": "&eRemove your looking the shop",
+      "remove": "&eBaktığınız marketi kaldırın",
       "amount": "&eExecute for your actions with amount(For chat plugin issue)",
-      "about": "&eShow QuickShop abouts",
-      "help": "&eShow QuickShop helps",
-      "supercreate": "&eCreate a shop bypass all protection checks"
+      "about": "&eQuickShop hakkındayı Göster",
+      "help": "&eQuickShop yardımlarını Göster",
+      "supercreate": "%eBütün koruma kontrollerini atlayarak bir market oluştur"
     }
   },
   "signs": {
@@ -217,7 +217,7 @@
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.",
+    "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlendi, bunun anlamı bu versiyonda büyük problemler oluşabilir, detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak, sunucu hızınızı etkilemez.",
     "label": {
       "unstable": "[Unstable]",
       "stable": "[Stable]",
@@ -229,14 +229,14 @@
       "master": "[Master]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYou shop at {0} was removed cause you had no enough money to keep it!",
-  "digits-reach-the-limit": "&cYou have reach the limit of the digits after the dot in price.",
-  "complete": "&aComplete!",
-  "quickshop-gui-preview": "QuickShop GUI Preview Item",
-  "shops-recovering": "Recovering shops from backup...",
-  "shops-backingup": "Backing up the shops from database... ",
-  "saved-to-path": "The backup file was saved to {0} .",
-  "backup-failed": "Cannot backup the database, check the console for details.",
+  "shop-removed-cause-ongoing-fee": "&c{0} koordinatlarında bulunan marketiniz açık tutacak kadar paranız olmadığı için kaldırılmıştır!",
+  "digits-reach-the-limit": "&cFiyattaki basamak sınırına ulaştınız.",
+  "complete": "&aTamamlandı!",
+  "quickshop-gui-preview": "QuickShop GUI Önizleme Öğesi",
+  "shops-recovering": "Dükkanlar yedekten kurtarılıyor...",
+  "shops-backingup": "Mağazalar veritabanından yedekleniyor... ",
+  "saved-to-path": "Yedek dosyası {0} klasörüne kaydedildi.",
+  "backup-failed": "Veritabanı yedeklenemiyor, ayrıntılar için konsolu kontrol edin.",
   "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
   "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
   "language-info-panel": {
