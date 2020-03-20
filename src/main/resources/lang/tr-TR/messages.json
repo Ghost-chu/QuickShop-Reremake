@@ -210,12 +210,12 @@
       "Err! Yok, bu bir hata değil, {0} yayınlandı!",
       "OMG! {0} Çıktı! Neden hala {1} versiyonunu kullanıyorsun?",
       "Bügünün Haberleri: QuickShop {0} versiyonuna güncellendi!",
-      "Plugin K.I.A, You should update to {0}!",
-      "Fuze is fuzeing update {0}, save update!",
-      "There is an update commander, {0} has just come out!",
-      "Look me style---{0} updated, your still using {1}",
-      "Ahhhhhhh! New update {0}! Update!",
-      "What U thinking? {0} has been released! Update!"
+      "Eklenti K.I.A, {0} versiyonuna güncellemelisin!",
+      "Fuze {0} güncellemesini bulanıklaştırıyor, güncellemeyi kaydet!",
+      "Bir güncelleme var komutanım, {0} şuan çıktı!",
+      "Tarzıma bak---{0} güncellendi, sen hala {1} versiyonunu kullanıyorsun",
+      "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
+      "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!"
     ],
     "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.",
     "label": {
