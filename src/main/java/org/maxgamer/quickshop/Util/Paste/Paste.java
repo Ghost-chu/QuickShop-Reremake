@@ -154,6 +154,8 @@ public class Paste {
                 .append(bplugin.getName())
                 .append("@")
                 .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                .append("#")
+                .append(bplugin.getDescription().getVersion())
                 .append("\n");
         }
         finalReport.append("================================================\n");
