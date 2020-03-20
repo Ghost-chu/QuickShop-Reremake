@@ -1,5 +1,5 @@
 {
-  "translation-author": "Çevirmen: DazzGranto",
+  "translation-author": "Çevirmen: NOYB, DazzGranto",
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
@@ -138,7 +138,7 @@
       "paste": "&eSunucu verilerini Pastebin'e otomatik yükle",
       "staff": "&eMağaza personellerinizi yönetin",
       "remove": "&eBaktığınız marketi kaldırın",
-      "amount": "&eExecute for your actions with amount(For chat plugin issue)",
+      "amount": "&eİşlemlerinizi tutarla gerçekleştirin(sohbet eklentisi konuları için)",
       "about": "&eQuickShop hakkındayı Göster",
       "help": "&eQuickShop yardımlarını Göster",
       "supercreate": "%eBütün koruma kontrollerini atlayarak bir market oluştur"
@@ -237,8 +237,8 @@
   "shops-backingup": "Mağazalar veritabanından yedekleniyor... ",
   "saved-to-path": "Yedek dosyası {0} klasörüne kaydedildi.",
   "backup-failed": "Veritabanı yedeklenemiyor, ayrıntılar için konsolu kontrol edin.",
-  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
-  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "translate-not-completed-yet-click": "{0} dilinin çevirisi {1} tamamlandı, çeviriyi geliştirmemize yardımcı olmak ister misiniz? Buraya Tıkla!",
+  "translate-not-completed-yet-url": "{0} dilinin çevirisi {1} tamamlandı, çeviriyi geliştirmemize yardımcı olmak ister misiniz? Göz atın: {2}",
   "language-info-panel": {
     "name": "Dil: ",
     "code": "Kod: ",
