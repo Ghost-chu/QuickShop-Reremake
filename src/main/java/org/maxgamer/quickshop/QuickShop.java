@@ -1532,6 +1532,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 90);
             selectedVersion = 90;
         }
+        if(selectedVersion==90){
+            getConfig().set("protect.hopper",true);
+            getConfig().set("config-version", 91);
+            selectedVersion=91;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");

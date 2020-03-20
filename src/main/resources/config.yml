@@ -472,8 +472,10 @@ integration:
         warzone: false
         #Player must have flags in the faction:
       flags: []
+#the protection that shop should check
 protect:
   explode: true
+  hopper: true
 
 
 
