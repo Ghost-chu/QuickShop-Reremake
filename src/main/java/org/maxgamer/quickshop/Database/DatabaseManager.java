@@ -23,6 +23,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -114,7 +116,9 @@ public class DatabaseManager {
             connection.commit();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            sqle.printStackTrace();
+            this.plugin
+                    .getLogger()
+                    .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
         }
 
 //        try {

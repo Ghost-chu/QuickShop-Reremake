@@ -950,7 +950,6 @@ public class ContainerShop implements Shop {
             container = (InventoryHolder) this.location.getBlock().getState();
             return container.getInventory();
         } catch (Exception e) {
-            this.onUnload();
             this.delete();
             Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
             return null;
