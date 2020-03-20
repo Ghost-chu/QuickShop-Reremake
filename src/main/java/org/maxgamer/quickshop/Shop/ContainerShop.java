@@ -132,12 +132,12 @@ public class ContainerShop implements Shop {
                 case VIRTUALITEM:
                     try {
                         this.displayItem = new VirtualDisplayItem(this);
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         plugin.getConfig().set("shop.display-type", 0);
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
                         //do not throw
-                        plugin.getLogger().log(Level.SEVERE,"Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",e);
+                        plugin.getLogger().log(Level.SEVERE, "Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?", e);
                     }
                     break;
                 default:
@@ -330,7 +330,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
-        isDeleted=true;
+        isDeleted = true;
         // Unload the shop
         if (isLoaded) {
             this.onUnload();
@@ -1017,10 +1017,18 @@ public class ContainerShop implements Shop {
         if (!this.isLoaded) {
             return;
         }
+        if (!Util.isLoaded(this.getLocation())) {
+            return;
+        }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + " container was missing, remove...");
+            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock() + " container was missing, remove...");
             this.onUnload();
-            this.delete();
+            if (!createBackup) {
+                this.createBackup = Util.backupDatabase();
+            }
+            if (createBackup) {
+                this.delete();
+            }
         }
     }
 
