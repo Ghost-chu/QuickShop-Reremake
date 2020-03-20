@@ -89,9 +89,9 @@ public interface Shop {
     /**
      * Delete shop from ram or ram and database
      *
-     * @param paramBoolean true = only delete from ram, false = delete from both ram and database
+     * @param memoryOnly true = only delete from ram, false = delete from both ram and database
      */
-    void delete(boolean paramBoolean);
+    void delete(boolean memoryOnly);
 
     /**
      * Check shop is or not attacked the target block
