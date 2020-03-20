@@ -62,7 +62,10 @@ public class ContainerShop implements Shop {
     private volatile boolean isLoaded = false;
 
     @EqualsAndHashCode.Exclude
-    private volatile boolean isDeleted= false;
+    private volatile boolean isDeleted = false;
+
+    @EqualsAndHashCode.Exclude
+    private volatile boolean createBackup = false;
 
     private ShopModerator moderator;
 
@@ -929,6 +932,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The chest this shop is based on.
      */
+
     public @Nullable Inventory getInventory() {
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST
@@ -950,8 +954,16 @@ public class ContainerShop implements Shop {
             container = (InventoryHolder) this.location.getBlock().getState();
             return container.getInventory();
         } catch (Exception e) {
-            this.delete();
-            Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+            if (!createBackup) {
+                createBackup = Util.backupDatabase();
+                if (createBackup) {
+                    this.delete();
+                    Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+                }
+            } else {
+                this.delete();
+                Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+            }
             return null;
         }
     }
