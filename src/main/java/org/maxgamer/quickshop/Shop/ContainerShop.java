@@ -133,7 +133,8 @@ public class ContainerShop implements Shop {
                         plugin.getConfig().set("shop.display-type", 0);
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
-                        throw new RuntimeException("Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",e);
+                        //do not throw
+                        plugin.getLogger().log(Level.SEVERE,"Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",e);
                     }
                     break;
                 default:
