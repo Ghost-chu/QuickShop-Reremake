@@ -127,7 +127,14 @@ public class ContainerShop implements Shop {
                     this.displayItem = new ArmorStandDisplayItem(this);
                     break;
                 case VIRTUALITEM:
-                    this.displayItem = new VirtualDisplayItem(this);
+                    try {
+                        this.displayItem = new VirtualDisplayItem(this);
+                    }catch(Exception e){
+                        plugin.getConfig().set("shop.display-type", 0);
+                        plugin.saveConfig();
+                        this.displayItem = new RealDisplayItem(this);
+                        throw new RuntimeException("Failed to initialize VirtualDisplayItem, fallback to RealDisplayItem, are you using the latest version of ProtocolLib?",e);
+                    }
                     break;
                 default:
                     Util.debugLog(

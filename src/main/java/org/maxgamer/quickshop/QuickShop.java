@@ -344,13 +344,13 @@ public class QuickShop extends JavaPlugin {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
                 getLogger().info("Using Virtual item Display, loading ProtocolLib support...");
-                if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+                Plugin protocolLibPlugin=Bukkit.getPluginManager().getPlugin("ProtocolLib");
+                if (protocolLibPlugin != null&&protocolLibPlugin.isEnabled()) {
                     getLogger().info("Successfully loaded ProtocolLib support!");
                 } else {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
                     getConfig().set("shop.display-type", 0);
                     saveConfig();
-                    reloadConfig();
                 }
             }
 
@@ -361,7 +361,7 @@ public class QuickShop extends JavaPlugin {
                         if (!clearLagListener.getPlugin().equals(clearlag)) {
                             continue;
                         }
-                        int spamTimes = 500;
+                        int spamTimes = 20;
                         if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
                             ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
                             for (int i = 0; i < spamTimes; i++) {
