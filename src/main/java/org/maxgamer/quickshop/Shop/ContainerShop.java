@@ -197,8 +197,8 @@ public class ContainerShop implements Shop {
         if (amount1 < 0) {
             this.sell(p, -amount1);
         }
+        ItemStack[] contents = p.getInventory().getContents();
         if (this.isUnlimited()) {
-            ItemStack[] contents = p.getInventory().getContents();
             for (int i = 0; amount1 > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
                 if (stack == null || stack.getType() == Material.AIR) {
@@ -228,10 +228,9 @@ public class ContainerShop implements Shop {
                             + "!");
             }
         } else {
-            ItemStack[] playerContents = p.getInventory().getContents();
             Inventory chestInv = this.getInventory();
-            for (int i = 0; amount1 > 0 && i < playerContents.length; i++) {
-                ItemStack item = playerContents[i];
+            for (int i = 0; amount1 > 0 && i < contents.length; i++) {
+                ItemStack item = contents[i];
                 if (item != null && this.matches(item)) {
                     // Copy it, we don't want to interfere
                     item = new ItemStack(item);
@@ -241,7 +240,7 @@ public class ContainerShop implements Shop {
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
-                    playerContents[i].setAmount(playerContents[i].getAmount() - stackSize);
+                    contents[i].setAmount(contents[i].getAmount() - stackSize);
                     // We can modify this, it is a copy.
                     item.setAmount(stackSize);
                     // Add the items to the players inventory
@@ -250,7 +249,7 @@ public class ContainerShop implements Shop {
                 }
             }
             // Now update the players inventory.
-            p.getInventory().setContents(playerContents);
+            p.getInventory().setContents(contents);
             this.setSignText();
         }
     }
