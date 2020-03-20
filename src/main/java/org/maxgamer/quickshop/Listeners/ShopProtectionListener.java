@@ -176,7 +176,9 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-
+        if(!plugin.getConfig().getBoolean("protect.hopper")){
+            return;
+        }
         final Location loc = event.getSource().getLocation();
 
         if (loc == null) {
