@@ -215,42 +215,41 @@ public class ShopManager {
         }
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
+
+        if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+            if (!Util.isAir(info.getSignBlock().getType())) {
+                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
+                return;
+            }
+            boolean isWaterLogged = false;
+            if (info.getSignBlock().getType() == Material.WATER) {
+                isWaterLogged = true;
+            }
+
+            info.getSignBlock().setType(Util.getSignMaterial());
+            BlockState bs = info.getSignBlock().getState();
+            if (isWaterLogged) {
+                if (bs.getBlockData() instanceof Waterlogged) {
+                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                    waterable.setWaterlogged(true); // Looks like sign directly put in water
+                }
+            }
+            if (bs.getBlockData() instanceof WallSign) {
+                WallSign signBlockDataType = (WallSign) bs.getBlockData();
+                BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+                if (bf != null) {
+                    signBlockDataType.setFacing(bf);
+                    bs.setBlockData(signBlockDataType);
+                }
+            } else {
+                plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
+            }
+            bs.update(true);
+            shop.setSignText();
+        }
         plugin.getDatabaseHelper().createShop(
             shop,
-            () -> Bukkit.getScheduler().runTask(plugin, () -> {
-                // Create sign
-                if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-                    if (!Util.isAir(info.getSignBlock().getType())) {
-                        Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                        return;
-                    }
-                    boolean isWaterLogged = false;
-                    if (info.getSignBlock().getType() == Material.WATER) {
-                        isWaterLogged = true;
-                    }
-
-                    info.getSignBlock().setType(Util.getSignMaterial());
-                    BlockState bs = info.getSignBlock().getState();
-                    if (isWaterLogged) {
-                        if (bs.getBlockData() instanceof Waterlogged) {
-                            Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                            waterable.setWaterlogged(true); // Looks like sign directly put in water
-                        }
-                    }
-                    if (bs.getBlockData() instanceof WallSign) {
-                        WallSign signBlockDataType = (WallSign) bs.getBlockData();
-                        BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-                        if (bf != null) {
-                            signBlockDataType.setFacing(bf);
-                            bs.setBlockData(signBlockDataType);
-                        }
-                    } else {
-                        plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
-                    }
-                    bs.update(true);
-                    shop.setSignText();
-                }
-            }),
+            null,
             e -> Bukkit.getScheduler().runTask(plugin, () -> {
                 //also remove from memory when failed
                 shop.delete(true);

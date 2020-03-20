@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Shop.ShopModerator;
@@ -134,7 +135,7 @@ public class DatabaseHelper {
         plugin.getDatabaseManager().add(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
     }
 
-    public void createShop(Shop shop, Runnable onSuccess, Consumer<SQLException> onFailed) {
+    public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         plugin.getDatabaseHelper().removeShop(shop); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + QuickShop.instance.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         plugin.getDatabaseManager().add(new DatabaseTask(sqlString, new DatabaseTask.Task() {
@@ -156,13 +157,17 @@ public class DatabaseHelper {
             @Override
             public void onSuccess() {
                 if(!shop.isDeleted()) {
-                    onSuccess.run();
+                    if (onSuccess != null) {
+                        onSuccess.run();
+                    }
                 }
             }
 
             @Override
             public void onFailed(SQLException e) {
-                onFailed.accept(e);
+                if (onFailed != null) {
+                    onFailed.accept(e);
+                }
             }
         }));
     }
