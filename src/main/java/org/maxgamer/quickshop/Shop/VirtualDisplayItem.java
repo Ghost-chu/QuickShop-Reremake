@@ -236,7 +236,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void unload() {
         packetSenders.clear();
-        protocolManager.removePacketListener(packetAdapter);
+        if(packetAdapter!=null) {
+            protocolManager.removePacketListener(packetAdapter);
+        }
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {
             asyncSendingTask.cancel();
         }

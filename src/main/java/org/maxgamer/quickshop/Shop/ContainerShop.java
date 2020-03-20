@@ -335,10 +335,6 @@ public class ContainerShop implements Shop {
         if (isLoaded) {
             this.onUnload();
         }
-        // Delete the display item
-        if (this.getDisplayItem() != null) {
-            this.getDisplayItem().remove();
-        }
         // Delete the signs around it
         for (Sign s : this.getSigns()) {
             s.getBlock().setType(Material.AIR);
