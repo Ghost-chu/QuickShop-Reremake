@@ -57,7 +57,7 @@
   "break-shop-use-supertool": "&eSuperTool aletini kullanarak marketleri kırabilirsin.",
   "failed-to-put-sign": "&cMarket çevresinde bilgi tabelasını yerleştirmek için yeterli yer yok.",
   "failed-to-paste": "&cVeriler Pastebin'e yüklenemedi, internetinizi kontrol edip tekrar deneyiniz. (Ayrıntılar için konsola bakın)",
-  "warn-to-paste": "&eCollecting data and uploading it to Pastebin, this may take a while. &c&lWarning&c, The data is kept public for one week, it may leak your server configuration and other sensitive information, make sure you only send it to your &ltrusted staff\/developer.",
+  "warn-to-paste": "&eVeriler toplanıyor ve Pastebin'e yükleniyor, bu biraz zaman alabilir. &c&lUyarı&c, Veriler bir hafta boyunca herkese açık tutulur, sunucu konfigürasyonunuzu ve diğer hassas bilgilerinizi sızdırabilir, sadece &lgüvendiğiniz personele\/geliştiriciye &c göderdiğinizden emin olun.",
   "price-too-high": "&c The shop price too high! You can't create one that is priced higher than {0}.",
   "you-cant-create-shop-in-there": "&cYou don't have permission to create a shop at this location.",
   "unknown-player": "&cTarget player doesn't exist, please check the username you typed.",
