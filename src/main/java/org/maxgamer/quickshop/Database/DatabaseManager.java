@@ -88,7 +88,8 @@ public class DatabaseManager {
      * Internal method, runTasks in queue.
      */
     private void runTask() {
-        try (Connection connection=this.database.getConnection()){
+        try {
+            Connection connection=this.database.getConnection();
             if (!connection.isValid(3000)) {
                 this.plugin
                     .getLogger()
@@ -114,6 +115,7 @@ public class DatabaseManager {
                 }
             }
             connection.commit();
+            connection.close();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
             this.plugin
