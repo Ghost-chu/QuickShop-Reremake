@@ -83,12 +83,12 @@ public class VirtualDisplayItem extends DisplayItem {
     private BukkitTask asyncSendingTask;
 
 
-    public VirtualDisplayItem(@NotNull Shop shop) {
+    public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
         initFakeDropItemPacket();
     }
 
-    private void initFakeDropItemPacket() {
+    private void initFakeDropItemPacket() throws RuntimeException {
 
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
