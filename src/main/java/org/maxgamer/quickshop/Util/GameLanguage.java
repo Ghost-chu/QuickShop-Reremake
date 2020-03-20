@@ -52,7 +52,7 @@ public class GameLanguage extends Thread {
         loadThread.setMainThreadWaiting(true); // Told thread we're waiting him
         loadThread.start();
         int count = 0;
-        while (count < 20) {
+        while (count < 7) {
             if (loadThread.isAlive()) {
                 count++;
                 Thread.sleep(1000);
