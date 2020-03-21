@@ -88,7 +88,7 @@ public class VirtualDisplayItem extends DisplayItem {
         initFakeDropItemPacket();
     }
 
-    private void initFakeDropItemPacket() throws RuntimeException {
+    private void initFakeDropItemPacket() {
 
         //First, create a new packet to spawn item
         fakeItemPacket = protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
