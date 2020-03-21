@@ -103,7 +103,7 @@
   "how-much-to-trade-for": "&aPodaj cenę przedmiotu &e{0}&a na chat.",
   "command": {
     "toggle-unlimited": {
-      "unlimited": "&aSklep jest teraz nielimitowany",
+      "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
     "no-owner-given": "&cNie podano właściciela. Użyj &a\/qs setowner <player>&c",
@@ -120,7 +120,7 @@
     "wrong-args": "&cOpcja nie istnieje, użyj \/qs help aby uzyskać pomoc.",
     "description": {
       "title": "&aPomoc QuickShop",
-      "unlimited": "&eTworzy nielimitowany sklep",
+      "unlimited": "&eTworzy nieograniczony sklep",
       "setowner": "&eZmień właściciela sklepu",
       "owner": "&eZmień właściciela sklepu",
       "buy": "&eZmień rodzaj sklepu na tryb &dKUP",
@@ -150,14 +150,14 @@
     "buying": "Sprzedaj {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
-    "unlimited": "Nielimitowany"
+    "unlimited": "Nieograniczony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
     "infomation": "&aPanel kontrolny sklepu:",
     "setowner-hover": "&eKliknij, aby zmienić właściciela.",
-    "unlimited": "&aNielimitowany: {0} &e[&d&lZmień&e]",
-    "unlimited-hover": "&eKliknij, aby przełączyć, jeśli sklep jest nielimitowany.",
+    "unlimited": "&aNieograniczony: {0} &e[&d&lZmień&e]",
+    "unlimited-hover": "&eKliknij, aby przełączyć, jeśli sklep jest nieograniczony.",
     "mode-selling": "&aTryb sklepu: &bSPRZEDAŻ &e[&d&lZmień&e]",
     "mode-selling-hover": "&eKliknij, aby zmienić sklep na tryb kupowania.",
     "mode-buying": "&aTryb sklepu: &bKUP &e[&d&lZmień&e]",
