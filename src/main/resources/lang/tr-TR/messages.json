@@ -94,7 +94,7 @@
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
     }
   },
-  "bypassing-lock": "%cBir QuickShop kilidi atlanıyor!",
+  "bypassing-lock": "&cBir QuickShop kilidi atlanıyor!",
   "that-is-locked": "&cBu market kilitli.",
   "how-many-buy": "&aNe kadar &bSATIN ALMAK&a istediğini sohbete yaz. &e{0}&a tane satın alabilirsiniz. Hepsini satın almak için &ball&a yaz.",
   "how-many-sell": "&aNe kadar &bSATMAK&a istediğini sohbete yaz. &e{0}&a tane satabilirsiniz. Hepsini satmak için &ball&a yaz.",
