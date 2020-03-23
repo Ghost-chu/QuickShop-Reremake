@@ -29,6 +29,7 @@ import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -619,6 +620,9 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
         this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
+        if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
+            this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
+        }
 
 
         /* Load 3rd party supports */
