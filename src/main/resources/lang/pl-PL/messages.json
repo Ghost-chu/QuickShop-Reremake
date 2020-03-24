@@ -10,7 +10,7 @@
   "no-creative-break": "&cNie możesz niszczyć sklepów innych graczy w trybie kreatywnym. Zamiast tego użyj trybu przetrwania.",
   "no-double-chests": "&cNie możesz stworzyć sklepu z podwójną skrzynią.",
   "not-managed-shop": "&cNie jesteś właścicielem lub moderatorem sklepu",
-  "shop-already-owned": "&cTo już jest sklep.",
+  "shop-already-owned": "jest już tu sklep.",
   "chest-was-removed": "&cSklep został usunięty.",
   "price-too-cheap": "&cCena musi być większa niż &e${0}",
   "no-price-change": "&cCena nie została zmieniona!",
