@@ -20,10 +20,6 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.common.collect.Sets;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,6 +40,11 @@ import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -634,7 +635,7 @@ public class ShopManager {
             if (!bypassProtectionChecks) {
                 plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
                 if (!plugin.getPermissionChecker().canBuild(p, info.getLocation())) {
-                    p.sendMessage(MsgUtil.getMessage("no-permission", p) + ": Some 3rd party plugin denied the permission checks, did you have permission built in there?");
+                    p.sendMessage(MsgUtil.getMessage("no-permission", p)+MsgUtil.getMessage("3rd-plugin-build-check-failed",p));
                     Util.debugLog("Failed to create shop: Protection check failed:");
                     for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
                         Util.debugLog(belisteners.getPlugin().getName());
