@@ -7,7 +7,7 @@
   "not-looking-at-shop": "&cQuickShop bulunamadı, birine bakıyor olmalısın.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
-  "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
+  "3rd-plugin-build-check-failed": "Üçüncü parti bir eklenti yetki kontrolünü reddetti, orada yetkiniz var mıydı?",
   "no-creative-break": "&cYaratıcı modda diğer oyuncuların marketlerini kıramazsınız. Bunun yerine hayatta kalma modunu kullanın.",
   "no-double-chests": "&cÇifte sandık ile market oluşturamazsınız.",
   "not-managed-shop": "&cBu marketin sahibi ya da moderatörü değilsin",
