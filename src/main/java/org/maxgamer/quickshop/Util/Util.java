@@ -20,16 +20,6 @@
 package org.maxgamer.quickshop.Util;
 
 import com.google.common.io.Files;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.*;
-import java.util.Map.Entry;
-import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -59,6 +49,17 @@ import org.maxgamer.quickshop.Watcher.InventoryEditContainer;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * @author MACHENIKE
  */
@@ -73,8 +74,8 @@ public class Util {
 
     static short tookLongTimeCostTimes;
 
-    @Getter
-    public static List<String> debugLogs = Collections.synchronizedList(new LinkedList<>());
+    public static List<String> debugLogs = new LinkedList<>();
+    private static ReentrantReadWriteLock lock=new ReentrantReadWriteLock();
 
     private static boolean devMode = false;
 
@@ -284,16 +285,31 @@ public class Util {
         }
     }
 
+    public static List<String> getDebugLogs() {
+        lock.readLock().lock();
+        List<String> strings=new ArrayList<>(debugLogs);
+        lock.readLock().unlock();
+        return strings;
+    }
+
     /**
      * Print debug log when plugin running on dev mode.
      *
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
+        if(disableDebugLogger){
+            return;
+        }
+        lock.writeLock().lock();
+        if(debugLogs.size()>=2000){
+            debugLogs.clear();
+        }
         if (!devMode) {
             for (String log : logs) {
                 debugLogs.add("[DEBUG] " + log);
             }
+            lock.writeLock().unlock();
             return;
         }
         StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
@@ -304,6 +320,7 @@ public class Util {
             debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
             QuickShop.instance.getLogger().info(log);
         }
+        lock.writeLock().unlock();
     }
 
     /**
