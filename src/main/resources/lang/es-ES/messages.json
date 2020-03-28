@@ -7,7 +7,7 @@
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
-  "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
+  "3rd-plugin-build-check-failed": "Algún complemento de terceros denegó las verificaciones de permisos, ¿tenía permiso incorporado allí?",
   "no-creative-break": "&cNo puedes destruir las tiendas de otros jugadores en modo Creativo. Debes usar el modo Supervivencia.",
   "no-double-chests": "&cNo puedes crear tiendas de cofres dobles.",
   "not-managed-shop": "&cNo eres el dueño o moderador de la tienda",
