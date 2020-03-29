@@ -3,14 +3,15 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współautorzy: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "29",
+  "language-version": "30",
   "not-looking-at-shop": "&cNie znaleziono sklepu, musisz patrzeć się na sklep.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "Nie masz na to uprawnień.",
+  "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
   "no-creative-break": "&cNie możesz niszczyć sklepów innych graczy w trybie kreatywnym. Zamiast tego użyj trybu przetrwania.",
   "no-double-chests": "&cNie możesz stworzyć sklepu z podwójną skrzynią.",
   "not-managed-shop": "&cNie jesteś właścicielem lub moderatorem sklepu",
-  "shop-already-owned": "&cTo już jest sklep.",
+  "shop-already-owned": "jest już tu sklep.",
   "chest-was-removed": "&cSklep został usunięty.",
   "price-too-cheap": "&cCena musi być większa niż &e${0}",
   "no-price-change": "&cCena nie została zmieniona!",
@@ -103,7 +104,7 @@
   "how-much-to-trade-for": "&aPodaj cenę przedmiotu &e{0}&a na chat.",
   "command": {
     "toggle-unlimited": {
-      "unlimited": "&aSklep jest teraz nielimitowany",
+      "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
     "no-owner-given": "&cNie podano właściciela. Użyj &a\/qs setowner <player>&c",
@@ -120,7 +121,7 @@
     "wrong-args": "&cOpcja nie istnieje, użyj \/qs help aby uzyskać pomoc.",
     "description": {
       "title": "&aPomoc QuickShop",
-      "unlimited": "&eTworzy nielimitowany sklep",
+      "unlimited": "&eTworzy nieograniczony sklep",
       "setowner": "&eZmień właściciela sklepu",
       "owner": "&eZmień właściciela sklepu",
       "buy": "&eZmień rodzaj sklepu na tryb &dKUP",
@@ -137,7 +138,7 @@
       "info": "&ePokaż statystyki QuickShop",
       "paste": "&eAutomatyczny upload danych serwera do Pastebin",
       "staff": "&eZarządzaj personelem sklepu",
-      "remove": "&eUsunięto sklep na który patrzysz",
+      "remove": "&eUsuwa sklep na który patrzysz",
       "amount": "&eWykonaj za swoje działania z kwotą (w przypadku problemu z wtyczką czatu)",
       "about": "&ePokaż informację o QuickShop",
       "help": "&ePokaż pomoc dla QuickShop",
@@ -150,14 +151,14 @@
     "buying": "Sprzedaj {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
-    "unlimited": "Nielimitowany"
+    "unlimited": "Nieograniczony"
   },
   "controlpanel": {
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
     "infomation": "&aPanel kontrolny sklepu:",
     "setowner-hover": "&eKliknij, aby zmienić właściciela.",
-    "unlimited": "&aNielimitowany: {0} &e[&d&lZmień&e]",
-    "unlimited-hover": "&eKliknij, aby przełączyć, jeśli sklep jest nielimitowany.",
+    "unlimited": "&aNieograniczony: {0} &e[&d&lZmień&e]",
+    "unlimited-hover": "&eKliknij, aby przełączyć, jeśli sklep jest nieograniczony.",
     "mode-selling": "&aTryb sklepu: &bSPRZEDAŻ &e[&d&lZmień&e]",
     "mode-selling-hover": "&eKliknij, aby zmienić sklep na tryb kupowania.",
     "mode-buying": "&aTryb sklepu: &bKUP &e[&d&lZmień&e]",

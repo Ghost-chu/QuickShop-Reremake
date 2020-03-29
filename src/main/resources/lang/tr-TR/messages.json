@@ -3,10 +3,11 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "29",
+  "language-version": "30",
   "not-looking-at-shop": "&cQuickShop bulunamadı, birine bakıyor olmalısın.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
+  "3rd-plugin-build-check-failed": "Üçüncü parti bir eklenti yetki kontrolünü reddetti, orada yetkiniz var mıydı?",
   "no-creative-break": "&cYaratıcı modda diğer oyuncuların marketlerini kıramazsınız. Bunun yerine hayatta kalma modunu kullanın.",
   "no-double-chests": "&cÇifte sandık ile market oluşturamazsınız.",
   "not-managed-shop": "&cBu marketin sahibi ya da moderatörü değilsin",
@@ -94,7 +95,7 @@
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
     }
   },
-  "bypassing-lock": "%cBir QuickShop kilidi atlanıyor!",
+  "bypassing-lock": "&cBir QuickShop kilidi atlanıyor!",
   "that-is-locked": "&cBu market kilitli.",
   "how-many-buy": "&aNe kadar &bSATIN ALMAK&a istediğini sohbete yaz. &e{0}&a tane satın alabilirsiniz. Hepsini satın almak için &ball&a yaz.",
   "how-many-sell": "&aNe kadar &bSATMAK&a istediğini sohbete yaz. &e{0}&a tane satabilirsiniz. Hepsini satmak için &ball&a yaz.",
