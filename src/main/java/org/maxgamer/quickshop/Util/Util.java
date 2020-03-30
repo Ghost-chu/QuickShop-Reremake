@@ -63,7 +63,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * @author MACHENIKE
  */
-@SuppressWarnings("WeakerAccess")
+
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
@@ -74,7 +74,7 @@ public class Util {
 
     static short tookLongTimeCostTimes;
 
-    public static List<String> debugLogs = new LinkedList<>();
+    private static List<String> debugLogs = new LinkedList<>();
     private static ReentrantReadWriteLock lock=new ReentrantReadWriteLock();
 
     private static boolean devMode = false;

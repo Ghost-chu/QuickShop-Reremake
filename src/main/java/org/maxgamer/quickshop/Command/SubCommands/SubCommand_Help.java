@@ -49,13 +49,13 @@ public class SubCommand_Help implements CommandProcesser {
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
         s.sendMessage(MsgUtil.getMessage("command.description.title", s));
-        next:
+        commandCheckLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             final List<String> requirePermissions = container.getPermissions();
             if (!container.isHidden()&&requirePermissions != null && !requirePermissions.isEmpty()) {
                 for (String requirePermission : requirePermissions) {
                     if (requirePermission!=null&&!QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
-                        continue next;
+                        continue commandCheckLoop;
                     }
                 }
                 s.sendMessage(

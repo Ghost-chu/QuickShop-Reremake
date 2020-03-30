@@ -19,16 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -58,9 +48,20 @@ import org.maxgamer.quickshop.FilePortlek.old.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 
-@SuppressWarnings("WeakerAccess")
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+
+
 public class MsgUtil {
-    public static final String invaildMsg = "Invaild message";
+    private static final String invaildMsg = "Invaild message";
 
     private static final HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
 
