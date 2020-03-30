@@ -267,8 +267,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private BukkitAPIWrapper bukkitAPIWrapper;
 
-    private boolean isUtilInited = false;
-
     @Getter
     private boolean enabledAsyncDisplayDespawn;
 
@@ -608,7 +606,6 @@ public class QuickShop extends JavaPlugin {
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
         Util.initialize();
-        this.isUtilInited = true;
         try {
             MsgUtil.loadCfgMessages();
         } catch (Exception e) {
