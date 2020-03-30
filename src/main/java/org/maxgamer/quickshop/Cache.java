@@ -10,7 +10,7 @@ import org.maxgamer.quickshop.Shop.Shop;
 public class Cache extends TimerTask {
     private QuickShop plugin;
 
-    private long expireTime = 10;
+    private long expireTime = 5000;
 
     private Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
 
@@ -24,6 +24,10 @@ public class Cache extends TimerTask {
                 cleanCache();
             }
         }.runTaskTimerAsynchronously(plugin, 0, expireTime * 20);
+    }
+
+    public int getCachingSize() {
+        return accessCaching.size();
     }
 
     public Shop getCaching(Location location, boolean includeAttached) {
