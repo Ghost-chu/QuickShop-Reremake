@@ -227,7 +227,7 @@
       "github": "[Github]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[大师]"
+      "master": "[主分支]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
