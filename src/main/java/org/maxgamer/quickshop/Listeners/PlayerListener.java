@@ -49,8 +49,6 @@ import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-// import com.griefcraft.lwc.LWC;
-// import com.griefcraft.lwc.LWCPlugin;
 @AllArgsConstructor
 public class PlayerListener implements Listener {
 

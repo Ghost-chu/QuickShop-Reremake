@@ -38,13 +38,14 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
 @SuppressWarnings("DuplicatedCode")
-public class ShopProtectionListener implements Listener {
+public class ShopProtectionListener extends ProtectionListenerBase implements Listener {
 
     @NotNull
     private final QuickShop plugin;
@@ -57,7 +58,8 @@ public class ShopProtectionListener implements Listener {
     Map.Entry<Location, Boolean> lastInventoryMoveItemCheck =
         new AbstractMap.SimpleEntry<>(null, null);
 
-    public ShopProtectionListener(@NotNull QuickShop plugin) {
+    public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
+        super(plugin, cache);
         this.plugin = plugin;
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
     }
@@ -67,7 +69,7 @@ public class ShopProtectionListener implements Listener {
 
         for (int i = 0; i < e.blockList().size(); i++) {
             final Block b = e.blockList().get(i);
-            Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            Shop shop = getShopNature(b.getLocation(), true);
             if (shop == null) {
                 shop = getShopNextTo(b.getLocation());
             }
@@ -95,7 +97,7 @@ public class ShopProtectionListener implements Listener {
             return null;
         }
 
-        return plugin.getShopManager().getShop(b.getLocation());
+        return getShopNature(b.getLocation(), false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -104,7 +106,7 @@ public class ShopProtectionListener implements Listener {
             return;
         }
 
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(e.getToBlock().getLocation());
+        final Shop shop = getShopNature(e.getToBlock().getLocation(), true);
 
         if (shop == null) {
             return;
@@ -120,8 +122,7 @@ public class ShopProtectionListener implements Listener {
             return;
         }
 
-        final Shop shop =
-            plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+        final Shop shop = getShopRedstone(event.getBlock().getLocation(), true);
 
         if (shop == null) {
             return;
@@ -140,12 +141,9 @@ public class ShopProtectionListener implements Listener {
         }
 
         final Block newBlock = e.getNewState().getBlock();
-        final Shop thisBlockShop =
-            plugin.getShopManager().getShopIncludeAttached(newBlock.getLocation());
+        final Shop thisBlockShop = getShopNature(newBlock.getLocation(), true);
         final Shop underBlockShop =
-            plugin
-                .getShopManager()
-                .getShopIncludeAttached(newBlock.getRelative(BlockFace.DOWN).getLocation());
+            getShopNature(newBlock.getRelative(BlockFace.DOWN).getLocation(), true);
 
         if (thisBlockShop == null && underBlockShop == null) {
             return;
@@ -161,7 +159,7 @@ public class ShopProtectionListener implements Listener {
 
         for (int i = 0; i < e.blockList().size(); i++) {
             final Block b = e.blockList().get(i);
-            final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            final Shop shop = getShopNature(b.getLocation(), true);
 
             if (shop == null) {
                 continue;
@@ -176,7 +174,7 @@ public class ShopProtectionListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if(!plugin.getConfig().getBoolean("protect.hopper")){
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
             return;
         }
         final Location loc = event.getSource().getLocation();
@@ -184,7 +182,7 @@ public class ShopProtectionListener implements Listener {
         if (loc == null) {
             return;
         }
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(loc);
+        final Shop shop = getShopRedstone(loc, true);
 
         if (shop == null) {
             return;
@@ -220,8 +218,7 @@ public class ShopProtectionListener implements Listener {
             return;
         }
 
-        final Shop shop =
-            plugin.getShopManager().getShopIncludeAttached(event.getBlock().getLocation());
+        final Shop shop = getShopNature(event.getBlock().getLocation(), true);
 
         if (shop == null) {
             return;
@@ -242,7 +239,7 @@ public class ShopProtectionListener implements Listener {
         }
 
         for (BlockState blockstate : event.getBlocks()) {
-            final Shop shop = plugin.getShopManager().getShopIncludeAttached(blockstate.getLocation());
+            final Shop shop = getShopNature(blockstate.getLocation(), true);
 
             if (shop == null) {
                 continue;
@@ -264,7 +261,7 @@ public class ShopProtectionListener implements Listener {
         }
         List<BlockState> blocks = event.getBlocks();
         for (BlockState block : blocks) {
-            if (plugin.getShopManager().getShopIncludeAttached(block.getLocation()) != null) {
+            if (getShopNature(block.getLocation(), true) != null) {
                 event.setCancelled(true);
             }
         }

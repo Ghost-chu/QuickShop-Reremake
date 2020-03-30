@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -39,17 +38,19 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.InventoryPreview;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-@AllArgsConstructor
-public class LockListener implements Listener {
+public class LockListener extends ProtectionListenerBase implements Listener {
 
-    @NotNull
-    private final QuickShop plugin;
+    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
+        super(plugin, cache);
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
@@ -115,11 +116,10 @@ public class LockListener implements Listener {
         if (b.getState() instanceof Sign) {
             final Sign sign = (Sign) b.getState();
 
-            if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+            if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
-                plugin
-                    .getLogger()
+                super.getPlugin().getLogger()
                     .info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
             }
@@ -128,7 +128,7 @@ public class LockListener implements Listener {
         final Player p = e.getPlayer();
         // If the chest was a chest
         if (Util.canBeShop(b)) {
-            final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+            final Shop shop = getShopPlayer(b.getLocation(), true);
 
             if (shop == null) {
                 return; // Wasn't a shop
@@ -143,8 +143,8 @@ public class LockListener implements Listener {
             if (b instanceof Sign) {
                 final Sign sign = (Sign) b;
 
-                if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -155,7 +155,7 @@ public class LockListener implements Listener {
                 return;
             }
 
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            final Shop shop = getShopPlayer(b.getLocation(), false);
 
             if (shop == null) {
                 return;
@@ -189,7 +189,7 @@ public class LockListener implements Listener {
             return; // Didn't right click it, we dont care.
         }
 
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(b.getLocation());
+        final Shop shop = getShopPlayer(b.getLocation(), true);
         // Make sure they're not using the non-shop half of a double chest.
         if (shop == null) {
             return;
@@ -204,28 +204,6 @@ public class LockListener implements Listener {
             e.setCancelled(true);
         }
     }
-  /* Moved to ShopProtectionListener
-   * Handles shops breaking through explosions
-  @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-  public void onExplode(EntityExplodeEvent e) {
-      for (int i = 0; i < e.blockList().size(); i++) {
-          Block b = e.blockList().get(i);
-          Shop shop = plugin.getShopManager().getShop(b.getLocation());
-          if (shop != null) {
-              e.blockList().remove(b); //Protect shop
-          }
-          if (Util.isWallSign(b.getType())) {
-              Block block = Util.getAttached(b);
-              if (block != null) {
-                  shop = plugin.getShopManager().getShop(block.getLocation());
-                  if (shop != null) {
-                      e.blockList().remove(b); //Protect shop
-                  }
-              }
-          }
-      }
-  }
-   */
 
     /*
      * Handles hopper placement

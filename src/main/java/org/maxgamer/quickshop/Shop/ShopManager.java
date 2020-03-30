@@ -20,6 +20,10 @@
 package org.maxgamer.quickshop.Shop;
 
 import com.google.common.collect.Sets;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,11 +44,6 @@ import org.maxgamer.quickshop.Event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
-
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -1014,31 +1013,26 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-
-        if (plugin.getShopCache().hasValidCache(loc)) {
-            return plugin.getShopCache().getCachingShop(loc);
+        @Nullable Shop shop;
+        shop = getShop(loc);
+        if (shop != null) {
+            plugin.getShopCache().setCache(loc, shop);
+            return shop;
+        }
+        Block currentBlock = loc.getBlock();
+        if (!fromAttach && Util.isWallSign(currentBlock.getType())) {
+            Block attached = Util.getAttached(currentBlock);
+            if (attached != null) {
+                this.getShopIncludeAttached_Fast(attached.getLocation(), true);
+            }
+        }
+        @Nullable Block half = Util.getSecondHalf(currentBlock);
+        if (half != null) {
+            plugin.getShopCache().setCache(loc, getShop(half.getLocation()));
+            return getShop(half.getLocation());
         } else {
-            @Nullable Shop shop;
-            shop = getShop(loc);
-            if (shop != null) {
-                plugin.getShopCache().setCache(loc, shop);
-                return shop;
-            }
-            Block currentBlock = loc.getBlock();
-            if (!fromAttach && Util.isWallSign(currentBlock.getType())) {
-                Block attached = Util.getAttached(currentBlock);
-                if (attached != null) {
-                    this.getShopIncludeAttached_Fast(attached.getLocation(), true);
-                }
-            }
-            @Nullable Block half = Util.getSecondHalf(currentBlock);
-            if (half != null) {
-                plugin.getShopCache().setCache(loc, getShop(half.getLocation()));
-                return getShop(half.getLocation());
-            } else {
-                plugin.getShopCache().setCache(loc, null);
-                return null;
-            }
+            plugin.getShopCache().setCache(loc, null);
+            return null;
         }
     }
 

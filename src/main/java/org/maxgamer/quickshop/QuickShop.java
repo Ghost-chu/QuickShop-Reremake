@@ -19,6 +19,12 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -36,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Command.CommandManager;
 import org.maxgamer.quickshop.Database.*;
-import org.maxgamer.quickshop.Database.Database.ConnectionException;
 import org.maxgamer.quickshop.Economy.*;
 import org.maxgamer.quickshop.InternalListener.InternalListener;
 import org.maxgamer.quickshop.Listeners.*;
@@ -55,13 +60,6 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.Map.Entry;
 
 
 public class QuickShop extends JavaPlugin {
@@ -661,7 +659,11 @@ public class QuickShop extends JavaPlugin {
             getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
         }
 
-        this.shopCache = new Cache(this);
+        if (getConfig().getBoolean("use-caching")) {
+            this.shopCache = new Cache(this);
+        } else {
+            this.shopCache = null;
+        }
 
         signUpdateWatcher = new SignUpdateWatcher(this);
         shopContainerWatcher = new ShopContainerWatcher(this);
@@ -676,7 +678,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Registering Listeners...");
         // Register events
 
-        blockListener = new BlockListener(this);
+        blockListener = new BlockListener(this, this.shopCache);
         playerListener = new PlayerListener(this);
         worldListener = new WorldListener(this);
         chatListener = new ChatListener(this);
@@ -684,12 +686,12 @@ public class QuickShop extends JavaPlugin {
 
         customInventoryListener = new CustomInventoryListener(this);
 
-        shopProtectListener = new ShopProtectionListener(this);
+        shopProtectListener = new ShopProtectionListener(this, this.shopCache);
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
-        lockListener = new LockListener(this);
+        lockListener = new LockListener(this, this.shopCache);
         internalListener = new InternalListener(this);
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
@@ -894,7 +896,7 @@ public class QuickShop extends JavaPlugin {
             this.database = new Database(dbCore);
             // Make the database up to date
             databaseHelper = new DatabaseHelper(this, database);
-        } catch (ConnectionException e) {
+        } catch (Database.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
