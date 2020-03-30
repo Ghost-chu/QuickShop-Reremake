@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Listeners;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +38,7 @@ import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Info;
 import org.maxgamer.quickshop.Shop.Shop;
@@ -46,11 +46,11 @@ import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
-@AllArgsConstructor
-public class BlockListener implements Listener {
+public class BlockListener extends ProtectionListenerBase implements Listener {
 
-    @NotNull
-    private final QuickShop plugin;
+    public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
+        super(plugin, cache);
+    }
 
     /*
      * Removes chests when they're destroyed.
@@ -62,12 +62,11 @@ public class BlockListener implements Listener {
 
         if (b.getState() instanceof Sign) {
             Sign sign = (Sign) b.getState();
-            if (plugin.getConfig().getBoolean("lockette.enable")
-                && sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+            if (super.getPlugin().getConfig().getBoolean("lockette.enable")
+                && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
-                plugin
-                    .getLogger()
+                super.getPlugin().getLogger()
                     .info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
             }
@@ -76,7 +75,7 @@ public class BlockListener implements Listener {
         final Player p = e.getPlayer();
         // If the shop was a chest
         if (Util.canBeShop(b)) {
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            final Shop shop = getShopPlayer(b.getLocation(), false);
             if (shop == null) {
                 return;
             }
@@ -107,7 +106,7 @@ public class BlockListener implements Listener {
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
-            final Info action = plugin.getShopManager().getActions().get(p.getUniqueId());
+            final Info action = super.getPlugin().getShopManager().getActions().get(p.getUniqueId());
 
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
@@ -119,8 +118,8 @@ public class BlockListener implements Listener {
         } else if (Util.isWallSign(b.getType())) {
             if (b.getState() instanceof Sign) {
                 Sign sign = (Sign) b.getState();
-                if (sign.getLine(0).equals(plugin.getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(plugin.getConfig().getString("lockette.more_users"))) {
+                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -165,12 +164,12 @@ public class BlockListener implements Listener {
             return null;
         }
 
-        return plugin.getShopManager().getShop(b.getLocation());
+        return getShopPlayer(b.getLocation(), false);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (!plugin.getConfig().getBoolean("shop.update-sign-when-inventory-moving", true)) {
+        if (!super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true)) {
             return;
         }
 
@@ -182,9 +181,9 @@ public class BlockListener implements Listener {
         }
 
         // Delayed task. Event triggers when item is moved, not when it is received.
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
+        final Shop shop = getShopRedstone(location, true);
         if (shop != null) {
-            plugin.getSignUpdateWatcher().scheduleSignUpdate(shop);
+            super.getPlugin().getSignUpdateWatcher().scheduleSignUpdate(shop);
         }
     }
 
@@ -239,7 +238,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Shop shop = plugin.getShopManager().getShop(chest.getLocation());
+        Shop shop = getShopPlayer(chest.getLocation(), false);
         if (shop != null) {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
