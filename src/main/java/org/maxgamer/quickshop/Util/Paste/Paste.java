@@ -159,6 +159,12 @@ public class Paste {
                 .append("\n");
         }
         finalReport.append("================================================\n");
+        finalReport.append("Internal Data:\n");
+        finalReport.append("Caching Pool Enabled: ").append(plugin.getShopCache() != null).append("\n");
+        if (plugin.getShopCache() != null) {
+            finalReport.append("Caching Contents: ").append(plugin.getShopCache().getCachingSize()).append("\n");
+        }
+        finalReport.append("================================================\n");
         finalReport.append("Configurations:\n");
         try {
             finalReport.append("\t*********************************\n");
