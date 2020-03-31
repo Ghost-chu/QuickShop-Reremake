@@ -1020,18 +1020,22 @@ public class ShopManager {
 
         //failed, get attached shop
         if (shop == null) {
+            //sign
             Block currentBlock = loc.getBlock();
             if (!fromAttach && Util.isWallSign(currentBlock.getType())) {
                 Block attached = Util.getAttached(currentBlock);
                 if (attached != null) {
-                    this.getShopIncludeAttached_Fast(attached.getLocation(), true);
+                  shop=this.getShopIncludeAttached_Fast(attached.getLocation(), true);
+                }
+                //double chest
+            }else {
+                @Nullable Block half = Util.getSecondHalf(currentBlock);
+                if (half != null) {
+                    shop = getShop(half.getLocation());
                 }
             }
-            @Nullable Block half = Util.getSecondHalf(currentBlock);
-            if (half != null) {
-                shop = getShop(half.getLocation());
-            }
         }
+        //add cache if using
         if(plugin.getShopCache()!=null) {
             plugin.getShopCache().setCache(loc, shop);
         }
