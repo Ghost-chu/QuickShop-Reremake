@@ -113,7 +113,10 @@ database:
   # Set prefix to "none" to remove prefix
   prefix: none
   usessl: false
+  #Whether to use async queue?
   queue: true
+  #How long between each commit when using queue? (seconds)
+  queue-commit-interval: 2
   # Auto set table encoding to utf8mb4 (beta)
   auto-fix-encoding-issue-in-database: false
 
