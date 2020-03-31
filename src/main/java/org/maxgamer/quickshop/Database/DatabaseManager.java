@@ -19,12 +19,6 @@
 
 package org.maxgamer.quickshop.Database;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -34,6 +28,12 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.Util;
 import org.maxgamer.quickshop.Util.WarningSender;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 
 /**
  * Queued database manager. Use queue to solve run SQL make server lagg issue.
@@ -67,6 +67,7 @@ public class DatabaseManager {
         this.warningSender = new WarningSender(plugin, 600000);
         this.database = db;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
+
         if (!useQueue) {
             return;
         }
@@ -77,7 +78,7 @@ public class DatabaseManager {
                     public void run() {
                         plugin.getDatabaseManager().runTask();
                     }
-                }.runTaskTimerAsynchronously(plugin, 1, 10);
+                }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval")*20);
         } catch (IllegalPluginAccessException e) {
             Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
             plugin.getDatabaseManager().runTask();

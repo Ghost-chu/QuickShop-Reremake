@@ -19,12 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -60,6 +54,13 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class QuickShop extends JavaPlugin {
@@ -1531,6 +1532,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("protect.hopper",true);
             getConfig().set("config-version", 91);
             selectedVersion=91;
+        }
+        if(selectedVersion==91){
+            getConfig().set("database.queue-commit-interval",2);
+            getConfig().set("config-version", 92);
+            selectedVersion=92;
         }
         saveConfig();
         reloadConfig();

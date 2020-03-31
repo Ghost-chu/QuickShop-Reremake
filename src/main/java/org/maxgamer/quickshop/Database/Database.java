@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.Database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Database {
 
@@ -47,7 +48,7 @@ public class Database {
     public Database(@NotNull DatabaseCore core) throws ConnectionException {
         try {
             try {
-                if (!core.getConnection().isValid(10)) {
+                if (!core.getConnection().isValid(30)) {
                     throw new ConnectionException("The database does not appear to be valid!");
                 }
             } catch (AbstractMethodError e) {
