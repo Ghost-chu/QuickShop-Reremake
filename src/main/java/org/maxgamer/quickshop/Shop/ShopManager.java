@@ -318,13 +318,24 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc) {
+        return getShopIncludeAttached(loc,true);
+    }
+
+    /**
+     * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
+     *
+     * @param loc The location to get the shop from
+     * @param useCache whether to use cache
+     * @return The shop at that location
+     */
+    public @Nullable Shop getShopIncludeAttached(@Nullable Location loc,boolean useCache) {
         if (loc == null) {
             Util.debugLog("Location is null.");
             return null;
         }
 
         if (this.useFastShopSearchAlgorithm) {
-            return getShopIncludeAttached_Fast(loc, false);
+            return getShopIncludeAttached_Fast(loc, false,useCache);
         } else {
             return getShopIncludeAttached_Classic(loc);
         }
@@ -1014,6 +1025,10 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
+        return getShopIncludeAttached_Fast(loc,fromAttach,true);
+    }
+
+    private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach,boolean useCache) {
         Shop shop;
         //Try to get it directly
         shop = getShop(loc);
@@ -1038,7 +1053,7 @@ public class ShopManager {
             }
         }
         //add cache if using
-        if(plugin.getShopCache()!=null) {
+        if(plugin.getShopCache()!=null&&useCache) {
             plugin.getShopCache().setCache(loc, shop);
         }
 
