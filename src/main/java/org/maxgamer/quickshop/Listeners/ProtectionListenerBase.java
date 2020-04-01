@@ -46,7 +46,7 @@ public class ProtectionListenerBase {
      */
     @Nullable
     public Shop getShopPlayer(@NotNull Location location, boolean includeAttached) {
-        return plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location,false):plugin.getShopManager().getShop(location);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ProtectionListenerBase {
      */
     @Nullable
     public Shop getShopNature(@NotNull Location location, boolean includeAttached) {
-        return plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location,false):plugin.getShopManager().getShop(location);
     }
 
 }
