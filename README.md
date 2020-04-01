@@ -35,7 +35,7 @@ Github projects have a "releases" link on their home page. If you still don't se
 - [Relatev](http://www.relatev.com/forum.php?mod=viewthread&tid=2251)
 
 ## Contribute
-If you're a developer, you can contribute to the QuickShop code! Just make a fork, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+If you're a developer, you can contribute to the QuickShop code! Just make a fork and install lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
 ```XML
