@@ -23,6 +23,7 @@ public class ProtectionListenerBase {
      * Get shop for redstone events, will caching if caching enabled
      *
      * @param location The block location
+     * @param includeAttached whether to include the attached shop
      * @return The shop object
      */
     @SuppressWarnings("SpellCheckingInspection")
@@ -42,6 +43,8 @@ public class ProtectionListenerBase {
      * Get shop for player events, won't be caching
      *
      * @param location The block location
+     * @param includeAttached whether to include the attached shop
+     *
      * @return The shop object
      */
     @Nullable
@@ -54,6 +57,7 @@ public class ProtectionListenerBase {
      * Because nature events usually won't check same block twice in shore time.
      *
      * @param location The block location
+     * @param includeAttached whether to include the attached shop
      * @return The shop object
      */
     @Nullable
