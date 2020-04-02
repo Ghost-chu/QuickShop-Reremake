@@ -19,6 +19,12 @@
 
 package org.maxgamer.quickshop;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -54,13 +60,6 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.Map.Entry;
 
 
 public class QuickShop extends JavaPlugin {
@@ -343,8 +342,8 @@ public class QuickShop extends JavaPlugin {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
                 getLogger().info("Using Virtual item Display, loading ProtocolLib support...");
-                Plugin protocolLibPlugin=Bukkit.getPluginManager().getPlugin("ProtocolLib");
-                if (protocolLibPlugin != null&&protocolLibPlugin.isEnabled()) {
+                Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+                if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
                     getLogger().info("Successfully loaded ProtocolLib support!");
                 } else {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
@@ -1528,15 +1527,21 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 90);
             selectedVersion = 90;
         }
-        if(selectedVersion==90){
-            getConfig().set("protect.hopper",true);
+        if (selectedVersion == 90) {
+            getConfig().set("protect.hopper", true);
             getConfig().set("config-version", 91);
-            selectedVersion=91;
+            selectedVersion = 91;
         }
-        if(selectedVersion==91){
-            getConfig().set("database.queue-commit-interval",2);
+        if (selectedVersion == 91) {
+            getConfig().set("database.queue-commit-interval", 2);
             getConfig().set("config-version", 92);
-            selectedVersion=92;
+            selectedVersion = 92;
+        }
+        if (selectedVersion == 92) {
+            getConfig().set("send-display-item-protection-alert", false);
+            getConfig().set("send-shop-protection-alert", false);
+            getConfig().set("config-version", 93);
+            selectedVersion = 93;
         }
         saveConfig();
         reloadConfig();
