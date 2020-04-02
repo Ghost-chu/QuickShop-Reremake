@@ -84,10 +84,10 @@ use-decimal-format: false
 decimal-format: "#,###.##"
 
 #Allow plugin send alert when something trying make a displayItem exploit
-send-display-item-protection-alert: true
+send-display-item-protection-alert: false
 
 #Allow plugin send alert when something trying steal shop
-send-shop-protection-alert: true
+send-shop-protection-alert: false
 
 # Log4j provides better logging performance, turn this off when you are suffering logging issues.
 enable-log4j: true
