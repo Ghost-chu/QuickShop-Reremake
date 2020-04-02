@@ -91,21 +91,22 @@ public class DatabaseManager {
     private void runTask() {
         try {
             Connection connection=this.database.getConnection();
-            if (!connection.isValid(3000)) {
-                this.plugin
-                    .getLogger()
-                    .warning("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                return; // Waiting next crycle and hope it success reconnected.
-            }
             //start our commit
             connection.setAutoCommit(false);
             while (true) {
+                if (!connection.isValid(3000)) {
+                    warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                    connection=database.getConnection();
+                    continue; // Waiting next crycle and hope it success reconnected.
+                }
+
                 Timer timer = new Timer(true);
                 DatabaseTask task = sqlQueue.poll();
                 if (task == null) {
                     break;
                 }
                 Util.debugLog("Executing the SQL task: " + task);
+
                 task.run(connection);
                 long tookTime = timer.endTimer();
                 if (tookTime > 500) {

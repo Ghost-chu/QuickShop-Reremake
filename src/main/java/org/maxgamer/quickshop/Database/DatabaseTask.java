@@ -1,13 +1,13 @@
 package org.maxgamer.quickshop.Database;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import lombok.NonNull;
 import lombok.ToString;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @ToString()
 public class DatabaseTask {
