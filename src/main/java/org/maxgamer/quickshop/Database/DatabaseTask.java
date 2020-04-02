@@ -1,13 +1,13 @@
 package org.maxgamer.quickshop.Database;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import lombok.NonNull;
 import lombok.ToString;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @ToString()
 public class DatabaseTask {
@@ -21,7 +21,7 @@ public class DatabaseTask {
         this.task = task;
     }
 
-    public void run() {
+    public void run() throws SQLException {
         try (PreparedStatement ps = database.getConnection().prepareStatement(statement)) {
             task.edit(ps);
             ps.execute();
@@ -30,7 +30,7 @@ public class DatabaseTask {
             task.onFailed(e);
         }
     }
-    public void run(@NonNull Connection connection) {
+    public void run(@NonNull Connection connection) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(statement);) {
             task.edit(ps);
             ps.execute();
@@ -46,8 +46,8 @@ public class DatabaseTask {
         default void onSuccess() {
         }
 
-        default void onFailed(SQLException e) {
-            e.printStackTrace();
+        default void onFailed(SQLException e) throws SQLException {
+            throw e;
         }
 
     }
