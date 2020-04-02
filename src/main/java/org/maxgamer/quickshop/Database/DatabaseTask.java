@@ -21,7 +21,7 @@ public class DatabaseTask {
         this.task = task;
     }
 
-    public void run() throws SQLException {
+    public void run() {
         try (PreparedStatement ps = database.getConnection().prepareStatement(statement)) {
             task.edit(ps);
             ps.execute();
@@ -30,7 +30,7 @@ public class DatabaseTask {
             task.onFailed(e);
         }
     }
-    public void run(@NonNull Connection connection) throws SQLException {
+    public void run(@NonNull Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(statement);) {
             task.edit(ps);
             ps.execute();
@@ -46,8 +46,8 @@ public class DatabaseTask {
         default void onSuccess() {
         }
 
-        default void onFailed(SQLException e) throws SQLException {
-            throw e;
+        default void onFailed(SQLException e) {
+            e.printStackTrace();
         }
 
     }

@@ -42,8 +42,6 @@ public class DatabaseManager {
 
     private final Queue<DatabaseTask> sqlQueue = new LinkedBlockingQueue<>();
 
-    private DatabaseTask lastFailedTask=null;
-
     @NotNull
     private final Database database;
 
@@ -91,7 +89,6 @@ public class DatabaseManager {
      * Internal method, runTasks in queue.
      */
     private void runTask() {
-        DatabaseTask databaseTask=null;
         try {
             Connection connection=this.database.getConnection();
             //start our commit
@@ -104,19 +101,13 @@ public class DatabaseManager {
                 }
 
                 Timer timer = new Timer(true);
-                if(lastFailedTask!=null){
-                    Util.debugLog("Executing the SQL task which failed last time: " + lastFailedTask);
-                    lastFailedTask.run(connection);
-                    lastFailedTask=null;
-                }else {
-                    databaseTask = sqlQueue.poll();
-                    if (databaseTask == null) {
-                        break;
-                    }
-                    Util.debugLog("Executing the SQL task: " + databaseTask);
-                    databaseTask.run(connection);
+                DatabaseTask task = sqlQueue.poll();
+                if (task == null) {
+                    break;
                 }
+                Util.debugLog("Executing the SQL task: " + task);
 
+                task.run(connection);
                 long tookTime = timer.endTimer();
                 if (tookTime > 500) {
                     warningSender.sendWarn(
@@ -129,7 +120,6 @@ public class DatabaseManager {
             connection.close();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            lastFailedTask=databaseTask;
             this.plugin
                     .getLogger()
                     .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
@@ -154,13 +144,7 @@ public class DatabaseManager {
         if (useQueue) {
             sqlQueue.offer(task);
         } else {
-            try {
-                task.run();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                //retry
-                add(task);
-            }
+            task.run();
         }
     }
 
