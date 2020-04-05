@@ -66,6 +66,11 @@ public class ItemMatcher {
             if(!matches(requireStack[i],givenStack[i])){
                 return false;
             }
+            if(requireStack[i]!=null&&givenStack[i]!=null){
+                if(requireStack[i].getAmount()!=givenStack[i].getAmount()){
+                    return false;
+                }
+            }
         }
         return true;
     }
