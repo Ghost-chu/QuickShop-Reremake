@@ -7,7 +7,7 @@
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。見ている必要があります。",
   "no-anythings-in-your-hand": "&cあなたの手には何もありません。",
   "no-permission": "&c権限を持っていないため実行できません。",
-  "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
+  "3rd-plugin-build-check-failed": "\n一部のサードパーティプラグインが権限チェックを拒否しました。権限が組み込まれていますか？",
   "no-creative-break": "&cクリエイティブモードで他のプレイヤーショップを壊すことはできません。 代わりにサバイバルを使用してください。",
   "no-double-chests": "&cダブルチェストショップを作成することはできません。",
   "not-managed-shop": "あなたはショップの所有者でもモデレーターでもありません。",
