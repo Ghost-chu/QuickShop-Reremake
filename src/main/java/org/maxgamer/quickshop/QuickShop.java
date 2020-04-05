@@ -19,12 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.Map.Entry;
 import lombok.Getter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
@@ -60,6 +54,13 @@ import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
 import org.maxgamer.quickshop.Watcher.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class QuickShop extends JavaPlugin {
@@ -1540,6 +1541,9 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 92) {
             getConfig().set("send-display-item-protection-alert", false);
             getConfig().set("send-shop-protection-alert", false);
+            getConfig().set("disable-creative-mode-trading",false);
+            getConfig().set("disable-super-tool",false);
+            getConfig().set("allow-owner-break-shop-sign",true);
             getConfig().set("config-version", 93);
             selectedVersion = 93;
         }
