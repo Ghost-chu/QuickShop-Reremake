@@ -54,6 +54,10 @@ public class ItemMatcher {
      * @return true if the itemstacks match. (Material, durability, enchants, name)
      */
     public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
+        if(requireStack==null&&givenStack==null){
+            return true;
+        }
+
         if(requireStack==null||givenStack==null){
             return false;
         }
@@ -63,14 +67,15 @@ public class ItemMatcher {
         }
         //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
         for(int i=0;i<requireStack.length;i++){
-            if(!matches(requireStack[i],givenStack[i])){
-                return false;
-            }
             //IDEA bug, ignore NPE tips
             //noinspection ConstantConditions
             if((requireStack[i] != null) && (givenStack[i] != null) &&
                     (requireStack[i].getAmount() != givenStack[i].getAmount())){
-                    return false;
+                return false;
+            }
+
+            if(!matches(requireStack[i],givenStack[i])){
+                return false;
             }
         }
         return true;
