@@ -365,6 +365,18 @@ matcher:
     books: true
     #Plugin should check the banner meta?
     banner: true
+    #Plugin should check the skull meta?
+    skull: true
+    #Plugin should check the firework meta?
+    firework: true
+    #Plugin should check the map meta?
+    map: true
+    #Plugin should check the leather armor meta?
+    leatherArmor: true
+    #Plugin should check the fishBucket meta?
+    fishBucket: true
+    #Plugin should check the suspiciousStew meta?
+    suspiciousStew: true
 cachingpool:
   # Did you want use caching pool?
   # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
