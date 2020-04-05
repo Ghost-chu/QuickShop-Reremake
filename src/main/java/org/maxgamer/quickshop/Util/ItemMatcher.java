@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -389,12 +388,14 @@ class ItemMetaMatcher {
             if (!(meta1 instanceof SkullMeta)) {
                 return true;
             }
-            OfflinePlayer player1= ((SkullMeta) meta1).getOwningPlayer();
-            OfflinePlayer player2= ((SkullMeta) meta2).getOwningPlayer();
+            //getOwningPlayer will let server query playerProfile in server thread
+            //Causing huge lag, so using String instead
+            String player1= ((SkullMeta) meta1).getOwner();
+            String player2= ((SkullMeta) meta2).getOwner();
             if(player1==null){
                 return true;
             }
-            return player2!=null&&player1.getUniqueId().equals(player2.getUniqueId());
+            return player1.equalsIgnoreCase(player2);
         });
         addIfEnable(itemMatcherConfig,"map",(meta1, meta2) -> {
             if ((meta1 instanceof MapMeta) != (meta2 instanceof MapMeta)) {
@@ -405,7 +406,7 @@ class ItemMetaMatcher {
             }
             MapMeta mapMeta1= ((MapMeta) meta1);
             MapMeta mapMeta2= ((MapMeta) meta2);
-            if(mapMeta1.hasMapView()||mapMeta1.getMapView()==null){
+            if(!mapMeta1.hasMapView()||mapMeta1.getMapView()==null){
                 return true;
             }
             if(!mapMeta1.getMapView().equals(mapMeta2.getMapView())) {
