@@ -46,7 +46,30 @@ public class ItemMatcher {
             new ItemMetaMatcher(
                 Objects.requireNonNull(plugin.getConfig().getConfigurationSection("matcher.item")));
     }
+    /**
+     * Compares two items array to each other. Returns true if they match. Rewrite it to use more faster
+     * hashCode.
+     *
+     * @param requireStack The first item stack array
+     * @param givenStack The second item stack array
+     * @return true if the itemstacks match. (Material, durability, enchants, name)
+     */
+    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
+        if(requireStack==null||givenStack==null){
+            return false;
+        }
 
+        if(requireStack.length!=givenStack.length){
+            return false;
+        }
+        //For performance, we just check really equals in each index,check isn't contain or match due to it will cost n^n time in most
+        for(int i=0;i<requireStack.length;i++){
+            if(!matches(requireStack[i],givenStack[i])){
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * Compares two items to each other. Returns true if they match. Rewrite it to use more faster
      * hashCode.
@@ -473,7 +496,7 @@ class ItemMetaMatcher {
             if(!(((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox)){
                 return true;
             }
-            return Arrays.deepEquals(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
+            return QuickShop.getInstance().getItemMatcher().matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
         }));
 
     }
