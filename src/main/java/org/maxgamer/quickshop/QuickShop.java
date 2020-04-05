@@ -1550,6 +1550,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("matcher.item.leatherArmor",true);
             getConfig().set("matcher.item.fishBucket",true);
             getConfig().set("matcher.item.suspiciousStew",true);
+            getConfig().set("matcher.item.shulkerBox",true);
             getConfig().set("config-version", 93);
             selectedVersion = 93;
         }

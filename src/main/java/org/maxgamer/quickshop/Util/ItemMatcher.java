@@ -85,7 +85,6 @@ public class ItemMatcher {
         if (!typeMatches(requireStack, givenStack)) {
             return false;
         }
-        if(requireStack instanceof ShulkerBox)
 
         //        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
         //            Util.debugLog("Meta not matched");
@@ -458,6 +457,23 @@ class ItemMetaMatcher {
                 return true;
             }
             return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
+        }));
+        addIfEnable(itemMatcherConfig,"shulkerBox",((meta1, meta2) -> {
+            //https://www.spigotmc.org/threads/getting-the-inventory-of-a-shulker-box-itemstack.212369
+            if ((meta1 instanceof BlockStateMeta) != (meta2 instanceof BlockStateMeta)) {
+                return false;
+            }
+            if (!(meta1 instanceof BlockStateMeta)) {
+                return true;
+            }
+
+            if ((((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox) != ((BlockStateMeta) meta2).getBlockState() instanceof ShulkerBox) {
+                return false;
+            }
+            if(!(((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox)){
+                return true;
+            }
+            return Arrays.deepEquals(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
         }));
 
     }
