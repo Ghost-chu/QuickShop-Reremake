@@ -62,7 +62,7 @@ public class ItemMatcher {
         if(requireStack.length!=givenStack.length){
             return false;
         }
-        //For performance, we just check really equals in each index,check isn't contain or match due to it will cost n^n time in most
+        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
         for(int i=0;i<requireStack.length;i++){
             if(!matches(requireStack[i],givenStack[i])){
                 return false;
