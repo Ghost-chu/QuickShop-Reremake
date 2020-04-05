@@ -1555,6 +1555,9 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 93;
         }
         if(selectedVersion==93){
+            getConfig().set("disable-creative-mode-trading",null);
+            getConfig().set("disable-super-tool",null);
+            getConfig().set("allow-owner-break-shop-sign",null);
             getConfig().set("shop.disable-creative-mode-trading",true);
             getConfig().set("shop.disable-super-tool",true);
             getConfig().set("shop.allow-owner-break-shop-sign",false);
