@@ -48,7 +48,7 @@
   "no-nearby-shop": "&cAucune boutique trouvée dans les alentours.",
   "buying-more-than-selling": "&cATTENTION: Vous êtes entrain d'acheter des objets plus cher que vous ne les vendez!",
   "not-enough-space": "&cIl ne vous reste que {0} place(s) restante(s) pour ceci !",
-  "refill-success": "&aRe Stock effectué",
+  "refill-success": "&aRemplissage de la boutique effectué avec succès.",
   "empty-success": "&aVidé avec succès.",
   "admin-shop": "Boutique Admin",
   "unknown-owner": "Inconnu",
