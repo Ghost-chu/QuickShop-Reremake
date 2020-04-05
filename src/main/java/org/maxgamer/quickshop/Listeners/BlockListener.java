@@ -83,6 +83,11 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
+                    if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
+                        e.setCancelled(true);
+                        p.sendMessage(MsgUtil.getMessage("supertool-is-disabled", p));
+                        return;
+                    }
                     p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
                     return;
                 }
@@ -135,6 +140,11 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
+                    if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
+                        e.setCancelled(true);
+                        p.sendMessage(MsgUtil.getMessage("supertool-is-disabled", p));
+                        return;
+                    }
                     p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
                     shop.delete();
                     return;
@@ -145,10 +155,11 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
                         "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
             //Allow Shop owner break the shop sign(for sign replacement)
-            if(!p.getUniqueId().equals(shop.getOwner())){
-                Util.debugLog("Cannot break the sign.");
-                e.setCancelled(true);
+            if(getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign")&&p.getUniqueId().equals(shop.getOwner())){
+               return;
             }
+            Util.debugLog("Cannot break the sign.");
+            e.setCancelled(true);
         }
     }
 
