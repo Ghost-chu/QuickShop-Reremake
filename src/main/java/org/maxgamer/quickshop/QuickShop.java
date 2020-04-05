@@ -1554,6 +1554,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 93);
             selectedVersion = 93;
         }
+        if(selectedVersion==93){
+            getConfig().set("shop.disable-creative-mode-trading",true);
+            getConfig().set("shop.disable-super-tool",true);
+            getConfig().set("shop.allow-owner-break-shop-sign",false);
+            getConfig().set("config-version", 94);
+            selectedVersion=94;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
