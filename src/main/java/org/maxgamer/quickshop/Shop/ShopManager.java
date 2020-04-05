@@ -537,18 +537,7 @@ public class ShopManager {
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
-        if (plugin.getEconomy() == null) {
-            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
-            return;
-        }
-        if (!Util.canBeShop(info.getLocation().getBlock())) {
-            p.sendMessage(MsgUtil.getMessage("chest-was-removed", p));
-            return;
-        }
-        if (info.hasChanged(shop)) {
-            p.sendMessage(MsgUtil.getMessage("shop-has-changed", p));
-            return;
-        }
+        if (shopIsNotValid(p, info, shop)){ return;}
         int space = shop.getRemainingSpace();
         if (space == -1) {
             space = 10000;
@@ -573,22 +562,8 @@ public class ShopManager {
             return; // Cancelled
         }
         // Money handling
-        double tax = plugin.getConfig().getDouble("tax");
+        double tax = getTax(shop,p);
         double total = amount * shop.getPrice();
-        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
-            tax = 0;
-            Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
-        }
-        if (tax >= 1.0) {
-            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
-            tax = 0;
-        }
-        if (tax < 0) {
-            tax = 0; // Tax was disabled.
-        }
-        if (shop.getModerator().isModerator(p.getUniqueId())) {
-            tax = 0; // Is staff or owner, so we won't will take them tax
-        }
 
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
         if (shouldPayOwner) {
@@ -629,7 +604,24 @@ public class ShopManager {
         shop.setSignText(); // Update the signs count
     }
 
-    @SuppressWarnings("deprecation")
+    private double getTax(Shop shop,Player p){
+        double tax = plugin.getConfig().getDouble("tax");
+        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
+            tax = 0;
+            Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
+        }
+        if (tax >= 1.0) {
+            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
+            tax = 0;
+        }
+        if (tax < 0) {
+            tax = 0; // Tax was disabled.
+        }
+        if (shop.getModerator().isModerator(p.getUniqueId())) {
+            tax = 0; // Is staff or owner, so we won't will take them tax
+        }
+        return tax;
+    }
     private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String
         message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
@@ -811,18 +803,7 @@ public class ShopManager {
     }
 
     private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
-        if (plugin.getEconomy() == null) {
-            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
-            return;
-        }
-        if (!Util.canBeShop(info.getLocation().getBlock())) {
-            p.sendMessage(MsgUtil.getMessage("chest-was-removed", p));
-            return;
-        }
-        if (info.hasChanged(shop)) {
-            p.sendMessage(MsgUtil.getMessage("shop-has-changed", p));
-            return;
-        }
+        if (shopIsNotValid(p, info, shop)) {return;}
         int stock = shop.getRemainingStock();
         if (stock == -1) {
             stock = 10000;
@@ -845,19 +826,10 @@ public class ShopManager {
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }
+        double tax = getTax(shop,p);
         // Money handling
-        double tax = plugin.getConfig().getDouble("tax");
         double total = amount * shop.getPrice();
-        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
-            tax = 0;
-            Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
-        }
-        if (tax < 0) {
-            tax = 0; // Tax was disabled.
-        }
-        if (shop.getModerator().isModerator(p.getUniqueId())) {
-            tax = 0; // Is staff or owner, so we won't will take them tax
-        }
+
 
         boolean successA = eco.withdraw(p.getUniqueId(), total); // Withdraw owner's money
         if (!successA) {
@@ -898,6 +870,22 @@ public class ShopManager {
         Bukkit.getPluginManager().callEvent(se);
     }
 
+    private boolean shopIsNotValid(@NotNull Player p, @NotNull Info info, @NotNull Shop shop) {
+        if (plugin.getEconomy() == null) {
+            p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
+            return true;
+        }
+        if (!Util.canBeShop(info.getLocation().getBlock())) {
+            p.sendMessage(MsgUtil.getMessage("chest-was-removed", p));
+            return true;
+        }
+        if (info.hasChanged(shop)) {
+            p.sendMessage(MsgUtil.getMessage("shop-has-changed", p));
+            return true;
+        }
+        return false;
+    }
+
     private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
         if (plugin.getEconomy() == null) {
             p.sendMessage("Error: Economy system not loaded, type /qs main command to get details.");
@@ -914,6 +902,10 @@ public class ShopManager {
         // It's not valid anymore
         if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
             p.sendMessage(MsgUtil.getMessage("chest-was-removed", p));
+            return;
+        }
+        if(p.getGameMode()==GameMode.CREATIVE&&plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")){
+            p.sendMessage(MsgUtil.getMessage("trading-in-creative-mode-is-disabled",p));
             return;
         }
         int amount;
@@ -998,7 +990,6 @@ public class ShopManager {
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
                             p.sendMessage(MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
-                            return;
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces == 0) {
@@ -1006,8 +997,8 @@ public class ShopManager {
                                 return;
                             }
                             p.sendMessage(MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(price)), Objects.requireNonNull(format(balance))));
-                            return;
                         }
+                        return;
                     }
                 } else {
                     // instead of output cancelled message, just let player know that there should be positive

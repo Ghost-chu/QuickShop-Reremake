@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 91
+config-version: 93
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -153,6 +153,13 @@ shop:
   cost: 10
   #Should we refund the player when their shops are deleted/removed/broken?
   refund: false
+
+  #Should we disable trading for creative mode?
+  disable-creative-mode-trading: false
+  #Should we disable super tool?(It's a tool which allow you break shop in creative mode by gold axe)
+  disable-super-tool: false
+  #Should we allow the owner of shop break the sign (for sign replacement or reduce lag)?
+  allow-owner-break-shop-sign: true
 
   #Is there a fee for changing prices on a shop (Help deter endless undercutting)
   price-change-requires-fee: true
