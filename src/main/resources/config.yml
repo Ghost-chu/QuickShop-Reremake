@@ -158,8 +158,8 @@ shop:
   disable-creative-mode-trading: false
   #Should we disable super tool?(It's a tool which allow you break shop in creative mode by gold axe)
   disable-super-tool: false
-  #Should we allow the owner of shop break the sign (for sign replacement or reduce lag)?
-  allow-owner-break-shop-sign: true
+  #Should we allow the owner of shop break the sign (for sign replacement, but may cause sign dupe when auto-sign is true)?
+  allow-owner-break-shop-sign: false
 
   #Is there a fee for changing prices on a shop (Help deter endless undercutting)
   price-change-requires-fee: true

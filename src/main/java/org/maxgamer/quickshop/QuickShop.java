@@ -1543,7 +1543,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("send-shop-protection-alert", false);
             getConfig().set("disable-creative-mode-trading",false);
             getConfig().set("disable-super-tool",false);
-            getConfig().set("allow-owner-break-shop-sign",true);
+            getConfig().set("allow-owner-break-shop-sign",false);
             getConfig().set("matcher.item.skull",true);
             getConfig().set("matcher.item.firework",true);
             getConfig().set("matcher.item.map",true);
