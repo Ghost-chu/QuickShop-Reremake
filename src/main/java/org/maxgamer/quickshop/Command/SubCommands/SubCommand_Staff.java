@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -37,11 +34,14 @@ import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class SubCommand_Staff implements CommandProcesser {
 
     private final QuickShop plugin = QuickShop.instance;
 
-    @SuppressWarnings("DuplicateBranchesInSwitch")
     @Override
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -73,8 +73,6 @@ public class SubCommand_Staff implements CommandProcesser {
                 case 1:
                     switch (cmdArg[0]) {
                         case "add":
-                            sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
-                            return;
                         case "del":
                             sender.sendMessage(MsgUtil.getMessage("command.wrong-args", sender));
                             return;
@@ -120,6 +118,7 @@ public class SubCommand_Staff implements CommandProcesser {
                             sender.sendMessage(MsgUtil.getMessage("shop-staff-added", sender, offlinePlayerName));
                             return;
                         case "del":
+                            shop.delStaff(offlinePlayer.getUniqueId());
                             sender.sendMessage(
                                 MsgUtil.getMessage("shop-staff-deleted", sender, offlinePlayerName));
                             return;
