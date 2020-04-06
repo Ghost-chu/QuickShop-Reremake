@@ -35,6 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -471,6 +472,7 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        QuickShopAPI.setupApi(this);
         getDataFolder().mkdirs();
         replaceLogger();
 
