@@ -318,7 +318,7 @@ public class Util {
         int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
             debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            QuickShop.instance.getLogger().info(log);
+            QuickShop.instance.getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         lock.writeLock().unlock();
     }
