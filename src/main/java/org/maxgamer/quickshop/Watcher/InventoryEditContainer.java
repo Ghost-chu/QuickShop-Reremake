@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.Watcher;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.inventory.Inventory;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class InventoryEditContainer {
     private Inventory inventory;
 
