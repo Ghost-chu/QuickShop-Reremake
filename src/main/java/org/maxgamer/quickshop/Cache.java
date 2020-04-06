@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TimerTask;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.shop.Shop;
 
 public class Cache extends TimerTask {
     private QuickShop plugin;

@@ -2,10 +2,10 @@ package org.maxgamer.quickshop;
 
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Shop.DisplayType;
-import org.maxgamer.quickshop.Util.IncompatibleChecker;
-import org.maxgamer.quickshop.Util.ReflectFactory;
-import org.maxgamer.quickshop.Util.Util;
+import org.maxgamer.quickshop.shop.DisplayType;
+import org.maxgamer.quickshop.util.IncompatibleChecker;
+import org.maxgamer.quickshop.util.ReflectFactory;
+import org.maxgamer.quickshop.util.Util;
 
 public class RuntimeCheck {
     public RuntimeCheck(@NotNull QuickShop plugin) {
