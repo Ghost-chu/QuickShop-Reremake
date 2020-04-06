@@ -9,6 +9,11 @@ import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 public class QuickShopAPI {
     private static QuickShop plugin;
 
+    /**
+     * DO NOT CALL ME, IT JUST A INTERNAL METHOD, BUT BECAUSE CROSS-PACKAGE ACCESS, IT IS PUBLIC, SO DO NOT EXECUTE IT.
+     * Go away =w=
+     * @param qs The QuickShop plugin instance
+     */
     public static void setupApi(@NotNull QuickShop qs){
         plugin = qs;
     }
