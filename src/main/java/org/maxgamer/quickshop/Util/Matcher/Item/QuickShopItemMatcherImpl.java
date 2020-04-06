@@ -21,10 +21,13 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
     private QuickShop plugin;
 
     private ItemMetaMatcher itemMetaMatcher;
-
+    public QuickShopItemMatcherImpl(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
+        itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"),this);
+    }
 
     public QuickShopItemMatcherImpl() {
-        plugin = QuickShop.getInstance();
+        this.plugin = QuickShop.getInstance();
         itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"),this);
     }
 
