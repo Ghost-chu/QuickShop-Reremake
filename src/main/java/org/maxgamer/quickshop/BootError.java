@@ -24,7 +24,7 @@ import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.util.MsgUtil;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.

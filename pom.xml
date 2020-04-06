@@ -69,11 +69,11 @@
                     <relocations>
                         <relocation>
                             <pattern>io.github.portlek.configs</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.dumptruckman.bukkit.configuration</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.FilePortlek.newest.json</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

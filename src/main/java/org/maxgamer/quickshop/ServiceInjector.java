@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.Database.DatabaseCore;
-import org.maxgamer.quickshop.Economy.EconomyCore;
-import org.maxgamer.quickshop.Util.Language.Game.GameLanguage;
-import org.maxgamer.quickshop.Util.Matcher.Item.ItemMatcher;
+import org.maxgamer.quickshop.database.DatabaseCore;
+import org.maxgamer.quickshop.economy.EconomyCore;
+import org.maxgamer.quickshop.util.Language.Game.GameLanguage;
+import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 
 public class ServiceInjector {
     public static EconomyCore getEconomyCore(@NotNull EconomyCore def){
