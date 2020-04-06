@@ -45,7 +45,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can't be run by console");
+            MsgUtil.sendMessage(sender,"This command can't be run by console");
             return;
         }
 
@@ -53,7 +53,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
         final ItemStack item = p.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-anythings-in-your-hand", sender));
             return;
         }
 
@@ -84,14 +84,14 @@ public class SubCommand_SuperCreate implements CommandProcesser {
 
             if (Util.getSecondHalf(b) != null
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
-                p.sendMessage(MsgUtil.getMessage("no-double-chests", sender));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-double-chests", sender));
                 return;
             }
 
             if (Util.isBlacklisted(item)
                 && !QuickShop.getPermissionManager()
                 .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
 
@@ -108,11 +108,11 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                     b.getRelative(p.getFacing().getOppositeFace()));
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-            p.sendMessage(
+            MsgUtil.sendMessage(p,
                 MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

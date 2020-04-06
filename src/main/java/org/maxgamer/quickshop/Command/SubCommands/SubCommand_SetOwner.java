@@ -40,19 +40,19 @@ public class SubCommand_SetOwner implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Only player can run this command", sender));
             return;
         }
 
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.no-owner-given", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-owner-given", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
 
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -67,17 +67,17 @@ public class SubCommand_SetOwner implements CommandProcesser {
             @SuppressWarnings("deprecation") final OfflinePlayer p = plugin.getServer().getOfflinePlayer(cmdArg[0]);
             final String shopOwner = plugin.getServer().getOfflinePlayer(shop.getOwner()).getName();
             if (shopOwner == null) {
-                sender.sendMessage(MsgUtil.getMessage("unknown-player", null));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("unknown-player", null));
                 return;
             }
             shop.setOwner(p.getUniqueId());
             // shop.setSignText();
             shop.update();
-            sender.sendMessage(MsgUtil.getMessage("command.new-owner", sender, shopOwner));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.new-owner", sender, shopOwner));
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

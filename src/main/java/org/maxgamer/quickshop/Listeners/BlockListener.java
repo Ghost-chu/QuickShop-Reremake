@@ -85,21 +85,21 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
                         e.setCancelled(true);
-                        p.sendMessage(MsgUtil.getMessage("supertool-is-disabled", p));
+                        MsgUtil.sendMessage(p,MsgUtil.getMessage("supertool-is-disabled", p));
                         return;
                     }
-                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("break-shop-use-supertool", p));
                     return;
                 }
                 e.setCancelled(true);
-                p.sendMessage(
+                MsgUtil.sendMessage(p,
                     MsgUtil.getMessage(
                         "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
 
             if (e.isCancelled()) {
-                p.sendMessage(MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
                 Util.debugLog("The action was cancelled by other plugin");
                 return;
             }
@@ -107,7 +107,7 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
             if (!shop.getModerator().isOwner(p.getUniqueId())
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                p.sendMessage(MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
@@ -119,7 +119,7 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
 
             shop.onUnload();
             shop.delete();
-            p.sendMessage(MsgUtil.getMessage("success-removed-shop", p));
+            MsgUtil.sendMessage(p,MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
             if (b.getState() instanceof Sign) {
                 Sign sign = (Sign) b.getState();
@@ -142,15 +142,15 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
                         e.setCancelled(true);
-                        p.sendMessage(MsgUtil.getMessage("supertool-is-disabled", p));
+                        MsgUtil.sendMessage(p,MsgUtil.getMessage("supertool-is-disabled", p));
                         return;
                     }
-                    p.sendMessage(MsgUtil.getMessage("break-shop-use-supertool", p));
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("break-shop-use-supertool", p));
                     shop.delete();
                     return;
                 }
                 e.setCancelled(true);
-                p.sendMessage(
+                MsgUtil.sendMessage(p,
                     MsgUtil.getMessage(
                         "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
             }
@@ -255,11 +255,11 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
         if (shop != null) {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
-                player.sendMessage(MsgUtil.getMessage("no-double-chests", player));
+                MsgUtil.sendMessage(player,MsgUtil.getMessage("no-double-chests", player));
 
             } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
                 e.setCancelled(true);
-                player.sendMessage(MsgUtil.getMessage("not-managed-shop", player));
+                MsgUtil.sendMessage(player,MsgUtil.getMessage("not-managed-shop", player));
             }
         }
     }

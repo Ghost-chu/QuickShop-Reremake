@@ -41,55 +41,55 @@ public class SubCommand_Update implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                sender.sendMessage(ChatColor.YELLOW + "Checking for updates...");
+                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Checking for updates...");
 
                 final UpdateInfomation updateInfomation = Updater.checkUpdate();
                 final String updateVersion = updateInfomation.getVersion();
 
                 if (updateVersion == null) {
-                    sender.sendMessage(ChatColor.RED + "Failed check the update, connection issue?");
+                    MsgUtil.sendMessage(sender,ChatColor.RED + "Failed check the update, connection issue?");
                     return;
                 }
 
                 if (updateVersion.equals(plugin.getDescription().getVersion())) {
-                    sender.sendMessage(ChatColor.GREEN + "No updates can update now.");
+                    MsgUtil.sendMessage(sender,ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
 
-                sender.sendMessage(ChatColor.YELLOW + "Downloading update, this may need a while...");
+                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Downloading update, this may need a while...");
 
                 final byte[] pluginBin;
 
                 try {
                     pluginBin = Updater.downloadUpdatedJar();
                 } catch (IOException e) {
-                    sender.sendMessage(ChatColor.RED + "Update failed, get details to look the console.");
+                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
                     e.printStackTrace();
                     return;
                 }
 
                 if (pluginBin.length < 1) {
-                    sender.sendMessage(
+                    MsgUtil.sendMessage(sender,
                         ChatColor.RED + "Download failed, check your connection before contact the author.");
                     return;
                 }
 
-                sender.sendMessage(ChatColor.YELLOW + "Installing update...");
+                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Installing update...");
 
                 try {
                     Updater.replaceTheJar(pluginBin);
                 } catch (IOException ioe) {
-                    sender.sendMessage(ChatColor.RED + "Update failed, get details to look the console.");
+                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
                     ioe.printStackTrace();
                     return;
                 } catch (RuntimeException re) {
-                    sender.sendMessage(ChatColor.RED + "Update failed, " + re.getMessage());
+                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, " + re.getMessage());
                     return;
                 }
 
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
             }
         }.runTaskAsynchronously(plugin);

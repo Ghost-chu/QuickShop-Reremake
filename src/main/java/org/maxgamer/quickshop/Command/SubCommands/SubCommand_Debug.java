@@ -55,7 +55,7 @@ public class SubCommand_Debug implements CommandProcesser {
                 break;
             case "handlerlist":
                 if (cmdArg.length < 2) {
-                    sender.sendMessage("You must given a event");
+                    MsgUtil.sendMessage(sender,"You must given a event");
                     break;
                 }
 
@@ -65,23 +65,23 @@ public class SubCommand_Debug implements CommandProcesser {
                 RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
 
                 List<String> arguments = runtimeMxBean.getInputArguments();
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
-                sender.sendMessage(ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
+                MsgUtil.sendMessage(sender,
                     ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
                 Map<String, String> sys = runtimeMxBean.getSystemProperties();
                 List<String> sysData = new ArrayList<>();
                 sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
                 break;
             default:
-                sender.sendMessage("Error, no correct args given.");
+                MsgUtil.sendMessage(sender,"Error, no correct args given.");
                 break;
         }
     }
@@ -109,7 +109,7 @@ public class SubCommand_Debug implements CommandProcesser {
             plugin.saveConfig();
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             plugin.getServer().getPluginManager().enablePlugin(plugin);
-            sender.sendMessage(MsgUtil.getMessage("command.now-nolonger-debuging", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.now-nolonger-debuging", sender));
             return;
         }
 
@@ -117,7 +117,7 @@ public class SubCommand_Debug implements CommandProcesser {
         plugin.saveConfig();
         plugin.getServer().getPluginManager().disablePlugin(plugin);
         plugin.getServer().getPluginManager().enablePlugin(plugin);
-        sender.sendMessage(MsgUtil.getMessage("command.now-debuging", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.now-debuging", sender));
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
@@ -128,7 +128,7 @@ public class SubCommand_Debug implements CommandProcesser {
             final HandlerList list = (HandlerList) method.invoke(null, obj);
 
             for (RegisteredListener listener1 : list.getRegisteredListeners()) {
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     ChatColor.AQUA
                         + listener1.getPlugin().getName()
                         + ChatColor.YELLOW
@@ -137,7 +137,7 @@ public class SubCommand_Debug implements CommandProcesser {
                         + listener1.getListener().getClass().getCanonicalName());
             }
         } catch (Throwable th) {
-            sender.sendMessage("ERR " + th.getMessage());
+            MsgUtil.sendMessage(sender,"ERR " + th.getMessage());
             th.printStackTrace();
         }
     }

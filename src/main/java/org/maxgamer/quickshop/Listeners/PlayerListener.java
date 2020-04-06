@@ -167,7 +167,7 @@ public class PlayerListener implements Listener {
                     itemAmount = 0;
                 }
 
-                p.sendMessage(MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner());
                 int items = Util.countItems(p.getInventory(), shop.getItem());
@@ -189,7 +189,7 @@ public class PlayerListener implements Listener {
                     items = 0;
                 }
 
-                p.sendMessage(MsgUtil.getMessage("how-many-sell", p, "" + items));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell", p, "" + items));
             }
             // Add the new action
             HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
@@ -214,14 +214,14 @@ public class PlayerListener implements Listener {
 
             if (Util.getSecondHalf(b) != null
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                p.sendMessage(MsgUtil.getMessage("no-double-chests", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-double-chests", p));
                 return;
             }
 
             if (Util.isBlacklisted(item)
                 && !QuickShop.getPermissionManager()
                 .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                p.sendMessage(MsgUtil.getMessage("blacklisted-item", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("blacklisted-item", p));
                 return;
             }
 
@@ -260,7 +260,7 @@ public class PlayerListener implements Listener {
             final Info info = new Info(b.getLocation(), ShopAction.CREATE, e.getItem(), last);
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-            p.sendMessage(
+            MsgUtil.sendMessage(p,
                 MsgUtil.getMessage(
                     "how-much-to-trade-for",
                     p,
@@ -334,10 +334,10 @@ public class PlayerListener implements Listener {
 
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.CREATE) {
-                p.sendMessage(MsgUtil.getMessage("shop-creation-cancelled", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-creation-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.BUY) {
-                p.sendMessage(MsgUtil.getMessage("shop-purchase-cancelled", p));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-purchase-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             }
             plugin.getShopManager().getActions().remove(p.getUniqueId());

@@ -41,7 +41,7 @@ public class SubCommand_Recovery implements CommandProcesser {
         }
         File file = new File(plugin.getDataFolder(), "recovery.txt");
         if (!file.exists()) {
-            sender.sendMessage("recovery.txt not exist, do not execute this command unless you know what are you doing.");
+            MsgUtil.sendMessage(sender,"recovery.txt not exist, do not execute this command unless you know what are you doing.");
             return;
         }
         new BukkitRunnable() {
