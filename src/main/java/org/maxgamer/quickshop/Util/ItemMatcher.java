@@ -322,21 +322,6 @@ class ItemMetaMatcher {
                 return Arrays.deepEquals(meta1.getItemFlags().toArray(), meta2.getItemFlags().toArray());
             }
         }));
-        addIfEnable(itemMatcherConfig,"custommodeldata",((meta1, meta2) -> {
-            try {
-                if (!meta1.hasCustomModelData()) {
-                    return true;
-                } else {
-                    if (!meta2.hasCustomModelData()) {
-                        return false;
-                    }
-                    return meta1.getCustomModelData() == meta2.getCustomModelData();
-                }
-            } catch (NoSuchMethodError err) {
-                // Ignore, for 1.13 compatibility
-                return true;
-            }
-        }));
         addIfEnable(itemMatcherConfig,"book",((meta1, meta2) -> {
             if (!(meta1 instanceof BookMeta)) {
                 return true;
@@ -479,20 +464,6 @@ class ItemMetaMatcher {
                     &&fishBucketMeta1.getBodyColor().equals(fishBucketMeta2.getBodyColor())
                     &&fishBucketMeta1.getPatternColor().equals(fishBucketMeta2.getPatternColor());
         });
-        addIfEnable(itemMatcherConfig,"suspiciousStew",((meta1, meta2) -> {
-            if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
-                return false;
-            }
-            if (!(meta1 instanceof SuspiciousStewMeta)) {
-                return true;
-            }
-            SuspiciousStewMeta stewMeta1= ((SuspiciousStewMeta) meta1);
-            SuspiciousStewMeta stewMeta2= ((SuspiciousStewMeta) meta2);
-            if(!stewMeta1.hasCustomEffects()){
-                return true;
-            }
-            return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
-        }));
         addIfEnable(itemMatcherConfig,"shulkerBox",((meta1, meta2) -> {
             //https://www.spigotmc.org/threads/getting-the-inventory-of-a-shulker-box-itemstack.212369
             if ((meta1 instanceof BlockStateMeta) != (meta2 instanceof BlockStateMeta)) {
@@ -510,7 +481,32 @@ class ItemMetaMatcher {
             }
             return QuickShop.getInstance().getItemMatcher().matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
         }));
-
+        if(!Util.getNMSVersion().equals("v1_13_R1")&&!Util.getNMSVersion().equals("v1_13_R2")){
+            addIfEnable(itemMatcherConfig,"custommodeldata",((meta1, meta2) -> {
+                if (!meta1.hasCustomModelData()) {
+                    return true;
+                } else {
+                    if (!meta2.hasCustomModelData()) {
+                        return false;
+                    }
+                    return meta1.getCustomModelData() == meta2.getCustomModelData();
+                }
+            }));
+            addIfEnable(itemMatcherConfig,"suspiciousStew",((meta1, meta2) -> {
+                if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
+                    return false;
+                }
+                if (!(meta1 instanceof SuspiciousStewMeta)) {
+                    return true;
+                }
+                SuspiciousStewMeta stewMeta1= ((SuspiciousStewMeta) meta1);
+                SuspiciousStewMeta stewMeta2= ((SuspiciousStewMeta) meta2);
+                if(!stewMeta1.hasCustomEffects()){
+                    return true;
+                }
+                return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
+            }));
+        }
     }
 
 
