@@ -41,8 +41,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.database.MySQLCore;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.database.MySQLCore;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.watcher.InventoryEditContainer;
@@ -628,7 +628,7 @@ public class Util {
             blacklist.add(mat);
         }
 
-        for (String s : plugin.getConfig().getStringList("price-restriction")) {
+        for (String s : plugin.getConfig().getStringList("shop.price-restriction")) {
             String[] sp = s.split(";");
             if (sp.length == 3) {
                 try {
