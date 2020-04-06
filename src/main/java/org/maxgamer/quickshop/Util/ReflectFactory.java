@@ -19,20 +19,27 @@
 
 package org.maxgamer.quickshop.Util;
 
-import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
 
+import java.lang.reflect.Field;
+
 public class ReflectFactory {
+    private static String cachedVersion = null;
     public static String getServerVersion() {
+        if(cachedVersion != null){
+            return cachedVersion;
+        }
         try {
             Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
             consoleField.setAccessible(true); // protected
             Object console = consoleField.get(Bukkit.getServer()); // dedicated server
-            return String.valueOf(
+            cachedVersion = String.valueOf(
                 console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
+            return cachedVersion;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Unknown";
+            cachedVersion = "Unknown";
+            return cachedVersion;
         }
     }
 

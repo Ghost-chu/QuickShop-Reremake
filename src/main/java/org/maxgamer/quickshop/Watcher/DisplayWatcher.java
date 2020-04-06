@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.Shop.Shop;
 
 @Data
 public class DisplayWatcher {
-    // private ArrayList<Shop> pendingCheckDisplay = new ArrayList<>();
     private QuickShop plugin;
 
     public DisplayWatcher(QuickShop plugin) {
@@ -48,18 +47,6 @@ public class DisplayWatcher {
                     if (plugin.getConfig().getInt("shop.display-items-check-ticks") < 3000) {
                         plugin.getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
                     }
-                    //                    Iterator<Shop> it = plugin.getShopManager().getShopIterator();
-                    //                    while (it.hasNext()) {
-                    //                        Shop shop = it.next();
-                    //                        if (shop == null) {
-                    //                            continue;
-                    //                        }
-                    //                        if (!shop.isLoaded()) {
-                    //                            continue;
-                    //                        }
-                    //                        if (!Util.isLoaded(shop.getLocation())) {
-                    //                            continue;
-                    //                        }
                     for (Shop shop : plugin.getShopManager().getLoadedShops()) {
                         shop.checkDisplay();
                     }

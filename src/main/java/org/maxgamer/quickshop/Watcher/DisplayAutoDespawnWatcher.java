@@ -37,7 +37,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
         plugin
             .getShopManager()
             .getLoadedShops()
-            .parallelStream()
+            .stream()
             .filter(shop -> shop.getDisplay() != null)
             .forEach(
                 shop -> {
