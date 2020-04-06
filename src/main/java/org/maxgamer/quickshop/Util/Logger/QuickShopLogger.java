@@ -41,8 +41,6 @@ import org.jetbrains.annotations.Nullable;
  *
  * This is generally a new built logger system that rely on the Java logger to provide better
  * customization.
- *
- * It is possible to switch to Log4j for better performance in the future.
  */
 public class QuickShopLogger extends PluginLogger {
     protected boolean debugSetup = false;
