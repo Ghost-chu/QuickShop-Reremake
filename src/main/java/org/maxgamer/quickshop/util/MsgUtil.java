@@ -95,8 +95,7 @@ public class MsgUtil {
                 .getLogger()
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
-        long weekAgo = System.currentTimeMillis() - 604800000;
-        plugin.getDatabaseHelper().cleanMessage(weekAgo);
+        plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
     }
 
     /**
@@ -317,7 +316,7 @@ public class MsgUtil {
     }
 
     public static void loadEnchi18n() {
-        plugin.getLogger().info("Starting loading Enchantment i18n...");
+        plugin.getLogger().info("Starting loading enchantments translation...");
         File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
         if (!enchi18nFile.exists()) {
             plugin.getLogger().info("Creating enchi18n.yml");
@@ -351,13 +350,14 @@ public class MsgUtil {
                             Level.WARNING,
                             "Could not load/save transaction enchname from enchi18n.yml. Skipping.");
         }
-        plugin.getLogger().info("Complete to load enchname i18n.");
+        plugin.getLogger().info("Complete to load enchantments translation.");
     }
 
     /**
      * Load Itemi18n fron file
      */
     public static void loadItemi18n() {
+        plugin.getLogger().info("Starting loading items translation...");
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
         if (!itemi18nFile.exists()) {
             plugin.getLogger().info("Creating itemi18n.yml");
@@ -393,11 +393,11 @@ public class MsgUtil {
                             Level.WARNING,
                             "Could not load/save transaction itemname from itemi18n.yml. Skipping.");
         }
-        plugin.getLogger().info("Complete to load Itemname i18n.");
+        plugin.getLogger().info("Complete to load items translation.");
     }
 
     public static void loadPotioni18n() {
-        plugin.getLogger().info("Starting loading Potion i18n...");
+        plugin.getLogger().info("Starting loading potions translation...");
         File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
         if (!potioni18nFile.exists()) {
             plugin.getLogger().info("Creating potioni18n.yml");
@@ -430,7 +430,7 @@ public class MsgUtil {
                             Level.WARNING,
                             "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
         }
-        plugin.getLogger().info("Complete to load potionname i18n.");
+        plugin.getLogger().info("Complete to load potions effect translation.");
     }
 
     /**
@@ -684,7 +684,6 @@ public class MsgUtil {
                 if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                     try {
                         filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-                        Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
                     } catch (Exception ignored) {
                         if (((OfflinePlayer) player).getPlayer() != null) {
                             try {
