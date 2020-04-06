@@ -25,7 +25,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
     public QuickShopItemMatcherImpl() {
         plugin = QuickShop.getInstance();
-        itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"));
+        itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"),this);
     }
 
     /**
@@ -158,7 +158,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
             }
         }
 
-        public ItemMetaMatcher(ConfigurationSection itemMatcherConfig) {
+        public ItemMetaMatcher(@NotNull ConfigurationSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
 
             addIfEnable(itemMatcherConfig, "damage", (meta1, meta2) -> {
                 //            if (!(meta1 instanceof Damageable)) {
@@ -513,7 +513,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 if (!(((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox)) {
                     return true;
                 }
-                return QuickShop.getInstance().getItemMatcher().matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
+                return itemMatcher.matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
             }));
 
         }
