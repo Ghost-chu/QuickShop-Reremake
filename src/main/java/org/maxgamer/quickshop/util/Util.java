@@ -1271,16 +1271,18 @@ public class Util {
      * @return TPS (e.g 19.92)
      */
     public static Double getTPS() {
-        try {
-            serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
-            tpsField = serverInstance.getClass().getField("recentTps");
-        } catch (NoSuchFieldException
-            | SecurityException
-            | IllegalAccessException
-            | IllegalArgumentException
-            | InvocationTargetException
-            | NoSuchMethodException e) {
-            e.printStackTrace();
+        if(serverInstance == null || tpsField == null) {
+            try {
+                serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
+                tpsField = serverInstance.getClass().getField("recentTps");
+            } catch (NoSuchFieldException
+                    | SecurityException
+                    | IllegalAccessException
+                    | IllegalArgumentException
+                    | InvocationTargetException
+                    | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
         try {
             double[] tps = ((double[]) tpsField.get(serverInstance));
