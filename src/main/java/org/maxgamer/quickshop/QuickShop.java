@@ -1564,6 +1564,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 94);
             selectedVersion=94;
         }
+        if(selectedVersion == 94){
+            getConfig().set("enable-log4j",null);
+            getConfig().set("config-version", 95);
+            selectedVersion=95;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");

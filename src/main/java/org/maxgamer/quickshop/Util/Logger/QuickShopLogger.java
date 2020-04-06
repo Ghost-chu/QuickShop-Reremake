@@ -45,32 +45,20 @@ import org.jetbrains.annotations.Nullable;
  * It is possible to switch to Log4j for better performance in the future.
  */
 public class QuickShopLogger extends PluginLogger {
-
-    private final boolean useLog4j;
-
     protected boolean debugSetup = false;
-
-    @Nullable
-    private org.apache.logging.log4j.Logger log4jLogger;
-
     /**
      * Mapping from the text pattern of Bukkit color to the corresponding text format of Ansi
      */
     private Map<Pattern, String> bukkitToAnsi;
-
-    private Map<Level, org.apache.logging.log4j.Level> levelMapping;
-
     // below are non-static for secret optimization
-
     /**
      * Regex that indicates the case insensitive
      */
     private String IGNORE_CASE;
-
     // private FileHandler debugLogFileHandler = null;
-    private boolean hasAnsi = true;
+    private boolean hasAnsi;
 
-    private boolean hasJline = true;
+    private boolean hasJline;
 
     @SneakyThrows
     public QuickShopLogger(Plugin plugin) {
@@ -79,27 +67,14 @@ public class QuickShopLogger extends PluginLogger {
 
         // Logger re-naming
         String prefix = plugin.getDescription().getPrefix();
-        String pluginName = (useLog4j = plugin.getConfig().getBoolean("enable-log4j")) ?
-
-            (ChatColor.YELLOW + (prefix == null ? plugin.getDescription().getName() : prefix)
-                + ChatColor.RESET)
-            :
-
-            (prefix != null ? "[" + ChatColor.YELLOW + prefix + ChatColor.RESET + "] "
+        String pluginName = (prefix != null ? "[" + ChatColor.YELLOW + prefix + ChatColor.RESET + "] "
                 : "[" + ChatColor.YELLOW + plugin.getDescription().getName() + ChatColor.RESET + "] ");
         pluginName = applyStyles(pluginName);
 
-        // Log4j setup
-        if (useLog4j) {
-            registerLevels();
-            log4jLogger = LogManager.getLogger(pluginName);
-            info("Log4J has been enabled as logging system.");
-        } else {
             // Remove logger name from package name
             Field nameField = Logger.class.getDeclaredField("name");
             nameField.setAccessible(true); // private
             nameField.set(this, "");
-        }
 
         // Apply plugin name for BukkitLogger
         Field pluginNameField = PluginLogger.class.getDeclaredField("pluginName");
@@ -130,16 +105,9 @@ public class QuickShopLogger extends PluginLogger {
     public void log(LogRecord logRecord) {
         String message = logRecord.getMessage();
 
-        if (message == null) {
-            return;
-        } else {
+        if (message != null) {
 
-            if (useLog4j) {
-                log4jLogger.log(
-                    levelMapping.getOrDefault(logRecord.getLevel(), org.apache.logging.log4j.Level.INFO),
-                    applyStyles(message));
 
-            } else {
                 if (logRecord.getLevel() == Level.WARNING) {
                     message = ChatColor.YELLOW + message;
                 } else if (logRecord.getLevel() == Level.SEVERE) {
@@ -148,7 +116,6 @@ public class QuickShopLogger extends PluginLogger {
 
                 logRecord.setMessage(applyStyles(message));
                 super.log(logRecord);
-            }
 
         }
     }
@@ -171,11 +138,7 @@ public class QuickShopLogger extends PluginLogger {
     }
 
     public void info(Object... params) {
-        if (useLog4j) {
-            log4jLogger.info(collectParams(params));
-        } else {
             super.info(collectParams(params));
-        }
     }
 
     /**
@@ -189,67 +152,38 @@ public class QuickShopLogger extends PluginLogger {
     }
 
     public void warning(Object... params) {
-        if (useLog4j) {
-            log4jLogger.warn(collectParams(params));
-        } else {
+
             super.warning(collectParams(params));
-        }
     }
 
     public void severe(Object... params) {
-        if (useLog4j) {
-            log4jLogger.error(collectParams(params));
-        } else {
+
             super.severe(collectParams(params));
-        }
+
     }
 
     public void config(Object... params) {
-        if (useLog4j) {
-            log4jLogger.debug(collectParams(params));
-        } else {
+
             super.config(collectParams(params));
-        }
+
     }
 
     public void fine(Object... params) {
-        if (useLog4j) {
-            log4jLogger.debug(collectParams(params));
-        } else {
+
             super.fine(collectParams(params));
-        }
+
     }
 
     public void finer(Object... params) {
-        if (useLog4j) {
-            log4jLogger.trace(collectParams(params));
-        } else {
+
             super.finer(collectParams(params));
-        }
+
     }
 
     public void finest(Object... params) {
-        if (useLog4j) {
-            log4jLogger.trace(collectParams(params));
-        } else {
+
             super.finest(collectParams(params));
-        }
-    }
 
-    // Style stuffs
-
-    private void registerLevels() {
-        levelMapping = Maps.newHashMap();
-
-        levelMapping.put(Level.ALL, org.apache.logging.log4j.Level.ALL);
-        levelMapping.put(Level.CONFIG, org.apache.logging.log4j.Level.DEBUG);
-        levelMapping.put(Level.FINE, org.apache.logging.log4j.Level.DEBUG);
-        levelMapping.put(Level.FINER, org.apache.logging.log4j.Level.TRACE);
-        levelMapping.put(Level.FINEST, org.apache.logging.log4j.Level.TRACE);
-        levelMapping.put(Level.INFO, org.apache.logging.log4j.Level.INFO);
-        levelMapping.put(Level.WARNING, org.apache.logging.log4j.Level.WARN);
-        levelMapping.put(Level.SEVERE, org.apache.logging.log4j.Level.ERROR);
-        levelMapping.put(Level.OFF, org.apache.logging.log4j.Level.OFF);
     }
 
     /*
