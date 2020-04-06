@@ -55,7 +55,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
                         Integer.parseInt(cmdArg[3])));
 
         if (!(shop instanceof ContainerShop)) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -69,7 +69,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
 
         inventory.clear();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        sender.sendMessage(MsgUtil.getMessage("empty-success", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("empty-success", sender));
     }
 
     @NotNull

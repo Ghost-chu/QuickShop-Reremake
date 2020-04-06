@@ -43,14 +43,14 @@ public class SubCommand_Price implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Can't run this command by Console");
+            MsgUtil.sendMessage(sender,"Can't run this command by Console");
             return;
         }
 
         final Player p = (Player) sender;
 
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("no-price-given", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-price-given", sender));
             return;
         }
 
@@ -64,7 +64,7 @@ public class SubCommand_Price implements CommandProcesser {
                 } catch (NumberFormatException ex2) {
                     // input is number, but not Integer
                     Util.debugLog(ex2.getMessage());
-                    p.sendMessage(MsgUtil.getMessage("not-a-integer", p, cmdArg[0]));
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-integer", p, cmdArg[0]));
                     return;
                 }
             } else {
@@ -74,7 +74,7 @@ public class SubCommand_Price implements CommandProcesser {
         } catch (NumberFormatException ex) {
             // No number input
             Util.debugLog(ex.getMessage());
-            p.sendMessage(MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
+            MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-number", p, cmdArg[0]));
             return;
         }
 
@@ -82,14 +82,14 @@ public class SubCommand_Price implements CommandProcesser {
 
         if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
             if (price != 0 && price < minPrice) {
-                p.sendMessage(
+                MsgUtil.sendMessage(p,
                     MsgUtil.getMessage(
                         "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                 return;
             }
         } else {
             if (price < minPrice) {
-                p.sendMessage(
+                MsgUtil.sendMessage(p,
                     MsgUtil.getMessage(
                         "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
                 return;
@@ -99,7 +99,7 @@ public class SubCommand_Price implements CommandProcesser {
         final double price_limit = plugin.getConfig().getDouble("shop.maximum-price");
 
         if (price_limit != -1 && price > price_limit) {
-            p.sendMessage(
+            MsgUtil.sendMessage(p,
                 MsgUtil.getMessage(
                     "price-too-high",
                     p,
@@ -114,14 +114,14 @@ public class SubCommand_Price implements CommandProcesser {
         }
 
     /*if (fee > 0 && plugin.getEconomy().getBalance(p.getUniqueId()) < fee) {
-        sender.sendMessage(
+        MsgUtil.sendMessage(sender,
             MsgUtil.getMessage("you-cant-afford-to-change-price", plugin.getEconomy().format(fee)));
         return;
     }*/
         final BlockIterator bIt = new BlockIterator(p, 10);
         // Loop through every block they're looking at upto 10 blocks away
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -138,19 +138,19 @@ public class SubCommand_Price implements CommandProcesser {
 
             if (shop.getPrice() == price) {
                 // Stop here if there isn't a price change
-                sender.sendMessage(MsgUtil.getMessage("no-price-change", sender));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-price-change", sender));
                 return;
             }
 
             if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee)) {
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     MsgUtil.getMessage(
                         "you-cant-afford-to-change-price", sender, plugin.getEconomy().format(fee)));
                 return;
             }
 
             if (fee > 0) {
-                sender.sendMessage(
+                MsgUtil.sendMessage(sender,
                     MsgUtil.getMessage(
                         "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                 try {
@@ -176,7 +176,7 @@ public class SubCommand_Price implements CommandProcesser {
             shop.setPrice(price);
             // shop.setSignText();
             shop.update();
-            sender.sendMessage(
+            MsgUtil.sendMessage(sender,
                 MsgUtil.getMessage("price-is-now", sender, plugin.getEconomy().format(shop.getPrice())));
             // Chest shops can be double shops.
             if (!(shop instanceof ContainerShop)) {
@@ -198,18 +198,18 @@ public class SubCommand_Price implements CommandProcesser {
 
             if (cs.isSelling()) {
                 if (cs.getPrice() < nextTo.getPrice()) {
-                    sender.sendMessage(MsgUtil.getMessage("buying-more-than-selling", sender));
+                    MsgUtil.sendMessage(sender,MsgUtil.getMessage("buying-more-than-selling", sender));
                 }
             }
             // Buying
             else if (cs.getPrice() > nextTo.getPrice()) {
-                sender.sendMessage(MsgUtil.getMessage("buying-more-than-selling", sender));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("buying-more-than-selling", sender));
             }
 
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

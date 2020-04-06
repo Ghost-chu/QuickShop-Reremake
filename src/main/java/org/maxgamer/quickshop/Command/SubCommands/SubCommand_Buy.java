@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -34,6 +32,9 @@ import org.maxgamer.quickshop.Shop.ShopType;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubCommand_Buy implements CommandProcesser {
 
     private final QuickShop plugin = QuickShop.instance;
@@ -42,14 +43,14 @@ public class SubCommand_Buy implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Can't run command by Console", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -62,7 +63,7 @@ public class SubCommand_Buy implements CommandProcesser {
                     shop.setShopType(ShopType.BUYING);
                     // shop.setSignText();
                     shop.update();
-                    sender.sendMessage(MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
+                    MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
                     return;
                 } else {
                     MsgUtil.getMessage("not-managed-shop", sender);
@@ -71,7 +72,7 @@ public class SubCommand_Buy implements CommandProcesser {
             }
         }
 
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

@@ -119,9 +119,9 @@ public class MsgUtil {
                             }
                             sendItemholochat(player, msgData[0], data, msgData[2]);
                         } catch (InvalidConfigurationException e) {
-                            p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
+                            MsgUtil.sendMessage(p.getPlayer(),msgData[0] + msgData[1] + msgData[2]);
                         } catch (ArrayIndexOutOfBoundsException e2) {
-                            p.getPlayer().sendMessage(msg);
+                            MsgUtil.sendMessage(p.getPlayer(),msg);
                         }
                     }
                 }
@@ -1356,11 +1356,22 @@ public class MsgUtil {
         } else {
             messagei18n.set(path, alt);
         }
-//    Object objFromBuiltIn = builtInDefaultLanguage.get(path); // Apply english default
+//    Object objFromBuiltIn = builtInDefaultLanguage.get(path); / Apply english default
 //    if (objFromBuiltIn == null) {
 //      objFromBuiltIn =
 //          object; // Apply hard-code default, maybe a language file i forgotten update??
 //    }
+    }
+    public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages){
+        if(messages == null){
+            return;
+        }
+        for (String msg : messages){
+            if(msg == null || msg.isEmpty()){
+                continue;
+            }
+            MsgUtil.sendMessage(sender,msg);
+        }
     }
 
 }

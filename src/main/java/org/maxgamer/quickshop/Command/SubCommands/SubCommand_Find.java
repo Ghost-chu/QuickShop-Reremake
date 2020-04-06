@@ -43,12 +43,12 @@ public class SubCommand_Find implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Only player can run this command", sender));
             return;
         }
 
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-type-given", sender));
             return;
         }
 
@@ -71,7 +71,7 @@ public class SubCommand_Find implements CommandProcesser {
         try {
             c = future.get();
         } catch (Exception asyncErr) {
-            sender.sendMessage("Cannot execute the command, see console for details.");
+            MsgUtil.sendMessage(sender,"Cannot execute the command, see console for details.");
             plugin.getSentryErrorReporter().sendError(asyncErr, "Unknown errors");
             plugin.getSentryErrorReporter().ignoreThrow();
             asyncErr.printStackTrace();
@@ -102,7 +102,7 @@ public class SubCommand_Find implements CommandProcesser {
         }
 
         if (closest == null) {
-            sender.sendMessage(MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
             return;
         }
 
@@ -114,7 +114,7 @@ public class SubCommand_Find implements CommandProcesser {
                 p,
                 Util.lookAt(loc, lookat).add(0, -1.62, 0),
                 PlayerTeleportEvent.TeleportCause.UNKNOWN);
-        p.sendMessage(
+        MsgUtil.sendMessage(p,
             MsgUtil.getMessage(
                 "nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
     }

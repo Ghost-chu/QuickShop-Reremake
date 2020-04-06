@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +28,9 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 @Getter
@@ -44,7 +44,7 @@ public class ChatSheetPrinter {
     private CommandSender p;
 
     public void printCenterLine(@NotNull String text) {
-        p.sendMessage(
+        MsgUtil.sendMessage(p,
             chatColor
                 + MsgUtil.getMessage("tableformat.left_half_line", p)
                 + text
@@ -62,20 +62,20 @@ public class ChatSheetPrinter {
     }
 
     public void printFooter() {
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendMessage(p,chatColor + MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printHeader() {
-        p.sendMessage("");
-        p.sendMessage("");
-        p.sendMessage(chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendMessage(p,"");
+        MsgUtil.sendMessage(p,"");
+        MsgUtil.sendMessage(p,chatColor + MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printLine(@NotNull String text) {
         String[] texts = text.split("\n");
         Arrays.asList(texts)
             .forEach(
-                (str) -> p.sendMessage(
+                (str) -> MsgUtil.sendMessage(p,
                     chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + " " + str));
     }
 

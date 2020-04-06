@@ -62,7 +62,7 @@ public class SubCommand_Export implements CommandProcesser {
                 BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
                 outputStream.write(finalReport.toString());
                 outputStream.close();
-                sender.sendMessage("Done.");
+                MsgUtil.sendMessage(sender,"Done.");
             }
         }.runTaskAsynchronously(plugin);
 

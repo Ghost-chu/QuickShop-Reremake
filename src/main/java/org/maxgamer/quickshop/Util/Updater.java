@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.Util;
 
-import java.io.*;
-import java.net.URL;
-import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -31,6 +28,10 @@ import org.maxgamer.quickshop.NonQuickShopStuffs.com.sk89q.worldedit.util.net.Ht
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.Github.GithubAPI;
 import org.maxgamer.quickshop.Util.Github.ReleaseJsonContainer;
+
+import java.io.*;
+import java.net.URL;
+import java.util.Objects;
 
 public class Updater {
     /**
@@ -59,8 +60,7 @@ public class Updater {
             }
             return new UpdateInfomation(false, spigotPluginVersion);
         } catch (IOException e) {
-            Bukkit.getConsoleSender()
-                .sendMessage(
+            MsgUtil.sendMessage(Bukkit.getConsoleSender(),
                     ChatColor.RED
                         + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
             return new UpdateInfomation(false, null);

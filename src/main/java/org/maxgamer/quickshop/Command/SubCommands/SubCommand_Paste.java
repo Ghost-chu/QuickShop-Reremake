@@ -44,14 +44,14 @@ public class SubCommand_Paste implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                sender.sendMessage("Please wait, we're uploading the data to the pastebin...");
+                MsgUtil.sendMessage(sender,"Please wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();
                 String pasteResult = paste.paste(pasteText);
                 if (pasteResult != null) {
-                    sender.sendMessage(pasteResult);
+                    MsgUtil.sendMessage(sender,pasteResult);
                 } else {
-                    sender.sendMessage("The paste failed, saving the paste at local location...");
+                    MsgUtil.sendMessage(sender,"The paste failed, saving the paste at local location...");
                     File file = new File(plugin.getDataFolder(), "paste");
                     file.mkdirs();
                     file =
@@ -63,11 +63,11 @@ public class SubCommand_Paste implements CommandProcesser {
                         fwriter.write(pasteText);
                         fwriter.flush();
                         fwriter.close();
-                        sender.sendMessage("Paste was saved to your server at: " + file.getAbsolutePath());
+                        MsgUtil.sendMessage(sender,"Paste was saved to your server at: " + file.getAbsolutePath());
                     } catch (IOException e) {
                         plugin.getSentryErrorReporter().ignoreThrow();
                         e.printStackTrace();
-                        sender.sendMessage("Saving failed, output to console...");
+                        MsgUtil.sendMessage(sender,"Saving failed, output to console...");
                         plugin.getLogger().info(pasteText);
                     }
                 }

@@ -55,7 +55,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
                         Integer.parseInt(cmdArg[3])));
 
         if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -63,7 +63,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
         // shop.setSignText();
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        sender.sendMessage(
+        MsgUtil.sendMessage(sender,
             MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
     }
 

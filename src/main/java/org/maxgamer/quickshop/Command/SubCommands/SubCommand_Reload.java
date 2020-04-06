@@ -34,7 +34,7 @@ public class SubCommand_Reload implements CommandProcesser {
     @Override
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        sender.sendMessage(MsgUtil.getMessage("command.reloading", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.reloading", sender));
         plugin.getServer().getPluginManager().disablePlugin(plugin);
         plugin.getServer().getPluginManager().enablePlugin(plugin);
     }
