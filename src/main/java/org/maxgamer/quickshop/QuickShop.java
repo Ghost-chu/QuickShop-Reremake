@@ -1601,8 +1601,7 @@ public class QuickShop extends JavaPlugin {
                     logger.set(this, new QuickShopLogger(this));
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
+        } catch (Throwable ignored) {
         }
     }
 
