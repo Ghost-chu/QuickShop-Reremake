@@ -684,7 +684,6 @@ public class MsgUtil {
                 if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                     try {
                         filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-                        Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
                     } catch (Exception ignored) {
                         if (((OfflinePlayer) player).getPlayer() != null) {
                             try {
