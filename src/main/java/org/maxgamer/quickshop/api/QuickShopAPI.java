@@ -1,44 +1,49 @@
 package org.maxgamer.quickshop.api;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.IntegrationHelper;
+import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 
 public class QuickShopAPI {
-    protected static QuickShopAPI api;
+    private static QuickShop plugin;
 
-    /**
-     * Get api instance, you will get an object extends current class.
-     * And you will need cast it to the version that you want to use.
-     *
-     * @param qapiVersion The version of api you want get.
-     * @return
-     */
-    public static QuickShopAPI getApiInstance(QAPIVersion qapiVersion) {
-        if (qapiVersion == null) {
-            throw new IllegalArgumentException("QAPIVersion arg cannot be null");
-        }
-        if (api == null) {
-            throw new IllegalStateException("QuickShop API not loaded yet, please try again later.");
-        }
-        switch (qapiVersion) {
-            case V1:
-                return api;
-            default:
-                throw new IllegalArgumentException("Cannot find the API (" + qapiVersion.name() + "), it not exist or removed.");
-        }
+    public static void setupApi(@NotNull QuickShop qs){
+        plugin = qs;
     }
 
     /**
-     * Set the api, you shouldn't use this method.
-     *
-     * @param clazz The clazz
+     * Gets apis about shop
+     * @return The Shop API
      */
-    @Deprecated
-    public static void setupApiInstance(@NotNull QuickShopAPI clazz) {
-        api = clazz;
+    public static @NotNull ShopAPI getShopAPI(){
+        return new ShopAPI(plugin);
     }
 
-    public QAPIVersion getVersion() {
-        return QAPIVersion.V1; //extend me
+    /**
+     * Gets apis about display item
+     * @return The DisplayItem API
+     */
+    public static @NotNull DisplayItemAPI getDisplayItemAPI(){
+        return new DisplayItemAPI(plugin);
     }
 
+    /**
+     * Gets anti-cheat compatibility manager to allow you access and process.
+     * If you calling this before plugin loaded up, you might get nothing.
+     * @return Compatibility Manager
+     */
+    public static @Nullable CompatibilityManager getCompatibilityManager(){
+        return plugin.getCompatibilityTool();
+    }
+
+    /**
+     * Gets protection plugins integration helper to allow hook your plugin to our checks system.
+     * If you calling this before plugin loaded up, you might get nothing.
+     * @return IntegrationHelper
+     */
+    public static @Nullable IntegrationHelper getIntegrationManager(){
+        return plugin.getIntegrationHelper();
+    }
 }
