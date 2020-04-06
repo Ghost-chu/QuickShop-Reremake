@@ -19,19 +19,21 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Command.CommandProcesser;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.Util.MsgUtil;
+import org.maxgamer.quickshop.Util.Paste.Paste;
+import org.maxgamer.quickshop.Util.Util;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.Command.CommandProcesser;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.Util.Paste.Paste;
-import org.maxgamer.quickshop.Util.Util;
 
 public class SubCommand_Paste implements CommandProcesser {
 
