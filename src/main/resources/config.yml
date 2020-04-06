@@ -89,10 +89,7 @@ send-display-item-protection-alert: false
 #Allow plugin send alert when something trying steal shop
 send-shop-protection-alert: false
 
-#Force plugin running under a platform
-#0=AUTO
-#1=SPIGOT
-#2=PAPER
+#Still WIP
 server-platform: 0
 
 #BETA=Use caching for shop finding to optimize performance if possible

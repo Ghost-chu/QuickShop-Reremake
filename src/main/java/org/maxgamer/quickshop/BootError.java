@@ -54,7 +54,6 @@ public class BootError {
         for (String issue : errors) {
             sender.sendMessage(ChatColor.YELLOW + " " + issue);
         }
-        // sender.sendMessage(ChatColor.YELLOW+" "+errors);
         sender.sendMessage(ChatColor.RED + "#####################################################");
     }
 

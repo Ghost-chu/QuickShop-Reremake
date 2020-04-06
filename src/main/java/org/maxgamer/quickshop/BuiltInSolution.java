@@ -26,7 +26,6 @@ import org.bukkit.ChatColor;
  * A class to check known issue cause plugin failed enable.
  */
 class BuiltInSolution {
-    private static QuickShop plugin = QuickShop.instance;
 
     /**
      * Call when failed load database, and use this to check the reason.
@@ -54,11 +53,6 @@ class BuiltInSolution {
                 "Vault or Reserve is not installed or loaded!",
                 "Make sure you installed Vault or Reserve.");
         }
-        // if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-        //     // Vault not installed
-        //     return new BootError("Vault is not installed or loaded!", "Make sure you installed
-        // Vault.");
-        // }
         // Vault is installed
         if (Bukkit.getPluginManager().getPlugin("CMI") != null) {
             // Found may in-compatiable plugin

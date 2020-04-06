@@ -19,26 +19,20 @@
 
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Check the shops after server booted up, make sure shop can correct self-deleted when container
  * lost.
  */
-// unused, pending to remove
 public class ShopContainerWatcher extends BukkitRunnable {
-    // private QuickShop plugin;
     private final Queue<Shop> checkQueue = new LinkedList<>();
-
-    public ShopContainerWatcher(@NotNull QuickShop plugin) {
-        // this.plugin = plugin;
-    }
 
     public void scheduleCheck(@NotNull Shop shop) {
         checkQueue.add(shop);
