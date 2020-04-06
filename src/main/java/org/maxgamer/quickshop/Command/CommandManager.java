@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.Command;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.Data;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -35,6 +32,10 @@ import org.maxgamer.quickshop.Command.SubCommands.*;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
@@ -324,7 +325,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                                 + Util.array2String(cmdArg)
                                 + ", but no permission "
                                 + requirePermission);
-                        sender.sendMessage(MsgUtil.getMessage("no-permission", sender));
+                        MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-permission", sender));
                         return true;
                     }
                 }

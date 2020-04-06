@@ -24,6 +24,7 @@ import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.Util.MsgUtil;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
@@ -49,12 +50,12 @@ public class BootError {
      * @param sender The sender you want output the errors.
      */
     public void printErrors(CommandSender sender) {
-        sender.sendMessage(ChatColor.RED + "#####################################################");
-        sender.sendMessage(ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
+        MsgUtil.sendMessage(sender,ChatColor.RED + "#####################################################");
+        MsgUtil.sendMessage(sender,ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
         for (String issue : errors) {
-            sender.sendMessage(ChatColor.YELLOW + " " + issue);
+            MsgUtil.sendMessage(sender,ChatColor.YELLOW + " " + issue);
         }
-        sender.sendMessage(ChatColor.RED + "#####################################################");
+        MsgUtil.sendMessage(sender,ChatColor.RED + "#####################################################");
     }
 
     public String[] getErrors() {

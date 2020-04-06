@@ -38,7 +38,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Only players may use that command.");
+            MsgUtil.sendMessage(sender,ChatColor.RED + "Only players may use that command.");
             return;
         }
 

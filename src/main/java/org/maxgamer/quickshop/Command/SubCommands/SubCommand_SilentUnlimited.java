@@ -52,7 +52,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
                         Integer.parseInt(cmdArg[3])));
 
         if (shop == null) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -62,11 +62,11 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         MsgUtil.sendControlPanelInfo(sender, shop);
 
         if (shop.isUnlimited()) {
-            sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.toggle-unlimited.unlimited", sender));
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
     }
 
     @NotNull

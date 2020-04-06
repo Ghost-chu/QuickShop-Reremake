@@ -41,7 +41,7 @@ public class SubCommand_Reset implements CommandProcesser {
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-type-given", sender));
             return;
         }
 
@@ -57,7 +57,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                sender.sendMessage(MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
@@ -66,13 +66,13 @@ public class SubCommand_Reset implements CommandProcesser {
                 plugin.reloadConfig();
                 Bukkit.getPluginManager().disablePlugin(plugin);
                 Bukkit.getPluginManager().enablePlugin(plugin);
-                sender.sendMessage(MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
                 break;
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadCfgMessages();
-                sender.sendMessage(MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
                 break;
         }
     }

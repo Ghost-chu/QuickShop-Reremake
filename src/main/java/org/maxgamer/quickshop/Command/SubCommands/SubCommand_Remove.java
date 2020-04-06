@@ -40,7 +40,7 @@ public class SubCommand_Remove implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Only players may use that command.");
+            MsgUtil.sendMessage(sender,ChatColor.RED + "Only players may use that command.");
             return;
         }
 
@@ -48,7 +48,7 @@ public class SubCommand_Remove implements CommandProcesser {
         final BlockIterator bIt = new BlockIterator(p, 10);
 
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -65,13 +65,13 @@ public class SubCommand_Remove implements CommandProcesser {
                 shop.onUnload();
                 shop.delete();
             } else {
-                sender.sendMessage(ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
+                MsgUtil.sendMessage(sender,ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
             }
 
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

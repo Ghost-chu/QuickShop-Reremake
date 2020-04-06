@@ -40,12 +40,12 @@ public class SubCommand_Refill implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Can't run by Console");
+            MsgUtil.sendMessage(sender,"Can't run by Console");
             return;
         }
 
         if (cmdArg.length < 1) {
-            sender.sendMessage(MsgUtil.getMessage("command.no-amount-given", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-amount-given", sender));
             return;
         }
 
@@ -54,14 +54,14 @@ public class SubCommand_Refill implements CommandProcesser {
         try {
             add = Integer.parseInt(cmdArg[0]);
         } catch (NumberFormatException e) {
-            sender.sendMessage(MsgUtil.getMessage("thats-not-a-number", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("thats-not-a-number", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -74,11 +74,11 @@ public class SubCommand_Refill implements CommandProcesser {
             }
 
             shop.add(shop.getItem(), add);
-            sender.sendMessage(MsgUtil.getMessage("refill-success", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("refill-success", sender));
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

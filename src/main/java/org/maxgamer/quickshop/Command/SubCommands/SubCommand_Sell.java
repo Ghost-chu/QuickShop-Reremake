@@ -42,14 +42,14 @@ public class SubCommand_Sell implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MsgUtil.getMessage("Can't run command by Console", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Can't run command by Console", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -64,11 +64,11 @@ public class SubCommand_Sell implements CommandProcesser {
             shop.setShopType(ShopType.SELLING);
             // shop.setSignText();
             shop.update();
-            sender.sendMessage(
+            MsgUtil.sendMessage(sender,
                 MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
             return;
         }
-        sender.sendMessage(MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull

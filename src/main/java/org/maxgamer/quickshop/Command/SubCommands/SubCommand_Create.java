@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -37,6 +35,9 @@ import org.maxgamer.quickshop.Shop.ShopAction;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubCommand_Create implements CommandProcesser {
 
     private final QuickShop plugin = QuickShop.instance;
@@ -45,7 +46,7 @@ public class SubCommand_Create implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can't be run by console");
+            MsgUtil.sendMessage(sender,"This command can't be run by console");
             return;
         }
 
@@ -53,7 +54,7 @@ public class SubCommand_Create implements CommandProcesser {
         final ItemStack item = p.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            sender.sendMessage(MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-anythings-in-your-hand", sender));
             return;
         }
 
@@ -88,14 +89,14 @@ public class SubCommand_Create implements CommandProcesser {
 
             if (Util.getSecondHalf(b) != null
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                p.sendMessage(MsgUtil.getMessage("no-double-chests", sender));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-double-chests", sender));
                 return;
             }
 
             if (Util.isBlacklisted(item)
                 && !QuickShop.getPermissionManager()
                 .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                p.sendMessage(MsgUtil.getMessage("blacklisted-item", sender));
+                MsgUtil.sendMessage(p,MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
 
@@ -117,7 +118,7 @@ public class SubCommand_Create implements CommandProcesser {
                 return;
             }
 
-            p.sendMessage(
+            MsgUtil.sendMessage(p,
                 MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
 
             return;

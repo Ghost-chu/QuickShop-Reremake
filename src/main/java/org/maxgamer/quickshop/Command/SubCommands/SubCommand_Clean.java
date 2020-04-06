@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.Command.SubCommands;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +28,10 @@ import org.maxgamer.quickshop.Shop.ContainerShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class SubCommand_Clean implements CommandProcesser {
 
     private final QuickShop plugin = QuickShop.instance;
@@ -39,11 +40,11 @@ public class SubCommand_Clean implements CommandProcesser {
     public void onCommand(
         @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Server) {
-            sender.sendMessage("Can't run this command by Console");
+            MsgUtil.sendMessage(sender,"Can't run this command by Console");
             return;
         }
 
-        sender.sendMessage(MsgUtil.getMessage("command.cleaning", sender));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaning", sender));
 
         final Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
         final ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
@@ -76,7 +77,7 @@ public class SubCommand_Clean implements CommandProcesser {
         }
 
         MsgUtil.clean();
-        sender.sendMessage(MsgUtil.getMessage("command.cleaned", sender, "" + i));
+        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaned", sender, "" + i));
     }
 
     @NotNull
