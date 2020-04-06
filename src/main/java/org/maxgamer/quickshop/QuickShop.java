@@ -421,7 +421,7 @@ public class QuickShop extends JavaPlugin {
                 // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
-                this.economy = new Economy(core);
+                this.economy = new Economy(ServiceInjector.getEconomyCore(core));
                 return true;
             }
         } catch (Exception e) {
