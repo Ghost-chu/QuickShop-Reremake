@@ -1484,7 +1484,7 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("shop.price-restriction",getConfig().getStringList("price-restriction"));
                 getConfig().set("price-restriction",null);
             }else {
-                getConfig().set("price-restriction", Collections.emptyList());
+                getConfig().set("shop.price-restriction", Collections.emptyList());
             }
             getConfig().set("enable-log4j",null);
             getConfig().set("config-version", 95);
