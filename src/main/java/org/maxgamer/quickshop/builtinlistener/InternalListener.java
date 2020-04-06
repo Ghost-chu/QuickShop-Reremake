@@ -23,8 +23,8 @@ import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
 
 @AllArgsConstructor
@@ -98,7 +98,9 @@ public class InternalListener implements Listener {
                     + " ("
                     + plugin.getEconomy().format(event.getTax())
                     + " tax).");
+
         }
+        plugin.log("Player "+event.getPlayer().getName()+" had "+plugin.getEconomy().getBalance(event.getPlayer().getUniqueId())+" after trading.");
     }
 
 }
