@@ -46,7 +46,10 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.FilePortlek.old.IFile;
 import org.maxgamer.quickshop.FilePortlek.old.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.Shop.Shop;
+import org.maxgamer.quickshop.Util.Language.Game.GameLanguage;
+import org.maxgamer.quickshop.Util.Language.Game.MojangGameLanguageImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -227,7 +230,7 @@ public class MsgUtil {
     }
 
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = new GameLanguage(languageCode);
+        gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
     }
 
     public static void loadCfgMessages() throws InvalidConfigurationException {
@@ -334,7 +337,7 @@ public class MsgUtil {
             if (enchi18nString != null && !enchi18nString.isEmpty()) {
                 continue;
             }
-            String enchName = gameLanguage.getEnchantment(ench.getKey().getKey());
+            String enchName = gameLanguage.getEnchantment(ench);
             enchi18n.set("enchi18n." + ench.getKey().getKey(), enchName);
             plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
         }

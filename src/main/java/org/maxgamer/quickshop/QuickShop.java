@@ -49,9 +49,12 @@ import org.maxgamer.quickshop.PluginsIntegration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.*;
-import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.Util.*;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
+import org.maxgamer.quickshop.Util.Matcher.Item.BukkitItemMatcherImpl;
+import org.maxgamer.quickshop.Util.Matcher.Item.ItemMatcher;
+import org.maxgamer.quickshop.Util.Matcher.Item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.SpigotWrapper;
@@ -587,7 +590,17 @@ public class QuickShop extends JavaPlugin {
         bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
-        itemMatcher = new ItemMatcher(this);
+        ItemMatcher defItemMatcher;
+        switch (getConfig().getInt("matcher.work-type")){
+            case 1:
+                defItemMatcher = new BukkitItemMatcherImpl(this);
+                break;
+            case 0:
+            default:
+                defItemMatcher = new QuickShopItemMatcherImpl(this);
+                break;
+        }
+        itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
 
         Util.initialize();
         try {
@@ -803,7 +816,7 @@ public class QuickShop extends JavaPlugin {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
             }
-            this.database = new Database(dbCore);
+            this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
             databaseHelper = new DatabaseHelper(this, database);
         } catch (Database.ConnectionException e) {
