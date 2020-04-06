@@ -934,15 +934,11 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 7) {
             getConfig().set("database.prefix", "none");
-            getConfig().set("database.reconnect", false);
-            getConfig().set("database.use-varchar", false);
             getConfig().set("config-version", 8);
             selectedVersion = 8;
         }
         if (selectedVersion == 8) {
-            getConfig().set("database.use-varchar", true);
             getConfig().set("limits.old-algorithm", false);
-            getConfig().set("shop.pay-player-from-unlimited-shop-owner", false);
             getConfig().set("plugin.ProtocolLib", false);
             getConfig().set("plugin.Multiverse-Core", true);
             getConfig().set("shop.ignore-unlimited", false);
@@ -971,7 +967,6 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 12) {
             getConfig().set("plugin.ProtocolLib", null); // Removed
             getConfig().set("plugin.BKCommonLib", null); // Removed
-            getConfig().set("plugin.BKCommonLib", null); // Removed
             getConfig().set("database.use-varchar", null); // Removed
             getConfig().set("database.reconnect", null); // Removed
             getConfig().set("anonymous-metrics", false);
@@ -981,8 +976,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 13;
         }
         if (selectedVersion == 13) {
-            getConfig().set("plugin.AreaShop", false);
-            getConfig().set("shop.special-region-only", false);
             getConfig().set("config-version", 14);
             selectedVersion = 14;
         }
@@ -1001,7 +994,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 16;
         }
         if (selectedVersion == 16) {
-            getConfig().set("ignore-cancel-chat-event", false);
             getConfig().set("config-version", 17);
             selectedVersion = 17;
         }
@@ -1182,13 +1174,11 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 46;
         }
         if (selectedVersion == 46) {
-            getConfig().set("shop.use-protection-checking-filter", true);
             getConfig().set("shop.max-shops-checks-in-once", 100);
             getConfig().set("config-version", 47);
             selectedVersion = 47;
         }
         if (selectedVersion == 47) {
-            getConfig().set("shop.use-protection-checking-filter", false);
             getConfig().set("config-version", 48);
             selectedVersion = 48;
         }
@@ -1391,7 +1381,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 81;
         }
         if (selectedVersion == 81) {
-            getConfig().set("matcher.item.banner", true);
             getConfig().set("config-version", 82);
             selectedVersion = 82;
         }
@@ -1412,7 +1401,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 85;
         }
         if (selectedVersion == 85) {
-            getConfig().set("shop.use-fast-shop-search-algorithm", null);
             getConfig().set("config-version", 86);
             selectedVersion = 86;
         }
