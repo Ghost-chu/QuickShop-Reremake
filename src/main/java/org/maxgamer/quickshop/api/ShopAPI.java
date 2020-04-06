@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.api;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class ShopAPI {
     /**
      * Gets shop from location
      * @param location The location
-     * @return The shop in that locatio, may be null
+     * @return The shop in that location, may be null
      */
     public @Nullable Shop getShop(@NotNull Location location){
         return plugin.getShopManager().getShop(location,false);
@@ -35,6 +37,16 @@ public class ShopAPI {
         }
         return plugin.getShopCache().getCaching(location,false);
     }
+
+    /**
+     * Gets shops in chunk
+     * @param chunk The chunk
+     * @return The shops in chunk, may be null
+     */
+    public @Nullable Map<Location, Shop> getShop(@NotNull Chunk chunk){
+        return plugin.getShopManager().getShops(chunk);
+    }
+
     /**
      * Gets shop from location
      * @param location The location
