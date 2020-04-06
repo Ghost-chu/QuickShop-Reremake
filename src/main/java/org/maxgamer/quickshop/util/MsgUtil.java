@@ -43,10 +43,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.fileportlek.old.IFile;
-import org.maxgamer.quickshop.fileportlek.old.JSONFile;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.fileportlek.old.IFile;
+import org.maxgamer.quickshop.fileportlek.old.JSONFile;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Language.Game.GameLanguage;
 import org.maxgamer.quickshop.util.Language.Game.MojangGameLanguageImpl;
@@ -843,7 +843,7 @@ public class MsgUtil {
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()));
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey())+" "+entries.getValue());
             }
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
