@@ -19,27 +19,23 @@
 
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.Shop.DisplayItem;
 
-/**
- * Deprecated for unused and inproper implementation,
- * this is likely to be removed in a future version.
- */
-@Deprecated
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class DisplayDupeRemoverWatcher extends BukkitRunnable {
     private final Queue<DisplayItem> checkQueue = new LinkedList<>();
 
     @Override
-    public @Deprecated
+    public
     void run() {
         checkQueue.forEach(DisplayItem::removeDupe);
     }
 
-    public @Deprecated
+    public
     void add(@NotNull DisplayItem displayItem) {
         checkQueue.offer(displayItem);
     }

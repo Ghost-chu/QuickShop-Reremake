@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ import org.maxgamer.quickshop.PluginsIntegration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.PluginsIntegration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.Shop.*;
 import org.maxgamer.quickshop.Util.*;
+import org.maxgamer.quickshop.Util.Compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.Util.Logger.QuickShopLogger;
 import org.maxgamer.quickshop.Util.ServerForkWrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.Util.Timer;
@@ -87,6 +89,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Nullable
     @Getter
+    @Setter
     private BootError bootError;
 
     // Listeners - We decide which one to use at runtime
@@ -101,7 +104,7 @@ public class QuickShop extends JavaPlugin {
      * WIP
      */
     @Getter
-    private Compatibility compatibilityTool = new Compatibility(this);
+    private CompatibilityManager compatibilityTool = new CompatibilityManager();
 
     private CustomInventoryListener customInventoryListener;
 
@@ -183,8 +186,6 @@ public class QuickShop extends JavaPlugin {
      * bStats, good helper for metrics.
      */
     private Metrics metrics;
-
-    private boolean noopDisable;
 
     /**
      * The plugin OpenInv (null if not present)
@@ -488,9 +489,6 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (noopDisable) {
-            return;
-        }
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
 //        if (sentryErrorReporter != null && sentryErrorReporter.isEnabled()) {
@@ -555,7 +553,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         try {
-            runtimeCheck(this);
+            new RuntimeCheck(this);
         } catch (RuntimeException e) {
             bootError = new BootError(e.getMessage());
             //noinspection ConstantConditions
@@ -586,26 +584,11 @@ public class QuickShop extends JavaPlugin {
         //noinspection ConstantConditions
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         sentryErrorReporter = new SentryErrorReporter(this);
-        // loadEcon();
-        switch (getConfig().getInt("server-platform", 0)) {
-            case 1:
-                bukkitAPIWrapper = new SpigotWrapper();
-                getLogger().info("Plugin now running under Spigot mode. Paper performance profile is disabled, if you switch to Paper, we can use a lot paper api to improve the server performance.");
-//            case 2:
-//                bukkitAPIWrapper = new PaperWrapper();
-//                getLogger().info("Plugin now running under Paper mode.");
-            default: // AUTO
-//                if (Util.isClassAvailable("com.destroystokyo.paper.PaperConfig")) {
-//                    bukkitAPIWrapper = new PaperWrapper();
-//                    getLogger().info("Plugin now running under Paper mode.");
-//                } else {
-                bukkitAPIWrapper = new SpigotWrapper();
-                getLogger().info("Plugin now running under Spigot mode.");
-//                }
-        }
+        bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
         itemMatcher = new ItemMatcher(this);
+
         Util.initialize();
         try {
             MsgUtil.loadCfgMessages();
@@ -663,8 +646,8 @@ public class QuickShop extends JavaPlugin {
             this.shopCache = null;
         }
 
-        signUpdateWatcher = new SignUpdateWatcher(this);
-        shopContainerWatcher = new ShopContainerWatcher(this);
+        signUpdateWatcher = new SignUpdateWatcher();
+        shopContainerWatcher = new ShopContainerWatcher();
         if (display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
         }
@@ -791,77 +774,6 @@ public class QuickShop extends JavaPlugin {
             if (factions != null && factions.isEnabled()) {
                 this.integrationHelper.register(new FactionsUUIDIntegration(this));
             }
-        }
-    }
-
-    /**
-     * Check the env plugin running.
-     *
-     * @throws RuntimeException The error message, use this to create a BootError.
-     */
-    private void runtimeCheck(QuickShop plugin) throws RuntimeException {
-        if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
-            getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
-            throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
-        }
-        String nmsVersion = Util.getNMSVersion();
-        IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
-        getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
-        if (incompatibleChecker.isIncompatible(nmsVersion)) {
-            throw new RuntimeException("Your Minecraft version is nolonger supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
-        }
-        try {
-            getServer().spigot();
-        } catch (Throwable e) {
-            getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
-            throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
-        }
-        if (getServer().getName().toLowerCase().contains("catserver") || Util.isClassAvailable("moe.luohuayu.CatServer") || Util.isClassAvailable("catserver.server.CatServer")) {
-            // Send FATAL ERROR TO CatServer's users.
-            int csi = 0;
-            while (csi < 101) {
-                csi++;
-                getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async, Go https://github.com/Luohuayu/QuickShop-Reremake to get CatServer Edition.");
-                getLogger().severe("FATAL: Don't report any bugs or other issues to the Ghost-chu's QuickShop-Reremake repo as we do not support CatServer");
-            }
-            try {
-                Thread.sleep(180000); //Make sure CS user 100% can see alert sent above.
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.bootError = new BootError("Cannot load on CatServer, go download CS edition, don't fucking asking us for support or we will send an army of angry bees your way.", "https://github.com/Luohuayu/QuickShop-Reremake");
-            return;
-        }
-        if ((getServer().getName().toLowerCase().contains("mohist") || Util.isClassAvailable("red.mohist.mohist"))) {
-            //Because it passed compatible checker checks, Mohist version must is 1.13+.
-            //We doesn't need check the mohist is 1.12 or not.
-            //Because QuickShop doesn't support ANY 1.12 server.
-            int moi = 0;
-            while (moi < 3) {
-                moi++;
-                getLogger().severe("WARN: QSRR compatibility on Mohist 1.13+ modded server currently unknown, report any issue to Mohist issue tracker or QuickShop issue tracker.");
-                if (DisplayType.fromID(getConfig().getInt("shop.display-type")) != DisplayType.VIRTUALITEM) {//Even VIRTUALITEM still WIP, but we should install checker first.
-                    getLogger().warning("Switch to Virtual display item to make sure displays won't duped by mods.");
-                }
-            }
-        }
-
-        if (Util.isDevEdition()) {
-            getLogger().severe("WARNING: You are running QSRR in dev-mode");
-            getLogger().severe("WARNING: Keep backup and DO NOT run this in a production environment!");
-            getLogger().severe("WARNING: Test version may destroy everything!");
-            getLogger().severe("WARNING: QSRR won't start without your confirmation, nothing will change before you turn on dev allowed.");
-            if (!getConfig().getBoolean("dev-mode")) {
-                getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load in dev mode(You may need add this line to the config yourself).");
-                noopDisable = true;
-                throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
-            }
-        }
-        getLogger().info("Checking the tax account infos...");
-        String taxAccount = plugin.getConfig().getString("tax-account", "tax");
-        //noinspection ConstantConditions
-        if (!Bukkit.getOfflinePlayer(taxAccount).hasPlayedBefore()) {
-            getLogger().warning("Tax account's player never played server before, that may cause server lagg or economy system error, you should change that name.");
         }
     }
 

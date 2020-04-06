@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.Watcher;
 
-import java.util.Objects;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +26,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.Shop.Shop;
 import org.maxgamer.quickshop.Util.MsgUtil;
 import org.maxgamer.quickshop.Util.Util;
+
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Check the shops after server booted up, make sure shop can correct self-deleted when container
@@ -50,8 +51,6 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         int cost = plugin.getConfig().getInt("shop.ongoing-fee.cost-per-shop");
         boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
-        int perTaskFlow = 0;
-        int parallelTasks = 0;
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if (!shop.isUnlimited() || !ignoreUnlimited) {
                 UUID shopOwner = shop.getOwner();
