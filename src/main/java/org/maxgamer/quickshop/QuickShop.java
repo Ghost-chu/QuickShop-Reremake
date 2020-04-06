@@ -47,7 +47,6 @@ import org.maxgamer.quickshop.integration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.integration.WorldGuard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
-import org.maxgamer.quickshop.nonquickshopstuff.de.Keyle.MyPet.api.util.ReflectionUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -55,7 +54,6 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
-import org.maxgamer.quickshop.util.logger.QuickShopLogger;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -63,7 +61,6 @@ import org.maxgamer.quickshop.watcher.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.Map.Entry;
@@ -474,7 +471,7 @@ public class QuickShop extends JavaPlugin {
         instance = this;
         QuickShopAPI.setupApi(this);
         getDataFolder().mkdirs();
-        replaceLogger();
+//        replaceLogger();
 
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
@@ -1510,20 +1507,20 @@ public class QuickShop extends JavaPlugin {
         return "Reremake";
     }
 
-    private void replaceLogger() {
-        try {
-            Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
-
-            if (logger != null) {
-                try {
-                    logger.set(this, new QuickShopLogger(this));
-                } catch (Throwable th) {
-                    logger.setAccessible(true);
-                    logger.set(this, new QuickShopLogger(this));
-                }
-            }
-        } catch (Throwable ignored) {
-        }
-    }
+//    private void replaceLogger() {
+//        try {
+//            Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
+//
+//            if (logger != null) {
+//                try {
+//                    logger.set(this, new QuickShopLogger(this));
+//                } catch (Throwable th) {
+//                    logger.setAccessible(true);
+//                    logger.set(this, new QuickShopLogger(this));
+//                }
+//            }
+//        } catch (Throwable ignored) {
+//        }
+//    }
 
 }
