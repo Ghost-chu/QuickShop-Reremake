@@ -35,29 +35,29 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
-import org.maxgamer.quickshop.builtinlistener.InternalListener;
-import org.maxgamer.quickshop.listener.*;
-import org.maxgamer.quickshop.nonquickshopstuff.de.Keyle.MyPet.api.util.ReflectionUtil;
-import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.integration.FactionsUUID.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.PlotSquared.PlotSquaredIntegration;
 import org.maxgamer.quickshop.integration.Residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.Towny.TownyIntegration;
 import org.maxgamer.quickshop.integration.WorldGuard.WorldGuardIntegration;
+import org.maxgamer.quickshop.listener.*;
+import org.maxgamer.quickshop.nonquickshopstuff.de.Keyle.MyPet.api.util.ReflectionUtil;
+import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
-import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
+import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
+import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
+import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.logger.QuickShopLogger;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
-import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
-import org.maxgamer.quickshop.util.Timer;
-import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.File;
@@ -1478,6 +1478,12 @@ public class QuickShop extends JavaPlugin {
             selectedVersion=94;
         }
         if(selectedVersion == 94){
+            if(getConfig().isSet("price-restriction")){
+                getConfig().set("shop.price-restriction",getConfig().getStringList("price-restriction"));
+                getConfig().set("price-restriction",null);
+            }else {
+                getConfig().set("price-restriction", Collections.emptyList());
+            }
             getConfig().set("enable-log4j",null);
             getConfig().set("config-version", 95);
             selectedVersion=95;

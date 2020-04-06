@@ -32,12 +32,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.event.ShopCreateEvent;
 import org.maxgamer.quickshop.event.ShopPreCreateEvent;
 import org.maxgamer.quickshop.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.event.ShopSuccessPurchaseEvent;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -726,10 +726,10 @@ public class ShopManager {
                 }
             }
 
-            double price_limit = plugin.getConfig().getInt("shop.maximum-price");
-            if (price_limit != -1) {
-                if (price > price_limit) {
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(price_limit) : "" + price_limit));
+            double maximumPrice = plugin.getConfig().getInt("shop.maximum-price");
+            if (maximumPrice != -1) {
+                if (price > maximumPrice) {
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(maximumPrice) : "" + maximumPrice));
                     return;
                 }
             }

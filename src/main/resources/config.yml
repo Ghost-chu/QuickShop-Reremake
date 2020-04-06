@@ -230,6 +230,13 @@ shop:
   #The maximum price for shop, This will not affect existing shops, set it to -1 to disable it.
   maximum-price: -1
 
+  #Setting per item price restriction
+  #Format: <itemname>;<minprice>;<maxprice>
+  #e.g:
+  #price-restriction:
+  # - DIAMOND;100;200
+  price-restriction: []
+
   #The number of digits after decimal, set it to -1 to disable it
   maximum-digits-in-price: -1
 
