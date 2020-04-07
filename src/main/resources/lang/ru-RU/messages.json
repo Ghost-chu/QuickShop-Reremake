@@ -239,13 +239,13 @@
   "shops-recovering": "Recovering shops from backup...",
   "shops-backingup": "Backing up the shops from database... ",
   "saved-to-path": "The backup file was saved to {0} .",
-  "backup-failed": "Cannot backup the database, check the console for details.",
-  "translate-not-completed-yet-click": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Click Here!",
-  "translate-not-completed-yet-url": "The translation of language {0} has completed {1}, Do you want help us to improve the translation? Browse: {2}",
+  "backup-failed": "Невозможно сделать резервную копию базы данных, проверьте консоль для деталей.",
+  "translate-not-completed-yet-click": "Перевод языка {0} завершен {1}, Вы хотите помочь нам улучшить перевод? Нажмите здесь!",
+  "translate-not-completed-yet-url": "Перевод языка {0} завершен {1}, Вы хотите помочь нам улучшить перевод? Обзор: {2}",
   "language-info-panel": {
     "name": "Language: ",
-    "code": "Code: ",
-    "progress": "Progress: ",
+    "code": "Код: ",
+    "progress": "Прогресс: ",
     "help": "Help Us: ",
     "translate-on-crowdin": "[Translate on Crowdin]"
   }
