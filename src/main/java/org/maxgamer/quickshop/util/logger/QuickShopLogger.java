@@ -16,7 +16,10 @@
 
 package org.maxgamer.quickshop.util.logger;
 
-import static org.bukkit.ChatColor.*;
+import lombok.SneakyThrows;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLogger;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -28,10 +31,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import lombok.SneakyThrows;
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginLogger;
+
+import static org.bukkit.ChatColor.*;
 
 /*
  * Originally take from Mypet which is a awesome project, extends PluginLogger in order to replace
@@ -40,6 +41,7 @@ import org.bukkit.plugin.PluginLogger;
  * This is generally a new built logger system that rely on the Java logger to provide better
  * customization.
  */
+@Deprecated
 public class QuickShopLogger extends PluginLogger {
     protected boolean debugSetup = false;
     /**
@@ -57,6 +59,7 @@ public class QuickShopLogger extends PluginLogger {
     private boolean hasJline;
 
     @SneakyThrows
+    @Deprecated
     public QuickShopLogger(Plugin plugin) {
         super(plugin);
         registerStyles();
@@ -98,6 +101,7 @@ public class QuickShopLogger extends PluginLogger {
 
     // Logging stuffs
     @Override
+    @Deprecated
     public void log(LogRecord logRecord) {
         String message = logRecord.getMessage();
 
@@ -123,6 +127,7 @@ public class QuickShopLogger extends PluginLogger {
      * @param message to apply styles
      * @return text maybe applied styles
      */
+    @Deprecated
     public String applyStyles(String message) {
         for (Entry<Pattern, String> entry : bukkitToAnsi.entrySet()) {
             message =
@@ -132,7 +137,7 @@ public class QuickShopLogger extends PluginLogger {
         return hasAnsi && hasJline ? message.concat(org.fusesource.jansi.Ansi.ansi().reset().toString())
             : message;
     }
-
+    @Deprecated
     public void info(Object... params) {
             super.info(collectParams(params));
     }
@@ -143,39 +148,40 @@ public class QuickShopLogger extends PluginLogger {
      * @param params Params
      * @return collected string
      */
+    @Deprecated
     public String collectParams(Object... params) {
         return Arrays.stream(params).map(String::valueOf).collect(Collectors.joining(" "));
     }
-
+    @Deprecated
     public void warning(Object... params) {
 
             super.warning(collectParams(params));
     }
-
+    @Deprecated
     public void severe(Object... params) {
 
             super.severe(collectParams(params));
 
     }
-
+    @Deprecated
     public void config(Object... params) {
 
             super.config(collectParams(params));
 
     }
-
+    @Deprecated
     public void fine(Object... params) {
 
             super.fine(collectParams(params));
 
     }
-
+    @Deprecated
     public void finer(Object... params) {
 
             super.finer(collectParams(params));
 
     }
-
+    @Deprecated
     public void finest(Object... params) {
 
             super.finest(collectParams(params));
