@@ -25,12 +25,8 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -42,7 +38,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.Util;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
 
@@ -157,6 +160,12 @@ public class VirtualDisplayItem extends DisplayItem {
         //List<DataWatcher$Item> Type are more complex
         //Create a DataWatcher
         WrappedDataWatcher wpw = new WrappedDataWatcher();
+        //https://wiki.vg/index.php?title=Entity_metadata#Entity
+        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
+            wpw.setObject(2,WrappedDataWatcher.Registry.getChatComponentSerializer(true),Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(shop.getItem())).getHandle()));
+            wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3,WrappedDataWatcher.Registry.get(Boolean.class)),true);
+        }
+
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
         //For 1.13 is 6, and 1.14+ is 7
         switch (version) {
@@ -276,6 +285,13 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
+        Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
+        if (shopDisplayItemSpawnEvent.isCancelled()) {
+            Util.debugLog(
+                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+            return;
+        }
         load();
         sendFakeItemToAll();
         isDisplay = true;

@@ -24,16 +24,6 @@ import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
 import io.sentry.event.BreadcrumbBuilder;
 import io.sentry.event.UserBuilder;
-import java.io.IOException;
-import java.net.ProtocolException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Filter;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
@@ -44,6 +34,17 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.paste.Paste;
 import org.maxgamer.quickshop.watcher.UpdateWatcher;
+
+import java.io.IOException;
+import java.net.ProtocolException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Filter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  * Auto report errors to qs's sentry.
@@ -343,6 +344,9 @@ public class SentryErrorReporter {
             Level level = record.getLevel();
             if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
+            }
+            if(record.getThrown()==null){
+               return true;
             }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());
