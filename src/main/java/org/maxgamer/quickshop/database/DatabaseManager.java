@@ -96,6 +96,7 @@ public class DatabaseManager {
             while (true) {
                 if (!connection.isValid(3000)) {
                     warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                    //connection isn't stable, let autocommit on
                     connection=database.getConnection();
                     continue; // Waiting next crycle and hope it success reconnected.
                 }
@@ -116,7 +117,10 @@ public class DatabaseManager {
                                     + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
                 }
             }
-            connection.commit();
+            if(!connection.getAutoCommit()) {
+                connection.commit();
+                connection.setAutoCommit(true);
+            }
             connection.close();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
