@@ -19,7 +19,7 @@ public interface ItemMatcher {
 
     /**
      * Tests ItemStacks is matches
-     * ->BEWARE: Different order of itemstacks you might will got different results<-
+     * BEWARE: Different order of itemstacks you might will got different results
      * @param original The original ItemStack
      * @param tester The ItemStack will test matches with original itemstack.
      * @return The result of tests
