@@ -7,7 +7,7 @@
   "not-looking-at-shop": "&cKauppaa ei löytynyt. Sinun pitää katsoa muokattavaa kauppaa päin.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
-  "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
+  "3rd-plugin-build-check-failed": "Jokin kolmannen osapuolen lisäosa kielsi oikeuksien tarkistamisen, onko sinulla sisäänrakennettua oikeuksia?",
   "no-creative-break": "&cSinä et voi rikkoa muiden pelaajien kauppoja luovassa tilassa, vaihda selviytymis tilaan tai yritä käyttää supertyökalua {0}.",
   "trading-in-creative-mode-is-disabled": "&cSinä et voi ostaa\/myydä luovassa tilassa.",
   "supertool-is-disabled": "&cSupertyökalu on poistettu käytöstä, et voi rikkoa mitään kauppoja.",
