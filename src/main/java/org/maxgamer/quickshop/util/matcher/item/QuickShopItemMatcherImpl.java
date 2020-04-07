@@ -53,7 +53,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
     /**
      * Tests ItemStacks is matches
-     * ->BEWARE: Different order of itemstacks you might will got different results<-
+     * BEWARE: Different order of itemstacks you might will got different results
      *
      * @param requireStack The original ItemStack
      * @param givenStack   The ItemStack will test matches with original itemstack.
