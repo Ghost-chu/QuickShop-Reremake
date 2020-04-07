@@ -121,7 +121,6 @@ public class DatabaseManager {
                 connection.commit();
                 connection.setAutoCommit(true);
             }
-            connection.close();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
             this.plugin
