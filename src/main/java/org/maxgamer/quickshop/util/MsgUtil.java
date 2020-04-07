@@ -1372,7 +1372,7 @@ public class MsgUtil {
             if(msg == null || msg.isEmpty()){
                 continue;
             }
-            MsgUtil.sendMessage(sender,msg);
+            sender.sendMessage(msg);
         }
     }
 
