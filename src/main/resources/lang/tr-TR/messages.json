@@ -260,6 +260,7 @@
   },
   "shop-now-freezed": "&aMarketi dondurdunuz, artık hiç kimse bu marketten ticaret yapamaz!",
   "shop-nolonger-freezed": "&aMarketi çözdünüz, şimdi normale döndü!",
+  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
   "denied-put-in-item": "&cBu öğe bu markete konamaz!"
 }
