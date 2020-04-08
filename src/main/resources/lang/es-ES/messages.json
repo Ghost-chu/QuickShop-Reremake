@@ -3,7 +3,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&e{0}% &aRestante.",
     "this-shop-is-buying": "&aEsta tienda está &dCOMPRANDO&a artículos.",
     "this-shop-is-selling": "&aEsta tienda está &dVENDIENDO&a artículos.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&aEfectos",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eEjecuta tus acciones con una cantidad (Por problemas del complemento de chat)",
       "about": "&eMuestra información de QuickShop",
       "help": "&eMuestra la ayuda de QuickShop",
-      "supercreate": "&eCrea una tienda que omita todas las pruebas de seguridad."
+      "supercreate": "&eCrea una tienda que omita todas las pruebas de seguridad.",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} por unidad.",
+    "stack-price": "{0} stack",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eClick para limpiar el inventario de la tienda.",
     "remove": "&c&l[Eliminar tienda]",
     "remove-hover": "&eClick para eliminar esta tienda.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [Jugador]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [Nuevo Precio]",
       "refill": "\/qs refill [Cantidad]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Hay una nueva versión, comandante, ¡{0} acaba de salir!",
       "Mira, mira---{0} se ha actualizado, sigues usando {1}",
       "¡Ahhhhhhh! ¡Nueva versión {0}! ¡Actualiza!",
-      "¿En qué estás pensando? {0} ¡ya fue lanzada! ¡Actualiza!"
+      "¿En qué estás pensando? {0} ¡ya fue lanzada! ¡Actualiza!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "§cEsta versión de QuickShop esta marcada como deshabilitado por servidor remoto, quiere decir que esta versión puede tener serios problemas, obtén detalles de nuestra pagina de SpigotMC: {0}. Esta advertencia aparecerá y llenara tu consola de mensajes hasta que uses otra versión no deshabilitada para reemplazar esta, no afectara el funcionamiento de su servidor.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "Progreso: ",
     "help": "Ayúdanos: ",
     "translate-on-crowdin": "[Traducir en Crowdin]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }
