@@ -270,9 +270,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
     }
 
-    private void registerCmd(CommandContainer container) {
+    public void registerCmd(@NotNull CommandContainer container) {
         cmds.add(container);
     }
+
+    public void unregisterCmd(@NotNull CommandContainer container) {cmds.remove(container);}
 
     @Override
     public boolean onCommand(

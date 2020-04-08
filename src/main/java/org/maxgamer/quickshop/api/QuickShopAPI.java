@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.api;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.util.IntegrationHelper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 
@@ -50,5 +51,13 @@ public class QuickShopAPI {
      */
     public static @Nullable IntegrationHelper getIntegrationManager(){
         return plugin.getIntegrationHelper();
+    }
+
+    /**
+     * Gets command manager to allow you access quickshop command system
+     * @return CommandManager
+     */
+    public static @Nullable CommandManager getCommandManager(){
+        return plugin.getCommandManager();
     }
 }
