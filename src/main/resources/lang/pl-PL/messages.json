@@ -92,7 +92,7 @@
     "damage-percent-remaining": "&e{0}% &aZostało.",
     "this-shop-is-buying": "&aTen sklep &dSKUPUJE&a itemy.",
     "this-shop-is-selling": "&aTen sklep &bSPRZEDAJE&a itemy.",
-    "shop-stack": "&aStack Amount: &e{0}",
+    "shop-stack": "&aKwota Stacku: &e{0}",
     "effects": "&aEfekty",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -146,7 +146,7 @@
       "about": "&ePokaż informację o QuickShop",
       "help": "&ePokaż pomoc dla QuickShop",
       "supercreate": "&eUtwórz sklep z obejściem ochrony",
-      "language": "&eSwitch the language that quickshop using"
+      "language": "&ePrzełącz język, którego używa QuickShop"
     }
   },
   "signs": {
@@ -176,8 +176,8 @@
     "empty-hover": "&eKliknij, aby wyczyścić sklep.",
     "remove": "&c&l[Usuń sklep]",
     "remove-hover": "&eKliknij, żeby usunąć sklep.",
-    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
-    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
+    "stack": "&aStack: &b{0} &e[&d&lUstaw&e]",
+    "stack-hover": "&eKliknij, aby ustawić kwoty przedmiotu dla każdego stacku. Ustaw na 1 dla normalnego zachowania.",
     "commands": {
       "setowner": "\/qs setowner [Gracz]",
       "unlimited": "\/qs slientunlimited {0} {1} {2} {3}",
@@ -225,7 +225,7 @@
       "Nie, przyjacielu! Patrz na mnie! Stara wersja przeminie {0}, nowa {1} jest wieczna!",
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Słyszałeś? Wersja {0} już jest!",
-      "Doctor, QuickShop have new update {0}! Think about update~",
+      "Doktorze, QuickShop ma nową aktualizację {0}! Pomyśl o aktualizacji~",
       "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
