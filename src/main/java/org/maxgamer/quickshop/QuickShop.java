@@ -540,6 +540,7 @@ public class QuickShop extends JavaPlugin {
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onUnloadAfter);
+        this.integrationHelper.getIntegrations().forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
         Util.debugLog("All shutdown work is finished.");
     }
 
