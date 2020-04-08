@@ -23,14 +23,15 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.QuickShop;
+
+import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
@@ -129,8 +130,8 @@ public class ResidenceIntegration implements IntegratedPlugin {
 
     @Override
     public void load() {
-        FlagPermissions.addFlag("quickshop.create");
-        FlagPermissions.addFlag("quickshop.trade");
+        FlagPermissions.addFlag("quickshop-create");
+        FlagPermissions.addFlag("quickshop-trade");
     }
 
     @Override
