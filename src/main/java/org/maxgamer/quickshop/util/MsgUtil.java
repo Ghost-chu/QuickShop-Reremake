@@ -1339,6 +1339,20 @@ public class MsgUtil {
             setAndUpdate("language-version", 31);
             selectedVersion = 31;
         }
+        if (selectedVersion == 31) {
+            setAndUpdate("menu.shop-stack", "&aStack Amount: &e{0}");
+            setAndUpdate("command.description.language", "&eSwitch the language that quickshop using");
+            setAndUpdate("signs.stack-price", "{0} stack");
+            setAndUpdate("controlpanel.commands.stack", "/qs silentstack [Amount]");
+            setAndUpdate("controlpanel.stack", "&aStack: &b{0} &e[&d&lSet&e]");
+            setAndUpdate("controlpanel.stack-hover", "&eClick to set the item amounts each stack. Set to 1 for normal behavior.");
+            setAndUpdate("shop-now-freezed", "&aYou are frozen the shop, and nobody can trade with this shop now!");
+            setAndUpdate("shop-nolonger-freezed", "&aYou are unfrozen the shop, it back to normal now!");
+            setAndUpdate("shop-freezed-at-location", "&eYour shop {0} at {1} got frozen!");
+            setAndUpdate("denied-put-in-item", "&cThis item cannot put in this shop!");
+            setAndUpdate("language-version", 32);
+            selectedVersion = 32;
+        }
 
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
