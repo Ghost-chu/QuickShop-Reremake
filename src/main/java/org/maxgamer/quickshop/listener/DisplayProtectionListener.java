@@ -408,7 +408,7 @@ public class DisplayProtectionListener implements Listener {
                 + " at"
                 + event.getClickedInventory().getLocation()
                 + " was clicked the displayItem, QuickShop already removed it.");
-        event.getCurrentItem().setAmount(0);
+        //event.getCurrentItem().setAmount(0);
         event.getCurrentItem().setType(Material.AIR);
         event.setResult(Result.DENY);
         Util.inventoryCheck(event.getInventory());
