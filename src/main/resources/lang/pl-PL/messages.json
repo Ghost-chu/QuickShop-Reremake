@@ -260,6 +260,7 @@
   },
   "shop-now-freezed": "&aSklep został zamrożony i nikt nie może teraz handlować z tym sklepem!",
   "shop-nolonger-freezed": "&aSklep został odmrożony, teraz wrócił do normy!",
+  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!"
 }
