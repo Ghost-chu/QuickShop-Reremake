@@ -20,9 +20,6 @@
 package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
 import lombok.EqualsAndHashCode;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,10 +36,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 /**
  * ChestShop core
@@ -110,9 +111,11 @@ public class ContainerShop implements Shop {
         this.location = location;
         this.price = price;
         this.moderator = moderator;
-        this.item = new ItemStack(item);
+        this.item = item.clone();
         this.plugin = QuickShop.instance;
-        this.item.setAmount(1);
+        if(!plugin.isAllowStack()){
+            this.item.setAmount(1);
+        }
         this.shopType = type;
         this.unlimited = unlimited;
 
@@ -233,7 +236,7 @@ public class ContainerShop implements Shop {
                 ItemStack item = contents[i];
                 if (item != null && this.matches(item)) {
                     // Copy it, we don't want to interfere
-                    item = new ItemStack(item);
+                    item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
                     int stackSize = Math.min(amount1, item.getAmount());
@@ -488,7 +491,7 @@ public class ContainerShop implements Shop {
         ArrayList<ItemStack> floor = new ArrayList<>(5);
         Inventory pInv = p.getInventory();
         if (this.isUnlimited()) {
-            ItemStack item = new ItemStack(this.item);
+            ItemStack item = this.item.clone();
             while (amount > 0) {
                 int stackSize = Math.min(amount, this.item.getMaxStackSize());
                 item.setAmount(stackSize);
@@ -502,7 +505,7 @@ public class ContainerShop implements Shop {
                 ItemStack item = chestContents[i];
                 if (item != null && item.getType() != Material.AIR && this.matches(item)) {
                     // Copy it, we don't want to interfere
-                    item = new ItemStack(item);
+                    item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
                     int stackSize = Math.min(amount, item.getAmount());

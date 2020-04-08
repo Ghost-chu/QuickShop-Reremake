@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -33,10 +30,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A class to create a GUI item preview quickly
@@ -59,7 +60,7 @@ public class InventoryPreview implements Listener {
      * @param player Target player.
      */
     public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
-        this.itemStack = new ItemStack(itemStack);
+        this.itemStack = itemStack.clone();
         this.player = player;
         if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
             ItemMeta itemMeta = this.itemStack.getItemMeta();

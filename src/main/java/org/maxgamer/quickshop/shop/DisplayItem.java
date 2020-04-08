@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.ArrayList;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
@@ -52,7 +53,7 @@ public abstract class DisplayItem {
 
     protected DisplayItem(Shop shop) {
         this.shop = shop;
-        this.originalItemStack = new ItemStack(shop.getItem());
+        this.originalItemStack = shop.getItem().clone();
         this.originalItemStack.setAmount(1);
     }
 
@@ -176,7 +177,7 @@ public abstract class DisplayItem {
      * @return New itemStack with protect flag.
      */
     public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
-        itemStack = new ItemStack(itemStack);
+        itemStack = itemStack.clone();
         itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
