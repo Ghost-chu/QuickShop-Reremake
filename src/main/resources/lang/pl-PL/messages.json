@@ -226,8 +226,8 @@
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Słyszałeś? Wersja {0} już jest!",
       "Doktorze, QuickShop ma nową aktualizację {0}! Pomyśl o aktualizacji~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "\\o\/ Stworzycielu serwera! QuickShop ma nową aktualizację {0}!",
+      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0} ~"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, pobierz szczegóły ze strony SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie użyjesz innej, nie wyłączonej wersji, która nie wypływa na działanie serwera.",
     "label": {
@@ -258,8 +258,8 @@
     "help": "Pomóż nam: ",
     "translate-on-crowdin": "[Tłumacz na Crowdin]"
   },
-  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
-  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
-  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "shop-now-freezed": "&aSklep został zamrożony i nikt nie może teraz handlować z tym sklepem!",
+  "shop-nolonger-freezed": "&aSklep został odmrożony, teraz wrócił do normy!",
+  "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
+  "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!"
 }
