@@ -92,7 +92,7 @@
     "damage-percent-remaining": "&a耐久度: &e剩餘 {0}%",
     "this-shop-is-buying": "&a此商店是 &d收購物品&a 的商店。",
     "this-shop-is-selling": "&a此商店是 &b賣出物品&a 的商店。",
-    "shop-stack": "&aStack Amount: &e{0}",
+    "shop-stack": "&a堆疊數量: &e{0}",
     "effects": "&a藥水效果: &e{0}",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -155,7 +155,7 @@
     "buying": "收購 {0} 個",
     "item": "{0}",
     "price": "每個 {0}",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} 堆疊",
     "unlimited": "無上限"
   },
   "controlpanel": {
@@ -176,8 +176,8 @@
     "empty-hover": "&e點擊清除商店內庫存。",
     "remove": "&c&l[刪除商店]",
     "remove-hover": "&e點擊刪除商店。",
-    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
-    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
+    "stack": "&a堆疊: &b{0} &e[&d&l設定&e]",
+    "stack-hover": "&e點擊設置每個堆疊數量。設置1為標準。",
     "commands": {
       "setowner": "\/qs setowner [玩家名稱]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -225,9 +225,9 @@
       "看我的風格--- {0} 版本出來了, 您還在使用 {1} 版本",
       "啊啊啊! 是新的版本 {0}! 快更新!",
       "您在想什麼？ {0} 已經釋出了! 快更新!",
-      "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "醫生, QuickShop 有新的更新 {0}! 想想更新吧~",
+      "\\o\/ 神主! QuickShop 有新的更新 {0}!",
+      "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
     ],
     "remote-disable-warning": "&c這個版本的 QuickShop 已經被標記為禁用, 代表這個版本有十分嚴重的問題。從我們的 SpigotMC 頁面獲取更多資訊: {0} 。這則警告將持續顯示到您使用沒有被禁用的版本替代這個, 但不影響您的伺服器運行。",
     "label": {
