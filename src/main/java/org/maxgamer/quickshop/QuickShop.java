@@ -472,6 +472,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Override
     public void onLoad() {
+        //BEWARE THESE ONLY RUN ONCE
         instance = this;
         QuickShopAPI.setupApi(this);
         getDataFolder().mkdirs();
