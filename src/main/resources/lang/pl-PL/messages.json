@@ -3,7 +3,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współautorzy: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cNie znaleziono sklepu, musisz patrzeć się na sklep.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "Nie masz na to uprawnień.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&e{0}% &aZostało.",
     "this-shop-is-buying": "&aTen sklep &dSKUPUJE&a itemy.",
     "this-shop-is-selling": "&aTen sklep &bSPRZEDAJE&a itemy.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&aEfekty",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eWykonaj za swoje działania z kwotą (w przypadku problemu z wtyczką czatu)",
       "about": "&ePokaż informację o QuickShop",
       "help": "&ePokaż pomoc dla QuickShop",
-      "supercreate": "&eUtwórz sklep z obejściem ochrony"
+      "supercreate": "&eUtwórz sklep z obejściem ochrony",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Sprzedaj {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
+    "stack-price": "{0} stack",
     "unlimited": "Nieograniczony"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eKliknij, aby wyczyścić sklep.",
     "remove": "&c&l[Usuń sklep]",
     "remove-hover": "&eKliknij, żeby usunąć sklep.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [Gracz]",
       "unlimited": "\/qs slientunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [Nowa cena]",
       "refill": "\/qs refill [Ilość]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Adminie! Twoje królestwo jest zagrożone, nalegam na przejście do wersji {0}!",
       "Nie, przyjacielu! Patrz na mnie! Stara wersja przeminie {0}, nowa {1} jest wieczna!",
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
-      "Słyszałeś? Wersja {0} już jest!"
+      "Słyszałeś? Wersja {0} już jest!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, pobierz szczegóły ze strony SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie użyjesz innej, nie wyłączonej wersji, która nie wypływa na działanie serwera.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "Postęp: ",
     "help": "Pomóż nam: ",
     "translate-on-crowdin": "[Tłumacz na Crowdin]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }
