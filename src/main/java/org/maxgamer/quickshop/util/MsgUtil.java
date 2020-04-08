@@ -1349,6 +1349,8 @@ public class MsgUtil {
             setAndUpdate("shop-now-freezed", "&aYou are frozen the shop, and nobody can trade with this shop now!");
             setAndUpdate("shop-nolonger-freezed", "&aYou are unfrozen the shop, it back to normal now!");
             setAndUpdate("shop-freezed-at-location", "&eYour shop {0} at {1} got frozen!");
+            setAndUpdate("shop-cannot-trade-when-freezing", "&cYou cannot trade with this shop cause it under freezing.");
+
             setAndUpdate("denied-put-in-item", "&cThis item cannot put in this shop!");
             setAndUpdate("language-version", 32);
             selectedVersion = 32;
