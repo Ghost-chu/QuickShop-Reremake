@@ -3,7 +3,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cAucune boutique trouvée. Vous devez être entrain d'en regarder un pendant que vous écrivez votre commande.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&e{0}% &arestant.",
     "this-shop-is-buying": "&aCette boutique &dACHETE&a des objets.",
     "this-shop-is-selling": "&aCeette boutique &dVEND&a des objets.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&aEffets",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eExécuter les actions avec montant(Pour le problème du plugin de chat)",
       "about": "&eA propos de QuickShop",
       "help": "&eAfficher l'aide QuickShop",
-      "supercreate": "&eCréer un coffre de shop en contournant tous les contrôles de protection"
+      "supercreate": "&eCréer un coffre de shop en contournant tous les contrôles de protection",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Achat {0}",
     "item": "{0}",
     "price": "{0} l'unité",
+    "stack-price": "{0} stack",
     "unlimited": "Illimité"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eClique pour vider tout les objets du shop.",
     "remove": "&c&l[Supprimer le shop]",
     "remove-hover": "&eClique pour supprimer ce coffre de shop.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [Pseudonyme]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [Nouveau prix]",
       "refill": "\/qs refill [Quantité]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Il y a une mise à jour commandant,  {0} viens de sortir!",
       "Regarde mon style --- {0} mise à jour, tu as toujours la version {1}",
       "Ahhhhhhh! Nouvelle mise à jour {0}!",
-      "Qu'est-ce que tu penses? {0} Une nouvelle mise à jour publiée!"
+      "Qu'est-ce que tu penses? {0} Une nouvelle mise à jour publiée!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cCette version de QuickShop a été désignée comme désactivée par le serveur distant. Cela signifie que cette version peux contenir de sérieux problèmes et bugs. Plus de détails sur notre page SpigotMC: {0}. Cet avertissement apparaitra dans votre console jusqu'à ce que vous utilisiez une version stable de QuickShop. Ceci n'affecte pas le fonctionnement de votre serveur.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "Progression : ",
     "help": "Aidez-nous : ",
     "translate-on-crowdin": "[Traduit sur Crowdin]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }
