@@ -259,7 +259,7 @@
     "translate-on-crowdin": "[Crowdin'de Çevirin]]"
   },
   "shop-now-freezed": "&aMarketi dondurdunuz, artık hiç kimse bu marketten ticaret yapamaz!",
-  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
-  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "shop-nolonger-freezed": "&aMarketi çözdünüz, şimdi normale döndü!",
+  "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
+  "denied-put-in-item": "&cBu öğe bu markete konamaz!"
 }
