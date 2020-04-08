@@ -769,12 +769,6 @@ public class QuickShop extends JavaPlugin {
                 this.integrationHelper.register(new TownyIntegration(this));
             }
         }
-        if (getConfig().getBoolean("integration.worldguard.enable")) {
-            Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            if (worldGuard != null && worldGuard.isEnabled()) {
-                this.integrationHelper.register(new WorldGuardIntegration(this));
-            }
-        }
         if (getConfig().getBoolean("integration.plotsquared.enable")) {
             Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
             if (plotSquared != null && plotSquared.isEnabled()) {
