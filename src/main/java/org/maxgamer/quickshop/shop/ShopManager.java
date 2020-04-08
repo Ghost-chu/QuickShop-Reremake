@@ -538,6 +538,7 @@ public class ShopManager {
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(p, info, shop)){ return;}
+        amount = shop.getItem().getAmount()*amount;
         int space = shop.getRemainingSpace();
         if (space == -1) {
             space = 10000;
@@ -804,6 +805,7 @@ public class ShopManager {
 
     private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(p, info, shop)) {return;}
+        amount = shop.getItem().getAmount()*amount;
         int stock = shop.getRemainingStock();
         if (stock == -1) {
             stock = 10000;
