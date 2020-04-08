@@ -3,7 +3,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Ohjelmointi-apu: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cKauppaa ei löytynyt. Sinun pitää katsoa muokattavaa kauppaa päin.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&e{0}% &ajäljellä.",
     "this-shop-is-buying": "&aTämä kauppa &a&lOSTAA &atuotteita.",
     "this-shop-is-selling": "&aTämä kauppa &c&lMYY &atavaroita.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&aEfektit: &e{0}",
     "commands": {
       "preview": "\/qs hiljainenkatselu {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eTee toiminto summalla (chat-ongelmia varten)",
       "about": "&eNäytä QuickShop-ohjeistukset",
       "help": "&eNäytä QuickShop-apuselitteet",
-      "supercreate": "&eLuo kauppa ohittamalla kaikki suojaustarkistukset"
+      "supercreate": "&eLuo kauppa ohittamalla kaikki suojaustarkistukset",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Ostetaan {0}",
     "item": "{0}",
     "price": "{0} kpl",
+    "stack-price": "{0} stack",
     "unlimited": "Rajaton"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eNäyttäisi siltä että haluat muokata kauppaa, paina tyhjenttäksesi kaupan varasto.",
     "remove": "&c&l[Poista kauppa]",
     "remove-hover": "&ePoista tämä kauppa klikkaamalla.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [Pelaaja]",
       "unlimited": "\/qs slientunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [Uusi hinta]",
       "refill": "\/qs refill [summa]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Kerron sinulle, että {0} julkaistaisiin!",
       "Mä oon jo versiossa {0}! Päivitä! Sä oot viel {1}-versiossa ;)",
       "Jeeeeeeee! Uusi päivitys {0} on tullut! Päivitä!",
-      "Mitä ajattelet? {0} on julkaistu! Päivitä!"
+      "Mitä ajattelet? {0} on julkaistu! Päivitä!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cTämä QuickShop-versio on merkitty toimimattomaksi etäpalvelimelta. Tämä tarkoittaa sitä, että MIKÄÄN tai OSA QuickShopin ominaisuuksista ei toimi tai on pahasti vialla. Lataa uusi versio SpigotMC-sivuiltamme: {0}. Tämä varoitusviesti poistuu, eikä spämmi konsoliasi, kun päivität tämän lisäosan.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "Edistyminen: ",
     "help": "Auta meitä: ",
     "translate-on-crowdin": "[Käännä Crowdinissa]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }

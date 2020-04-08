@@ -3,7 +3,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 당신은 반드시 상점을 보고있어야 합니다.",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&a남은 내구도 : &e{0}%",
     "this-shop-is-buying": "&a이 상점은 아이템을 &d구매&a중인 상점입니다.",
     "this-shop-is-selling": "&a이 상점은 아이템을 &d판매&a중인 상점입니다.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&a효과",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&e거래 숫자 입력을 명령어로 시행합니다(채팅 플러그인 충돌 문제)",
       "about": "&eQuickShop 플러그인의 정보를 봅니다.",
       "help": "&eQuickShop 명령어 목록을 봅니다.",
-      "supercreate": "&e모든 보호를 우회하고 상점을 개설합니다."
+      "supercreate": "&e모든 보호를 우회하고 상점을 개설합니다.",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "구매 {0}",
     "item": "{0}",
     "price": "개당 {0}",
+    "stack-price": "{0} stack",
     "unlimited": "무제한"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&e눌러서 상점 비우기",
     "remove": "&c&l[상점 제거]",
     "remove-hover": "&e 클릭해서 상점 삭제.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [플레이어]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [새 가격]",
       "refill": "\/qs refill [수량]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "업데이트가 있습니다, 사령관님! {0} 이 출시했습니다!",
       "내 스타일좀 봐! {0} 업데이트! 넌 아직 {1}을 쓰는중!",
       "ㅋㅋㅋㅋㅋㅋㅋㅋ 새로운 {0} 업데이트!",
-      "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!"
+      "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오 : {0}.이 경고는 당신의 콘솔에 허가된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "진행도: ",
     "help": "도움: ",
     "translate-on-crowdin": "[Crowdin에서 번역하기]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }
