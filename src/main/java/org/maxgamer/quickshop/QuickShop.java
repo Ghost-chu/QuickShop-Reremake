@@ -282,6 +282,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private Cache shopCache;
 
+    @Getter
+    private boolean allowStack;
+
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
      * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
@@ -455,6 +458,7 @@ public class QuickShop extends JavaPlugin {
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
+        this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("log-actions")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -590,7 +594,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Initalize the Utils */
         ItemMatcher defItemMatcher;
-        switch (getConfig().getInt("matcher.work-type")){
+        switch (getConfig().getInt("matcher.work-type")) {
             case 1:
                 defItemMatcher = new BukkitItemMatcherImpl(this);
                 break;
@@ -1453,39 +1457,45 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 92) {
             getConfig().set("send-display-item-protection-alert", false);
             getConfig().set("send-shop-protection-alert", false);
-            getConfig().set("disable-creative-mode-trading",false);
-            getConfig().set("disable-super-tool",false);
-            getConfig().set("allow-owner-break-shop-sign",false);
-            getConfig().set("matcher.item.skull",true);
-            getConfig().set("matcher.item.firework",true);
-            getConfig().set("matcher.item.map",true);
-            getConfig().set("matcher.item.leatherArmor",true);
-            getConfig().set("matcher.item.fishBucket",true);
-            getConfig().set("matcher.item.suspiciousStew",true);
-            getConfig().set("matcher.item.shulkerBox",true);
+            getConfig().set("disable-creative-mode-trading", false);
+            getConfig().set("disable-super-tool", false);
+            getConfig().set("allow-owner-break-shop-sign", false);
+            getConfig().set("matcher.item.skull", true);
+            getConfig().set("matcher.item.firework", true);
+            getConfig().set("matcher.item.map", true);
+            getConfig().set("matcher.item.leatherArmor", true);
+            getConfig().set("matcher.item.fishBucket", true);
+            getConfig().set("matcher.item.suspiciousStew", true);
+            getConfig().set("matcher.item.shulkerBox", true);
             getConfig().set("config-version", 93);
             selectedVersion = 93;
         }
-        if(selectedVersion==93){
-            getConfig().set("disable-creative-mode-trading",null);
-            getConfig().set("disable-super-tool",null);
-            getConfig().set("allow-owner-break-shop-sign",null);
-            getConfig().set("shop.disable-creative-mode-trading",true);
-            getConfig().set("shop.disable-super-tool",true);
-            getConfig().set("shop.allow-owner-break-shop-sign",false);
+        if (selectedVersion == 93) {
+            getConfig().set("disable-creative-mode-trading", null);
+            getConfig().set("disable-super-tool", null);
+            getConfig().set("allow-owner-break-shop-sign", null);
+            getConfig().set("shop.disable-creative-mode-trading", true);
+            getConfig().set("shop.disable-super-tool", true);
+            getConfig().set("shop.allow-owner-break-shop-sign", false);
             getConfig().set("config-version", 94);
-            selectedVersion=94;
+            selectedVersion = 94;
         }
-        if(selectedVersion == 94){
-            if(getConfig().isSet("price-restriction")){
-                getConfig().set("shop.price-restriction",getConfig().getStringList("price-restriction"));
-                getConfig().set("price-restriction",null);
-            }else {
+        if (selectedVersion == 94) {
+            if (getConfig().isSet("price-restriction")) {
+                getConfig().set("shop.price-restriction", getConfig().getStringList("price-restriction"));
+                getConfig().set("price-restriction", null);
+            } else {
                 getConfig().set("shop.price-restriction", Collections.emptyList());
             }
-            getConfig().set("enable-log4j",null);
+            getConfig().set("enable-log4j", null);
             getConfig().set("config-version", 95);
-            selectedVersion=95;
+            selectedVersion = 95;
+        }
+        if (selectedVersion == 95) {
+            getConfig().set("shop.allow-stacks", false);
+            getConfig().set("shop.display-allow-stacks", false);
+            getConfig().set("config-version", 96);
+            selectedVersion = 96;
         }
         saveConfig();
         reloadConfig();

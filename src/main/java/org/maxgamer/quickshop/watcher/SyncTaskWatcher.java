@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class SyncTaskWatcher {
     @Getter
@@ -68,7 +69,7 @@ public class SyncTaskWatcher {
                 }
                 ItemStack itemStack = itemStackRemoveQueue.poll();
                 while (itemStack != null) {
-                    itemStack.setAmount(0);
+                    //itemStack.setAmount(0);
                     itemStack.setType(Material.AIR);
                     itemStack = itemStackRemoveQueue.poll();
                 }
