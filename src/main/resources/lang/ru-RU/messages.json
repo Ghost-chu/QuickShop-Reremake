@@ -3,7 +3,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Авторы: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cQuickShop не найден. Вы должны смотреть на сундук.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руках.",
   "no-permission": "&cУ вас нет прав на это.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&e{0}% &aОсталось.",
     "this-shop-is-buying": "&aЭтот магазин &dПОКУПАЕТ&a предметы.",
     "this-shop-is-selling": "&aЭтот магазин &bПРОДАЕТ&a предметы.",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&aЭффекты",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eИспользуйте эту команду, чтобы ввести цену или число в случае проблем с вводом данных в чат",
       "about": "&eО QuickShop",
       "help": "&eПоказать подсказку QuickShop",
-      "supercreate": "&eСоздать магазин в обход всех проверок защиты"
+      "supercreate": "&eСоздать магазин в обход всех проверок защиты",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Покупает {0}",
     "item": "{0}",
     "price": "{0}",
+    "stack-price": "{0} stack",
     "unlimited": "Много"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eНажмите чтобы очистить магазин.",
     "remove": "&c&l[Удалить магазин]",
     "remove-hover": "&eНажмите для удаления магазина.",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [Игрок]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [новая цена]",
       "refill": "\/qs refill [количество]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Сообщите админу что {0} уже вышел!",
       "Посмотрите---{0} обновлен, вы используете {1}",
       "Аххххх! Новое обновление {0}! Обновитесь!",
-      "Чего тут думать? {0} вышел! Обновитесь!"
+      "Чего тут думать? {0} вышел! Обновитесь!",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cЭта версия QS была отключена сервером, это означает что у неё есть серьезные проблемы, подробнее SpigotMC : {0}. Это сообщение будет появляться пока вы не отключите или обновите плагин.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "Прогресс: ",
     "help": "Help Us: ",
     "translate-on-crowdin": "[Translate on Crowdin]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }

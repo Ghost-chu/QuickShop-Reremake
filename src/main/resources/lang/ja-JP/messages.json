@@ -3,7 +3,7 @@
   "translation-version": "サポートバージョン: Reremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood 及び Mgazul",
   "translation-country": "言語圏: 日本語 (ja_JP)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。見ている必要があります。",
   "no-anythings-in-your-hand": "&cあなたの手には何もありません。",
   "no-permission": "&c権限を持っていないため実行できません。",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&a残り &e{0}%",
     "this-shop-is-buying": "&aこのショップは &d販売&a です",
     "this-shop-is-selling": "&aこのショップは &b買取&a です",
+    "shop-stack": "&aStack Amount: &e{0}",
     "effects": "&a効果",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&e金額を指定してアクションを実行します（チャットプラグインの問題の場合）",
       "about": "&eQuickShopの情報を表示",
       "help": "&eQuickShopのヘルプを表示",
-      "supercreate": "&eすべての保護チェックをバイパスするショップを作成する"
+      "supercreate": "&eすべての保護チェックをバイパスするショップを作成する",
+      "language": "&eSwitch the language that quickshop using"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "買取 {0}",
     "item": "{0}",
     "price": "1つあたり {0}",
+    "stack-price": "{0} stack",
     "unlimited": "無制限"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "&eクリックでアイテム削除します",
     "remove": "&c&l[ショップ削除]",
     "remove-hover": "&eクリックでショップを削除します",
+    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
+    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
     "commands": {
       "setowner": "\/qs setowner [プレイヤー名]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [新価格]",
       "refill": "\/qs refill [個数]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "アップデート司令官がいます、{0} が登場しました！",
       "私のスタイルを見て--- {0} が更新されましたが、まだ {1} を使用しています",
       "ああ！ 新しい更新 {0}！ 更新を！",
-      "何を考えてる？ {0} がリリースされました！ 更新しましょう！"
+      "何を考えてる？ {0} がリリースされました！ 更新しましょう！",
+      "Doctor, QuickShop have new update {0}! Think about update~",
+      "\\o\/ God of Server! QuickShop have new update {0}!",
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cこのバージョンのQuickShopは、リモートサーバーでは無効と記されています。つまり、このバージョンには深刻な問題がある可能性があります。SpigotMCページから詳細を取得します：{0}。この警告が表示され、無効になっていない他のバージョンを使用してこのバージョンを置き換えるまで、コンソールに表示が続きます。サーバーの実行には影響しません。",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "進行状況: ",
     "help": "ヘルプ: ",
     "translate-on-crowdin": "[Crowdinで翻訳]"
-  }
+  },
+  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
+  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
+  "denied-put-in-item": "&cThis item cannot put in this shop!"
 }

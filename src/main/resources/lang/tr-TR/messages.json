@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "31",
+  "language-version": "32",
   "not-looking-at-shop": "&cQuickShop bulunamadı, birine bakıyor olmalısın.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -92,6 +92,7 @@
     "damage-percent-remaining": "&aKalan &e{0}%.",
     "this-shop-is-buying": "&aBu market eşya %dSATIN ALIYOR&a.",
     "this-shop-is-selling": "&aBu market eşya %SATIYOR&a.",
+    "shop-stack": "&aYığın Miktarı: &e{0}",
     "effects": "&aEfektler",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -144,7 +145,8 @@
       "amount": "&eİşlemlerinizi tutarla gerçekleştirin(sohbet eklentisi konuları için)",
       "about": "&eQuickShop hakkındayı Göster",
       "help": "&eQuickShop yardımlarını Göster",
-      "supercreate": "%eBütün koruma kontrollerini atlayarak bir market oluştur"
+      "supercreate": "%eBütün koruma kontrollerini atlayarak bir market oluştur",
+      "language": "&eQuickshop'un kullandığı dili değiştirin"
     }
   },
   "signs": {
@@ -153,6 +155,7 @@
     "buying": "Alış {0}",
     "item": "{0}",
     "price": "her biri {0}",
+    "stack-price": "{0} yığın",
     "unlimited": "Sınırsız"
   },
   "controlpanel": {
@@ -173,6 +176,8 @@
     "empty-hover": "%eMarketin envanterini temizlemek için tıkla.",
     "remove": "&c&l[Marketi Kaldır]",
     "remove-hover": "&eBu marketi kaldırmak için tıkla.",
+    "stack": "&aYığın: &b{0} &e[&d&lAyarla&e]",
+    "stack-hover": "&eHer yığının öğe miktarlarını ayarlamak için tıklayın. Normal davranış için 1'e ayarlayın.",
     "commands": {
       "setowner": "\/qs setowner [Player]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -181,7 +186,8 @@
       "price": "\/qs price [New Price]",
       "refill": "\/qs refill [Amount]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
-      "remove": "\/qs silentremove {0} {1} {2} {3}"
+      "remove": "\/qs silentremove {0} {1} {2} {3}",
+      "stack": "\/qs silentstack [Amount]"
     }
   },
   "tableformat": {
@@ -218,7 +224,10 @@
       "Bir güncelleme var komutanım, {0} şuan çıktı!",
       "Tarzıma bak---{0} güncellendi, sen hala {1} versiyonunu kullanıyorsun",
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
-      "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!"
+      "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!",
+      "Doktor, QuickShop'un yeni bir güncellemesi var, {0}! Güncellemeyi düşün~",
+      "\\o\/ Sunucunun tanrısı! QuickShop'un yeni bir güncellemesi var, {0}!",
+      "Ko~ko~da~yo~ QuickShop'un yeni bir güncellemesi var, {0} ~"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlendi, bunun anlamı bu versiyonda büyük problemler oluşabilir, detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak, sunucu hızınızı etkilemez.",
     "label": {
@@ -248,5 +257,9 @@
     "progress": "İlerleme: ",
     "help": "Bize Yardım Edin: ",
     "translate-on-crowdin": "[Crowdin'de Çevirin]]"
-  }
+  },
+  "shop-now-freezed": "&aMarketi dondurdunuz, artık hiç kimse bu marketten ticaret yapamaz!",
+  "shop-nolonger-freezed": "&aMarketi çözdünüz, şimdi normale döndü!",
+  "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
+  "denied-put-in-item": "&cBu öğe bu markete konamaz!"
 }
