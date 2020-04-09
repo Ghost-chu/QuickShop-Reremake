@@ -226,7 +226,6 @@
       "ㅋㅋㅋㅋㅋㅋㅋㅋ 새로운 {0} 업데이트!",
       "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오 : {0}.이 경고는 당신의 콘솔에 허가된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
