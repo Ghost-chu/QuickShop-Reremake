@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,6 +41,8 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.List;
+
 @SuppressWarnings("DuplicatedCode")
 public class ShopProtectionListener extends ProtectionListenerBase implements Listener {
 
@@ -53,10 +52,6 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
     private final boolean useEnhanceProtection;
 
     private final boolean sendProtectionAlert = QuickShop.instance.getConfig().getBoolean("send-shop-protection-alert", false);
-
-    // Protect Minecart steal shop
-    Map.Entry<Location, Boolean> lastInventoryMoveItemCheck =
-        new AbstractMap.SimpleEntry<>(null, null);
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin, cache);
@@ -142,10 +137,13 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
 
         final Block newBlock = e.getNewState().getBlock();
         final Shop thisBlockShop = getShopNature(newBlock.getLocation(), true);
-        final Shop underBlockShop =
-            getShopNature(newBlock.getRelative(BlockFace.DOWN).getLocation(), true);
 
-        if (thisBlockShop == null && underBlockShop == null) {
+        if (thisBlockShop == null) {
+            return;
+        }
+        final Shop underBlockShop =
+                getShopNature(newBlock.getRelative(BlockFace.DOWN).getLocation(), true);
+        if(underBlockShop == null){
             return;
         }
         e.setCancelled(true);
