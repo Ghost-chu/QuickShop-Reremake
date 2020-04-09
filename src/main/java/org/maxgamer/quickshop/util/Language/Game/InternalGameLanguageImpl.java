@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.util.Language.Game;
+package org.maxgamer.quickshop.util.language.game;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
