@@ -245,7 +245,7 @@
   "digits-reach-the-limit": "&cFiyattaki basamak sınırına ulaştınız.",
   "complete": "&aTamamlandı!",
   "quickshop-gui-preview": "QuickShop GUI Önizleme Öğesi",
-  "shops-recovering": "Dükkanlar yedekten kurtarılıyor...",
+  "shops-recovering": "Marketler yedekten kurtarılıyor...",
   "shops-backingup": "Mağazalar veritabanından yedekleniyor... ",
   "saved-to-path": "Yedek dosyası {0} klasörüne kaydedildi.",
   "backup-failed": "Veritabanı yedeklenemiyor, ayrıntılar için konsolu kontrol edin.",
