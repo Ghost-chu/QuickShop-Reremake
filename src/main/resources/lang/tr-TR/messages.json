@@ -202,9 +202,9 @@
     "failed": "&c✘"
   },
   "tabcomplete": {
-    "price": "[price]",
-    "range": "[range]",
-    "amount": "[amount]"
+    "price": "[fiyat]",
+    "range": "[menzil]",
+    "amount": "[miktar]"
   },
   "updatenotify": {
     "buttontitle": "[Şimdi Güncelle]",
