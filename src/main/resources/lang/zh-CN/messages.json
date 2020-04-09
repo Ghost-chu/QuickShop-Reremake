@@ -88,6 +88,7 @@
     "space": "&a空间: &e{0}",
     "stock": "&a库存&e{0}",
     "price-per": "&a每&e{0}&a价格&e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&a共计商店数: &e{0}",
     "damage-percent-remaining": "&e{0}% &a剩余",
     "this-shop-is-buying": "&a这个商店&d收购&a物品。",
@@ -226,7 +227,6 @@
       "啊啊啊啊啊啊啊啊啊啊！更新 {0} 来了！快升级！",
       "你在想什么呢？{0}已经发布了！快更新！",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&c这个版本的QuickShop已经被远程服务器停用了,这意味着这个版本的QS可能存在着严重的问题，请在我们的SpigotMC插件页面:{0}里寻找详细信息。这个警告会出现按并且在你的控制台上通知直到你使用其他没有被停用的版本来替换这个版本，停用后不影响您的服务器的正常运行。",
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "denied-put-in-item": "&cThis item cannot put in this shop!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }

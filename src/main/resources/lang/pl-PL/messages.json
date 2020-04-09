@@ -88,6 +88,7 @@
     "space": "&aMiejsce: &e{0}",
     "stock": "&aIlość &e{0}",
     "price-per": "&aCena za &e{0} &a- &e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&aIlość w skrzyni: &e{0}",
     "damage-percent-remaining": "&e{0}% &aZostało.",
     "this-shop-is-buying": "&aTen sklep &dSKUPUJE&a itemy.",
@@ -226,8 +227,7 @@
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Słyszałeś? Wersja {0} już jest!",
       "Doktorze, QuickShop ma nową aktualizację {0}! Pomyśl o aktualizacji~",
-      "\\o\/ Stworzycielu serwera! QuickShop ma nową aktualizację {0}!",
-      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0} ~"
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, pobierz szczegóły ze strony SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie użyjesz innej, nie wyłączonej wersji, która nie wypływa na działanie serwera.",
     "label": {
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aSklep został odmrożony, teraz wrócił do normy!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
-  "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!"
+  "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
