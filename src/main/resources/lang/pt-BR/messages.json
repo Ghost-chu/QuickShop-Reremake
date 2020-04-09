@@ -8,9 +8,9 @@
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
   "3rd-plugin-build-check-failed": "Permissão para construir negada, você tem permissão para construir aqui?",
-  "no-creative-break": "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.",
-  "trading-in-creative-mode-is-disabled": "&cYou cannot trade with shop in the creative mode.",
-  "supertool-is-disabled": "&cSupertool is disabled, cannot break any shop.",
+  "no-creative-break": "&cVocê não pode quebrar lojas de outros jogadores no modo criativo, mude para o modo sobrevivência ou tente usar a super-ferramenta {0}.",
+  "trading-in-creative-mode-is-disabled": "&cVocê não pode negociar com a loja no modo criativo.",
+  "supertool-is-disabled": "&cSuper-ferramenta está desativada, não é mais possível quebrar nenhuma loja.",
   "no-double-chests": "&cVocê não pode criar a loja com baú duplo.",
   "not-managed-shop": "&cVocê não é o proprietário ou moderador da loja",
   "shop-already-owned": "&cIsso já é uma loja.",
@@ -88,12 +88,12 @@
     "space": "&aEspaço: &e{0}",
     "stock": "&aEstoque &e{0}",
     "price-per": "&aPrice por &e{0} &a- &e{1}",
-    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
+    "price-per-stack": "&aPriço por pacote&e{0} - {1} ",
     "total-value-of-chest": "&aValor total do baú: &e{0}",
     "damage-percent-remaining": "&e{0}% &aRestante.",
     "this-shop-is-buying": "&aEsta loja está &dCOMPRANDO&a itens.",
     "this-shop-is-selling": "&aEsta loja está &bVENDENDO&a itens.",
-    "shop-stack": "&aStack Amount: &e{0}",
+    "shop-stack": "&aValor do pack: &e{0}",
     "effects": "&aEfeitos",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -147,7 +147,7 @@
       "about": "&eMostrar detalhes do QuickShop",
       "help": "&eMostrar ajuda do QuickShop",
       "supercreate": "&eCria uma loja ignorando todas as verificações de proteção",
-      "language": "&eSwitch the language that quickshop using"
+      "language": "&eAltera o idioma do QuickShop"
     }
   },
   "signs": {
@@ -156,7 +156,7 @@
     "buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} cada",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} pack",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
@@ -177,8 +177,8 @@
     "empty-hover": "&eClique para limpar o inventário da loja.",
     "remove": "&c&l[Remover Loja]",
     "remove-hover": "&eClique para remover esta loja.",
-    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
-    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
+    "stack": "&aPack: &b{0} &e[&d&lMudar&e]",
+    "stack-hover": "&eClique para definir o valor do pacote. Deixe como 1 para comportamento normal.",
     "commands": {
       "setowner": "\/qs setowner [jogador]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -188,7 +188,7 @@
       "refill": "\/qs refill [quantidade]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
       "remove": "\/qs silentremove {0} {1} {2} {3}",
-      "stack": "\/qs silentstack [Amount]"
+      "stack": "\/qs silentstack [Quantidade]"
     }
   },
   "tableformat": {
@@ -226,8 +226,8 @@
       "Olhe meu estilo---{0} atualizado, você ainda está usando {1}",
       "Ahhhhhhh! Nova atualização {0}! Atualize!",
       "O que cê tá esperando? {0} foi lançado! Atualize!",
-      "Doctor, QuickShop have new update {0}! Think about update~",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "Doutor, o QuickShop tem uma nova atualização {0}! Pense em atualizar~",
+      "Ko~ko~da~yo~ O QuickShop tem uma nova atualização {0}~"
     ],
     "remote-disable-warning": "&cEsta versão do QuickShop está marcada como desativada pelo servidor remoto, o que significa que esta versão pode ter problemas sérios, obtenha detalhes na nossa página do SpigotMC: {0}. Este aviso irá aparecer e enviar spam ao console até que você use outra versão não desabilitada para substituir esta, não comprometa o seu servidor!",
     "label": {
@@ -258,19 +258,19 @@
     "help": "Nos Ajude: ",
     "translate-on-crowdin": "[Traduza no Crowdin]"
   },
-  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
-  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
-  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
-  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!",
-  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "shop-now-freezed": "&aVocê congelou a loja, portanto ninguém pode negociar com esta loja agora!",
+  "shop-nolonger-freezed": "&aVocê descongelou a loja, de volta ao normal!",
+  "shop-cannot-trade-when-freezing": "&cVocê não pode negociar com esta loja porque ela está congelada.",
+  "shop-freezed-at-location": "&eA sua loja {0} em {1} foi congelada!",
+  "denied-put-in-item": "&cEste item não pode ser colocado nesta loja!",
+  "how-many-buy-stack": "&aDigite quantos pacotes você deseja &bCOMPRAR&a no chat. Há &e{0}&a itens em cada pacote e você pode comprar &e{1}&a pacote(s). Digite &ball&a para comprar todos.",
+  "how-many-sell-stack": "&aDigite quantos pacotes você deseja &bCOMPRAR&a no chat. Há &e{0}&a itens em cada pacote e você pode comprar &e{1}&a pacote(s). Digite &ball&a para comprar todos.",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslate Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
-    "help-us": "&a[Help Us Improve Translation Quality]"
+    "name": "&eNome: &6{0}",
+    "code": "&eCódigo: &6{0}",
+    "translate-progress": "&eProgresso de tradução: &b{0}%",
+    "approval-progress": "&eProgresso de aprovação: &b{0}%",
+    "qa-issues": "&eProblemas de garantia de qualidade: &b{0}%",
+    "help-us": "&a[Ajude-nos a melhorar a qualidade da tradução]"
   }
 }
