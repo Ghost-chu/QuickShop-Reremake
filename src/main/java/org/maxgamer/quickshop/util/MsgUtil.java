@@ -1351,8 +1351,8 @@ public class MsgUtil {
             setAndUpdate("shop-freezed-at-location", "&eYour shop {0} at {1} got frozen!");
             setAndUpdate("shop-cannot-trade-when-freezing", "&cYou cannot trade with this shop cause it under freezing.");
             setAndUpdate("denied-put-in-item", "&cThis item cannot put in this shop!");
-            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have {0} items in each bulk and You can buy &e{0}&a bulks. Enter &ball&a to buy them all.");
-            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all.");
+            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{0}&a bulks. Enter &ball&a to buy them all.");
+            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all.");
             setAndUpdate("lang.name", "&eName: &6{0}");
             setAndUpdate("lang.code", "&eCode: &6{0}");
             setAndUpdate("lang.translate-progress", "&eTranslate Progress: &b{0}%");

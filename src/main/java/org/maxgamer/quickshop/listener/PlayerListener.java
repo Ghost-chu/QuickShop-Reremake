@@ -168,7 +168,7 @@ public class PlayerListener implements Listener {
                     itemAmount = 0;
                 }
                 if (plugin.getConfig().getBoolean("shop.allow-stacks") && shop.getItem().getAmount()>1) { //FIXME: A trash impl, need use a better way
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy-stack", p, ""+shop.getItem().getAmount(),"" + itemAmount));
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy-stack", p, ""+shop.getItem().getAmount(),"" + itemAmount/shop.getItem().getAmount()));
                 } else {
                     MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
                 }
@@ -194,7 +194,7 @@ public class PlayerListener implements Listener {
                     items = 0;
                 }
                 if (plugin.getConfig().getBoolean("shop.allow-stacks") && shop.getItem().getAmount()>1) { //FIXME: A trash impl, need use a better way
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell-stack", p,""+shop.getItem().getAmount(), "" + items));
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell-stack", p,""+shop.getItem().getAmount(), "" + items/shop.getItem().getAmount()));
                 } else {
                     MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell", p, "" + items));
                 }
