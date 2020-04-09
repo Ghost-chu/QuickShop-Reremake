@@ -226,7 +226,6 @@
       "啊啊啊啊啊啊啊啊啊啊！更新 {0} 来了！快升级！",
       "你在想什么呢？{0}已经发布了！快更新！",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&c这个版本的QuickShop已经被远程服务器停用了,这意味着这个版本的QS可能存在着严重的问题，请在我们的SpigotMC插件页面:{0}里寻找详细信息。这个警告会出现按并且在你的控制台上通知直到你使用其他没有被停用的版本来替换这个版本，停用后不影响您的服务器的正常运行。",
