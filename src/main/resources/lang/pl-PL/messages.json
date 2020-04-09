@@ -264,5 +264,13 @@
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!",
   "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have {0} items in each bulk and You can buy &e{0}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all."
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
