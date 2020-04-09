@@ -226,8 +226,7 @@
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!",
       "Doktor, QuickShop'un yeni bir güncellemesi var, {0}! Güncellemeyi düşün~",
-      "\\o\/ Sunucunun tanrısı! QuickShop'un yeni bir güncellemesi var, {0}!",
-      "Ko~ko~da~yo~ QuickShop'un yeni bir güncellemesi var, {0} ~"
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlendi, bunun anlamı bu versiyonda büyük problemler oluşabilir, detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak, sunucu hızınızı etkilemez.",
     "label": {
@@ -263,14 +262,14 @@
   "shop-cannot-trade-when-freezing": "&cBu markette ticaret yapamazsın çünkü donmuş.",
   "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
   "denied-put-in-item": "&cBu öğe bu markete konamaz!",
-  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have {0} items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "how-many-buy-stack": "&aKaç yığın &bALMAK&a istediğini sohbete yaz. Her yığında {0} öğe var ve &e{1}&a yığın alabilirsin. Hepsini almak için &ball&a yaz.",
+  "how-many-sell-stack": "&aKaç yığın &bSATMAK&a istediğini sohbete yaz. Her yığında {0} öğe var ve &e{1}&a yığın satılabilir. Hepsini satmak için &ball&a yaz.",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslate Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
-    "help-us": "&a[Help Us Improve Translation Quality]"
+    "name": "&eİsim: &6{0}",
+    "code": "&eKod: &6{0}",
+    "translate-progress": "&eTercüme İlerlemesi: &b{0}%",
+    "approval-progress": "&eOnaylanan İlerleme: &b{0}%",
+    "qa-issues": "&eKalite Güven Sorunları: &b{0}%",
+    "help-us": "&a[Tercüme Kalitemizi Geliştirmeye Yardım Edin]"
   }
 }
