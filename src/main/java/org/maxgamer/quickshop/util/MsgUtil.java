@@ -1358,7 +1358,7 @@ public class MsgUtil {
             setAndUpdate("lang.translate-progress", "&eTranslate Progress: &b{0}%");
             setAndUpdate("lang.approval-progress", "&eApproval Progress: &b{0}%");
             setAndUpdate("lang.qa-issues", "&eQuality Assurance Issues: &b{0}%");
-            setAndUpdate("lang.help-us", "&eQuality Assurance Issues: &b{0}%");
+            setAndUpdate("lang.help-us", "&a[Help Us Improve Translation Quality]");
             setAndUpdate("language-version", 32);
             selectedVersion = 32;
         }
