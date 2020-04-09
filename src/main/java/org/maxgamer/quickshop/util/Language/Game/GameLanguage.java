@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.util.Language.Game;
+package org.maxgamer.quickshop.util.language.game;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
