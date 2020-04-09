@@ -226,8 +226,7 @@
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Słyszałeś? Wersja {0} już jest!",
       "Doktorze, QuickShop ma nową aktualizację {0}! Pomyśl o aktualizacji~",
-      "\\o\/ Stworzycielu serwera! QuickShop ma nową aktualizację {0}!",
-      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0} ~"
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, pobierz szczegóły ze strony SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie użyjesz innej, nie wyłączonej wersji, która nie wypływa na działanie serwera.",
     "label": {
