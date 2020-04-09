@@ -263,6 +263,14 @@
   "shop-cannot-trade-when-freezing": "&cBu markette ticaret yapamazsın çünkü donmuş.",
   "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
   "denied-put-in-item": "&cBu öğe bu markete konamaz!",
-  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have {0} items in each bulk and You can buy &e{0}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all."
+  "how-many-buy-stack": "&aKaç yığın &bALMAK&a istediğini sohbete yaz. Her yığında {0} öğe var ve &e{0}&a yığın alabilirsin. Hepsini almak için &ball&a yaz.",
+  "how-many-sell-stack": "&aKaç yığın &bSATMAK&a istediğini sohbete yaz. Her yığında {0} öğe var ve &e{0}&a yığın satılabilir. Hepsini satmak için &ball&a yaz.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
