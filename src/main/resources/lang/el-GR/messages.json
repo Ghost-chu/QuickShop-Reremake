@@ -4,7 +4,7 @@
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Language Zone: English (en_US)",
   "language-version": "32",
-  "not-looking-at-shop": "&cNo QuickShop was found, you must be looking at one.",
+  "not-looking-at-shop": "Κανένα QuickShop δεν βρέθηκε, πρέπει να κοιτάς σε ένα.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
   "3rd-plugin-build-check-failed": "Some 3rd party plugin denied the permission checks, did you have permission built in there?",
@@ -88,6 +88,7 @@
     "space": "&aSpace: &e{0}",
     "stock": "&aStock &e{0}",
     "price-per": "&aPrice per &e{0} &a- &e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&aTotal value of Chest: &e{0}",
     "damage-percent-remaining": "&e{0}% &aRemaining.",
     "this-shop-is-buying": "&aThis shop is &dBUYING&a items.",
@@ -226,7 +227,6 @@
       "Ahhhhhhh! New update {0}! Update!",
       "What U thinking? {0} has been released! Update!",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, that mean this version may have serious problem, get details from our SpigotMC page: {0}. This warning will appear and spam your console until you use other not disabled version to replace this one, doesn't effect your server running.",
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "denied-put-in-item": "&cThis item cannot put in this shop!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
