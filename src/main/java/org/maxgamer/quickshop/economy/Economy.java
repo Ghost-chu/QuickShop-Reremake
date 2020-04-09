@@ -19,12 +19,14 @@
 
 package org.maxgamer.quickshop.economy;
 
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.UUID;
 
 public class Economy implements EconomyCore {
 
@@ -86,6 +88,16 @@ public class Economy implements EconomyCore {
     @Override
     public boolean isValid() {
         return core.isValid();
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Economy Processor";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.instance;
     }
 
 }
