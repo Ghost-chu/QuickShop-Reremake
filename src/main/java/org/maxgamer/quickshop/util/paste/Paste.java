@@ -132,7 +132,11 @@ public class Paste {
         finalReport.append("================================================\n");
         finalReport.append("Replaceable Modules Status:\n");
         finalReport.append("\tItemMatcher: ").append(plugin.getItemMatcher().getName()).append("@").append(plugin.getItemMatcher().getPlugin().getName());
-        finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName());
+        if(plugin.getEconomy() == null){
+            finalReport.append("\tEconomyCore: ").append("Not loaded").append("@").append("Unknown");
+        }else {
+            finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName());
+        }
         finalReport.append("\tDatabaseCore: ").append(plugin.getDatabase().getCore().getName()).append("@").append(plugin.getDatabase().getCore().getPlugin().getName());
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName());
         finalReport.append("================================================\n");
