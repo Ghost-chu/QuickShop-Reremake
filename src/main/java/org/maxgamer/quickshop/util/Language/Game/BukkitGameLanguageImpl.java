@@ -9,7 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
-public class BukkitGameLanguageImpl extends org.maxgamer.quickshop.util.language.game.InternalGameLanguageImpl implements org.maxgamer.quickshop.util.language.game.GameLanguage {
+public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements GameLanguage {
     private QuickShop plugin;
 
     public BukkitGameLanguageImpl(@NotNull QuickShop plugin) {
