@@ -48,8 +48,8 @@ import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.Language.Game.GameLanguage;
-import org.maxgamer.quickshop.util.Language.Game.MojangGameLanguageImpl;
+import org.maxgamer.quickshop.util.language.game.GameLanguage;
+import org.maxgamer.quickshop.util.language.game.MojangGameLanguageImpl;
 
 import java.io.File;
 import java.io.IOException;
