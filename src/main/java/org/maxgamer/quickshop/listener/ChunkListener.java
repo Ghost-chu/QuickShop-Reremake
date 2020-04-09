@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +30,8 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
+
+import java.util.HashMap;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {
@@ -56,7 +57,6 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
-
         final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
 
         if (inChunk == null || inChunk.isEmpty()) {

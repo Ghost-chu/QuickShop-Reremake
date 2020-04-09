@@ -60,14 +60,13 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
 
         final Block b = e.getBlock();
 
-        if (b.getState() instanceof Sign) {
+        if (b.getState() instanceof Sign) { //FIXME: It seems dupe with LockListener, remove it if can be removed
             Sign sign = (Sign) b.getState();
             if (super.getPlugin().getConfig().getBoolean("lockette.enable")
                 && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                 || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
-                super.getPlugin().getLogger()
-                    .info("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
+                Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
             }
         }
