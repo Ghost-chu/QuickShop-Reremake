@@ -226,7 +226,6 @@
       "¡Ahhhhhhh! ¡Nueva versión {0}! ¡Actualiza!",
       "¿En qué estás pensando? {0} ¡ya fue lanzada! ¡Actualiza!",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "§cEsta versión de QuickShop esta marcada como deshabilitado por servidor remoto, quiere decir que esta versión puede tener serios problemas, obtén detalles de nuestra pagina de SpigotMC: {0}. Esta advertencia aparecerá y llenara tu consola de mensajes hasta que uses otra versión no deshabilitada para reemplazar esta, no afectara el funcionamiento de su servidor.",
