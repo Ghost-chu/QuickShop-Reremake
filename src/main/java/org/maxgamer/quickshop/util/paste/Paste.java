@@ -19,14 +19,6 @@
 
 package org.maxgamer.quickshop.util.paste;
 
-import java.io.File;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -35,11 +27,20 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A util to generate a paste report and upload it to EngineHub/Ubuntu Paste
@@ -134,7 +135,7 @@ public class Paste {
             finalReport.append("\t*********************************\n");
             finalReport.append("\t\tName: ").append(world.getName()).append("\n");
             finalReport.append("\t\tEnvironment: ").append(world.getEnvironment().name()).append("\n");
-            finalReport.append("\t\tLoaded Chunks: ").append(world.getLoadedChunks().length).append("\n");
+            //finalReport.append("\t\tLoaded Chunks: ").append(world.getLoadedChunks().length).append("\n");
             finalReport.append("\t\tPlayer In World: ").append(world.getPlayers().size()).append("\n");
             finalReport
                 .append("\t\tShops In World: ")
