@@ -226,7 +226,6 @@
       "Аххххх! Новое обновление {0}! Обновитесь!",
       "Чего тут думать? {0} вышел! Обновитесь!",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cЭта версия QS была отключена сервером, это означает что у неё есть серьезные проблемы, подробнее SpigotMC : {0}. Это сообщение будет появляться пока вы не отключите или обновите плагин.",
