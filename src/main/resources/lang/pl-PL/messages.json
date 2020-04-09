@@ -88,6 +88,7 @@
     "space": "&aMiejsce: &e{0}",
     "stock": "&aIlość &e{0}",
     "price-per": "&aCena za &e{0} &a- &e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&aIlość w skrzyni: &e{0}",
     "damage-percent-remaining": "&e{0}% &aZostało.",
     "this-shop-is-buying": "&aTen sklep &dSKUPUJE&a itemy.",
@@ -262,8 +263,8 @@
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!",
-  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have {0} items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have {0} items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
   "language": {
     "name": "&eName: &6{0}",
     "code": "&eCode: &6{0}",
