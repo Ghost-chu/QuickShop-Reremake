@@ -623,7 +623,6 @@ public class QuickShop extends JavaPlugin {
             this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
         }
 
-
         /* Load 3rd party supports */
         load3rdParty();
 

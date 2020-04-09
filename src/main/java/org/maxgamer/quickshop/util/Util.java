@@ -72,8 +72,6 @@ public class Util {
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
 
-    static short tookLongTimeCostTimes;
-
     private static List<String> debugLogs = new LinkedList<>();
     private static ReentrantReadWriteLock lock=new ReentrantReadWriteLock();
 
@@ -854,6 +852,7 @@ public class Util {
      * @param p The player performing the action.
      * @return true if a nearby shop was found, false otherwise.
      */
+    @Deprecated
     public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
         // Check 5 relative positions that can be affected by a hopper: behind, in front of, to the
         // right,
@@ -940,13 +939,8 @@ public class Util {
         if (string.length() != 36 && string.length() != 32) {
             return false;
         }
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            UUID.fromString(string);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        String[] components = string.split("-");
+        return components.length == 5;
     }
 
     /**
