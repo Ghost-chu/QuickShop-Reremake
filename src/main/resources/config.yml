@@ -194,6 +194,7 @@ shop:
   display-check-time: 40
 
   #Allow display show stacks effect when stack creation turned on
+  #!WIP, DON'T TURN ON IT BEFORE WE FINISH IT!
   display-allow-stacks: false
 
   #Use enhance display protect
