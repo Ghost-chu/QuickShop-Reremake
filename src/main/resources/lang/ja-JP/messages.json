@@ -88,6 +88,7 @@
     "space": "&a空き : &e{0}",
     "stock": "&a在庫 : &e{0}",
     "price-per": "&a単価 : &e{0} &a- &e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&aチェストの合計額 : &e{0}",
     "damage-percent-remaining": "&a残り &e{0}%",
     "this-shop-is-buying": "&aこのショップは &d販売&a です",
@@ -226,7 +227,6 @@
       "ああ！ 新しい更新 {0}！ 更新を！",
       "何を考えてる？ {0} がリリースされました！ 更新しましょう！",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&cこのバージョンのQuickShopは、リモートサーバーでは無効と記されています。つまり、このバージョンには深刻な問題がある可能性があります。SpigotMCページから詳細を取得します：{0}。この警告が表示され、無効になっていない他のバージョンを使用してこのバージョンを置き換えるまで、コンソールに表示が続きます。サーバーの実行には影響しません。",
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "denied-put-in-item": "&cThis item cannot put in this shop!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
