@@ -19,16 +19,19 @@
 
 package org.maxgamer.quickshop.economy;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author creatorfromhell
@@ -175,6 +178,16 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public boolean isValid() {
         return reserve != null;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Reserve";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
     }
 
 }

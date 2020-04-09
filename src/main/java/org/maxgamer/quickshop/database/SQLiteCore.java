@@ -19,6 +19,11 @@
 
 package org.maxgamer.quickshop.database;
 
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,8 +32,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class SQLiteCore implements DatabaseCore {
     private final File dbFile;
@@ -116,6 +119,16 @@ public class SQLiteCore implements DatabaseCore {
                 return null;
             }
         }
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-SQLite";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.instance;
     }
 
     private void startWatcher() {

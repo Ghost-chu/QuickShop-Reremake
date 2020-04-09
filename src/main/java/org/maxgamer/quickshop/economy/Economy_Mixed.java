@@ -19,11 +19,14 @@
 
 package org.maxgamer.quickshop.economy;
 
-import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.UUID;
 
 public class Economy_Mixed implements EconomyCore {
     final EconomyCore core;
@@ -87,6 +90,16 @@ public class Economy_Mixed implements EconomyCore {
     @Override
     public boolean isValid() {
         return core.isValid();
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Mixed";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.instance;
     }
 
 }

@@ -20,8 +20,6 @@
 package org.maxgamer.quickshop.economy;
 
 
-import java.util.Objects;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -30,11 +28,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.event.server.ServiceUnregisterEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
@@ -236,6 +238,16 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Override
     public boolean isValid() {
         return this.vault != null;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Vault";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
     }
 
     public boolean checkValid() {

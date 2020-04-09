@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.database;
 
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Connection;
 
 public interface DatabaseCore {
@@ -30,5 +33,8 @@ public interface DatabaseCore {
     void queue(BufferStatement bs);
 
     Connection getConnection();
+
+    @NotNull String getName();
+    @NotNull Plugin getPlugin();
 
 }

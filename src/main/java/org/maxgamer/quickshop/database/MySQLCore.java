@@ -19,14 +19,17 @@
 
 package org.maxgamer.quickshop.database;
 
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MySQLCore implements DatabaseCore {
 
@@ -121,6 +124,16 @@ public class MySQLCore implements DatabaseCore {
             }
         }
         return null;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-MySQL";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.instance;
     }
 
 }
