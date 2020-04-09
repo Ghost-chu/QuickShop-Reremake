@@ -968,7 +968,7 @@ public class Util {
      * @return The location the player should be facing to have their crosshairs on the location
      * lookAt Kudos to bergerkiller for most of this function
      */
-    public static Location lookAt(Location loc, Location lookat) {
+    public static @NotNull Location lookAt(@NotNull Location loc, @NotNull Location lookat) {
         // Clone the loc to prevent applied changes to the input loc
         loc = loc.clone();
         // Values of change in distance (make it relative)
@@ -1021,6 +1021,7 @@ public class Util {
      * @param map2 Map2
      * @return Map1 match Map2
      */
+    @Deprecated
     public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
         for (Object obj : map1.keySet()) {
             if (!map2.containsKey(obj)) {
@@ -1040,6 +1041,7 @@ public class Util {
      * @param list2 givenList
      * @return Map1 match Map2
      */
+    @Deprecated
     public static boolean listMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
         return list2.containsAll(list1);
     }
@@ -1132,16 +1134,7 @@ public class Util {
      */
     public static String readToString(@NotNull String fileName) {
         File file = new File(fileName);
-        long filelength = file.length();
-        byte[] filecontent = new byte[(int) filelength];
-        try {
-            FileInputStream in = new FileInputStream(file);
-            in.read(filecontent);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String(filecontent, StandardCharsets.UTF_8);
+        return readToString(file);
     }
 
     /**
@@ -1151,8 +1144,7 @@ public class Util {
      * @return Target file's content.
      */
     public static String readToString(@NotNull File file) {
-        long filelength = file.length();
-        byte[] filecontent = new byte[(int) filelength];
+        byte[] filecontent = new byte[(int) file.length()];
         try {
             FileInputStream in = new FileInputStream(file);
             in.read(filecontent);
@@ -1166,6 +1158,7 @@ public class Util {
     /**
      * Send warning message when some plugin calling deprecated method... With the trace.
      */
+    @Deprecated
     public static void sendDeprecatedMethodWarn() {
         QuickShop.instance
             .getLogger()
