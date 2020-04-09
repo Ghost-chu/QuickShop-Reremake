@@ -38,7 +38,7 @@ public class RuntimeCheck {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            plugin.setBootError(new BootError("Cannot load on CatServer, go download CS edition, don't fucking asking us for support or we will send an army of angry bees your way.", "https://github.com/Luohuayu/QuickShop-Reremake"));
+            plugin.setBootError(new BootError("Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
             return;
         }
         if ((plugin.getServer().getName().toLowerCase().contains("mohist") || Util.isClassAvailable("red.mohist.mohist"))) {
