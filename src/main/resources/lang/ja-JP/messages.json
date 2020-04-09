@@ -155,7 +155,7 @@
     "buying": "買取 {0}",
     "item": "{0}",
     "price": "1つあたり {0}",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} スタック",
     "unlimited": "無制限"
   },
   "controlpanel": {
@@ -260,6 +260,7 @@
   },
   "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
+  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
   "denied-put-in-item": "&cThis item cannot put in this shop!"
 }
