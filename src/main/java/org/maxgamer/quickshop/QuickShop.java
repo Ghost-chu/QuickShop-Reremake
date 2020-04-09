@@ -568,6 +568,7 @@ public class QuickShop extends JavaPlugin {
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
         }
+        QuickShopAPI.setupApi(this);
 
         getLogger().info("Reading the configuration...");
         /* Process the config */
