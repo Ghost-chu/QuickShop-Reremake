@@ -226,7 +226,7 @@
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!",
       "Doktor, QuickShop'un yeni bir güncellemesi var, {0}! Güncellemeyi düşün~",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi var ~"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlendi, bunun anlamı bu versiyonda büyük problemler oluşabilir, detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak, sunucu hızınızı etkilemez.",
     "label": {
