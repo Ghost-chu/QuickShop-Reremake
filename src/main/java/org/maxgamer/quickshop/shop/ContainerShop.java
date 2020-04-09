@@ -93,27 +93,27 @@ public class ContainerShop implements Shop {
     /**
      * Adds a new shop.
      *
-     * @param location The location of the chest block
-     * @param price The cost per item
-     * @param item The itemstack with the properties we want. This is .cloned, no need to worry about
-     * references
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
      * @param moderator The modertators
-     * @param type The shop type
+     * @param type      The shop type
      * @param unlimited The unlimited
      */
     public ContainerShop(
-        @NotNull Location location,
-        double price,
-        @NotNull ItemStack item,
-        @NotNull ShopModerator moderator,
-        boolean unlimited,
-        @NotNull ShopType type) {
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type) {
         this.location = location;
         this.price = price;
         this.moderator = moderator;
         this.item = item.clone();
         this.plugin = QuickShop.instance;
-        if(!plugin.isAllowStack()){
+        if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
         }
         this.shopType = type;
@@ -123,7 +123,7 @@ public class ContainerShop implements Shop {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
                     Util.debugLog(
-                        "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
+                            "Failed to create a ContainerShop displayItem, the type is unknown, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
                 case REALITEM:
@@ -147,7 +147,7 @@ public class ContainerShop implements Shop {
                     break;
                 default:
                     Util.debugLog(
-                        "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
+                            "Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to RealDisplayItem");
                     this.displayItem = new RealDisplayItem(this);
                     break;
             }
@@ -159,7 +159,7 @@ public class ContainerShop implements Shop {
     /**
      * Add an item to shops chest.
      *
-     * @param item The itemstack. The amount does not matter, just everything else
+     * @param item   The itemstack. The amount does not matter, just everything else
      * @param amount The amount to add to the shop.
      */
     @Override
@@ -191,7 +191,7 @@ public class ContainerShop implements Shop {
     /**
      * Buys amount of item from Player p. Does NOT check our inventory, or balances
      *
-     * @param p The player to buy from
+     * @param p      The player to buy from
      * @param amount The amount to buy
      */
     @Override
@@ -219,16 +219,16 @@ public class ContainerShop implements Shop {
             // This should not happen.
             if (amount1 > 0) {
                 plugin
-                    .getLogger()
-                    .log(
-                        Level.WARNING,
-                        "Could not take all items from a players inventory on purchase! "
-                            + p.getName()
-                            + ", missing: "
-                            + amount1
-                            + ", item: "
-                            + Util.getItemStackName(this.getItem())
-                            + "!");
+                        .getLogger()
+                        .log(
+                                Level.WARNING,
+                                "Could not take all items from a players inventory on purchase! "
+                                        + p.getName()
+                                        + ", missing: "
+                                        + amount1
+                                        + ", item: "
+                                        + Util.getItemStackName(this.getItem())
+                                        + "!");
             }
         } else {
             Inventory chestInv = this.getInventory();
@@ -267,12 +267,12 @@ public class ContainerShop implements Shop {
             Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
             Util.debugLog(
-                "Call from: "
-                    + traceElements.getClassName()
-                    + "#"
-                    + traceElements.getMethodName()
-                    + "%"
-                    + traceElements.getLineNumber());
+                    "Call from: "
+                            + traceElements.getClassName()
+                            + "#"
+                            + traceElements.getMethodName()
+                            + "%"
+                            + traceElements.getLineNumber());
             return;
         }
 
@@ -444,12 +444,12 @@ public class ContainerShop implements Shop {
     public @NotNull String ownerName() {
         if (this.isUnlimited()) {
             return MsgUtil.getMessageOfflinePlayer(
-                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
+                    "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
         }
         String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
         if (name == null || name.isEmpty()) {
             return MsgUtil.getMessageOfflinePlayer(
-                "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
+                    "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
         }
         return name;
     }
@@ -457,7 +457,7 @@ public class ContainerShop implements Shop {
     /**
      * Removes an item from the shop.
      *
-     * @param item The itemstack. The amount does not matter, just everything else
+     * @param item   The itemstack. The amount does not matter, just everything else
      * @param amount The amount to remove from the shop.
      */
     @Override
@@ -479,7 +479,7 @@ public class ContainerShop implements Shop {
     /**
      * Sells amount of item to Player p. Does NOT check our inventory, or balances
      *
-     * @param p The player to sell to
+     * @param p      The player to sell to
      * @param amount The amount to sell
      */
     @Override
@@ -543,32 +543,35 @@ public class ContainerShop implements Shop {
         if (this.isSelling()) {
             if (this.getRemainingStock() == -1) {
                 lines[1] =
-                    MsgUtil.getMessageOfflinePlayer(
-                        "signs.selling",
-                        player,
-                        "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                        MsgUtil.getMessageOfflinePlayer(
+                                "signs.selling",
+                                player,
+                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
             } else {
                 lines[1] =
-                    MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + this.getRemainingStock());
+                        MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + this.getRemainingStock());
             }
 
         } else if (this.isBuying()) {
             if (this.getRemainingSpace() == -1) {
                 lines[1] =
-                    MsgUtil.getMessageOfflinePlayer(
-                        "signs.buying",
-                        player,
-                        "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
-
+                        MsgUtil.getMessageOfflinePlayer(
+                                "signs.buying",
+                                player,
+                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
             } else {
                 lines[1] =
-                    MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
+                        MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
             }
         }
         lines[2] =
-            MsgUtil.getMessageOfflinePlayer(
-                "signs.item", player, Util.getItemStackName(this.getItem()));
-        lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
+                MsgUtil.getMessageOfflinePlayer(
+                        "signs.item", player, Util.getItemStackName(this.getItem()));
+        if (!plugin.getConfig().getBoolean("shop.allow-stacks")) { //FIXME: A trash impl, need use a better way
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
+        } else {
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice()));
+        }
         this.setSignText(lines);
     }
 
@@ -590,24 +593,24 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin
-                .getDatabaseHelper()
-                .updateShop(
-                    ShopModerator.serialize(this.moderator.clone()),
-                    this.getItem(),
-                    unlimited,
-                    shopType.toID(),
-                    this.getPrice(),
-                    x,
-                    y,
-                    z,
-                    world);
+                    .getDatabaseHelper()
+                    .updateShop(
+                            ShopModerator.serialize(this.moderator.clone()),
+                            this.getItem(),
+                            unlimited,
+                            shopType.toID(),
+                            this.getPrice(),
+                            x,
+                            y,
+                            z,
+                            world);
         } catch (Exception e) {
             e.printStackTrace();
             plugin
-                .getLogger()
-                .log(
-                    Level.WARNING,
-                    "Could not update a shop in the database! Changes will revert after a reboot!");
+                    .getLogger()
+                    .log(
+                            Level.WARNING,
+                            "Could not update a shop in the database! Changes will revert after a reboot!");
         }
     }
 
@@ -773,7 +776,7 @@ public class ContainerShop implements Shop {
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         final String signHeader =
-            MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
+                MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
 
         for (Block b : blocks) {
             if (b == null) {
@@ -892,16 +895,16 @@ public class ContainerShop implements Shop {
     @Override
     public String toString() {
         StringBuilder sb =
-            new StringBuilder(
-                "Shop "
-                    + (location.getWorld() == null ? "unloaded world" : location.getWorld().getName())
-                    + "("
-                    + location.getBlockX()
-                    + ", "
-                    + location.getBlockY()
-                    + ", "
-                    + location.getBlockZ()
-                    + ")");
+                new StringBuilder(
+                        "Shop "
+                                + (location.getWorld() == null ? "unloaded world" : location.getWorld().getName())
+                                + "("
+                                + location.getBlockX()
+                                + ", "
+                                + location.getBlockY()
+                                + ", "
+                                + location.getBlockZ()
+                                + ")");
         sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
@@ -935,14 +938,14 @@ public class ContainerShop implements Shop {
     public @Nullable Inventory getInventory() {
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST
-                && plugin.getOpenInvPlugin() != null) {
+                    && plugin.getOpenInvPlugin() != null) {
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv
-                    .getSpecialEnderChest(
-                        Objects.requireNonNull(
-                            openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
-                        Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
-                    .getBukkitInventory();
+                        .getSpecialEnderChest(
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
+                                Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                        .getBukkitInventory();
             }
         } catch (Exception e) {
             Util.debugLog(e.getMessage());
