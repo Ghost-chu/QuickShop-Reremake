@@ -226,8 +226,7 @@
       "啊啊啊! 是新的版本 {0}! 快更新!",
       "您在想什麼？ {0} 已經釋出了! 快更新!",
       "醫生, QuickShop 有新的更新 {0}! 想想更新吧~",
-      "\\o\/ 神主! QuickShop 有新的更新 {0}!",
-      "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&c這個版本的 QuickShop 已經被標記為禁用, 代表這個版本有十分嚴重的問題。從我們的 SpigotMC 頁面獲取更多資訊: {0} 。這則警告將持續顯示到您使用沒有被禁用的版本替代這個, 但不影響您的伺服器運行。",
     "label": {
