@@ -25,7 +25,7 @@
   "shops-arent-locked": "&cUnutmayın! Marketler hırsızlara karşı koruma altında DEĞİLDİR. Eğer marketleri korumak istiyorsanız LWC, Lockette, vb. eklentiler ile kilitleyiniz.",
   "shop-creation-cancelled": "&cMarket oluşturma iptal edildi.",
   "shop-purchase-cancelled": "&cMarket satın alma işlemi iptal edildi.",
-  "shop-stock-too-low": "&cMarkette sadece {0} tane {1} var",
+  "shop-stock-too-low": "&cMarkette sadece {0} tane {1} kalmış",
   "you-cant-afford-to-buy": "&cBu ${0}'a mâl oluyor ama sende ${1} var.",
   "negative-amount": "&cSaf! Negatif miktarlarda işlem yapamazsın.",
   "not-a-number": "&cYalnızca sayı kullanabilirsiniz ama siz {0} girdiniz.",
