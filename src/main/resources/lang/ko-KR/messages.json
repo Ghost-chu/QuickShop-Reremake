@@ -88,6 +88,7 @@
     "space": "&a빈 공간 : &e{0}",
     "stock": "&a재고품 &e{0}",
     "price-per": "&e{0}&a의 개당 가격 &a- &e{1}",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&a상자의 총 가치 : &e{0}원",
     "damage-percent-remaining": "&a남은 내구도 : &e{0}%",
     "this-shop-is-buying": "&a이 상점은 아이템을 &d구매&a중인 상점입니다.",
@@ -226,7 +227,6 @@
       "ㅋㅋㅋㅋㅋㅋㅋㅋ 새로운 {0} 업데이트!",
       "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!",
       "Doctor, QuickShop have new update {0}! Think about update~",
-      "\\o\/ God of Server! QuickShop have new update {0}!",
       "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오 : {0}.이 경고는 당신의 콘솔에 허가된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "denied-put-in-item": "&cThis item cannot put in this shop!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
