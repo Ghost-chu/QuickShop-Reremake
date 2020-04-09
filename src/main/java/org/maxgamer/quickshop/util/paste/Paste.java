@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
@@ -128,6 +129,12 @@ public class Paste {
         List<String> modules = new ArrayList<>();
         plugin.getIntegrationHelper().getIntegrations().forEach(m -> modules.add(m.getName()));
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
+        finalReport.append("================================================\n");
+        finalReport.append("Replaceable Modules Status:\n");
+        finalReport.append("\tItemMatcher: ").append(plugin.getItemMatcher().getName()).append("@").append(plugin.getItemMatcher().getPlugin().getName());
+        finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName());
+        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabase().getCore().getName()).append("@").append(plugin.getDatabase().getCore().getPlugin().getName());
+        finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName());
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");

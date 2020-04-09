@@ -83,7 +83,7 @@ public class MsgUtil {
 
     private static YamlConfiguration potioni18n;
 
-    private static GameLanguage gameLanguage;
+    public static GameLanguage gameLanguage;
 
     private static IFile builtInLang;
 
