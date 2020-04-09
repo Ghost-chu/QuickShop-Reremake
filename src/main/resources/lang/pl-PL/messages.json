@@ -266,11 +266,11 @@
   "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
   "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
+    "name": "&eNazwa: &6{0}",
+    "code": "&eKod: &6{0}",
     "translate-progress": "&ePostęp tłumaczenia: &b{0}%",
     "approval-progress": "&ePostęp zatwierdzania: &b{0}%",
-    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "qa-issues": "&eProblemy z zapewnieniem jakości: &b{0}",
     "help-us": "&a[Pomóż Nam Poprawić Jakość Tłumaczeń]"
   }
 }
