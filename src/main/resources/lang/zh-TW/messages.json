@@ -88,6 +88,7 @@
     "space": "&a空間: &e{0}",
     "stock": "&a庫存: &e{0}",
     "price-per": "&a價格: &e一個 {0} {1} 元",
+    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
     "total-value-of-chest": "&a箱子中物品總價: &e{0} 元",
     "damage-percent-remaining": "&a耐久度: &e剩餘 {0}%",
     "this-shop-is-buying": "&a此商店是 &d收購物品&a 的商店。",
@@ -226,8 +227,7 @@
       "啊啊啊! 是新的版本 {0}! 快更新!",
       "您在想什麼？ {0} 已經釋出了! 快更新!",
       "醫生, QuickShop 有新的更新 {0}! 想想更新吧~",
-      "\\o\/ 神主! QuickShop 有新的更新 {0}!",
-      "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~"
+      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
     ],
     "remote-disable-warning": "&c這個版本的 QuickShop 已經被標記為禁用, 代表這個版本有十分嚴重的問題。從我們的 SpigotMC 頁面獲取更多資訊: {0} 。這則警告將持續顯示到您使用沒有被禁用的版本替代這個, 但不影響您的伺服器運行。",
     "label": {
@@ -262,5 +262,15 @@
   "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!"
+  "denied-put-in-item": "&cThis item cannot put in this shop!",
+  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
+  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "language": {
+    "name": "&eName: &6{0}",
+    "code": "&eCode: &6{0}",
+    "translate-progress": "&eTranslate Progress: &b{0}%",
+    "approval-progress": "&eApproval Progress: &b{0}%",
+    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
+    "help-us": "&a[Help Us Improve Translation Quality]"
+  }
 }
