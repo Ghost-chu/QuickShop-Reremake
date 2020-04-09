@@ -246,9 +246,9 @@
   "complete": "&aTamamlandı!",
   "quickshop-gui-preview": "QuickShop GUI Önizleme Öğesi",
   "shops-recovering": "Marketler yedekten kurtarılıyor...",
-  "shops-backingup": "Mağazalar veritabanından yedekleniyor... ",
+  "shops-backingup": "Mağazalar veri tabanından yedekleniyor... ",
   "saved-to-path": "Yedek dosyası {0} klasörüne kaydedildi.",
-  "backup-failed": "Veritabanı yedeklenemiyor, ayrıntılar için konsolu kontrol edin.",
+  "backup-failed": "Veri tabanı yedeklenemiyor, ayrıntılar için konsolu kontrol edin.",
   "translate-not-completed-yet-click": "{0} dilinin çevirisi {1} tamamlandı, çeviriyi geliştirmemize yardımcı olmak ister misiniz? Buraya Tıkla!",
   "translate-not-completed-yet-url": "{0} dilinin çevirisi {1} tamamlandı, çeviriyi geliştirmemize yardımcı olmak ister misiniz? Göz atın: {2}",
   "language-info-panel": {
