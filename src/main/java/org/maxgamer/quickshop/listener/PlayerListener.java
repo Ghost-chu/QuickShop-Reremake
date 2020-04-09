@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -41,13 +38,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class PlayerListener implements Listener {
@@ -166,8 +167,12 @@ public class PlayerListener implements Listener {
                 if (itemAmount < 0) {
                     itemAmount = 0;
                 }
+                if (!plugin.getConfig().getBoolean("shop.allow-stacks")) { //FIXME: A trash impl, need use a better way
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
+                } else {
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy-stack", p, ""+shop.getItem().getAmount(),"" + itemAmount));
+                }
 
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner());
                 int items = Util.countItems(p.getInventory(), shop.getItem());
@@ -188,8 +193,12 @@ public class PlayerListener implements Listener {
                 if (items < 0) {
                     items = 0;
                 }
+                if (!plugin.getConfig().getBoolean("shop.allow-stacks")) { //FIXME: A trash impl, need use a better way
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell", p, "" + items));
+                } else {
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell-stack", p,""+shop.getItem().getAmount(), "" + items));
+                }
 
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("how-many-sell", p, "" + items));
             }
             // Add the new action
             HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
