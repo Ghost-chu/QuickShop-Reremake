@@ -180,15 +180,15 @@
     "stack": "&aYığın: &b{0} &e[&d&lAyarla&e]",
     "stack-hover": "&eHer yığının öğe miktarlarını ayarlamak için tıklayın. Normal davranış için 1'e ayarlayın.",
     "commands": {
-      "setowner": "\/qs setowner [Player]",
+      "setowner": "\/qs setowner [Oyuncu]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
       "buy": "\/qs silentbuy {0} {1} {2} {3}",
       "sell": "\/qs silentsell {0} {1} {2} {3}",
-      "price": "\/qs price [New Price]",
-      "refill": "\/qs refill [Amount]",
+      "price": "\/qs price [Yeni Fiyat]",
+      "refill": "\/qs refill [Miktar]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
       "remove": "\/qs silentremove {0} {1} {2} {3}",
-      "stack": "\/qs silentstack [Amount]"
+      "stack": "\/qs silentstack [Miktar]"
     }
   },
   "tableformat": {
@@ -226,7 +226,7 @@
       "Tarzıma bak---{0} güncellendi, sen hala {1} versiyonunu kullanıyorsun",
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne Düşünüyorsun? {0} yayınlandı! Güncelle!",
-      "Doktor, QuickShop'un yeni bir güncellemesi var, {0}! Güncellemeyi düşün~",
+      "Doktor, QuickShop'un yeni {0} güncellemesi var! Güncellemeyi düşün~",
       "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi var ~"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlendi, bunun anlamı bu versiyonda büyük problemler oluşabilir, detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak, sunucu hızınızı etkilemez.",
@@ -241,7 +241,7 @@
       "master": "[Master]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&c{0} koordinatlarında bulunan marketiniz açık tutacak kadar paranız olmadığı için kaldırılmıştır!",
+  "shop-removed-cause-ongoing-fee": "&c{0} koordinatlarında bulunan marketinizi açık tutacak kadar paranız olmadığı için kaldırılmıştır!",
   "digits-reach-the-limit": "&cFiyattaki basamak sınırına ulaştınız.",
   "complete": "&aTamamlandı!",
   "quickshop-gui-preview": "QuickShop GUI Önizleme Öğesi",
