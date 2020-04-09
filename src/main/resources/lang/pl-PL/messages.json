@@ -227,7 +227,7 @@
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Słyszałeś? Wersja {0} już jest!",
       "Doktorze, QuickShop ma nową aktualizację {0}! Pomyśl o aktualizacji~",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0} ~"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, pobierz szczegóły ze strony SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie użyjesz innej, nie wyłączonej wersji, która nie wypływa na działanie serwera.",
     "label": {
@@ -260,7 +260,7 @@
   },
   "shop-now-freezed": "&aSklep został zamrożony i nikt nie może teraz handlować z tym sklepem!",
   "shop-nolonger-freezed": "&aSklep został odmrożony, teraz wrócił do normy!",
-  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
+  "shop-cannot-trade-when-freezing": "&cNie możesz handlować z tym sklepem, ponieważ jest on zamrożony.",
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cTen przedmiot nie może zostać umieszczony w tym sklepie!",
   "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
@@ -268,9 +268,9 @@
   "language": {
     "name": "&eName: &6{0}",
     "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslate Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
+    "translate-progress": "&ePostęp tłumaczenia: &b{0}%",
+    "approval-progress": "&ePostęp zatwierdzania: &b{0}%",
     "qa-issues": "&eQuality Assurance Issues: &b{0}%",
-    "help-us": "&a[Help Us Improve Translation Quality]"
+    "help-us": "&a[Pomóż Nam Poprawić Jakość Tłumaczeń]"
   }
 }
