@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.integration.PlotSquared;
+package org.maxgamer.quickshop.integration.plotsquared;
 
 import com.github.intellectualsites.plotsquared.plot.flag.BooleanFlag;
 import com.github.intellectualsites.plotsquared.plot.flag.Flags;
