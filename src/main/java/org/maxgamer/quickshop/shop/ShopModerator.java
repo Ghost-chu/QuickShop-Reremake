@@ -21,11 +21,13 @@ package org.maxgamer.quickshop.shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.util.ArrayList;
-import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
@@ -36,7 +38,7 @@ public class ShopModerator {
     private UUID owner;
 
     @NonNull
-    private ArrayList<UUID> staffs;
+    private List<UUID> staffs;
 
     private ShopModerator(@NotNull ShopModerator shopModerator) {
         this.owner = shopModerator.owner;
@@ -59,7 +61,7 @@ public class ShopModerator {
      * @param owner The owner
      * @param staffs The staffs
      */
-    public ShopModerator(@NotNull UUID owner, @NotNull ArrayList<UUID> staffs) {
+    public ShopModerator(@NotNull UUID owner, @NotNull List<UUID> staffs) {
         this.owner = owner;
         this.staffs = staffs;
     }
@@ -173,7 +175,7 @@ public class ShopModerator {
      *
      * @return Staffs
      */
-    public @NotNull ArrayList<UUID> getStaffs() {
+    public @NotNull List<UUID> getStaffs() {
         return staffs;
     }
 
@@ -182,7 +184,7 @@ public class ShopModerator {
      *
      * @param players staffs list
      */
-    public void setStaffs(@NotNull ArrayList<UUID> players) {
+    public void setStaffs(@NotNull List<UUID> players) {
         this.staffs = players;
     }
 
