@@ -268,6 +268,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.export")
                 .executor(new SubCommand_Export())
                 .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("convert")
+                        .hidden(true)
+                        .permission("quickshop.convert")
+                        .executor(new SubCommand_Convert())
+                        .build());
     }
 
     public void registerCmd(@NotNull CommandContainer container) {

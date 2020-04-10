@@ -54,7 +54,7 @@ public class SentryErrorReporter {
         "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
             + "stacktrace.app.packages=org.maxgamer.quickshop";
 
-    private final ArrayList<String> reported = new ArrayList<>();
+    private final List<String> reported = new ArrayList<>();
 
     private final Context context;
 
