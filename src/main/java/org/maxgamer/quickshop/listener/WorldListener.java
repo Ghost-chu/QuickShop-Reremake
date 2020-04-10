@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 @AllArgsConstructor
@@ -54,9 +55,9 @@ public class WorldListener implements Listener {
 
         plugin.getShopLoader().loadShops(world.getName());
         // New world data
-        final HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = new HashMap<>(1);
+        final Map<ShopChunk, Map<Location, Shop>> inWorld = new HashMap<>(1);
         // Old world data
-        final HashMap<ShopChunk, HashMap<Location, Shop>> oldInWorld =
+        final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
             plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
         // update.
@@ -64,8 +65,8 @@ public class WorldListener implements Listener {
             return;
         }
 
-        for (Entry<ShopChunk, HashMap<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
-            final HashMap<Location, Shop> inChunk = new HashMap<>(1);
+        for (Entry<ShopChunk, Map<Location, Shop>> oldInChunk : oldInWorld.entrySet()) {
+            final Map<Location, Shop> inChunk = new HashMap<>(1);
             // Put the new chunk were the old chunk was
             inWorld.put(oldInChunk.getKey(), inChunk);
 
@@ -83,9 +84,9 @@ public class WorldListener implements Listener {
         // world first loads....
         // So manually tell all of these shops they're loaded.
         for (Chunk chunk : world.getLoadedChunks()) {
-            final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+            final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
 
-            if (inChunk == null || inChunk.isEmpty()) {
+            if (inChunk == null) {
                 continue;
             }
 
@@ -102,8 +103,8 @@ public class WorldListener implements Listener {
         // world unloads, I think...
         // So manually tell all of these shops they're unloaded.
         for (Chunk chunk : e.getWorld().getLoadedChunks()) {
-            final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-            if (inChunk == null || inChunk.isEmpty()) {
+            final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
+            if (inChunk == null) {
                 continue;
             }
             for (Shop shop : inChunk.values()) {

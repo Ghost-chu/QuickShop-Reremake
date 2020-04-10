@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.google.common.collect.Maps;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -66,7 +67,7 @@ import java.util.logging.Level;
 public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
-    private static final HashMap<UUID, LinkedList<String>> player_messages = new HashMap<>();
+    private static final Map<UUID, LinkedList<String>> player_messages = Maps.newConcurrentMap();
 
     private static final QuickShop plugin = QuickShop.instance;
 
