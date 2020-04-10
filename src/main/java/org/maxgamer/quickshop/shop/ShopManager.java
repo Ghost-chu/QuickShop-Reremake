@@ -131,7 +131,7 @@ public class ShopManager {
      *
      * @return a map of World - Chunk - Shop
      */
-    public Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
+    public @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
         return this.shops;
     }
 
@@ -141,7 +141,7 @@ public class ShopManager {
      *
      * @return a new shop iterator object.
      */
-    public Iterator<Shop> getShopIterator() {
+    public @NotNull Iterator<Shop> getShopIterator() {
         return new ShopIterator();
     }
 
