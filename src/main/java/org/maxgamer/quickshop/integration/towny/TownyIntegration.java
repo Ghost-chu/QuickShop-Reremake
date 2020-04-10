@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.integration.Towny;
+package org.maxgamer.quickshop.integration.towny;
 
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
 import java.util.List;

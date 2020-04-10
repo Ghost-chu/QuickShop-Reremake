@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is WorldGuardFlags.java
+ * This file is a part of project QuickShop, the name is TownyFlags.java
  * Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  * Copyright (C) Bukkit Commons Studio and contributors
  *
@@ -17,24 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.maxgamer.quickshop.integration.WorldGuard;
+package org.maxgamer.quickshop.integration.towny;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public enum WorldGuardFlags {
-    FLAG,
-    BUILD,
-    CHEST_ACCESS,
-    INTERACT;
+public enum TownyFlags {
+    OWN,
+    MODIFY,
+    SHOPTYPE;
 
-    public static List<WorldGuardFlags> deserialize(List<String> list) {
-        List<WorldGuardFlags> result = new ArrayList<>();
-        list.forEach(v -> result.add(WorldGuardFlags.valueOf(v.toUpperCase())));
+    public static List<TownyFlags> deserialize(List<String> list) {
+        List<TownyFlags> result = new ArrayList<>();
+        list.forEach(v -> result.add(TownyFlags.valueOf(v.toUpperCase())));
         return result;
     }
 
-    public static List<String> serialize(List<WorldGuardFlags> list) {
+    public static List<String> serialize(List<TownyFlags> list) {
         List<String> result = new ArrayList<>();
         list.forEach(v -> result.add(v.name()));
         return result;
