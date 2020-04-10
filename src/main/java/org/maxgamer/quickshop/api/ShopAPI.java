@@ -69,7 +69,6 @@ public class ShopAPI {
 
     /**
      * Gets a list of copy for loaded shops
-     * This is a expensive action, please caching the result
      * @return The copy of loaded shops
      */
     public @NotNull List<Shop> getLoadedShops(){
@@ -77,17 +76,17 @@ public class ShopAPI {
     }
 
     /**
-     * Gets a list of a player's all shops
+     * Gets a list of copy a player's all shops
      * This is a expensive action, please caching the result
      * @param uuid Player UUID
      * @return The list of player's all shops
      */
     public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID uuid){
-        return plugin.getShopManager().getPlayerAllShops(uuid);
+        return new ArrayList<>(plugin.getShopManager().getPlayerAllShops(uuid));
     }
 
     /**
-     * Gets a list of all shops on this server
+     * Gets a list of copy all shops on this server
      * This is a expensive action, please caching the result
      * @return The list of all shops on server
      */
@@ -95,13 +94,13 @@ public class ShopAPI {
         return new ArrayList<>( plugin.getShopManager().getAllShops());
     }
     /**
-     * Gets a list of all shops in world
+     * Gets a list of copy all shops in world
      * This is a expensive action, please caching the result
      * @param world The world that you want get shops
      * @return The list of all shops in world
      */
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world){
-        return plugin.getShopManager().getShopsInWorld(world);
+        return new ArrayList<>(plugin.getShopManager().getShopsInWorld(world));
     }
 
 

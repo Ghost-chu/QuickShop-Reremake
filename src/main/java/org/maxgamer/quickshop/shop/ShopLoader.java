@@ -21,10 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Logger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -39,11 +35,17 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
+
 /**
  * A class allow plugin load shops fast and simply.
  */
 public class ShopLoader {
-    private final ArrayList<Long> loadTimes = new ArrayList<>();
+    private final List<Long> loadTimes = new ArrayList<>();
 
     private final Map<Timer, Double> costCache = new HashMap<>();
 
@@ -58,9 +60,9 @@ public class ShopLoader {
     private int totalLoaded = 0;
 
     /* This may contains broken shop, must use null check before load it. */
-    private List<Shop> shopsInDatabase = new ArrayList<>();
+    private List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
 
-    private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new ArrayList<>();
+    private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
 
     /**
      * The shop load allow plugin load shops fast and simply.

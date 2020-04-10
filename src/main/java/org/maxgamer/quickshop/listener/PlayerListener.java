@@ -44,7 +44,7 @@ import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -169,7 +169,7 @@ public class PlayerListener implements Listener {
                 }
             }
             // Add the new action
-            HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
+            Map<UUID, Info> actions = plugin.getShopManager().getActions();
             Info info = new Info(shop.getLocation(), ShopAction.BUY, null, null, shop);
             actions.put(p.getUniqueId(), info);
         }
