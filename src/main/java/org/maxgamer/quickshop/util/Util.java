@@ -220,7 +220,7 @@ public class Util {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += itemMaxStackSize - iStack.getAmount();
+                space += iStack.getAmount()>itemMaxStackSize ? 0:itemMaxStackSize - iStack.getAmount();
             }
         }
         return space;
@@ -232,11 +232,7 @@ public class Util {
      * @return Game StackSize or Custom
      */
     public static int getItemMaxStackSize(@NotNull Material material){
-        Integer integer = customStackSize.get(material);
-        if(integer != null){
-            return integer;
-        }
-        return material.getMaxStackSize();
+        return customStackSize.getOrDefault(material,material.getMaxStackSize());
     }
 
     /**
