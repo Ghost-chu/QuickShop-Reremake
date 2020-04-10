@@ -87,7 +87,7 @@
     "preview": "&b[Öğeyi Önizle]",
     "space": "&aYer: &e{0}",
     "stock": "&aStok &e{0}",
-    "price-per": "&e{0} &abaşına &e{1}",
+    "price-per": "&e{0} &abaşına fiyat &a- &e{1}",
     "price-per-stack": "&aYığın başına fiyat &e{0} - {1} ",
     "total-value-of-chest": "&aSandığın toplam değeri: &e{0}",
     "damage-percent-remaining": "&aKalan &e{0}%.",
