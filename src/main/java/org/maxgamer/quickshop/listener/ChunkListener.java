@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 public class ChunkListener implements Listener {
@@ -41,16 +41,15 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
-        // FIXME: Need thread-safe impl, because paper using async chunk loading.
         if (e.isNewChunk()) {
             return;
         }
-        final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+        final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
         if (inChunk == null || inChunk.isEmpty()) {
             return;
         }
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (Shop shop : new HashMap<>(inChunk).values()) {
+            for (Shop shop : inChunk.values()) {
                 shop.onLoad();
             }
         }, 1);
@@ -58,16 +57,14 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
-        // FIXME: Need thread-safe impl, because paper using async chunk unloading.
-        final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
+        final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
         if (inChunk == null || inChunk.isEmpty()) {
             return;
         }
-        for (Shop shop : new HashMap<>(inChunk).values()) {
+        for (Shop shop : inChunk.values()) {
             if(shop.isLoaded()) {
                 shop.onUnload();
             }
         }
     }
-
 }

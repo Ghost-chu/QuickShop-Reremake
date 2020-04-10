@@ -55,7 +55,7 @@ public class ShopManager {
 
     private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
 
-    private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ? Sets.newConcurrentHashSet() : Sets.newHashSet();
+    private final Set<Shop> loadedShops = Sets.newConcurrentHashSet();
 
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
@@ -485,7 +485,7 @@ public class ShopManager {
     /**
      * @return Returns the Map. Info contains what their last question etc was.
      */
-    public Map<UUID, Info> getActions() {
+    public @NotNull Map<UUID, Info> getActions() {
         return this.actions;
     }
 
@@ -494,12 +494,14 @@ public class ShopManager {
      *
      * @return All loaded shops.
      */
-    public Set<Shop> getLoadedShops() {
+    public @NotNull Set<Shop> getLoadedShops() {
         return this.loadedShops;
     }
 
     /**
      * Get a players all shops.
+     *
+     *  Make sure you have caching this, because this need a while to get player's all shops
      *
      * @param playerUUID The player's uuid.
      * @return The list have this player's all shops.
@@ -511,12 +513,12 @@ public class ShopManager {
     /**
      * Returns all shops in the whole database, include unloaded.
      *
-     * <p>Make sure you have caching this, because this need a while to get all shops
+     * Make sure you have caching this, because this need a while to get all shops
      *
      * @return All shop in the database
      */
-    public Collection<Shop> getAllShops() {
-        Collection<Shop> shops = new ArrayList<>();
+    public @NotNull List<Shop> getAllShops() {
+        List<Shop> shops = new ArrayList<>();
         for (Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
             for (Map<Location, Shop> shopData : shopMapData.values()) {
                 shops.addAll(shopData.values());
