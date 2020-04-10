@@ -995,7 +995,7 @@ public class ShopManager {
                             MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
                         } else {
                             // when if player's inventory is full
-                            if (invHaveSpaces == 0) {
+                            if (invHaveSpaces <= 0) {
                                 MsgUtil.sendMessage(p,MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
                                 return;
                             }

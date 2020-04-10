@@ -70,6 +70,8 @@ public class Util {
     private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
         new EnumMap<>(Material.class);
 
+    private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
+
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
 
     private static List<String> debugLogs = new LinkedList<>();
@@ -211,15 +213,30 @@ public class Util {
         }
         int space = 0;
 
+        int itemMaxStackSize = getItemMaxStackSize(item.getType());
+
         ItemStack[] contents = inv.getStorageContents();
         for (ItemStack iStack : contents) {
             if (iStack == null || iStack.getType() == Material.AIR) {
-                space += item.getMaxStackSize();
+                space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += item.getMaxStackSize() - iStack.getAmount();
+                space += itemMaxStackSize - iStack.getAmount();
             }
         }
         return space;
+    }
+
+    /**
+     * Returns a material max stacksize
+     * @param material Material
+     * @return Game StackSize or Custom
+     */
+    public static int getItemMaxStackSize(@NotNull Material material){
+        Integer integer = customStackSize.get(material);
+        if(integer != null){
+            return integer;
+        }
+        return material.getMaxStackSize();
     }
 
     /**
@@ -599,6 +616,7 @@ public class Util {
         shoppables.clear();
         restrictedPrices.clear();
         worldBlacklist.clear();
+        customStackSize.clear();
         plugin = QuickShop.instance;
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -646,6 +664,21 @@ public class Util {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
             }
+        }
+        for(String material:plugin.getConfig().getStringList("custom-item-stacksize")){
+            String[] data = material.split(":");
+            if(data.length != 2){
+                continue;
+            }
+
+            Material mat = Material.matchMaterial(data[0]);
+            if (mat == null || mat == Material.AIR){
+                plugin.getLogger().warning(material+" not a valid material type in custom-item-stacksize section.");
+                continue;
+            }
+            int size = Integer.parseInt(data[1]);
+            customStackSize.put(mat,size);
+
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
         disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger", false);

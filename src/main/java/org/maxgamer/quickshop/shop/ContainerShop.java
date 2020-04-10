@@ -167,10 +167,11 @@ public class ContainerShop implements Shop {
         if (this.unlimited) {
             return;
         }
+        int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         Inventory inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
-            int stackSize = Math.min(remains, item.getMaxStackSize());
+            int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Objects.requireNonNull(inv).addItem(item);
             remains -= stackSize;
@@ -465,10 +466,11 @@ public class ContainerShop implements Shop {
         if (this.unlimited) {
             return;
         }
+        int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         Inventory inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
-            int stackSize = Math.min(remains, item.getMaxStackSize());
+            int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Objects.requireNonNull(inv).removeItem(item);
             remains -= stackSize;
@@ -490,10 +492,11 @@ public class ContainerShop implements Shop {
         // Items to drop on floor
         ArrayList<ItemStack> floor = new ArrayList<>(5);
         Inventory pInv = p.getInventory();
+        int itemMaxStackSize = Util.getItemMaxStackSize(this.item.getType());
         if (this.isUnlimited()) {
             ItemStack item = this.item.clone();
             while (amount > 0) {
-                int stackSize = Math.min(amount, this.item.getMaxStackSize());
+                int stackSize = Math.min(amount, itemMaxStackSize);
                 item.setAmount(stackSize);
                 pInv.addItem(item);
                 amount -= stackSize;
