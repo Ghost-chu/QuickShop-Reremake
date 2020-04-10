@@ -939,7 +939,7 @@ public class ContainerShop implements Shop {
     public @Nullable Inventory getInventory() {
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST
-                    && plugin.getOpenInvPlugin() != null) {
+                    && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
                 return openInv
                         .getSpecialEnderChest(
