@@ -23,15 +23,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,14 +45,13 @@ public class SubCommand_Info implements CommandProcesser {
         buying = selling = doubles = chunks = worlds = doubleschests = 0;
         int nostock = 0;
 
-        for (Map<ShopChunk, HashMap<Location, Shop>> inWorld :
+        for (Map<ShopChunk, Map<Location, Shop>> inWorld :
             plugin.getShopManager().getShops().values()) {
             worlds++;
 
             for (Map<Location, Shop> inChunk : inWorld.values()) {
                 chunks++;
-                //noinspection unchecked
-                for (Shop shop : (ArrayList<Shop>) new ArrayList<>(inChunk.values()).clone()) {
+                for (Shop shop : inChunk.values()) {
                     if (shop.isBuying()) {
                         buying++;
                     } else if (shop.isSelling()) {
