@@ -68,9 +68,9 @@ public class ShopManager {
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         //noinspection ConstantConditions
         OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
-        if (taxPlayer.hasPlayedBefore()) {
+        //if (taxPlayer.hasPlayedBefore()) {
             this.cacheTaxAccount = taxPlayer.getUniqueId();
-        }
+        //}
     }
 
     /**
