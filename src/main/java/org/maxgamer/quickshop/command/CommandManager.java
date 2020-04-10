@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command;
 
+import com.google.common.collect.Sets;
 import lombok.Data;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -28,18 +29,17 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.command.subcommand.*;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.subcommand.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
-    private Set<CommandContainer> cmds = new HashSet<>();
+    private Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
 
     private CommandContainer rootContainer =
         CommandContainer.builder()
