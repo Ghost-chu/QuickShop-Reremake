@@ -152,6 +152,7 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
                 MsgUtil.sendMessage(p,
                     MsgUtil.getMessage(
                         "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
             if(getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign")&&p.getUniqueId().equals(shop.getOwner())){
