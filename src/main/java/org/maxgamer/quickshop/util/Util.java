@@ -220,7 +220,7 @@ public class Util {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += iStack.getAmount()>itemMaxStackSize ? 0:itemMaxStackSize - iStack.getAmount();
+                space += iStack.getAmount()>=itemMaxStackSize ? 0:itemMaxStackSize - iStack.getAmount();
             }
         }
         return space;
