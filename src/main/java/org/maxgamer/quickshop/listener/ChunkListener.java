@@ -41,6 +41,7 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
+        // FIXME: Need thread-safe impl, because paper using async chunk loading.
         if (e.isNewChunk()) {
             return;
         }
@@ -57,13 +58,15 @@ public class ChunkListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
+        // FIXME: Need thread-safe impl, because paper using async chunk unloading.
         final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-
         if (inChunk == null || inChunk.isEmpty()) {
             return;
         }
         for (Shop shop : new HashMap<>(inChunk).values()) {
-            shop.onUnload();
+            if(shop.isLoaded()) {
+                shop.onUnload();
+            }
         }
     }
 
