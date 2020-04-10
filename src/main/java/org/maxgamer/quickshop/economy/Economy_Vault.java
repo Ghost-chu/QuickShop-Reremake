@@ -94,7 +94,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @EventHandler
-    public void onServiceRegister(ServiceUnregisterEvent event) {
+    public void onServiceUnregister(ServiceUnregisterEvent event) {
         if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
             return;
         }
