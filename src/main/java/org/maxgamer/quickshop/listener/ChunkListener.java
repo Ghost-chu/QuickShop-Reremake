@@ -45,7 +45,7 @@ public class ChunkListener implements Listener {
             return;
         }
         final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-        if (inChunk == null || inChunk.isEmpty()) {
+        if (inChunk == null) {
             return;
         }
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -58,7 +58,7 @@ public class ChunkListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent e) {
         final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(e.getChunk());
-        if (inChunk == null || inChunk.isEmpty()) {
+        if (inChunk == null) {
             return;
         }
         for (Shop shop : inChunk.values()) {
