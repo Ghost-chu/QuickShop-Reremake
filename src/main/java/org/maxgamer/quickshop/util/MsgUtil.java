@@ -486,13 +486,13 @@ public class MsgUtil {
         } else {
             if (p.getPlayer() != null) {
                 try {
-                    sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), msgData[2]);
+                    sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
                 } catch (InvalidConfigurationException e) {
                     Util.debugLog("Unknown error, send by plain text.");
                     p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
                 } catch (ArrayIndexOutOfBoundsException e2) {
                     try {
-                        sendItemholochat(p.getPlayer(), msgData[0], Util.deserialize(msgData[1]), "");
+                        sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), "");
                     } catch (Exception any) {
                         // Normal msg
                         p.getPlayer().sendMessage(message);
