@@ -830,7 +830,7 @@ public class ContainerShop implements Shop {
      */
     @NotNull
     @Override
-    public ArrayList<UUID> getStaffs() {
+    public List<UUID> getStaffs() {
         return this.moderator.getStaffs();
     }
 

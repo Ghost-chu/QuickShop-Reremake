@@ -19,9 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -29,6 +26,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.UUID;
 
 public interface Shop {
     /**
@@ -275,7 +275,7 @@ public interface Shop {
      * @return staffs
      */
     @NotNull
-    ArrayList<UUID> getStaffs();
+    List<UUID> getStaffs();
 
     /**
      * Get shop is or not in buying mode
