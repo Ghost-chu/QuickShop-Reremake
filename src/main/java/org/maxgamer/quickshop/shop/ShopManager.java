@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -51,11 +53,11 @@ import java.util.stream.Collectors;
  */
 public class ShopManager {
 
-    private final HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> shops = new HashMap<>();
+    private final Map<String, Map<ShopChunk, Map<Location, Shop>>> shops = Maps.newConcurrentMap();
 
     private final Set<Shop> loadedShops = QuickShop.instance.isEnabledAsyncDisplayDespawn() ? Sets.newConcurrentHashSet() : Sets.newHashSet();
 
-    private final HashMap<UUID, Info> actions = new HashMap<>();
+    private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
 
@@ -88,8 +90,8 @@ public class ShopManager {
             if (plugin.isLimit()) {
                 int owned = 0;
                 if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
-                    for (HashMap<ShopChunk, HashMap<Location, Shop>> shopmap : getShops().values()) {
-                        for (HashMap<Location, Shop> shopLocs : shopmap.values()) {
+                    for (Map<ShopChunk, Map<Location, Shop>> shopmap : getShops().values()) {
+                        for (Map<Location, Shop> shopLocs : shopmap.values()) {
                             for (Shop shop : shopLocs.values()) {
                                 if (shop.getOwner().equals(p.getUniqueId()) && !shop.isUnlimited()) {
                                     owned++;
@@ -125,18 +127,17 @@ public class ShopManager {
     }
 
     /**
-     * Returns a hashmap of World - Chunk - Shop
+     * Returns a map of World - Chunk - Shop
      *
-     * @return a hashmap of World - Chunk - Shop
+     * @return a map of World - Chunk - Shop
      */
-    @NotNull
-    public HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> getShops() {
+    public Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops() {
         return this.shops;
     }
 
     /**
      * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
-     * through a 3D hashmap.
+     * through a 3D map.
      *
      * @return a new shop iterator object.
      */
@@ -152,7 +153,7 @@ public class ShopManager {
         if (plugin.isDisplay()) {
             for (World world : Bukkit.getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
-                    HashMap<Location, Shop> inChunk = this.getShops(chunk);
+                    Map<Location, Shop> inChunk = this.getShops(chunk);
                     if (inChunk == null || inChunk.isEmpty()) {
                         continue;
                     }
@@ -167,12 +168,12 @@ public class ShopManager {
     }
 
     /**
-     * Returns a hashmap of Shops
+     * Returns a map of Shops
      *
      * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are used.
      * @return Shops
      */
-    public @Nullable HashMap<Location, Shop> getShops(@NotNull Chunk c) {
+    public @Nullable Map<Location, Shop> getShops(@NotNull Chunk c) {
         // long start = System.nanoTime();
         return getShops(c.getWorld().getName(), c.getX(), c.getZ());
         // long end = System.nanoTime();
@@ -180,8 +181,8 @@ public class ShopManager {
         // "ms.");
     }
 
-    public @Nullable HashMap<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops(world);
+    public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
+        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
         }
@@ -189,12 +190,12 @@ public class ShopManager {
     }
 
     /**
-     * Returns a hashmap of Chunk - Shop
+     * Returns a map of Chunk - Shop
      *
      * @param world The name of the world (case sensitive) to get the list of shops from
-     * @return a hashmap of Chunk - Shop
+     * @return a map of Chunk - Shop
      */
-    public @Nullable HashMap<ShopChunk, HashMap<Location, Shop>> getShops(@NotNull String world) {
+    public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
         return this.shops.get(world);
     }
 
@@ -297,7 +298,7 @@ public class ShopManager {
                 return null;
             }
         }
-        HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        Map<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
         }
@@ -344,7 +345,7 @@ public class ShopManager {
     public @Nullable Shop getShopIncludeAttached_Classic(@NotNull Location loc) {
         @Nullable Shop shop;
 // Get location's chunk all shops
-        @Nullable HashMap<Location, Shop> inChunk = getShops(loc.getChunk());
+        @Nullable Map<Location, Shop> inChunk = getShops(loc.getChunk());
         // Found some shops in this chunk.
         if (inChunk != null) {
             shop = inChunk.get(loc);
@@ -402,7 +403,7 @@ public class ShopManager {
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            HashMap<UUID, Info> actions = getActions();
+            Map<UUID, Info> actions = getActions();
             // They wanted to do something.
             Info info = actions.remove(p.getUniqueId());
             if (info == null) {
@@ -441,8 +442,8 @@ public class ShopManager {
      * @param shop The shop to add
      */
     public void addShop(@NotNull String world, @NotNull Shop shop) {
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new HashMap<>(3));
-        // There's no world storage yet. We need to create that hashmap.
+        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().computeIfAbsent(world, k -> new MapMaker().initialCapacity(3).makeMap());
+        // There's no world storage yet. We need to create that map.
         // Put it in the data universe
         // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
         // location rounded to the nearest 16.
@@ -450,7 +451,7 @@ public class ShopManager {
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         // Get the chunk set from the world info
         ShopChunk shopChunk = new ShopChunk(world, x, z);
-        HashMap<Location, Shop> inChunk = inWorld.computeIfAbsent(shopChunk, k -> new HashMap<>(1));
+        Map<Location, Shop> inChunk = inWorld.computeIfAbsent(shopChunk, k -> new MapMaker().initialCapacity(1).makeMap());
         // That chunk data hasn't been created yet - Create it!
         // Put it in the world
         // Put the shop in its location in the chunk list.
@@ -469,11 +470,11 @@ public class ShopManager {
         // shop.onUnload();
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
-        HashMap<ShopChunk, HashMap<Location, Shop>> inWorld = this.getShops().get(world);
+        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
         int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
         int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
         ShopChunk shopChunk = new ShopChunk(world, x, z);
-        HashMap<Location, Shop> inChunk = inWorld.get(shopChunk);
+        Map<Location, Shop> inChunk = inWorld.get(shopChunk);
         if (inChunk == null) {
             return;
         }
@@ -482,9 +483,9 @@ public class ShopManager {
     }
 
     /**
-     * @return Returns the HashMap. Info contains what their last question etc was.
+     * @return Returns the Map. Info contains what their last question etc was.
      */
-    public HashMap<UUID, Info> getActions() {
+    public Map<UUID, Info> getActions() {
         return this.actions;
     }
 
@@ -515,11 +516,9 @@ public class ShopManager {
      * @return All shop in the database
      */
     public Collection<Shop> getAllShops() {
-        //noinspection unchecked
-        HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
         Collection<Shop> shops = new ArrayList<>();
-        for (HashMap<ShopChunk, HashMap<Location, Shop>> shopMapData : worldsMap.values()) {
-            for (HashMap<Location, Shop> shopData : shopMapData.values()) {
+        for (Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
+            for (Map<Location, Shop> shopData : shopMapData.values()) {
                 shops.addAll(shopData.values());
             }
         }
@@ -536,7 +535,7 @@ public class ShopManager {
         return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
     }
 
-    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(p, info, shop)){ return;}
         amount = shop.getItem().getAmount()*amount;
         int space = shop.getRemainingSpace();
@@ -623,7 +622,7 @@ public class ShopManager {
         }
         return tax;
     }
-    private void actionCreate(@NotNull Player p, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String
+    private void actionCreate(@NotNull Player p, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String
         message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p,"Error: Economy system not loaded, type /qs main command to get details.");
@@ -803,7 +802,7 @@ public class ShopManager {
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull HashMap<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(p, info, shop)) {return;}
         amount = shop.getItem().getAmount()*amount;
         int stock = shop.getRemainingStock();
@@ -888,7 +887,7 @@ public class ShopManager {
         return false;
     }
 
-    private void actionTrade(@NotNull Player p, @NotNull HashMap<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
+    private void actionTrade(@NotNull Player p, @NotNull Map<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p,"Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -1055,16 +1054,14 @@ public class ShopManager {
 
     public class ShopIterator implements Iterator<Shop> {
 
-        private final Iterator<HashMap<ShopChunk, HashMap<Location, Shop>>> worlds;
+        private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
 
-        private Iterator<HashMap<Location, Shop>> chunks;
+        private Iterator<Map<Location, Shop>> chunks;
 
         private Iterator<Shop> shops;
 
         public ShopIterator() {
-            //noinspection unchecked
-            HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>> worldsMap = (HashMap<String, HashMap<ShopChunk, HashMap<Location, Shop>>>) getShops().clone();
-            worlds = worldsMap.values().iterator();
+            worlds = getShops().values().iterator();
         }
 
         /**
