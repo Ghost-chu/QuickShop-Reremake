@@ -19,21 +19,22 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class SubCommand_Find implements CommandProcesser {
 
@@ -80,7 +81,7 @@ public class SubCommand_Find implements CommandProcesser {
         for (int x = -chunkRadius + c.getX(); x < chunkRadius + c.getX(); x++) {
             for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
                 final Chunk d = c.getWorld().getChunkAt(x, z);
-                final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(d);
+                final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(d);
 
                 if (inChunk == null) {
                     continue;
