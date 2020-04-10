@@ -47,7 +47,7 @@ public class SubCommand_Clean implements CommandProcesser {
         MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaning", sender));
 
         final Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
-        final ArrayList<Shop> pendingRemoval = new java.util.ArrayList<>();
+        final List<Shop> pendingRemoval = new ArrayList<>();
         int i = 0;
 
         while (shIt.hasNext()) {
@@ -72,9 +72,7 @@ public class SubCommand_Clean implements CommandProcesser {
             }
         }
 
-        for (Shop shop : pendingRemoval) {
-            shop.delete();
-        }
+        pendingRemoval.forEach(Shop::delete);
 
         MsgUtil.clean();
         MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaned", sender, "" + i));
