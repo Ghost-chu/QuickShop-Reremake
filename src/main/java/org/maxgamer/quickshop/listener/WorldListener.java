@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
 import lombok.AllArgsConstructor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -34,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 @AllArgsConstructor
 public class WorldListener implements Listener {
@@ -102,13 +103,13 @@ public class WorldListener implements Listener {
         // So manually tell all of these shops they're unloaded.
         for (Chunk chunk : e.getWorld().getLoadedChunks()) {
             final HashMap<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
-
             if (inChunk == null || inChunk.isEmpty()) {
                 continue;
             }
-
             for (Shop shop : inChunk.values()) {
-                shop.onUnload();
+                if(shop.isLoaded()) { //Don't unload already unloaded shops.
+                    shop.onUnload();
+                }
             }
         }
     }
