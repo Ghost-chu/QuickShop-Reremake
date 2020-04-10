@@ -661,7 +661,7 @@ public class ShopManager {
                 MsgUtil.sendMessage(p,MsgUtil.getMessage("chest-was-removed", p));
                 return;
             }
-            if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) {
+            if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) { //FIXME: Need a better impl
                 if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                     return;
                 }

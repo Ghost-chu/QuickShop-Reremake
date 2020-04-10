@@ -33,11 +33,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.shop.Info;
@@ -56,14 +54,17 @@ public class PlayerListener implements Listener {
     @NotNull
     private final QuickShop plugin;
 
+    private void playClickSound(@NotNull Player player){
+        if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
+            player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                    && Util.isWallSign(e.getClickedBlock().getType())) {
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Util.isWallSign(e.getClickedBlock().getType())) {
                 final Block block;
-
                 if (Util.isWallSign(e.getClickedBlock().getType())) {
                     block = Util.getAttached(e.getClickedBlock());
                 } else {
@@ -71,37 +72,23 @@ public class PlayerListener implements Listener {
                 }
                 Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
                 if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())){
-                    if (plugin.getConfig().getBoolean("shop.sneak-to-control")
-                            && !e.getPlayer().isSneaking()) {
+                    if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                         return;
                     }
-
-                    if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
-                        e.getPlayer()
-                                .playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
-                    }
-
-                    MsgUtil.sendControlPanelInfo(
-                            e.getPlayer(),
-                            Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
-                    Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation()))
-                            .setSignText();
+                    MsgUtil.sendControlPanelInfo(e.getPlayer(), Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
+                    this.playClickSound(e.getPlayer());
+                    Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
                 }
             }
-
             return;
         }
-
         final Block b = e.getClickedBlock();
-
         if (b == null) {
             return;
         }
-
         if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
             return;
         }
-
         final Player p = e.getPlayer();
         final Location loc = b.getLocation();
         final ItemStack item = e.getItem();
@@ -110,16 +97,13 @@ public class PlayerListener implements Listener {
         // If that wasn't a shop, search nearby shops
         if (shop == null) {
             final Block attached;
-
             if (Util.isWallSign(b.getType())) {
                 attached = Util.getAttached(b);
-
                 if (attached != null) {
                     shop = plugin.getShopManager().getShop(attached.getLocation());
                 }
             } else if (Util.isDoubleChest(b)) {
                 attached = Util.getSecondHalf(b);
-
                 if (attached != null) {
                     Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
                     if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
@@ -136,13 +120,8 @@ public class PlayerListener implements Listener {
             if (plugin.getConfig().getBoolean("shop.sneak-to-trade") && !p.isSneaking()) {
                 return;
             }
-
             shop.onClick();
-
-            if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
-                e.getPlayer()
-                        .playSound(e.getPlayer().getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
-            }
+            this.playClickSound(e.getPlayer());
             // Text menu
             MsgUtil.sendShopInfo(p, shop);
             shop.setSignText();
@@ -152,14 +131,10 @@ public class PlayerListener implements Listener {
             final double money = plugin.getEconomy().getBalance(p.getUniqueId());
 
             if (shop.isSelling()) {
-                int itemAmount =
-                        Math.min(
-                                Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
-
+                int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
                 if (!shop.isUnlimited()) {
                     itemAmount = Math.min(itemAmount, shop.getRemainingStock());
                 }
-
                 if (itemAmount < 0) {
                     itemAmount = 0;
                 }
@@ -168,7 +143,6 @@ public class PlayerListener implements Listener {
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-buy", p, "" + itemAmount));
                 }
-
             } else {
                 final double ownerBalance = eco.getBalance(shop.getOwner());
                 int items = Util.countItems(p.getInventory(), shop.getItem());
@@ -185,7 +159,6 @@ public class PlayerListener implements Listener {
                     // the unlimited shop owner should have enough money.
                     items = Math.min(items, ownerCanAfford);
                 }
-
                 if (items < 0) {
                     items = 0;
                 }
@@ -194,7 +167,6 @@ public class PlayerListener implements Listener {
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-sell", p, "" + items));
                 }
-
             }
             // Add the new action
             HashMap<UUID, Info> actions = plugin.getShopManager().getActions();
@@ -209,39 +181,29 @@ public class PlayerListener implements Listener {
                 && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell")
                 && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Result.DENY
-                    || plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking()
+                    || (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking())
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
                 return;
             }
-
             if (Util.getSecondHalf(b) != null
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", p));
                 return;
             }
-
             if (Util.isBlacklisted(item)
                     && !QuickShop.getPermissionManager()
                     .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("blacklisted-item", p));
                 return;
             }
-
-            if (b.getType() == Material.ENDER_CHEST
+            if (b.getType() == Material.ENDER_CHEST //FIXME: Need a better impl
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                 return;
             }
-      /*if (!Util.canBeShop(b)) {
-          Util.debugLog("Can be shop check failed.");
-          return;
-      }
-      Already checked above*/
-
             if (Util.isWallSign(b.getType())) {
-//        Util.debugLog("WallSign check failed.");
                 return;
             }
             // Finds out where the sign should be placed for the shop
@@ -254,11 +216,9 @@ public class PlayerListener implements Listener {
 
             while (bIt.hasNext()) {
                 final Block n = bIt.next();
-
                 if (n.equals(b)) {
                     break;
                 }
-
                 last = n;
             }
             // Send creation menu.
@@ -275,24 +235,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
-
-        @Nullable Inventory inventory = e.getInventory(); // Possibly wrong tag
-        @Nullable Location location = null;
-
-        try {
-            // This will cause NPE when the internal getLocation method
-            // itself NPE, which should be a server issue.
-            location = inventory.getLocation();
-        } catch (NullPointerException npe) {
-            return; // ignored as workaround, GH-303
+        Location location = e.getInventory().getLocation();
+        if(location == null){
+            return; /// ignored as workaround, GH-303
         }
-
-        if (location == null) {
-            return;
-        }
-
         final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
-
         if (shop != null) {
             shop.setSignText();
         }
@@ -300,7 +247,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
-
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
@@ -309,16 +255,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
-
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent e) {
-
-        PlayerMoveEvent me = new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo());
-        onMove(me);
+        onMove(new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo()));
     }
 
     /*
@@ -326,23 +269,16 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e) {
-
         final Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
-
         if (info == null) {
             return;
         }
-
         final Player p = e.getPlayer();
         final Location loc1 = info.getLocation();
         final Location loc2 = p.getLocation();
-
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
-            if (info.getAction() == ShopAction.CREATE) {
+            if (info.getAction() == ShopAction.CREATE || info.getAction() == ShopAction.BUY) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-creation-cancelled", p));
-                Util.debugLog(p.getName() + " too far with the shop location.");
-            } else if (info.getAction() == ShopAction.BUY) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             }
             plugin.getShopManager().getActions().remove(p.getUniqueId());
@@ -351,27 +287,18 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDyeing(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK
-                || e.getItem() == null
-                || !Util.isDyes(e.getItem().getType())) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getItem() == null || !Util.isDyes(e.getItem().getType())) {
             return;
         }
-
         final Block block = e.getClickedBlock();
-
         if (block == null || !Util.isWallSign(block.getType())) {
             return;
         }
-
         final Block attachedBlock = Util.getAttached(block);
-
-        if (attachedBlock == null
-                || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
             return;
         }
-
         e.setCancelled(true);
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
-
 }
