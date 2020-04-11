@@ -156,7 +156,7 @@
     "buying": "Покупает {0}",
     "item": "{0}",
     "price": "{0}",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} per stack",
     "unlimited": "Много"
   },
   "controlpanel": {
