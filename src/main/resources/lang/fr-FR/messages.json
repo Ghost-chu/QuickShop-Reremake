@@ -156,7 +156,7 @@
     "buying": "Achat {0}",
     "item": "{0}",
     "price": "{0} l'unité",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} per stack",
     "unlimited": "Illimité"
   },
   "controlpanel": {
