@@ -156,7 +156,7 @@
     "buying": "收購 {0} 個",
     "item": "{0}",
     "price": "每個 {0}",
-    "stack-price": "{0} 堆疊",
+    "stack-price": "{0} per stack",
     "unlimited": "無上限"
   },
   "controlpanel": {
