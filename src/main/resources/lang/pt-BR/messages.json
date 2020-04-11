@@ -156,7 +156,7 @@
     "buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} cada",
-    "stack-price": "{0} pack",
+    "stack-price": "{0} per stack",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
