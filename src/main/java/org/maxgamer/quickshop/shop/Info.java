@@ -56,7 +56,7 @@ public class Info {
         if (item != null) {
             this.item = item.clone();
         }
-        this.lastChangedAt = shop.getLastChangedAt();
+        this.lastChangedAt = System.currentTimeMillis();
     }
 
     public Info(
