@@ -156,7 +156,7 @@
     "buying": "買取 {0}",
     "item": "{0}",
     "price": "1つあたり {0}",
-    "stack-price": "{0} スタック",
+    "stack-price": "{0} per stack",
     "unlimited": "無制限"
   },
   "controlpanel": {
