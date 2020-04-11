@@ -156,7 +156,7 @@
     "buying": "Alıyor: {0}",
     "item": "{0}",
     "price": "her biri {0}",
-    "stack-price": "{0} per stack",
+    "stack-price": "Yığın başına {0}",
     "unlimited": "Sınırsız"
   },
   "controlpanel": {
