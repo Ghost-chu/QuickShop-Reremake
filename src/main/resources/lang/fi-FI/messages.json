@@ -156,7 +156,7 @@
     "buying": "Ostetaan {0}",
     "item": "{0}",
     "price": "{0} kpl",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} per stack",
     "unlimited": "Rajaton"
   },
   "controlpanel": {
