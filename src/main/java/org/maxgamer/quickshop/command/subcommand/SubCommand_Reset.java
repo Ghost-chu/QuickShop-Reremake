@@ -19,17 +19,18 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class SubCommand_Reset implements CommandProcesser {
 
@@ -47,9 +48,11 @@ public class SubCommand_Reset implements CommandProcesser {
 
         switch (cmdArg[0]) {
             case "lang":
+                File cache = new File(plugin.getDataFolder(), "cache");
                 File item = new File(plugin.getDataFolder(), "itemi18n.yml");
                 File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
                 File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
+                cache.delete();
                 item.delete();
                 ench.delete();
                 potion.delete();
