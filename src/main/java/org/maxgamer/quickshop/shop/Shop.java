@@ -334,4 +334,11 @@ public interface Shop {
     @Nullable
     DisplayItem getDisplay();
 
+    /**
+     * Gets the shop last changes timestamp
+     * @return The time stamp
+     */
+    long getLastChangedAt();
+
+
 }

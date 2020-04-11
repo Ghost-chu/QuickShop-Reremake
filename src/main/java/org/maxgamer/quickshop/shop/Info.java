@@ -43,6 +43,8 @@ public class Info {
 
     private Shop shop;
 
+    private long lastChangedAt;
+
     public Info(
         @NotNull Location loc,
         @NotNull ShopAction action,
@@ -54,6 +56,7 @@ public class Info {
         if (item != null) {
             this.item = item.clone();
         }
+        this.lastChangedAt = shop.getLastChangedAt();
     }
 
     public Info(
@@ -71,6 +74,7 @@ public class Info {
         if (shop != null) {
             this.shop = shop.clone();
         }
+        this.lastChangedAt = shop.getLastChangedAt();
     }
 
     /**
@@ -80,7 +84,7 @@ public class Info {
         return this.action;
     }
 
-    public void setAction(ShopAction action) {
+    public void setAction(@NotNull ShopAction action) {
         this.action = action;
     }
 
@@ -131,6 +135,9 @@ public class Info {
         }
         if (!this.shop.getLocation().equals(shop.getLocation())) {
             return true;
+        }
+        if(this.lastChangedAt != shop.getLastChangedAt()){
+            return false;
         }
         return !this.shop.matches(shop.getItem());
     }
