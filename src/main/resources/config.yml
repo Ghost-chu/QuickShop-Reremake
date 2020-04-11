@@ -397,6 +397,7 @@ mixedeconomy:
   deposit: "eco give {0} {1}"
   withdraw: "eco take {0} {1}"
 #Integration is under BETA stage, please report any bugs to our Issue Tracker.
+#Must disable protection-checks before enable integration
 integration:
   #Towny Integration Component
   towny:
