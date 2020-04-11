@@ -156,7 +156,7 @@
     "buying": "Sprzedaj {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} per stack",
     "unlimited": "Nieograniczony"
   },
   "controlpanel": {
