@@ -78,6 +78,8 @@ public class ContainerShop implements Shop {
 
     private boolean unlimited;
 
+    private long lastChangedAt;
+
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
         this.shopType = s.shopType;
@@ -88,6 +90,7 @@ public class ContainerShop implements Shop {
         this.moderator = s.moderator;
         this.price = s.price;
         this.isLoaded = s.isLoaded;
+        this.lastChangedAt = System.currentTimeMillis();
     }
 
     /**
@@ -154,6 +157,7 @@ public class ContainerShop implements Shop {
         } else {
             Util.debugLog("The display was disabled.");
         }
+        this.lastChangedAt = System.currentTimeMillis();
     }
 
     /**
@@ -181,6 +185,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean addStaff(@NotNull UUID player) {
+        this.lastChangedAt = System.currentTimeMillis();
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
@@ -300,6 +305,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void clearStaffs() {
+        this.lastChangedAt = System.currentTimeMillis();
         this.moderator.clearStaffs();
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
         update();
@@ -307,6 +313,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean delStaff(@NotNull UUID player) {
+        this.lastChangedAt = System.currentTimeMillis();
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
@@ -330,6 +337,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void delete(boolean memoryOnly) {
+        this.lastChangedAt = System.currentTimeMillis();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
@@ -405,9 +413,11 @@ public class ContainerShop implements Shop {
         Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
         if (priceRestriction != null) {
             if (price < priceRestriction.getKey()) {
+                this.lastChangedAt = System.currentTimeMillis();
                 price = priceRestriction.getKey();
                 this.update();
             } else if (price > priceRestriction.getValue()) {
+                this.lastChangedAt = System.currentTimeMillis();
                 price = priceRestriction.getValue();
                 this.update();
             }
@@ -667,7 +677,8 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public void setModerator(ShopModerator shopModerator) {
+    public void setModerator(@NotNull ShopModerator shopModerator) {
+        this.lastChangedAt = System.currentTimeMillis();
         this.moderator = shopModerator;
         update();
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
@@ -714,6 +725,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("A plugin cancelled the price change event.");
             return;
         }
+        this.lastChangedAt = System.currentTimeMillis();
         this.price = price;
         setSignText();
         update();
@@ -757,6 +769,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setShopType(@NotNull ShopType shopType) {
+        this.lastChangedAt = System.currentTimeMillis();
         this.shopType = shopType;
         this.setSignText();
         update();
@@ -883,6 +896,16 @@ public class ContainerShop implements Shop {
     @Override
     public @Nullable DisplayItem getDisplay() {
         return this.displayItem;
+    }
+
+    /**
+     * Gets the shop last changes timestamp
+     *
+     * @return The time stamp
+     */
+    @Override
+    public long getLastChangedAt() {
+        return this.lastChangedAt;
     }
 
     /**
