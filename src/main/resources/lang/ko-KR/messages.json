@@ -156,7 +156,7 @@
     "buying": "구매 {0}",
     "item": "{0}",
     "price": "개당 {0}",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} per stack",
     "unlimited": "무제한"
   },
   "controlpanel": {
