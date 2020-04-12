@@ -154,7 +154,6 @@ public class Updater {
         if (versionNow == null) {
             return false;
         }
-        boolean updateResult = false;
         if (!versionNow.equals(QuickShop.getVersion())) {
             Matcher matcher = pattern.matcher(versionNow);
             if (matcher.find()) {
@@ -164,18 +163,21 @@ public class Updater {
                     String[] previous = QuickShop.getVersion().split("\\.");
                     for (int i = 0; i < now.length; i++) {
                         if (i < previous.length) {
-                            if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
-                                updateResult = true;
-                                break;
+                            int nowSub = Integer.parseInt(now[i]);
+                            int preSub = Integer.parseInt(previous[i]);
+                            if (nowSub == preSub) {
+                                continue;
                             }
+                            return nowSub > preSub;
                         }
                     }
                 }
-            } else {
-                // no recognize, forced update
-                updateResult = true;
             }
+        } else {
+            //equals
+            return true;
         }
-        return updateResult;
+        // no recognize, forced update
+        return true;
     }
 }
