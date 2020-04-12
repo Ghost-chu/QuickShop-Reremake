@@ -1355,13 +1355,19 @@ public class MsgUtil {
             setAndUpdate("language-version", 32);
             selectedVersion = 32;
         }
-        if(selectedVersion == 32){
-            setAndUpdate("signs.stack-selling","Selling {0}");
-            setAndUpdate("signs.stack-buying","Buying {0}");
-            setAndUpdate("menu.price-per-stack","&aPrice per bulk &e{0} - {1}");
-            setAndUpdate("menu.shop-stack","&aStack Amount: &e{0}");
+        if (selectedVersion == 32) {
+            setAndUpdate("signs.stack-selling", "Selling {0}");
+            setAndUpdate("signs.stack-buying", "Buying {0}");
+            setAndUpdate("menu.price-per-stack", "&aPrice per bulk &e{0} - {1}");
+            setAndUpdate("menu.shop-stack", "&aStack Amount: &e{0}");
             setAndUpdate("language-version", 33);
             selectedVersion = 33;
+        }
+        if (selectedVersion == 33) {
+            setAndUpdate("integrations-check-failed-create", "Integrations denied the shop creation");
+            setAndUpdate("integrations-check-failed-trade", "Integrations denied the shop trade");
+            setAndUpdate("language-version", 34);
+            selectedVersion = 34;
         }
 
         messagei18n.save();
