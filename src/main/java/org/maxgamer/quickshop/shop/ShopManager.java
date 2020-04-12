@@ -716,9 +716,6 @@ public class ShopManager {
                 return;
             }
 
-            if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
-                price = CalculateUtil.divide(price,info.getItem().getAmount());
-            }
 
             boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
@@ -750,6 +747,11 @@ public class ShopManager {
                     MsgUtil.sendMessage(p,MsgUtil.getMessage("restricted-prices", p, Util.getItemStackName(info.getItem()), String.valueOf(priceRestriction.getKey()), String.valueOf(priceRestriction.getValue())));
                 }
             }
+
+            if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
+                price = CalculateUtil.divide(price,info.getItem().getAmount());
+            }
+
 
             double createCost = plugin.getConfig().getDouble("shop.cost");
             // Create the sample shop.
