@@ -54,11 +54,11 @@ public class SentryErrorReporter {
         "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
             + "stacktrace.app.packages=org.maxgamer.quickshop";
 
-    private final List<String> reported = new ArrayList<>();
+    private final List<String> reported = new ArrayList<>(5);
 
     private final Context context;
 
-    private final List<Class<?>> ignoredException = new ArrayList<>();
+    private final List<Class<?>> ignoredException = new ArrayList<>(8);
 
     private final QuickShop plugin;
 

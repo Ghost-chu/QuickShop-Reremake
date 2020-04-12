@@ -85,7 +85,7 @@ public class Util {
 
     private static Field tpsField;
 
-    private static List<String> worldBlacklist = new ArrayList<>();
+    private static List<String> worldBlacklist = new ArrayList<>(5);
 
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
 

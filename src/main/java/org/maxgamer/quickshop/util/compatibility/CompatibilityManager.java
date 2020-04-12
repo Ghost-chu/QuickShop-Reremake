@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CompatibilityManager {
-    private Set<CompatibilityModule> registeredModules = new HashSet<>();
+    private Set<CompatibilityModule> registeredModules = new HashSet<>(5);
 
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin

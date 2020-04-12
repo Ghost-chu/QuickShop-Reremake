@@ -85,8 +85,7 @@ public class InventoryPreview implements Listener {
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
-        List<String> lores = stack.getItemMeta().getLore();
-        for (String string : lores) {
+        for (String string : stack.getItemMeta().getLore()) {
             if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
                 return true;
             }

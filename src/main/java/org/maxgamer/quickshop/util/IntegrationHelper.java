@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -29,9 +27,12 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 public class IntegrationHelper {
-    private Set<IntegratedPlugin> integrations = new HashSet<>();
+    private Set<IntegratedPlugin> integrations = new HashSet<>(5);
 
     public void register(@NotNull IntegratedPlugin clazz) {
         if (!isIntegrationClass(clazz)) {
