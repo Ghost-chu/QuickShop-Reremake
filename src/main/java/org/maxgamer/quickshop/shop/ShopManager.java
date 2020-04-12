@@ -42,6 +42,7 @@ import org.maxgamer.quickshop.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.event.ShopSuccessPurchaseEvent;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.text.DecimalFormat;
@@ -66,6 +67,8 @@ public class ShopManager {
 
     private UUID cacheTaxAccount;
 
+    private PriceLimiter priceLimiter;
+
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
@@ -74,6 +77,7 @@ public class ShopManager {
         //if (taxPlayer.hasPlayedBefore()) {
             this.cacheTaxAccount = taxPlayer.getUniqueId();
         //}
+        this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"),plugin.getConfig().getBoolean("shop.allow-free-shop"));
     }
 
     /**
@@ -685,21 +689,17 @@ public class ShopManager {
 
             // Price per item
             double price;
-            double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
-            try {
-                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
-                    try {
-                        price = Integer.parseInt(message);
-                    } catch (NumberFormatException ex2) {
-                        // input is number, but not Integer
-                        Util.debugLog(ex2.getMessage());
-                        MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-integer", p, message));
-                        return;
-                    }
-                } else {
-                    price = Double.parseDouble(message);
-                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
-                    String[] processedDouble = strFormat.split(".");
+
+            if(plugin.getConfig().getBoolean("whole-number-prices-only")){
+                try{price = Integer.parseInt(message);}catch (NumberFormatException numberFormatException){
+                    Util.debugLog(numberFormatException.getMessage());
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-integer", p, message));
+                    return;
+                }
+            }else{
+                price = Double.parseDouble(message);
+                   String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
+                   String[] processedDouble = strFormat.split(".");
                     if (processedDouble.length > 1) {
                         int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price", -1);
                         if (processedDouble[1].length() > maximumDigitsLimit && maximumDigitsLimit != -1) {
@@ -707,46 +707,83 @@ public class ShopManager {
                             return;
                         }
                     }
-                }
-
-            } catch (NumberFormatException ex) {
-                // No number input
-                Util.debugLog(ex.getMessage());
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-number", p, message));
-                return;
             }
-
-
             boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
-            if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
-                if (price != 0 && price < minPrice) {
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+            switch (this.priceLimiter.check(info.getItem(),price)){
+                case REACHED_PRICE_MIN_LIMIT:
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : "" + this.priceLimiter.getMinPrice()));
                     return;
-                }
-            } else {
-                if (price < minPrice) {
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+                case REACHED_PRICE_MAX_LIMIT:
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : "" +this.priceLimiter.getMinPrice()));
                     return;
-                }
+                case PRICE_RESTRICTED:
+                    Map.Entry<Double, Double> materialLimit =Util.getPriceRestriction(info.getItem().getType());
+                    MsgUtil.sendMessage(p,MsgUtil.getMessage("restricted-prices", p, Util.getItemStackName(info.getItem()), String.valueOf(materialLimit.getKey()), String.valueOf(materialLimit.getValue())));
             }
 
-            double maximumPrice = plugin.getConfig().getInt("shop.maximum-price");
-            if (maximumPrice != -1) {
-                if (price > maximumPrice) {
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(maximumPrice) : "" + maximumPrice));
-                    return;
-                }
-            }
-            // Check price restriction
-            Map.Entry<Double, Double> priceRestriction = Util.getPriceRestriction(info.getItem().getType());
-            if (priceRestriction != null) {
-                if (price < priceRestriction.getKey() || price > priceRestriction.getValue()) {
-                    // MsgUtil.sendMessage(p,ChatColor.RED+"Restricted prices for
-                    // "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max
-                    // "+priceRestriction.getValue());
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("restricted-prices", p, Util.getItemStackName(info.getItem()), String.valueOf(priceRestriction.getKey()), String.valueOf(priceRestriction.getValue())));
-                }
-            }
+
+//            double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
+//            try {
+//                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
+//                    try {
+//                        price = Integer.parseInt(message);
+//                    } catch (NumberFormatException ex2) {
+//                        // input is number, but not Integer
+//                        Util.debugLog(ex2.getMessage());
+//                        MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-integer", p, message));
+//                        return;
+//                    }
+//                } else {
+//                    price = Double.parseDouble(message);
+//                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
+//                    String[] processedDouble = strFormat.split(".");
+//                    if (processedDouble.length > 1) {
+//                        int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price", -1);
+//                        if (processedDouble[1].length() > maximumDigitsLimit && maximumDigitsLimit != -1) {
+//                            MsgUtil.sendMessage(p,MsgUtil.getMessage("digits-reach-the-limit", p, String.valueOf(maximumDigitsLimit)));
+//                            return;
+//                        }
+//                    }
+//                }
+//
+//            } catch (NumberFormatException ex) {
+//                // No number input
+//                Util.debugLog(ex.getMessage());
+//                MsgUtil.sendMessage(p,MsgUtil.getMessage("not-a-number", p, message));
+//                return;
+//            }
+//
+//
+//            boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
+//            if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
+//                if (price != 0 && price < minPrice) {
+//                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+//                    return;
+//                }
+//            } else {
+//                if (price < minPrice) {
+//                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+//                    return;
+//                }
+//            }
+//
+//            double maximumPrice = plugin.getConfig().getInt("shop.maximum-price");
+//            if (maximumPrice != -1) {
+//                if (price > maximumPrice) {
+//                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(maximumPrice) : "" + maximumPrice));
+//                    return;
+//                }
+//            }
+//            // Check price restriction
+//            Map.Entry<Double, Double> priceRestriction = Util.getPriceRestriction(info.getItem().getType());
+//            if (priceRestriction != null) {
+//                if (price < priceRestriction.getKey() || price > priceRestriction.getValue()) {
+//                    // MsgUtil.sendMessage(p,ChatColor.RED+"Restricted prices for
+//                    // "+info.getItem().getType()+": min "+priceRestriction.getKey()+", max
+//                    // "+priceRestriction.getValue());
+//                    MsgUtil.sendMessage(p,MsgUtil.getMessage("restricted-prices", p, Util.getItemStackName(info.getItem()), String.valueOf(priceRestriction.getKey()), String.valueOf(priceRestriction.getValue())));
+//                }
+//            }
 
             if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
                 price = CalculateUtil.divide(price,info.getItem().getAmount());
@@ -811,7 +848,8 @@ public class ShopManager {
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop
+        shop, int amount) {
         if (shopIsNotValid(p, info, shop)) {return;}
         amount = shop.getItem().getAmount()*amount;
         int stock = shop.getRemainingStock();
