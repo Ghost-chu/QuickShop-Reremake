@@ -53,7 +53,7 @@ public class SubCommand_Update implements CommandProcesser {
                     return;
                 }
 
-                if (Updater.hasUpdate(updateVersion)) {
+                if (!Updater.hasUpdate(updateVersion)) {
                     MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
