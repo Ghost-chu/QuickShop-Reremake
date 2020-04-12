@@ -411,7 +411,9 @@ public class QuickShop extends JavaPlugin {
                             Economy_Vault vault = (Economy_Vault) core;
                             if (vault.isValid()) {
                                 if (!vault.getVault().hasAccount(tax)) {
-                                    vault.getVault().createPlayerAccount(tax);
+                                    try {
+                                        vault.getVault().createPlayerAccount(tax);
+                                    }catch (Throwable ignored){}
                                     if (!vault.getVault().hasAccount(tax)) {
                                         getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
                                     }
