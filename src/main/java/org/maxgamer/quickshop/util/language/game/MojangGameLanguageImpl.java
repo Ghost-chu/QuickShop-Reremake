@@ -17,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Copied;
-import org.maxgamer.quickshop.util.mojangapi.AssetJson;
-import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.mojangapi.AssetJson;
+import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
