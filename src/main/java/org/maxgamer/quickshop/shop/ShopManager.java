@@ -723,6 +723,8 @@ public class ShopManager {
             }
 
 
+
+
 //            double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
 //            try {
 //                if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
@@ -793,7 +795,6 @@ public class ShopManager {
 
             double createCost = plugin.getConfig().getDouble("shop.cost");
             // Create the sample shop.
-            ContainerShop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
 
             // This must be called after the event has been called.
             // Else, if the event is cancelled, they won't get their
@@ -815,6 +816,7 @@ public class ShopManager {
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
                 }
             }
+            ContainerShop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
             if (Util.fireCancellableEvent(e)) {
