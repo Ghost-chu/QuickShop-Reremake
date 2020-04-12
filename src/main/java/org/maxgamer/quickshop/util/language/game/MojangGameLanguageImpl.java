@@ -172,18 +172,15 @@ class GameLanguageLoadThread extends Thread {
             String cachingLanguageHash = yamlConfiguration.getString("hash");
             String cachingLanguageName = yamlConfiguration.getString("lang");
             /* If language name is default, use computer language */
-
-            String langCode = languageCode;
-
             if ("default".equals(languageCode)) {
                 Locale locale = Locale.getDefault();
-                langCode = locale.getLanguage() + "_" + locale.getCountry();
+                languageCode = locale.getLanguage() + "_" + locale.getCountry();
             }
-            if (!langCode.equals(cachingLanguageName)) {
-                cachingLanguageName = langCode;
+            if (!languageCode.equals(cachingLanguageName)) {
+                cachingLanguageName = languageCode;
                 needUpdateCache = true;
             }
-            langCode = langCode.toLowerCase();
+            String languageCode1 = languageCode.toLowerCase();
             String serverVersion = ReflectFactory.getServerVersion();
             if (!serverVersion.equals(cachingServerVersion)) {
                 cachingServerVersion = serverVersion;
@@ -197,7 +194,7 @@ class GameLanguageLoadThread extends Thread {
                 String assetJson = mojangAPI.getAssetIndexJson(cachingServerVersion);
                 if (assetJson != null) {
                     AssetJson versionJson = new AssetJson(assetJson);
-                    String hash = versionJson.getLanguageHash(langCode);
+                    String hash = versionJson.getLanguageHash(languageCode1);
                     if (hash != null) {
                         cachingLanguageHash = hash;
                         String langJson = mojangAPI.downloadTextFileFromMojang(hash);
@@ -213,7 +210,7 @@ class GameLanguageLoadThread extends Thread {
                             failed = true;
                         }
                     } else {
-                        Util.debugLog("Cannot get file hash for language " + langCode);
+                        Util.debugLog("Cannot get file hash for language " + languageCode1);
                         QuickShop.instance
                                 .getLogger()
                                 .warning(
