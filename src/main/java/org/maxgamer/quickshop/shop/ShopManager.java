@@ -719,6 +719,7 @@ public class ShopManager {
                 case PRICE_RESTRICTED:
                     Map.Entry<Double, Double> materialLimit =Util.getPriceRestriction(info.getItem().getType());
                     MsgUtil.sendMessage(p,MsgUtil.getMessage("restricted-prices", p, Util.getItemStackName(info.getItem()), String.valueOf(materialLimit.getKey()), String.valueOf(materialLimit.getValue())));
+                    return;
             }
 
 
