@@ -874,14 +874,7 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         // Enabled
-        sendItemholochat(
-                shop,
-                items,
-                p,
-                ChatColor.DARK_PURPLE
-                        + MsgUtil.getMessage("tableformat.left_begin", p)
-                        + " "
-                        + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)));
+        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + " " + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
@@ -903,12 +896,11 @@ public class MsgUtil {
                         MsgUtil.getMessage("menu.space", p, "" + shop.getRemainingSpace()));
             }
         }
-        chatSheetPrinter.printLine(
-                MsgUtil.getMessage(
-                        "menu.price-per",
-                        p,
-                        Util.getItemStackName(shop.getItem()),
-                        Util.format(shop.getPrice())));
+        if(shop.getItem().getAmount() == 1) {
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+        }else{
+            chatSheetPrinter.printLine(MsgUtil.getMessage("price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+        }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
         } else {

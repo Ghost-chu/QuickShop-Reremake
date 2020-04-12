@@ -581,7 +581,7 @@ public class ContainerShop implements Shop {
                 MsgUtil.getMessageOfflinePlayer(
                         "signs.item", player, Util.getItemStackName(this.getItem()));
         if (plugin.getConfig().getBoolean("shop.allow-stacks") && this.getItem().getAmount() > 1) { //FIXME: A trash impl, need use a better way
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice()*this.getItem().getAmount()));
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice()));
         } else {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
 
