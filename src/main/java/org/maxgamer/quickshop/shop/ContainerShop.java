@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -554,28 +555,49 @@ public class ContainerShop implements Shop {
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName());
         if (this.isSelling()) {
-            if (this.getRemainingStock() == -1) {
-                lines[1] =
-                        MsgUtil.getMessageOfflinePlayer(
-                                "signs.selling",
-                                player,
-                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+            if (this.getItem().getAmount() > 1) {
+                if (this.getRemainingStock() == -1) {
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                } else {
+                    lines[1] =
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + ((this.getRemainingStock() != 0) ? CalculateUtil.divide(this.getRemainingStock(), this.getItem().getAmount()) : 0));
+                }
             } else {
-                lines[1] =
-                        MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + this.getRemainingStock());
+                if (this.getRemainingStock() == -1) {
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                } else {
+                    lines[1] =
+                            MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + this.getRemainingStock());
+                }
             }
 
+
         } else if (this.isBuying()) {
-            if (this.getRemainingSpace() == -1) {
-                lines[1] =
-                        MsgUtil.getMessageOfflinePlayer(
-                                "signs.buying",
-                                player,
-                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+            if (this.getItem().getAmount() > 1) {
+                if (this.getRemainingSpace() == -1) {
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                } else {
+                    lines[1] =
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + ((this.getRemainingSpace() != 0) ? CalculateUtil.divide(this.getRemainingSpace(), this.getItem().getAmount()) : 0));
+                }
             } else {
-                lines[1] =
-                        MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
+                if (this.getRemainingSpace() == -1) {
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                } else {
+                    lines[1] =
+                            MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
+                }
             }
+//            if (this.getRemainingSpace() == -1) {
+//                lines[1] =
+//                        MsgUtil.getMessageOfflinePlayer(
+//                                "signs.buying",
+//                                player,
+//                                "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+//            } else {
+//                lines[1] =
+//                        MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
+//            }
         }
         lines[2] =
                 MsgUtil.getMessageOfflinePlayer(
