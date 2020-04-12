@@ -815,7 +815,7 @@ public class ShopManager {
                 }
             }
 
-            if (!plugin.getConfig().getBoolean("shop.allow-stacks")) { //Set to 1 when disabled
+            if (!plugin.isAllowStack()) { //Set to 1 when disabled
                 info.getItem().setAmount(1);
             }
 
