@@ -74,10 +74,9 @@ public class ShopManager {
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         //noinspection ConstantConditions
         OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
-        //if (taxPlayer.hasPlayedBefore()) {
-            this.cacheTaxAccount = taxPlayer.getUniqueId();
-        //}
-        this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"),plugin.getConfig().getBoolean("shop.allow-free-shop"));
+
+        this.cacheTaxAccount = taxPlayer.getUniqueId();
+        this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"), plugin.getConfig().getBoolean("shop.allow-free-shop"));
     }
 
     /**
@@ -828,6 +827,7 @@ public class ShopManager {
             }
             if (!plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation())) {
                 shop.onUnload();
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p));
                 Util.debugLog("Cancelled by integrations");
                 return;
             }
@@ -946,6 +946,7 @@ public class ShopManager {
             return;
         }
         if (!plugin.getIntegrationHelper().callIntegrationsCanTrade(p, info.getLocation())) {
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-trade", p));
             Util.debugLog("Cancel by integrations.");
             return;
         }
