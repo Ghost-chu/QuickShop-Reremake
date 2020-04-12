@@ -19,18 +19,21 @@
 
 package org.maxgamer.quickshop.util.mojangapi;
 
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+import org.maxgamer.quickshop.util.Util;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.Util;
+import java.nio.charset.StandardCharsets;
 
 public class MojangAPI {
     final String versionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
@@ -119,6 +122,7 @@ public class MojangAPI {
                 .returnContent()
                 .asString("UTF-8")
                 .trim();
+        Files.write(data,cacheFile, StandardCharsets.UTF_8);
         return data;
     }
 
