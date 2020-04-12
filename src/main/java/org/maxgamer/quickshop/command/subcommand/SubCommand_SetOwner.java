@@ -19,18 +19,19 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubCommand_SetOwner implements CommandProcesser {
 
@@ -64,16 +65,15 @@ public class SubCommand_SetOwner implements CommandProcesser {
                 continue;
             }
 
-            @SuppressWarnings("deprecation") final OfflinePlayer p = plugin.getServer().getOfflinePlayer(cmdArg[0]);
-            final String shopOwner = plugin.getServer().getOfflinePlayer(shop.getOwner()).getName();
-            if (shopOwner == null) {
-                MsgUtil.sendMessage(sender,MsgUtil.getMessage("unknown-player", null));
+            @SuppressWarnings("deprecation") final OfflinePlayer newShopOwner = plugin.getServer().getOfflinePlayer(cmdArg[0]);
+            if (newShopOwner.getName() == null) {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("unknown-player", null));
                 return;
             }
-            shop.setOwner(p.getUniqueId());
+            shop.setOwner(newShopOwner.getUniqueId());
             // shop.setSignText();
             shop.update();
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.new-owner", sender, shopOwner));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.new-owner", sender, newShopOwner.getName()));
             return;
         }
 
