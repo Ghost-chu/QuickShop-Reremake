@@ -151,16 +151,20 @@ public class Updater {
     }
 
     public static boolean hasUpdate(String versionNow) {
+        return hasUpdate(QuickShop.getVersion(), versionNow);
+    }
+
+    public static boolean hasUpdate(String versionPre, String versionNow) {
         if (versionNow == null) {
             return false;
         }
-        if (!versionNow.equals(QuickShop.getVersion())) {
+        if (!versionNow.equals(versionPre)) {
             Matcher matcher = pattern.matcher(versionNow);
             if (matcher.find()) {
                 String result = matcher.group(0);
                 if (result != null && !result.isEmpty()) {
                     String[] now = matcher.group(0).split("\\.");
-                    String[] previous = QuickShop.getVersion().split("\\.");
+                    String[] previous = versionPre.split("\\.");
                     for (int i = 0; i < now.length; i++) {
                         if (i < previous.length) {
                             int nowSub = Integer.parseInt(now[i]);
@@ -174,8 +178,8 @@ public class Updater {
                 }
             }
         } else {
-            //equals
-            return true;
+            //equals, so no update
+            return false;
         }
         // no recognize, forced update
         return true;
