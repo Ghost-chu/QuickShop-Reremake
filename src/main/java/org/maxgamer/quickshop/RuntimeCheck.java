@@ -65,6 +65,5 @@ public class RuntimeCheck {
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
-
     }
 }
