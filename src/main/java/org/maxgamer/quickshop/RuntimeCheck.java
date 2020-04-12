@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop;
 
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.IncompatibleChecker;
