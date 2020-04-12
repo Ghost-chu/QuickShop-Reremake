@@ -716,6 +716,10 @@ public class ShopManager {
                 return;
             }
 
+            if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
+                price = CalculateUtil.divide(price,info.getItem().getAmount());
+            }
+
             boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
             if (plugin.getConfig().getBoolean("shop.allow-free-shop")) {
                 if (price != 0 && price < minPrice) {
