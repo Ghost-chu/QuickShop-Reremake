@@ -24,11 +24,9 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.shop.InventoryPreview;
+import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
 @AllArgsConstructor
 public class CustomInventoryListener implements Listener {
@@ -38,37 +36,25 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
-
-        final Inventory inventory = e.getInventory();
-        final ItemStack[] stacks = inventory.getContents();
-
-        for (ItemStack itemStack : stacks) {
-            if (!InventoryPreview.isPreviewItem(itemStack)) {
-                continue;
-            }
-
+        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
             e.setCancelled(true);
-            e.setResult(Result.DENY);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-
-        if (InventoryPreview.isPreviewItem(e.getItem())) {
+        if(e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder){
+            e.setCancelled(true);
+            return;
+        }
+        if(e.getSource() instanceof QuickShopPreviewInventoryHolder){
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void invEvent(InventoryClickEvent e) {
-
-        if (InventoryPreview.isPreviewItem(e.getCursor())) {
-            e.setCancelled(true);
-            e.setResult(Result.DENY);
-        }
-
-        if (InventoryPreview.isPreviewItem(e.getCurrentItem())) {
+        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }
@@ -76,27 +62,9 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler
     public void invEvent(InventoryDragEvent e) {
-
-        if (InventoryPreview.isPreviewItem(e.getCursor())
-            || InventoryPreview.isPreviewItem(e.getOldCursor())) {
+        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }
     }
-
-    @EventHandler
-    public void invEvent(InventoryPickupItemEvent e) {
-
-        final Inventory inventory = e.getInventory();
-        final ItemStack[] stacks = inventory.getContents();
-
-        for (ItemStack itemStack : stacks) {
-            if (!InventoryPreview.isPreviewItem(itemStack)) {
-                continue;
-            }
-
-            e.setCancelled(true);
-        }
-    }
-
 }

@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ShopInventoryPreviewEvent;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,7 @@ public class InventoryPreview implements Listener {
             return;
         }
         final int size = 9;
-        inventory = Bukkit.createInventory(null, size, MsgUtil.getMessage("menu.preview", player));
+        inventory = Bukkit.createInventory(new QuickShopPreviewInventoryHolder(),size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);
         }
