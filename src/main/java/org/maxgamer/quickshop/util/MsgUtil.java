@@ -899,7 +899,7 @@ public class MsgUtil {
         if(shop.getItem().getAmount() == 1) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
         }else{
-            chatSheetPrinter.printLine(MsgUtil.getMessage("price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
@@ -1356,8 +1356,8 @@ public class MsgUtil {
             selectedVersion = 32;
         }
         if(selectedVersion == 32){
-            setAndUpdate("menu.stack-selling","Selling {0}");
-            setAndUpdate("menu.stack-buying","Buying {0}");
+            setAndUpdate("signs.stack-selling","Selling {0}");
+            setAndUpdate("signs.stack-buying","Buying {0}");
             setAndUpdate("menu.price-per-stack","&aPrice per bulk &e{0} - {1}");
             setAndUpdate("menu.shop-stack","&aStack Amount: &e{0}");
             setAndUpdate("language-version", 33);
