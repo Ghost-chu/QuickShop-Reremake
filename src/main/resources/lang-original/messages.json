@@ -152,8 +152,10 @@
   },
   "signs": {
     "selling": "Selling {0}",
+    "stack-selling": "Selling {0}",
     "header": "&c{0}",
     "buying": "Buying {0}",
+    "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
     "stack-price":"{0} per stack",
