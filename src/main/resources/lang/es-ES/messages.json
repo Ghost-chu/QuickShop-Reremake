@@ -1,5 +1,5 @@
 {
-  "translation-author": "&c&lTraductores: &b&lGhost_chu, LoudCloud, DorianXYZ, Erduke21 y Ant4rez",
+  "translation-author": "&c&lTraductores: &b&lGhost_chu, LoudCloud, DorianXYZ, Erduke21, Ant4rez y AlbeRGames",
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
@@ -7,12 +7,12 @@
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
-  "integrations-check-failed-create": "Integrations denied the shop creation",
-  "integrations-check-failed-trade": "Integrations denied the shop trade",
+  "integrations-check-failed-create": "Integraciones denegó la creación de la tienda",
+  "integrations-check-failed-trade": "Integraciones denegó el intercambio en la tienda",
   "3rd-plugin-build-check-failed": "Algún complemento de terceros denegó las verificaciones de permisos, ¿tenía permiso incorporado allí?",
   "no-creative-break": "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.",
-  "trading-in-creative-mode-is-disabled": "&cYou cannot trade with shop in the creative mode.",
-  "supertool-is-disabled": "&cSupertool is disabled, cannot break any shop.",
+  "trading-in-creative-mode-is-disabled": "&cNo puedes intercambiar en la tienda en modo creativo.",
+  "supertool-is-disabled": "&cSuperherramienta está deshabilitada, no se puede destruir ninguna tienda.",
   "no-double-chests": "&cNo puedes crear tiendas de cofres dobles.",
   "not-managed-shop": "&cNo eres el dueño o moderador de la tienda",
   "shop-already-owned": "&cEso ya es una tienda.",
@@ -90,12 +90,12 @@
     "space": "&aEspacio: &e{0}",
     "stock": "&aAlmacenado &e{0}",
     "price-per": "&aPrecio por &e{0} &a- &e{1}",
-    "price-per-stack": "&aPrice per bulk &e{0} - {1}",
+    "price-per-stack": "&aPrecio por montón &e{0} - {1}",
     "total-value-of-chest": "&aValor total del cofre: &e{0}",
     "damage-percent-remaining": "&e{0}% &aRestante.",
     "this-shop-is-buying": "&aEsta tienda está &dCOMPRANDO&a artículos.",
     "this-shop-is-selling": "&aEsta tienda está &dVENDIENDO&a artículos.",
-    "shop-stack": "&aStack Amount: &e{0}",
+    "shop-stack": "&aNúmero de montones: &e{0}",
     "effects": "&aEfectos",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -274,7 +274,7 @@
     "code": "&eCode: &6{0}",
     "translate-progress": "&eTranslate Progress: &b{0}%",
     "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
-    "help-us": "&a[Help Us Improve Translation Quality]"
+    "qa-issues": "&eProblemas de control de calidad: &b{0}%",
+    "help-us": "&a[Ayúdanos a mejorar la calidad de la traducción]"
   }
 }
