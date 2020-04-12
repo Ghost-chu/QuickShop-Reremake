@@ -490,7 +490,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 return itemMatcher.matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
             }));
             if(!Util.getNMSVersion().equals("v1_13_R1")&&!Util.getNMSVersion().equals("v1_13_R2")){
-                addIfEnable(itemMatcherConfig,"custommodeldata",((meta1, meta2) -> {
+                addIfEnable(itemMatcherConfig, "custommodeldata", ((meta1, meta2) -> {
                     if (!meta1.hasCustomModelData()) {
                         return true;
                     } else {
@@ -500,20 +500,22 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                         return meta1.getCustomModelData() == meta2.getCustomModelData();
                     }
                 }));
-                addIfEnable(itemMatcherConfig,"suspiciousStew",((meta1, meta2) -> {
-                    if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
-                        return false;
-                    }
-                    if (!(meta1 instanceof SuspiciousStewMeta)) {
-                        return true;
-                    }
-                    SuspiciousStewMeta stewMeta1= ((SuspiciousStewMeta) meta1);
-                    SuspiciousStewMeta stewMeta2= ((SuspiciousStewMeta) meta2);
-                    if(!stewMeta1.hasCustomEffects()){
-                        return true;
-                    }
-                    return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
-                }));
+                if (!Util.getNMSVersion().equals("v1_14_R1")) {
+                    addIfEnable(itemMatcherConfig, "suspiciousStew", ((meta1, meta2) -> {
+                        if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
+                            return false;
+                        }
+                        if (!(meta1 instanceof SuspiciousStewMeta)) {
+                            return true;
+                        }
+                        SuspiciousStewMeta stewMeta1 = ((SuspiciousStewMeta) meta1);
+                        SuspiciousStewMeta stewMeta2 = ((SuspiciousStewMeta) meta2);
+                        if (!stewMeta1.hasCustomEffects()) {
+                            return true;
+                        }
+                        return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
+                    }));
+                }
             }
         }
 
