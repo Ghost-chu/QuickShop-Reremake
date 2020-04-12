@@ -57,15 +57,14 @@ public class SubCommand_Staff implements CommandProcesser {
             MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
-
+        boolean hitShop = false;
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
             if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                 continue;
             }
-
+            hitShop = true;
             switch (cmdArg.length) {
                 case 0:
                     MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.wrong-args", sender));
@@ -125,6 +124,10 @@ public class SubCommand_Staff implements CommandProcesser {
                     Util.debugLog("No any args matched");
                     break;
             }
+        }
+        if(!hitShop){
+            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+            return;
         }
     }
 
