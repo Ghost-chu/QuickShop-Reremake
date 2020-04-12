@@ -54,49 +54,56 @@ public class UpdateWatcher implements Listener {
         return originalVer;
     }
 
-    public static void init() {
-        cronTask =
-            new BukkitRunnable() {
-
-                @Override
-                public void run() {
-                    info = Updater.checkUpdate();
-
-                    if (info.getVersion() == null) {
-                        hasNewUpdate = false;
-                        return;
-                    }
-
-                    if (info.getVersion().equals(QuickShop.getVersion())) {
-                        hasNewUpdate = false;
-                        return;
-                    } else {
-                        Matcher matcher = pattern.matcher(info.getVersion());
-                        if (matcher.find()) {
-                            String result = matcher.group(0);
-                            if (result != null && !result.isEmpty()) {
-                                String[] now = matcher.group(0).split("\\.");
-                                String[] previous = QuickShop.getVersion().split("\\.");
-                                for (int i = 0; i < now.length; i++) {
-                                    if (i < previous.length) {
-                                        if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
-                                            hasNewUpdate = true;
-                                            break;
-                                        }
-                                    }
-                                }
+    public static boolean hasUpdate(String versionNow) {
+        if (versionNow == null) {
+            return false;
+        }
+        boolean updateResult = false;
+        if (!versionNow.equals(QuickShop.getVersion())) {
+            Matcher matcher = pattern.matcher(versionNow);
+            if (matcher.find()) {
+                String result = matcher.group(0);
+                if (result != null && !result.isEmpty()) {
+                    String[] now = matcher.group(0).split("\\.");
+                    String[] previous = QuickShop.getVersion().split("\\.");
+                    for (int i = 0; i < now.length; i++) {
+                        if (i < previous.length) {
+                            if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
+                                updateResult = true;
+                                break;
                             }
                         }
-                        hasNewUpdate = false;
                     }
+                }
+            } else {
+                // no recognize, forced update
+                updateResult = true;
+            }
+        }
+        return updateResult;
+    }
 
-                    if (!info.isBeta()) {
-                        QuickShop.instance
-                            .getLogger()
-                            .info(
-                                "A new version of QuickShop has been released! [" + info.getVersion() + "]");
-                        QuickShop.instance
-                            .getLogger()
+    public static void init() {
+        cronTask =
+                new BukkitRunnable() {
+
+                    @Override
+                    public void run() {
+                        info = Updater.checkUpdate();
+
+                        if (hasUpdate(info.getVersion())) {
+                            hasNewUpdate = true;
+                        } else {
+                            return;
+                        }
+
+                        if (!info.isBeta()) {
+                            QuickShop.instance
+                                    .getLogger()
+                                    .info(
+                                            "A new version of QuickShop has been released! [" + info.getVersion() + "]");
+                            QuickShop.instance
+                                    .getLogger()
                             .info("Update here: https://www.spigotmc.org/resources/62575/");
 
                         Bukkit.getOnlinePlayers()
