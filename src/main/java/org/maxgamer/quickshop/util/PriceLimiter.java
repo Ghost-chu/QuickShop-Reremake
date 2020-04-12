@@ -1,12 +1,14 @@
 package org.maxgamer.quickshop.util;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 @AllArgsConstructor
+@Data
 public class PriceLimiter {
     private double minPrice;
     private double maxPrice;
@@ -14,6 +16,7 @@ public class PriceLimiter {
 
     @NotNull
     public Status check(@NotNull ItemStack stack, double price){
+        //TODO: Adapt stack item
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
                 return Status.REACHED_PRICE_MIN_LIMIT;
@@ -35,11 +38,10 @@ public class PriceLimiter {
         }
         return Status.PASS;
     }
-}
-enum Status{
-    PASS,
-    REACHED_PRICE_MAX_LIMIT,
-    REACHED_PRICE_MIN_LIMIT,
-    REACHED_DIGITS_LIMIT,
-    PRICE_RESTRICTED
+    public enum Status{
+        PASS,
+        REACHED_PRICE_MAX_LIMIT,
+        REACHED_PRICE_MIN_LIMIT,
+        PRICE_RESTRICTED
+    }
 }
