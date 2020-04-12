@@ -1352,10 +1352,16 @@ public class MsgUtil {
             setAndUpdate("lang.approval-progress", "&eApproval Progress: &b{0}%");
             setAndUpdate("lang.qa-issues", "&eQuality Assurance Issues: &b{0}%");
             setAndUpdate("lang.help-us", "&a[Help Us Improve Translation Quality]");
-            setAndUpdate("menu.stack-selling","Selling {0}");
-            setAndUpdate("menu.stack-buying","Buying {0}");
             setAndUpdate("language-version", 32);
             selectedVersion = 32;
+        }
+        if(selectedVersion == 32){
+            setAndUpdate("menu.stack-selling","Selling {0}");
+            setAndUpdate("menu.stack-buying","Buying {0}");
+            setAndUpdate("menu.price-per-stack","&aPrice per bulk &e{0} - {1}");
+            setAndUpdate("menu.shop-stack","&aStack Amount: &e{0}");
+            setAndUpdate("language-version", 33);
+            selectedVersion = 33;
         }
 
         messagei18n.save();
