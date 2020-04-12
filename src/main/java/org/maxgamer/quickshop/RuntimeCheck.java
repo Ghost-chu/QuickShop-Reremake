@@ -69,7 +69,7 @@ public class RuntimeCheck {
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         //noinspection ConstantConditions
         if (!Bukkit.getOfflinePlayer(taxAccount).hasPlayedBefore()) {
-            plugin.getLogger().warning("Tax account's player never played server before, that may cause server lagg or economy system error, you should change that name.");
+            plugin.getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
         }
     }
 }
