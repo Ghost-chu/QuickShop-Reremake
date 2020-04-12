@@ -788,11 +788,9 @@ public class ShopManager {
 //                }
 //            }
 
-            if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
-                price = CalculateUtil.divide(price,info.getItem().getAmount());
-            }
-
-
+//            if (plugin.getConfig().getBoolean("shop.allow-stacks") && info.getItem().getAmount() > 1) {//FIXME: need a better impl
+//                price = CalculateUtil.divide(price,info.getItem().getAmount());
+//            }
             double createCost = plugin.getConfig().getDouble("shop.cost");
             // Create the sample shop.
 
@@ -816,7 +814,12 @@ public class ShopManager {
                     plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
                 }
             }
-            ContainerShop shop = new ContainerShop(info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
+
+            if (!plugin.getConfig().getBoolean("shop.allow-stacks")) { //Set to 1 when disabled
+                info.getItem().setAmount(1);
+            }
+
+            ContainerShop shop = new ContainerShop(info.getLocation(), CalculateUtil.multiply(price, info.getItem().getAmount()), info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
             if (Util.fireCancellableEvent(e)) {
