@@ -36,15 +36,11 @@ import org.maxgamer.quickshop.util.Updater;
 
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class UpdateWatcher implements Listener {
     public static boolean hasNewUpdate = false;
 
     private static BukkitTask cronTask = null;
-
-    private static Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");
 
     private static UpdateInfomation info = null;
 
@@ -52,35 +48,6 @@ public class UpdateWatcher implements Listener {
         originalVer = originalVer.replaceAll(QuickShop.getFork(), "");
         originalVer = originalVer.trim();
         return originalVer;
-    }
-
-    public static boolean hasUpdate(String versionNow) {
-        if (versionNow == null) {
-            return false;
-        }
-        boolean updateResult = false;
-        if (!versionNow.equals(QuickShop.getVersion())) {
-            Matcher matcher = pattern.matcher(versionNow);
-            if (matcher.find()) {
-                String result = matcher.group(0);
-                if (result != null && !result.isEmpty()) {
-                    String[] now = matcher.group(0).split("\\.");
-                    String[] previous = QuickShop.getVersion().split("\\.");
-                    for (int i = 0; i < now.length; i++) {
-                        if (i < previous.length) {
-                            if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
-                                updateResult = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            } else {
-                // no recognize, forced update
-                updateResult = true;
-            }
-        }
-        return updateResult;
     }
 
     public static void init() {
@@ -91,7 +58,7 @@ public class UpdateWatcher implements Listener {
                     public void run() {
                         info = Updater.checkUpdate();
 
-                        if (hasUpdate(info.getVersion())) {
+                        if (Updater.hasUpdate(info.getVersion())) {
                             hasNewUpdate = true;
                         } else {
                             return;

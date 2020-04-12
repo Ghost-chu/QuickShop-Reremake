@@ -24,16 +24,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 import org.maxgamer.quickshop.util.github.GithubAPI;
 import org.maxgamer.quickshop.util.github.ReleaseJsonContainer;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Updater {
+
+    private static Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");
+
     /**
      * Check new update
      *
@@ -145,4 +150,32 @@ public class Updater {
         outputStream.close();
     }
 
+    public static boolean hasUpdate(String versionNow) {
+        if (versionNow == null) {
+            return false;
+        }
+        boolean updateResult = false;
+        if (!versionNow.equals(QuickShop.getVersion())) {
+            Matcher matcher = pattern.matcher(versionNow);
+            if (matcher.find()) {
+                String result = matcher.group(0);
+                if (result != null && !result.isEmpty()) {
+                    String[] now = matcher.group(0).split("\\.");
+                    String[] previous = QuickShop.getVersion().split("\\.");
+                    for (int i = 0; i < now.length; i++) {
+                        if (i < previous.length) {
+                            if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
+                                updateResult = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // no recognize, forced update
+                updateResult = true;
+            }
+        }
+        return updateResult;
+    }
 }

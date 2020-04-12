@@ -28,7 +28,6 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.UpdateInfomation;
 import org.maxgamer.quickshop.util.Updater;
-import org.maxgamer.quickshop.watcher.UpdateWatcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class SubCommand_Update implements CommandProcesser {
                     return;
                 }
 
-                if (UpdateWatcher.hasUpdate(updateVersion)) {
+                if (Updater.hasUpdate(updateVersion)) {
                     MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
