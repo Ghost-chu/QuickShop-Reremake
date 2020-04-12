@@ -715,6 +715,10 @@ public class QuickShop extends JavaPlugin {
             }
         }
 
+//        if(getConfig().getBoolean("shop.deny-non-shop-items-to-shop-container")){
+//            Bukkit.getPluginManager().registerEvents(new ShopChestListener(), this);
+//        }
+
         if (getConfig().getBoolean("shop.lock")) {
             Bukkit.getPluginManager().registerEvents(lockListener, this);
         }
@@ -1494,6 +1498,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
+        if (selectedVersion == 96) {
+            getConfig().set("shop.deny-non-shop-items-to-shop-container", false);
+            getConfig().set("config-version", 97);
+            selectedVersion = 97;
+        }
+
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
