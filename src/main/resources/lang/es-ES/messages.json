@@ -272,8 +272,8 @@
   "language": {
     "name": "&eNombre: &6{0}",
     "code": "&eCódigo: &6{0}",
-    "translate-progress": "&eTranslate Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
+    "translate-progress": "&eProgreso de traducción: &b{0}%",
+    "approval-progress": "&eProgreso de aprobación: &b{0}%",
     "qa-issues": "&eProblemas de control de calidad: &b{0}%",
     "help-us": "&a[Ayúdanos a mejorar la calidad de la traducción]"
   }
