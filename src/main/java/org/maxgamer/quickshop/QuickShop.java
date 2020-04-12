@@ -403,19 +403,21 @@ public class QuickShop extends JavaPlugin {
                 case VAULT:
                     core = new Economy_Vault();
                     Util.debugLog("Now using the Vault economy system.");
-                    getLogger().info("Checking the tax account infos...");
-                    String taxAccount = getConfig().getString("tax-account", "tax");
-                    OfflinePlayer tax = Bukkit.getOfflinePlayer(taxAccount);
-                    if (!tax.hasPlayedBefore()) {
-                        Economy_Vault vault = (Economy_Vault)core;
-                        if(vault.isValid()){
-                            if(!vault.getVault().hasAccount(tax)){
-                                vault.getVault().createPlayerAccount(tax);
-                                if(!vault.getVault().hasAccount(tax)) {
-                                    getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
+                    if(getConfig().getDouble("tax", 0) > 0) {
+                        getLogger().info("Checking the tax account infos...");
+                        String taxAccount = getConfig().getString("tax-account", "tax");
+                        OfflinePlayer tax = Bukkit.getOfflinePlayer(taxAccount);
+                        if (!tax.hasPlayedBefore()) {
+                            Economy_Vault vault = (Economy_Vault) core;
+                            if (vault.isValid()) {
+                                if (!vault.getVault().hasAccount(tax)) {
+                                    vault.getVault().createPlayerAccount(tax);
+                                    if (!vault.getVault().hasAccount(tax)) {
+                                        getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
+                                    }
                                 }
-                            }
 
+                            }
                         }
                     }
                     break;
