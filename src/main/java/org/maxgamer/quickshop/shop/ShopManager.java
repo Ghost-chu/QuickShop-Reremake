@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.event.ShopCreateEvent;
 import org.maxgamer.quickshop.event.ShopPreCreateEvent;
 import org.maxgamer.quickshop.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.event.ShopSuccessPurchaseEvent;
+import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -564,8 +565,8 @@ public class ShopManager {
             return; // Cancelled
         }
         // Money handling
-        double tax = getTax(shop,p);
-        double total = amount * shop.getPrice();
+        double tax = getTax(shop, p);
+        double total = CalculateUtil.multiply(amount, shop.getPrice());
 
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
         if (shouldPayOwner) {
@@ -575,7 +576,7 @@ public class ShopManager {
                 return;
             }
         }
-        double depositMoney = total * (1 - tax);
+        double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
         boolean successB = eco.deposit(p.getUniqueId(), depositMoney); // Deposit player's money
         if (!successB) {
             plugin.getLogger().warning("Failed to deposit the money " + depositMoney + " to player " + e.getPlayer().getName());
@@ -590,7 +591,7 @@ public class ShopManager {
         }
         // Purchase successfully
         if (tax != 0 && cacheTaxAccount != null) {
-            eco.deposit(cacheTaxAccount, total * tax);
+            eco.deposit(cacheTaxAccount, CalculateUtil.multiply(total, tax));
         }
         // Notify the owner of the purchase.
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
@@ -831,7 +832,7 @@ public class ShopManager {
         }
         double tax = getTax(shop,p);
         // Money handling
-        double total = amount * shop.getPrice();
+        double total = CalculateUtil.multiply(amount, shop.getPrice());
 
 
         boolean successA = eco.withdraw(p.getUniqueId(), total); // Withdraw owner's money
@@ -841,7 +842,7 @@ public class ShopManager {
         }
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
         if (shouldPayOwner) {
-            double depositMoney = total * (1 - tax);
+            double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
             boolean successB = eco.deposit(shop.getOwner(), depositMoney);
             if (!successB) {
                 plugin.getLogger().warning("Failed to deposit the money for player " + Bukkit.getOfflinePlayer(shop.getOwner()));
@@ -857,7 +858,7 @@ public class ShopManager {
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), "" + amount, "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((tax * total)));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), "" + amount, "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
         } else {
             msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), "" + amount, "##########" + Util.serialize(shop.getItem()) + "##########");
         }
