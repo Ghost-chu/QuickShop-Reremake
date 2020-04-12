@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import java.util.List;
-import java.util.Random;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -36,10 +34,17 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.UpdateInfomation;
 import org.maxgamer.quickshop.util.Updater;
 
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class UpdateWatcher implements Listener {
     public static boolean hasNewUpdate = false;
 
     private static BukkitTask cronTask = null;
+
+    private static Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");
 
     private static UpdateInfomation info = null;
 
@@ -65,8 +70,25 @@ public class UpdateWatcher implements Listener {
                     if (info.getVersion().equals(QuickShop.getVersion())) {
                         hasNewUpdate = false;
                         return;
+                    } else {
+                        Matcher matcher = pattern.matcher(info.getVersion());
+                        if (matcher.find()) {
+                            String result = matcher.group(0);
+                            if (result != null && !result.isEmpty()) {
+                                String[] now = matcher.group(0).split("\\.");
+                                String[] previous = QuickShop.getVersion().split("\\.");
+                                for (int i = 0; i < now.length; i++) {
+                                    if (i < previous.length) {
+                                        if (Integer.parseInt(now[i]) > Integer.parseInt(previous[i])) {
+                                            hasNewUpdate = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        hasNewUpdate = false;
                     }
-                    hasNewUpdate = true;
 
                     if (!info.isBeta()) {
                         QuickShop.instance
