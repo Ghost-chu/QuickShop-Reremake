@@ -559,7 +559,7 @@ public class ContainerShop implements Shop {
                     lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + ((this.getRemainingStock() != 0) ? (int)this.getRemainingStock()/this.getItem().getAmount() : 0));
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + ((this.getRemainingStock() != 0) ? this.getRemainingStock() /this.getItem().getAmount() : 0));
                 }
             } else {
                 if (this.getRemainingStock() == -1) {
@@ -577,7 +577,7 @@ public class ContainerShop implements Shop {
                     lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + ((this.getRemainingSpace() != 0) ? (int)this.getRemainingSpace()/this.getItem().getAmount() : 0));
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + ((this.getRemainingSpace() != 0) ? this.getRemainingSpace() /this.getItem().getAmount() : 0));
                 }
             } else {
                 if (this.getRemainingSpace() == -1) {
