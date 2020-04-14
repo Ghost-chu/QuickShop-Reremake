@@ -196,7 +196,7 @@ public class Util {
                 items += iStack.getAmount();
             }
         }
-        return items;
+        return items / item.getAmount();
     }
 
     /**
@@ -223,7 +223,7 @@ public class Util {
                 space += iStack.getAmount()>=itemMaxStackSize ? 0:itemMaxStackSize - iStack.getAmount();
             }
         }
-        return space;
+        return space / item.getAmount();
     }
 
     /**
