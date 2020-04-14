@@ -49,7 +49,7 @@ public class ShopDisplayItemSpawnEvent extends QSEvent implements Cancellable {
     /**
      * This event is called before the shop display item created
      *
-     * @param shop Target shop
+     * @param shop      Target shop
      * @param itemStack The ItemStack for spawning the displayItem
      */
     @Deprecated
@@ -60,12 +60,12 @@ public class ShopDisplayItemSpawnEvent extends QSEvent implements Cancellable {
     /**
      * This event is called before the shop display item created
      *
-     * @param shop Target shop
+     * @param shop        Target shop
      * @param displayType The displayType
-     * @param itemStack Target ItemStack
+     * @param itemStack   Target ItemStack
      */
     public ShopDisplayItemSpawnEvent(
-        @NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
+            @NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull DisplayType displayType) {
         this.shop = shop;
         this.itemStack = itemStack;
         this.displayType = displayType;

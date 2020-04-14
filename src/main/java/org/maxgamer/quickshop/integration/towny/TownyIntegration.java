@@ -20,14 +20,15 @@
 package org.maxgamer.quickshop.integration.towny;
 
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.QuickShop;
+
+import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
@@ -38,9 +39,9 @@ public class TownyIntegration implements IntegratedPlugin {
 
     public TownyIntegration(QuickShop plugin) {
         createFlags =
-            TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
+                TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags =
-            TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+                TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
     }
 
     @Override

@@ -26,7 +26,7 @@ public interface PermissionProvider {
     /**
      * Test the sender has special permission
      *
-     * @param sender CommandSender
+     * @param sender     CommandSender
      * @param permission The permission want to check
      * @return hasPermission
      */
@@ -43,12 +43,12 @@ public interface PermissionProvider {
     /**
      * Get the debug infos in provider
      *
-     * @param sender CommandSender
+     * @param sender     CommandSender
      * @param permission The permission want to check
      * @return Debug Infos
      */
     @NotNull
     PermissionInfomationContainer getDebugInfo(
-        @NotNull CommandSender sender, @NotNull String permission);
+            @NotNull CommandSender sender, @NotNull String permission);
 
 }

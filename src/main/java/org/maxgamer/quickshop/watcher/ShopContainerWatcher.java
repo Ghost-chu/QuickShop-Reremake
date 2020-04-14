@@ -47,7 +47,7 @@ public class ShopContainerWatcher extends BukkitRunnable {
                 ((ContainerShop) shop).checkContainer();
             }
             if (System.currentTimeMillis() - beginTime
-                > 45) { // Don't let quickshop eat more than 45 ms per tick.
+                    > 45) { // Don't let quickshop eat more than 45 ms per tick.
                 break;
             }
             shop = checkQueue.poll();

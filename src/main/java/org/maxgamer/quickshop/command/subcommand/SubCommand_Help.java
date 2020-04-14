@@ -22,9 +22,9 @@ package org.maxgamer.quickshop.command.subcommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
 import org.maxgamer.quickshop.command.CommandProcesser;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
@@ -36,14 +36,14 @@ public class SubCommand_Help implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         sendHelp(sender, commandLabel);
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return Collections.emptyList();
     }
 
@@ -52,9 +52,9 @@ public class SubCommand_Help implements CommandProcesser {
         commandCheckLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             final List<String> requirePermissions = container.getPermissions();
-            if (!container.isHidden()&&requirePermissions != null && !requirePermissions.isEmpty()) {
+            if (!container.isHidden() && requirePermissions != null && !requirePermissions.isEmpty()) {
                 for (String requirePermission : requirePermissions) {
-                    if (requirePermission!=null&&!QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
+                    if (requirePermission != null && !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
                         continue commandCheckLoop;
                     }
                 }

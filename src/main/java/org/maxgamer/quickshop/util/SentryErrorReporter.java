@@ -51,22 +51,16 @@ import java.util.logging.Logger;
  */
 public class SentryErrorReporter {
     private final String dsn =
-        "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
-            + "stacktrace.app.packages=org.maxgamer.quickshop";
+            "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
+                    + "stacktrace.app.packages=org.maxgamer.quickshop";
 
     private final List<String> reported = new ArrayList<>(5);
-
-    private Context context;
-
     private final List<Class<?>> ignoredException = new ArrayList<>(8);
-
+    private final IncompatibleChecker checker = new IncompatibleChecker();
+    private Context context;
     private QuickShop plugin;
-
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
-
-    private final IncompatibleChecker checker = new IncompatibleChecker();
-
     private boolean disable;
 
     @Getter
@@ -137,8 +131,8 @@ public class SentryErrorReporter {
                     }
                 }
             }.runTaskAsynchronously(plugin);
-        }catch (Throwable th){
-            plugin.getLogger().warning("Cannot load the Sentry Error Reporter: "+th.getMessage());
+        } catch (Throwable th) {
+            plugin.getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             plugin.getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
             this.disable = true;
         }
@@ -148,11 +142,11 @@ public class SentryErrorReporter {
         StringBuilder buffer = new StringBuilder();
         for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
             buffer
-                .append("\t")
-                .append(bplugin.getName())
-                .append("@")
-                .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
-                .append("\n");
+                    .append("\t")
+                    .append(bplugin.getName())
+                    .append("@")
+                    .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append("\n");
         }
         return buffer.toString();
     }
@@ -178,9 +172,9 @@ public class SentryErrorReporter {
             return false;
         }
         if (checker
-            .isIncompatible(
-                Util
-                    .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
+                .isIncompatible(
+                        Util
+                                .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }
@@ -194,11 +188,11 @@ public class SentryErrorReporter {
             stackTraceElement = throwable.getStackTrace()[2];
         }
         String text =
-            stackTraceElement.getClassName()
-                + "#"
-                + stackTraceElement.getMethodName()
-                + "#"
-                + stackTraceElement.getLineNumber();
+                stackTraceElement.getClassName()
+                        + "#"
+                        + stackTraceElement.getMethodName()
+                        + "#"
+                        + stackTraceElement.getLineNumber();
         if (!reported.contains(text)) {
             reported.add(text);
             return true;
@@ -227,12 +221,12 @@ public class SentryErrorReporter {
             throwable = throwable.getCause();
         }
         long element =
-            Arrays.stream(throwable.getStackTrace())
-                .limit(5)
-                .filter(
-                    stackTraceElement ->
-                        stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
-                .count();
+                Arrays.stream(throwable.getStackTrace())
+                        .limit(5)
+                        .filter(
+                                stackTraceElement ->
+                                        stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
+                        .count();
         if (element > 0) {
             return true;
         } else if (throwable.getCause() != null) {
@@ -267,7 +261,7 @@ public class SentryErrorReporter {
      * Send a error to Sentry
      *
      * @param throwable Throws
-     * @param context BreadCrumb
+     * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
     public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
@@ -314,9 +308,9 @@ public class SentryErrorReporter {
             this.sentryClient.sendException(throwable);
             this.context.clearBreadcrumbs();
             plugin
-                .getLogger()
-                .warning(
-                    "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+                    .getLogger()
+                    .warning(
+                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
@@ -351,8 +345,8 @@ public class SentryErrorReporter {
             if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
             }
-            if(record.getThrown()==null){
-               return true;
+            if (record.getThrown() == null) {
+                return true;
             }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());

@@ -34,7 +34,7 @@ public class VaultPermissionProvider implements PermissionProvider {
     @Deprecated
     public VaultPermissionProvider() {
         RegisteredServiceProvider<Permission> rsp =
-            Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+                Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
         if (rsp == null) {
             throw new ProviderIsEmptyException(getName());
         }
@@ -44,7 +44,7 @@ public class VaultPermissionProvider implements PermissionProvider {
     /**
      * Test the sender has special permission
      *
-     * @param sender CommandSender
+     * @param sender     CommandSender
      * @param permission The permission want to check
      * @return hasPermission
      */
@@ -66,19 +66,19 @@ public class VaultPermissionProvider implements PermissionProvider {
     /**
      * Get the debug infos in provider
      *
-     * @param sender CommandSender
+     * @param sender     CommandSender
      * @param permission The permission want to check
      * @return Debug Infos
      */
     @Override
     public @NotNull PermissionInfomationContainer getDebugInfo(
-        @NotNull CommandSender sender, @NotNull String permission) {
+            @NotNull CommandSender sender, @NotNull String permission) {
         if (sender instanceof Server) {
             return new PermissionInfomationContainer(sender, permission, null, "User is Console");
         }
         OfflinePlayer offlinePlayer = (OfflinePlayer) sender;
         return new PermissionInfomationContainer(
-            sender, permission, api.getPrimaryGroup(null, offlinePlayer), null);
+                sender, permission, api.getPrimaryGroup(null, offlinePlayer), null);
     }
 
 }

@@ -22,8 +22,8 @@ package org.maxgamer.quickshop.command.subcommand;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -38,13 +38,13 @@ public class SubCommand_Clean implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (sender instanceof Server) {
-            MsgUtil.sendMessage(sender,"Can't run this command by Console");
+            MsgUtil.sendMessage(sender, "Can't run this command by Console");
             return;
         }
 
-        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaning", sender));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaning", sender));
 
         final Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
         final List<Shop> pendingRemoval = new ArrayList<>();
@@ -55,15 +55,15 @@ public class SubCommand_Clean implements CommandProcesser {
 
             try {
                 if (shop.getLocation().getWorld() != null
-                    && shop.isSelling()
-                    && shop.getRemainingStock() == 0
-                    && shop instanceof ContainerShop) {
+                        && shop.isSelling()
+                        && shop.getRemainingStock() == 0
+                        && shop instanceof ContainerShop) {
                     ContainerShop cs = (ContainerShop) shop;
                     if (cs.isDoubleShop()) {
                         continue;
                     }
                     pendingRemoval.add(
-                        shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
+                            shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
                     // Can be deleted safely.
                     i++;
                 }
@@ -75,13 +75,13 @@ public class SubCommand_Clean implements CommandProcesser {
         pendingRemoval.forEach(Shop::delete);
 
         MsgUtil.clean();
-        MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.cleaned", sender, "" + i));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaned", sender, "" + i));
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

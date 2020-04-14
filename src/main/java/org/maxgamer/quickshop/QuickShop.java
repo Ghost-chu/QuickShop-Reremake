@@ -41,8 +41,8 @@ import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
-import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.IntegrateStage;
+import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegration;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.towny.TownyIntegration;
@@ -273,6 +273,24 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    /**
+     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
+     *
+     * @return The fork name.
+     */
+    public static String getFork() {
+        return "Reremake";
+    }
+
+    /**
      * Get the Player's Shop limit.
      *
      * @param p The player you want get limit.
@@ -286,15 +304,6 @@ public class QuickShop extends JavaPlugin {
             }
         }
         return max;
-    }
-
-    /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
     }
 
     /**
@@ -379,7 +388,7 @@ public class QuickShop extends JavaPlugin {
                 case VAULT:
                     core = new Economy_Vault();
                     Util.debugLog("Now using the Vault economy system.");
-                    if(getConfig().getDouble("tax", 0) > 0) {
+                    if (getConfig().getDouble("tax", 0) > 0) {
                         getLogger().info("Checking the tax account infos...");
                         String taxAccount = getConfig().getString("tax-account", "tax");
                         OfflinePlayer tax = Bukkit.getOfflinePlayer(taxAccount);
@@ -389,7 +398,8 @@ public class QuickShop extends JavaPlugin {
                                 if (!vault.getVault().hasAccount(tax)) {
                                     try {
                                         vault.getVault().createPlayerAccount(tax);
-                                    }catch (Throwable ignored){}
+                                    } catch (Throwable ignored) {
+                                    }
                                     if (!vault.getVault().hasAccount(tax)) {
                                         getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
                                     }
@@ -1493,7 +1503,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize",new ArrayList<>());
+            getConfig().set("custom-item-stacksize", new ArrayList<>());
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1513,15 +1523,6 @@ public class QuickShop extends JavaPlugin {
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }
-    }
-
-    /**
-     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
-     *
-     * @return The fork name.
-     */
-    public static String getFork() {
-        return "Reremake";
     }
 
 //    private void replaceLogger() {

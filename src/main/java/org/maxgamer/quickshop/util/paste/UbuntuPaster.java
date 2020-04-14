@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.Util;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.Util;
 
 public class UbuntuPaster implements PasteInterface {
     /**
@@ -43,8 +44,8 @@ public class UbuntuPaster implements PasteInterface {
         conn.setRequestProperty("accept", "*/*");
         conn.setRequestProperty("connection", "Keep-Alive");
         conn.setRequestProperty(
-            "user-agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36");
+                "user-agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36");
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setConnectTimeout(50000);
@@ -52,12 +53,12 @@ public class UbuntuPaster implements PasteInterface {
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // poster=aaaaaaa&syntax=text&expiration=&content=%21%40
         String builder =
-            "poster="
-                + "QuickShop Paster"
-                + "&syntax=text"
-                + "&expiration=week"
-                + "&content="
-                + URLEncoder.encode(text, "UTF-8");
+                "poster="
+                        + "QuickShop Paster"
+                        + "&syntax=text"
+                        + "&expiration=week"
+                        + "&content="
+                        + URLEncoder.encode(text, "UTF-8");
         out.print(builder);
         out.flush(); // Drop
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));

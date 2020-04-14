@@ -25,8 +25,9 @@ import java.lang.reflect.Field;
 
 public class ReflectFactory {
     private static String cachedVersion = null;
+
     public static String getServerVersion() {
-        if(cachedVersion != null){
+        if (cachedVersion != null) {
             return cachedVersion;
         }
         try {
@@ -34,7 +35,7 @@ public class ReflectFactory {
             consoleField.setAccessible(true); // protected
             Object console = consoleField.get(Bukkit.getServer()); // dedicated server
             cachedVersion = String.valueOf(
-                console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
+                    console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
             return cachedVersion;
         } catch (Exception e) {
             e.printStackTrace();

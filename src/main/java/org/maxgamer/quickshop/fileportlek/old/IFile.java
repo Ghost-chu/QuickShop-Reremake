@@ -1,8 +1,5 @@
 package org.maxgamer.quickshop.fileportlek.old;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -10,6 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.mock.MckFileConfiguration;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
 
 public interface IFile {
 
@@ -54,7 +55,7 @@ public interface IFile {
     /**
      * Gets the object with fallback
      *
-     * @param path object path to get
+     * @param path     object path to get
      * @param fallback fallback object to get if path does not exist
      * @return if path does not exist returns fallback object
      */
@@ -63,9 +64,9 @@ public interface IFile {
     /**
      * Gets or sets the object
      *
-     * @param path object path to get
+     * @param path     object path to get
      * @param fallback fallback object to get if path does not exist
-     * @param <T> object type
+     * @param <T>      object type
      * @return if path does not exist returns and set the path with fallback object
      */
     @NotNull <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
@@ -81,7 +82,7 @@ public interface IFile {
     /**
      * Sets location into the path
      *
-     * @param path location path to set
+     * @param path     location path to set
      * @param location {@link Location}
      */
     void setLocation(@NotNull final String path, @NotNull final Location location);
@@ -100,7 +101,7 @@ public interface IFile {
     /**
      * Sets custom itemstack to path
      *
-     * @param path itemstack path to set
+     * @param path      itemstack path to set
      * @param itemStack {@link ItemStack}
      */
     void setCustomItemStack(@NotNull final String path, @NotNull final ItemStack itemStack);
@@ -116,7 +117,7 @@ public interface IFile {
     /**
      * Sets object to path
      *
-     * @param path object path to set
+     * @param path   object path to set
      * @param object {@link Object}
      */
     void set(@NotNull final String path, @Nullable final Object object);

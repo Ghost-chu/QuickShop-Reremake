@@ -39,17 +39,17 @@ public class SubCommand_Update implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Checking for updates...");
+                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
                 final UpdateInfomation updateInfomation = Updater.checkUpdate();
                 final String updateVersion = updateInfomation.getVersion();
 
                 if (updateVersion == null) {
-                    MsgUtil.sendMessage(sender,ChatColor.RED + "Failed check the update, connection issue?");
+                    MsgUtil.sendMessage(sender, ChatColor.RED + "Failed check the update, connection issue?");
                     return;
                 }
 
@@ -58,14 +58,14 @@ public class SubCommand_Update implements CommandProcesser {
                     return;
                 }
 
-                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Downloading update, this may need a while...");
+                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
 
                 final byte[] pluginBin;
 
                 try {
                     pluginBin = Updater.downloadUpdatedJar();
                 } catch (IOException e) {
-                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, get details to look the console.");
+                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
                     e.printStackTrace();
                     return;
@@ -73,26 +73,26 @@ public class SubCommand_Update implements CommandProcesser {
 
                 if (pluginBin.length < 1) {
                     MsgUtil.sendMessage(sender,
-                        ChatColor.RED + "Download failed, check your connection before contact the author.");
+                            ChatColor.RED + "Download failed, check your connection before contact the author.");
                     return;
                 }
 
-                MsgUtil.sendMessage(sender,ChatColor.YELLOW + "Installing update...");
+                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
 
                 try {
                     Updater.replaceTheJar(pluginBin);
                 } catch (IOException ioe) {
-                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, get details to look the console.");
+                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
                     ioe.printStackTrace();
                     return;
                 } catch (RuntimeException re) {
-                    MsgUtil.sendMessage(sender,ChatColor.RED + "Update failed, " + re.getMessage());
+                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, " + re.getMessage());
                     return;
                 }
 
                 MsgUtil.sendMessage(sender,
-                    ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
+                        ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
             }
         }.runTaskAsynchronously(plugin);
     }
@@ -100,7 +100,7 @@ public class SubCommand_Update implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

@@ -126,7 +126,7 @@ public abstract class DisplayItem {
      * Check the itemStack is target shop's display
      *
      * @param itemStack Target ItemStack
-     * @param shop Target shop
+     * @param shop      Target shop
      * @return Is target shop's display
      */
     public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
@@ -173,7 +173,7 @@ public abstract class DisplayItem {
      * Create a new itemStack with protect flag.
      *
      * @param itemStack Old itemStack
-     * @param shop The shop
+     * @param shop      The shop
      * @return New itemStack with protect flag.
      */
     public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
@@ -194,7 +194,7 @@ public abstract class DisplayItem {
         String protectFlag = gson.toJson(shopProtectionFlag);
         for (int i = 0; i < 21; i++) {
             lore.add(
-                protectFlag); // Create 20 lines lore to make sure no stupid plugin accident remove mark.
+                    protectFlag); // Create 20 lines lore to make sure no stupid plugin accident remove mark.
         }
         iMeta.setLore(lore);
         itemStack.setItemMeta(iMeta);
@@ -205,11 +205,11 @@ public abstract class DisplayItem {
      * Create the shop protection flag for display item.
      *
      * @param itemStack The item stack
-     * @param shop The shop
+     * @param shop      The shop
      * @return ShopProtectionFlag obj
      */
     public static ShopProtectionFlag createShopProtectionFlag(
-        @NotNull ItemStack itemStack, @NotNull Shop shop) {
+            @NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 

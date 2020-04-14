@@ -20,9 +20,10 @@
 
 package org.maxgamer.quickshop.nonquickshopstuff.de.Keyle.MyPet.api.util;
 
+import org.bukkit.ChatColor;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.ChatColor;
 
 public class Colorizer {
 

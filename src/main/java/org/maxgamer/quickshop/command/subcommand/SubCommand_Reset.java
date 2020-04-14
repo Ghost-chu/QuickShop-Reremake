@@ -39,10 +39,10 @@ public class SubCommand_Reset implements CommandProcesser {
     @Override
     @SneakyThrows
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
             return;
         }
 
@@ -60,7 +60,7 @@ public class SubCommand_Reset implements CommandProcesser {
                 MsgUtil.loadItemi18n();
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
-                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
             case "config":
                 File config = new File(plugin.getDataFolder(), "config.yml");
@@ -69,13 +69,13 @@ public class SubCommand_Reset implements CommandProcesser {
                 plugin.reloadConfig();
                 Bukkit.getPluginManager().disablePlugin(plugin);
                 Bukkit.getPluginManager().enablePlugin(plugin);
-                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
             case "messages":
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadCfgMessages();
-                MsgUtil.sendMessage(sender,MsgUtil.getMessage("complete", sender));
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("complete", sender));
                 break;
         }
     }
@@ -83,7 +83,7 @@ public class SubCommand_Reset implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         ArrayList<String> tab = new ArrayList<>();
         tab.add("lang");
         tab.add("config");

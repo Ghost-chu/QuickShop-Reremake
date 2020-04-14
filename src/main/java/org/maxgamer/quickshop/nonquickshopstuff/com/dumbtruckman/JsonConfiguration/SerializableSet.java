@@ -1,12 +1,13 @@
 package org.maxgamer.quickshop.nonquickshopstuff.com.dumbtruckman.JsonConfiguration;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
 
 @SerializableAs("set")
 public class SerializableSet implements Set, ConfigurationSerializable {

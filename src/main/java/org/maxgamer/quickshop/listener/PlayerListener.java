@@ -54,7 +54,7 @@ public class PlayerListener implements Listener {
     @NotNull
     private final QuickShop plugin;
 
-    private void playClickSound(@NotNull Player player){
+    private void playClickSound(@NotNull Player player) {
         if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
             player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
         }
@@ -71,7 +71,7 @@ public class PlayerListener implements Listener {
                     block = e.getClickedBlock();
                 }
                 Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
-                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())){
+                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().isOp())) {
                     if (plugin.getConfig().getBoolean("shop.sneak-to-control") && !e.getPlayer().isSneaking()) {
                         return;
                     }
@@ -236,7 +236,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         Location location = e.getInventory().getLocation();
-        if(location == null){
+        if (location == null) {
             return; /// ignored as workaround, GH-303
         }
         final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);

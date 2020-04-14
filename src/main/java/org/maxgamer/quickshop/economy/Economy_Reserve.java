@@ -39,7 +39,7 @@ import java.util.UUID;
 public class Economy_Reserve implements EconomyCore {
 
     private final String errorMsg =
-        "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
+            "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     private final QuickShop plugin = QuickShop.instance;
 
@@ -66,7 +66,7 @@ public class Economy_Reserve implements EconomyCore {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
-     * @param name The exact (case insensitive) username to give money to
+     * @param name   The exact (case insensitive) username to give money to
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
      */
@@ -129,8 +129,8 @@ public class Economy_Reserve implements EconomyCore {
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
-     * @param from The player who is paying money
-     * @param to The player who is receiving money
+     * @param from   The player who is paying money
+     * @param to     The player who is receiving money
      * @param amount The amount to transfer
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
@@ -149,7 +149,7 @@ public class Economy_Reserve implements EconomyCore {
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
-     * @param name The exact (case insensitive) username to take money from
+     * @param name   The exact (case insensitive) username to take money from
      * @param amount The amount to take from them
      * @return True if success, false if they didn't have enough cash
      */
