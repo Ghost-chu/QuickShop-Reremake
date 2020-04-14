@@ -548,13 +548,13 @@ public class ShopManager {
             space = 10000;
         }
         if (space < amount) {
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-has-no-space", p, "" + space, Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-no-space", p, Integer.toString(space), Util.getItemStackName(shop.getItem())));
             return;
         }
         int count = Util.countItems(p.getInventory(), shop.getItem());
         // Not enough items
         if (amount > count) {
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("you-dont-have-that-many-items", p, "" + count, Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("you-dont-have-that-many-items", p, Integer.toString(count), Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
@@ -599,7 +599,7 @@ public class ShopManager {
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
 
         if (space == amount) {
-            msg += "\n" + MsgUtil.getMessage("shop-out-of-space", p, "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ());
+            msg += "\n" + MsgUtil.getMessage("shop-out-of-space", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()));
         }
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.buy(p, amount);
@@ -709,10 +709,10 @@ public class ShopManager {
             boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
             switch (this.priceLimiter.check(info.getItem(),price)){
                 case REACHED_PRICE_MIN_LIMIT:
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : "" + this.priceLimiter.getMinPrice()));
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-cheap", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : Double.toString(this.priceLimiter.getMinPrice())));
                     return;
                 case REACHED_PRICE_MAX_LIMIT:
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : "" +this.priceLimiter.getMinPrice()));
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("price-too-high", p, (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice()) : Double.toString(this.priceLimiter.getMinPrice())));
                     return;
                 case PRICE_RESTRICTED:
                     Map.Entry<Double, Double> materialLimit =Util.getPriceRestriction(info.getItem().getType());
@@ -861,7 +861,7 @@ public class ShopManager {
             stock = 10000;
         }
         if (stock < amount) {
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-stock-too-low", p, "" + stock, Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p, Integer.toString(stock), Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
@@ -906,13 +906,13 @@ public class ShopManager {
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), "" + amount, "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), "" + amount, "##########" + Util.serialize(shop.getItem()) + "##########");
+            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", p, "" + shop.getLocation().getBlockX(), "" + shop.getLocation().getBlockY(), "" + shop.getLocation().getBlockZ(), Util.getItemStackName(shop.getItem()));
+            msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()), Util.getItemStackName(shop.getItem()));
         }
 
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
@@ -998,7 +998,7 @@ public class ShopManager {
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
                         if (shopHaveSpaces == 0) {
                             // when typed 'all' but the shop doesn't have any empty space
-                            MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-has-no-space", p, "" + shopHaveSpaces, Util.getItemStackName(shop.getItem())));
+                            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-no-space", p, Integer.toString(shopHaveSpaces), Util.getItemStackName(shop.getItem())));
                             return;
                         }
                         if (ownerCanAfford == 0 && (!shop.isUnlimited() || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
@@ -1008,7 +1008,7 @@ public class ShopManager {
                             return;
                         }
                         // when typed 'all' but player doesn't have any items to sell
-                        MsgUtil.sendMessage(p,MsgUtil.getMessage("you-dont-have-that-many-items", p, "" + amount, Util.getItemStackName(shop.getItem())));
+                        MsgUtil.sendMessage(p, MsgUtil.getMessage("you-dont-have-that-many-items", p, Integer.toString(amount), Util.getItemStackName(shop.getItem())));
                         return;
                     }
                 } else {
@@ -1042,7 +1042,7 @@ public class ShopManager {
                         // when typed 'all' but player can't buy any items
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
-                            MsgUtil.sendMessage(p,MsgUtil.getMessage("shop-stock-too-low", p, "" + shop.getRemainingStock(), Util.getItemStackName(shop.getItem())));
+                            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p, Integer.toString(shop.getRemainingStock()), Util.getItemStackName(shop.getItem())));
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces <= 0) {

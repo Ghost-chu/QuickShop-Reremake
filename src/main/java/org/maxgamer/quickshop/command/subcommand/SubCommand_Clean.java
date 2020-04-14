@@ -75,7 +75,7 @@ public class SubCommand_Clean implements CommandProcesser {
         pendingRemoval.forEach(Shop::delete);
 
         MsgUtil.clean();
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaned", sender, "" + i));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaned", sender, Integer.toString(i)));
     }
 
     @NotNull
