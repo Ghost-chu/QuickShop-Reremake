@@ -19,12 +19,13 @@
 
 package org.maxgamer.quickshop.database;
 
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.Util;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.Util;
 
 public class BufferStatement {
 
@@ -37,7 +38,7 @@ public class BufferStatement {
     /**
      * Represents a PreparedStatement in a state before preparing it (E.g. No file I/O Required)
      *
-     * @param query The query to execute. E.g. INSERT INTO accounts (user, passwd) VALUES (?, ?)
+     * @param query  The query to execute. E.g. INSERT INTO accounts (user, passwd) VALUES (?, ?)
      * @param values The values to replace ? with in query. These are in order.
      */
     public BufferStatement(@NotNull String query, @NotNull Object... values) {

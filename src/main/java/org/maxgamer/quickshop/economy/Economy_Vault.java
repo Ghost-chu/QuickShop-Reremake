@@ -69,14 +69,14 @@ public class Economy_Vault implements EconomyCore, Listener {
 
         if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
             plugin
-                .getLogger()
-                .warning(
-                    "Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
+                    .getLogger()
+                    .warning(
+                            "Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
             plugin
-                .getLogger()
-                .warning(
-                    "This is technical information, please send this to economy plugin author: "
-                        + "VaultEconomyProvider.getName() return a null or empty.");
+                    .getLogger()
+                    .warning(
+                            "This is technical information, please send this to economy plugin author: "
+                                    + "VaultEconomyProvider.getName() return a null or empty.");
         } else {
             plugin.getLogger().info("Using economy system: " + this.vault.getName());
         }
@@ -113,11 +113,11 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin
-                .getLogger()
-                .warning(
-                    "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
-                        + getProviderName()
-                        + ")");
+                    .getLogger()
+                    .warning(
+                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
+                                    + getProviderName()
+                                    + ")");
             return false;
         }
     }
@@ -168,11 +168,11 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin
-                .getLogger()
-                .warning(
-                    "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                        + getProviderName()
-                        + ")");
+                    .getLogger()
+                    .warning(
+                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
+                                    + getProviderName()
+                                    + ")");
             return 0.0;
         }
     }
@@ -200,11 +200,11 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin
-                .getLogger()
-                .warning(
-                    "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
-                        + getProviderName()
-                        + ")");
+                    .getLogger()
+                    .warning(
+                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
+                                    + getProviderName()
+                                    + ")");
             return false;
         }
     }
@@ -226,11 +226,11 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin
-                .getLogger()
-                .warning(
-                    "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
-                        + getProviderName()
-                        + ")");
+                    .getLogger()
+                    .warning(
+                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
+                                    + getProviderName()
+                                    + ")");
             return false;
         }
     }

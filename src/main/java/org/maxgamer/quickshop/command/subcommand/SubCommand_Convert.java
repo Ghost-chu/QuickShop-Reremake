@@ -31,8 +31,8 @@ public class SubCommand_Convert implements CommandProcesser {
     @SneakyThrows
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if(sender instanceof Player){
-            sender.sendMessage(ChatColor.RED+"Danger command, please execute in console.");
+        if (sender instanceof Player) {
+            sender.sendMessage(ChatColor.RED + "Danger command, please execute in console.");
             return;
         }
         if (cmdArg.length == 0) {

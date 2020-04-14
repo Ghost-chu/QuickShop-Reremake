@@ -117,7 +117,7 @@ public class LockListener extends ProtectionListenerBase implements Listener {
             final Sign sign = (Sign) b.getState();
 
             if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
+                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
                 Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
@@ -134,16 +134,16 @@ public class LockListener extends ProtectionListenerBase implements Listener {
             }
             // If they owned it or have bypass perms, they can destroy it
             if (!shop.getOwner().equals(p.getUniqueId())
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
             }
         } else if (Util.isWallSign(b.getType())) {
             if (b instanceof Sign) {
                 final Sign sign = (Sign) b;
 
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
+                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -162,9 +162,9 @@ public class LockListener extends ProtectionListenerBase implements Listener {
             // If they're the shop owner or have bypass perms, they can destroy
             // it.
             if (!shop.getOwner().equals(p.getUniqueId())
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
             }
         }
     }
@@ -196,10 +196,10 @@ public class LockListener extends ProtectionListenerBase implements Listener {
 
         if (!shop.getModerator().isModerator(p.getUniqueId())) {
             if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("bypassing-lock", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("bypassing-lock", p));
                 return;
             }
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("that-is-locked", p));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("that-is-locked", p));
             e.setCancelled(true);
         }
     }
@@ -223,11 +223,11 @@ public class LockListener extends ProtectionListenerBase implements Listener {
         }
 
         if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("bypassing-lock", p));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("bypassing-lock", p));
             return;
         }
 
-        MsgUtil.sendMessage(p,MsgUtil.getMessage("that-is-locked", p));
+        MsgUtil.sendMessage(p, MsgUtil.getMessage("that-is-locked", p));
         e.setCancelled(true);
     }
 

@@ -62,7 +62,7 @@ public class ChunkListener implements Listener {
             return;
         }
         for (Shop shop : inChunk.values()) {
-            if(shop.isLoaded()) {
+            if (shop.isLoaded()) {
                 shop.onUnload();
             }
         }

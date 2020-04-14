@@ -19,18 +19,19 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import java.io.*;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.io.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LogWatcher extends BukkitRunnable {
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();

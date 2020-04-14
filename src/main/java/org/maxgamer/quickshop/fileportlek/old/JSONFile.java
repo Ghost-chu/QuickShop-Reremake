@@ -1,11 +1,12 @@
 package org.maxgamer.quickshop.fileportlek.old;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.nonquickshopstuff.com.dumbtruckman.JsonConfiguration.JSONConfiguration;
+
+import java.io.File;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public final class JSONFile extends FileEnvelope {
 

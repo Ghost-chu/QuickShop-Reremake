@@ -68,27 +68,19 @@ public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
     private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
-        new EnumMap<>(Material.class);
+            new EnumMap<>(Material.class);
 
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
-
-    private static List<String> debugLogs = new LinkedList<>();
-    private static ReentrantReadWriteLock lock=new ReentrantReadWriteLock();
-
-    private static boolean devMode = false;
-
-    private static QuickShop plugin;
-
-    private static Object serverInstance;
-
-    private static Field tpsField;
-
-    private static List<String> worldBlacklist = new ArrayList<>();
-
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-
+    private static List<String> debugLogs = new LinkedList<>();
+    private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private static boolean devMode = false;
+    private static QuickShop plugin;
+    private static Object serverInstance;
+    private static Field tpsField;
+    private static List<String> worldBlacklist = new ArrayList<>(5);
     private static boolean disableDebugLogger = false;
 
     /**
@@ -144,12 +136,12 @@ public class Util {
     public static boolean canBeShop(@NotNull Block b) {
         BlockState bs = b.getState();
 
-        // Specificed types by configuration
-        if (!isShoppables(b.getType())) {
+        if (isBlacklistWorld(b.getWorld())) {
             return false;
         }
 
-        if (isBlacklistWorld(b.getWorld())) {
+        // Specificed types by configuration
+        if (!isShoppables(b.getType())) {
             return false;
         }
 
@@ -178,7 +170,7 @@ public class Util {
      * Counts the number of items in the given inventory where Util.matches(inventory item, item) is
      * true.
      *
-     * @param inv The inventory to search
+     * @param inv  The inventory to search
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
      */
@@ -202,9 +194,9 @@ public class Util {
     /**
      * Returns the number of items that can be given to the inventory safely.
      *
-     * @param inv The inventory to count
+     * @param inv  The inventory to count
      * @param item The item prototype. Material, durabiltiy and enchants must match for 'stackability'
-     * to occur.
+     *             to occur.
      * @return The number of items that can be given to the inventory safely.
      */
     public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
@@ -220,7 +212,7 @@ public class Util {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += iStack.getAmount()>=itemMaxStackSize ? 0:itemMaxStackSize - iStack.getAmount();
+                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
             }
         }
         return space / item.getAmount();
@@ -228,11 +220,12 @@ public class Util {
 
     /**
      * Returns a material max stacksize
+     *
      * @param material Material
      * @return Game StackSize or Custom
      */
-    public static int getItemMaxStackSize(@NotNull Material material){
-        return customStackSize.getOrDefault(material,material.getMaxStackSize());
+    public static int getItemMaxStackSize(@NotNull Material material) {
+        return customStackSize.getOrDefault(material, material.getMaxStackSize());
     }
 
     /**
@@ -276,15 +269,15 @@ public class Util {
                     Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
-                        .getLogger()
-                        .warning(
-                            "Cannot load ItemStack "
-                                + config
-                                + " because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
+                            .getLogger()
+                            .warning(
+                                    "Cannot load ItemStack "
+                                            + config
+                                            + " because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLELASE DON'T REPORT TO QUICKSHOP!");
                     plugin
-                        .getLogger()
-                        .warning(
-                            "You can try force load this ItemStack by our hacked ItemStack read util(shop.force-load-downgrade-items), but beware, the data may damaged if you load on this lower Minecraft server version, Please backup your world and database before enable!");
+                            .getLogger()
+                            .warning(
+                                    "You can try force load this ItemStack by our hacked ItemStack read util(shop.force-load-downgrade-items), but beware, the data may damaged if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
             yamlConfiguration.loadFromString(config);
@@ -298,7 +291,7 @@ public class Util {
 
     public static List<String> getDebugLogs() {
         lock.readLock().lock();
-        List<String> strings=new ArrayList<>(debugLogs);
+        List<String> strings = new ArrayList<>(debugLogs);
         lock.readLock().unlock();
         return strings;
     }
@@ -309,11 +302,11 @@ public class Util {
      * @param logs logs
      */
     public static void debugLog(@NotNull String... logs) {
-        if(disableDebugLogger){
+        if (disableDebugLogger) {
             return;
         }
         lock.writeLock().lock();
-        if(debugLogs.size()>=2000){
+        if (debugLogs.size() >= 2000) {
             debugLogs.clear();
         }
         if (!devMode) {
@@ -348,7 +341,7 @@ public class Util {
             String formated = plugin.getEconomy().format(n);
             if (formated == null || formated.isEmpty()) {
                 Util.debugLog(
-                    "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
+                        "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
                 return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
             } else {
                 return formated;
@@ -356,7 +349,7 @@ public class Util {
         } catch (NumberFormatException e) {
             Util.debugLog("format", e.getMessage());
             Util.debugLog(
-                "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
+                    "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
         }
     }
@@ -424,7 +417,7 @@ public class Util {
 
     public static String getItemStackName(@NotNull ItemStack itemStack) {
         if (itemStack.hasItemMeta()
-            && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
+                && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
             return itemStack.getItemMeta().getDisplayName();
         }
         return MsgUtil.getItemi18n(itemStack.getType().name());
@@ -455,8 +448,8 @@ public class Util {
     @Nullable
     public static String getPotiondata(@NotNull ItemStack iStack) {
         if ((iStack.getType() != Material.POTION)
-            && (iStack.getType() != Material.LINGERING_POTION)
-            && (iStack.getType() != Material.SPLASH_POTION)) {
+                && (iStack.getType() != Material.LINGERING_POTION)
+                && (iStack.getType() != Material.SPLASH_POTION)) {
             return null;
         }
         if (!(iStack.getItemMeta() instanceof PotionMeta)) {
@@ -467,15 +460,15 @@ public class Util {
         // if (pMeta.getBasePotionData().getType() != null) {
         if (!(pMeta.getBasePotionData().isUpgraded())) {
             pEffects.add(
-                ChatColor.BLUE
-                    + MsgUtil.getPotioni18n(
-                    Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType())));
+                    ChatColor.BLUE
+                            + MsgUtil.getPotioni18n(
+                            Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType())));
         } else {
             pEffects.add(
-                ChatColor.BLUE
-                    + MsgUtil.getPotioni18n(
-                    Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType()))
-                    + " II");
+                    ChatColor.BLUE
+                            + MsgUtil.getPotioni18n(
+                            Objects.requireNonNull(pMeta.getBasePotionData().getType().getEffectType()))
+                            + " II");
         }
 
         // }
@@ -483,9 +476,9 @@ public class Util {
             List<PotionEffect> cEffects = pMeta.getCustomEffects();
             for (PotionEffect potionEffect : cEffects) {
                 pEffects.add(
-                    MsgUtil.getPotioni18n(potionEffect.getType())
-                        + " "
-                        + RomanNumber.toRoman(potionEffect.getAmplifier()));
+                        MsgUtil.getPotioni18n(potionEffect.getType())
+                                + " "
+                                + RomanNumber.toRoman(potionEffect.getAmplifier()));
             }
         }
         if (!pEffects.isEmpty()) {
@@ -647,33 +640,33 @@ public class Util {
                     Material mat = Material.matchMaterial(sp[0]);
                     if (mat == null) {
                         plugin
-                            .getLogger()
-                            .warning(
-                                "Material "
-                                    + sp[0]
-                                    + " in config.yml can't match with a valid Materials, check your config.yml!");
+                                .getLogger()
+                                .warning(
+                                        "Material "
+                                                + sp[0]
+                                                + " in config.yml can't match with a valid Materials, check your config.yml!");
                         continue;
                     }
                     restrictedPrices.put(
-                        mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
+                            mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
                 } catch (Exception e) {
                     plugin.getLogger().warning("Invalid price restricted material: " + s);
                 }
             }
         }
-        for(String material:plugin.getConfig().getStringList("custom-item-stacksize")){
+        for (String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
             String[] data = material.split(":");
-            if(data.length != 2){
+            if (data.length != 2) {
                 continue;
             }
 
             Material mat = Material.matchMaterial(data[0]);
-            if (mat == null || mat == Material.AIR){
-                plugin.getLogger().warning(material+" not a valid material type in custom-item-stacksize section.");
+            if (mat == null || mat == Material.AIR) {
+                plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
                 continue;
             }
             int size = Integer.parseInt(data[1]);
-            customStackSize.put(mat,size);
+            customStackSize.put(mat, size);
 
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
@@ -755,15 +748,15 @@ public class Util {
                                 return; // Virtual GUI
                             }
                             plugin
-                                .getSyncTaskWatcher()
-                                .getInventoryEditQueue()
-                                .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
+                                    .getSyncTaskWatcher()
+                                    .getInventoryEditQueue()
+                                    .offer(new InventoryEditContainer(inv, i, new ItemStack(Material.AIR)));
                             Util.debugLog("Found a displayitem in an inventory, Scheduling to removal...");
                             MsgUtil.sendGlobalAlert(
-                                "[InventoryCheck] Found displayItem in inventory at "
-                                    + location
-                                    + ", Item is "
-                                    + itemStack.getType().name());
+                                    "[InventoryCheck] Found displayItem in inventory at "
+                                            + location
+                                            + ", Item is "
+                                            + itemStack.getType().name());
                         }
                     }
                 } catch (Throwable t) {
@@ -788,12 +781,12 @@ public class Util {
             return false;
         }
         for (String lore : Objects.requireNonNull(stack.getItemMeta().getLore())) {
-			List<String> blacklistLores = plugin.getConfig().getStringList("shop.blacklist-lores");
-			for (String blacklistLore : blacklistLores) {
-				if (lore.contains(blacklistLore)) {
-					return true;
-				}
-			}
+            List<String> blacklistLores = plugin.getConfig().getStringList("shop.blacklist-lores");
+            for (String blacklistLore : blacklistLores) {
+                if (lore.contains(blacklistLore)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -898,9 +891,9 @@ public class Util {
             // on secondHalf.
             Block secondHalf = getSecondHalf(c);
             Shop secondShop =
-                secondHalf == null ? null : plugin.getShopManager().getShop(secondHalf.getLocation());
+                    secondHalf == null ? null : plugin.getShopManager().getShop(secondHalf.getLocation());
             if (firstShop != null && !p.getUniqueId().equals(firstShop.getOwner())
-                || secondShop != null && !p.getUniqueId().equals(secondShop.getOwner())) {
+                    || secondShop != null && !p.getUniqueId().equals(secondShop.getOwner())) {
                 return true;
             }
         }
@@ -946,8 +939,8 @@ public class Util {
      */
     private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
         return (b1.getBlockX() == b2.getBlockX())
-            && (b1.getBlockY() == b2.getBlockY())
-            && (b1.getBlockZ() == b2.getBlockZ());
+                && (b1.getBlockY() == b2.getBlockY())
+                && (b1.getBlockZ() == b2.getBlockZ());
     }
 
     /**
@@ -992,7 +985,7 @@ public class Util {
     /**
      * Returns loc with modified pitch/yaw angles so it faces lookat
      *
-     * @param loc The location a players head is
+     * @param loc    The location a players head is
      * @param lookat The location they should be looking
      * @return The location the player should be facing to have their crosshairs on the location
      * lookAt Kudos to bergerkiller for most of this function
@@ -1190,23 +1183,23 @@ public class Util {
     @Deprecated
     public static void sendDeprecatedMethodWarn() {
         QuickShop.instance
-            .getLogger()
-            .warning(
-                "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
+                .getLogger()
+                .warning(
+                        "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         for (StackTraceElement stackTraceElement : stackTraceElements) {
             QuickShop.instance
-                .getLogger()
-                .warning(
-                    "at "
-                        + stackTraceElement.getClassName()
-                        + "#"
-                        + stackTraceElement.getMethodName()
-                        + " ("
-                        + stackTraceElement.getFileName()
-                        + ":"
-                        + stackTraceElement.getLineNumber()
-                        + ")");
+                    .getLogger()
+                    .warning(
+                            "at "
+                                    + stackTraceElement.getClassName()
+                                    + "#"
+                                    + stackTraceElement.getMethodName()
+                                    + " ("
+                                    + stackTraceElement.getFileName()
+                                    + ":"
+                                    + stackTraceElement.getLineNumber()
+                                    + ")");
         }
     }
 
@@ -1256,8 +1249,8 @@ public class Util {
     public static Material getSignMaterial() {
 
         Material signMaterial =
-            Material.matchMaterial(
-                Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material")));
+                Material.matchMaterial(
+                        Objects.requireNonNull(plugin.getConfig().getString("shop.sign-material")));
         if (signMaterial != null) {
             return signMaterial;
         }
@@ -1271,9 +1264,9 @@ public class Util {
         }
         // What the fuck!?
         plugin
-            .getLogger()
-            .warning(
-                "QuickShop can't found any useable sign material, we will use default Sign Material.");
+                .getLogger()
+                .warning(
+                        "QuickShop can't found any useable sign material, we will use default Sign Material.");
         try {
             return Material.OAK_WALL_SIGN;
         } catch (Throwable e) {
@@ -1287,7 +1280,7 @@ public class Util {
      * @return TPS (e.g 19.92)
      */
     public static Double getTPS() {
-        if(serverInstance == null || tpsField == null) {
+        if (serverInstance == null || tpsField == null) {
             try {
                 serverInstance = getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
                 tpsField = serverInstance.getClass().getField("recentTps");
@@ -1337,12 +1330,12 @@ public class Util {
     public static boolean isDevEdition() {
         String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
         return (version.contains("dev")
-            || version.contains("develop")
-            || version.contains("alpha")
-            || version.contains("beta")
-            || version.contains("test")
-            || version.contains("snapshot")
-            || version.contains("preview"));
+                || version.contains("develop")
+                || version.contains("alpha")
+                || version.contains("beta")
+                || version.contains("test")
+                || version.contains("snapshot")
+                || version.contains("preview"));
     }
 
     /**

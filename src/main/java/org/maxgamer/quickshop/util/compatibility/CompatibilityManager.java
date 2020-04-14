@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CompatibilityManager {
-    private Set<CompatibilityModule> registeredModules = new HashSet<>();
+    private Set<CompatibilityModule> registeredModules = new HashSet<>(5);
 
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin
@@ -17,13 +17,14 @@ public class CompatibilityManager {
      * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
-        this.registeredModules.forEach(module->module.toggle(player,status));
+        this.registeredModules.forEach(module -> module.toggle(player, status));
     }
 
-    public void register(@NotNull CompatibilityModule module){
+    public void register(@NotNull CompatibilityModule module) {
         registeredModules.add(module);
     }
-    public void unregister(@NotNull CompatibilityModule module){
+
+    public void unregister(@NotNull CompatibilityModule module) {
         registeredModules.remove(module);
     }
 }

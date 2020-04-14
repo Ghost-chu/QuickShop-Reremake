@@ -58,7 +58,7 @@ public class WorldListener implements Listener {
         final Map<ShopChunk, Map<Location, Shop>> inWorld = new HashMap<>(1);
         // Old world data
         final Map<ShopChunk, Map<Location, Shop>> oldInWorld =
-            plugin.getShopManager().getShops(world.getName());
+                plugin.getShopManager().getShops(world.getName());
         // Nothing in the old world, therefore we don't care. No locations to
         // update.
         if (oldInWorld == null) {
@@ -108,7 +108,7 @@ public class WorldListener implements Listener {
                 continue;
             }
             for (Shop shop : inChunk.values()) {
-                if(shop.isLoaded()) { //Don't unload already unloaded shops.
+                if (shop.isLoaded()) { //Don't unload already unloaded shops.
                     shop.onUnload();
                 }
             }

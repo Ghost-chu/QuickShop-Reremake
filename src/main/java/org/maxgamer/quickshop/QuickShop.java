@@ -41,8 +41,8 @@ import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
-import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.IntegrateStage;
+import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegration;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.towny.TownyIntegration;
@@ -83,9 +83,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private IntegrationHelper integrationHelper;
 
-    // Listeners (These don't)
-    private BlockListener blockListener;
-
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -93,11 +90,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     @Setter
     private BootError bootError;
-
-    // Listeners - We decide which one to use at runtime
-    private ChatListener chatListener;
-
-    private ChunkListener chunkListener;
 
     @Getter
     private CommandManager commandManager;
@@ -107,8 +99,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private CompatibilityManager compatibilityTool = new CompatibilityManager();
-
-    private CustomInventoryListener customInventoryListener;
 
     /**
      * The database for storing all our data for persistence
@@ -140,8 +130,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private boolean display = true;
 
-    private DisplayBugFixListener displayBugFixListener;
-
     @Getter
     private int displayItemCheckTicks;
 
@@ -153,8 +141,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private Economy economy;
-
-    private DisplayProtectionListener inventoryListener;
 
     @Getter
     private ItemMatcher itemMatcher;
@@ -175,9 +161,7 @@ public class QuickShop extends JavaPlugin {
      * The shop limites.
      */
     @Getter
-    private HashMap<String, Integer> limits = new HashMap<>();
-
-    private LockListener lockListener;
+    private HashMap<String, Integer> limits = new HashMap<>(15);
 
     // private BukkitTask itemWatcherTask;
     @Nullable
@@ -206,10 +190,6 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private PermissionChecker permissionChecker;
-
-    private PlayerListener playerListener;
-
-    private InternalListener internalListener;
 
     /**
      * Whether we players are charged a fee to change the price on their shop (To help deter endless
@@ -244,16 +224,12 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private ShopManager shopManager;
 
-    private ShopProtectionListener shopProtectListener;
-
     @Getter
     private SyncTaskWatcher syncTaskWatcher;
 
     // private ShopVaildWatcher shopVaildWatcher;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
-
-    private WorldListener worldListener;
 
     @Getter
     private OngoingFeeWatcher ongoingFeeWatcher;
@@ -297,6 +273,24 @@ public class QuickShop extends JavaPlugin {
     }
 
     /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    /**
+     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
+     *
+     * @return The fork name.
+     */
+    public static String getFork() {
+        return "Reremake";
+    }
+
+    /**
      * Get the Player's Shop limit.
      *
      * @param p The player you want get limit.
@@ -310,15 +304,6 @@ public class QuickShop extends JavaPlugin {
             }
         }
         return max;
-    }
-
-    /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
     }
 
     /**
@@ -403,7 +388,7 @@ public class QuickShop extends JavaPlugin {
                 case VAULT:
                     core = new Economy_Vault();
                     Util.debugLog("Now using the Vault economy system.");
-                    if(getConfig().getDouble("tax", 0) > 0) {
+                    if (getConfig().getDouble("tax", 0) > 0) {
                         getLogger().info("Checking the tax account infos...");
                         String taxAccount = getConfig().getString("tax-account", "tax");
                         OfflinePlayer tax = Bukkit.getOfflinePlayer(taxAccount);
@@ -411,7 +396,10 @@ public class QuickShop extends JavaPlugin {
                             Economy_Vault vault = (Economy_Vault) core;
                             if (vault.isValid()) {
                                 if (!vault.getVault().hasAccount(tax)) {
-                                    vault.getVault().createPlayerAccount(tax);
+                                    try {
+                                        vault.getVault().createPlayerAccount(tax);
+                                    } catch (Throwable ignored) {
+                                    }
                                     if (!vault.getVault().hasAccount(tax)) {
                                         getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
                                     }
@@ -493,6 +481,7 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         QuickShopAPI.setupApi(this);
+        //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
 //        replaceLogger();
 
@@ -695,21 +684,23 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Registering Listeners...");
         // Register events
 
-        blockListener = new BlockListener(this, this.shopCache);
-        playerListener = new PlayerListener(this);
-        worldListener = new WorldListener(this);
-        chatListener = new ChatListener(this);
-        chunkListener = new ChunkListener(this);
+        // Listeners (These don't)
+        BlockListener blockListener = new BlockListener(this, this.shopCache);
+        PlayerListener playerListener = new PlayerListener(this);
+        WorldListener worldListener = new WorldListener(this);
+        // Listeners - We decide which one to use at runtime
+        ChatListener chatListener = new ChatListener(this);
+        ChunkListener chunkListener = new ChunkListener(this);
 
-        customInventoryListener = new CustomInventoryListener(this);
+        CustomInventoryListener customInventoryListener = new CustomInventoryListener(this);
 
-        shopProtectListener = new ShopProtectionListener(this, this.shopCache);
+        ShopProtectionListener shopProtectListener = new ShopProtectionListener(this, this.shopCache);
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
-        lockListener = new LockListener(this, this.shopCache);
-        internalListener = new InternalListener(this);
+        LockListener lockListener = new LockListener(this, this.shopCache);
+        InternalListener internalListener = new InternalListener(this);
 
         Bukkit.getPluginManager().registerEvents(blockListener, this);
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -724,9 +715,9 @@ public class QuickShop extends JavaPlugin {
 
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-            displayBugFixListener = new DisplayBugFixListener(this);
+            DisplayBugFixListener displayBugFixListener = new DisplayBugFixListener(this);
             Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
-            inventoryListener = new DisplayProtectionListener(this);
+            DisplayProtectionListener inventoryListener = new DisplayProtectionListener(this);
             Bukkit.getPluginManager().registerEvents(inventoryListener, this);
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
@@ -1512,7 +1503,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize",new ArrayList<>());
+            getConfig().set("custom-item-stacksize", new ArrayList<>());
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1525,21 +1516,13 @@ public class QuickShop extends JavaPlugin {
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
+        //noinspection ResultOfMethodCallIgnored
         file.delete();
         try {
             Files.copy(Objects.requireNonNull(getResource("config.yml")), file.toPath());
         } catch (IOException ioe) {
             getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
         }
-    }
-
-    /**
-     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
-     *
-     * @return The fork name.
-     */
-    public static String getFork() {
-        return "Reremake";
     }
 
 //    private void replaceLogger() {

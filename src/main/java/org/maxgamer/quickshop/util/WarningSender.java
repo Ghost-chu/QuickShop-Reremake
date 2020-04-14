@@ -37,7 +37,7 @@ public class WarningSender {
     /**
      * Create a warning sender
      *
-     * @param plugin Main class
+     * @param plugin   Main class
      * @param cooldown Time unit: ms
      */
     public WarningSender(@NotNull QuickShop plugin, long cooldown) {

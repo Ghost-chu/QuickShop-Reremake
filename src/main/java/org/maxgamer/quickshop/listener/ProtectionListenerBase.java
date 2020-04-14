@@ -22,7 +22,7 @@ public class ProtectionListenerBase {
     /**
      * Get shop for redstone events, will caching if caching enabled
      *
-     * @param location The block location
+     * @param location        The block location
      * @param includeAttached whether to include the attached shop
      * @return The shop object
      */
@@ -42,27 +42,26 @@ public class ProtectionListenerBase {
     /**
      * Get shop for player events, won't be caching
      *
-     * @param location The block location
+     * @param location        The block location
      * @param includeAttached whether to include the attached shop
-     *
      * @return The shop object
      */
     @Nullable
     public Shop getShopPlayer(@NotNull Location location, boolean includeAttached) {
-        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location,false):plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location, false) : plugin.getShopManager().getShop(location);
     }
 
     /**
      * Get shop for nature events, may will caching but usually it doesn't will cached.
      * Because nature events usually won't check same block twice in shore time.
      *
-     * @param location The block location
+     * @param location        The block location
      * @param includeAttached whether to include the attached shop
      * @return The shop object
      */
     @Nullable
     public Shop getShopNature(@NotNull Location location, boolean includeAttached) {
-        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location,false):plugin.getShopManager().getShop(location);
+        return includeAttached ? plugin.getShopManager().getShopIncludeAttached(location, false) : plugin.getShopManager().getShop(location);
     }
 
 }

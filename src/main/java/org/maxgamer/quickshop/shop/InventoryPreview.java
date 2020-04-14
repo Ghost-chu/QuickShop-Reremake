@@ -58,7 +58,7 @@ public class InventoryPreview implements Listener {
      * Create a preview item GUI for a player.
      *
      * @param itemStack The item you want create.
-     * @param player Target player.
+     * @param player    Target player.
      */
     public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
         this.itemStack = itemStack.clone();
@@ -85,8 +85,7 @@ public class InventoryPreview implements Listener {
         if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return false;
         }
-        List<String> lores = stack.getItemMeta().getLore();
-        for (String string : lores) {
+        for (String string : stack.getItemMeta().getLore()) {
             if (QuickShop.instance.getPreviewProtectionLore().equals(string)) {
                 return true;
             }
@@ -115,14 +114,14 @@ public class InventoryPreview implements Listener {
             return;
         }
         ShopInventoryPreviewEvent shopInventoryPreview =
-            new ShopInventoryPreviewEvent(player, itemStack);
+                new ShopInventoryPreviewEvent(player, itemStack);
         Bukkit.getPluginManager().callEvent(shopInventoryPreview);
         if (shopInventoryPreview.isCancelled()) {
             Util.debugLog("Inventory preview was canceled by a plugin.");
             return;
         }
         final int size = 9;
-        inventory = Bukkit.createInventory(new QuickShopPreviewInventoryHolder(),size, MsgUtil.getMessage("menu.preview", player));
+        inventory = Bukkit.createInventory(new QuickShopPreviewInventoryHolder(), size, MsgUtil.getMessage("menu.preview", player));
         for (int i = 0; i < size; i++) {
             inventory.setItem(i, itemStack);
         }

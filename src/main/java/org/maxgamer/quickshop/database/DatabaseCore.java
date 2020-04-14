@@ -35,6 +35,7 @@ public interface DatabaseCore {
     Connection getConnection();
 
     @NotNull String getName();
+
     @NotNull Plugin getPlugin();
 
 }

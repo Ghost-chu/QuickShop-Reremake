@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -30,10 +29,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.event.ShopProtectionCheckEvent;
-import org.maxgamer.quickshop.QuickShop;
 import org.primesoft.blockshub.BlocksHubBukkit;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PermissionChecker {
     private final QuickShop plugin;
@@ -48,7 +49,7 @@ public class PermissionChecker {
     /**
      * Check player can build in target location
      *
-     * @param player Target player
+     * @param player   Target player
      * @param location Target location
      * @return Success
      */
@@ -60,7 +61,7 @@ public class PermissionChecker {
      * Check player can build in target block
      *
      * @param player Target player
-     * @param block Target block
+     * @param block  Target block
      * @return Success
      */
     public boolean canBuild(@NotNull Player player, @NotNull Block block) {
@@ -91,9 +92,9 @@ public class PermissionChecker {
         beMainHand = new BlockBreakEvent(block, player);
         // Call for event for protection check start
         Bukkit.getPluginManager()
-            .callEvent(
-                new ShopProtectionCheckEvent(
-                    block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
+                .callEvent(
+                        new ShopProtectionCheckEvent(
+                                block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
         beMainHand.setDropItems(false);
         beMainHand.setExpToDrop(0);
 
@@ -104,8 +105,8 @@ public class PermissionChecker {
                 if (event == beMainHand) {
                     // Call for event for protection check end
                     Bukkit.getPluginManager().callEvent(
-                        new ShopProtectionCheckEvent(
-                            block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
+                            new ShopProtectionCheckEvent(
+                                    block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
                     if (!event.isCancelled()) {
                         //Ensure this test will no be logged by some plugin
                         beMainHand.setCancelled(true);
