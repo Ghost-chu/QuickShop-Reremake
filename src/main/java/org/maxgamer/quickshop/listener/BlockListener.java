@@ -63,8 +63,8 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
         if (b.getState() instanceof Sign) { //FIXME: It seems dupe with LockListener, remove it if can be removed
             Sign sign = (Sign) b.getState();
             if (super.getPlugin().getConfig().getBoolean("lockette.enable")
-                && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
+                    && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
                 Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
@@ -82,31 +82,31 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
+                    if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
-                        MsgUtil.sendMessage(p,MsgUtil.getMessage("supertool-is-disabled", p));
+                        MsgUtil.sendMessage(p, MsgUtil.getMessage("supertool-is-disabled", p));
                         return;
                     }
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("break-shop-use-supertool", p));
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("break-shop-use-supertool", p));
                     return;
                 }
                 e.setCancelled(true);
                 MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage(
-                        "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                        MsgUtil.getMessage(
+                                "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
 
             if (e.isCancelled()) {
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
                 Util.debugLog("The action was cancelled by other plugin");
                 return;
             }
 
             if (!shop.getModerator().isOwner(p.getUniqueId())
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-permission", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
                 return;
             }
             // Cancel their current menu... Doesnt cancel other's menu's.
@@ -118,12 +118,12 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
 
             shop.onUnload();
             shop.delete();
-            MsgUtil.sendMessage(p,MsgUtil.getMessage("success-removed-shop", p));
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
             if (b.getState() instanceof Sign) {
                 Sign sign = (Sign) b.getState();
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
+                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -139,24 +139,24 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    if(getPlugin().getConfig().getBoolean("shop.disable-super-tool")){
+                    if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
-                        MsgUtil.sendMessage(p,MsgUtil.getMessage("supertool-is-disabled", p));
+                        MsgUtil.sendMessage(p, MsgUtil.getMessage("supertool-is-disabled", p));
                         return;
                     }
-                    MsgUtil.sendMessage(p,MsgUtil.getMessage("break-shop-use-supertool", p));
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("break-shop-use-supertool", p));
                     shop.delete();
                     return;
                 }
                 e.setCancelled(true);
                 MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage(
-                        "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
+                        MsgUtil.getMessage(
+                                "no-creative-break", p, MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())));
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
-            if(getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign")&&p.getUniqueId().equals(shop.getOwner())){
-               return;
+            if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
+                return;
             }
             Util.debugLog("Cannot break the sign.");
             e.setCancelled(true);
@@ -231,10 +231,10 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
                 if (face != placingChestFacing && face != placingChestFacing.getOppositeFace()) {
                     Block nearByBlock = placingBlock.getRelative(face);
                     if (nearByBlock.getType() == Material.CHEST
-                        //non double chest
-                        && !(((Chest) nearByBlock.getState()).getInventory() instanceof DoubleChestInventory)
-                        //same facing
-                        && placingChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
+                            //non double chest
+                            && !(((Chest) nearByBlock.getState()).getInventory() instanceof DoubleChestInventory)
+                            //same facing
+                            && placingChestFacing == ((Directional) nearByBlock.getState().getBlockData()).getFacing()) {
                         if (chest == null) {
                             chest = nearByBlock;
                         } else {
@@ -255,11 +255,11 @@ public class BlockListener extends ProtectionListenerBase implements Listener {
         if (shop != null) {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(player,MsgUtil.getMessage("no-double-chests", player));
+                MsgUtil.sendMessage(player, MsgUtil.getMessage("no-double-chests", player));
 
             } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
                 e.setCancelled(true);
-                MsgUtil.sendMessage(player,MsgUtil.getMessage("not-managed-shop", player));
+                MsgUtil.sendMessage(player, MsgUtil.getMessage("not-managed-shop", player));
             }
         }
     }

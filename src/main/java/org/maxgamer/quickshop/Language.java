@@ -19,13 +19,14 @@
 
 package org.maxgamer.quickshop;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.Copied;
 import org.maxgamer.quickshop.util.Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Language {
     private final QuickShop plugin;
@@ -39,7 +40,7 @@ public class Language {
      * Save the target language's type file to the datafolder
      *
      * @param language Target language
-     * @param type Target type
+     * @param type     Target type
      * @param fileName The filename you want write to the plugin datafolder.
      */
     public void saveFile(@NotNull String language, @NotNull String type, @NotNull String fileName) {
@@ -67,7 +68,7 @@ public class Language {
      * Get target language's type file.
      *
      * @param language The target language
-     * @param type The file type for you want get. e.g. messages
+     * @param type     The file type for you want get. e.g. messages
      * @return The target file's InputStream.
      */
     public InputStream getFile(@Nullable String language, @Nullable String type) {

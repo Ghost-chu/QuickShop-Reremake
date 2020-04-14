@@ -58,7 +58,7 @@ public class ShopModerator {
     /**
      * Shop moderators, inlucding owner, staffs.
      *
-     * @param owner The owner
+     * @param owner  The owner
      * @param staffs The staffs
      */
     public ShopModerator(@NotNull UUID owner, @NotNull List<UUID> staffs) {
@@ -70,6 +70,11 @@ public class ShopModerator {
         // Use Gson deserialize data
         Gson gson = new Gson();
         return gson.fromJson(serilized, ShopModerator.class);
+    }
+
+    public static String serialize(@NotNull ShopModerator shopModerator) {
+        Gson gson = new Gson();
+        return gson.toJson(shopModerator); // Use Gson serialize this class
     }
 
     /**
@@ -102,11 +107,6 @@ public class ShopModerator {
     @Override
     public @NotNull String toString() {
         return serialize(this);
-    }
-
-    public static String serialize(@NotNull ShopModerator shopModerator) {
-        Gson gson = new Gson();
-        return gson.toJson(shopModerator); // Use Gson serialize this class
     }
 
     /**

@@ -77,37 +77,37 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 
         this.createRequireOpen =
-            plugin.getConfig().getBoolean("integration.factions.create.require.open");
+                plugin.getConfig().getBoolean("integration.factions.create.require.open");
         this.createRequireNormal =
-            plugin.getConfig().getBoolean("integration.factions.create.require.normal");
+                plugin.getConfig().getBoolean("integration.factions.create.require.normal");
         this.createRequireWilderness =
-            plugin.getConfig().getBoolean("integration.factions.create.require.wilderness");
+                plugin.getConfig().getBoolean("integration.factions.create.require.wilderness");
         this.createRequirePeaceful =
-            plugin.getConfig().getBoolean("integration.factions.create.require.peaceful");
+                plugin.getConfig().getBoolean("integration.factions.create.require.peaceful");
         this.createRequirePermanent =
-            plugin.getConfig().getBoolean("integration.factions.create.require.permanent");
+                plugin.getConfig().getBoolean("integration.factions.create.require.permanent");
         this.createRequireSafeZone =
-            plugin.getConfig().getBoolean("integration.factions.create.require.safezone");
+                plugin.getConfig().getBoolean("integration.factions.create.require.safezone");
         this.createRequireOwn =
-            plugin.getConfig().getBoolean("integration.factions.create.require.own");
+                plugin.getConfig().getBoolean("integration.factions.create.require.own");
         this.createRequireWarZone =
-            plugin.getConfig().getBoolean("integration.factions.create.require.warzone");
+                plugin.getConfig().getBoolean("integration.factions.create.require.warzone");
 
         this.tradeRequireOpen =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.open");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.open");
         this.tradeRequireNormal =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.normal");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.normal");
         this.tradeRequireWilderness =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.wilderness");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.wilderness");
         this.tradeRequirePeaceful =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.peaceful");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.peaceful");
         this.tradeRequirePermanent =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.permanent");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.permanent");
         this.tradeRequireSafeZone =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.safezone");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.safezone");
         this.tradeRequireOwn = plugin.getConfig().getBoolean("integration.factions.trade.require.own");
         this.tradeRequireWarZone =
-            plugin.getConfig().getBoolean("integration.factions.trade.require.warzone");
+                plugin.getConfig().getBoolean("integration.factions.trade.require.warzone");
     }
 
     @Override
@@ -146,12 +146,12 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
             return false;
         }
         if (createRequireOwn
-            && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
+                && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
             return false;
         }
         for (String flag : createFlags) {
             if (!faction.hasAccess(
-                FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
+                    FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
                 return false;
             }
         }
@@ -190,12 +190,12 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
             return false;
         }
         if (tradeRequireOwn
-            && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
+                && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
             return false;
         }
         for (String flag : tradeFlags) {
             if (!faction.hasAccess(
-                FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
+                    FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
                 return false;
             }
         }

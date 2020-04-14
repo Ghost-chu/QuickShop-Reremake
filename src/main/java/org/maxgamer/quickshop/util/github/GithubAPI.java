@@ -21,9 +21,10 @@ package org.maxgamer.quickshop.util.github;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.net.URL;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+
+import java.net.URL;
 
 public class GithubAPI {
     private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
@@ -31,12 +32,12 @@ public class GithubAPI {
     @Nullable
     public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
         String json =
-            HttpRequest.get(
-                new URL(
-                    "https://api.github.com/repos/Ghost-chu/QuickShop-Reremake/releases/latest"))
-                .execute()
-                .returnContent()
-                .asString("UTF-8");
+                HttpRequest.get(
+                        new URL(
+                                "https://api.github.com/repos/Ghost-chu/QuickShop-Reremake/releases/latest"))
+                        .execute()
+                        .returnContent()
+                        .asString("UTF-8");
         ReleaseJsonContainer result = gson.fromJson(json, ReleaseJsonContainer.class);
         for (ReleaseJsonContainer.AssetsBean asset : result.getAssets()) {
             if (asset.getName().contains("original-")) {

@@ -20,10 +20,11 @@
 
 package org.maxgamer.quickshop.nonquickshopstuff.de.Keyle.MyPet.api.util;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import org.jetbrains.annotations.Nullable;
 
 public class ReflectionUtil {
 
@@ -99,7 +100,7 @@ public class ReflectionUtil {
     }
 
     public static void setFinalStaticValue(Field field, Object newValue)
-        throws NoSuchFieldException, IllegalAccessException {
+            throws NoSuchFieldException, IllegalAccessException {
         field.setAccessible(true);
 
         Field modifiersField = Field.class.getDeclaredField("modifiers");

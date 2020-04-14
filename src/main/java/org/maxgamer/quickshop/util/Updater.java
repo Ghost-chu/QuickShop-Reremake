@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 
 public class Updater {
 
-    private static Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");
+    private static final Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");
 
     /**
      * Check new update
@@ -52,22 +52,22 @@ public class Updater {
 
             String localPluginVersion = QuickShop.instance.getDescription().getVersion();
             String spigotPluginVersion =
-                HttpRequest.get(new URL("https://api.spigotmc.org/legacy/update.php?resource=62575"))
-                    .execute()
-                    .expectResponseCode(200)
-                    .returnContent()
-                    .asString("UTF-8")
-                    .trim();
+                    HttpRequest.get(new URL("https://api.spigotmc.org/legacy/update.php?resource=62575"))
+                            .execute()
+                            .expectResponseCode(200)
+                            .returnContent()
+                            .asString("UTF-8")
+                            .trim();
             if (!spigotPluginVersion.isEmpty() && !spigotPluginVersion.equals(localPluginVersion)) {
                 Util.debugLog(spigotPluginVersion);
                 return new UpdateInfomation(
-                    spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
+                        spigotPluginVersion.toLowerCase().contains("beta"), spigotPluginVersion);
             }
             return new UpdateInfomation(false, spigotPluginVersion);
         } catch (IOException e) {
             MsgUtil.sendMessage(Bukkit.getConsoleSender(),
                     ChatColor.RED
-                        + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
+                            + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
             return new UpdateInfomation(false, null);
         }
     }
@@ -77,7 +77,7 @@ public class Updater {
         long uurlSize;
         try {
             ReleaseJsonContainer.AssetsBean bean =
-                Objects.requireNonNull(new GithubAPI().getLatestRelease());
+                    Objects.requireNonNull(new GithubAPI().getLatestRelease());
             uurl = bean.getBrowser_download_url();
             uurlSize = bean.getSize();
         } catch (Throwable ig) {
@@ -89,10 +89,10 @@ public class Updater {
         }
         QuickShop.instance.getLogger().info("Downloading from " + uurl);
         InputStream is =
-            HttpRequest.get(new URL(uurl))
-                .header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion())
-                .execute()
-                .getInputStream();
+                HttpRequest.get(new URL(uurl))
+                        .header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion())
+                        .execute()
+                        .getInputStream();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int len;
@@ -131,7 +131,7 @@ public class Updater {
         for (File plugin : plugins) {
             try {
                 PluginDescriptionFile desc =
-                    QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
+                        QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
                 if (!desc.getName().equals(QuickShop.instance.getDescription().getName())) {
                     continue;
                 }

@@ -31,7 +31,7 @@ public interface EconomyCore {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
-     * @param name The exact (case insensitive) username to give money to
+     * @param name   The exact (case insensitive) username to give money to
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
      */
@@ -56,8 +56,8 @@ public interface EconomyCore {
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
-     * @param from The player who is paying money
-     * @param to The player who is receiving money
+     * @param from   The player who is paying money
+     * @param to     The player who is receiving money
      * @param amount The amount to transfer
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
@@ -66,7 +66,7 @@ public interface EconomyCore {
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
-     * @param name The exact (case insensitive) username to take money from
+     * @param name   The exact (case insensitive) username to take money from
      * @param amount The amount to take from them
      * @return True if success, false if they didn't have enough cash
      */
@@ -80,6 +80,7 @@ public interface EconomyCore {
     boolean isValid();
 
     @NotNull String getName();
+
     @NotNull Plugin getPlugin();
 
 }

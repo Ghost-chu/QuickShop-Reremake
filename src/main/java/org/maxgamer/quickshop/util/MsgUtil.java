@@ -73,19 +73,12 @@ public class MsgUtil {
 
     private static final DecimalFormat decimalFormat =
             new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
-
-    private static YamlConfiguration enchi18n;
-
-    private static boolean inited;
-
-    private static YamlConfiguration itemi18n;
-
-    private static IFile messagei18n;
-
-    private static YamlConfiguration potioni18n;
-
     public static GameLanguage gameLanguage;
-
+    private static YamlConfiguration enchi18n;
+    private static boolean inited;
+    private static YamlConfiguration itemi18n;
+    private static IFile messagei18n;
+    private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
 
     /**
@@ -122,9 +115,9 @@ public class MsgUtil {
                             }
                             sendItemholochat(player, msgData[0], data, msgData[2]);
                         } catch (InvalidConfigurationException e) {
-                            MsgUtil.sendMessage(p.getPlayer(),msgData[0] + msgData[1] + msgData[2]);
+                            MsgUtil.sendMessage(p.getPlayer(), msgData[0] + msgData[1] + msgData[2]);
                         } catch (ArrayIndexOutOfBoundsException e2) {
-                            MsgUtil.sendMessage(p.getPlayer(),msg);
+                            MsgUtil.sendMessage(p.getPlayer(), msg);
                         }
                     }
                 }
@@ -844,7 +837,7 @@ public class MsgUtil {
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey())+" "+entries.getValue());
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + entries.getValue());
             }
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
@@ -896,9 +889,9 @@ public class MsgUtil {
                         MsgUtil.getMessage("menu.space", p, "" + shop.getRemainingSpace()));
             }
         }
-        if(shop.getItem().getAmount() == 1) {
+        if (shop.getItem().getAmount() == 1) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
-        }else{
+        } else {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
         }
         if (shop.isBuying()) {
@@ -1394,12 +1387,13 @@ public class MsgUtil {
 //          object; // Apply hard-code default, maybe a language file i forgotten update??
 //    }
     }
-    public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages){
-        if(messages == null){
+
+    public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages) {
+        if (messages == null) {
             return;
         }
-        for (String msg : messages){
-            if(msg == null || msg.isEmpty()){
+        for (String msg : messages) {
+            if (msg == null || msg.isEmpty()) {
                 continue;
             }
             sender.sendMessage(msg);

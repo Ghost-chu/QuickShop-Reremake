@@ -10,6 +10,7 @@ import org.maxgamer.quickshop.QuickShop;
 @AllArgsConstructor
 public class BukkitItemMatcherImpl implements ItemMatcher {
     private QuickShop plugin;
+
     /**
      * Gets the ItemMatcher provider name
      *
@@ -40,10 +41,10 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
      */
     @Override
     public boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester) {
-        if(original == null && tester == null){
+        if (original == null && tester == null) {
             return true;
         }
-        if((original == null) != (tester == null)){
+        if ((original == null) != (tester == null)) {
             return false;
         }
         return tester.isSimilar(original);

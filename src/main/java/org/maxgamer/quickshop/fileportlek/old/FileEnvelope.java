@@ -1,10 +1,5 @@
 package org.maxgamer.quickshop.fileportlek.old;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,9 +12,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.mock.MckFileConfiguration;
 import org.maxgamer.quickshop.util.Copied;
+import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.location.LocationOf;
 import org.maxgamer.quickshop.util.location.StringOf;
-import org.maxgamer.quickshop.util.Util;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @ToString
 public abstract class FileEnvelope implements IFile {

@@ -133,15 +133,15 @@ public class SQLiteCore implements DatabaseCore {
 
     private void startWatcher() {
         watcher =
-            new Thread(
-                () -> {
-                    try {
-                        Thread.sleep(30000);
-                    } catch (InterruptedException e) {
-                        // ignore
-                    }
-                    flush();
-                });
+                new Thread(
+                        () -> {
+                            try {
+                                Thread.sleep(30000);
+                            } catch (InterruptedException e) {
+                                // ignore
+                            }
+                            flush();
+                        });
         watcher.start();
     }
 

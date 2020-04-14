@@ -46,10 +46,10 @@ public class Info {
     private long lastChangedAt;
 
     public Info(
-        @NotNull Location loc,
-        @NotNull ShopAction action,
-        @Nullable ItemStack item,
-        @Nullable Block last) {
+            @NotNull Location loc,
+            @NotNull ShopAction action,
+            @Nullable ItemStack item,
+            @Nullable Block last) {
         this.loc = loc;
         this.action = action;
         this.last = last;
@@ -60,11 +60,11 @@ public class Info {
     }
 
     public Info(
-        @NotNull Location loc,
-        @NotNull ShopAction action,
-        @Nullable ItemStack item,
-        @Nullable Block last,
-        @Nullable Shop shop) {
+            @NotNull Location loc,
+            @NotNull ShopAction action,
+            @Nullable ItemStack item,
+            @Nullable Block last,
+            @Nullable Shop shop) {
         this.loc = loc;
         this.action = action;
         this.last = last;
@@ -136,7 +136,7 @@ public class Info {
         if (!this.shop.getLocation().equals(shop.getLocation())) {
             return true;
         }
-        if(this.lastChangedAt != shop.getLastChangedAt()){
+        if (this.lastChangedAt != shop.getLastChangedAt()) {
             return false;
         }
         return !this.shop.matches(shop.getItem());

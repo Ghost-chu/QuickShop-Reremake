@@ -35,7 +35,7 @@ public interface Shop {
      * Add x ItemStack to the shop inventory
      *
      * @param paramItemStack The ItemStack you want add
-     * @param paramInt How many you want add
+     * @param paramInt       How many you want add
      */
     void add(ItemStack paramItemStack, int paramInt);
 
@@ -51,7 +51,7 @@ public interface Shop {
      * Execute buy action for player with x items.
      *
      * @param paramPlayer Target player
-     * @param paramInt How many buyed?
+     * @param paramInt    How many buyed?
      */
     void buy(Player paramPlayer, int paramInt);
 
@@ -136,7 +136,7 @@ public interface Shop {
      * Remove x ItemStack from the shop inventory
      *
      * @param paramItemStack Want removed ItemStack
-     * @param paramInt Want remove how many
+     * @param paramInt       Want remove how many
      */
     void remove(ItemStack paramItemStack, int paramInt);
 
@@ -144,7 +144,7 @@ public interface Shop {
      * Execute sell action for player with x items.
      *
      * @param paramPlayer Target player
-     * @param paramInt How many sold?
+     * @param paramInt    How many sold?
      */
     void sell(Player paramPlayer, int paramInt);
 
@@ -336,6 +336,7 @@ public interface Shop {
 
     /**
      * Gets the shop last changes timestamp
+     *
      * @return The time stamp
      */
     long getLastChangedAt();

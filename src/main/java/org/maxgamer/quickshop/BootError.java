@@ -50,12 +50,12 @@ public class BootError {
      * @param sender The sender you want output the errors.
      */
     public void printErrors(CommandSender sender) {
-        MsgUtil.sendMessage(sender,ChatColor.RED + "#####################################################");
-        MsgUtil.sendMessage(sender,ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
+        MsgUtil.sendMessage(sender, ChatColor.RED + "#####################################################");
+        MsgUtil.sendMessage(sender, ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
         for (String issue : errors) {
-            MsgUtil.sendMessage(sender,ChatColor.YELLOW + " " + issue);
+            MsgUtil.sendMessage(sender, ChatColor.YELLOW + " " + issue);
         }
-        MsgUtil.sendMessage(sender,ChatColor.RED + "#####################################################");
+        MsgUtil.sendMessage(sender, ChatColor.RED + "#####################################################");
     }
 
     public String[] getErrors() {

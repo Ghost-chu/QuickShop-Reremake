@@ -1,20 +1,18 @@
 package org.maxgamer.quickshop;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.shop.Shop;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimerTask;
+
 public class Cache extends TimerTask {
-    private QuickShop plugin;
-
-    private long expireTime = 5000;
-
-    private Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
-
     private final Object lock = new Object();
+    private QuickShop plugin;
+    private long expireTime = 5000;
+    private Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
 
     public Cache(QuickShop plugin) {
         this.plugin = plugin;
@@ -88,16 +86,16 @@ class CacheContainer {
         return time;
     }
 
+    public void setTime(long time) {
+        this.time = time;
+    }
+
     public Shop getShop() {
         return shop;
     }
 
     public void setShop(final Shop shop) {
         this.shop = shop;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
     }
 
 }

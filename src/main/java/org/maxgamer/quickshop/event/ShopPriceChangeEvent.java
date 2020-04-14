@@ -44,7 +44,7 @@ public class ShopPriceChangeEvent extends QSEvent implements Cancellable {
     /**
      * Will call when shop price was changed.
      *
-     * @param shop Target shop
+     * @param shop     Target shop
      * @param oldPrice The old shop price
      * @param newPrice The new shop price
      */

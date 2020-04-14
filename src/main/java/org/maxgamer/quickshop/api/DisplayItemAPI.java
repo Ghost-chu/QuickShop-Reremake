@@ -14,28 +14,31 @@ public class DisplayItemAPI {
 
     /**
      * Checks is a display item
+     *
      * @param itemStack The itemstack
      * @return yes or no
      */
-    public static boolean isDisplayItem(@NotNull ItemStack itemStack){
+    public static boolean isDisplayItem(@NotNull ItemStack itemStack) {
         return DisplayItem.checkIsGuardItemStack(itemStack);
     }
 
     /**
      * Check is a shop's display item
+     *
      * @param itemStack The itemstack
-     * @param shop The itemstack
+     * @param shop      The itemstack
      * @return yes or no
      */
-    public static boolean isShopDisplayItem(@NotNull ItemStack itemStack, @NotNull Shop shop){
-        return DisplayItem.checkIsTargetShopDisplay(itemStack,shop);
+    public static boolean isShopDisplayItem(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+        return DisplayItem.checkIsTargetShopDisplay(itemStack, shop);
     }
 
     /**
      * Gets the display type now using
+     *
      * @return The type of display now using
      */
-    public static DisplayType getNowUsing(){
+    public static DisplayType getNowUsing() {
         return DisplayItem.getNowUsing();
     }
 }

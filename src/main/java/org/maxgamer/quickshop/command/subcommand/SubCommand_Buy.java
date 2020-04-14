@@ -25,8 +25,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -41,16 +41,16 @@ public class SubCommand_Buy implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Can't run command by Console", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("Can't run command by Console", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -63,22 +63,21 @@ public class SubCommand_Buy implements CommandProcesser {
                     shop.setShopType(ShopType.BUYING);
                     // shop.setSignText();
                     shop.update();
-                    MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
-                    return;
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
                 } else {
                     MsgUtil.getMessage("not-managed-shop", sender);
-                    return;
                 }
+                return;
             }
         }
 
-        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 
