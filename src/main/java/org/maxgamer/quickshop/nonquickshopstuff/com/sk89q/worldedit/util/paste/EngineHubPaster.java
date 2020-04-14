@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.paste;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+import org.maxgamer.quickshop.util.JsonUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,7 +34,7 @@ public class EngineHubPaster {
 
     private static final Pattern URL_PATTERN = Pattern.compile("https?://.+$");
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = JsonUtil.getGson();
 
     public Callable<URL> paste(String content) {
         return new PasteTask(content);
