@@ -24,6 +24,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +69,12 @@ public class ShopModerator {
 
     public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
-        Gson gson = new Gson();
+        Gson gson = JsonUtil.getGson();
         return gson.fromJson(serilized, ShopModerator.class);
     }
 
     public static String serialize(@NotNull ShopModerator shopModerator) {
-        Gson gson = new Gson();
+        Gson gson = JsonUtil.getGson();
         return gson.toJson(shopModerator); // Use Gson serialize this class
     }
 

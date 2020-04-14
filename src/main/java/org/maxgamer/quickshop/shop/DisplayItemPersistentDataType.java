@@ -25,13 +25,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 public class DisplayItemPersistentDataType
         implements PersistentDataType<String, ShopProtectionFlag> {
     static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = JsonUtil.getGson();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {

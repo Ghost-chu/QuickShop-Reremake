@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
@@ -268,7 +269,7 @@ public class ShopLoader {
         plugin.getLogger().info("Processing the shop data...");
         String[] shopsPlain = fileContent.split("\n");
         plugin.getLogger().info("Recovering shops...");
-        Gson gson = new Gson();
+        Gson gson = JsonUtil.getGson();
         int total = shopsPlain.length;
         for (int i = 0; i < total; i++) {
             String shopStr = shopsPlain[i].trim();

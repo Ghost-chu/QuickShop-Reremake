@@ -24,6 +24,9 @@ import java.util.logging.Level;
 public final class JSONConfiguration extends FileConfiguration {
 
     protected static final String BLANK_CONFIG = "{}\n";
+    private static Gson outputGson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+    private static Gson inputGson = new GsonBuilder().registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+    }.getType(), new MapDeserializerDoubleAsIntFix()).create();
 
     @NotNull
     public static JSONConfiguration loadConfiguration(@NotNull File file) {
@@ -56,14 +59,11 @@ public final class JSONConfiguration extends FileConfiguration {
     @NotNull
     @Override
     public String saveToString() {
-        final GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping();
 
         // if (!options().prettyPrint()) {
-        gsonBuilder.setPrettyPrinting();
         // }
-        final Gson gson = gsonBuilder.create();
         final Object value = SerializationHelper.serialize(getValues(false));
-        final String dump = StringEscapeUtils.unescapeJava(gson.toJson(value));
+        final String dump = StringEscapeUtils.unescapeJava(outputGson.toJson(value));
 
         if (dump.equals(BLANK_CONFIG)) {
             return "";
@@ -81,14 +81,7 @@ public final class JSONConfiguration extends FileConfiguration {
         final Map<?, ?> input;
 
         try {
-            final Gson gson =
-                    new GsonBuilder()
-                            .registerTypeAdapter(
-                                    new TypeToken<Map<String, Object>>() {
-                                    }.getType(),
-                                    new MapDeserializerDoubleAsIntFix())
-                            .create();
-            input = gson.fromJson(contents, new TypeToken<Map<String, Object>>() {
+            input = inputGson.fromJson(contents, new TypeToken<Map<String, Object>>() {
             }.getType());
         } catch (JsonSyntaxException e) {
             throw new InvalidConfigurationException("Invalid JSON detected.", e);
