@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class MojangAPI {
 
     final String pathTemplate = "minecraft/lang/{0}.json";
 
-    final Gson gson = new Gson();
+    final Gson gson = JsonUtil.getGson();
 
     @Nullable
     public String getAssetIndexJson(@NotNull String mcVer) throws IOException {
