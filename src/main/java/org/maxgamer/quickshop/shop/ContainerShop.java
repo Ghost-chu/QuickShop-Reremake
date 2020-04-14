@@ -557,17 +557,17 @@ public class ContainerShop implements Shop {
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, "" + ((this.getRemainingStock() != 0) ? this.getRemainingStock() / this.getItem().getAmount() : 0));
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-selling", player, Integer.toString(getRemainingStock()));
                 }
             } else {
                 if (this.getRemainingStock() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.selling", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.selling", player, "" + this.getRemainingStock());
+                            MsgUtil.getMessageOfflinePlayer("signs.selling", player, Integer.toString(this.getRemainingStock()));
                 }
             }
 
@@ -575,17 +575,17 @@ public class ContainerShop implements Shop {
         } else if (this.isBuying()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingSpace() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, "" + ((this.getRemainingSpace() != 0) ? this.getRemainingSpace() / this.getItem().getAmount() : 0));
+                            MsgUtil.getMessageOfflinePlayer("signs.stack-buying", player, Integer.toString(getRemainingSpace()));
                 }
             } else {
                 if (this.getRemainingSpace() == -1) {
-                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
+                    lines[1] = MsgUtil.getMessageOfflinePlayer("signs.buying", player, MsgUtil.getMessageOfflinePlayer("signs.unlimited", player));
                 } else {
                     lines[1] =
-                            MsgUtil.getMessageOfflinePlayer("signs.buying", player, "" + this.getRemainingSpace());
+                            MsgUtil.getMessageOfflinePlayer("signs.buying", player, Integer.toString(this.getRemainingSpace()));
                 }
             }
 //            if (this.getRemainingSpace() == -1) {
