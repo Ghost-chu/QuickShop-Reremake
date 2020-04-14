@@ -6,6 +6,9 @@ public class JsonUtil {
 
     private static final Gson gson = new Gson();
 
+    private JsonUtil() {
+    }
+
     public static Gson getGson() {
         return gson;
     }
