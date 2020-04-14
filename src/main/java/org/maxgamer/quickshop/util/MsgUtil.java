@@ -1338,8 +1338,8 @@ public class MsgUtil {
             setAndUpdate("shop-freezed-at-location", "&eYour shop {0} at {1} got frozen!");
             setAndUpdate("shop-cannot-trade-when-freezing", "&cYou cannot trade with this shop cause it under freezing.");
             setAndUpdate("denied-put-in-item", "&cThis item cannot put in this shop!");
-            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{0}&a bulks. Enter &ball&a to buy them all.");
-            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{0}&a bulks available. Enter &ball&a to sell them all.");
+            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.");
+            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.");
             setAndUpdate("lang.name", "&eName: &6{0}");
             setAndUpdate("lang.code", "&eCode: &6{0}");
             setAndUpdate("lang.translate-progress", "&eTranslate Progress: &b{0}%");
@@ -1362,6 +1362,12 @@ public class MsgUtil {
             setAndUpdate("integrations-check-failed-trade", "Integrations denied the shop trade");
             setAndUpdate("language-version", 34);
             selectedVersion = 34;
+        }
+        if (selectedVersion == 34) {
+            setAndUpdate("how-many-buy-stack", "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.");
+            setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.");
+            setAndUpdate("language-version", 35);
+            selectedVersion = 35;
         }
 
         messagei18n.save();
