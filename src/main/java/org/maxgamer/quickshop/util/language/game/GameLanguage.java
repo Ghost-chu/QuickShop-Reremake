@@ -10,10 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 public interface GameLanguage {
     @NotNull String getName();
+
     @NotNull Plugin getPlugin();
+
     @NotNull String getItem(@NotNull ItemStack itemStack);
+
     @NotNull String getItem(@NotNull Material material);
+
     @NotNull String getPotion(@NotNull PotionEffectType potionEffectType);
+
     @NotNull String getEnchantment(@NotNull Enchantment enchantment);
+
     @NotNull String getEntity(@NotNull EntityType entityType);
 }

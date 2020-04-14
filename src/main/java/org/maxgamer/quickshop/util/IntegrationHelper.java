@@ -56,42 +56,42 @@ public class IntegrationHelper {
 
     public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
         integrations.forEach(
-            integratedPlugin -> {
-                if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
-                    == stage) {
-                    Util.debugLog("Calling for load " + integratedPlugin.getName());
-                    integratedPlugin.load();
-                } else {
-                    Util.debugLog(
-                        "Ignored calling because "
-                            + integratedPlugin.getName()
-                            + " stage is "
-                            + integratedPlugin
-                            .getClass()
-                            .getDeclaredAnnotation(IntegrationStage.class)
-                            .loadStage());
-                }
-            });
+                integratedPlugin -> {
+                    if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
+                            == stage) {
+                        Util.debugLog("Calling for load " + integratedPlugin.getName());
+                        integratedPlugin.load();
+                    } else {
+                        Util.debugLog(
+                                "Ignored calling because "
+                                        + integratedPlugin.getName()
+                                        + " stage is "
+                                        + integratedPlugin
+                                        .getClass()
+                                        .getDeclaredAnnotation(IntegrationStage.class)
+                                        .loadStage());
+                    }
+                });
     }
 
     public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
         integrations.forEach(
-            integratedPlugin -> {
-                if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
-                    == stage) {
-                    Util.debugLog("Calling for unload " + integratedPlugin.getName());
-                    integratedPlugin.unload();
-                } else {
-                    Util.debugLog(
-                        "Ignored calling because "
-                            + integratedPlugin.getName()
-                            + " stage is "
-                            + integratedPlugin
-                            .getClass()
-                            .getDeclaredAnnotation(IntegrationStage.class)
-                            .loadStage());
-                }
-            });
+                integratedPlugin -> {
+                    if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
+                            == stage) {
+                        Util.debugLog("Calling for unload " + integratedPlugin.getName());
+                        integratedPlugin.unload();
+                    } else {
+                        Util.debugLog(
+                                "Ignored calling because "
+                                        + integratedPlugin.getName()
+                                        + " stage is "
+                                        + integratedPlugin
+                                        .getClass()
+                                        .getDeclaredAnnotation(IntegrationStage.class)
+                                        .loadStage());
+                    }
+                });
     }
 
     public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {

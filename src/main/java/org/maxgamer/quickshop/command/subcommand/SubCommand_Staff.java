@@ -28,8 +28,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -44,17 +44,17 @@ public class SubCommand_Staff implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Util.debugLog(Util.array2String(cmdArg));
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,"Only player can execute this command.");
+            MsgUtil.sendMessage(sender, "Only player can execute this command.");
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
         boolean hitShop = false;
@@ -67,34 +67,34 @@ public class SubCommand_Staff implements CommandProcesser {
             hitShop = true;
             switch (cmdArg.length) {
                 case 0:
-                    MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.wrong-args", sender));
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
                     return;
                 case 1:
                     switch (cmdArg[0]) {
                         case "clear":
                             shop.clearStaffs();
-                            MsgUtil.sendMessage(sender,MsgUtil.getMessage("shop-staff-cleared", sender));
+                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("shop-staff-cleared", sender));
                             return;
                         case "list":
                             final List<UUID> staffs = shop.getStaffs();
                             if (staffs.isEmpty()) {
                                 MsgUtil.sendMessage(sender,
-                                    ChatColor.GREEN
-                                        + MsgUtil.getMessage("tableformat.left_begin", sender)
-                                        + "Empty");
+                                        ChatColor.GREEN
+                                                + MsgUtil.getMessage("tableformat.left_begin", sender)
+                                                + "Empty");
                                 return;
                             }
                             for (UUID uuid : staffs) {
                                 MsgUtil.sendMessage(sender,
-                                    ChatColor.GREEN
-                                        + MsgUtil.getMessage("tableformat.left_begin", sender)
-                                        + Bukkit.getOfflinePlayer(uuid).getName());
+                                        ChatColor.GREEN
+                                                + MsgUtil.getMessage("tableformat.left_begin", sender)
+                                                + Bukkit.getOfflinePlayer(uuid).getName());
                             }
                             return;
                         case "add":
                         case "del":
                         default:
-                            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.wrong-args", sender));
+                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
                             return;
                     }
                 case 2:
@@ -108,15 +108,15 @@ public class SubCommand_Staff implements CommandProcesser {
                     switch (cmdArg[0]) {
                         case "add":
                             shop.addStaff(offlinePlayer.getUniqueId());
-                            MsgUtil.sendMessage(sender,MsgUtil.getMessage("shop-staff-added", sender, offlinePlayerName));
+                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("shop-staff-added", sender, offlinePlayerName));
                             return;
                         case "del":
                             shop.delStaff(offlinePlayer.getUniqueId());
                             MsgUtil.sendMessage(sender,
-                                MsgUtil.getMessage("shop-staff-deleted", sender, offlinePlayerName));
+                                    MsgUtil.getMessage("shop-staff-deleted", sender, offlinePlayerName));
                             return;
                         default:
-                            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.wrong-args", sender));
+                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
                     }
 
                     break;
@@ -125,8 +125,8 @@ public class SubCommand_Staff implements CommandProcesser {
                     break;
             }
         }
-        if(!hitShop){
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+        if (!hitShop) {
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
     }
@@ -134,7 +134,7 @@ public class SubCommand_Staff implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final ArrayList<String> tabList = new ArrayList<>();
 
         Util.debugLog(Util.array2String(cmdArg));

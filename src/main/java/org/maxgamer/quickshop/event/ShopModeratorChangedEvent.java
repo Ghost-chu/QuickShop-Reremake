@@ -40,7 +40,7 @@ public class ShopModeratorChangedEvent extends QSEvent {
     /**
      * Will call when shop price was changed.
      *
-     * @param shop Target shop
+     * @param shop          Target shop
      * @param shopModerator The shop moderator
      */
     public ShopModeratorChangedEvent(@NotNull Shop shop, @NotNull ShopModerator shopModerator) {

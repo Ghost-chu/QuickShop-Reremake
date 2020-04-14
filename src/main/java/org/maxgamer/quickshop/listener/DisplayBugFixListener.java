@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import java.util.Collection;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -32,6 +31,8 @@ import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.Collection;
+
 @AllArgsConstructor
 public class DisplayBugFixListener implements Listener {
 
@@ -41,23 +42,23 @@ public class DisplayBugFixListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void canBuild(BlockCanBuildEvent e) {
         if (!plugin.isDisplay()
-            || DisplayItem.getNowUsing() != DisplayType.ARMORSTAND
-            || e.isBuildable()) {
+                || DisplayItem.getNowUsing() != DisplayType.ARMORSTAND
+                || e.isBuildable()) {
             return;
         }
 
         final Collection<Entity> entities =
-            e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 1.0, 1, 1.0);
+                e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 1.0, 1, 1.0);
 
         for (Entity entity : entities) {
             if (!(entity instanceof ArmorStand)
-                || !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
+                    || !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
                 continue;
             }
 
             e.setBuildable(true);
             Util.debugLog(
-                "Re-set the allowed build flag here because it found the cause of the display-item blocking it before.");
+                    "Re-set the allowed build flag here because it found the cause of the display-item blocking it before.");
             return;
         }
     }

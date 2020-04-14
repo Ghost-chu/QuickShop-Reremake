@@ -1,10 +1,11 @@
 package org.maxgamer.quickshop.fileportlek.old;
 
-import java.io.File;
-import java.io.InputStreamReader;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.InputStreamReader;
 
 public final class YAMLFile extends FileEnvelope {
 

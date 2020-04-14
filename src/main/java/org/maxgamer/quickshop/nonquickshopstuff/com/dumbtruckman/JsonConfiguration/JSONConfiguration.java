@@ -3,6 +3,13 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.dumbtruckman.JsonConfigurat
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,12 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 public final class JSONConfiguration extends FileConfiguration {
 
@@ -81,12 +82,12 @@ public final class JSONConfiguration extends FileConfiguration {
 
         try {
             final Gson gson =
-                new GsonBuilder()
-                    .registerTypeAdapter(
-                        new TypeToken<Map<String, Object>>() {
-                        }.getType(),
-                        new MapDeserializerDoubleAsIntFix())
-                    .create();
+                    new GsonBuilder()
+                            .registerTypeAdapter(
+                                    new TypeToken<Map<String, Object>>() {
+                                    }.getType(),
+                                    new MapDeserializerDoubleAsIntFix())
+                            .create();
             input = gson.fromJson(contents, new TypeToken<Map<String, Object>>() {
             }.getType());
         } catch (JsonSyntaxException e) {
@@ -99,7 +100,7 @@ public final class JSONConfiguration extends FileConfiguration {
             convertMapsToSections(input, this);
         } else {
             throw new InvalidConfigurationException(
-                "An unknown error occurred while attempting to parse the json.");
+                    "An unknown error occurred while attempting to parse the json.");
         }
     }
 
@@ -120,7 +121,7 @@ public final class JSONConfiguration extends FileConfiguration {
     }
 
     protected void convertMapsToSections(
-        @NotNull Map<?, ?> input, @NotNull ConfigurationSection section) {
+            @NotNull Map<?, ?> input, @NotNull ConfigurationSection section) {
         final Object result = SerializationHelper.deserialize(input);
 
         if (result instanceof Map) {
@@ -142,13 +143,13 @@ public final class JSONConfiguration extends FileConfiguration {
     }
 
     public static class MapDeserializerDoubleAsIntFix
-        implements JsonDeserializer<Map<String, Object>> {
+            implements JsonDeserializer<Map<String, Object>> {
 
         @Override
         @SuppressWarnings("unchecked")
         public Map<String, Object> deserialize(
-            JsonElement json, Type typeOfT, JsonDeserializationContext context)
-            throws JsonParseException {
+                JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
             return (Map<String, Object>) read(json);
         }
 

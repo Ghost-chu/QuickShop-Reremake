@@ -19,12 +19,13 @@
 
 package org.maxgamer.quickshop.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 
 public final class Copied implements Consumer<InputStream> {
 

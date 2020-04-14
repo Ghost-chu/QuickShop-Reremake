@@ -102,18 +102,18 @@ public class VirtualDisplayItem extends DisplayItem {
         //and add data based on packet class in NMS  (global scope variable)
         //Reference: https://wiki.vg/Protocol#Spawn_Object
         fakeItemPacket.getIntegers()
-            //Entity ID
-            .write(0, entityID)
-            //Velocity x
-            .write(1, 0)
-            //Velocity y
-            .write(2, 0)
-            //Velocity z
-            .write(3, 0)
-            //Pitch
-            .write(4, 0)
-            //Yaw
-            .write(5, 0);
+                //Entity ID
+                .write(0, entityID)
+                //Velocity x
+                .write(1, 0)
+                //Velocity y
+                .write(2, 0)
+                //Velocity z
+                .write(3, 0)
+                //Pitch
+                .write(4, 0)
+                //Yaw
+                .write(5, 0);
 
         switch (version) {
             case "v1_13_R1":
@@ -145,12 +145,12 @@ public class VirtualDisplayItem extends DisplayItem {
         fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
         //Location
         fakeItemPacket.getDoubles()
-            //X
-            .write(0, location.getX())
-            //Y
-            .write(1, location.getY())
-            //Z
-            .write(2, location.getZ());
+                //X
+                .write(0, location.getX())
+                //Y
+                .write(1, location.getY())
+                //Z
+                .write(2, location.getZ());
 
         //Next, create a new packet to update item data (default is empty)
         fakeItemMetaPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
@@ -162,8 +162,8 @@ public class VirtualDisplayItem extends DisplayItem {
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //https://wiki.vg/index.php?title=Entity_metadata#Entity
         if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            wpw.setObject(2,WrappedDataWatcher.Registry.getChatComponentSerializer(true),Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(shop.getItem())).getHandle()));
-            wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3,WrappedDataWatcher.Registry.get(Boolean.class)),true);
+            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(shop.getItem())).getHandle()));
+            wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         }
 
         //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
@@ -184,14 +184,14 @@ public class VirtualDisplayItem extends DisplayItem {
         //And, create a entity velocity packet to make it at a proper location (otherwise it will fly randomly)
         fakeItemVelocityPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_VELOCITY);
         fakeItemVelocityPacket.getIntegers()
-            //Entity ID
-            .write(0, entityID)
-            //Velocity x
-            .write(1, 0)
-            //Velocity y
-            .write(2, 0)
-            //Velocity z
-            .write(3, 0);
+                //Entity ID
+                .write(0, entityID)
+                //Velocity x
+                .write(1, 0)
+                //Velocity y
+                .write(2, 0)
+                //Velocity z
+                .write(3, 0);
 
         //Also make a DestroyPacket to remove it
         fakeItemDestroyPacket = protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
@@ -245,7 +245,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     private void unload() {
         packetSenders.clear();
-        if(packetAdapter!=null) {
+        if (packetAdapter != null) {
             protocolManager.removePacketListener(packetAdapter);
         }
         if (asyncSendingTask != null && !asyncSendingTask.isCancelled()) {

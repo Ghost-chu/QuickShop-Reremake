@@ -23,8 +23,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -37,13 +37,13 @@ public class SubCommand_Recovery implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof ConsoleCommandSender)) {
             return;
         }
         File file = new File(plugin.getDataFolder(), "recovery.txt");
         if (!file.exists()) {
-            MsgUtil.sendMessage(sender,"recovery.txt not exist, do not execute this command unless you know what are you doing.");
+            MsgUtil.sendMessage(sender, "recovery.txt not exist, do not execute this command unless you know what are you doing.");
             return;
         }
         new BukkitRunnable() {
@@ -63,7 +63,7 @@ public class SubCommand_Recovery implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return null;
     }
 

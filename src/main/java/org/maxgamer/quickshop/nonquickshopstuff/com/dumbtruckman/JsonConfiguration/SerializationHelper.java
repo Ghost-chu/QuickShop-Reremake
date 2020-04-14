@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.nonquickshopstuff.com.dumbtruckman.JsonConfiguration;
 
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.error.YAMLException;
+
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Jeremy Wood
@@ -53,8 +54,8 @@ public class SerializationHelper {
             ConfigurationSerializable serializable = (ConfigurationSerializable) value;
             Map<String, Object> values = new LinkedHashMap<>();
             values.put(
-                ConfigurationSerialization.SERIALIZED_TYPE_KEY,
-                ConfigurationSerialization.getAlias(serializable.getClass()));
+                    ConfigurationSerialization.SERIALIZED_TYPE_KEY,
+                    ConfigurationSerialization.getAlias(serializable.getClass()));
             values.putAll(serializable.serialize());
             return buildMap(values);
         } else {

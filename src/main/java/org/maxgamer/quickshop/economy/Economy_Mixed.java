@@ -41,11 +41,11 @@ public class Economy_Mixed implements EconomyCore {
             return false;
         }
         Bukkit.dispatchCommand(
-            Bukkit.getConsoleSender(),
-            MsgUtil.fillArgs(
-                QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),
-                Bukkit.getOfflinePlayer(name).getName(),
-                String.valueOf(amount)));
+                Bukkit.getConsoleSender(),
+                MsgUtil.fillArgs(
+                        QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),
+                        Bukkit.getOfflinePlayer(name).getName(),
+                        String.valueOf(amount)));
         return true;
     }
 
@@ -79,11 +79,11 @@ public class Economy_Mixed implements EconomyCore {
             return false;
         }
         Bukkit.dispatchCommand(
-            Bukkit.getConsoleSender(),
-            MsgUtil.fillArgs(
-                QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),
-                Bukkit.getOfflinePlayer(name).getName(),
-                String.valueOf(amount)));
+                Bukkit.getConsoleSender(),
+                MsgUtil.fillArgs(
+                        QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),
+                        Bukkit.getOfflinePlayer(name).getName(),
+                        String.valueOf(amount)));
         return true;
     }
 

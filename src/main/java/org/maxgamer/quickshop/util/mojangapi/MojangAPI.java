@@ -67,11 +67,11 @@ public class MojangAPI {
             return null;
         }
         return HttpRequest.get(new URL(url))
-            .execute()
-            .expectResponseCode(200)
-            .returnContent()
-            .asString("UTF-8")
-            .trim();
+                .execute()
+                .expectResponseCode(200)
+                .returnContent()
+                .asString("UTF-8")
+                .trim();
     }
 
     @Nullable
@@ -82,11 +82,11 @@ public class MojangAPI {
                 try {
                     QuickShop.instance.getLogger().info("Downloading version index...");
                     return HttpRequest.get(new URL(mcv.getUrl()))
-                        .execute()
-                        .expectResponseCode(200)
-                        .returnContent()
-                        .asString("UTF-8")
-                        .trim();
+                            .execute()
+                            .expectResponseCode(200)
+                            .returnContent()
+                            .asString("UTF-8")
+                            .trim();
                 } catch (IOException e) {
                     Util.debugLog(e.getMessage());
                     return null;
@@ -100,11 +100,11 @@ public class MojangAPI {
     public String getVersionManifest() throws IOException {
         QuickShop.instance.getLogger().info("Downloading version manifest...");
         return HttpRequest.get(new URL(versionManifestUrl))
-            .execute()
-            .expectResponseCode(200)
-            .returnContent()
-            .asString("UTF-8")
-            .trim();
+                .execute()
+                .expectResponseCode(200)
+                .returnContent()
+                .asString("UTF-8")
+                .trim();
     }
 
     @Nullable
@@ -116,13 +116,13 @@ public class MojangAPI {
         String data;
         QuickShop.instance.getLogger().info("Downloading assets file...");
         data =
-            HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2) + "/" + hash))
-                .execute()
-                .expectResponseCode(200)
-                .returnContent()
-                .asString("UTF-8")
-                .trim();
-        Files.write(data,cacheFile, StandardCharsets.UTF_8);
+                HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2) + "/" + hash))
+                        .execute()
+                        .expectResponseCode(200)
+                        .returnContent()
+                        .asString("UTF-8")
+                        .trim();
+        Files.write(data, cacheFile, StandardCharsets.UTF_8);
         return data;
     }
 

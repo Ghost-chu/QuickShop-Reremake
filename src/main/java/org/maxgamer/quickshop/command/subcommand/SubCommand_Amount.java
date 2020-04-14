@@ -22,8 +22,8 @@ package org.maxgamer.quickshop.command.subcommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
@@ -35,21 +35,21 @@ public class SubCommand_Amount implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.wrong-args", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
             return;
         }
 
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,"This command can't be run by console");
+            MsgUtil.sendMessage(sender, "This command can't be run by console");
             return;
         }
 
         final Player player = (Player) sender;
 
         if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-pending-action", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
             return;
         }
 
@@ -59,7 +59,7 @@ public class SubCommand_Amount implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final ArrayList<String> list = new ArrayList<>();
 
         list.add(MsgUtil.getMessage("tabcomplete.amount", sender));

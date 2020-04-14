@@ -74,8 +74,8 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 });
             } else {
                 Util.debugLog(
-                    "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "
-                        + shop);
+                        "Shop was ignored for ongoing fee cause it is unlimited and ignoreUnlimited = true : "
+                                + shop);
             }
         }
     }
@@ -88,19 +88,19 @@ public class OngoingFeeWatcher extends BukkitRunnable {
     public void removeShop(@NotNull Shop shop) {
         Bukkit.getScheduler().runTask(plugin, (@NotNull Runnable) shop::delete);
         MsgUtil.send(
-            shop.getOwner(),
-            MsgUtil.getMessageOfflinePlayer(
-                "shop-removed-cause-ongoing-fee",
-                Bukkit.getOfflinePlayer(shop.getOwner()),
-                "World:"
-                    + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
-                    + " X:"
-                    + shop.getLocation().getBlockX()
-                    + " Y:"
-                    + shop.getLocation().getBlockY()
-                    + " Z:"
-                    + shop.getLocation().getBlockZ()),
-            shop.isUnlimited());
+                shop.getOwner(),
+                MsgUtil.getMessageOfflinePlayer(
+                        "shop-removed-cause-ongoing-fee",
+                        Bukkit.getOfflinePlayer(shop.getOwner()),
+                        "World:"
+                                + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
+                                + " X:"
+                                + shop.getLocation().getBlockX()
+                                + " Y:"
+                                + shop.getLocation().getBlockY()
+                                + " Z:"
+                                + shop.getLocation().getBlockZ()),
+                shop.isUnlimited());
     }
 
 }

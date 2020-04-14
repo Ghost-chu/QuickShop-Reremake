@@ -19,13 +19,14 @@
 
 package org.maxgamer.quickshop.database;
 
+import lombok.Cleanup;
+import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.Util;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import lombok.Cleanup;
-import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.Util;
 
 public class Database {
 
@@ -66,7 +67,7 @@ public class Database {
      * Executes the given statement either immediately, or soon.
      *
      * @param query The query
-     * @param objs The string values for each ? in the given query.
+     * @param objs  The string values for each ? in the given query.
      */
     public void execute(@NotNull String query, @NotNull Object... objs) {
         Util.debugLog(query);
@@ -77,7 +78,7 @@ public class Database {
     /**
      * Returns true if the given table has the given column
      *
-     * @param table The table
+     * @param table  The table
      * @param column The column
      * @return True if the given table has the given column
      * @throws SQLException If the database isn't connected

@@ -45,7 +45,7 @@ public class PermissionManager {
     /**
      * Check the permission for sender
      *
-     * @param sender The CommandSender you want check
+     * @param sender     The CommandSender you want check
      * @param permission The permission node wait to check
      * @return The result of check
      */
@@ -71,9 +71,9 @@ public class PermissionManager {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             plugin
-                .getLogger()
-                .info(
-                    "A error happend, if you believe this is QuickShop problem, please report to us on Issue Tracker or Discord.");
+                    .getLogger()
+                    .info(
+                            "A error happend, if you believe this is QuickShop problem, please report to us on Issue Tracker or Discord.");
             return false;
         }
     }

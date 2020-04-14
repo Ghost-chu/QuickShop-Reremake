@@ -90,8 +90,8 @@ public class ShopLoader {
             Timer fetchTimer = new Timer(true);
             ResultSet rs = plugin.getDatabaseHelper().selectAllShops();
             this.plugin
-                .getLogger()
-                .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
+                    .getLogger()
+                    .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
             while (rs.next()) {
                 Timer singleShopLoadTimer = new Timer(true);
                 ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(rs);
@@ -102,13 +102,13 @@ public class ShopLoader {
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
                 Shop shop =
-                    new ContainerShop(
-                        data.getLocation(),
-                        data.getPrice(),
-                        data.getItem(),
-                        data.getModerators(),
-                        data.isUnlimited(),
-                        data.getType());
+                        new ContainerShop(
+                                data.getLocation(),
+                                data.getPrice(),
+                                data.getItem(),
+                                data.getModerators(),
+                                data.isUnlimited(),
+                                data.getType());
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
@@ -146,22 +146,22 @@ public class ShopLoader {
             long totalUsedTime = totalLoadTimer.endTimer();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
-                .getLogger()
-                .info(
-                    "Successfully loaded "
-                        + totalLoaded
-                        + " shops! (Used "
-                        + totalUsedTime
-                        + "ms, Avg "
-                        + avgPerShop
-                        + "ms per shop)");
+                    .getLogger()
+                    .info(
+                            "Successfully loaded "
+                                    + totalLoaded
+                                    + " shops! (Used "
+                                    + totalUsedTime
+                                    + "ms, Avg "
+                                    + avgPerShop
+                                    + "ms per shop)");
             this.plugin
-                .getLogger()
-                .info(
-                    this.loadAfterChunkLoaded
-                        + " shops will load after chunk have loaded, "
-                        + this.loadAfterWorldLoaded
-                        + " shops will load after the world has loaded.");
+                    .getLogger()
+                    .info(
+                            this.loadAfterChunkLoaded
+                                    + " shops will load after chunk have loaded, "
+                                    + this.loadAfterWorldLoaded
+                                    + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
@@ -237,7 +237,7 @@ public class ShopLoader {
         logger.warning("  >> Target Location Info");
         logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
         logger.warning(
-            "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
         logger.warning("  >> Database Info");
         try {
             logger.warning("Connected: " + plugin.getDatabase().getConnection().isClosed());
@@ -260,7 +260,7 @@ public class ShopLoader {
         logger.warning("#######################################");
         if (errors > 10) {
             logger.severe(
-                "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
         }
     }
 
@@ -278,13 +278,13 @@ public class ShopLoader {
                 originShopsInDatabase.add(shopDatabaseInfoOrigin);
                 ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
                 Shop shop =
-                    new ContainerShop(
-                        data.getLocation(),
-                        data.getPrice(),
-                        data.getItem(),
-                        data.getModerators(),
-                        data.isUnlimited(),
-                        data.getType());
+                        new ContainerShop(
+                                data.getLocation(),
+                                data.getPrice(),
+                                data.getItem(),
+                                data.getModerators(),
+                                data.isUnlimited(),
+                                data.getType());
                 shopsInDatabase.add(shop);
                 if (shopNullCheck(shop)) {
                     continue;
@@ -358,9 +358,9 @@ public class ShopLoader {
             } catch (InvalidConfigurationException e) {
                 e.printStackTrace();
                 plugin
-                    .getLogger()
-                    .warning(
-                        "Failed load shop data, because target config can't deserialize the ItemStack.");
+                        .getLogger()
+                        .warning(
+                                "Failed load shop data, because target config can't deserialize the ItemStack.");
                 Util.debugLog("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }

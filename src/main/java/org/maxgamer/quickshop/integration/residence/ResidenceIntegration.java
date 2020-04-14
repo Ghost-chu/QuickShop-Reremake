@@ -59,15 +59,15 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (residence == null) {
                     // Check world permission
                     if (!Residence.getInstance()
-                        .getWorldFlags()
-                        .getPerms(location.getWorld().getName())
-                        .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
+                            .getWorldFlags()
+                            .getPerms(location.getWorld().getName())
+                            .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
                         return false;
                     }
                 } else {
                     if (!residence
-                        .getPermissions()
-                        .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
+                            .getPermissions()
+                            .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
                         return false;
                     }
                 }
@@ -75,9 +75,9 @@ public class ResidenceIntegration implements IntegratedPlugin {
             // Not flag
             if (residence == null) {
                 if (!Residence.getInstance()
-                    .getWorldFlags()
-                    .getPerms(location.getWorld().getName())
-                    .playerHas(player, Flags.getFlag(limit), false)) {
+                        .getWorldFlags()
+                        .getPerms(location.getWorld().getName())
+                        .playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
             } else {
@@ -98,15 +98,15 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (residence == null) {
                     // Check world permission
                     if (!Residence.getInstance()
-                        .getWorldFlags()
-                        .getPerms(location.getWorld().getName())
-                        .playerHas(player, Flags.getFlag("quickshop-trade"), false)) {
+                            .getWorldFlags()
+                            .getPerms(location.getWorld().getName())
+                            .playerHas(player, Flags.getFlag("quickshop-trade"), false)) {
                         return false;
                     }
                 } else {
                     if (!residence
-                        .getPermissions()
-                        .playerHas(player, Flags.getFlag("quickshop-trade"), true)) {
+                            .getPermissions()
+                            .playerHas(player, Flags.getFlag("quickshop-trade"), true)) {
                         return false;
                     }
                 }
@@ -114,9 +114,9 @@ public class ResidenceIntegration implements IntegratedPlugin {
             // Not flag
             if (residence == null) {
                 if (!Residence.getInstance()
-                    .getWorldFlags()
-                    .getPerms(location.getWorld().getName())
-                    .playerHas(player, Flags.getFlag(limit), false)) {
+                        .getWorldFlags()
+                        .getPerms(location.getWorld().getName())
+                        .playerHas(player, Flags.getFlag(limit), false)) {
                     return false;
                 }
             } else {

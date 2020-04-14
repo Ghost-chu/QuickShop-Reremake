@@ -47,12 +47,12 @@ public class MySQLCore implements DatabaseCore {
     private final String url;
 
     public MySQLCore(
-        @NotNull String host,
-        @NotNull String user,
-        @NotNull String pass,
-        @NotNull String database,
-        @NotNull String port,
-        boolean useSSL) {
+            @NotNull String host,
+            @NotNull String user,
+            @NotNull String pass,
+            @NotNull String database,
+            @NotNull String port,
+            boolean useSSL) {
         info = new Properties();
         info.setProperty("autoReconnect", "true");
         info.setProperty("user", user);
