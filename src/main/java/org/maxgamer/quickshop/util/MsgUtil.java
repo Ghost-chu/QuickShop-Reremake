@@ -608,7 +608,7 @@ public class MsgUtil {
                             sender,
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
-                                    : "" + shop.getPrice());
+                                    : Double.toString(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
@@ -655,6 +655,7 @@ public class MsgUtil {
 
         chatSheetPrinter.printFooter();
     }
+
 
     /**
      * getMessage in messages.yml
@@ -767,7 +768,7 @@ public class MsgUtil {
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
                         p,
-                        "" + amount,
+                        Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
         printEnchantment(p, shop, chatSheetPrinter);
@@ -807,7 +808,7 @@ public class MsgUtil {
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
                         p,
-                        "" + amount,
+                        Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
         if (plugin.getConfig().getBoolean("show-tax")) {
@@ -875,18 +876,18 @@ public class MsgUtil {
         if (shop.isSelling()) {
             if (shop.getRemainingStock() == -1) {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.stock", p, "" + MsgUtil.getMessage("signs.unlimited", p)));
+                        MsgUtil.getMessage("menu.stock", p, MsgUtil.getMessage("signs.unlimited", p)));
             } else {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.stock", p, "" + shop.getRemainingStock()));
+                        MsgUtil.getMessage("menu.stock", p, Integer.toString(shop.getRemainingStock())));
             }
         } else {
             if (shop.getRemainingSpace() == -1) {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.space", p, "" + MsgUtil.getMessage("signs.unlimited", p)));
+                        MsgUtil.getMessage("menu.space", p, MsgUtil.getMessage("signs.unlimited", p)));
             } else {
                 chatSheetPrinter.printLine(
-                        MsgUtil.getMessage("menu.space", p, "" + shop.getRemainingSpace()));
+                        MsgUtil.getMessage("menu.space", p, Integer.toString(shop.getRemainingSpace())));
             }
         }
         if (shop.getItem().getAmount() == 1) {
