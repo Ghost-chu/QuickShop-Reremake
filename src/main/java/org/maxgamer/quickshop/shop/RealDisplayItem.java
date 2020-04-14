@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import java.util.Objects;
-import java.util.UUID;
 import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,6 +32,9 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @ToString
 public class RealDisplayItem extends DisplayItem {
@@ -60,7 +61,7 @@ public class RealDisplayItem extends DisplayItem {
         // return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
         if (!Objects.requireNonNull(this.item.getLocation().getWorld())
-            .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
+                .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
             return true;
         }
         return this.item.getLocation().distance(getDisplayLocation()) > 0.6;
@@ -104,13 +105,13 @@ public class RealDisplayItem extends DisplayItem {
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
                 Util.debugLog(
-                    "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                        "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
                 plugin
-                    .getBukkitAPIWrapper()
-                    .teleportEntity(
-                        eItem,
-                        Objects.requireNonNull(getDisplayLocation()),
-                        PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                        .getBukkitAPIWrapper()
+                        .teleportEntity(
+                                eItem,
+                                Objects.requireNonNull(getDisplayLocation()),
+                                PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -131,7 +132,7 @@ public class RealDisplayItem extends DisplayItem {
         this.item = null;
         this.guardedIstack = null;
         ShopDisplayItemDespawnEvent shopDisplayItemDepawnEvent =
-            new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+                new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDepawnEvent);
     }
 
@@ -153,7 +154,7 @@ public class RealDisplayItem extends DisplayItem {
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
                     Util.debugLog(
-                        "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                            "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -202,31 +203,31 @@ public class RealDisplayItem extends DisplayItem {
         }
         if (item != null && item.isValid() && !item.isDead()) {
             Util.debugLog(
-                "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+                    "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
             for (StackTraceElement trace : traces) {
                 Util.debugLog(
-                    trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+                        trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
         }
         if (!Util.isDisplayAllowBlock(
-            Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
+                Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
             Util.debugLog(
-                "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
+                    "Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
 
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-            new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
+                new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {
             Util.debugLog(
-                "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+                    "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item =
-            this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
+                this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
         this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
     }

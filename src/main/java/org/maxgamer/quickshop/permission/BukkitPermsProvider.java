@@ -37,13 +37,13 @@ public class BukkitPermsProvider implements PermissionProvider {
     /**
      * Get the debug infos in provider
      *
-     * @param sender CommandSender
+     * @param sender     CommandSender
      * @param permission The permission want to check
      * @return Debug Infos
      */
     @Override
     public @NotNull PermissionInfomationContainer getDebugInfo(
-        @NotNull CommandSender sender, @NotNull String permission) {
+            @NotNull CommandSender sender, @NotNull String permission) {
         return new PermissionInfomationContainer(sender, permission, null, null);
     }
 

@@ -38,7 +38,7 @@ public class ShopDeleteEvent extends QSEvent implements Cancellable {
     /**
      * Call the event when shop is deleteing. The ShopUnloadEvent will call after ShopDeleteEvent
      *
-     * @param shop Target shop
+     * @param shop       Target shop
      * @param fromMemory Only delete from the memory? false = delete both in memory and database
      */
     public ShopDeleteEvent(@NotNull Shop shop, boolean fromMemory) {

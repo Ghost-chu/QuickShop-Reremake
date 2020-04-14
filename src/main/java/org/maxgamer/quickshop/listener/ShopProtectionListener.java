@@ -143,7 +143,7 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
         }
         final Shop underBlockShop =
                 getShopNature(newBlock.getRelative(BlockFace.DOWN).getLocation(), true);
-        if(underBlockShop == null){
+        if (underBlockShop == null) {
             return;
         }
         e.setCancelled(true);

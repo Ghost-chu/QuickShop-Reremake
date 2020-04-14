@@ -40,13 +40,13 @@ public class SubCommand_Info implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         int buying, selling, doubles, chunks, worlds, doubleschests;
         buying = selling = doubles = chunks = worlds = doubleschests = 0;
         int nostock = 0;
 
         for (Map<ShopChunk, Map<Location, Shop>> inWorld :
-            plugin.getShopManager().getShops().values()) {
+                plugin.getShopManager().getShops().values()) {
             worlds++;
 
             for (Map<Location, Shop> inChunk : inWorld.values()) {
@@ -71,36 +71,36 @@ public class SubCommand_Info implements CommandProcesser {
             }
         }
 
-        MsgUtil.sendMessage(sender,ChatColor.RED + "QuickShop Statistics...");
-        MsgUtil.sendMessage(sender,ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
+        MsgUtil.sendMessage(sender, ChatColor.RED + "QuickShop Statistics...");
+        MsgUtil.sendMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
         MsgUtil.sendMessage(sender,
-            ChatColor.GREEN
-                + ""
-                + (buying + selling)
-                + " shops in "
-                + chunks
-                + " chunks spread over "
-                + worlds
-                + " worlds.");
+                ChatColor.GREEN
+                        + ""
+                        + (buying + selling)
+                        + " shops in "
+                        + chunks
+                        + " chunks spread over "
+                        + worlds
+                        + " worlds.");
         MsgUtil.sendMessage(sender,
-            ChatColor.GREEN
-                + ""
-                + doubles
-                + " double shops. ("
-                + doubleschests
-                + " shops create on double chest.)");
+                ChatColor.GREEN
+                        + ""
+                        + doubles
+                        + " double shops. ("
+                        + doubleschests
+                        + " shops create on double chest.)");
         MsgUtil.sendMessage(sender,
-            ChatColor.GREEN
-                + ""
-                + nostock
-                + " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
-        MsgUtil.sendMessage(sender,ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
+                ChatColor.GREEN
+                        + ""
+                        + nostock
+                        + " nostock selling shops (excluding doubles) which will be removed by /qs clean.");
+        MsgUtil.sendMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

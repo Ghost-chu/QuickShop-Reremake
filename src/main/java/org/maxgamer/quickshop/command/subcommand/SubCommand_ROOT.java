@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandContainer;
 import org.maxgamer.quickshop.command.CommandProcesser;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubCommand_ROOT implements CommandProcesser {
 
@@ -34,19 +35,19 @@ public class SubCommand_ROOT implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
         final List<String> candidate = new ArrayList<>();
 
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             if (!container.getPrefix().startsWith(strings[0])
-                && !container.getPrefix().equals(strings[0])) {
+                    && !container.getPrefix().equals(strings[0])) {
                 continue;
             }
 
@@ -55,15 +56,15 @@ public class SubCommand_ROOT implements CommandProcesser {
             if (requirePermissions != null) {
                 for (String requirePermission : requirePermissions) {
                     if (requirePermission != null
-                        && !requirePermission.isEmpty()
-                        && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
+                            && !requirePermission.isEmpty()
+                            && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
                         Util.debugLog(
-                            "Sender "
-                                + sender.getName()
-                                + " trying tab-complete the command: "
-                                + commandLabel
-                                + ", but no permission "
-                                + requirePermission);
+                                "Sender "
+                                        + sender.getName()
+                                        + " trying tab-complete the command: "
+                                        + commandLabel
+                                        + ", but no permission "
+                                        + requirePermission);
                         return new ArrayList<>();
                     }
                 }

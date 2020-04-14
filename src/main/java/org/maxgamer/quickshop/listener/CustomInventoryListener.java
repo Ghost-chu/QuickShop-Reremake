@@ -23,7 +23,10 @@ import lombok.AllArgsConstructor;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
@@ -36,25 +39,25 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {
-        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-        if(e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder){
+        if (e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
             return;
         }
-        if(e.getSource() instanceof QuickShopPreviewInventoryHolder){
+        if (e.getSource() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void invEvent(InventoryClickEvent e) {
-        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }
@@ -62,7 +65,7 @@ public class CustomInventoryListener implements Listener {
 
     @EventHandler
     public void invEvent(InventoryDragEvent e) {
-        if(e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder){
+        if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
             e.setResult(Result.DENY);
         }

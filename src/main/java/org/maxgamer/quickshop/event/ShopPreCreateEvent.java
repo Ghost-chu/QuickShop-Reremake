@@ -45,7 +45,7 @@ public class ShopPreCreateEvent extends QSEvent implements Cancellable {
      * Calling when shop pre-creating. Shop won't one-percent will create after this event, if you
      * want get the shop created event, please use ShopCreateEvent
      *
-     * @param player Target player
+     * @param player   Target player
      * @param location The location will create be shop
      */
     public ShopPreCreateEvent(@NotNull Player player, @NotNull Location location) {

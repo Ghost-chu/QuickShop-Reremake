@@ -51,22 +51,16 @@ import java.util.logging.Logger;
  */
 public class SentryErrorReporter {
     private final String dsn =
-        "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
-            + "stacktrace.app.packages=org.maxgamer.quickshop";
+            "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
+                    + "stacktrace.app.packages=org.maxgamer.quickshop";
 
-    private final List<String> reported = new ArrayList<>();
-
-    private final Context context;
-
-    private final List<Class<?>> ignoredException = new ArrayList<>();
-
-    private final QuickShop plugin;
-
-    /* Pre-init it if it called before the we create it... */
-    private final SentryClient sentryClient;
-
+    private final List<String> reported = new ArrayList<>(5);
+    private final List<Class<?>> ignoredException = new ArrayList<>(8);
     private final IncompatibleChecker checker = new IncompatibleChecker();
-
+    private Context context;
+    private QuickShop plugin;
+    /* Pre-init it if it called before the we create it... */
+    private SentryClient sentryClient;
     private boolean disable;
 
     @Getter
@@ -77,76 +71,82 @@ public class SentryErrorReporter {
     private String lastPaste = "Failed to paste.";
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
-        this.plugin = plugin;
-        // sentryClient = Sentry.init(dsn);
-        Util.debugLog("Loading SentryErrorReporter");
-        sentryClient = SentryClientFactory.sentryClient(dsn);
-        context = sentryClient.getContext();
-        Util.debugLog("Setting basic report data...");
-        // context.addTag("plugin_version", QuickShop.getVersion());
-        context.addTag("system_os", System.getProperty("os.name"));
-        context.addTag("system_arch", System.getProperty("os.arch"));
-        context.addTag("system_version", System.getProperty("os.version"));
-        context.addTag("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
-        context.addTag("server_build", Bukkit.getServer().getVersion());
-        context.addTag("server_java", String.valueOf(System.getProperty("java.version")));
-        context.addTag(
-            "server_players", Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
-        context.addTag("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
-        context.addTag("server_bukkitversion", Bukkit.getVersion());
-        context.addTag("server_plugins", getPluginInfo());
-        context.setUser(
-            new UserBuilder()
-                .setId(plugin.getServerUniqueID().toString())
-                .setUsername(plugin.getServerUniqueID().toString())
-                .build());
-        sentryClient.setServerName(
-            Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
-        sentryClient.setRelease(QuickShop.getVersion());
-        sentryClient.setEnvironment(Util.isDevEdition() ? "development" : "production");
-        plugin
-            .getLogger()
-            .setFilter(
-                new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
-        Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
-        Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
-        Logger.getGlobal().setFilter(new GlobalExceptionFilter());
-        /* Ignore we won't report errors */
-        ignoredException.add(IOException.class);
-        ignoredException.add(OutOfMemoryError.class);
-        ignoredException.add(ProtocolException.class);
-        ignoredException.add(InvalidPluginException.class);
-        ignoredException.add(UnsupportedClassVersionError.class);
-        ignoredException.add(LinkageError.class);
+        try {
+            this.plugin = plugin;
+            // sentryClient = Sentry.init(dsn);
+            Util.debugLog("Loading SentryErrorReporter");
+            sentryClient = SentryClientFactory.sentryClient(dsn);
+            context = sentryClient.getContext();
+            Util.debugLog("Setting basic report data...");
+            // context.addTag("plugin_version", QuickShop.getVersion());
+            context.addTag("system_os", System.getProperty("os.name"));
+            context.addTag("system_arch", System.getProperty("os.arch"));
+            context.addTag("system_version", System.getProperty("os.version"));
+            context.addTag("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
+            context.addTag("server_build", Bukkit.getServer().getVersion());
+            context.addTag("server_java", String.valueOf(System.getProperty("java.version")));
+            context.addTag(
+                    "server_players", Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
+            context.addTag("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
+            context.addTag("server_bukkitversion", Bukkit.getVersion());
+            context.addTag("server_plugins", getPluginInfo());
+            context.setUser(
+                    new UserBuilder()
+                            .setId(plugin.getServerUniqueID().toString())
+                            .setUsername(plugin.getServerUniqueID().toString())
+                            .build());
+            sentryClient.setServerName(
+                    Bukkit.getServer().getName() + " @ " + Bukkit.getServer().getVersion());
+            sentryClient.setRelease(QuickShop.getVersion());
+            sentryClient.setEnvironment(Util.isDevEdition() ? "development" : "production");
+            plugin
+                    .getLogger()
+                    .setFilter(
+                            new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
+            Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
+            Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
+            Logger.getGlobal().setFilter(new GlobalExceptionFilter());
+            /* Ignore we won't report errors */
+            ignoredException.add(IOException.class);
+            ignoredException.add(OutOfMemoryError.class);
+            ignoredException.add(ProtocolException.class);
+            ignoredException.add(InvalidPluginException.class);
+            ignoredException.add(UnsupportedClassVersionError.class);
+            ignoredException.add(LinkageError.class);
 
-        Util.debugLog("Sentry error reporter success loaded.");
-        enabled = true;
-        if (!plugin.getConfig().getBoolean("auto-report-errors")) {
-            Util.debugLog("Sentry error report was disabled, unloading...");
-            unit();
-            return;
-        }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Paste paste = new Paste(plugin);
-                lastPaste = paste.paste(paste.genNewPaste(), 1);
-                if (lastPaste != null) {
-                    plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-                }
+            Util.debugLog("Sentry error reporter success loaded.");
+            enabled = true;
+            if (!plugin.getConfig().getBoolean("auto-report-errors")) {
+                Util.debugLog("Sentry error report was disabled, unloading...");
+                unit();
+                return;
             }
-        }.runTaskAsynchronously(plugin);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Paste paste = new Paste(plugin);
+                    lastPaste = paste.paste(paste.genNewPaste(), 1);
+                    if (lastPaste != null) {
+                        plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+                    }
+                }
+            }.runTaskAsynchronously(plugin);
+        } catch (Throwable th) {
+            plugin.getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+            plugin.getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
+            this.disable = true;
+        }
     }
 
     private String getPluginInfo() {
         StringBuilder buffer = new StringBuilder();
         for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
             buffer
-                .append("\t")
-                .append(bplugin.getName())
-                .append("@")
-                .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
-                .append("\n");
+                    .append("\t")
+                    .append(bplugin.getName())
+                    .append("@")
+                    .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append("\n");
         }
         return buffer.toString();
     }
@@ -172,9 +172,9 @@ public class SentryErrorReporter {
             return false;
         }
         if (checker
-            .isIncompatible(
-                Util
-                    .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
+                .isIncompatible(
+                        Util
+                                .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }
@@ -188,11 +188,11 @@ public class SentryErrorReporter {
             stackTraceElement = throwable.getStackTrace()[2];
         }
         String text =
-            stackTraceElement.getClassName()
-                + "#"
-                + stackTraceElement.getMethodName()
-                + "#"
-                + stackTraceElement.getLineNumber();
+                stackTraceElement.getClassName()
+                        + "#"
+                        + stackTraceElement.getMethodName()
+                        + "#"
+                        + stackTraceElement.getLineNumber();
         if (!reported.contains(text)) {
             reported.add(text);
             return true;
@@ -221,12 +221,12 @@ public class SentryErrorReporter {
             throwable = throwable.getCause();
         }
         long element =
-            Arrays.stream(throwable.getStackTrace())
-                .limit(5)
-                .filter(
-                    stackTraceElement ->
-                        stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
-                .count();
+                Arrays.stream(throwable.getStackTrace())
+                        .limit(5)
+                        .filter(
+                                stackTraceElement ->
+                                        stackTraceElement.getClassName().contains("org.maxgamer.quickshop"))
+                        .count();
         if (element > 0) {
             return true;
         } else if (throwable.getCause() != null) {
@@ -261,7 +261,7 @@ public class SentryErrorReporter {
      * Send a error to Sentry
      *
      * @param throwable Throws
-     * @param context BreadCrumb
+     * @param context   BreadCrumb
      * @return Event Uniqud ID
      */
     public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
@@ -308,9 +308,9 @@ public class SentryErrorReporter {
             this.sentryClient.sendException(throwable);
             this.context.clearBreadcrumbs();
             plugin
-                .getLogger()
-                .warning(
-                    "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
+                    .getLogger()
+                    .warning(
+                            "A exception was thrown, QuickShop already caught this exception and reported it, switch to debug mode to see the full errors.");
             plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
             plugin.getLogger().warning("Description: " + throwable.getMessage());
             plugin.getLogger().warning("Event    ID: " + this.context.getLastEventId());
@@ -345,8 +345,8 @@ public class SentryErrorReporter {
             if (level != Level.WARNING && level != Level.SEVERE) {
                 return true;
             }
-            if(record.getThrown()==null){
-               return true;
+            if (record.getThrown() == null) {
+                return true;
             }
             if (Util.isDevMode()) {
                 sendError(record.getThrown(), record.getMessage());

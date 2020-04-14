@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import java.util.Objects;
 import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,6 +35,8 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.Objects;
 
 @ToString
 public class ArmorStandDisplayItem extends DisplayItem {
@@ -64,7 +65,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
     public Location getCenter(Location loc) {
         // This is always '+' instead of '-' even in negative pos
         return new Location(
-            loc.getWorld(), loc.getBlockX() + .5, loc.getBlockY() + .5, loc.getBlockZ() + .5);
+                loc.getWorld(), loc.getBlockX() + .5, loc.getBlockY() + .5, loc.getBlockZ() + .5);
     }
 
     @Override
@@ -105,10 +106,10 @@ public class ArmorStandDisplayItem extends DisplayItem {
             ArmorStand eArmorStand = (ArmorStand) entity;
             if (eArmorStand.getUniqueId().equals(Objects.requireNonNull(this.armorStand).getUniqueId())) {
                 Util.debugLog(
-                    "Fixing moved ArmorStand displayItem "
-                        + eArmorStand.getUniqueId()
-                        + " at "
-                        + eArmorStand.getLocation());
+                        "Fixing moved ArmorStand displayItem "
+                                + eArmorStand.getUniqueId()
+                                + " at "
+                                + eArmorStand.getLocation());
                 eArmorStand.teleport(getDisplayLocation());
                 return;
             }
@@ -130,7 +131,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         this.armorStand = null;
         this.guardedIstack = null;
         ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent =
-            new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack, DisplayType.ARMORSTAND);
+                new ShopDisplayItemDespawnEvent(this.shop, this.originalItemStack, DisplayType.ARMORSTAND);
         Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
@@ -168,7 +169,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
     public void safeGuard(@NotNull Entity entity) {
         if (!(entity instanceof ArmorStand)) {
             Util.debugLog(
-                "Failed to safeGuard " + entity.getLocation() + ", cause target not a ArmorStand");
+                    "Failed to safeGuard " + entity.getLocation() + ", cause target not a ArmorStand");
             return;
         }
         ArmorStand armorStand = (ArmorStand) entity;
@@ -177,11 +178,11 @@ public class ArmorStandDisplayItem extends DisplayItem {
         armorStand.setHelmet(guardedIstack);
         try {
             armorStand
-                .getPersistentDataContainer()
-                .set(
-                    new NamespacedKey(plugin, "displayMark"),
-                    DisplayItemPersistentDataType.INSTANCE,
-                    DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
+                    .getPersistentDataContainer()
+                    .set(
+                            new NamespacedKey(plugin, "displayMark"),
+                            DisplayItemPersistentDataType.INSTANCE,
+                            DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
         } catch (Throwable ignored) {
         }
     }
@@ -200,51 +201,51 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
         if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
             Util.debugLog(
-                "Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
+                    "Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();
             for (StackTraceElement trace : traces) {
                 Util.debugLog(
-                    trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+                        trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
             }
 
             ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
-                new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
+                    new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);
             Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
             if (shopDisplayItemSpawnEvent.isCancelled()) {
                 Util.debugLog(
-                    "Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
+                        "Canceled the displayItem from spawning because a plugin setCancelled the spawning event, usually it is a QuickShop Add on");
                 return;
             }
 
             Location location = getDisplayLocation();
             this.armorStand =
-                this.shop
-                    .getLocation()
-                    .getWorld()
-                    .spawn(
-                        location,
-                        ArmorStand.class,
-                        armorStand -> {
-                            // Set basic armorstand datas.
-                            armorStand.setGravity(false);
-                            armorStand.setVisible(false);
-                            armorStand.setMarker(true);
-                            armorStand.setCollidable(false);
-                            armorStand.setSmall(true);
-                            armorStand.setArms(false);
-                            armorStand.setBasePlate(false);
-                            armorStand.setSilent(true);
-                            armorStand.setAI(false);
-                            armorStand.setCanPickupItems(false);
-                            // Set pose (this is for hand while we use helmet)
-                            // setPoseForArmorStand();
-                        });
+                    this.shop
+                            .getLocation()
+                            .getWorld()
+                            .spawn(
+                                    location,
+                                    ArmorStand.class,
+                                    armorStand -> {
+                                        // Set basic armorstand datas.
+                                        armorStand.setGravity(false);
+                                        armorStand.setVisible(false);
+                                        armorStand.setMarker(true);
+                                        armorStand.setCollidable(false);
+                                        armorStand.setSmall(true);
+                                        armorStand.setArms(false);
+                                        armorStand.setBasePlate(false);
+                                        armorStand.setSilent(true);
+                                        armorStand.setAI(false);
+                                        armorStand.setCanPickupItems(false);
+                                        // Set pose (this is for hand while we use helmet)
+                                        // setPoseForArmorStand();
+                                    });
             // Set safeGuard
             Util.debugLog(
-                "Spawned armor stand @ "
-                    + this.armorStand.getLocation()
-                    + " with UUID "
-                    + this.armorStand.getUniqueId());
+                    "Spawned armor stand @ "
+                            + this.armorStand.getLocation()
+                            + " with UUID "
+                            + this.armorStand.getUniqueId());
             safeGuard(this.armorStand); // Helmet must be set after spawning
         }
     }
@@ -259,14 +260,14 @@ public class ArmorStandDisplayItem extends DisplayItem {
         BlockFace containerBlockFace = BlockFace.NORTH; // Set default vaule
         if (this.shop.getLocation().getBlock().getBlockData() instanceof Directional) {
             containerBlockFace =
-                ((Directional) this.shop.getLocation().getBlock().getBlockData())
-                    .getFacing(); // Replace by container face.
+                    ((Directional) this.shop.getLocation().getBlock().getBlockData())
+                            .getFacing(); // Replace by container face.
         }
         // Fix specific block facing
         Material type = this.shop.getLocation().getBlock().getType();
         if (type.name().contains("ANVIL")
-            || type.name().contains("FENCE")
-            || type.name().contains("WALL")) {
+                || type.name().contains("FENCE")
+                || type.name().contains("WALL")) {
             switch (containerBlockFace) {
                 case SOUTH:
                     containerBlockFace = BlockFace.WEST;

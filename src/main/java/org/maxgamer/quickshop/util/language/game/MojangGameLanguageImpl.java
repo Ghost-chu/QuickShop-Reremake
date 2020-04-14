@@ -28,9 +28,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Objects;
 
-    public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
+public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private QuickShop plugin;
     private @Nullable JsonObject lang;
+
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);

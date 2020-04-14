@@ -34,10 +34,10 @@ public class InternalListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         plugin.log(
-            "Player "
-                + event.getPlayer().getName()
-                + " created a shop at location "
-                + event.getShop().getLocation());
+                "Player "
+                        + event.getPlayer().getName()
+                        + " created a shop at location "
+                        + event.getShop().getLocation());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -48,59 +48,59 @@ public class InternalListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopModeratorChanges(ShopModeratorChangedEvent event) {
         plugin.log(
-            "Shop at location "
-                + event.getShop().getLocation()
-                + " moderator was changed to "
-                + event.getModerator());
+                "Shop at location "
+                        + event.getShop().getLocation()
+                        + " moderator was changed to "
+                        + event.getModerator());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPriceChanges(ShopPriceChangeEvent event) {
         plugin.log(
-            "Shop at location "
-                + event.getShop().getLocation()
-                + " price was changed from "
-                + event.getOldPrice()
-                + " to "
-                + event.getNewPrice());
+                "Shop at location "
+                        + event.getShop().getLocation()
+                        + " price was changed from "
+                        + event.getOldPrice()
+                        + " to "
+                        + event.getNewPrice());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPurchase(ShopSuccessPurchaseEvent event) {
         if (event.getShop().getShopType() == ShopType.BUYING) {
             plugin.log(
-                "Player "
-                    + event.getPlayer().getName()
-                    + " sold "
-                    + event.getShop().ownerName()
-                    + " shop "
-                    + event.getShop()
-                    + " for items x"
-                    + event.getAmount()
-                    + " for "
-                    + plugin.getEconomy().format(event.getBalance())
-                    + " ("
-                    + plugin.getEconomy().format(event.getTax())
-                    + " tax).");
+                    "Player "
+                            + event.getPlayer().getName()
+                            + " sold "
+                            + event.getShop().ownerName()
+                            + " shop "
+                            + event.getShop()
+                            + " for items x"
+                            + event.getAmount()
+                            + " for "
+                            + plugin.getEconomy().format(event.getBalance())
+                            + " ("
+                            + plugin.getEconomy().format(event.getTax())
+                            + " tax).");
         }
         if (event.getShop().getShopType() == ShopType.SELLING) {
             plugin.log(
-                "Player "
-                    + event.getPlayer().getName()
-                    + " bought "
-                    + event.getShop().ownerName()
-                    + " shop "
-                    + event.getShop()
-                    + " for items x"
-                    + event.getAmount()
-                    + " for "
-                    + plugin.getEconomy().format(event.getBalance())
-                    + " ("
-                    + plugin.getEconomy().format(event.getTax())
-                    + " tax).");
+                    "Player "
+                            + event.getPlayer().getName()
+                            + " bought "
+                            + event.getShop().ownerName()
+                            + " shop "
+                            + event.getShop()
+                            + " for items x"
+                            + event.getAmount()
+                            + " for "
+                            + plugin.getEconomy().format(event.getBalance())
+                            + " ("
+                            + plugin.getEconomy().format(event.getTax())
+                            + " tax).");
 
         }
-        plugin.log("Player "+event.getPlayer().getName()+" had "+plugin.getEconomy().getBalance(event.getPlayer().getUniqueId())+" after trading.");
+        plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " after trading.");
     }
 
 }

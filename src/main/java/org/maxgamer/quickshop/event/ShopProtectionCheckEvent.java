@@ -46,15 +46,15 @@ public class ShopProtectionCheckEvent extends QSEvent {
      * Will call when shop price was changed.
      *
      * @param location Target location will execute protect check.
-     * @param status The checking status
-     * @param event The event will call to check the permissions.
-     * @param player The player in was mentions in this event
+     * @param status   The checking status
+     * @param event    The event will call to check the permissions.
+     * @param player   The player in was mentions in this event
      */
     public ShopProtectionCheckEvent(
-        @NotNull Location location,
-        @NotNull Player player,
-        @NotNull ProtectionCheckStatus status,
-        @NotNull Event event) {
+            @NotNull Location location,
+            @NotNull Player player,
+            @NotNull ProtectionCheckStatus status,
+            @NotNull Event event) {
         this.loc = location;
         this.player = player;
         this.status = status;

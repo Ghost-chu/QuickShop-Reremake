@@ -42,7 +42,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
     private final double tax;
 
     private final double
-        total; // Don't use getter, we have important notice need told dev in javadoc.
+            total; // Don't use getter, we have important notice need told dev in javadoc.
 
     private boolean cancelled;
 
@@ -50,14 +50,14 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
      * Builds a new shop purchase event This time, purchase not start, please listen the
      * ShopSuccessPurchaseEvent.
      *
-     * @param shop The shop bought from
+     * @param shop   The shop bought from
      * @param player The player buying
      * @param amount The amount they're buying
-     * @param tax The tax in this purchase
-     * @param total The money in this purchase
+     * @param tax    The tax in this purchase
+     * @param total  The money in this purchase
      */
     public ShopSuccessPurchaseEvent(
-        @NotNull Shop shop, @NotNull Player player, int amount, double total, double tax) {
+            @NotNull Shop shop, @NotNull Player player, int amount, double total, double tax) {
         this.shop = shop;
         this.player = player;
         this.amount = amount;

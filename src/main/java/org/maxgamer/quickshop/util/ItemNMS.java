@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import java.lang.reflect.Method;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+
+import java.lang.reflect.Method;
 
 @Getter
 public abstract class ItemNMS {
@@ -42,22 +43,22 @@ public abstract class ItemNMS {
 
         try {
             craftItemStack_asNMSCopyMethod =
-                Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
-                    .getDeclaredMethod("asNMSCopy", ItemStack.class);
+                    Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".inventory.CraftItemStack")
+                            .getDeclaredMethod("asNMSCopy", ItemStack.class);
 
             nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
 
             itemStack_saveMethod =
-                Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
-                    .getDeclaredMethod("save", nbtTagCompoundClass);
+                    Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
+                            .getDeclaredMethod("save", nbtTagCompoundClass);
 
         } catch (Throwable t) {
             QuickShop.instance.getLogger().info("A error happend:");
             t.printStackTrace();
             QuickShop.instance
-                .getLogger()
-                .info(
-                    "Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
+                    .getLogger()
+                    .info(
+                            "Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
         }
     }
 
