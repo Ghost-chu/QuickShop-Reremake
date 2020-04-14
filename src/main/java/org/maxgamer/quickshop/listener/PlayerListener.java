@@ -182,6 +182,7 @@ public class PlayerListener implements Listener {
                 && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Result.DENY
                     || (plugin.getConfig().getBoolean("shop.sneak-to-create") && !p.isSneaking())
+                    || plugin.getConfig().getBoolean("shop.disable-quick-create")
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
