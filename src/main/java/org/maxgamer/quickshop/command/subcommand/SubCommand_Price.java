@@ -58,7 +58,7 @@ public class SubCommand_Price implements CommandProcesser {
         final double price;
         final double minPrice = plugin.getConfig().getDouble("shop.minimum-price");
 
-        try {
+        try { //TODO Migrate to PriceLimiter
             if (plugin.getConfig().getBoolean("whole-number-prices-only")) {
                 try {
                     price = Long.parseLong(cmdArg[0]);
