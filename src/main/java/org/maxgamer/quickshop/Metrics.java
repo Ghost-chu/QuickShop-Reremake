@@ -4,6 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,13 +21,6 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
-import javax.net.ssl.HttpsURLConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 
 /**
  * bStats collects some data for plugin authors.
@@ -50,19 +51,19 @@ public class Metrics {
     static {
         // You can use the property to disable the check in your test environment
         if (System.getProperty("bstats.relocatecheck") == null
-            || !System.getProperty("bstats.relocatecheck").equals("false")) {
+                || !System.getProperty("bstats.relocatecheck").equals("false")) {
             // Maven's Relocate is clever and changes strings, too. So we have to use this little "trick"
             // ... :D
             final String defaultPackage =
-                new String(
-                    new byte[]{
-                        'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's', '.', 'b', 'u', 'k', 'k', 'i', 't'
-                    });
+                    new String(
+                            new byte[]{
+                                    'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's', '.', 'b', 'u', 'k', 'k', 'i', 't'
+                            });
             final String examplePackage =
-                new String(new byte[]{'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
+                    new String(new byte[]{'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
             // We want to make sure nobody just copy & pastes the example and use the wrong package names
             if (Metrics.class.getPackage().getName().equals(defaultPackage)
-                || Metrics.class.getPackage().getName().equals(examplePackage)) {
+                    || Metrics.class.getPackage().getName().equals(examplePackage)) {
                 throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
             }
         }
@@ -85,9 +86,9 @@ public class Metrics {
     /**
      * Class constructor.
      *
-     * @param plugin The plugin which stats should be submitted.
+     * @param plugin   The plugin which stats should be submitted.
      * @param pluginId The id of the plugin. It can be found at <a
-     * href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
+     *                 href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
      */
     public Metrics(Plugin plugin, int pluginId) {
         if (plugin == null) {
@@ -117,13 +118,13 @@ public class Metrics {
 
             // Inform the server owners about bStats
             config
-                .options()
-                .header(
-                    "bStats collects some data for plugin authors like how many servers are using their plugins.\n"
-                        + "To honor their work, you should not disable it.\n"
-                        + "This has nearly no effect on the server performance!\n"
-                        + "Check out https://bStats.org/ to learn more :)")
-                .copyDefaults(true);
+                    .options()
+                    .header(
+                            "bStats collects some data for plugin authors like how many servers are using their plugins.\n"
+                                    + "To honor their work, you should not disable it.\n"
+                                    + "This has nearly no effect on the server performance!\n"
+                                    + "Check out https://bStats.org/ to learn more :)")
+                    .copyDefaults(true);
             try {
                 config.save(configFile);
             } catch (IOException ignored) {
@@ -158,28 +159,98 @@ public class Metrics {
     }
 
     /**
+     * Sends the data to the bStats server.
+     *
+     * @param plugin Any plugin. It's just used to get a logger instance.
+     * @param data   The data to send.
+     * @throws Exception If the request failed.
+     */
+    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null!");
+        }
+        if (Bukkit.isPrimaryThread()) {
+            throw new IllegalAccessException("This method must not be called from the main thread!");
+        }
+        if (logSentData) {
+            plugin.getLogger().info("Sending data to bStats: " + data);
+        }
+        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
+
+        // Compress the data to save bandwidth
+        byte[] compressedData = compress(data.toString());
+
+        // Add headers
+        connection.setRequestMethod("POST");
+        connection.addRequestProperty("Accept", "application/json");
+        connection.addRequestProperty("Connection", "close");
+        connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
+        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+        connection.setRequestProperty(
+                "Content-Type", "application/json"); // We send our data in JSON format
+        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
+
+        // Send data
+        connection.setDoOutput(true);
+        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+            outputStream.write(compressedData);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader bufferedReader =
+                     new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                builder.append(line);
+            }
+        }
+
+        if (logResponseStatusText) {
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
+        }
+    }
+
+    /**
+     * Gzips the given String.
+     *
+     * @param str The string to gzip.
+     * @return The gzipped String.
+     * @throws IOException If the compression failed.
+     */
+    private static byte[] compress(final String str) throws IOException {
+        if (str == null) {
+            return null;
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
+            gzip.write(str.getBytes(StandardCharsets.UTF_8));
+        }
+        return outputStream.toByteArray();
+    }
+
+    /**
      * Starts the Scheduler which submits our data every 30 minutes.
      */
     private void startSubmitting() {
         final Timer timer =
-            new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
+                new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
         timer.scheduleAtFixedRate(
-            new TimerTask() {
-                @Override
-                public void run() {
-                    if (!plugin.isEnabled()) { // Plugin was disabled
-                        timer.cancel();
-                        return;
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!plugin.isEnabled()) { // Plugin was disabled
+                            timer.cancel();
+                            return;
+                        }
+                        // Nevertheless we want our code to run in the Bukkit main thread, so we have to use the
+                        // Bukkit scheduler
+                        // Don't be afraid! The connection to the bStats server is still async, only the stats
+                        // collection is sync ;)
+                        Bukkit.getScheduler().runTask(plugin, () -> submitData());
                     }
-                    // Nevertheless we want our code to run in the Bukkit main thread, so we have to use the
-                    // Bukkit scheduler
-                    // Don't be afraid! The connection to the bStats server is still async, only the stats
-                    // collection is sync ;)
-                    Bukkit.getScheduler().runTask(plugin, () -> submitData());
-                }
-            },
-            1000 * 60 * 5,
-            1000 * 60 * 30);
+                },
+                1000 * 60 * 5,
+                1000 * 60 * 30);
         // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough
         // time to start
         // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
@@ -199,10 +270,10 @@ public class Metrics {
                 service.getField("B_STATS_VERSION"); // Our identifier :)
 
                 for (RegisteredServiceProvider<?> provider :
-                    Bukkit.getServicesManager().getRegistrations(service)) {
+                        Bukkit.getServicesManager().getRegistrations(service)) {
                     try {
                         Object plugin =
-                            provider.getService().getMethod("getPluginData").invoke(provider.getProvider());
+                                provider.getService().getMethod("getPluginData").invoke(provider.getProvider());
                         if (plugin instanceof JsonObject) {
                             pluginData.add((JsonObject) plugin);
                         } else { // old bstats version compatibility
@@ -223,9 +294,9 @@ public class Metrics {
                             }
                         }
                     } catch (NullPointerException
-                        | NoSuchMethodException
-                        | IllegalAccessException
-                        | InvocationTargetException ignored) {
+                            | NoSuchMethodException
+                            | IllegalAccessException
+                            | InvocationTargetException ignored) {
                     }
                 }
             } catch (NoSuchFieldException ignored) {
@@ -236,21 +307,21 @@ public class Metrics {
 
         // Create a new thread for the connection to the bStats server
         new Thread(
-            () -> {
-                try {
-                    // Send the data
-                    sendData(plugin, data);
-                } catch (Exception e) {
-                    // Something went wrong! :(
-                    if (logFailedRequests) {
-                        plugin
-                            .getLogger()
-                            .log(
-                                Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
+                () -> {
+                    try {
+                        // Send the data
+                        sendData(plugin, data);
+                    } catch (Exception e) {
+                        // Something went wrong! :(
+                        if (logFailedRequests) {
+                            plugin
+                                    .getLogger()
+                                    .log(
+                                            Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
+                        }
                     }
-                }
-            })
-            .start();
+                })
+                .start();
     }
 
     /**
@@ -267,12 +338,12 @@ public class Metrics {
             // org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             playerAmount =
-                onlinePlayersMethod.getReturnType().equals(Collection.class)
-                    ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
-                    : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
+                    onlinePlayersMethod.getReturnType().equals(Collection.class)
+                            ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
+                            : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
         } catch (Exception e) {
             playerAmount =
-                Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+                    Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
         int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
         String bukkitVersion = Bukkit.getVersion();
@@ -301,76 +372,6 @@ public class Metrics {
         data.addProperty("coreCount", coreCount);
 
         return data;
-    }
-
-    /**
-     * Sends the data to the bStats server.
-     *
-     * @param plugin Any plugin. It's just used to get a logger instance.
-     * @param data The data to send.
-     * @throws Exception If the request failed.
-     */
-    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
-        if (data == null) {
-            throw new IllegalArgumentException("Data cannot be null!");
-        }
-        if (Bukkit.isPrimaryThread()) {
-            throw new IllegalAccessException("This method must not be called from the main thread!");
-        }
-        if (logSentData) {
-            plugin.getLogger().info("Sending data to bStats: " + data);
-        }
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
-
-        // Compress the data to save bandwidth
-        byte[] compressedData = compress(data.toString());
-
-        // Add headers
-        connection.setRequestMethod("POST");
-        connection.addRequestProperty("Accept", "application/json");
-        connection.addRequestProperty("Connection", "close");
-        connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
-        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-        connection.setRequestProperty(
-            "Content-Type", "application/json"); // We send our data in JSON format
-        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
-
-        // Send data
-        connection.setDoOutput(true);
-        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-            outputStream.write(compressedData);
-        }
-
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader bufferedReader =
-                 new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                builder.append(line);
-            }
-        }
-
-        if (logResponseStatusText) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
-        }
-    }
-
-    /**
-     * Gzips the given String.
-     *
-     * @param str The string to gzip.
-     * @return The gzipped String.
-     * @throws IOException If the compression failed.
-     */
-    private static byte[] compress(final String str) throws IOException {
-        if (str == null) {
-            return null;
-        }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
-            gzip.write(str.getBytes(StandardCharsets.UTF_8));
-        }
-        return outputStream.toByteArray();
     }
 
     /**
@@ -455,7 +456,7 @@ public class Metrics {
             } catch (Throwable t) {
                 if (logFailedRequests) {
                     Bukkit.getLogger()
-                        .log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
+                            .log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
                 }
                 return null;
             }
@@ -476,7 +477,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimplePie(String chartId, Callable<String> callable) {
@@ -508,7 +509,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
@@ -553,7 +554,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
@@ -603,7 +604,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SingleLineChart(String chartId, Callable<Integer> callable) {
@@ -635,7 +636,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -680,7 +681,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -718,7 +719,7 @@ public class Metrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {

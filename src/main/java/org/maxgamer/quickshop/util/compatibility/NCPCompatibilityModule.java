@@ -12,6 +12,7 @@ import org.maxgamer.quickshop.util.Util;
 @AllArgsConstructor
 public class NCPCompatibilityModule implements CompatibilityModule {
     private QuickShop plugin;
+
     /**
      * Gets the CompatibilityModule provider name
      *
@@ -40,7 +41,7 @@ public class NCPCompatibilityModule implements CompatibilityModule {
      */
     @Override
     public void toggle(@NotNull Player player, boolean status) {
-        if(status){
+        if (status) {
             Util.debugLog(
                     "Calling NoCheatPlus ignore "
                             + player.getName()
@@ -48,7 +49,7 @@ public class NCPCompatibilityModule implements CompatibilityModule {
 
             NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_REACH);
             NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_FASTPLACE);
-        }else{
+        } else {
             Util.debugLog(
                     "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
             NCPExemptionManager.unexempt(player, CheckType.BLOCKPLACE_REACH);

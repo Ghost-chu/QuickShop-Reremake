@@ -26,10 +26,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
@@ -54,11 +54,11 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
         com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
-            new com.github.intellectualsites.plotsquared.plot.object.Location(
-                location.getWorld().getName(),
-                location.getBlockX(),
-                location.getBlockY(),
-                location.getBlockZ());
+                new com.github.intellectualsites.plotsquared.plot.object.Location(
+                        location.getWorld().getName(),
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ());
         Plot plot = pLocation.getPlot();
         return this.createFlag.isTrue(plot);
     }
@@ -66,11 +66,11 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
         com.github.intellectualsites.plotsquared.plot.object.Location pLocation =
-            new com.github.intellectualsites.plotsquared.plot.object.Location(
-                location.getWorld().getName(),
-                location.getBlockX(),
-                location.getBlockY(),
-                location.getBlockZ());
+                new com.github.intellectualsites.plotsquared.plot.object.Location(
+                        location.getWorld().getName(),
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ());
         Plot plot = pLocation.getPlot();
         return this.tradeFlag.isFalse(plot);
     }

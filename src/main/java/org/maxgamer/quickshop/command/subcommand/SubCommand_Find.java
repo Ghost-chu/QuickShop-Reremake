@@ -42,14 +42,14 @@ public class SubCommand_Find implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("Only player can run this command", sender));
             return;
         }
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-type-given", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
             return;
         }
 
@@ -72,7 +72,7 @@ public class SubCommand_Find implements CommandProcesser {
         try {
             c = future.get();
         } catch (Exception asyncErr) {
-            MsgUtil.sendMessage(sender,"Cannot execute the command, see console for details.");
+            MsgUtil.sendMessage(sender, "Cannot execute the command, see console for details.");
             plugin.getSentryErrorReporter().sendError(asyncErr, "Unknown errors");
             plugin.getSentryErrorReporter().ignoreThrow();
             asyncErr.printStackTrace();
@@ -103,27 +103,27 @@ public class SubCommand_Find implements CommandProcesser {
         }
 
         if (closest == null) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
             return;
         }
 
         final Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
         // Hack fix to make /qs find not used by /back
         plugin
-            .getBukkitAPIWrapper()
-            .teleportEntity(
-                p,
-                Util.lookAt(loc, lookat).add(0, -1.62, 0),
-                PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                .getBukkitAPIWrapper()
+                .teleportEntity(
+                        p,
+                        Util.lookAt(loc, lookat).add(0, -1.62, 0),
+                        PlayerTeleportEvent.TeleportCause.UNKNOWN);
         MsgUtil.sendMessage(p,
-            MsgUtil.getMessage(
-                "nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
+                MsgUtil.getMessage(
+                        "nearby-shop-this-way", sender, "" + (int) Math.floor(Math.sqrt(minDistanceSquared))));
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
 //TODO: This is stupid, need a better impl
 public class SyncTaskWatcher {
     @Getter

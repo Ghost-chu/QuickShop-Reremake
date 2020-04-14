@@ -160,7 +160,7 @@
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
-    "stack-price":"{0} per stack",
+    "stack-price": "{0} per stack",
     "unlimited": "Unlimited"
   },
   "controlpanel": {

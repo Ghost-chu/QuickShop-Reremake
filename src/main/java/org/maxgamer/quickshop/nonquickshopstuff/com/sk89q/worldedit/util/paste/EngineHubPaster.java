@@ -2,13 +2,14 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.paste;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 
 public class EngineHubPaster {
     /*
@@ -53,17 +54,17 @@ public class EngineHubPaster {
 
             URL url = HttpRequest.url("https://paste.enginehub.org/paste");
             String result =
-                HttpRequest.post(url)
-                    .bodyForm(form)
-                    .execute()
-                    .expectResponseCode(200)
-                    .returnContent()
-                    .asString("UTF-8")
-                    .trim();
+                    HttpRequest.post(url)
+                            .bodyForm(form)
+                            .execute()
+                            .expectResponseCode(200)
+                            .returnContent()
+                            .asString("UTF-8")
+                            .trim();
 
             Map<Object, Object> object =
-                GSON.fromJson(result, new TypeToken<Map<Object, Object>>() {
-                }.getType());
+                    GSON.fromJson(result, new TypeToken<Map<Object, Object>>() {
+                    }.getType());
             if (object != null) {
                 String urlString = String.valueOf(object.get("url"));
                 Matcher m = URL_PATTERN.matcher(urlString);

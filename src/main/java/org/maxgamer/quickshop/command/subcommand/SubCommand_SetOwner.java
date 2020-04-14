@@ -39,21 +39,21 @@ public class SubCommand_SetOwner implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("Only player can run this command", sender));
             return;
         }
 
         if (cmdArg.length < 1) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.no-owner-given", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-owner-given", sender));
             return;
         }
 
         final BlockIterator bIt = new BlockIterator((Player) sender, 10);
 
         if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
 
@@ -77,13 +77,13 @@ public class SubCommand_SetOwner implements CommandProcesser {
             return;
         }
 
-        MsgUtil.sendMessage(sender,MsgUtil.getMessage("not-looking-at-shop", sender));
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

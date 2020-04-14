@@ -21,14 +21,15 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
     private QuickShop plugin;
 
     private ItemMetaMatcher itemMetaMatcher;
+
     public QuickShopItemMatcherImpl(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"),this);
+        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
     }
 
     public QuickShopItemMatcherImpl() {
         this.plugin = QuickShop.getInstance();
-        itemMetaMatcher=new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"),this);
+        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
     }
 
     /**
@@ -146,20 +147,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
     private static class ItemMetaMatcher {
 
-        interface Matcher {
-
-            boolean match(ItemMeta meta1, ItemMeta meta2);
-
-        }
-
         private final List<Matcher> matcherList = new LinkedList<>();
-
-
-        private void addIfEnable(ConfigurationSection itemMatcherConfig, String path, Matcher matcher) {
-            if (itemMatcherConfig.getBoolean(path)) {
-                matcherList.add(matcher);
-            }
-        }
 
         public ItemMetaMatcher(@NotNull ConfigurationSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
 
@@ -489,7 +477,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 }
                 return itemMatcher.matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
             }));
-            if(!Util.getNMSVersion().equals("v1_13_R1")&&!Util.getNMSVersion().equals("v1_13_R2")){
+            if (!Util.getNMSVersion().equals("v1_13_R1") && !Util.getNMSVersion().equals("v1_13_R2")) {
                 addIfEnable(itemMatcherConfig, "custommodeldata", ((meta1, meta2) -> {
                     if (!meta1.hasCustomModelData()) {
                         return true;
@@ -519,6 +507,11 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
             }
         }
 
+        private void addIfEnable(ConfigurationSection itemMatcherConfig, String path, Matcher matcher) {
+            if (itemMatcherConfig.getBoolean(path)) {
+                matcherList.add(matcher);
+            }
+        }
 
         boolean matches(ItemStack requireStack, ItemStack givenStack) {
             if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
@@ -537,9 +530,15 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
             return true;
         }
 
-
         private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
             return (meta1.hashCode() == meta2.hashCode());
+        }
+
+
+        interface Matcher {
+
+            boolean match(ItemMeta meta1, ItemMeta meta2);
+
         }
 
 

@@ -17,13 +17,14 @@ public class CompatibilityManager {
      * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
-        this.registeredModules.forEach(module->module.toggle(player,status));
+        this.registeredModules.forEach(module -> module.toggle(player, status));
     }
 
-    public void register(@NotNull CompatibilityModule module){
+    public void register(@NotNull CompatibilityModule module) {
         registeredModules.add(module);
     }
-    public void unregister(@NotNull CompatibilityModule module){
+
+    public void unregister(@NotNull CompatibilityModule module) {
         registeredModules.remove(module);
     }
 }

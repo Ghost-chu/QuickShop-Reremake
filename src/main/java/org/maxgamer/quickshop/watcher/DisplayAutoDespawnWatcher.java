@@ -35,31 +35,31 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
         int range = plugin.getConfig().getInt("shop.display-despawn-range");
 
         plugin
-            .getShopManager()
-            .getLoadedShops()
-            .stream()
-            .filter(shop -> shop.getDisplay() != null)
-            .forEach(
-                shop -> {
-                    // Check the range has player?
-                    boolean anyPlayerInRegion =
-                        Bukkit.getOnlinePlayers().stream()
-                            .filter(player -> player.getWorld() == shop.getLocation().getWorld())
-                            .anyMatch(
-                                player -> player.getLocation().distance(shop.getLocation()) < range);
+                .getShopManager()
+                .getLoadedShops()
+                .stream()
+                .filter(shop -> shop.getDisplay() != null)
+                .forEach(
+                        shop -> {
+                            // Check the range has player?
+                            boolean anyPlayerInRegion =
+                                    Bukkit.getOnlinePlayers().stream()
+                                            .filter(player -> player.getWorld() == shop.getLocation().getWorld())
+                                            .anyMatch(
+                                                    player -> player.getLocation().distance(shop.getLocation()) < range);
 
-                    if (anyPlayerInRegion) {
-                        if (!shop.getDisplay().isSpawned()) {
-                            Util.debugLog(
-                                "Respawning the shop "
-                                    + shop
-                                    + " the display, cause it was despawned and a player close it");
-                            Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
-                        }
-                    } else if (shop.getDisplay().isSpawned()) {
-                        removeDisplayItemDelayed(shop);
-                    }
-                });
+                            if (anyPlayerInRegion) {
+                                if (!shop.getDisplay().isSpawned()) {
+                                    Util.debugLog(
+                                            "Respawning the shop "
+                                                    + shop
+                                                    + " the display, cause it was despawned and a player close it");
+                                    Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
+                                }
+                            } else if (shop.getDisplay().isSpawned()) {
+                                removeDisplayItemDelayed(shop);
+                            }
+                        });
     }
 
     public boolean removeDisplayItemDelayed(Shop shop) {

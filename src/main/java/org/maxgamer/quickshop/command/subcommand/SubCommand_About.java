@@ -22,8 +22,8 @@ package org.maxgamer.quickshop.command.subcommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -34,91 +34,91 @@ public class SubCommand_About implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         MsgUtil.sendMessage(sender,
-            ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
+                ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork());
         MsgUtil.sendMessage(sender,
-            ChatColor.AQUA
-                + "Ver "
-                + ChatColor.YELLOW
-                + ">> "
-                + ChatColor.GREEN
-                + QuickShop.getVersion());
+                ChatColor.AQUA
+                        + "Ver "
+                        + ChatColor.YELLOW
+                        + ">> "
+                        + ChatColor.GREEN
+                        + QuickShop.getVersion());
         if (QuickShop.getVersion().toUpperCase().contains("LTS")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.lts", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.lts", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("STABLE")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.stable", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.stable", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("QV")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.qualityverifyed", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.qualityverifyed", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("BETA")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("ALPHA")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("EARLY ACCESS")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         } else if (QuickShop.getVersion().toUpperCase().contains("SNAPSHOT")) {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA
-                    + "Release "
-                    + ChatColor.YELLOW
-                    + ">> "
-                    + ChatColor.GREEN
-                    + MsgUtil.getMessage("updatenotify.label.unstable", sender));
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         } else {
             MsgUtil.sendMessage(sender,
-                ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + "[Main Line]");
+                    ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + "[Main Line]");
         }
         MsgUtil.sendMessage(sender,
-            ChatColor.AQUA
-                + "Dev "
-                + ChatColor.YELLOW
-                + ">> "
-                + ChatColor.GREEN
-                + Util.list2String(QuickShop.instance.getDescription().getAuthors()));
-        MsgUtil.sendMessage(sender,ChatColor.GOLD + "Powered by Bukkit Common Studio");
-        MsgUtil.sendMessage(sender,ChatColor.RED + "Made with ❤");
+                ChatColor.AQUA
+                        + "Dev "
+                        + ChatColor.YELLOW
+                        + ">> "
+                        + ChatColor.GREEN
+                        + Util.list2String(QuickShop.instance.getDescription().getAuthors()));
+        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by Bukkit Common Studio");
+        MsgUtil.sendMessage(sender, ChatColor.RED + "Made with ❤");
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         return new ArrayList<>();
     }
 

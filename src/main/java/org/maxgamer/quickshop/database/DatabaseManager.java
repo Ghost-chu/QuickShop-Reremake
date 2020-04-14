@@ -60,7 +60,7 @@ public class DatabaseManager {
      * Queued database manager. Use queue to solve run SQL make server lagg issue.
      *
      * @param plugin plugin main class
-     * @param db database
+     * @param db     database
      */
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
         this.plugin = plugin;
@@ -73,12 +73,12 @@ public class DatabaseManager {
         }
         try {
             task =
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        plugin.getDatabaseManager().runTask();
-                    }
-                }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval")*20);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            plugin.getDatabaseManager().runTask();
+                        }
+                    }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
         } catch (IllegalPluginAccessException e) {
             Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
             plugin.getDatabaseManager().runTask();
@@ -90,14 +90,14 @@ public class DatabaseManager {
      */
     private void runTask() {
         try {
-            Connection connection=this.database.getConnection();
+            Connection connection = this.database.getConnection();
             //start our commit
             connection.setAutoCommit(false);
             while (true) {
                 if (!connection.isValid(3000)) {
                     warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
                     //connection isn't stable, let autocommit on
-                    connection=database.getConnection();
+                    connection = database.getConnection();
                     continue; // Waiting next crycle and hope it success reconnected.
                 }
 
@@ -117,7 +117,7 @@ public class DatabaseManager {
                                     + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
                 }
             }
-            if(!connection.getAutoCommit()) {
+            if (!connection.getAutoCommit()) {
                 connection.commit();
                 connection.setAutoCommit(true);
             }

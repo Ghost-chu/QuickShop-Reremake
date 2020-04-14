@@ -28,8 +28,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -44,9 +44,9 @@ public class SubCommand_Create implements CommandProcesser {
 
     @Override
     public void onCommand(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender,"This command can't be run by console");
+            MsgUtil.sendMessage(sender, "This command can't be run by console");
             return;
         }
 
@@ -54,7 +54,7 @@ public class SubCommand_Create implements CommandProcesser {
         final ItemStack item = p.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            MsgUtil.sendMessage(sender,MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
             return;
         }
 
@@ -88,29 +88,29 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             if (Util.getSecondHalf(b) != null
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("no-double-chests", sender));
+                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
                 return;
             }
 
             if (Util.isBlacklisted(item)
-                && !QuickShop.getPermissionManager()
-                .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(p,MsgUtil.getMessage("blacklisted-item", sender));
+                    && !QuickShop.getPermissionManager()
+                    .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("blacklisted-item", sender));
                 return;
             }
 
             // Send creation menu.
             plugin
-                .getShopManager()
-                .getActions()
-                .put(
-                    p.getUniqueId(),
-                    new Info(
-                        b.getLocation(),
-                        ShopAction.CREATE,
-                        p.getInventory().getItemInMainHand(),
-                        b.getRelative(p.getFacing().getOppositeFace())));
+                    .getShopManager()
+                    .getActions()
+                    .put(
+                            p.getUniqueId(),
+                            new Info(
+                                    b.getLocation(),
+                                    ShopAction.CREATE,
+                                    p.getInventory().getItemInMainHand(),
+                                    b.getRelative(p.getFacing().getOppositeFace())));
 
             if (cmdArg.length >= 1) {
                 plugin.getShopManager().handleChat(p, cmdArg[0]);
@@ -119,7 +119,7 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             MsgUtil.sendMessage(p,
-                MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
 
             return;
         }
@@ -128,7 +128,7 @@ public class SubCommand_Create implements CommandProcesser {
     @NotNull
     @Override
     public List<String> onTabComplete(
-        @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final ArrayList<String> list = new ArrayList<>();
 
         list.add(MsgUtil.getMessage("tabcomplete.price", sender));

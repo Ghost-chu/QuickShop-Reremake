@@ -19,6 +19,7 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net;
  */
 
 import com.google.common.io.Closer;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class HttpRequest implements Closeable {
      * Create a new HTTP request.
      *
      * @param method the method
-     * @param url the URL
+     * @param url    the URL
      */
     private HttpRequest(String method, URL url) {
         this.method = method;
@@ -76,7 +77,7 @@ public class HttpRequest implements Closeable {
      * Perform a request.
      *
      * @param method the method
-     * @param url the URL
+     * @param url    the URL
      * @return a new request object
      */
     public static HttpRequest request(String method, URL url) {
@@ -109,6 +110,31 @@ public class HttpRequest implements Closeable {
     }
 
     /**
+     * URL may contain spaces and other nasties that will cause a failure.
+     *
+     * @param existing the existing URL to transform
+     * @return the new URL, or old one if there was a failure
+     */
+    private static URL reformat(URL existing) {
+        try {
+            URL url = new URL(existing.toString());
+            URI uri =
+                    new URI(
+                            url.getProtocol(),
+                            url.getUserInfo(),
+                            url.getHost(),
+                            url.getPort(),
+                            url.getPath(),
+                            url.getQuery(),
+                            url.getRef());
+            url = uri.toURL();
+            return url;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return existing;
+        }
+    }
+
+    /**
      * Submit data.
      *
      * @param data the data
@@ -134,7 +160,7 @@ public class HttpRequest implements Closeable {
     /**
      * Add a header.
      *
-     * @param key the header key
+     * @param key   the header key
      * @param value the header value
      * @return this object
      */
@@ -147,7 +173,6 @@ public class HttpRequest implements Closeable {
         return this;
     }
 
-
     /**
      * Execute the request.
      *
@@ -159,7 +184,6 @@ public class HttpRequest implements Closeable {
     public HttpRequest execute() throws IOException {
         return execute(-1);
     }
-
 
     /**
      * Execute the request.
@@ -212,9 +236,9 @@ public class HttpRequest implements Closeable {
             }
 
             inputStream =
-                conn.getResponseCode() == HttpURLConnection.HTTP_OK
-                    ? conn.getInputStream()
-                    : conn.getErrorStream();
+                    conn.getResponseCode() == HttpURLConnection.HTTP_OK
+                            ? conn.getInputStream()
+                            : conn.getErrorStream();
 
             successful = true;
         } finally {
@@ -224,31 +248,6 @@ public class HttpRequest implements Closeable {
         }
 
         return this;
-    }
-
-    /**
-     * URL may contain spaces and other nasties that will cause a failure.
-     *
-     * @param existing the existing URL to transform
-     * @return the new URL, or old one if there was a failure
-     */
-    private static URL reformat(URL existing) {
-        try {
-            URL url = new URL(existing.toString());
-            URI uri =
-                new URI(
-                    url.getProtocol(),
-                    url.getUserInfo(),
-                    url.getHost(),
-                    url.getPort(),
-                    url.getPath(),
-                    url.getQuery(),
-                    url.getRef());
-            url = uri.toURL();
-            return url;
-        } catch (MalformedURLException | URISyntaxException e) {
-            return existing;
-        }
     }
 
     @Override
@@ -276,7 +275,7 @@ public class HttpRequest implements Closeable {
 
         close();
         throw new IOException(
-            "Did not get expected response code, got " + responseCode + " for " + url);
+                "Did not get expected response code, got " + responseCode + " for " + url);
     }
 
     /**
@@ -402,7 +401,7 @@ public class HttpRequest implements Closeable {
         /**
          * Add a key/value to the form.
          *
-         * @param key the key
+         * @param key   the key
          * @param value the value
          * @return this object
          */

@@ -29,16 +29,17 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
@@ -56,11 +57,11 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
         createFlags =
-            WorldGuardFlags.deserialize(
-                plugin.getConfig().getStringList("integration.worldguard.create"));
+                WorldGuardFlags.deserialize(
+                        plugin.getConfig().getStringList("integration.worldguard.create"));
         tradeFlags =
-            WorldGuardFlags.deserialize(
-                plugin.getConfig().getStringList("integration.worldguard.trade"));
+                WorldGuardFlags.deserialize(
+                        plugin.getConfig().getStringList("integration.worldguard.trade"));
     }
 
     @Override
@@ -91,15 +92,15 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
         boolean canBypass =
-            WorldGuard.getInstance()
-                .getPlatform()
-                .getSessionManager()
-                .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
+                WorldGuard.getInstance()
+                        .getPlatform()
+                        .getSessionManager()
+                        .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
         if (canBypass) {
             Util.debugLog(
-                "Player "
-                    + player.getName()
-                    + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+                    "Player "
+                            + player.getName()
+                            + " bypassing the protection checks, because player have bypass permission in WorldGuard");
             return true;
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -136,15 +137,15 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
         boolean canBypass =
-            WorldGuard.getInstance()
-                .getPlatform()
-                .getSessionManager()
-                .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
+                WorldGuard.getInstance()
+                        .getPlatform()
+                        .getSessionManager()
+                        .hasBypass(localPlayer, BukkitAdapter.adapt(location.getWorld()));
         if (canBypass) {
             Util.debugLog(
-                "Player "
-                    + player.getName()
-                    + " bypassing the protection checks, because player have bypass permission in WorldGuard");
+                    "Player "
+                            + player.getName()
+                            + " bypassing the protection checks, because player have bypass permission in WorldGuard");
             return true;
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();

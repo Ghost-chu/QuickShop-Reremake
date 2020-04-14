@@ -40,7 +40,7 @@ public class ShopCreateEvent extends QSEvent implements Cancellable {
     /**
      * Call when have a new shop was createing.
      *
-     * @param shop Target shop
+     * @param shop   Target shop
      * @param player The player creaing the shop
      */
     public ShopCreateEvent(@NotNull Shop shop, @NotNull Player player) {

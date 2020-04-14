@@ -12,8 +12,8 @@ import java.sql.SQLException;
 @ToString()
 public class DatabaseTask {
 
+    private static final Database database = QuickShop.getInstance().getDatabase();
     private String statement;
-    private static final Database database=QuickShop.getInstance().getDatabase();
     private Task task;
 
     public DatabaseTask(String statement, Task task) {
@@ -30,6 +30,7 @@ public class DatabaseTask {
             task.onFailed(e);
         }
     }
+
     public void run(@NonNull Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(statement)) {
             task.edit(ps);
