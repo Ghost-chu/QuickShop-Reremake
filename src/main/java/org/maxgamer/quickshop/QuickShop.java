@@ -1512,6 +1512,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 97);
             selectedVersion = 97;
         }
+        if (selectedVersion == 97) {
+            getConfig().set("shop.disable-quick-create", false);
+            getConfig().set("config-version", 98);
+            selectedVersion = 98;
+        }
 
         saveConfig();
         reloadConfig();
