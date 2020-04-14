@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public abstract class DisplayItem {
 
     protected static final QuickShop plugin = QuickShop.instance;
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = JsonUtil.getGson();
 
     protected final ItemStack originalItemStack;
 
