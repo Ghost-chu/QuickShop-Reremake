@@ -64,11 +64,10 @@ public class SubCommand_Buy implements CommandProcesser {
                     // shop.setSignText();
                     shop.update();
                     MsgUtil.sendMessage(sender,MsgUtil.getMessage("command.now-buying", sender, Util.getItemStackName(shop.getItem())));
-                    return;
                 } else {
                     MsgUtil.getMessage("not-managed-shop", sender);
-                    return;
                 }
+                return;
             }
         }
 
