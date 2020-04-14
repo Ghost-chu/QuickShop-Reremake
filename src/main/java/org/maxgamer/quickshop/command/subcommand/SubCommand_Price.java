@@ -85,14 +85,14 @@ public class SubCommand_Price implements CommandProcesser {
             if (price != 0 && price < minPrice) {
                 MsgUtil.sendMessage(p,
                         MsgUtil.getMessage(
-                                "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+                                "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : Double.toString(minPrice)));
                 return;
             }
         } else {
             if (price < minPrice) {
                 MsgUtil.sendMessage(p,
                         MsgUtil.getMessage(
-                                "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : "" + minPrice));
+                                "price-too-cheap", p, (format) ? MsgUtil.decimalFormat(minPrice) : Double.toString(minPrice)));
                 return;
             }
         }
@@ -104,7 +104,7 @@ public class SubCommand_Price implements CommandProcesser {
                     MsgUtil.getMessage(
                             "price-too-high",
                             p,
-                            (format) ? MsgUtil.decimalFormat(price_limit) : "" + price_limit));
+                            (format) ? MsgUtil.decimalFormat(price_limit) : Double.toString(price_limit)));
             return;
         }
 
