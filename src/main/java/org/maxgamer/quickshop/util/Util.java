@@ -292,7 +292,7 @@ public class Util {
             return yamlConfiguration.getItemStack("item");
         }
     }
-
+    @NotNull
     public static List<String> getDebugLogs() {
         lock.readLock().lock();
         List<String> strings = new ArrayList<>(debugLogs);
@@ -670,8 +670,7 @@ public class Util {
                 plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
                 continue;
             }
-            int size = Integer.parseInt(data[1]);
-            customStackSize.put(mat, size);
+            customStackSize.put(mat, Integer.parseInt(data[1]));
 
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
@@ -1305,7 +1304,7 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
-
+    //TODO: Need caching
     public static Class<?> getNMSClass(@Nullable String className) {
         if (className == null) {
             className = "MinecraftServer";
