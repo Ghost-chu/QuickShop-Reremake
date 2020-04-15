@@ -140,12 +140,12 @@ public class SentryErrorReporter {
 
     private String getPluginInfo() {
         StringBuilder buffer = new StringBuilder();
-        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin bPlugin : Bukkit.getPluginManager().getPlugins()) {
             buffer
                     .append("\t")
-                    .append(bplugin.getName())
+                    .append(bPlugin.getName())
                     .append("@")
-                    .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
                     .append("\n");
         }
         return buffer.toString();
