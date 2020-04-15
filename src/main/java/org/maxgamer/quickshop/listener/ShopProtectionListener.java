@@ -62,7 +62,7 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
 
-        for (int i = 0; i < e.blockList().size(); i++) {
+        for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
             Shop shop = getShopNature(b.getLocation(), true);
             if (shop == null) {
@@ -155,7 +155,7 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent e) {
 
-        for (int i = 0; i < e.blockList().size(); i++) {
+        for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
             final Shop shop = getShopNature(b.getLocation(), true);
 
