@@ -224,7 +224,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("update")
                         .hidden(true)
-                        .permission("quickshop.alert")
+                        .permission("quickshop.alerts")
                         .executor(new SubCommand_Update())
                         .build());
         registerCmd(

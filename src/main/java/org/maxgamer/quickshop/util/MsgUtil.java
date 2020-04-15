@@ -524,16 +524,12 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if ((sender instanceof Player && !sender.isOp())
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if ((sender instanceof Player)
+                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")
+                && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !sender.hasPermission("quickshop.other.edit"))
+                && (plugin.getConfig().getBoolean("sneak-to-control") && !((Player) sender).isSneaking())) {
+
             return;
-        }
-        if (plugin.getConfig().getBoolean("sneak-to-control")) {
-            if (sender instanceof Player) {
-                if (!((Player) sender).isSneaking()) { // sneaking
-                    return;
-                }
-            }
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
@@ -744,8 +740,7 @@ public class MsgUtil {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp()
-                            || QuickShop.getPermissionManager().hasPermission(player, "quickshop.alert")) {
+                    if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
                         player.sendMessage(message);
                     }
                 }
