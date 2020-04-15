@@ -77,7 +77,7 @@ public class UpdateWatcher implements Listener {
                                     .forEach(
                                             player -> {
                                                 if (QuickShop.getPermissionManager()
-                                                        .hasPermission(player, "quickshop.alert")) {
+                                                        .hasPermission(player, "quickshop.alerts")) {
                                                     List<String> notifys =
                                                             MsgUtil.getI18nFile().getStringList("updatenotify.list");
                                                     Random random = new Random();
@@ -144,7 +144,7 @@ public class UpdateWatcher implements Listener {
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
         if (!hasNewUpdate
-                || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
+                || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts")) {
             return;
         }
         new BukkitRunnable() {
