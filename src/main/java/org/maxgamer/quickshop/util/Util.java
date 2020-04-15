@@ -228,6 +228,8 @@ public class Util {
         return customStackSize.getOrDefault(material, material.getMaxStackSize());
     }
 
+    static Yaml yaml = null;
+    static DumperOptions yamlOptions = null;
     /**
      * Covert YAML string to ItemStack.
      *
@@ -237,10 +239,12 @@ public class Util {
      */
     @Nullable
     public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
-        DumperOptions yamlOptions = new DumperOptions();
-        yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yamlOptions.setIndent(2);
-        Yaml yaml = new Yaml(yamlOptions);
+        if(yaml == null){
+            yamlOptions = new DumperOptions();
+            yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            yamlOptions.setIndent(2);
+            yaml = new Yaml(yamlOptions); //Caching it!
+        }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         Map<Object, Object> root = yaml.load(config);
         //noinspection unchecked
@@ -361,6 +365,7 @@ public class Util {
      * @param blockFace given blockFace
      * @return the right side for given blockFace, UP and DOWN will return itself
      */
+    @Deprecated
     public static BlockFace getRightSide(@NonNull BlockFace blockFace) {
         switch (blockFace) {
             case EAST:
