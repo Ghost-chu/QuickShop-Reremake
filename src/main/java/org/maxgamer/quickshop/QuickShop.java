@@ -737,8 +737,6 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering UpdateWatcher...");
         UpdateWatcher.init();
-        getLogger().info("Registering BStats Mertics...");
-        submitMeritcs();
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
@@ -773,6 +771,13 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Throwable ignore) {
         }
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                getLogger().info("Registering BStats Mertics...");
+                submitMeritcs();
+            }
+        }.runTask(this);
     }
 
     private void registerIntegrations() {
@@ -887,12 +892,18 @@ public class QuickShop extends JavaPlugin {
             }
             String shop_find_distance = getConfig().getString("shop.find-distance");
             String economyType = Economy.getNowUsing().name();
+            if(getEconomy() != null){
+                economyType = this.getEconomy().getName();
+            }
             String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
             String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             String disableDebugLoggger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-
+            String databaseType = this.getDatabase().getCore().getName();
+            String displayType = DisplayItem.getNowUsing().name();
+            String itemMatcherType = this.getItemMatcher().getName();
+            String useStackItem = String.valueOf(this.isAllowStack());
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -901,12 +912,17 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
             metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
             metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
-            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> economyType));
+            String finalEconomyType = economyType;
+            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> useDisplayAutoDespawn));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
             metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLoggger));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type",  ()->databaseType));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type",  ()->displayType));
+            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type",  ()->itemMatcherType));
+            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item",  ()->useStackItem));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
