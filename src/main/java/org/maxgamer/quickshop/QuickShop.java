@@ -391,7 +391,7 @@ public class QuickShop extends JavaPlugin {
                     if (getConfig().getDouble("tax", 0) > 0) {
                         getLogger().info("Checking the tax account infos...");
                         String taxAccount = getConfig().getString("tax-account", "tax");
-                        OfflinePlayer tax = Bukkit.getOfflinePlayer(taxAccount);
+                        OfflinePlayer tax = PlayerUtil.getOfflinePlayer(taxAccount);
                         if (!tax.hasPlayedBefore()) {
                             Economy_Vault vault = (Economy_Vault) core;
                             if (vault.isValid()) {
@@ -1516,6 +1516,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.disable-quick-create", false);
             getConfig().set("config-version", 98);
             selectedVersion = 98;
+        }
+        if (selectedVersion == 98) {
+            getConfig().set("work-type", 1);
+            getConfig().set("config-version", 99);
+            selectedVersion = 99;
         }
 
         saveConfig();
