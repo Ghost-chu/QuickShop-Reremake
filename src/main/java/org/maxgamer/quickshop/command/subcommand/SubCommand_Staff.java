@@ -143,19 +143,19 @@ public class SubCommand_Staff implements CommandProcesser {
             if (cmdArg.length == 1) {
                 final String prefix = cmdArg[0].toLowerCase();
 
-                if ("add".startsWith(prefix) || "add".equals(prefix)) {
+                if ("add".startsWith(prefix)) {
                     tabList.add("add");
                 }
 
-                if ("del".startsWith(prefix) || "del".equals(prefix)) {
+                if ("del".startsWith(prefix)) {
                     tabList.add("del");
                 }
 
-                if ("list".startsWith(prefix) || "list".equals(prefix)) {
+                if ("list".startsWith(prefix)) {
                     tabList.add("list");
                 }
 
-                if ("clear".startsWith(prefix) || "clear".equals(prefix)) {
+                if ("clear".startsWith(prefix)) {
                     tabList.add("clear");
                 }
             } else {
