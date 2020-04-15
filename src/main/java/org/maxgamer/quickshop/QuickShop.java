@@ -899,7 +899,7 @@ public class QuickShop extends JavaPlugin {
             String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
-            String disableDebugLoggger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
+            String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
             String databaseType = this.getDatabase().getCore().getName();
             String displayType = DisplayItem.getNowUsing().name();
             String itemMatcherType = this.getItemMatcher().getName();
@@ -918,7 +918,7 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLoggger));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLogger));
             metrics.addCustomChart(new Metrics.SimplePie("database_type",  ()->databaseType));
             metrics.addCustomChart(new Metrics.SimplePie("display_type",  ()->displayType));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type",  ()->itemMatcherType));
