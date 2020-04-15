@@ -365,7 +365,6 @@ public class Util {
      * @param blockFace given blockFace
      * @return the right side for given blockFace, UP and DOWN will return itself
      */
-    @Deprecated
     public static BlockFace getRightSide(@NonNull BlockFace blockFace) {
         switch (blockFace) {
             case EAST:
