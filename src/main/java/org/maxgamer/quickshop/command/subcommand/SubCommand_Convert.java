@@ -55,7 +55,6 @@ public class SubCommand_Convert implements CommandProcesser {
             boolean useSSL = dbCfg.getBoolean("usessl");
             DatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             Database databaseManager = new Database(dbCore);
-            DatabaseHelper helper = new DatabaseHelper(plugin, databaseManager);
             sender.sendMessage(ChatColor.GREEN + "Converting...");
             this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
