@@ -80,7 +80,7 @@ public class InventoryPreview implements Listener {
             this.itemStack.setItemMeta(itemMeta);
         }
     }
-
+    @Deprecated
     public static boolean isPreviewItem(@Nullable ItemStack stack) {
         if (stack == null) {
             return false;
