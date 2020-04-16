@@ -287,7 +287,7 @@ public class ContainerShop implements Shop {
 
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
-            Util.debugLog("Target item not spawned, spawning...");
+            Util.debugLog("Target item not spawned, spawning for shop "+this.getLocation());
             this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
