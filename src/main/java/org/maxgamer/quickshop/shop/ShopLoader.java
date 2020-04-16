@@ -61,9 +61,9 @@ public class ShopLoader {
     private int totalLoaded = 0;
 
     /* This may contains broken shop, must use null check before load it. */
-    private List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
+    private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
 
-    private List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
+    private final List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
 
     /**
      * The shop load allow plugin load shops fast and simply.

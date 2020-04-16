@@ -29,7 +29,7 @@ import org.maxgamer.quickshop.shop.ShopType;
 
 @AllArgsConstructor
 public class InternalListener implements Listener {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {

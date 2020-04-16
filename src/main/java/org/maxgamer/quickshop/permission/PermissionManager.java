@@ -27,9 +27,9 @@ import org.maxgamer.quickshop.util.Util;
 
 @Getter
 public class PermissionManager {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
-    private PermissionProvider provider;
+    private final PermissionProvider provider;
 
     /**
      * The manager to call permission providers

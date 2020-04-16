@@ -45,7 +45,7 @@ public class MojangAPI {
 
     final Gson gson = JsonUtil.getGson();
     
-    private QuickShop plugin;
+    private final QuickShop plugin;
     public MojangAPI (@NotNull QuickShop plugin){
         this.plugin = plugin;
     }

@@ -65,9 +65,9 @@ public class ShopManager {
 
     private boolean useFastShopSearchAlgorithm = false;
 
-    private UUID cacheTaxAccount;
+    private final UUID cacheTaxAccount;
 
-    private PriceLimiter priceLimiter;
+    private final PriceLimiter priceLimiter;
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -697,7 +697,7 @@ public class ShopManager {
             }else{
                 price = Double.parseDouble(message);
                    String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
-                   String[] processedDouble = strFormat.split(".");
+                   String[] processedDouble = strFormat.split("\\.");
                     if (processedDouble.length > 1) {
                         int maximumDigitsLimit = plugin.getConfig().getInt("maximum-digits-in-price", -1);
                         if (processedDouble[1].length() > maximumDigitsLimit && maximumDigitsLimit != -1) {

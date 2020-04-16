@@ -37,13 +37,13 @@ public class Info {
 
     private ItemStack item;
 
-    private Block last;
+    private final Block last;
 
-    private Location loc;
+    private final Location loc;
 
     private Shop shop;
 
-    private long lastChangedAt;
+    private final long lastChangedAt;
 
     public Info(
             @NotNull Location loc,

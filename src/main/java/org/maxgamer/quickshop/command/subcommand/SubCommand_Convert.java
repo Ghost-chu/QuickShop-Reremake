@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 @AllArgsConstructor
 public class SubCommand_Convert implements CommandProcesser {
-    private QuickShop plugin;
+    private final QuickShop plugin;
     /**
      * Accept the onCommand, it will call when have Command Event cmdArg not contains
      * CommandContainer's prefix. E.g: Register the CommandContainer with Prefix: unlimited
@@ -59,7 +59,6 @@ public class SubCommand_Convert implements CommandProcesser {
             sender.sendMessage(ChatColor.GREEN + "Converting...");
             this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
-            return;
 
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
             if (plugin.getDatabase().getCore() instanceof SQLiteCore) {
@@ -71,11 +70,9 @@ public class SubCommand_Convert implements CommandProcesser {
             sender.sendMessage(ChatColor.GREEN + "Converting...");
             this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
-            return;
 
         } else {
             sender.sendMessage(ChatColor.RED + "Wrong type! Only can be mysql or sqlite");
-            return;
         }
     }
 
