@@ -29,9 +29,12 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.UUID;
 
 public class Economy_Mixed implements EconomyCore {
-    final EconomyCore core;
+    private final EconomyCore core;
+    private final QuickShop plugin;
 
-    public Economy_Mixed() {
+    public Economy_Mixed(@NotNull QuickShop plugin)
+    {
+        this.plugin = plugin;
         core = new Economy_Vault();
     }
 
@@ -99,7 +102,7 @@ public class Economy_Mixed implements EconomyCore {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.instance;
+        return this.plugin;
     }
 
 }
