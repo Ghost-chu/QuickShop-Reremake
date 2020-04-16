@@ -1087,6 +1087,8 @@ public class ContainerShop implements Shop {
             }
             if (createBackup) {
                 this.delete();
+            }else{
+                Util.debugLog("Failed to create backup, shop at "+this.toString()+" won't to delete.");
             }
         }
     }
