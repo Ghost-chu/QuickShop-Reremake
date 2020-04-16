@@ -39,143 +39,144 @@ import java.util.Set;
 
 @Data
 public class CommandManager implements TabCompleter, CommandExecutor {
-    private Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
+    private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
+    private final QuickShop plugin;
+    private final CommandContainer rootContainer;
 
-    private CommandContainer rootContainer =
-            CommandContainer.builder()
-                    .prefix(null)
-                    .permission(null)
-                    .executor(new SubCommand_ROOT())
-                    .build();
-
-    public CommandManager() {
+    public CommandManager(QuickShop plugin) {
+        this.plugin = plugin;
+        this.rootContainer = CommandContainer.builder()
+                .prefix(null)
+                .permission(null)
+                .executor(new SubCommand_ROOT(plugin))
+                .build();
         registerCmd(
                 CommandContainer.builder()
                         .prefix("help")
                         .permission(null)
-                        .executor(new SubCommand_Help())
+                        .executor(new SubCommand_Help(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("unlimited")
                         .permission("quickshop.unlimited")
-                        .executor(new SubCommand_Unlimited())
+                        .executor(new SubCommand_Unlimited(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentunlimited")
                         .hidden(true)
                         .permission("quickshop.unlimited")
-                        .executor(new SubCommand_SilentUnlimited())
+                        .executor(new SubCommand_SilentUnlimited(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("slientunlimited")
                         .hidden(true)
                         .permission("quickshop.unlimited")
-                        .executor(new SubCommand_SilentUnlimited())
+                        .executor(new SubCommand_SilentUnlimited(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("setowner")
                         .permission("quickshop.setowner")
-                        .executor(new SubCommand_SetOwner())
+                        .executor(new SubCommand_SetOwner(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("owner")
                         .hidden(true)
                         .permission("quickshop.setowner")
-                        .executor(new SubCommand_SetOwner())
+                        .executor(new SubCommand_SetOwner(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("amount")
                         .permission(null)
-                        .executor(new SubCommand_Amount())
+                        .executor(new SubCommand_Amount(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("buy")
                         .permission("quickshop.create.buy")
-                        .executor(new SubCommand_Buy())
+                        .executor(new SubCommand_Buy(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("sell")
                         .permission("quickshop.create.sell")
-                        .executor(new SubCommand_Sell())
+                        .executor(new SubCommand_Sell(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentbuy")
                         .hidden(true)
                         .permission("quickshop.create.buy")
-                        .executor(new SubCommand_SilentBuy())
+                        .executor(new SubCommand_SilentBuy(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentsell")
                         .hidden(true)
                         .permission("quickshop.create.sell")
-                        .executor(new SubCommand_SilentSell())
+                        .executor(new SubCommand_SilentSell(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("price")
                         .permission("quickshop.create.changeprice")
-                        .executor(new SubCommand_Price())
+                        .executor(new SubCommand_Price(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("remove")
                         .permission(null)
-                        .executor(new SubCommand_Remove())
+                        .executor(new SubCommand_Remove(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentremove")
                         .hidden(true)
                         .permission(null)
-                        .executor(new SubCommand_SilentRemove())
+                        .executor(new SubCommand_SilentRemove(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("empty")
                         .permission("quickshop.empty")
-                        .executor(new SubCommand_Empty())
+                        .executor(new SubCommand_Empty(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("refill")
                         .permission("quickshop.refill")
-                        .executor(new SubCommand_Refill())
+                        .executor(new SubCommand_Refill(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentempty")
                         .hidden(true)
                         .permission("quickshop.empty")
-                        .executor(new SubCommand_SilentEmpty())
+                        .executor(new SubCommand_SilentEmpty(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("silentpreview")
                         .hidden(true)
                         .permission("quickshop.preview")
-                        .executor(new SubCommand_SilentPreview())
+                        .executor(new SubCommand_SilentPreview(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("clean")
                         .permission("quickshop.clean")
-                        .executor(new SubCommand_Clean())
+                        .executor(new SubCommand_Clean(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("reload")
                         .permission("quickshop.reload")
-                        .executor(new SubCommand_Reload())
+                        .executor(new SubCommand_Reload(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -187,86 +188,86 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("debug")
                         .permission("quickshop.debug")
-                        .executor(new SubCommand_Debug())
+                        .executor(new SubCommand_Debug(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("fetchmessage")
                         .permission("quickshop.fetchmessage")
-                        .executor(new SubCommand_FetchMessage())
+                        .executor(new SubCommand_FetchMessage(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("info")
                         .permission("quickshop.info")
-                        .executor(new SubCommand_Info())
+                        .executor(new SubCommand_Info(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("paste")
                         .permission("quickshop.paste")
-                        .executor(new SubCommand_Paste())
+                        .executor(new SubCommand_Paste(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("staff")
                         .permission("quickshop.staff")
-                        .executor(new SubCommand_Staff())
+                        .executor(new SubCommand_Staff(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("create")
                         .permission("quickshop.create.cmd")
                         .permission("quickshop.create.sell")
-                        .executor(new SubCommand_Create())
+                        .executor(new SubCommand_Create(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("update")
                         .hidden(true)
                         .permission("quickshop.alerts")
-                        .executor(new SubCommand_Update())
+                        .executor(new SubCommand_Update(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("find")
                         .permission("quickshop.find")
-                        .executor(new SubCommand_Find())
+                        .executor(new SubCommand_Find(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("supercreate")
                         .permission("quickshop.create.admin")
                         .permission("quickshop.create.sell")
-                        .executor(new SubCommand_SuperCreate())
+                        .executor(new SubCommand_SuperCreate(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("cleanghost")
                         .permission("quickshop.cleanghost")
                         .hidden(true)
-                        .executor(new SubCommand_CleanGhost())
+                        .executor(new SubCommand_CleanGhost(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("reset")
                         .hidden(true)
                         .permission("quickshop.reset")
-                        .executor(new SubCommand_Reset())
+                        .executor(new SubCommand_Reset(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("recovery")
                         .hidden(true)
                         .permission("quickshop.recovery")
-                        .executor(new SubCommand_Recovery())
+                        .executor(new SubCommand_Recovery(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("export")
                         .hidden(true)
                         .permission("quickshop.export")
-                        .executor(new SubCommand_Export())
+                        .executor(new SubCommand_Export(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()

@@ -40,14 +40,15 @@ import java.util.UUID;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Getter
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
 
-    public Economy_Vault() {
+    public Economy_Vault(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
         setupEconomy();
     }
 
@@ -144,7 +145,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return "Error";
         }
         try {
-            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
+            return plugin.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
             return String.valueOf('$' + balance);
         }

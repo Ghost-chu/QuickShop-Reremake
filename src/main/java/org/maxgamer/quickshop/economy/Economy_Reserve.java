@@ -41,14 +41,15 @@ public class Economy_Reserve implements EconomyCore {
     private final String errorMsg =
             "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Getter
     @Setter
     @Nullable
     private EconomyAPI reserve = null;
 
-    public Economy_Reserve() {
+    public Economy_Reserve(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
         setup();
     }
 
