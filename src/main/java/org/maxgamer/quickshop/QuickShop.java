@@ -385,7 +385,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
+                    bootError = new BootError(this.getLogger(),"Can't load the Economy provider, invaild value in config.yml.");
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -429,7 +429,7 @@ public class QuickShop extends JavaPlugin {
                 // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
-                this.economy = new Economy(ServiceInjector.getEconomyCore(core));
+                this.economy = new Economy(this,ServiceInjector.getEconomyCore(core));
                 return true;
             }
         } catch (Exception e) {
@@ -572,7 +572,7 @@ public class QuickShop extends JavaPlugin {
         try {
             new RuntimeCheck(this);
         } catch (RuntimeException e) {
-            bootError = new BootError(e.getMessage());
+            bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
@@ -830,10 +830,10 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                dbCore = new MySQLCore(this,Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
-                dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
+                dbCore = new SQLiteCore(this,new File(this.getDataFolder(), "shops.db"));
             }
             this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date

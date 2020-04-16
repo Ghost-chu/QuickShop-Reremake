@@ -182,7 +182,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 CommandContainer.builder()
                         .prefix("about")
                         .permission(null)
-                        .executor(new SubCommand_About())
+                        .executor(new SubCommand_About(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()
@@ -274,7 +274,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         .prefix("convert")
                         .hidden(true)
                         .permission("quickshop.convert")
-                        .executor(new SubCommand_Convert())
+                        .executor(new SubCommand_Convert(plugin))
                         .build());
     }
 
@@ -292,13 +292,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
-        if (QuickShop.instance.getBootError() != null && !cmdArg[0].equalsIgnoreCase("paste")) {
-            QuickShop.instance.getBootError().printErrors(sender);
+        if (plugin.getBootError() != null && !cmdArg[0].equalsIgnoreCase("paste")) {
+            plugin.getBootError().printErrors(sender);
             return true;
         }
 
         if (sender instanceof Player) {
-            if (QuickShop.instance.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+            if (plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
                 Player player = (Player) sender;
                 ((Player) sender)
                         .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
@@ -358,11 +358,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         // No args, it shouldn't happend
-        if (QuickShop.instance.getBootError() != null) {
+        if (plugin.getBootError() != null) {
             return null;
         }
         if (sender instanceof Player) {
-            if (QuickShop.instance.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+            if (plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
                 Player player = (Player) sender;
                 ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
             }

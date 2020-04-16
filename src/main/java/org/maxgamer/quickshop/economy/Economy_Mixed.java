@@ -35,7 +35,7 @@ public class Economy_Mixed implements EconomyCore {
     public Economy_Mixed(@NotNull QuickShop plugin)
     {
         this.plugin = plugin;
-        core = new Economy_Vault();
+        core = new Economy_Vault(plugin);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Economy_Mixed implements EconomyCore {
         Bukkit.dispatchCommand(
                 Bukkit.getConsoleSender(),
                 MsgUtil.fillArgs(
-                        QuickShop.instance.getConfig().getString("mixedeconomy.deposit"),
+                        plugin.getConfig().getString("mixedeconomy.deposit"),
                         Bukkit.getOfflinePlayer(name).getName(),
                         String.valueOf(amount)));
         return true;
@@ -84,7 +84,7 @@ public class Economy_Mixed implements EconomyCore {
         Bukkit.dispatchCommand(
                 Bukkit.getConsoleSender(),
                 MsgUtil.fillArgs(
-                        QuickShop.instance.getConfig().getString("mixedeconomy.withdraw"),
+                        plugin.getConfig().getString("mixedeconomy.withdraw"),
                         Bukkit.getOfflinePlayer(name).getName(),
                         String.valueOf(amount)));
         return true;

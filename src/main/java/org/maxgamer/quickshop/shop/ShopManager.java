@@ -817,7 +817,7 @@ public class ShopManager {
                 info.getItem().setAmount(1);
             }
 
-            ContainerShop shop = new ContainerShop(info.getLocation(), CalculateUtil.multiply(price, info.getItem().getAmount()), info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
+            ContainerShop shop = new ContainerShop(plugin,info.getLocation(), CalculateUtil.multiply(price, info.getItem().getAmount()), info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
             if (Util.fireCancellableEvent(e)) {
