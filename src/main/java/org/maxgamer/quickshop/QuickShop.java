@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop;
 
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -1078,9 +1079,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("lockette.displayname", null);
             getConfig().set("float", null);
             getConfig().set("lockette.enable", true);
-            ArrayList<String> blackListWorld = new ArrayList<>();
-            blackListWorld.add("disabled_world_name");
-            getConfig().set("shop.blacklist-world", blackListWorld);
+            getConfig().set("shop.blacklist-world", Lists.newArrayList("disabled_world_name"));
             getConfig().set("config-version", 24);
             selectedVersion = 24;
         }
@@ -1299,9 +1298,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 68;
         }
         if (selectedVersion == 68) {
-            ArrayList<String> temp = new ArrayList<>();
-            temp.add("SoulBound");
-            getConfig().set("shop.blacklist-lores", temp);
+            getConfig().set("shop.blacklist-lores", Lists.newArrayList("SoulBound"));
             getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
@@ -1521,7 +1518,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", new ArrayList<>());
+            getConfig().set("custom-item-stacksize", new ArrayList<>(1));
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }

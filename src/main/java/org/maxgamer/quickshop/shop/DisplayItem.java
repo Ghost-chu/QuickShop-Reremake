@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.bukkit.Location;
@@ -30,8 +31,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
-
-import java.util.ArrayList;
 
 /**
  * @author Netherfoam A display item, that spawns a block above the chest and cannot be interacted
@@ -190,14 +189,9 @@ public abstract class DisplayItem {
         } else {
             iMeta.setDisplayName(null);
         }
-        java.util.List<String> lore = new ArrayList<>();
         ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);
         String protectFlag = gson.toJson(shopProtectionFlag);
-        for (int i = 0; i < 21; i++) {
-            lore.add(
-                    protectFlag); // Create 20 lines lore to make sure no stupid plugin accident remove mark.
-        }
-        iMeta.setLore(lore);
+        iMeta.setLore(Lists.newArrayList(protectFlag));
         itemStack.setItemMeta(iMeta);
         return itemStack;
     }
