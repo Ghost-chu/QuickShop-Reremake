@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -28,15 +29,15 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@AllArgsConstructor
 public class SubCommand_ROOT implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        new SubCommand_Help().onCommand(sender, commandLabel, cmdArg);
+        new SubCommand_Help(plugin).onCommand(sender, commandLabel, cmdArg);
     }
 
     @NotNull
