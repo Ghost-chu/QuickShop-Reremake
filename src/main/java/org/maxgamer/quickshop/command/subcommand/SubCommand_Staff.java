@@ -46,7 +46,6 @@ public class SubCommand_Staff implements CommandProcesser {
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        Util.debugLog(Util.array2String(cmdArg));
         if (!(sender instanceof Player)) {
             MsgUtil.sendMessage(sender, "Only player can execute this command.");
             return;
