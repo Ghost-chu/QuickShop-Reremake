@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class LocationOf {
+public class LocationOf {
 
     @NotNull
     private static final Pattern PATTERN =

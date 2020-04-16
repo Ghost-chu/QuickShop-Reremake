@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
 public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements GameLanguage {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     public BukkitGameLanguageImpl(@NotNull QuickShop plugin) {
         super(plugin);

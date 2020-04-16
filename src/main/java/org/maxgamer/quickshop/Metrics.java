@@ -79,7 +79,7 @@ public class Metrics {
     private final List<CustomChart> charts = new ArrayList<>();
 
     // Is bStats enabled on this server?
-    private boolean enabled;
+    private final boolean enabled;
 
     private QuickShop quickShop;
 

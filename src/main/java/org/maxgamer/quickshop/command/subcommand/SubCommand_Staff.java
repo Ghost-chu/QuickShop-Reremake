@@ -128,7 +128,6 @@ public class SubCommand_Staff implements CommandProcesser {
         }
         if (!hitShop) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-            return;
         }
     }
 

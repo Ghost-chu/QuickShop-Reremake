@@ -50,11 +50,11 @@ public class InventoryPreview implements Listener {
     @Nullable
     private Inventory inventory;
 
-    private ItemStack itemStack;
+    private final ItemStack itemStack;
 
-    private Player player;
+    private final Player player;
 
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Create a preview item GUI for a player.

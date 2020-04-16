@@ -13,7 +13,7 @@ import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class InternalGameLanguageImpl implements GameLanguage {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     @Override
     public @NotNull String getName() {

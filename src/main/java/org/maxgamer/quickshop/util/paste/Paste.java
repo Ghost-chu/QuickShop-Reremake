@@ -48,7 +48,7 @@ import java.util.Objects;
  */
 @AllArgsConstructor
 public class Paste {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Create a server infomation paste

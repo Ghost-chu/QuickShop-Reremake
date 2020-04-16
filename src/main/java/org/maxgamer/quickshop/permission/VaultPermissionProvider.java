@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Deprecated
 public class VaultPermissionProvider implements PermissionProvider {
-    private Permission api;
+    private final Permission api;
 
     @Deprecated
     public VaultPermissionProvider() {

@@ -34,7 +34,7 @@ public class Economy implements EconomyCore {
     @Setter
     @NotNull
     private EconomyCore core;
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     public Economy(@NotNull QuickShop plugin,@NotNull EconomyCore core) {
         this.plugin = plugin;

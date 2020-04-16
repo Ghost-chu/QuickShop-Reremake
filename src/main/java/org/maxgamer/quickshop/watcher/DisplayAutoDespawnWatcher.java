@@ -28,7 +28,7 @@ import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     @Override
     public void run() {
