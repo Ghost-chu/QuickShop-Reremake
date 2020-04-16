@@ -29,7 +29,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class SubCommand_SilentRemove implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 4) {
-            Util.debugLog("Exception on command, cancel.");
             return;
         }
 
