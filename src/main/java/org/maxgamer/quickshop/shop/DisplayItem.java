@@ -54,7 +54,7 @@ public abstract class DisplayItem {
     protected DisplayItem(Shop shop) {
         this.shop = shop;
         this.originalItemStack = shop.getItem().clone();
-        this.originalItemStack.setAmount(1);
+        //this.originalItemStack.setAmount(1);
     }
 
 
