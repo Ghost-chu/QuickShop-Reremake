@@ -71,8 +71,10 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * The active instance of QuickShop
+     * @Deprecated You shouldn't use this if you really need it.
      */
     @Getter
+    @Deprecated
     public static QuickShop instance;
 
     /**
@@ -386,7 +388,7 @@ public class QuickShop extends JavaPlugin {
                     bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
                     return false;
                 case VAULT:
-                    core = new Economy_Vault();
+                    core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
                         getLogger().info("Checking the tax account infos...");
@@ -410,7 +412,7 @@ public class QuickShop extends JavaPlugin {
                     }
                     break;
                 case RESERVE:
-                    core = new Economy_Reserve();
+                    core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
                 default:
@@ -558,7 +560,7 @@ public class QuickShop extends JavaPlugin {
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
-        commandManager = new CommandManager();
+        commandManager = new CommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
