@@ -50,9 +50,6 @@ import java.util.logging.Logger;
  * Auto report errors to qs's sentry.
  */
 public class SentryErrorReporter {
-    private final String dsn =
-            "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
-                    + "stacktrace.app.packages=org.maxgamer.quickshop";
 
     private final List<String> reported = new ArrayList<>(5);
     private final List<Class<?>> ignoredException = new ArrayList<>(8);
@@ -75,6 +72,8 @@ public class SentryErrorReporter {
             this.plugin = plugin;
             // sentryClient = Sentry.init(dsn);
             Util.debugLog("Loading SentryErrorReporter");
+            String dsn = "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
+                    + "stacktrace.app.packages=org.maxgamer.quickshop";
             sentryClient = SentryClientFactory.sentryClient(dsn);
             context = sentryClient.getContext();
             Util.debugLog("Setting basic report data...");

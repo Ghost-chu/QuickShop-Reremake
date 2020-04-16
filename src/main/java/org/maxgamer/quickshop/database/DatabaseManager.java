@@ -54,7 +54,7 @@ public class DatabaseManager {
     @Nullable
     private BukkitTask task;
 
-    private boolean useQueue;
+    private final boolean useQueue;
 
     /**
      * Queued database manager. Use queue to solve run SQL make server lagg issue.

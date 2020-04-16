@@ -10,7 +10,7 @@ import org.maxgamer.quickshop.shop.Shop;
 
 @AllArgsConstructor
 public class DisplayItemAPI {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Checks is a display item

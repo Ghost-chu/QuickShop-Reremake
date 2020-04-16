@@ -91,6 +91,8 @@ public class ContainerShop implements Shop {
         this.price = s.price;
         this.isLoaded = s.isLoaded;
         this.lastChangedAt = System.currentTimeMillis();
+        this.isDeleted = s.isDeleted;
+        this.createBackup = s.createBackup;
     }
 
     /**

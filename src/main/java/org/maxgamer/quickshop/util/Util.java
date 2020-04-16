@@ -74,8 +74,8 @@ public class Util {
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static List<String> debugLogs = new LinkedList<>();
-    private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final List<String> debugLogs = new LinkedList<>();
+    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private static boolean devMode = false;
     private static QuickShop plugin;
     private static Object serverInstance;

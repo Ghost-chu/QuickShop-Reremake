@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public final class StringOf {
+public class StringOf {
 
     @NotNull
     private final Location location;

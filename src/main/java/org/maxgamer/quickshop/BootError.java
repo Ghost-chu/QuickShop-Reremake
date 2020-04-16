@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 @ToString
 public class BootError {
 
-    private String[] errors;
+    private final String[] errors;
 
     public BootError(@NotNull Logger logger, @NotNull String... errors) {
         this.errors = errors;

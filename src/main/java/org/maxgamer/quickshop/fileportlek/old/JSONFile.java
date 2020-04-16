@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public final class JSONFile extends FileEnvelope {
+public class JSONFile extends FileEnvelope {
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath, boolean loadDefault) {
         super(plugin, file, resourcePath.endsWith(".json") ? resourcePath : resourcePath + ".json", loadDefault);

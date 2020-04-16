@@ -18,9 +18,9 @@ import java.util.*;
 
 @AllArgsConstructor
 public class QuickShopItemMatcherImpl implements ItemMatcher {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
-    private ItemMetaMatcher itemMetaMatcher;
+    private final ItemMetaMatcher itemMetaMatcher;
 
     public QuickShopItemMatcherImpl(@NotNull QuickShop plugin) {
         this.plugin = plugin;

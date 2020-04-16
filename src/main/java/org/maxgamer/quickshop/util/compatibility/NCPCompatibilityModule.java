@@ -11,7 +11,7 @@ import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class NCPCompatibilityModule implements CompatibilityModule {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Gets the CompatibilityModule provider name

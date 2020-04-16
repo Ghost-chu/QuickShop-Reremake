@@ -218,8 +218,7 @@ public class DatabaseHelper {
                         }));
     }
 
-    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName)
-            throws SQLException {
+    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db
                 .getCore() instanceof MySQLCore ? " LIMIT 1" : "");

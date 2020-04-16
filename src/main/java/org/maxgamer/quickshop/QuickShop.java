@@ -71,7 +71,7 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * The active instance of QuickShop
-     * @Deprecated You shouldn't use this if you really need it.
+     * You shouldn't use this if you really need it.
      */
     @Getter
     @Deprecated
@@ -100,7 +100,7 @@ public class QuickShop extends JavaPlugin {
      * WIP
      */
     @Getter
-    private CompatibilityManager compatibilityTool = new CompatibilityManager();
+    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
 
     /**
      * The database for storing all our data for persistence
@@ -163,7 +163,7 @@ public class QuickShop extends JavaPlugin {
      * The shop limites.
      */
     @Getter
-    private HashMap<String, Integer> limits = new HashMap<>(15);
+    private final HashMap<String, Integer> limits = new HashMap<>(15);
 
     // private BukkitTask itemWatcherTask;
     @Nullable

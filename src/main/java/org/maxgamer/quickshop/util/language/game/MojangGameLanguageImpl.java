@@ -29,8 +29,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
-    private QuickShop plugin;
-    private @Nullable JsonObject lang;
+    private final QuickShop plugin;
+    private @Nullable
+    final JsonObject lang;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
