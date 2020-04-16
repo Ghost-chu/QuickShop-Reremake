@@ -103,7 +103,7 @@ public class ShopLoader {
                 }
                 ShopDatabaseInfo data = new ShopDatabaseInfo(origin);
                 Shop shop =
-                        new ContainerShop(
+                        new ContainerShop(plugin,
                                 data.getLocation(),
                                 data.getPrice(),
                                 data.getItem(),
@@ -279,7 +279,7 @@ public class ShopLoader {
                 originShopsInDatabase.add(shopDatabaseInfoOrigin);
                 ShopDatabaseInfo data = new ShopDatabaseInfo(shopDatabaseInfoOrigin);
                 Shop shop =
-                        new ContainerShop(
+                        new ContainerShop(plugin,
                                 data.getLocation(),
                                 data.getPrice(),
                                 data.getItem(),

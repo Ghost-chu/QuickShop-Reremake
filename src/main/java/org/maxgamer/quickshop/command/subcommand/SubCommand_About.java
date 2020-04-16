@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +30,9 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@AllArgsConstructor
 public class SubCommand_About implements CommandProcesser {
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
@@ -110,7 +112,7 @@ public class SubCommand_About implements CommandProcesser {
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
-                        + Util.list2String(QuickShop.instance.getDescription().getAuthors()));
+                        + Util.list2String(plugin.getDescription().getAuthors()));
         MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by Bukkit Common Studio");
         MsgUtil.sendMessage(sender, ChatColor.RED + "Made with ❤");
     }

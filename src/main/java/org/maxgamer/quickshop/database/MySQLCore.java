@@ -30,7 +30,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-
 public class MySQLCore implements DatabaseCore {
 
     private static final ArrayList<Connection> POOL = new ArrayList<>();
@@ -46,13 +45,17 @@ public class MySQLCore implements DatabaseCore {
     @NotNull
     private final String url;
 
+    @NotNull private final QuickShop plugin;
+
     public MySQLCore(
+            @NotNull QuickShop plugin,
             @NotNull String host,
             @NotNull String user,
             @NotNull String pass,
             @NotNull String database,
             @NotNull String port,
             boolean useSSL) {
+        this.plugin = plugin;
         info = new Properties();
         info.setProperty("autoReconnect", "true");
         info.setProperty("user", user);
@@ -133,7 +136,7 @@ public class MySQLCore implements DatabaseCore {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.instance;
+        return plugin;
     }
 
 }

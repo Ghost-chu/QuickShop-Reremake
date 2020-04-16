@@ -40,6 +40,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         languageCode = languageCode.replace("-", "_");
         loadThread.setLanguageCode(languageCode);
         loadThread.setMainThreadWaiting(true); // Told thread we're waiting him
+        loadThread.setPlugin(plugin);
         loadThread.start();
         int count = 0;
         while (count < 7) {
@@ -49,7 +50,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 if (count >= 20) {
                     Util.debugLog(
                             "No longer waiting file downloading because it now timed out, now downloading in background.");
-                    QuickShop.instance
+                    plugin
                             .getLogger()
                             .info(
                                     "No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
@@ -157,6 +158,8 @@ class GameLanguageLoadThread extends Thread {
 
     private boolean mainThreadWaiting;
 
+    private QuickShop plugin;
+
     public void run() {
         boolean failed = false;
         try {
@@ -191,7 +194,7 @@ class GameLanguageLoadThread extends Thread {
                 needUpdateCache = true;
             }
             if (needUpdateCache) {
-                MojangAPI mojangAPI = new MojangAPI();
+                MojangAPI mojangAPI = new MojangAPI(plugin);
                 String assetJson = mojangAPI.getAssetIndexJson(cachingServerVersion);
                 if (assetJson != null) {
                     AssetJson versionJson = new AssetJson(assetJson);
@@ -204,7 +207,7 @@ class GameLanguageLoadThread extends Thread {
                                     .accept(new ByteArrayInputStream(langJson.getBytes(StandardCharsets.UTF_8)));
                         } else {
                             Util.debugLog("Cannot download file.");
-                            QuickShop.instance
+                            plugin
                                     .getLogger()
                                     .warning(
                                             "Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
@@ -212,7 +215,7 @@ class GameLanguageLoadThread extends Thread {
                         }
                     } else {
                         Util.debugLog("Cannot get file hash for language " + languageCode1);
-                        QuickShop.instance
+                        plugin
                                 .getLogger()
                                 .warning(
                                         "Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
@@ -220,7 +223,7 @@ class GameLanguageLoadThread extends Thread {
                     }
                 } else {
                     Util.debugLog("Cannot get version json.");
-                    QuickShop.instance
+                    plugin
                             .getLogger()
                             .warning(
                                     "Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
@@ -243,7 +246,7 @@ class GameLanguageLoadThread extends Thread {
                 Util.debugLog("json is null");
             }
         } catch (Exception e) {
-            QuickShop.instance.getSentryErrorReporter().ignoreThrow();
+            plugin.getSentryErrorReporter().ignoreThrow();
             e.printStackTrace();
             failed = true;
         }
@@ -251,12 +254,12 @@ class GameLanguageLoadThread extends Thread {
 
             if (!failed) {
 
-                QuickShop.instance
+                plugin
                         .getLogger()
                         .info(
                                 "Download completed, please execute /qs reset lang to generate localized language files.");
             } else {
-                QuickShop.instance
+                plugin
                         .getLogger()
                         .info(
                                 "Failed to download required files, we will try again when plugin next loading.");
