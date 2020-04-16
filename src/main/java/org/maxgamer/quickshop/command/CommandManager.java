@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.command.subcommand.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -284,6 +285,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     public void unregisterCmd(@NotNull CommandContainer container) {
         cmds.remove(container);
+    }
+
+    public List<CommandContainer> getRegisteredCommands(){
+        return new ArrayList<>(this.getCmds());
     }
 
     @Override
