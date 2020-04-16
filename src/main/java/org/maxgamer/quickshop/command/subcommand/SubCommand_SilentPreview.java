@@ -67,7 +67,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
             return;
         }
 
-        new InventoryPreview(shop.getItem(), (Player) sender).show();
+        new InventoryPreview(plugin,shop.getItem(), (Player) sender).show();
     }
 
     @NotNull

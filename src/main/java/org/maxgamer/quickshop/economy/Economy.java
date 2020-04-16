@@ -34,8 +34,10 @@ public class Economy implements EconomyCore {
     @Setter
     @NotNull
     private EconomyCore core;
+    private QuickShop plugin;
 
-    public Economy(@NotNull EconomyCore core) {
+    public Economy(@NotNull QuickShop plugin,@NotNull EconomyCore core) {
+        this.plugin = plugin;
         this.core = core;
     }
 
@@ -97,7 +99,7 @@ public class Economy implements EconomyCore {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.instance;
+        return plugin;
     }
 
 }

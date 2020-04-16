@@ -44,6 +44,11 @@ public class MojangAPI {
     final String pathTemplate = "minecraft/lang/{0}.json";
 
     final Gson gson = JsonUtil.getGson();
+    
+    private QuickShop plugin;
+    public MojangAPI (@NotNull QuickShop plugin){
+        this.plugin = plugin;
+    }
 
     @Nullable
     public String getAssetIndexJson(@NotNull String mcVer) throws IOException {
@@ -81,7 +86,7 @@ public class MojangAPI {
         for (VersionList.VersionsBean mcv : list.getVersions()) {
             if (mcv.getId().equals(mcVer)) {
                 try {
-                    QuickShop.instance.getLogger().info("Downloading version index...");
+                    plugin.getLogger().info("Downloading version index...");
                     return HttpRequest.get(new URL(mcv.getUrl()))
                             .execute()
                             .expectResponseCode(200)
@@ -99,7 +104,7 @@ public class MojangAPI {
 
     @Nullable
     public String getVersionManifest() throws IOException {
-        QuickShop.instance.getLogger().info("Downloading version manifest...");
+        plugin.getLogger().info("Downloading version manifest...");
         return HttpRequest.get(new URL(versionManifestUrl))
                 .execute()
                 .expectResponseCode(200)
@@ -115,7 +120,7 @@ public class MojangAPI {
             return Util.readToString(cacheFile);
         }
         String data;
-        QuickShop.instance.getLogger().info("Downloading assets file...");
+        plugin.getLogger().info("Downloading assets file...");
         data =
                 HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2) + "/" + hash))
                         .execute()

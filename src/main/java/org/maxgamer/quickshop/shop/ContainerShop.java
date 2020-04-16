@@ -70,7 +70,7 @@ public class ContainerShop implements Shop {
 
     private ShopModerator moderator;
 
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     private double price;
 
@@ -105,6 +105,7 @@ public class ContainerShop implements Shop {
      * @param unlimited The unlimited
      */
     public ContainerShop(
+            @NotNull QuickShop plugin,
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
@@ -115,7 +116,7 @@ public class ContainerShop implements Shop {
         this.price = price;
         this.moderator = moderator;
         this.item = item.clone();
-        this.plugin = QuickShop.instance;
+        this.plugin = plugin;
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
         }

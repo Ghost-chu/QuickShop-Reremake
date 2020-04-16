@@ -51,11 +51,12 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
 
     private final boolean useEnhanceProtection;
 
-    private final boolean sendProtectionAlert = QuickShop.instance.getConfig().getBoolean("send-shop-protection-alert", false);
+    private final boolean sendProtectionAlert;
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin, cache);
         this.plugin = plugin;
+        this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
     }
 

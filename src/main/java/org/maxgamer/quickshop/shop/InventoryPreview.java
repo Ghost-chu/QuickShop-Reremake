@@ -54,25 +54,28 @@ public class InventoryPreview implements Listener {
 
     private Player player;
 
+    private QuickShop plugin;
+
     /**
      * Create a preview item GUI for a player.
      *
      * @param itemStack The item you want create.
      * @param player    Target player.
      */
-    public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
+    public InventoryPreview(@NotNull QuickShop plugin,@NotNull ItemStack itemStack, @NotNull Player player) {
+        this.plugin = plugin;
         this.itemStack = itemStack.clone();
         this.player = player;
         if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             List<String> lores = itemMeta.getLore();
-            Objects.requireNonNull(lores).add(QuickShop.instance.getPreviewProtectionLore());
+            Objects.requireNonNull(lores).add(plugin.getPreviewProtectionLore());
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         } else {
             ItemMeta itemMeta = this.itemStack.getItemMeta();
             List<String> lores = new ArrayList<>();
-            lores.add(QuickShop.instance.getPreviewProtectionLore());
+            lores.add(plugin.getPreviewProtectionLore());
             itemMeta.setLore(lores);
             this.itemStack.setItemMeta(itemMeta);
         }

@@ -47,7 +47,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
         plugin
                 .getServer()
                 .getScheduler()
-                .runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
+                .runTask(plugin, () -> MsgUtil.flush((Player) sender));
     }
 
     @NotNull

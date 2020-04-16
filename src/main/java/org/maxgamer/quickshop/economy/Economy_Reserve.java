@@ -103,7 +103,7 @@ public class Economy_Reserve implements EconomyCore {
 
     private String formatInternal(double balance) {
         try {
-            return QuickShop.instance.getConfig().getString("shop.alternate-currency-symbol") + balance;
+            return plugin.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
             return String.valueOf('$' + balance);
         }

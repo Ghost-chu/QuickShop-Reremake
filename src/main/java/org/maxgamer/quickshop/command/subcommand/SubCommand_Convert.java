@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -15,8 +16,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@AllArgsConstructor
 public class SubCommand_Convert implements CommandProcesser {
+    private QuickShop plugin;
     /**
      * Accept the onCommand, it will call when have Command Event cmdArg not contains
      * CommandContainer's prefix. E.g: Register the CommandContainer with Prefix: unlimited
@@ -40,34 +42,34 @@ public class SubCommand_Convert implements CommandProcesser {
             return;
         }
         if (cmdArg[0].equalsIgnoreCase("mysql")) {
-            if (QuickShop.instance.getDatabase().getCore() instanceof MySQLCore) {
+            if (plugin.getDatabase().getCore() instanceof MySQLCore) {
                 sender.sendMessage(ChatColor.RED + "Please switch to SQLite before converting to MySQL.");
                 return;
             }
-            ConfigurationSection dbCfg = QuickShop.instance.getConfig().getConfigurationSection("database");
+            ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
             String user = dbCfg.getString("user");
             String pass = dbCfg.getString("password");
             String host = dbCfg.getString("host");
             String port = dbCfg.getString("port");
             String database = dbCfg.getString("database");
             boolean useSSL = dbCfg.getBoolean("usessl");
-            DatabaseCore dbCore = new MySQLCore(Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+            DatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             Database databaseManager = new Database(dbCore);
-            DatabaseHelper helper = new DatabaseHelper(QuickShop.instance, databaseManager);
+            DatabaseHelper helper = new DatabaseHelper(plugin, databaseManager);
             sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(QuickShop.instance, databaseManager), sender);
+            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
             return;
 
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
-            if (QuickShop.instance.getDatabase().getCore() instanceof SQLiteCore) {
+            if (plugin.getDatabase().getCore() instanceof SQLiteCore) {
                 sender.sendMessage(ChatColor.GREEN + "Please switch to MySQL before converting to SQLite.");
                 return;
             }
-            DatabaseCore core = new SQLiteCore(new File(QuickShop.instance.getDataFolder(), "shops.db"));
+            DatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
             Database databaseManager = new Database(core);
             sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(QuickShop.instance, databaseManager), sender);
+            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
             return;
 
@@ -78,7 +80,7 @@ public class SubCommand_Convert implements CommandProcesser {
     }
 
     private void transferShops(@NotNull DatabaseHelper helper, @NotNull CommandSender sender) {
-        QuickShop.instance.getShopManager().getAllShops().forEach(shop -> {
+        plugin.getShopManager().getAllShops().forEach(shop -> {
             helper.removeShop(shop);
             helper.createShop(shop, null, (ignored) -> sender.sendMessage("Failed to convert shop " + shop));
         });
