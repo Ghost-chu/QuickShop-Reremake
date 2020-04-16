@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.google.common.collect.Lists;
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
@@ -52,14 +53,18 @@ import java.util.logging.Logger;
 public class SentryErrorReporter {
 
     private final List<String> reported = new ArrayList<>(5);
-    private final List<Class<?>> ignoredException = new ArrayList<>(8);
+    private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
+            ,OutOfMemoryError.class
+            ,ProtocolException .class
+            ,InvalidPluginException .class
+            ,UnsupportedClassVersionError.class
+            ,LinkageError.class);
     private final IncompatibleChecker checker = new IncompatibleChecker();
     private Context context;
     private QuickShop plugin;
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
     private boolean disable;
-
     @Getter
     private boolean enabled;
 
@@ -105,13 +110,6 @@ public class SentryErrorReporter {
             Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
             Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
             Logger.getGlobal().setFilter(new GlobalExceptionFilter());
-            /* Ignore we won't report errors */
-            ignoredException.add(IOException.class);
-            ignoredException.add(OutOfMemoryError.class);
-            ignoredException.add(ProtocolException.class);
-            ignoredException.add(InvalidPluginException.class);
-            ignoredException.add(UnsupportedClassVersionError.class);
-            ignoredException.add(LinkageError.class);
 
             Util.debugLog("Sentry error reporter success loaded.");
             enabled = true;
