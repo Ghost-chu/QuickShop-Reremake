@@ -128,10 +128,10 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>central-repo</id>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>central-repo</id>-->
+<!--            <url>https://repo1.maven.org/maven2/</url>-->
+<!--        </repository>-->
         <repository>
             <id>reserve-repo</id>
             <url>https://dl.bintray.com/theneweconomy/java/</url>
