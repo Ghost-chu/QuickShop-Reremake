@@ -33,10 +33,11 @@ import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @AllArgsConstructor
 public class SubCommand_SetOwner implements CommandProcesser {
 
-    private final QuickShop plugin ;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(

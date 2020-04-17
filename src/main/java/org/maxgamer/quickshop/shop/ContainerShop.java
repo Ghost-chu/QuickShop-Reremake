@@ -55,23 +55,16 @@ public class ContainerShop implements Shop {
 
     @NotNull
     private final Location location;
-
+    private final QuickShop plugin;
     @Nullable
     private DisplayItem displayItem;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean isDeleted = false;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
-
     private ShopModerator moderator;
-
-    private final QuickShop plugin;
-
     private double price;
 
     private ShopType shopType;
@@ -287,7 +280,7 @@ public class ContainerShop implements Shop {
 
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
-            Util.debugLog("Target item not spawned, spawning for shop "+this.getLocation());
+            Util.debugLog("Target item not spawned, spawning for shop " + this.getLocation());
             this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
@@ -1087,8 +1080,8 @@ public class ContainerShop implements Shop {
             }
             if (createBackup) {
                 this.delete();
-            }else{
-                Util.debugLog("Failed to create backup, shop at "+this.toString()+" won't to delete.");
+            } else {
+                Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
             }
         }
     }

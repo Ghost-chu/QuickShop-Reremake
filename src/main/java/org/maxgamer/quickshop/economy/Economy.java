@@ -30,13 +30,13 @@ import java.util.UUID;
 
 public class Economy implements EconomyCore {
 
+    private final QuickShop plugin;
     @Getter
     @Setter
     @NotNull
     private EconomyCore core;
-    private final QuickShop plugin;
 
-    public Economy(@NotNull QuickShop plugin,@NotNull EconomyCore core) {
+    public Economy(@NotNull QuickShop plugin, @NotNull EconomyCore core) {
         this.plugin = plugin;
         this.core = core;
     }

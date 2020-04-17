@@ -30,6 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
+
 public class MySQLCore implements DatabaseCore {
 
     private static final ArrayList<Connection> POOL = new ArrayList<>();
@@ -45,7 +46,8 @@ public class MySQLCore implements DatabaseCore {
     @NotNull
     private final String url;
 
-    @NotNull private final QuickShop plugin;
+    @NotNull
+    private final QuickShop plugin;
 
     public MySQLCore(
             @NotNull QuickShop plugin,

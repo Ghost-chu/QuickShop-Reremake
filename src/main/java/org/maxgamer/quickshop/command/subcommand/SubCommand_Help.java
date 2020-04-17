@@ -30,6 +30,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
+
 @AllArgsConstructor
 public class SubCommand_Help implements CommandProcesser {
 
@@ -49,7 +50,7 @@ public class SubCommand_Help implements CommandProcesser {
     }
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
-        MsgUtil.sendMessage(s,MsgUtil.getMessage("command.description.title", s));
+        MsgUtil.sendMessage(s, MsgUtil.getMessage("command.description.title", s));
         commandCheckLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             final List<String> requirePermissions = container.getPermissions();

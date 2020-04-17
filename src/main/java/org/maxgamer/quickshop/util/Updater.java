@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 //TODO: This is a shit, need refactor
 public class Updater {
 

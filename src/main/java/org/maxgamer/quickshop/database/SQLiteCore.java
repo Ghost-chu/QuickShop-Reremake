@@ -37,11 +37,10 @@ public class SQLiteCore implements DatabaseCore {
     private final File dbFile;
 
     private final LinkedList<BufferStatement> queue = new LinkedList<>();
-
+    @NotNull
+    private final QuickShop plugin;
     private Connection connection;
-
     private volatile Thread watcher;
-    @NotNull private final QuickShop plugin;
 
     public SQLiteCore(@NotNull QuickShop plugin, @NotNull File dbFile) {
         this.plugin = plugin;

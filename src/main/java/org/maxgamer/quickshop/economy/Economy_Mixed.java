@@ -32,8 +32,7 @@ public class Economy_Mixed implements EconomyCore {
     private final EconomyCore core;
     private final QuickShop plugin;
 
-    public Economy_Mixed(@NotNull QuickShop plugin)
-    {
+    public Economy_Mixed(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         core = new Economy_Vault(plugin);
     }

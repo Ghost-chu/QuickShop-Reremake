@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 @AllArgsConstructor
 public class SubCommand_Info implements CommandProcesser {
 

@@ -54,11 +54,11 @@ public class SentryErrorReporter {
 
     private final List<String> reported = new ArrayList<>(5);
     private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
-            ,OutOfMemoryError.class
-            ,ProtocolException .class
-            ,InvalidPluginException .class
-            ,UnsupportedClassVersionError.class
-            ,LinkageError.class);
+            , OutOfMemoryError.class
+            , ProtocolException.class
+            , InvalidPluginException.class
+            , UnsupportedClassVersionError.class
+            , LinkageError.class);
     private final IncompatibleChecker checker = new IncompatibleChecker();
     private Context context;
     private QuickShop plugin;
