@@ -36,6 +36,7 @@ import org.maxgamer.quickshop.util.Updater;
 
 import java.util.List;
 import java.util.Random;
+
 //TODO: This is a shit, need refactor
 public class UpdateWatcher implements Listener {
     public static boolean hasNewUpdate = false;

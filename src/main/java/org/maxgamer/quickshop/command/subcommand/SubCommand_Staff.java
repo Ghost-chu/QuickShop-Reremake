@@ -38,6 +38,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 @AllArgsConstructor
 public class SubCommand_Staff implements CommandProcesser {
 

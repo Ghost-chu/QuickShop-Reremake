@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @AllArgsConstructor
 public class SubCommand_SilentPreview implements CommandProcesser {
 
@@ -67,7 +68,7 @@ public class SubCommand_SilentPreview implements CommandProcesser {
             return;
         }
 
-        new InventoryPreview(plugin,shop.getItem(), (Player) sender).show();
+        new InventoryPreview(plugin, shop.getItem(), (Player) sender).show();
     }
 
     @NotNull

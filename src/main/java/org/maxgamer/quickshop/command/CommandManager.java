@@ -286,8 +286,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     public void unregisterCmd(@NotNull CommandContainer container) {
         cmds.remove(container);
     }
+
     @NotNull
-    public List<CommandContainer> getRegisteredCommands(){
+    public List<CommandContainer> getRegisteredCommands() {
         return new ArrayList<>(this.getCmds());
     }
 

@@ -19,9 +19,9 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -44,14 +44,11 @@ import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 @ToString
 public class InventoryPreview implements Listener {
 
+    private final ItemStack itemStack;
+    private final Player player;
+    private final QuickShop plugin;
     @Nullable
     private Inventory inventory;
-
-    private final ItemStack itemStack;
-
-    private final Player player;
-
-    private final QuickShop plugin;
 
     /**
      * Create a preview item GUI for a player.
@@ -59,7 +56,7 @@ public class InventoryPreview implements Listener {
      * @param itemStack The item you want create.
      * @param player    Target player.
      */
-    public InventoryPreview(@NotNull QuickShop plugin,@NotNull ItemStack itemStack, @NotNull Player player) {
+    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
         this.plugin = plugin;
         this.itemStack = itemStack.clone();
         this.player = player;
@@ -67,6 +64,7 @@ public class InventoryPreview implements Listener {
         itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
         this.itemStack.setItemMeta(itemMeta);
     }
+
     @Deprecated
     public static boolean isPreviewItem(@Nullable ItemStack stack) {
         if (stack == null) {

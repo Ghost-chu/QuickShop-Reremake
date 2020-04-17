@@ -44,9 +44,10 @@ public class MojangAPI {
     final String pathTemplate = "minecraft/lang/{0}.json";
 
     final Gson gson = JsonUtil.getGson();
-    
+
     private final QuickShop plugin;
-    public MojangAPI (@NotNull QuickShop plugin){
+
+    public MojangAPI(@NotNull QuickShop plugin) {
         this.plugin = plugin;
     }
 

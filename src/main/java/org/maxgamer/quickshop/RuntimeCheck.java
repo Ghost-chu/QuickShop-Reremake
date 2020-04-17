@@ -37,7 +37,7 @@ public class RuntimeCheck {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            plugin.setBootError(new BootError(plugin.getLogger(),"Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
+            plugin.setBootError(new BootError(plugin.getLogger(), "Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
             return;
         }
         if ((plugin.getServer().getName().toLowerCase().contains("mohist") || Util.isClassAvailable("red.mohist.mohist"))) {

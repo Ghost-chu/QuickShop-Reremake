@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @AllArgsConstructor
 public class SubCommand_SilentEmpty implements CommandProcesser {
 
@@ -65,7 +66,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         final Inventory inventory = cs.getInventory();
 
         if (inventory == null) {
-            Util.debugLog("Inventory is empty! "+cs.toString());
+            Util.debugLog("Inventory is empty! " + cs.toString());
             return;
         }
 
