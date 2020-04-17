@@ -345,10 +345,6 @@
                     <groupId>net.java.truecommons</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>worldedit-core</artifactId>
-                    <groupId>com.sk89q.worldedit</groupId>
-                </exclusion>
-                <exclusion>
                     <artifactId>jcl-over-slf4j</artifactId>
                     <groupId>org.slf4j</groupId>
                 </exclusion>
