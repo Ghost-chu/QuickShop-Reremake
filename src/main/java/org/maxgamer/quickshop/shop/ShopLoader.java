@@ -51,19 +51,13 @@ public class ShopLoader {
     private final Map<Timer, Double> costCache = new HashMap<>();
 
     private final QuickShop plugin;
-
-    private int errors;
-
-    private int loadAfterChunkLoaded = 0;
-
-    private int loadAfterWorldLoaded = 0;
-
-    private int totalLoaded = 0;
-
     /* This may contains broken shop, must use null check before load it. */
     private final List<Shop> shopsInDatabase = new CopyOnWriteArrayList<>();
-
     private final List<ShopDatabaseInfoOrigin> originShopsInDatabase = new CopyOnWriteArrayList<>();
+    private int errors;
+    private int loadAfterChunkLoaded = 0;
+    private int loadAfterWorldLoaded = 0;
+    private int totalLoaded = 0;
 
     /**
      * The shop load allow plugin load shops fast and simply.

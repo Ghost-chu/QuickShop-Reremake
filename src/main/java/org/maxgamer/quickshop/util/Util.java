@@ -76,6 +76,8 @@ public class Util {
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
     private static final List<String> debugLogs = new LinkedList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    static Yaml yaml = null;
+    static DumperOptions yamlOptions = null;
     private static boolean devMode = false;
     private static QuickShop plugin;
     private static Object serverInstance;
@@ -228,8 +230,6 @@ public class Util {
         return customStackSize.getOrDefault(material, material.getMaxStackSize());
     }
 
-    static Yaml yaml = null;
-    static DumperOptions yamlOptions = null;
     /**
      * Covert YAML string to ItemStack.
      *
@@ -239,7 +239,7 @@ public class Util {
      */
     @Nullable
     public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
-        if(yaml == null){
+        if (yaml == null) {
             yamlOptions = new DumperOptions();
             yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
             yamlOptions.setIndent(2);
@@ -292,6 +292,7 @@ public class Util {
             return yamlConfiguration.getItemStack("item");
         }
     }
+
     @NotNull
     public static List<String> getDebugLogs() {
         lock.readLock().lock();
@@ -1303,6 +1304,7 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
+
     //TODO: Need caching
     public static Class<?> getNMSClass(@Nullable String className) {
         if (className == null) {

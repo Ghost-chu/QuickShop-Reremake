@@ -82,10 +82,18 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-
+    /**
+     * WIP
+     */
+    @Getter
+    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
+    /**
+     * The shop limites.
+     */
+    @Getter
+    private final HashMap<String, Integer> limits = new HashMap<>(15);
     @Getter
     private IntegrationHelper integrationHelper;
-
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -93,79 +101,54 @@ public class QuickShop extends JavaPlugin {
     @Getter
     @Setter
     private BootError bootError;
-
     @Getter
     private CommandManager commandManager;
-
-    /**
-     * WIP
-     */
-    @Getter
-    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
-
     /**
      * The database for storing all our data for persistence
      */
     @Getter
     private Database database;
-
     /**
      * Contains all SQL tasks
      */
     @Getter
     private DatabaseHelper databaseHelper;
-
     /**
      * Queued database manager
      */
     @Getter
     private DatabaseManager databaseManager;
-
     /**
      * Default database prefix, can overwrite by config
      */
     @Getter
     private String dbPrefix = "";
-
     /**
      * Whether we should use display items or not
      */
     @Getter
     private boolean display = true;
-
     @Getter
     private int displayItemCheckTicks;
-
     @Getter
     private DisplayWatcher displayWatcher;
-
     /**
      * The economy we hook into for transactions
      */
     @Getter
     private Economy economy;
-
     @Getter
     private ItemMatcher itemMatcher;
-
     /**
      * Language manager, to select which language will loaded.
      */
     @Getter
     private Language language;
-
     /**
      * Whether or not to limit players shop amounts
      */
     @Getter
     private boolean limit = false;
-
-    /**
-     * The shop limites.
-     */
-    @Getter
-    private final HashMap<String, Integer> limits = new HashMap<>(15);
-
     // private BukkitTask itemWatcherTask;
     @Nullable
     @Getter
@@ -386,7 +369,7 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    bootError = new BootError(this.getLogger(),"Can't load the Economy provider, invaild value in config.yml.");
+                    bootError = new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml.");
                     return false;
                 case VAULT:
                     core = new Economy_Vault(this);
@@ -430,7 +413,7 @@ public class QuickShop extends JavaPlugin {
                 // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
-                this.economy = new Economy(this,ServiceInjector.getEconomyCore(core));
+                this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
                 return true;
             }
         } catch (Exception e) {
@@ -774,7 +757,7 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Throwable ignore) {
         }
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 getLogger().info("Registering BStats Mertics...");
@@ -831,10 +814,10 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(this,Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                dbCore = new MySQLCore(this, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
-                dbCore = new SQLiteCore(this,new File(this.getDataFolder(), "shops.db"));
+                dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
             this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
@@ -895,7 +878,7 @@ public class QuickShop extends JavaPlugin {
             }
             String shop_find_distance = getConfig().getString("shop.find-distance");
             String economyType = Economy.getNowUsing().name();
-            if(getEconomy() != null){
+            if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
             String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
@@ -922,10 +905,10 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
             metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLogger));
-            metrics.addCustomChart(new Metrics.SimplePie("database_type",  ()->databaseType));
-            metrics.addCustomChart(new Metrics.SimplePie("display_type",  ()->displayType));
-            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type",  ()->itemMatcherType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item",  ()->useStackItem));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> databaseType));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> displayType));
+            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> itemMatcherType));
+            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> useStackItem));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {

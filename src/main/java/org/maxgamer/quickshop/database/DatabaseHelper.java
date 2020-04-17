@@ -94,7 +94,7 @@ public class DatabaseHelper {
         PreparedStatement ps;
         try {
             // V3.4.2
-            ps = db.getConnection().prepareStatement("ALTER TABLE " +plugin
+            ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
                     .getDbPrefix() + "shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
             ps.execute();
             ps.close();
