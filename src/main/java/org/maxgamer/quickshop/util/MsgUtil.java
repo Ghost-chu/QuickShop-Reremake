@@ -888,7 +888,7 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         // Enabled
-        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + " " + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)));
+        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + " " + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  ");
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
@@ -969,7 +969,7 @@ public class MsgUtil {
                 return errorComponent;
             }
             TextComponent normalmessage =
-                    new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview", player));
+                    new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(
@@ -1423,6 +1423,14 @@ public class MsgUtil {
             setAndUpdate("shop-stack", "&aAmount of bulk: &e{0}");
             setAndUpdate("language-version", 36);
             selectedVersion = 36;
+        }
+        if (selectedVersion == 36) {
+            setAndUpdate("menu.price-per-stack", "&aPrice per &e{2}x {0} - {1}");
+            setAndUpdate("command.trade-item-now", "&aNow trading &e{0}x {1}");
+            setAndUpdate("command.bulk-size-now", "&aNow trading &e{0}x {1}");
+            setAndUpdate("how-much-to-trade-for", "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.");
+            setAndUpdate("language-version", 37);
+            selectedVersion = 37;
         }
 
         messagei18n.save();

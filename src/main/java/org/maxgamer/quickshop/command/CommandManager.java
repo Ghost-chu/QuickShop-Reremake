@@ -280,6 +280,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (plugin.isAllowStack()) {
             registerCmd(CommandContainer.builder()
                     .prefix("size")
+                    .permission("quickshop.create.stacks")
                     .permission("quickshop.create.changeamount")
                     .executor(new SubCommand_Size())
                     .build());

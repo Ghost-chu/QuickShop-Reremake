@@ -227,7 +227,7 @@ public class PlayerListener implements Listener {
                     MsgUtil.getMessage(
                             "how-much-to-trade-for",
                             p,
-                            Util.getItemStackName(Objects.requireNonNull(e.getItem()))));
+                            Util.getItemStackName(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
         }
     }
 
