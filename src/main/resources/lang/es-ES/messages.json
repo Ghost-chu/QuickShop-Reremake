@@ -1,7 +1,7 @@
 {
-  "translation-author": "Traductor: DorianXYZ",
+  "translation-author": "Traductor: Ghost_chu, Andre_601",
   "translation-version": "&c&lVersión soportada: &b&lReremake",
-  "translation-contributors": "Contribuyentes: Timtower, Netherfoam, KaiNoMood, Mgazul y Andre_601",
+  "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21, Ant4rez, dbguichu, notNao, sandtechnology, silverdragorum, anyel.master.company, alberlife, trucho y DorianXYZ",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
   "language-version": "35",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna QuickShop. Tienes que mirar hacia una.",
@@ -139,12 +139,12 @@
       "refill": "&eAgrega un número dado de artículos a la tienda",
       "empty": "&eElimina todos los ítems de una tienda",
       "debug": "&eHabilita el modo desarrollador",
-      "create": "&eCreates a new shop from the targeted chest",
-      "fetchmessage": "&eShow unread shop messages",
-      "info": "&eShow QuickShop statistics",
-      "paste": "&eUploads server data to Pastebin",
-      "staff": "&eManage your shop staff",
-      "remove": "&eRemoves the shop you're looking at",
+      "create": "&eCrea una tienda nueva en el cofre seleccionado",
+      "fetchmessage": "&eMostrar mensajes de tienda sin leer",
+      "info": "&eMostrar estadísticas de QuickShop",
+      "paste": "&eCarga datos del servidor a Pastebin",
+      "staff": "&eGestionar personal de tu tienda",
+      "remove": "&eElimina la tienda seleccionada",
       "amount": "&ePara establecer la cantidad de ítems (útil cuando se tienen problemas con el chat)",
       "about": "&eMuestra información de QuickShop",
       "help": "&eMuestra la ayuda de QuickShop",
@@ -272,9 +272,9 @@
   "language": {
     "name": "&eNombre: &6{0}",
     "code": "&eCódigo: &6{0}",
-    "translate-progress": "&eTranslation Progress: &b{0}%",
+    "translate-progress": "&eProgreso de traducción: &b{0}%",
     "approval-progress": "&eProgreso de aprobación: &b{0}%",
-    "qa-issues": "&eQuality assurance issues: &b{0}%",
-    "help-us": "&a[Help us improve the translation quality]"
+    "qa-issues": "&eProblemas de garantía de calidad: &b{0}%",
+    "help-us": "&a[Ayúdanos a mejorar la calidad de la traducción]"
   }
 }
