@@ -230,8 +230,8 @@
       "Stilime bak---{0} güncellendi. Sen hala {1} kullanıyorsun",
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne düşünüyürsun? {0} yayınlandı! Güncelle!",
-      "Doctor, QuickShop has a new update {0}! You should update~",
-      "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
+      "Doktor QuickShop'a yeni {0} güncellemesi geldi! Güncellemelisin~",
+      "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~"
     ],
     "remote-disable-warning": "&cThis version of QuickShop has been marked disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server however.",
     "label": {
@@ -245,25 +245,25 @@
       "master": "[Usta]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't had enough money to keep it!",
-  "digits-reach-the-limit": "&cYou have reached the limits of decimals in the price.",
+  "shop-removed-cause-ongoing-fee": "&c{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!",
+  "digits-reach-the-limit": "&cFiyatta maksimum sayı sınırına ulaştın.",
   "complete": "&aTamamlandı!",
-  "quickshop-gui-preview": "QuickShop GUI Item Preview",
+  "quickshop-gui-preview": "QuickShop GUI Öğe Önizlemesi",
   "shops-recovering": "Marketler yedekten kurtarılıyor...",
-  "shops-backingup": "Creating Shop-backup from database...",
-  "saved-to-path": "The Backup was saved to {0}.",
-  "backup-failed": "Cannot backup the database. Check the console for details.",
-  "translate-not-completed-yet-click": "The translation of the language {0} was completed by {1}. Do you want to help us improving the translation? Click here!",
-  "translate-not-completed-yet-url": "The translation of the language {0} was completed by {1}. Do you want to help us improving the translation? Browse: {2}",
+  "shops-backingup": "Veri tabanından market yedeği oluşturuluyor...",
+  "saved-to-path": "Yedek {0} dosyasına kaydedildi.",
+  "backup-failed": "Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.",
+  "translate-not-completed-yet-click": "{0} dilinin çevirisi {1} tamamlandı. Çevirmemize yardım etmek mi istiyorsun? Buraya tıkla!",
+  "translate-not-completed-yet-url": "{0} dilinin çevirisi {1} tamamlandı. Çevirmemize yardım etmek mi istiyorsun? Araştır: {2}",
   "language-info-panel": {
     "name": "Dil: ",
     "code": "Kod: ",
-    "progress": "Progres: ",
-    "help": "Help us: ",
+    "progress": "İlerleme: ",
+    "help": "Bize yardım edin: ",
     "translate-on-crowdin": "[Crowdin'de Çevirin]]"
   },
-  "shop-now-freezed": "&aYou have frozen the shop. Nobody can trade with this shop now!",
-  "shop-nolonger-freezed": "&aYou unfroze the shop. It's back to normal now!",
+  "shop-now-freezed": "&aMarketi dondurdunuz. Artık hiç kimse bu marketle ticaret yapamaz!",
+  "shop-nolonger-freezed": "&aMarketi çözdünüz. Şimdi normale döndü!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop because it is frozen.",
   "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
   "denied-put-in-item": "&cYou cannot put this item into your shop!",
