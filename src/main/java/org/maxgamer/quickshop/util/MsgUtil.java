@@ -888,7 +888,7 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         // Enabled
-        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + " " + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  ");
+        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  ");
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
