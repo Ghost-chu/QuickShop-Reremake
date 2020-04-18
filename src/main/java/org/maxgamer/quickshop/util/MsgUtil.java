@@ -71,6 +71,8 @@ public class MsgUtil {
 
     private static final QuickShop plugin = QuickShop.instance;
 
+    private static TextComponent errorComponent;
+
     private static final DecimalFormat decimalFormat =
             new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
     public static GameLanguage gameLanguage;
@@ -526,7 +528,7 @@ public class MsgUtil {
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
         if ((sender instanceof Player)
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")
-                && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !sender.hasPermission("quickshop.other.edit"))
+                && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
                 && (plugin.getConfig().getBoolean("sneak-to-control") && !((Player) sender).isSneaking())) {
 
             return;
@@ -568,7 +570,7 @@ public class MsgUtil {
         }
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
-                && sender.hasPermission("quickshop.create.sell")) {
+                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
             if (shop.isSelling()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-selling", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
@@ -609,6 +611,28 @@ public class MsgUtil {
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
+        //Set amount per bulk
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
+            String text = MsgUtil.getMessage(
+                    "controlpanel.stack",
+                    sender,
+                    Integer.toString(shop.getItem().getAmount()));
+            String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.stack", sender);
+            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+
+        }
+        //Set item
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
+            String text = MsgUtil.getMessage(
+                    "controlpanel.item",
+                    sender);
+            String hoverText = MsgUtil.getMessage("controlpanel.item-hover", sender);
+            String clickCommand = MsgUtil.getMessage("controlpanel.commands.item", sender);
+            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
+        }
+
+
         // Refill
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
             String text =
@@ -617,7 +641,8 @@ public class MsgUtil {
             String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill", sender);
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
-        // Refill
+
+        // Empty
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
             String text =
                     MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
@@ -888,7 +913,7 @@ public class MsgUtil {
         if (shop.getItem().getAmount() == 1) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice()), Integer.toString(shop.getItem().getAmount())));
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
@@ -926,10 +951,22 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
+        player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
+    }
+
+    @NotNull
+    public static TextComponent getItemholochat(
+            @NotNull Shop shop,
+            @NotNull ItemStack itemStack,
+            @NotNull Player player,
+            @NotNull String normalText) {
         try {
+            if (errorComponent == null) {
+                errorComponent = new TextComponent(getMessage("menu.item-holochat-error", player));
+            }
             String json = ItemNMS.saveJsonfromNMS(itemStack);
             if (json == null) {
-                return;
+                return errorComponent;
             }
             TextComponent normalmessage =
                     new TextComponent(normalText + "   " + MsgUtil.getMessage("menu.preview", player));
@@ -947,9 +984,10 @@ public class MsgUtil {
                                         String.valueOf(shop.getLocation().getBlockZ()))));
             }
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
-            player.spigot().sendMessage(normalmessage);
+            return normalmessage;
         } catch (Throwable t) {
             t.printStackTrace();
+            return errorComponent;
         }
     }
 
@@ -1347,7 +1385,7 @@ public class MsgUtil {
         if (selectedVersion == 32) {
             setAndUpdate("signs.stack-selling", "Selling {0}");
             setAndUpdate("signs.stack-buying", "Buying {0}");
-            setAndUpdate("menu.price-per-stack", "&aPrice per bulk &e{0} - {1}");
+            setAndUpdate("menu.price-per-stack", "&aPrice per &e {3}x {0} - {1}");
             setAndUpdate("menu.shop-stack", "&aStack Amount: &e{0}");
             setAndUpdate("language-version", 33);
             selectedVersion = 33;
@@ -1363,6 +1401,14 @@ public class MsgUtil {
             setAndUpdate("how-many-sell-stack", "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.");
             setAndUpdate("language-version", 35);
             selectedVersion = 35;
+        }
+        if (selectedVersion == 35) {
+            setAndUpdate("menu.price-per-stack", "&aPrice per &e {3}x {0} - {1}");
+            setAndUpdate("signs.stack-price", "{0} per bulk");
+            setAndUpdate("controlpanel.stack", "&aPer bulk amount: &b{0} &e[&d&lChange&e]");
+            setAndUpdate("controlpanel.stack-hover", "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.");
+            setAndUpdate("language-version", 36);
+            selectedVersion = 36;
         }
 
         messagei18n.save();

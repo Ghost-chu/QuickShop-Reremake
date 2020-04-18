@@ -51,7 +51,7 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
     @NotNull
-    private final ItemStack item;
+    private ItemStack item;
 
     @NotNull
     private final Location location;
@@ -117,7 +117,12 @@ public class ContainerShop implements Shop {
         }
         this.shopType = type;
         this.unlimited = unlimited;
+        initDisplayItem();
 
+        this.lastChangedAt = System.currentTimeMillis();
+    }
+
+    private void initDisplayItem() {
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
@@ -153,7 +158,6 @@ public class ContainerShop implements Shop {
         } else {
             Util.debugLog("The display was disabled.");
         }
-        this.lastChangedAt = System.currentTimeMillis();
     }
 
     /**
@@ -660,6 +664,23 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull ItemStack getItem() {
         return item;
+    }
+
+    @Override
+    public void setItem(@NotNull ItemStack item) {
+        this.item = item;
+        update();
+        refresh();
+    }
+
+    @Override
+    public void refresh() {
+        if (displayItem != null) {
+            displayItem.remove();
+            initDisplayItem();
+            displayItem.spawn();
+        }
+        setSignText();
     }
 
     /**

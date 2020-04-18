@@ -174,6 +174,18 @@ public interface Shop {
     ItemStack getItem();
 
     /**
+     * Set shop item's ItemStack
+     *
+     * @param item ItemStack to set
+     */
+    void setItem(@NotNull ItemStack item);
+
+    /**
+     * Refresh shop sign and display item
+     */
+    void refresh();
+
+    /**
      * Set texts on shop's sign
      *
      * @param paramArrayOfString The texts you want set
