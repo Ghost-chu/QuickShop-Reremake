@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,9 +32,10 @@ import org.maxgamer.quickshop.util.Util;
 import java.io.File;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_Recovery implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(

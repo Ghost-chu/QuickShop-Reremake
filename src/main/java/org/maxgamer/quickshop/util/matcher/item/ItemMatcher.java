@@ -3,6 +3,7 @@ package org.maxgamer.quickshop.util.matcher.item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface ItemMatcher {
     /**
@@ -27,5 +28,5 @@ public interface ItemMatcher {
      * @param tester   The ItemStack will test matches with original itemstack.
      * @return The result of tests
      */
-    boolean matches(@NotNull ItemStack original, @NotNull ItemStack tester);
+    boolean matches(@Nullable ItemStack original, @Nullable ItemStack tester);
 }

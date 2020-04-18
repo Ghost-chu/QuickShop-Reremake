@@ -37,12 +37,13 @@ public class SQLiteCore implements DatabaseCore {
     private final File dbFile;
 
     private final LinkedList<BufferStatement> queue = new LinkedList<>();
-
+    @NotNull
+    private final QuickShop plugin;
     private Connection connection;
-
     private volatile Thread watcher;
 
-    public SQLiteCore(@NotNull File dbFile) {
+    public SQLiteCore(@NotNull QuickShop plugin, @NotNull File dbFile) {
+        this.plugin = plugin;
         this.dbFile = dbFile;
     }
 
@@ -128,7 +129,7 @@ public class SQLiteCore implements DatabaseCore {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.instance;
+        return plugin;
     }
 
     private void startWatcher() {

@@ -27,12 +27,10 @@ import org.maxgamer.quickshop.QuickShop;
 @EqualsAndHashCode
 @ToString
 public class WarningSender {
-    private long cooldown;
-
-    private long lastSend = 0;
-
+    private final long cooldown;
     @ToString.Exclude
-    private QuickShop plugin;
+    private final QuickShop plugin;
+    private long lastSend = 0;
 
     /**
      * Create a warning sender

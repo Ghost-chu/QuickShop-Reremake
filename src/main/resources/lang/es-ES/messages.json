@@ -1,16 +1,18 @@
 {
-  "translation-author": "&c&lTraductores: &b&lGhost_chu, LoudCloud, DorianXYZ, Erduke21 y Ant4rez",
+  "translation-author": "&c&lTraductores: &b&lGhost_chu, LoudCloud, DorianXYZ, Erduke21, Ant4rez y AlbeRGames",
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "&c&lContribuyentes: &b&lTimtower, Netherfoam, KaiNoMood, Mgazul, LoudCloud, CKittycannon, ERDUKE21 y Ant4rez",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_LA)",
-  "language-version": "32",
+  "language-version": "35",
   "not-looking-at-shop": "&cNo se encontró ninguna QuickShop, debes estar mirando una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
+  "integrations-check-failed-create": "Integraciones denegó la creación de la tienda",
+  "integrations-check-failed-trade": "Integraciones denegó el intercambio en la tienda",
   "3rd-plugin-build-check-failed": "Algún complemento de terceros denegó las verificaciones de permisos, ¿tenía permiso incorporado allí?",
   "no-creative-break": "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.",
-  "trading-in-creative-mode-is-disabled": "&cYou cannot trade with shop in the creative mode.",
-  "supertool-is-disabled": "&cSupertool is disabled, cannot break any shop.",
+  "trading-in-creative-mode-is-disabled": "&cNo puedes intercambiar en la tienda en modo creativo.",
+  "supertool-is-disabled": "&cSuperherramienta está deshabilitada, no se puede destruir ninguna tienda.",
   "no-double-chests": "&cNo puedes crear tiendas de cofres dobles.",
   "not-managed-shop": "&cNo eres el dueño o moderador de la tienda",
   "shop-already-owned": "&cEso ya es una tienda.",
@@ -88,12 +90,12 @@
     "space": "&aEspacio: &e{0}",
     "stock": "&aAlmacenado &e{0}",
     "price-per": "&aPrecio por &e{0} &a- &e{1}",
-    "price-per-stack": "&aPrice per bulk &e{0} - {1} ",
+    "price-per-stack": "&aPrecio por montón &e{0} - {1}",
     "total-value-of-chest": "&aValor total del cofre: &e{0}",
     "damage-percent-remaining": "&e{0}% &aRestante.",
     "this-shop-is-buying": "&aEsta tienda está &dCOMPRANDO&a artículos.",
     "this-shop-is-selling": "&aEsta tienda está &dVENDIENDO&a artículos.",
-    "shop-stack": "&aStack Amount: &e{0}",
+    "shop-stack": "&aNúmero de montones: &e{0}",
     "effects": "&aEfectos",
     "commands": {
       "preview": "\/qs silentpreview {0} {1} {2} {3}"
@@ -147,16 +149,18 @@
       "about": "&eMuestra información de QuickShop",
       "help": "&eMuestra la ayuda de QuickShop",
       "supercreate": "&eCrea una tienda que omita todas las pruebas de seguridad.",
-      "language": "&eSwitch the language that quickshop using"
+      "language": "&eCambia el lenguaje de \"quickshop\" usando"
     }
   },
   "signs": {
     "selling": "Vendiendo {0}",
+    "stack-selling": "Vendiendo {0}",
     "header": "&c{0}",
     "buying": "Comprando {0}",
+    "stack-buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} por unidad.",
-    "stack-price": "{0} stack",
+    "stack-price": "{0} por montón",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
@@ -177,8 +181,8 @@
     "empty-hover": "&eClick para limpiar el inventario de la tienda.",
     "remove": "&c&l[Eliminar tienda]",
     "remove-hover": "&eClick para eliminar esta tienda.",
-    "stack": "&aStack: &b{0} &e[&d&lSet&e]",
-    "stack-hover": "&eClick to set the item amounts each stack. Set to 1 for normal behavior.",
+    "stack": "&aMontón: &b{0} &e[&d&|Set&e]",
+    "stack-hover": "&eClick para establecer la cantidad de objetos por montón. Establecer en 1 para comportamiento normal.",
     "commands": {
       "setowner": "\/qs setowner [Jugador]",
       "unlimited": "\/qs silentunlimited {0} {1} {2} {3}",
@@ -188,7 +192,7 @@
       "refill": "\/qs refill [Cantidad]",
       "empty": "\/qs silentempty {0} {1} {2} {3}",
       "remove": "\/qs silentremove {0} {1} {2} {3}",
-      "stack": "\/qs silentstack [Amount]"
+      "stack": "\/qs silentstack [Cantidad]"
     }
   },
   "tableformat": {
@@ -226,8 +230,8 @@
       "Mira, mira---{0} se ha actualizado, sigues usando {1}",
       "¡Ahhhhhhh! ¡Nueva versión {0}! ¡Actualiza!",
       "¿En qué estás pensando? {0} ¡ya fue lanzada! ¡Actualiza!",
-      "Doctor, QuickShop have new update {0}! Think about update~",
-      "Ko~ko~da~yo~ QuickShop have new update {0} ~"
+      "Doctor, QuickShop tiene una nueva actualización {0}! Piensa si deberías actualizar~",
+      "Ko~ko~da~yo~ QuickShop tiene una nueva actualización {0} ~"
     ],
     "remote-disable-warning": "§cEsta versión de QuickShop esta marcada como deshabilitado por servidor remoto, quiere decir que esta versión puede tener serios problemas, obtén detalles de nuestra pagina de SpigotMC: {0}. Esta advertencia aparecerá y llenara tu consola de mensajes hasta que uses otra versión no deshabilitada para reemplazar esta, no afectara el funcionamiento de su servidor.",
     "label": {
@@ -258,19 +262,19 @@
     "help": "Ayúdanos: ",
     "translate-on-crowdin": "[Traducir en Crowdin]"
   },
-  "shop-now-freezed": "&aYou are frozen the shop, and nobody can trade with this shop now!",
-  "shop-nolonger-freezed": "&aYou are unfrozen the shop, it back to normal now!",
-  "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop cause it under freezing.",
-  "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
-  "denied-put-in-item": "&cThis item cannot put in this shop!",
-  "how-many-buy-stack": "&aEnter how many bulks you wish to &bBUY&a in chat. There have &e{0}&a items in each bulk and You can buy &e{1}&a bulks. Enter &ball&a to buy them all.",
-  "how-many-sell-stack": "&aEnter how many bulks you wish to &dSELL&a in chat. There have &e{0}&a items in each bulk and You have &e{1}&a bulks available. Enter &ball&a to sell them all.",
+  "shop-now-freezed": "&aHas congelado esta tienda y ahora nadie puede intercambiar con esta tienda!",
+  "shop-nolonger-freezed": "&aHas descongelado la tienda, ahora ha vuelto a la normalidad!",
+  "shop-cannot-trade-when-freezing": "&cNo puedes intercambiar con esta tienda porque está congelada.",
+  "shop-freezed-at-location": "&eTú tienda {0} en {1} se ha congelado!",
+  "denied-put-in-item": "&cEste objeto no se puede poner en esta tienda!",
+  "how-many-buy-stack": "&aEscribe cuántos montones querrías &bCOMPRAR&b en el chat. Hay &e{0}&a objetos en cada montón y puedes comprar &e{1}&a montones. Escribe &ball&a para comprarlos todos.",
+  "how-many-sell-stack": "&aEscribe cuántos montones querrías &dVENDER&a en el chat. Hay &e{0}&a objetos en cada montón y tienes &e{1}&a montones disponibles. Escribe &ball&a para venderlos todos.",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslate Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality Assurance Issues: &b{0}%",
-    "help-us": "&a[Help Us Improve Translation Quality]"
+    "name": "&eNombre: &6{0}",
+    "code": "&eCódigo: &6{0}",
+    "translate-progress": "&eProgreso de traducción: &b{0}%",
+    "approval-progress": "&eProgreso de aprobación: &b{0}%",
+    "qa-issues": "&eProblemas de control de calidad: &b{0}%",
+    "help-us": "&a[Ayúdanos a mejorar la calidad de la traducción]"
   }
 }

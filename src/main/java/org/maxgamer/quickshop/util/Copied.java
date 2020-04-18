@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.function.Consumer;
 
-public final class Copied implements Consumer<InputStream> {
+public class Copied implements Consumer<InputStream> {
 
     @NotNull
     private final File file;

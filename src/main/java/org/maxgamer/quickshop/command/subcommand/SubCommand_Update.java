@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,9 +34,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_Update implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(

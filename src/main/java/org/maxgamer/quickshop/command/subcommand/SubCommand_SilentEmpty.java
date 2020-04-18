@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
@@ -33,9 +34,10 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_SilentEmpty implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
@@ -64,7 +66,7 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         final Inventory inventory = cs.getInventory();
 
         if (inventory == null) {
-            // TODO: 24/11/2019 Send message about that issue.
+            Util.debugLog("Inventory is empty! " + cs.toString());
             return;
         }
 

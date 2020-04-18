@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -36,10 +37,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 /**
  * A class to create a GUI item preview quickly
  */
@@ -47,12 +44,11 @@ import java.util.Objects;
 @ToString
 public class InventoryPreview implements Listener {
 
+    private final ItemStack itemStack;
+    private final Player player;
+    private final QuickShop plugin;
     @Nullable
     private Inventory inventory;
-
-    private ItemStack itemStack;
-
-    private Player player;
 
     /**
      * Create a preview item GUI for a player.
@@ -60,24 +56,16 @@ public class InventoryPreview implements Listener {
      * @param itemStack The item you want create.
      * @param player    Target player.
      */
-    public InventoryPreview(@NotNull ItemStack itemStack, @NotNull Player player) {
+    public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
+        this.plugin = plugin;
         this.itemStack = itemStack.clone();
         this.player = player;
-        if (Objects.requireNonNull(this.itemStack.getItemMeta()).hasLore()) {
-            ItemMeta itemMeta = this.itemStack.getItemMeta();
-            List<String> lores = itemMeta.getLore();
-            Objects.requireNonNull(lores).add(QuickShop.instance.getPreviewProtectionLore());
-            itemMeta.setLore(lores);
-            this.itemStack.setItemMeta(itemMeta);
-        } else {
-            ItemMeta itemMeta = this.itemStack.getItemMeta();
-            List<String> lores = new ArrayList<>();
-            lores.add(QuickShop.instance.getPreviewProtectionLore());
-            itemMeta.setLore(lores);
-            this.itemStack.setItemMeta(itemMeta);
-        }
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
+        this.itemStack.setItemMeta(itemMeta);
     }
 
+    @Deprecated
     public static boolean isPreviewItem(@Nullable ItemStack stack) {
         if (stack == null) {
             return false;

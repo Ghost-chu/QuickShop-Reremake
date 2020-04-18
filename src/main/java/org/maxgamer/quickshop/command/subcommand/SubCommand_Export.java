@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -34,9 +35,10 @@ import java.io.FileWriter;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_Export implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     @SneakyThrows

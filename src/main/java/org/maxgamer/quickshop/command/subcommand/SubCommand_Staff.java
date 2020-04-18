@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -38,14 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class SubCommand_Staff implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        Util.debugLog(Util.array2String(cmdArg));
         if (!(sender instanceof Player)) {
             MsgUtil.sendMessage(sender, "Only player can execute this command.");
             return;
@@ -127,7 +128,6 @@ public class SubCommand_Staff implements CommandProcesser {
         }
         if (!hitShop) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-            return;
         }
     }
 
@@ -143,19 +143,19 @@ public class SubCommand_Staff implements CommandProcesser {
             if (cmdArg.length == 1) {
                 final String prefix = cmdArg[0].toLowerCase();
 
-                if ("add".startsWith(prefix) || "add".equals(prefix)) {
+                if ("add".startsWith(prefix)) {
                     tabList.add("add");
                 }
 
-                if ("del".startsWith(prefix) || "del".equals(prefix)) {
+                if ("del".startsWith(prefix)) {
                     tabList.add("del");
                 }
 
-                if ("list".startsWith(prefix) || "list".equals(prefix)) {
+                if ("list".startsWith(prefix)) {
                     tabList.add("list");
                 }
 
-                if ("clear".startsWith(prefix) || "clear".equals(prefix)) {
+                if ("clear".startsWith(prefix)) {
                     tabList.add("clear");
                 }
             } else {
