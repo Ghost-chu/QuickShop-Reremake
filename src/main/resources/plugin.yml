@@ -43,13 +43,19 @@ permissions:
     description: Allows a player to create a double shop
     default: op
   quickshop.create.changeprice:
-    description: Allow a player to chyange their shop's price
+    description: Allow a player to change their shop's price
     default: op
   quickshop.create.cmd:
     description: Allow a player to use /qs create to create a shop
     default: op
   quickshop.create.admin:
     description: Allow a player use /qs supercreate to create a shop bypass all protection checks
+    default: op
+  quickshop.create.changeitem:
+    description: Allow a player to change their shop's item
+    default: op
+  quickshop.create.changeamount:
+    description: Allow a player to change their shop's per bulk amount
     default: op
   quickshop.use:
     description: Allows a player to buy/sell using other players shops
@@ -63,14 +69,20 @@ permissions:
   quickshop.other.destroy:
     description: Allows a Staff Member to destroy other players shops if they are locked in the config
     default: op
+  quickshop.other.control:
+    description: Allows a Staff Member to open control panel for other players shop
+    default: op
   quickshop.other.open:
     description: Allows a Staff Member to open someone elses shop if they are locked in the config
     default: op
   quickshop.other.price:
     description: Allows a Staff Member to change the price of someone elses shop
     default: op
-  quickshop.other.edit:
-    description: Allows a Staff Member to open control pannel of someone elses shop
+  quickshop.other.item:
+    description: Allows a Staff Member to change the item of someone elses shop
+    default: op
+  quickshop.other.amount:
+    description: Allows a Staff Member to change the per bulk amount of someone elses shop
     default: op
   quickshop.setowner:
     description: Allows a Staff Member to change the owner of any shop
