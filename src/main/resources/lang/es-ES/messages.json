@@ -71,7 +71,7 @@
   "shop-staff-deleted": "&aHas retirado a {0} como personal de tu tienda con éxito.",
   "no-permission-build": "&cNo puedes construir una tienda aquí.",
   "success-change-owner-to-server": "&aPropiedad de la tienda establecida a Servidor con éxito.",
-  "flush-finished": "&aPurgó con éxito los mensajes.\n",
+  "flush-finished": "&aMensajes purgados con éxito.",
   "purchase-failed": "&cCompra sin éxito: fallo interno. Por favor, contacta con el administrador del servidor.",
   "no-pending-action": "&cNo tienes ninguna acción pendiente",
   "permission-denied-3rd-party": "&cPermiso denegado: Plugin de terceros [{0}].",
