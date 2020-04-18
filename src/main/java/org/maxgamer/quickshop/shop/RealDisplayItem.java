@@ -72,7 +72,7 @@ public class RealDisplayItem extends DisplayItem {
         if (this.item == null) {
             return false;
         }
-        return !this.item.isValid() || this.item.isDead();
+        return !this.item.isValid();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class RealDisplayItem extends DisplayItem {
             Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
-        if (item != null && item.isValid() && !item.isDead()) {
+        if (item != null && item.isValid()) {
             Util.debugLog(
                     "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             StackTraceElement[] traces = Thread.currentThread().getStackTrace();

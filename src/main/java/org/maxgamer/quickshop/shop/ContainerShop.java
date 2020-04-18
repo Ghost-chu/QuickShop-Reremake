@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
@@ -118,7 +119,6 @@ public class ContainerShop implements Shop {
         this.shopType = type;
         this.unlimited = unlimited;
         initDisplayItem();
-
         this.lastChangedAt = System.currentTimeMillis();
     }
 
@@ -410,16 +410,20 @@ public class ContainerShop implements Shop {
         Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
         // check price restriction
-        Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial());
-        if (priceRestriction != null) {
-            if (price < priceRestriction.getKey()) {
-                this.lastChangedAt = System.currentTimeMillis();
-                price = priceRestriction.getKey();
-                this.update();
-            } else if (price > priceRestriction.getValue()) {
-                this.lastChangedAt = System.currentTimeMillis();
-                price = priceRestriction.getValue();
-                this.update();
+
+
+        if(plugin.getShopManager().getPriceLimiter().check(item,price) != PriceLimiter.Status.PASS){
+            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
+            if (priceRestriction != null) {
+                if (price < priceRestriction.getKey()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getKey();
+                    this.update();
+                } else if (price > priceRestriction.getValue()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getValue();
+                    this.update();
+                }
             }
         }
         this.checkDisplay();
