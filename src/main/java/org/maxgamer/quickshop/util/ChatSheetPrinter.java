@@ -80,13 +80,17 @@ public class ChatSheetPrinter {
     }
 
     public void printSuggestableCmdLine(
-            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
+            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd, TextComponent... additionText) {
         TextComponent message =
                 new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
         message.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
-        p.spigot().sendMessage(message);
+        if (additionText.length >= 1) {
+            p.spigot().sendMessage(new ComponentBuilder().append(message).append(additionText).create());
+        } else {
+            p.spigot().sendMessage(message);
+        }
     }
 
 }

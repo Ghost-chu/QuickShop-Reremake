@@ -71,7 +71,7 @@ public class PlayerListener implements Listener {
                     block = e.getClickedBlock();
                 }
                 Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
-                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || e.getPlayer().hasPermission("quickshop.other.edit"))) {
+                if (controlPanelShop != null && (controlPanelShop.getOwner().equals(e.getPlayer().getUniqueId()) || QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.other.control"))) {
                     MsgUtil.sendControlPanelInfo(e.getPlayer(), Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
                     this.playClickSound(e.getPlayer());
                     Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();

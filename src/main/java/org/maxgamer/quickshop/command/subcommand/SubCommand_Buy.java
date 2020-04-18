@@ -61,7 +61,7 @@ public class SubCommand_Buy implements CommandProcesser {
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
             if (shop != null) {
-                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.edit")) {
+                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
                     shop.setShopType(ShopType.BUYING);
                     // shop.setSignText();
                     shop.update();
