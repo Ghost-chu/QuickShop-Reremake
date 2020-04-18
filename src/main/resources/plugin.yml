@@ -57,6 +57,9 @@ permissions:
   quickshop.create.changeamount:
     description: Allow a player to change their shop's per bulk amount
     default: op
+  quickshop.create.stacks:
+    description: Allow a player to create a shop with stack items
+    default: op
   quickshop.use:
     description: Allows a player to buy/sell using other players shops
     default: true

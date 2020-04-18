@@ -633,6 +633,10 @@ public class ShopManager {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
+        if(plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")){
+            Util.debugLog("Player "+p+" no permission to create stacks shop, forcing creating single item shop");
+            info.getItem().setAmount(1);
+        }
         Util.debugLog("actionCreate");
         try {
             // Checking the shop can be created
