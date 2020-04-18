@@ -128,7 +128,8 @@ limits:
   #Players with these permissions can create these amounts of shops.
   ranks:
     #Anyone with 'quickshop.vip' permissions, can create 20 shops instead of 10.
-    quickshop.vip: 20 #Players with quickshop.vip can make 20 shops.
+    quickshop:
+      vip: 20 #Players with quickshop.vip can make 20 shops.
 
 #A list of block (materials) which can be used to create shops.
 #By default, chests are added to this list.
