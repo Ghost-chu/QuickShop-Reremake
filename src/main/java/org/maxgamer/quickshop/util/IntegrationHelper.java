@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +50,12 @@ public class IntegrationHelper {
     public void unregister(@NotNull IntegratedPlugin clazz) {
         if (!isIntegrationClass(clazz)) {
             throw new InvaildIntegratedPluginClass();
+        }
+        //Prevent it being removed
+        //WorldGuardIntegration will load in onload()V
+        //so it won't be registered again when reload
+        if (clazz instanceof WorldGuardIntegration) {
+            return;
         }
         Util.debugLog("Unregistering " + clazz.getName());
         integrations.remove(clazz);
