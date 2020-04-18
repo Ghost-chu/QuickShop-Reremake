@@ -622,15 +622,15 @@ public class MsgUtil {
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
 
         }
-        //Set item
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
-            String text = MsgUtil.getMessage(
-                    "controlpanel.item",
-                    sender);
-            String hoverText = MsgUtil.getMessage("controlpanel.item-hover", sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.item", sender);
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
-        }
+//        //Set item
+//        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
+//            String text = MsgUtil.getMessage(
+//                    "controlpanel.item",
+//                    sender);
+//            String hoverText = MsgUtil.getMessage("controlpanel.item-hover", sender);
+//            String clickCommand = MsgUtil.getMessage("controlpanel.commands.item", sender);
+//            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
+//        }
 
 
         // Refill
