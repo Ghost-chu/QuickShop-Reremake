@@ -33,17 +33,12 @@ import org.jetbrains.annotations.Nullable;
 @EqualsAndHashCode
 @ToString
 public class Info {
+    private final Block last;
+    private final Location loc;
+    private final long lastChangedAt;
     private ShopAction action;
-
     private ItemStack item;
-
-    private Block last;
-
-    private Location loc;
-
     private Shop shop;
-
-    private long lastChangedAt;
 
     public Info(
             @NotNull Location loc,

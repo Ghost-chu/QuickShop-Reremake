@@ -9,7 +9,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 @AllArgsConstructor
 public class BukkitItemMatcherImpl implements ItemMatcher {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Gets the ItemMatcher provider name

@@ -35,6 +35,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: This is a shit, need refactor
 public class Updater {
 
     private static final Pattern pattern = Pattern.compile("([0-9]*\\.)+[0-9]*");

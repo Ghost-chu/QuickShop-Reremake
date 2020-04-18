@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,10 +31,11 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_FetchMessage implements CommandProcesser {
 
     @NotNull
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
@@ -46,7 +48,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
         plugin
                 .getServer()
                 .getScheduler()
-                .runTask(QuickShop.instance, () -> MsgUtil.flush((Player) sender));
+                .runTask(plugin, () -> MsgUtil.flush((Player) sender));
     }
 
     @NotNull

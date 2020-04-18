@@ -74,8 +74,10 @@ public class Util {
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static List<String> debugLogs = new LinkedList<>();
-    private static ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final List<String> debugLogs = new LinkedList<>();
+    private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    static Yaml yaml = null;
+    static DumperOptions yamlOptions = null;
     private static boolean devMode = false;
     private static QuickShop plugin;
     private static Object serverInstance;
@@ -237,10 +239,12 @@ public class Util {
      */
     @Nullable
     public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
-        DumperOptions yamlOptions = new DumperOptions();
-        yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yamlOptions.setIndent(2);
-        Yaml yaml = new Yaml(yamlOptions);
+        if (yaml == null) {
+            yamlOptions = new DumperOptions();
+            yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            yamlOptions.setIndent(2);
+            yaml = new Yaml(yamlOptions); //Caching it!
+        }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         Map<Object, Object> root = yaml.load(config);
         //noinspection unchecked
@@ -289,6 +293,7 @@ public class Util {
         }
     }
 
+    @NotNull
     public static List<String> getDebugLogs() {
         lock.readLock().lock();
         List<String> strings = new ArrayList<>(debugLogs);
@@ -665,8 +670,7 @@ public class Util {
                 plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
                 continue;
             }
-            int size = Integer.parseInt(data[1]);
-            customStackSize.put(mat, size);
+            customStackSize.put(mat, Integer.parseInt(data[1]));
 
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
@@ -1301,6 +1305,7 @@ public class Util {
         }
     }
 
+    //TODO: Need caching
     public static Class<?> getNMSClass(@Nullable String className) {
         if (className == null) {
             className = "MinecraftServer";

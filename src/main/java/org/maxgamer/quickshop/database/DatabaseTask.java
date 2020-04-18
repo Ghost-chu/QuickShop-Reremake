@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class DatabaseTask {
 
     private static final Database database = QuickShop.getInstance().getDatabase();
-    private String statement;
-    private Task task;
+    private final String statement;
+    private final Task task;
 
     public DatabaseTask(String statement, Task task) {
         this.statement = statement;

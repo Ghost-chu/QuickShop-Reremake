@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class ShopAPI {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     /**
      * Gets shop from location

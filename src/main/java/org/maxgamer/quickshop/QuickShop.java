@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop;
 
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -71,18 +72,28 @@ public class QuickShop extends JavaPlugin {
 
     /**
      * The active instance of QuickShop
+     * You shouldn't use this if you really need it.
      */
     @Getter
+    @Deprecated
     public static QuickShop instance;
 
     /**
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-
+    /**
+     * WIP
+     */
+    @Getter
+    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
+    /**
+     * The shop limites.
+     */
+    @Getter
+    private final HashMap<String, Integer> limits = new HashMap<>(15);
     @Getter
     private IntegrationHelper integrationHelper;
-
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -90,79 +101,54 @@ public class QuickShop extends JavaPlugin {
     @Getter
     @Setter
     private BootError bootError;
-
     @Getter
     private CommandManager commandManager;
-
-    /**
-     * WIP
-     */
-    @Getter
-    private CompatibilityManager compatibilityTool = new CompatibilityManager();
-
     /**
      * The database for storing all our data for persistence
      */
     @Getter
     private Database database;
-
     /**
      * Contains all SQL tasks
      */
     @Getter
     private DatabaseHelper databaseHelper;
-
     /**
      * Queued database manager
      */
     @Getter
     private DatabaseManager databaseManager;
-
     /**
      * Default database prefix, can overwrite by config
      */
     @Getter
     private String dbPrefix = "";
-
     /**
      * Whether we should use display items or not
      */
     @Getter
     private boolean display = true;
-
     @Getter
     private int displayItemCheckTicks;
-
     @Getter
     private DisplayWatcher displayWatcher;
-
     /**
      * The economy we hook into for transactions
      */
     @Getter
     private Economy economy;
-
     @Getter
     private ItemMatcher itemMatcher;
-
     /**
      * Language manager, to select which language will loaded.
      */
     @Getter
     private Language language;
-
     /**
      * Whether or not to limit players shop amounts
      */
     @Getter
     private boolean limit = false;
-
-    /**
-     * The shop limites.
-     */
-    @Getter
-    private HashMap<String, Integer> limits = new HashMap<>(15);
-
     // private BukkitTask itemWatcherTask;
     @Nullable
     @Getter
@@ -383,10 +369,10 @@ public class QuickShop extends JavaPlugin {
             EconomyCore core = null;
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
-                    bootError = new BootError("Can't load the Economy provider, invaild value in config.yml.");
+                    bootError = new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml.");
                     return false;
                 case VAULT:
-                    core = new Economy_Vault();
+                    core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
                         getLogger().info("Checking the tax account infos...");
@@ -410,7 +396,7 @@ public class QuickShop extends JavaPlugin {
                     }
                     break;
                 case RESERVE:
-                    core = new Economy_Reserve();
+                    core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
                 default:
@@ -427,7 +413,7 @@ public class QuickShop extends JavaPlugin {
                 // getLogger().severe("(Does Vault have an Economy to hook into?!)");
                 return false;
             } else {
-                this.economy = new Economy(ServiceInjector.getEconomyCore(core));
+                this.economy = new Economy(this, ServiceInjector.getEconomyCore(core));
                 return true;
             }
         } catch (Exception e) {
@@ -558,7 +544,7 @@ public class QuickShop extends JavaPlugin {
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
-        commandManager = new CommandManager();
+        commandManager = new CommandManager(this);
         //noinspection ConstantConditions
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
@@ -570,7 +556,7 @@ public class QuickShop extends JavaPlugin {
         try {
             new RuntimeCheck(this);
         } catch (RuntimeException e) {
-            bootError = new BootError(e.getMessage());
+            bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
@@ -737,8 +723,6 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering UpdateWatcher...");
         UpdateWatcher.init();
-        getLogger().info("Registering BStats Mertics...");
-        submitMeritcs();
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
@@ -773,6 +757,13 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Throwable ignore) {
         }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getLogger().info("Registering BStats Mertics...");
+                submitMeritcs();
+            }
+        }.runTask(this);
     }
 
     private void registerIntegrations() {
@@ -823,10 +814,10 @@ public class QuickShop extends JavaPlugin {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                dbCore = new MySQLCore(this, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
             } else {
                 // SQLite database - Doing this handles file creation
-                dbCore = new SQLiteCore(new File(this.getDataFolder(), "shops.db"));
+                dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
             this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
@@ -887,12 +878,18 @@ public class QuickShop extends JavaPlugin {
             }
             String shop_find_distance = getConfig().getString("shop.find-distance");
             String economyType = Economy.getNowUsing().name();
+            if (getEconomy() != null) {
+                economyType = this.getEconomy().getName();
+            }
             String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
             String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
-            String disableDebugLoggger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-
+            String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
+            String databaseType = this.getDatabase().getCore().getName();
+            String displayType = DisplayItem.getNowUsing().name();
+            String itemMatcherType = this.getItemMatcher().getName();
+            String useStackItem = String.valueOf(this.isAllowStack());
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
@@ -901,12 +898,17 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
             metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
             metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
-            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> economyType));
+            String finalEconomyType = economyType;
+            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> useDisplayAutoDespawn));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLoggger));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLogger));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> databaseType));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> displayType));
+            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> itemMatcherType));
+            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> useStackItem));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
@@ -1060,9 +1062,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("lockette.displayname", null);
             getConfig().set("float", null);
             getConfig().set("lockette.enable", true);
-            ArrayList<String> blackListWorld = new ArrayList<>();
-            blackListWorld.add("disabled_world_name");
-            getConfig().set("shop.blacklist-world", blackListWorld);
+            getConfig().set("shop.blacklist-world", Lists.newArrayList("disabled_world_name"));
             getConfig().set("config-version", 24);
             selectedVersion = 24;
         }
@@ -1281,9 +1281,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 68;
         }
         if (selectedVersion == 68) {
-            ArrayList<String> temp = new ArrayList<>();
-            temp.add("SoulBound");
-            getConfig().set("shop.blacklist-lores", temp);
+            getConfig().set("shop.blacklist-lores", Lists.newArrayList("SoulBound"));
             getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
@@ -1503,7 +1501,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", new ArrayList<>());
+            getConfig().set("custom-item-stacksize", new ArrayList<>(1));
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }

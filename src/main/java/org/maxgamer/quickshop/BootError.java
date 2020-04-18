@@ -26,6 +26,8 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.logging.Logger;
+
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
  */
@@ -33,12 +35,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 @ToString
 public class BootError {
 
-    private String[] errors;
+    private final String[] errors;
 
-    public BootError(@NotNull String... errors) {
+    public BootError(@NotNull Logger logger, @NotNull String... errors) {
         this.errors = errors;
         for (String err : errors) {
-            QuickShop.instance.getLogger().severe(err);
+            logger.severe(err);
         }
     }
 

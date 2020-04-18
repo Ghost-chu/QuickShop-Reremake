@@ -21,11 +21,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public final class JSONConfiguration extends FileConfiguration {
+public class JSONConfiguration extends FileConfiguration {
 
     protected static final String BLANK_CONFIG = "{}\n";
-    private static Gson outputGson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-    private static Gson inputGson = new GsonBuilder().registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+    private static final Gson outputGson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+    private static final Gson inputGson = new GsonBuilder().registerTypeAdapter(new TypeToken<Map<String, Object>>() {
     }.getType(), new MapDeserializerDoubleAsIntFix()).create();
 
     @NotNull
