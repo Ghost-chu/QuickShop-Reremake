@@ -90,7 +90,7 @@
     "space": "&aKapazität: &e{0}",
     "stock": "&aLagerbestand: &e{0}",
     "price-per": "&aPreis pro &e{0} &a- &e{1}",
-    "price-per-stack": "&aPreis pro Bulk &e{0} - {1}",
+    "price-per-stack": "&aPrice per &e{3}x {0} - {1}",
     "total-value-of-chest": "&aTotal value of chest: &e{0}",
     "damage-percent-remaining": "&e{0}% &aremaining.",
     "this-shop-is-buying": "&aDieser Shop &dKAUFT&a Gegenstände an.",
