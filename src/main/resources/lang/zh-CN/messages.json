@@ -25,7 +25,7 @@
   "success-created-shop": "&a创建商店成功！",
   "success-removed-shop": "&a商店已删除！",
   "shops-arent-locked": "&c注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住箱子。",
-  "shop-creation-cancelled": "创建竞技场已取消。",
+  "shop-creation-cancelled": "商店创建已取消。",
   "shop-purchase-cancelled": "您取消了付款",
   "shop-stock-too-low": "&c这个商店只有 {0} 个 {1} 了。",
   "you-cant-afford-to-buy": "&c余额不足！购买该商店物品需要 {0}，但是你只有 {1}。",
