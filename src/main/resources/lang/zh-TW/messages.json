@@ -90,7 +90,7 @@
     "space": "&a空間: &e{0}",
     "stock": "&a庫存: &e{0}",
     "price-per": "&a價格: &e一個 {0} {1} 元",
-    "price-per-stack": "&aPrice per bulk &e{0} - {1}",
+    "price-per-stack": "&aPrice per &e{3}x {0} - {1}",
     "total-value-of-chest": "&aTotal value of chest: &e{0}",
     "damage-percent-remaining": "&e{0}% &aremaining.",
     "this-shop-is-buying": "&a此商店是 &d收購物品&a 的商店。",
