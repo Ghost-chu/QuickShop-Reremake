@@ -4,7 +4,7 @@
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
   "language-version": "36",
-  "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
+  "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
   "integrations-check-failed-create": "An integration denied the shop-creation",
