@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.shop;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -63,6 +64,7 @@ public class ShopManager {
 
     private final QuickShop plugin;
     private final UUID cacheTaxAccount;
+    @Getter
     private final PriceLimiter priceLimiter;
     private boolean useFastShopSearchAlgorithm = false;
 

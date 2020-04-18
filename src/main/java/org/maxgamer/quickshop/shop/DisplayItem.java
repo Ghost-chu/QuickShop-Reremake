@@ -64,7 +64,7 @@ public abstract class DisplayItem {
      * @param itemStack Target ItemStack
      * @return Contains protect flag.
      */
-    public static boolean checkIsGuardItemStack(@Nullable ItemStack itemStack) {
+    public static boolean checkIsGuardItemStack(@Nullable final ItemStack itemStack) {
 
         if (!plugin.isDisplay()) {
             return false;
@@ -118,8 +118,9 @@ public abstract class DisplayItem {
      *
      * @return Using displayType.
      */
+    @NotNull
     public static DisplayType getNowUsing() {
-        return DisplayType.fromID(QuickShop.instance.getConfig().getInt("shop.display-type"));
+        return DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
     }
 
     /**
@@ -129,7 +130,7 @@ public abstract class DisplayItem {
      * @param shop      Target shop
      * @return Is target shop's display
      */
-    public static boolean checkIsTargetShopDisplay(@NotNull ItemStack itemStack, @NotNull Shop shop) {
+    public static boolean checkIsTargetShopDisplay(@NotNull final ItemStack itemStack, @NotNull Shop shop) {
         if (!plugin.isDisplay()) {
             return false;
         }
@@ -176,9 +177,10 @@ public abstract class DisplayItem {
      * @param shop      The shop
      * @return New itemStack with protect flag.
      */
+    @NotNull
     public static ItemStack createGuardItemStack(@NotNull ItemStack itemStack, @NotNull Shop shop) {
         itemStack = itemStack.clone();
-        itemStack.setAmount(1);
+        //itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
         if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
             if (iMeta.hasDisplayName()) {
@@ -203,6 +205,7 @@ public abstract class DisplayItem {
      * @param shop      The shop
      * @return ShopProtectionFlag obj
      */
+    @NotNull
     public static ShopProtectionFlag createShopProtectionFlag(
             @NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
