@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +101,7 @@ public class SubCommand_Info implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
 }
