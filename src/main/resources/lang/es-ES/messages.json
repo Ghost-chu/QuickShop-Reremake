@@ -153,14 +153,14 @@
     }
   },
   "signs": {
-    "selling": "Vendiendo {0}",
-    "stack-selling": "Vendiendo {0}",
+    "selling": "Vendo {0}",
+    "stack-selling": "Vendo {0}",
     "header": "&c{0}",
-    "buying": "Comprando {0}",
-    "stack-buying": "Comprando {0}",
+    "buying": "Compro {0}",
+    "stack-buying": "Compro {0}",
     "item": "{0}",
-    "price": "{0} por unidad.",
-    "stack-price": "{0} por montón",
+    "price": "{0} la unidad",
+    "stack-price": "{0} el stack",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
@@ -199,7 +199,7 @@
     "full_line": "+---------------------------------------------------+",
     "left_half_line": "+--------------------",
     "right_half_line": "--------------------+",
-    "left_begin": "|"
+    "left_begin": "| "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -242,7 +242,7 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Maestro]"
+      "master": "[Master]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c¡Tu tienda en {0} ha sido eliminada porque no tenías fondos para mantenerla!",
