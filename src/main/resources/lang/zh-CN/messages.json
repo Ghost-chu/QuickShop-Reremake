@@ -2,7 +2,7 @@
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul and Andre_601",
-  "translation-country": "本地化语言：简体中文 (zh_CN)",
+  "translation-country": "本地化语言：&b&l简体中文 (zh_CN)",
   "language-version": "35",
   "not-looking-at-shop": "&cCould not find any QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cYou have nothing in your hand.",
@@ -271,10 +271,10 @@
   "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &ball&a in chat to sell all.",
   "language": {
     "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslation Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality assurance issues: &b{0}%",
-    "help-us": "&a[Help us improve the translation quality]"
+    "code": "&eCode： &6{0}",
+    "translate-progress": "&eTranslation 进度: &b{0}%",
+    "approval-progress": "&e审批进度: &b{0}%",
+    "qa-issues": "&eQuality 保证问题：&b{0}%",
+    "help-us": "&a[帮助我们提高翻译质量]"
   }
 }
