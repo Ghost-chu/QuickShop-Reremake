@@ -1270,7 +1270,7 @@ public class Util {
         plugin
                 .getLogger()
                 .warning(
-                        "QuickShop can't found any useable sign material, we will use default Sign Material.");
+                        "QuickShop can't found any usable sign material, we will use default Sign Material.");
         try {
             return Material.OAK_WALL_SIGN;
         } catch (Throwable e) {
