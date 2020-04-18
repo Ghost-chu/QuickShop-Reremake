@@ -76,8 +76,8 @@ public class Util {
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
     private static final List<String> debugLogs = new LinkedList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    static Yaml yaml = null;
-    static DumperOptions yamlOptions = null;
+    private static Yaml yaml = null;
+    private static DumperOptions yamlOptions = null;
     private static boolean devMode = false;
     private static QuickShop plugin;
     private static Object serverInstance;
@@ -1295,6 +1295,10 @@ public class Util {
                     | InvocationTargetException
                     | NoSuchMethodException e) {
                 e.printStackTrace();
+                serverInstance = null;
+                tpsField = null;
+                Util.debugLog("Failed to get TPS "+e.getMessage());
+                return 20.0;
             }
         }
         try {
