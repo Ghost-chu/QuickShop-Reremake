@@ -53,9 +53,11 @@ public class SubCommand_Item implements CommandProcesser {
                 }
                 shop.setItem(itemStack);
                 MsgUtil.sendItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())));
+                return;
             }
             // shop.setSignText();
         }
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @Override
