@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.api;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -16,8 +17,11 @@ public class QuickShopAPI {
      *
      * @param qs The QuickShop plugin instance
      */
-    public static void setupApi(@NotNull QuickShop qs) {
-        plugin = qs;
+    public static void setupApi(@NotNull JavaPlugin qs) {
+        if(!(qs instanceof QuickShop)){
+            throw new IllegalArgumentException("You can't setup API, it should only access by QuickShop internal calling.");
+        }
+        plugin = (QuickShop) qs;
     }
 
     /**
