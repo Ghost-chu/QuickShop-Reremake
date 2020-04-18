@@ -16,7 +16,6 @@ public class PriceLimiter {
 
     @NotNull
     public Status check(@NotNull ItemStack stack, double price) {
-        //TODO: Adapt stack item
         if (allowFreeShop) {
             if (price != 0 && price < minPrice) {
                 return Status.REACHED_PRICE_MIN_LIMIT;
@@ -30,9 +29,10 @@ public class PriceLimiter {
                 return Status.REACHED_PRICE_MAX_LIMIT;
             }
         }
+        double perItemPrice = CalculateUtil.subtract(price, stack.getAmount());
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
-            if (price < materialLimit.getKey() || price > materialLimit.getValue()) {
+            if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
                 return Status.PRICE_RESTRICTED;
             }
         }
