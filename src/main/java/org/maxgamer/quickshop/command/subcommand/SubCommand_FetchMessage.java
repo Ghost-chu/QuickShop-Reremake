@@ -27,7 +27,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_FetchMessage implements CommandProcesser {
@@ -53,7 +53,7 @@ public class SubCommand_FetchMessage implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
 }
