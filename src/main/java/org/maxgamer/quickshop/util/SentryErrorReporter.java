@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.google.common.collect.Lists;
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;
 import io.sentry.context.Context;
@@ -50,19 +51,20 @@ import java.util.logging.Logger;
  * Auto report errors to qs's sentry.
  */
 public class SentryErrorReporter {
-    private final String dsn =
-            "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
-                    + "stacktrace.app.packages=org.maxgamer.quickshop";
 
     private final List<String> reported = new ArrayList<>(5);
-    private final List<Class<?>> ignoredException = new ArrayList<>(8);
+    private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
+            , OutOfMemoryError.class
+            , ProtocolException.class
+            , InvalidPluginException.class
+            , UnsupportedClassVersionError.class
+            , LinkageError.class);
     private final IncompatibleChecker checker = new IncompatibleChecker();
     private Context context;
     private QuickShop plugin;
     /* Pre-init it if it called before the we create it... */
     private SentryClient sentryClient;
     private boolean disable;
-
     @Getter
     private boolean enabled;
 
@@ -75,6 +77,8 @@ public class SentryErrorReporter {
             this.plugin = plugin;
             // sentryClient = Sentry.init(dsn);
             Util.debugLog("Loading SentryErrorReporter");
+            String dsn = "https://1d14223850ee44b284b11734461ebbc5@sentry.io/1473041?"
+                    + "stacktrace.app.packages=org.maxgamer.quickshop";
             sentryClient = SentryClientFactory.sentryClient(dsn);
             context = sentryClient.getContext();
             Util.debugLog("Setting basic report data...");
@@ -106,13 +110,6 @@ public class SentryErrorReporter {
             Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
             Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
             Logger.getGlobal().setFilter(new GlobalExceptionFilter());
-            /* Ignore we won't report errors */
-            ignoredException.add(IOException.class);
-            ignoredException.add(OutOfMemoryError.class);
-            ignoredException.add(ProtocolException.class);
-            ignoredException.add(InvalidPluginException.class);
-            ignoredException.add(UnsupportedClassVersionError.class);
-            ignoredException.add(LinkageError.class);
 
             Util.debugLog("Sentry error reporter success loaded.");
             enabled = true;
@@ -140,12 +137,12 @@ public class SentryErrorReporter {
 
     private String getPluginInfo() {
         StringBuilder buffer = new StringBuilder();
-        for (Plugin bplugin : Bukkit.getPluginManager().getPlugins()) {
+        for (Plugin bPlugin : Bukkit.getPluginManager().getPlugins()) {
             buffer
                     .append("\t")
-                    .append(bplugin.getName())
+                    .append(bPlugin.getName())
                     .append("@")
-                    .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
+                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
                     .append("\n");
         }
         return buffer.toString();
@@ -266,7 +263,7 @@ public class SentryErrorReporter {
      */
     public @Nullable UUID sendError(@NotNull Throwable throwable, @NotNull String... context) {
         try {
-            if (QuickShop.instance.getBootError() != null) {
+            if (plugin.getBootError() != null) {
                 return null; // Don't report any errors if boot failed.
             }
             if (tempDisable) {

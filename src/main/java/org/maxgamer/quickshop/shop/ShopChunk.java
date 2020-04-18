@@ -30,11 +30,11 @@ import org.bukkit.World;
 @ToString
 @AllArgsConstructor
 public class ShopChunk {
-    private String world;
+    private final String world;
 
-    private int x;
+    private final int x;
 
-    private int z;
+    private final int z;
 
     public boolean isSame(World world, int x, int z) {
         return isSame(world.getName(), x, z);

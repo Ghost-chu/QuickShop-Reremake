@@ -29,7 +29,7 @@ public class RuntimeCheck {
             int csi = 0;
             while (csi < 101) {
                 csi++;
-                plugin.getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async, Go https://github.com/Luohuayu/QuickShop-Reremake to get CatServer Edition.");
+                plugin.getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async.");
                 plugin.getLogger().severe("FATAL: Don't report any bugs or other issues to the Ghost-chu's QuickShop-Reremake repo as we do not support CatServer");
             }
             try {
@@ -37,7 +37,7 @@ public class RuntimeCheck {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            plugin.setBootError(new BootError("Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
+            plugin.setBootError(new BootError(plugin.getLogger(), "Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
             return;
         }
         if ((plugin.getServer().getName().toLowerCase().contains("mohist") || Util.isClassAvailable("red.mohist.mohist"))) {

@@ -55,23 +55,16 @@ public class ContainerShop implements Shop {
 
     @NotNull
     private final Location location;
-
+    private final QuickShop plugin;
     @Nullable
     private DisplayItem displayItem;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean isLoaded = false;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean isDeleted = false;
-
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
-
     private ShopModerator moderator;
-
-    private QuickShop plugin;
-
     private double price;
 
     private ShopType shopType;
@@ -91,6 +84,8 @@ public class ContainerShop implements Shop {
         this.price = s.price;
         this.isLoaded = s.isLoaded;
         this.lastChangedAt = System.currentTimeMillis();
+        this.isDeleted = s.isDeleted;
+        this.createBackup = s.createBackup;
     }
 
     /**
@@ -105,6 +100,7 @@ public class ContainerShop implements Shop {
      * @param unlimited The unlimited
      */
     public ContainerShop(
+            @NotNull QuickShop plugin,
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
@@ -115,7 +111,7 @@ public class ContainerShop implements Shop {
         this.price = price;
         this.moderator = moderator;
         this.item = item.clone();
-        this.plugin = QuickShop.instance;
+        this.plugin = plugin;
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
         }
@@ -284,7 +280,7 @@ public class ContainerShop implements Shop {
 
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
-            Util.debugLog("Target item not spawned, spawning...");
+            Util.debugLog("Target item not spawned, spawning for shop " + this.getLocation());
             this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
@@ -1084,6 +1080,8 @@ public class ContainerShop implements Shop {
             }
             if (createBackup) {
                 this.delete();
+            } else {
+                Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
             }
         }
     }

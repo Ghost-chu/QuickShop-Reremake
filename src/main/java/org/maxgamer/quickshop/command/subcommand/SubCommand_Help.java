@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +31,10 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 public class SubCommand_Help implements CommandProcesser {
 
-    private final QuickShop plugin = QuickShop.instance;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(
@@ -48,7 +50,7 @@ public class SubCommand_Help implements CommandProcesser {
     }
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
-        s.sendMessage(MsgUtil.getMessage("command.description.title", s));
+        MsgUtil.sendMessage(s, MsgUtil.getMessage("command.description.title", s));
         commandCheckLoop:
         for (CommandContainer container : plugin.getCommandManager().getCmds()) {
             final List<String> requirePermissions = container.getPermissions();
@@ -58,7 +60,7 @@ public class SubCommand_Help implements CommandProcesser {
                         continue commandCheckLoop;
                     }
                 }
-                s.sendMessage(
+                MsgUtil.sendMessage(s,
                         ChatColor.GREEN
                                 + "/"
                                 + commandLabel

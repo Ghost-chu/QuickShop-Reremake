@@ -32,13 +32,13 @@ import java.util.Queue;
 //TODO: This is stupid, need a better impl
 public class SyncTaskWatcher {
     @Getter
-    private Queue<Entity> entityRemoveQueue = new LinkedList<>();
+    private final Queue<Entity> entityRemoveQueue = new LinkedList<>();
 
     @Getter
-    private Queue<InventoryEditContainer> inventoryEditQueue = new LinkedList<>();
+    private final Queue<InventoryEditContainer> inventoryEditQueue = new LinkedList<>();
 
     @Getter
-    private Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
+    private final Queue<ItemStack> itemStackRemoveQueue = new LinkedList<>();
     // private QuickShop plugin;
 
     /**

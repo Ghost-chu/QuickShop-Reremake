@@ -297,7 +297,7 @@ class LunarCalendar {
         Date baseDate = null;
         try {
             baseDate = chineseDateFormat.parse("1900年1月31日");
-        } catch (ParseException e) {
+        } catch (ParseException ignore) {
         }
 
         // 求出和1900年1月31日相差的天数
@@ -433,14 +433,14 @@ class LunarCalendar {
     }
 
     // ====== 传回农历 y年的生肖
-    public final String animalsYear() {
+    public String animalsYear() {
         final String[] Animals =
                 new String[]{"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
         return Animals[(year - 4) % 12];
     }
 
     // ====== 传入 offset 传回干支, 0=甲子
-    public final String cyclical() {
+    public String cyclical() {
         int num = year - 1900 + 36;
         return (cyclicalm(num));
     }

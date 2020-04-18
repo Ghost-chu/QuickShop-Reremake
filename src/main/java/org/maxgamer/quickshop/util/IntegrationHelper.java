@@ -32,7 +32,7 @@ import java.util.Set;
 
 @Getter
 public class IntegrationHelper {
-    private Set<IntegratedPlugin> integrations = new HashSet<>(5);
+    private final Set<IntegratedPlugin> integrations = new HashSet<>(5);
 
     public void register(@NotNull IntegratedPlugin clazz) {
         if (!isIntegrationClass(clazz)) {

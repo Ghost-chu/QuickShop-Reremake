@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.InputStreamReader;
 
-public final class YAMLFile extends FileEnvelope {
+public class YAMLFile extends FileEnvelope {
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath, boolean loadDefault) {
         super(plugin, file, resourcePath.endsWith(".yml") ? resourcePath : resourcePath + ".yml", loadDefault);

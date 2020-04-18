@@ -30,12 +30,14 @@ import java.util.UUID;
 
 public class Economy implements EconomyCore {
 
+    private final QuickShop plugin;
     @Getter
     @Setter
     @NotNull
     private EconomyCore core;
 
-    public Economy(@NotNull EconomyCore core) {
+    public Economy(@NotNull QuickShop plugin, @NotNull EconomyCore core) {
+        this.plugin = plugin;
         this.core = core;
     }
 
@@ -97,7 +99,7 @@ public class Economy implements EconomyCore {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.instance;
+        return plugin;
     }
 
 }

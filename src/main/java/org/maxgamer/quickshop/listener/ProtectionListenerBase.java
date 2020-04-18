@@ -10,9 +10,9 @@ import org.maxgamer.quickshop.shop.Shop;
 
 @Getter
 public class ProtectionListenerBase {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
-    private Cache cache;
+    private final Cache cache;
 
     public ProtectionListenerBase(@NotNull QuickShop plugin, @Nullable Cache cache) {
         this.cache = cache;

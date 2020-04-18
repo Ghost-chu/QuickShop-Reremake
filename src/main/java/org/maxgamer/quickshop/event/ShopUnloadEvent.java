@@ -30,7 +30,7 @@ public class ShopUnloadEvent extends QSEvent {
 
     @NotNull
     @Getter
-    private Shop shop;
+    private final Shop shop;
 
     /**
      * Getting the unloading shop, Can't cancel.

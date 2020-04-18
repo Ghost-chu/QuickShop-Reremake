@@ -10,9 +10,9 @@ import java.util.TimerTask;
 
 public class Cache extends TimerTask {
     private final Object lock = new Object();
-    private QuickShop plugin;
-    private long expireTime = 5000;
-    private Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
+    private final QuickShop plugin;
+    private final long expireTime = 5000;
+    private final Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
 
     public Cache(QuickShop plugin) {
         this.plugin = plugin;
