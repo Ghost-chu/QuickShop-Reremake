@@ -63,12 +63,12 @@
   "failed-to-put-sign": "&cMarket çevresinde bilgi tabelasını yerleştirmek için yeterli yer yok.",
   "failed-to-paste": "&cVeriler Pastebin'e yüklenemedi. İnternetinizi kontrol edip tekrar deneyiniz. (Ayrıntılar için konsola bakın)",
   "warn-to-paste": "&eVeriler toplanıyor ve Pastebin'e yükleniyor, bu biraz zaman alabilir. &c&lUyarı&c, Veriler bir hafta boyunca herkese açık tutulur, sunucu konfigürasyonunuzu ve diğer hassas bilgilerinizi sızdırabilir, sadece &lgüvendiğiniz personele\/geliştiriciye &c göderdiğinizden emin olun.",
-  "price-too-high": "&cThe shop price is too high! You cannot create one with a price higher than {0}.",
+  "price-too-high": "&cMarket fiyatı çok yüksek! {0} fiyatından yüksek bir tane oluşturamazsınız.",
   "you-cant-create-shop-in-there": "&cBurada bir market oluşturma izniniz yok.",
-  "unknown-player": "&cTarget Player doesn't exist. Please check the username you typed.",
-  "shop-staff-cleared": "&aSuccessfully removed all staff members from your shop.",
-  "shop-staff-added": "&aSuccessfully added {0} as staff for your shop.",
-  "shop-staff-deleted": "&aSuccessfully removed {0} as staff for your shop.",
+  "unknown-player": "&cHedef oyuncu mevcut değil. Lütfen yazdığınız kullanıcı adını kontrol ediniz.",
+  "shop-staff-cleared": "&aBaşarıyla marketinizin bütün personelleri kadırıldı.",
+  "shop-staff-added": "&a{0} başarıyla market personellerinize eklendi.",
+  "shop-staff-deleted": "&a{0} başarıyla market personellerinizden kaldırıldı.",
   "no-permission-build": "&cYou cannot build a shop here.",
   "success-change-owner-to-server": "&aSuccessfully set the Shop owner to Server.",
   "flush-finished": "&aMesajlar başarıyla temizlendi.",
@@ -149,7 +149,7 @@
       "about": "&eShows QuickShop info",
       "help": "&eShows QuickShop help",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
-      "language": "&eChange the currently used language"
+      "language": "&eGeçerli dili değiştir"
     }
   },
   "signs": {
@@ -165,7 +165,7 @@
   },
   "controlpanel": {
     "setowner": "&aSahibi: &b{0} &e[&d&lDeğiştir&e]",
-    "infomation": "&aShop Control panel:",
+    "infomation": "&aMarket Kontrol paneli:",
     "setowner-hover": "&eSahibi değiştirmek için tıkla.",
     "unlimited": "&aUnlimited: {0} &e[&d&lChange&e]",
     "unlimited-hover": "&eMağaza sınırsızsa geçiş yapmak için tıkla.",
