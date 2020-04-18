@@ -112,7 +112,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)));
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)), Integer.toString(item.getAmount()));
             return;
         }
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
