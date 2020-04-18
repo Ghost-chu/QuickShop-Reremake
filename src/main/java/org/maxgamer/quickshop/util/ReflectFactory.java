@@ -20,12 +20,14 @@
 package org.maxgamer.quickshop.util;
 
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
 public class ReflectFactory {
     private static String cachedVersion = null;
 
+    @NotNull
     public static String getServerVersion() {
         if (cachedVersion != null) {
             return cachedVersion;
