@@ -48,7 +48,7 @@ public class SubCommand_Size implements CommandProcesser {
                             }
                             shop.getItem().setAmount(amount);
                             shop.refresh();
-                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.bulk-size-now", sender, Util.getItemStackName(shop.getItem()), Integer.toString(shop.getItem().getAmount())));
+                            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.bulk-size-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())));
                         } else {
                             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
                         }

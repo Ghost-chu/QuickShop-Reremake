@@ -48,11 +48,11 @@ public class SubCommand_Item implements CommandProcesser {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("blacklisted-item", sender));
                     return;
                 }
-                if (!QuickShop.getInstance().isAllowStack()) {
+                if (!QuickShop.getInstance().isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
                     itemStack.setAmount(1);
                 }
                 shop.setItem(itemStack);
-                MsgUtil.sendItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("command.trade-item-now", sender, Util.getItemStackName(shop.getItem()), Integer.toString(shop.getItem().getAmount())));
+                MsgUtil.sendItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())));
             }
             // shop.setSignText();
         }
