@@ -269,7 +269,7 @@
   "language-info-panel": {
     "name": "Language: ",
     "code": "Code: ",
-    "progress": "Progres: ",
+    "progress": "Progress: ",
     "help": "Help us: ",
     "translate-on-crowdin": "[Translate on Crowdin]"
   },
