@@ -24,23 +24,25 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 public class ShopChunk {
+    @NotNull
     private final String world;
 
     private final int x;
 
     private final int z;
 
-    public boolean isSame(World world, int x, int z) {
+    public boolean isSame(@NotNull World world, int x, int z) {
         return isSame(world.getName(), x, z);
     }
 
-    public boolean isSame(String world, int x, int z) {
+    public boolean isSame(@NotNull String world, int x, int z) {
         return this.x == x && this.z == z && this.world.equals(world);
     }
 
