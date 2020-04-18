@@ -125,6 +125,10 @@
 
     <repositories>
         <repository>
+            <id>ustc</id>
+            <url>http://mirrors.ustc.edu.cn/</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -132,10 +136,7 @@
 <!--            <id>central-repo</id>-->
 <!--            <url>https://repo1.maven.org/maven2/</url>-->
 <!--        </repository>-->
-        <repository>
-            <id>reserve-repo</id>
-            <url>https://dl.bintray.com/theneweconomy/java/</url>
-        </repository>
+
         <repository>
             <id>vault-repo</id>
             <url>https://jitpack.io</url>
@@ -143,10 +144,6 @@
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>ustc</id>
-            <url>http://mirrors.ustc.edu.cn/</url>
         </repository>
         <repository>
             <id>fanciful-repo</id>
@@ -188,6 +185,10 @@
         <repository>
             <id>portlek</id>
             <url>https://dl.bintray.com/portlek/maven</url>
+        </repository>
+        <repository>
+            <id>reserve-repo</id>
+            <url>https://dl.bintray.com/theneweconomy/java/</url>
         </repository>
     </repositories>
 
