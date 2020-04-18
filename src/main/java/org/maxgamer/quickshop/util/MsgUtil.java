@@ -788,7 +788,7 @@ public class MsgUtil {
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
                         p,
-                        Integer.toString(amount),
+                        Integer.toString(amount*shop.getItem().getAmount()),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
         printEnchantment(p, shop, chatSheetPrinter);
