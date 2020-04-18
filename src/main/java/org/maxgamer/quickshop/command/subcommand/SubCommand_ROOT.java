@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_ROOT implements CommandProcesser {
@@ -65,7 +66,7 @@ public class SubCommand_ROOT implements CommandProcesser {
                                         + commandLabel
                                         + ", but no permission "
                                         + requirePermission);
-                        return new ArrayList<>();
+                        return Collections.emptyList();
                     }
                 }
             }

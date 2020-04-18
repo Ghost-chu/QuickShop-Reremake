@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.util.UpdateInfomation;
 import org.maxgamer.quickshop.util.Updater;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_Update implements CommandProcesser {
@@ -101,7 +101,7 @@ public class SubCommand_Update implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
 }

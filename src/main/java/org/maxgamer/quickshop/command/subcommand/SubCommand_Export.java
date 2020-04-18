@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_Export implements CommandProcesser {
@@ -75,7 +76,7 @@ public class SubCommand_Export implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return null;
+        return Collections.emptyList();
     }
 
 }

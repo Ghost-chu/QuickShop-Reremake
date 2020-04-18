@@ -32,7 +32,7 @@ import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_Sell implements CommandProcesser {
@@ -58,16 +58,17 @@ public class SubCommand_Sell implements CommandProcesser {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
-            if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
-                continue;
+            if (shop != null) {
+                if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.edit")) {
+                    shop.setShopType(ShopType.SELLING);
+                    // shop.setSignText();
+                    shop.update();
+                    MsgUtil.sendMessage(sender,
+                            MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                } else {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                }
             }
-
-            shop.setShopType(ShopType.SELLING);
-            // shop.setSignText();
-            shop.update();
-            MsgUtil.sendMessage(sender,
-                    MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
-            return;
         }
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
@@ -76,7 +77,7 @@ public class SubCommand_Sell implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
 }

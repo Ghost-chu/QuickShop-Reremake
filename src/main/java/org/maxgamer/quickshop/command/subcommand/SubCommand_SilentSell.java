@@ -30,7 +30,7 @@ import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubCommand_SilentSell implements CommandProcesser {
@@ -72,7 +72,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
 }

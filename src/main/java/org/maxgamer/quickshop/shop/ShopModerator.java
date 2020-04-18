@@ -127,10 +127,7 @@ public class ShopModerator {
      * @return yes or no, return true when it is staff or owner
      */
     public boolean isModerator(@NotNull UUID player) {
-        if (isOwner(player)) {
-            return true;
-        }
-        return isStaff(player);
+        return isOwner(player) || isStaff(player);
     }
 
     /**
