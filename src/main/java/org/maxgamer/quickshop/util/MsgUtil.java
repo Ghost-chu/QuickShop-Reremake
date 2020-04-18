@@ -1407,6 +1407,20 @@ public class MsgUtil {
             setAndUpdate("signs.stack-price", "{0} per bulk");
             setAndUpdate("controlpanel.stack", "&aPer bulk amount: &b{0} &e[&d&lChange&e]");
             setAndUpdate("controlpanel.stack-hover", "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.");
+            setAndUpdate("controlpanel.commands.stack", "/qs size [Amount]");
+            setAndUpdate("controlpanel.item", "&aShop Item: {0} &e[&d&lChange&e]");
+            setAndUpdate("controlpanel.item-hover", "&eClick to change shop Item");
+            setAndUpdate("controlpanel.commands.item", "/qs item");
+            setAndUpdate("how-much-to-trade-for", "&aEnter in chat, how much you wish to trade {1}x &e{0}&a for.");
+            setAndUpdate("command.bulk-size-not-set", "&cUsage: /qs size <amount>");
+            setAndUpdate("command.bulk-size-now", "&aNow trading {0}x {1}");
+            setAndUpdate("command.invalid-bulk-amount", "&cThe given value {0} larger than max stack size or lower than one");
+            setAndUpdate("command.description.size", "&eChange per bulk amount of a shop");
+            setAndUpdate("command.no-trade-item", "&aPlease hold a trade item to change in main hand");
+            setAndUpdate("command.trade-item-now", "&aNow trading {0}x {1}");
+            setAndUpdate("command.description.item", "&eChange shop item of a shop");
+            setAndUpdate("item-holochat-error", "&c[Error]");
+            setAndUpdate("shop-stack", "&aAmount of bulk: &e{0}");
             setAndUpdate("language-version", 36);
             selectedVersion = 36;
         }
