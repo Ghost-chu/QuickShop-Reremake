@@ -112,7 +112,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
 
             plugin.getShopManager().getActions().put(p.getUniqueId(), info);
             MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item)), Integer.toString(item.getAmount()));
+                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
             return;
         }
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
