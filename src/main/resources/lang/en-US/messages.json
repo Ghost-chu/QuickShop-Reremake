@@ -13,7 +13,7 @@
   "no-creative-break": "&cYou cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cYou cannot trade with this shop while being in creative mode.",
   "supertool-is-disabled": "&cSupertool is disabled. Cannot break any shops.",
-  "no-double-chests": "&cYou cannot create the doublechest shop.",
+  "no-double-chests": "&cYou cannot create the double chest shop.",
   "not-managed-shop": "&cYou are not the owner or moderator of this Shop",
   "shop-already-owned": "&cThis is already a shop.",
   "chest-was-removed": "&cThe chest was removed.",
@@ -62,7 +62,7 @@
   "break-shop-use-supertool": "&eYou can break the shop by using the SuperTool.",
   "failed-to-put-sign": "&cNot enough space around the shop to place the info sign.",
   "failed-to-paste": "&cFailed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)",
-  "warn-to-paste": "&eCollecting data and uploading it to Pastebin, this may take a while. &c&lWadning:&c The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to &ltrusted staff/developers.",
+  "warn-to-paste": "&eCollecting data and uploading it to Pastebin, this may take a while. &c&lWarning:&c The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to &ltrusted staff/developers.",
   "price-too-high": "&cThe shop price is too high! You cannot create one with a price higher than {0}.",
   "you-cant-create-shop-in-there": "&cYou don't have permission to create a shop at this location.",
   "unknown-player": "&cTarget player doesn't exist, please check the username you typed.",
@@ -102,7 +102,7 @@
       "preview": "/qs silentpreview {0} {1} {2} {3}"
     }
   },
-  "bypassing-lock": "&cBypassying a QuckShop lock!",
+  "bypassing-lock": "&cBypassying a QuickShop lock!",
   "that-is-locked": "&cThis shop is locked.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &ball&a to buy them all.",
   "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &ball&a in chat, to sell all.",
