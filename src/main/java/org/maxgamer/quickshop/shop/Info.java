@@ -66,10 +66,8 @@ public class Info {
         if (item != null) {
             this.item = item.clone();
         }
-        if (shop != null) {
-            this.shop = shop.clone();
-        }
         if(shop != null) {
+            this.shop = shop.clone();
             this.lastChangedAt = shop.getLastChangedAt();
         }else{
             this.lastChangedAt = System.currentTimeMillis();
