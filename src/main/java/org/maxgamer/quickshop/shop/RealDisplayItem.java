@@ -131,9 +131,9 @@ public class RealDisplayItem extends DisplayItem {
         this.item.remove();
         this.item = null;
         this.guardedIstack = null;
-        ShopDisplayItemDespawnEvent shopDisplayItemDepawnEvent =
+        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent =
                 new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM);
-        Bukkit.getPluginManager().callEvent(shopDisplayItemDepawnEvent);
+        Bukkit.getPluginManager().callEvent(shopDisplayItemDespawnEvent);
     }
 
     @Override
