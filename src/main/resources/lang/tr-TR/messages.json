@@ -1,5 +1,5 @@
 {
-  "translation-author": "Translator: Ghost_chu, Andre_601",
+  "translation-author": "Çevirmen: NOYB",
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
@@ -233,7 +233,7 @@
       "Doktor QuickShop'a yeni {0} güncellemesi geldi! Güncellemelisin~",
       "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server however.",
+    "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlenmiş, bunun anlamı bu versiyonda büyük problemler oluşabilir. Detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak. Bu sunucu hızınızı etkilemez.",
     "label": {
       "unstable": "[Kararsız]",
       "stable": "[Kararlı]",
