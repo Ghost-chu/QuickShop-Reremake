@@ -817,7 +817,7 @@ public class ShopManager {
                 info.getItem().setAmount(1);
             }
 
-            ContainerShop shop = new ContainerShop(plugin, info.getLocation(), CalculateUtil.multiply(price, info.getItem().getAmount()), info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
+            ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
             shop.onLoad();
             ShopCreateEvent e = new ShopCreateEvent(shop, p);
             if (Util.fireCancellableEvent(e)) {
@@ -908,9 +908,9 @@ public class ShopManager {
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
+            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########");
         }
         // Transfers the item from A to B
         if (stock == amount) {

@@ -51,7 +51,7 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
     public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount) {
         this.shop = shop;
         this.player = player;
-        this.amount = amount;
+        this.amount = amount * shop.getItem().getAmount();
     }
 
     @Override
