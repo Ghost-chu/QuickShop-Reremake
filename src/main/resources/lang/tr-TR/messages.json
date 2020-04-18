@@ -90,7 +90,7 @@
     "space": "&aYer: &e{0}",
     "stock": "&aStok &e{0}",
     "price-per": "&e{0} &abaşına fiyat &a- &e{1}",
-    "price-per-stack": "&aYığın başına fiyat &e{0} - {1}",
+    "price-per-stack": "&aPrice per &e{3}x {0} - {1}",
     "total-value-of-chest": "&aSandığın toplam değeri: &e{0}",
     "damage-percent-remaining": "&aKalan &e{0}%.",
     "this-shop-is-buying": "&aBu market öğe %dSATIN ALIYOR&a.",
@@ -145,10 +145,10 @@
       "paste": "&eSunucu verilerini Pastebin'e yükler",
       "staff": "&eMarket personellerini yönet",
       "remove": "&eBaktığınız marketi kaldırır",
-      "amount": "&eTo set item amount (Useful when having chat issues)",
-      "about": "&eShows QuickShop info",
-      "help": "&eShows QuickShop help",
-      "supercreate": "&eCreate a shop while bypassing all protection checks",
+      "amount": "&eÖğe miktarını belirlemek için (Sohbet sorunları varken kullanışlı)",
+      "about": "&eQuickShop bilgilerini gösterir",
+      "help": "&eQuickShop yardımını gösterir",
+      "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir"
     }
   },
