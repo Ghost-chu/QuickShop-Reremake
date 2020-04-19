@@ -244,7 +244,7 @@
       "Doctor, QuickShop has a new update {0}! You should update~",
       "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "&cThis version of QuickShop is marked disabled by remote server, meaning this version may have serious problem, get details from our Spigot plugin page: {0}. This warning will continue to appear untill you switch to a stable version, but it will not affect your server's performence.",
     "label": {
       "unstable": "[Unstable]",
       "stable": "[Stable]",
