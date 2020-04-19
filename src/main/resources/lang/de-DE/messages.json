@@ -114,7 +114,8 @@
       "unlimited": "&aDer Shop ist nun unlimitiert",
       "limited": "&aDer Shop ist nun limitiert"
     },
-    "no-owner-given": "&cKein Besitzer angegeben. Verwende &a/qs setowner <Spieler>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNeuer Besitzer: &e{0}",
     "now-buying": "&e{0} &awerden jetzt &dANGEKAUFT",
     "now-selling": "&e{0} &awerden jetzt &dVERKAUFT",
@@ -157,7 +158,8 @@
       "item": "&eÄndert das Shopitem eines Shops",
       "size": "&eÄndert die Mengenanzahl eines Shops",
       "supercreate": "&eErstellen eines Shops, während alle Schutzprüfungen umgangen werden",
-      "language": "&eÄndert die derzeitig verwendete Sprache"
+      "language": "&eÄndert die derzeitig verwendete Sprache",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
