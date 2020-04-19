@@ -1,5 +1,5 @@
 {
-  "translation-author": "翻译器： Ghost_chu, Andre_601",
+  "translation-author": "翻译人员： Ghost_chu, Andre_601",
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：&b&l简体中文 (zh_CN)",
@@ -130,7 +130,7 @@
     "no-amount-given": "&c数量未指定. 使用 &a/qs refull <数量>&c",
     "now-debuging": "&a成功切换到了开发者模式，插件重载中...",
     "now-nolonger-debuging": "&a成功切换到了开发者模式，插件重载中...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &rto preview the list of commands.",
+    "wrong-args": "&c无效参数。使用 &l/qs help&r预览命令列表。",
     "description": {
       "title": "&aQuickShop 帮助",
       "unlimited": "&e设置商店为无限库存。",
@@ -154,8 +154,8 @@
       "amount": "&e设置物品数量(在有聊天问题时有用)",
       "about": "&e显示QuickShop信息",
       "help": "&e显示QuickShop帮助",
-      "item": "&eChange shop item of a shop",
-      "size": "&eChange per bulk amount of a shop",
+      "item": "&e改变商店物品",
+      "size": "&e修改每份物品的数量",
       "supercreate": "&e越过所有区域保护检查创建商店",
       "language": "更改当前公会语言"
     }
@@ -168,7 +168,7 @@
     "stack-buying": "收购 {0}",
     "item": "{0}",
     "price": "单价：{0}",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} 每份",
     "unlimited": "无限"
   },
   "controlpanel": {
@@ -189,10 +189,10 @@
     "empty-hover": "&e点击清除商店库存",
     "remove": "&c&l[删除商店]",
     "remove-hover": "&e点击来删除商店",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
-    "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item",
+    "stack": "&a每份数量: &b{0} &e[&d&l修改&e]",
+    "stack-hover": "&e点击设置每个堆栈的物品数量。设置为1以恢复为普通单物品商店。",
+    "item": "&a无限模式: {0} &e[&d&l切换&e]",
+    "item-hover": "&e点击更改商店物品",
     "commands": {
       "setowner": "/qs setowner [玩家id]",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
@@ -225,11 +225,11 @@
     "buttontitle": "[立即更新]",
     "onekeybuttontitle": "[一键升级]",
     "list": [
-      "{0} was released. You are still using {1}!",
-      "Boom! New update {0} incoming. Update!",
-      "Surprise! {0} came out. You are on {1}",
-      "Looks like you need to update. {0} was released!",
-      "Ooops! {0} was now released. You are on {1}!",
+      "{0} 版本已经发布，您还在使用{1}",
+      "噔噔咚！新版本{0} 已经发布，快升级!",
+      "在？{0} 来了，你还在使用{1}",
+      "看起来你需要更新了，{0} 版本已经发布了！",
+      "噢！{0}已经发布了呀,你还在用 {1}!",
       "我保证，QS已经升级到了 {0},你为什么没有升级？",
       "修复并更新了...抱歉其实是{0}版本已经发布！",
       "错误！其实并没有错误，只是 {0} 版本已经发布了！",
@@ -244,7 +244,7 @@
       "医生，QuickShop有一个新的更新 {0}！你应该更新~",
       "Ko~ko~day~yo~QuickShop有一个新的更新 {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "&c这个版本的QuickShop已经被远程服务器停用了,这意味着这个版本的QS可能存在着严重的问题，请在我们的SpigotMC插件页面:{0}里寻找详细信息。这个警告会出现按并且在你的控制台上通知直到你使用其他没有被停用的版本来替换这个版本，停用后不影响您的服务器的正常运行。",
     "label": {
       "unstable": "[不稳定]",
       "stable": "[稳定]",
@@ -256,7 +256,7 @@
       "master": "[主分支]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
+  "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
   "digits-reach-the-limit": "&c您已经达到了价格小数的极限。",
   "complete": "&a完成！",
   "quickshop-gui-preview": "QuickShop GUI 项目预览",
@@ -264,8 +264,8 @@
   "shops-backingup": "从数据库创建商店备份...",
   "saved-to-path": "备份文件已保存到 {0}。",
   "backup-failed": "无法备份数据库，请查看控制台以获取详细信息。",
-  "translate-not-completed-yet-click": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!",
-  "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
+  "translate-not-completed-yet-click": "{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： ",
+  "translate-not-completed-yet-url": "{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： {2}",
   "language-info-panel": {
     "name": "语言：",
     "code": "语言代码：",
