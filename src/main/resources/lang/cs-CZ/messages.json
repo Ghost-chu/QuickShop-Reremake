@@ -3,7 +3,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -168,7 +168,7 @@
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} each",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Unlimited"
   },
   "controlpanel": {
