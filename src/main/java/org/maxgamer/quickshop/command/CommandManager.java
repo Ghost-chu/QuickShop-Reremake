@@ -282,13 +282,13 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                     .prefix("size")
                     .permission("quickshop.create.stacks")
                     .permission("quickshop.create.changeamount")
-                    .executor(new SubCommand_Size())
+                    .executor(new SubCommand_Size(plugin))
                     .build());
         }
         registerCmd(CommandContainer.builder()
                 .prefix("item")
                 .permission("quickshop.create.changeitem")
-                .executor(new SubCommand_Item())
+                .executor(new SubCommand_Item(plugin))
                 .build());
     }
 
