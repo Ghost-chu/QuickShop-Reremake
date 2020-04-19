@@ -1,10 +1,10 @@
 {
   "translation-author": "Tłumacz: Ghost_chu, Andre_601, Majkon01",
   "translation-version": "Wspierana wersja: Reremake",
-  "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
+  "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
   "language-version": "37",
-  "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
+  "not-looking-at-shop": "Nie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "Nie masz na to uprawnień.",
   "integrations-check-failed-create": "An integration denied the shop-creation",
