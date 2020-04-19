@@ -114,7 +114,8 @@
       "unlimited": "&a商店现在是无限的。",
       "limited": "&a商店现在是有限的。"
     },
-    "no-owner-given": "&c未指定新的所有者. 使用  &a/qs owner <新的店主>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&a新的商店所有者: &e{0}",
     "now-buying": "&a现在 &d收购中 &e{0}",
     "now-selling": "&a现在 &b出售中 &e{0}",
@@ -157,7 +158,8 @@
       "item": "&e改变商店物品",
       "size": "&e修改每份物品的数量",
       "supercreate": "&e越过所有区域保护检查创建商店",
-      "language": "更改当前公会语言"
+      "language": "更改当前公会语言",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
