@@ -36,6 +36,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -135,11 +136,9 @@ public class SubCommand_Staff implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        final ArrayList<String> tabList = new ArrayList<>();
-
-        Util.debugLog(Util.array2String(cmdArg));
 
         if (cmdArg.length < 2) {
+            final ArrayList<String> tabList = new ArrayList<>();
             if (cmdArg.length == 1) {
                 final String prefix = cmdArg[0].toLowerCase();
 
@@ -169,20 +168,9 @@ public class SubCommand_Staff implements CommandProcesser {
         }
 
         if ("add".equals(cmdArg[0]) || "del".equals(cmdArg[0])) {
-            if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-                // Include
-                for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
-                    tabList.add(offlinePlayer.getName());
-                }
-            } else {
-                // Not Include
-                for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
-                    tabList.add(offlinePlayer.getName());
-                }
-            }
+            return Util.getPlayerList(cmdArg);
         }
-
-        return tabList;
+        return Collections.emptyList();
     }
 
 }

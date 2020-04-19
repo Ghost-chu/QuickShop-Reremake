@@ -141,3 +141,6 @@ permissions:
   quickshop.recovery:
     description: Permission to use /qs recovery, WARNING DO NOT EXECUTE THIS COMMAND IF YOU DID NOT KNOW WHAT WILL HAPPEND
     default: op
+  quickshop.removeall:
+    description: Permission to use /qs removeall
+    default: op

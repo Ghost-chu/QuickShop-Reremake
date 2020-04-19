@@ -290,6 +290,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.create.changeitem")
                 .executor(new SubCommand_Item(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("removeall")
+                .permission("quickshop.removeall")
+                .executor(new SubCommand_RemoveAll())
+                .build());
     }
 
     public void registerCmd(@NotNull CommandContainer container) {
