@@ -3,7 +3,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "Nie masz na to uprawnień.",
@@ -168,7 +168,7 @@
     "stack-buying": "Kup {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Nieograniczony"
   },
   "controlpanel": {
