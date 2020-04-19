@@ -32,7 +32,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -219,9 +219,7 @@ public class SubCommand_Price implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(MsgUtil.getMessage("tabcomplete.price", sender));
-        return list;
+        return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender)) : Collections.emptyList();
     }
 
 }

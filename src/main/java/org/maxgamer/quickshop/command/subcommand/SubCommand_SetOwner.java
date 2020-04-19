@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -86,7 +87,23 @@ public class SubCommand_SetOwner implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
+        if (cmdArg.length > 1) {
+            return Collections.emptyList();
+        } else {
+            List<String> tabList = new ArrayList<>();
+            if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
+                // Include
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
+                    tabList.add(offlinePlayer.getName());
+                }
+            } else {
+                // Not Include
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
+                    tabList.add(offlinePlayer.getName());
+                }
+            }
+            return tabList;
+        }
     }
 
 }

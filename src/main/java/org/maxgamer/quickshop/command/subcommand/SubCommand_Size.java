@@ -68,6 +68,6 @@ public class SubCommand_Size implements CommandProcesser {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender)) : Collections.emptyList();
     }
 }
