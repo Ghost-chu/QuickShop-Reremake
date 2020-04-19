@@ -33,7 +33,7 @@
   "not-a-number": "&cGirdi sadece sayı olabilir, senin girdin {0} idi.",
   "not-a-integer": "&cBir sayı girmelisin, senin girdin {0} idi.",
   "player-bought-from-your-store": "&c{0} marketinden {1} tane {2} satın aldı.",
-  "shop-out-of-stock": "&5{0}, {1}, {2} kordinatlarındaki marketinde {3} tükendi!",
+  "shop-out-of-stock": "&5{0}, {1}, {2} koordinatlarındaki marketinde {3} tükendi!",
   "shop-has-no-space": "&cMarkette sadece {1} için daha fazla {0} yer var.",
   "you-dont-have-that-many-items": "&cSende sadece {0} tane {1} var.",
   "the-owner-cant-afford-to-buy-from-you": "&cBu {0} ediyor ama market sahibinde sadece {1} var",
@@ -48,7 +48,7 @@
   "shop-not-exist": "&cOrada market yok.",
   "nearby-shop-this-way": "&aMarket sizden {0} blok uzakta.",
   "no-nearby-shop": "&cYakınlarda {0} ile uyuşan market yok.",
-  "buying-more-than-selling": "&cUYARI: Sattığınızdan fazla ürün satın alıyorsunuz!",
+  "buying-more-than-selling": "&cUYARI: Sattığınızdan fazla öğe satın alıyorsunuz!",
   "not-enough-space": "&cSadece {0} için daha fazla yerin var!",
   "refill-success": "&aDoldurma başarılı",
   "empty-success": "&aMarket boşaltma başarılı",
@@ -125,7 +125,7 @@
     "bulk-size-not-set": "&cKullanım: /qs size <miktar>",
     "bulk-size-now": "&aŞimdi &e{0} tane {1}&a ticaret ediliyor",
     "invalid-bulk-amount": "&cVerilen değer {0} maks yığın miktarından fazla veya birinden az",
-    "no-trade-item": "&aPlease hold a trade item to change in main hand",
+    "no-trade-item": "&aLütfen değiştirmek için elinizde ticaret edilecek öğeyi tutunuz",
     "trade-item-now": "&aŞimdi &e{0} tane {1}&a ticaret ediliyor",
     "no-amount-given": "&cMiktar sağlanmadı. &a/qs refill <amount>&c komudunu kullan.",
     "now-debuging": "&aGeliştirirci modu başarıyla aktive edildi. QuickShop yeniden yükleniyor...",
@@ -154,8 +154,8 @@
       "amount": "&eÖğe miktarını belirlemek için (Sohbet sorunları varken kullanışlı)",
       "about": "&eQuickShop bilgilerini gösterir",
       "help": "&eQuickShop yardımını gösterir",
-      "item": "&eChange shop item of a shop",
-      "size": "&eChange per bulk amount of a shop",
+      "item": "&eBir marketin market öğesini değiştir",
+      "size": "&eBir marketin her yığınının miktarını değiştir",
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir"
     }
@@ -168,7 +168,7 @@
     "stack-buying": "{0} Alıyor",
     "item": "{0}",
     "price": "her biri {0}",
-    "stack-price": "{0} per bulk",
+    "stack-price": "Yığın başına {0}",
     "unlimited": "Sınırsız"
   },
   "controlpanel": {
@@ -189,10 +189,10 @@
     "empty-hover": "%eMarketin envanterini temizlemek için tıkla.",
     "remove": "&c&l[Marketi Kaldır]",
     "remove-hover": "&eBu marketi kaldırmak için tıkla.",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
-    "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item",
+    "stack": "Yığın başına miktar: &b{0} &e[&d&lDeğiştir&e]",
+    "stack-hover": "&eYığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.",
+    "item": "&aMarket Öğesi: {0} &e[&d&lDeğiştir&e]",
+    "item-hover": "&eMarket öğesini değiştirmek için tıkla",
     "commands": {
       "setowner": "/qs setowner [Oyuncu]",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
@@ -202,7 +202,7 @@
       "refill": "/qs refill [Miktar]",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size [Amount]",
+      "stack": "/qs size [Miktar]",
       "item": "/qs item"
     }
   },
@@ -265,11 +265,11 @@
   "saved-to-path": "Yedek {0} dosyasına kaydedildi.",
   "backup-failed": "Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.",
   "translate-not-completed-yet-click": "{0} dilinin çevirisi {1} tamamlanmadı. Çevirmemize yardım etmek mi istiyorsun? Buraya tıkla!",
-  "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
+  "translate-not-completed-yet-url": "{0} dilinin çevirisi {1} tamamlanmadı. Çevirmemize yardım etmek mi istiyorsun? Araştır: {2}",
   "language-info-panel": {
     "name": "Dil: ",
     "code": "Kod: ",
-    "progress": "Progress: ",
+    "progress": "İlerleme: ",
     "help": "Bize yardım edin: ",
     "translate-on-crowdin": "[Crowdin'de Çevirin]]"
   },
