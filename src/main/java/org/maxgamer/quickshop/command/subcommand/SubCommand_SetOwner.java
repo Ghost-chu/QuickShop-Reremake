@@ -31,9 +31,9 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static org.maxgamer.quickshop.util.Util.getPlayerList;
 
 @AllArgsConstructor
 public class SubCommand_SetOwner implements CommandProcesser {
@@ -44,7 +44,7 @@ public class SubCommand_SetOwner implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender, "Only player can run this command");
             return;
         }
 
@@ -87,23 +87,7 @@ public class SubCommand_SetOwner implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length > 1) {
-            return Collections.emptyList();
-        } else {
-            List<String> tabList = new ArrayList<>();
-            if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-                // Include
-                for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
-                    tabList.add(offlinePlayer.getName());
-                }
-            } else {
-                // Not Include
-                for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
-                    tabList.add(offlinePlayer.getName());
-                }
-            }
-            return tabList;
-        }
+        return getPlayerList(cmdArg);
     }
 
 }

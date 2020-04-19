@@ -1422,4 +1422,24 @@ public class Util {
         return cache;
     }
 
+    @NotNull
+    public static List<String> getPlayerList(@NotNull String[] cmdArg) {
+        if (cmdArg.length > 1) {
+            return Collections.emptyList();
+        } else {
+            List<String> tabList = new ArrayList<>();
+            if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
+                // Include
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOfflinePlayers()) {
+                    tabList.add(offlinePlayer.getName());
+                }
+            } else {
+                // Not Include
+                for (OfflinePlayer offlinePlayer : plugin.getServer().getOnlinePlayers()) {
+                    tabList.add(offlinePlayer.getName());
+                }
+            }
+            return tabList;
+        }
+    }
 }
