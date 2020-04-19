@@ -242,9 +242,9 @@
       "Jeeeeeeee! Uusi päivitys {0} on tullut! Päivitä!",
       "Mitä mieltä olet? {0} on julkaistu! Päivitä!",
       "Tohtori, QuickShop sai uuden päivityksen {0}! Sinun pitäisi päivittää~",
-      "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
+      "Ko~ko~da~yo~ QuickShop on saanut uuden päivityksen {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "&cTämä QuickShopin version on merkattu käytöstä poistoon etäpalvelimen toiemsta. Se tarkoittaa, että tällä versiolla on vakavia ongelmia. Saa tiedot meidän SpigotMC sivulta: {0}. Tämä varoitus ilmestyy ja spammaa konsoliisi kunnes vaihdat käytössä olevaan versioon. Tämä ei vaikuta palvelimeesi.",
     "label": {
       "unstable": "[Epävakaa]",
       "stable": "[Vakaa]",
@@ -256,14 +256,14 @@
       "master": "[master]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
-  "digits-reach-the-limit": "&cYou have reached the limits of decimals in the price.",
+  "shop-removed-cause-ongoing-fee": "&cKauppasi {0} on poistettu, koska sinulla ei ollut rahaa sen pitämiseen!",
+  "digits-reach-the-limit": "&cOlet saavuttanut desimaalien rajan hinnassa.",
   "complete": "&aValmis!",
-  "quickshop-gui-preview": "QuickShop GUI Item Preview",
+  "quickshop-gui-preview": "QuickShop GUI Tavaran Esikatselu",
   "shops-recovering": "Palautetaan kauppoja varmuuskopiosta...",
-  "shops-backingup": "Creating Shop-backup from database...",
-  "saved-to-path": "The Backup was saved to {0}.",
-  "backup-failed": "Cannot backup the database. Check the console for details.",
+  "shops-backingup": "Luodaan Kauppa-varmuuskopio tietokannasta...",
+  "saved-to-path": "Varmuuskopio tallennettin {0}.",
+  "backup-failed": "Tietokantaa ei pystytty varmuuskopioimaan, katso konsoli yksityiskohtia varten.",
   "translate-not-completed-yet-click": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!",
   "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
   "language-info-panel": {
