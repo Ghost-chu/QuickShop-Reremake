@@ -1432,6 +1432,11 @@ public class MsgUtil {
             setAndUpdate("language-version", 37);
             selectedVersion = 37;
         }
+        if (selectedVersion == 37) {
+            setAndUpdate("signs.stack-price", "{0} per {1}x {2}");
+            setAndUpdate("language-version", 38);
+            selectedVersion = 38;
+        }
 
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
