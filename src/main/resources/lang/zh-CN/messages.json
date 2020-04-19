@@ -22,7 +22,7 @@
   "you-cant-afford-a-new-shop": "&c你需要 {0} 才能创建一个商店。",
   "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you paid {3} in taxes.",
   "you-cant-afford-to-change-price": "&c你需要 {0} 才能修改商店的价格。",
-  "success-created-shop": "&cShop created.",
+  "success-created-shop": "&c商店已创建",
   "success-removed-shop": "&a商店已删除！",
   "shops-arent-locked": "&cRemember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, etc!",
   "shop-creation-cancelled": "商店创建已取消。",
