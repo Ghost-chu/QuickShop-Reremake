@@ -188,7 +188,7 @@ public class MsgUtil {
             }
             String filled = fillArgs(raw.get(), args);
             if (player != null) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
                     filled = PlaceholderAPI.setPlaceholders(player, filled);
                     Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
                 }
