@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -16,8 +17,9 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
 import java.util.List;
-
+@AllArgsConstructor
 public class SubCommand_Item implements CommandProcesser {
+    private QuickShop plugin;
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
@@ -32,7 +34,7 @@ public class SubCommand_Item implements CommandProcesser {
         }
         while (bIt.hasNext()) {
             final Block b = bIt.next();
-            final Shop shop = QuickShop.getInstance().getShopManager().getShop(b.getLocation());
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
 
             if (shop != null) {
                 if (!shop.getModerator().isModerator(((Player) sender).getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
@@ -48,7 +50,7 @@ public class SubCommand_Item implements CommandProcesser {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("blacklisted-item", sender));
                     return;
                 }
-                if (!QuickShop.getInstance().isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
+                if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
                     itemStack.setAmount(1);
                 }
                 shop.setItem(itemStack);
