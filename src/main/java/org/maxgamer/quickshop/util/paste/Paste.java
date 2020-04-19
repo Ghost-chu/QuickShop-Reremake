@@ -133,12 +133,12 @@ public class Paste {
         finalReport.append("Replaceable Modules Status:\n");
         finalReport.append("\tItemMatcher: ").append(plugin.getItemMatcher().getName()).append("@").append(plugin.getItemMatcher().getPlugin().getName());
         if (plugin.getEconomy() == null) {
-            finalReport.append("\tEconomyCore: ").append("Not loaded").append("@").append("Unknown");
+            finalReport.append("\tEconomyCore: ").append("Not loaded").append("@").append("Unknown").append("\n");
         } else {
-            finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName());
+            finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName()).append("\n");
         }
-        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabase().getCore().getName()).append("@").append(plugin.getDatabase().getCore().getPlugin().getName());
-        finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName());
+        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabase().getCore().getName()).append("@").append(plugin.getDatabase().getCore().getPlugin().getName()).append("\n");
+        finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
         finalReport.append("\tTotal: ").append(Bukkit.getWorlds().size()).append("\n");
