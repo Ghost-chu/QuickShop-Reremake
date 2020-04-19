@@ -47,11 +47,6 @@ public class SubCommand_Size implements CommandProcesser {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
-                if(amount != 1) {
-                    if (!plugin.isAllowStack()) {
-                        return;
-                    }
-                }
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
                         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.invalid-bulk-amount", sender, Integer.toString(amount)));
