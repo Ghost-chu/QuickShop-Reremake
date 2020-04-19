@@ -48,10 +48,6 @@ public class SubCommand_Size implements CommandProcesser {
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
                 if(amount != 1) {
-                    if (!sender.hasPermission("quickshop.create.stacks")) {
-                        MsgUtil.sendMessage(sender, "no-permission");
-                        return;
-                    }
                     if (!plugin.isAllowStack()) {
                         return;
                     }
