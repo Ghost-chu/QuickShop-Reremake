@@ -46,14 +46,15 @@ public class SubCommand_Size implements CommandProcesser {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
             if (shop != null) {
-                if(!sender.hasPermission("quickshop.create.stacks")){
-                    MsgUtil.sendMessage(sender, "no-permission");
-                    return;
-                }
-                if(!plugin.isAllowStack()){
-                    return;
+                if(amount != 1) {
+                    if (!sender.hasPermission("quickshop.create.stacks")) {
+                        MsgUtil.sendMessage(sender, "no-permission");
+                        return;
+                    }
+                    if (!plugin.isAllowStack()) {
+                        return;
+                    }
                 }
                 if (shop.getModerator().isModerator(((Player) sender).getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
