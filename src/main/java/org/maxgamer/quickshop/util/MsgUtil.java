@@ -1436,6 +1436,7 @@ public class MsgUtil {
             setAndUpdate("signs.stack-price", "{0} per {1}x {2}");
             setAndUpdate("command.some-shops-removed", "&e{0} &ashop removed");
             setAndUpdate("command.description.removeall", "&eRemove ALL shops of a specified player");
+            setAndUpdate("command.no-owner-given", "&cNo owner provided");
             setAndUpdate("language-version", 38);
             selectedVersion = 38;
         }
