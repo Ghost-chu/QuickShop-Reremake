@@ -170,7 +170,7 @@
     "stack-buying": "{0} Alıyor",
     "item": "{0}",
     "price": "her biri {0}",
-    "stack-price": "{0} per {1}x {2}",
+    "stack-price": "{1} tane {2} başına {0}",
     "unlimited": "Sınırsız"
   },
   "controlpanel": {
