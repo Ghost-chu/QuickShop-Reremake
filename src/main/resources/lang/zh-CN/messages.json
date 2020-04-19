@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：&b&l简体中文 (zh_CN)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -168,7 +168,7 @@
     "stack-buying": "收购 {0}",
     "item": "{0}",
     "price": "单价：{0}",
-    "stack-price": "{0} 每份",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "无限"
   },
   "controlpanel": {
