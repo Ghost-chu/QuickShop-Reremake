@@ -3,7 +3,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "Colaboradores: Torre del tiempo, espuma, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_ES)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -168,7 +168,7 @@
     "stack-buying": "Compro {0}",
     "item": "{0}",
     "price": "{0} la unidad",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
