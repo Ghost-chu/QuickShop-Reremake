@@ -114,7 +114,8 @@
       "unlimited": "&aLa tienda ahora es ilimitada.",
       "limited": "&aLa tienda ahora es limitada."
     },
-    "no-owner-given": "&cNo hay propietario especificado. Usa &a/qs setowner <player>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNuevo dueño: &e{0}",
     "now-buying": "&aAhora &dCOMPRANDO &e{0}",
     "now-selling": "&aAhora &dVENDIENDO &e{0}",
@@ -157,7 +158,8 @@
       "item": "&eChange shop item of a shop",
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&Crear una tienda circunvalando todas las comprobaciones de seguridad",
-      "language": "&eCambiar el idioma actual"
+      "language": "&eCambiar el idioma actual",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
