@@ -130,14 +130,14 @@
     "no-amount-given": "&cMiktar sağlanmadı. &a/qs refill <amount>&c komudunu kullan.",
     "now-debuging": "&aGeliştirirci modu başarıyla aktive edildi. QuickShop yeniden yükleniyor...",
     "now-nolonger-debuging": "&aGeliştirirci modu başarıyla devre dışı bırakıldı. QuickShop yeniden yükleniyor...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &rto preview the list of commands.",
+    "wrong-args": "&cGeçersiz argümanları. Komutların listesini önizlemek için &l/qs help &rkomudunu kullanın.",
     "description": {
       "title": "&aQuickShop yardım",
-      "unlimited": "&eGives a shop unlimited stock.",
-      "setowner": "&eChanges the ownership of a shop.",
-      "owner": "&eChanges the ownership of a shop.",
-      "buy": "&eChanges a shop to &dBUY&e mode",
-      "sell": "&eChanges a shop to &bSELL&e mode",
+      "unlimited": "&eBir markete sınırsız stok sağlar.",
+      "setowner": "&eBir marketin sahibini değiştirir.",
+      "owner": "&eBir marketin sahibini değiştirir.",
+      "buy": "&eBir marketi &dALMA&e moduna geçirir",
+      "sell": "&eBir marketi &dSATMA&e moduna geçirir",
       "price": "&eBir marketin alım/satım fiyatını değiştirir",
       "clean": "&eStoksuz bütün (yüklü) marketleri kaldırır",
       "find": "&eBelirli bir türde en yakındaki marketi bulur.",
@@ -244,7 +244,7 @@
       "Doktor QuickShop'a yeni {0} güncellemesi geldi! Güncellemelisin~",
       "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı olarak işaretlenmiş, bunun anlamı bu versiyonda büyük problemler oluşabilir. Detayları SpigotMC sayfamızdan edinin: {0}. Bu uyarı siz bu versiyonu devre dışı bırakılmamış başka bir versiyon ile değiştirmedikçe konsolda belirecek ve spam yapacak. Bu sunucu hızınızı etkilemez.",
     "label": {
       "unstable": "[Kararsız]",
       "stable": "[Kararlı]",
@@ -256,7 +256,7 @@
       "master": "[Usta]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
+  "shop-removed-cause-ongoing-fee": "&c{0}'deki marketiniz açık tutmaya yetecek kadar paranız olmadığı için kaldırıldı!",
   "digits-reach-the-limit": "&cFiyatta maksimum sayı sınırına ulaştın.",
   "complete": "&aTamamlandı!",
   "quickshop-gui-preview": "QuickShop GUI Öğe Önizlemesi",
@@ -264,7 +264,7 @@
   "shops-backingup": "Veri tabanından market yedeği oluşturuluyor...",
   "saved-to-path": "Yedek {0} dosyasına kaydedildi.",
   "backup-failed": "Veri tabanı yedeklenemedi. Detaylar için konsolu kontrol edin.",
-  "translate-not-completed-yet-click": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!",
+  "translate-not-completed-yet-click": "{0} dilinin çevirisi {1} tamamlanmadı. Çevirmemize yardım etmek mi istiyorsun? Buraya tıkla!",
   "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
   "language-info-panel": {
     "name": "Dil: ",
