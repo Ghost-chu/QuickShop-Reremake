@@ -115,7 +115,7 @@
       "limited": "&aShop is now limited"
     },
     "some-shops-removed": "&e{0} &ashop removed",
-    "no-owner-given": "&cNo owner provided. Use &a/qs setowner <player>&c",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNew owner: &e{0}",
     "now-buying": "&aNow &dBUYING &e{0}",
     "now-selling": "&aNow &bSELLING &e{0}",
