@@ -697,7 +697,7 @@ public class MsgUtil {
             }
             String filled = fillArgs(raw.get(), args);
             if (player instanceof OfflinePlayer) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
+                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()&& plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
                     try {
                         filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                     } catch (Exception ignored) {
