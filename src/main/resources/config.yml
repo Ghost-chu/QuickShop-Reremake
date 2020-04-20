@@ -221,6 +221,7 @@ shop:
 
   #If show currency symbol on the right side
   #By default, is on the left side
+  #Only work when disable-vault-format is true
   currency-symbol-on-right: false
 
   #Ignore trade messages if the shop is unlimited
