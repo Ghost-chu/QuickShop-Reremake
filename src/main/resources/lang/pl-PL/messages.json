@@ -126,19 +126,19 @@
     "bulk-size-not-set": "&cUżycie: /qs size <amount>",
     "bulk-size-now": "&aTeraz handluj &{0}x {1}",
     "invalid-bulk-amount": "&cPodana wartość {0} jest większa niż maksymalna wielkość stacku lub mniejsza niż jeden",
-    "no-trade-item": "&aPlease hold a trade item to change in main hand",
-    "trade-item-now": "&aNow trading &e{0}x {1}",
+    "no-trade-item": "&aProszę trzymać przedmiot handlowy, aby zmienić go w ręce głównej",
+    "trade-item-now": "&aTeraz handluj &{0}x {1}",
     "no-amount-given": "&cNie podano ilości. Użyj &a/qs refill <amount>&c",
     "now-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &rto preview the list of commands.",
+    "wrong-args": "&cNieprawidłowe argumenty. Użyj &l/qs help &raby wyświetlić podgląd listy poleceń.",
     "description": {
       "title": "&aPomoc Sklepu",
-      "unlimited": "&eGives a shop unlimited stock.",
-      "setowner": "&eChanges the ownership of a shop.",
-      "owner": "&eChanges the ownership of a shop.",
-      "buy": "&eChanges a shop to &dBUY&e mode",
-      "sell": "&eChanges a shop to &bSELL&e mode",
+      "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
+      "setowner": "&eZmienia właściciela sklepu.",
+      "owner": "&eZmienia właściciela sklepu.",
+      "buy": "&eZmienia rodzaj sklepu na tryb &dKUP",
+      "sell": "&eZmienia rodzaj sklepu na tryb &bSPRZEDAJ",
       "price": "&eZmienia cenę zakupu/sprzedaży sklepu",
       "clean": "&eUsuwa wszystkie (załadowane) sklepy bez żadnych zapasów",
       "find": "&eLokalizuje najbliższy sklep określonego typu.",
@@ -155,11 +155,11 @@
       "amount": "&eAby ustawić kwotę pozycji (przydatne przy zgłaszaniu problemów z czatem)",
       "about": "&ePokazuje informacje ze Sklepu",
       "help": "&ePokazuje pomoc Sklepu",
-      "item": "&eChange shop item of a shop",
-      "size": "&eChange per bulk amount of a shop",
+      "item": "&eZmień przedmiot sklepu w sklepie",
+      "size": "&eZmień na dużą ilość sklepu",
       "supercreate": "&eUtwórz sklep podczas omijania wszystkich kontroli ochrony",
       "language": "&eZmień aktualnie używany język",
-      "removeall": "&eRemove ALL shops of a specified player"
+      "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza"
     }
   },
   "signs": {
@@ -170,7 +170,7 @@
     "stack-buying": "Kup {0}",
     "item": "{0}",
     "price": "{0} za 1 szt.",
-    "stack-price": "{0} per {1}x {2}",
+    "stack-price": "{0} za {1}x {2}",
     "unlimited": "Nieograniczony"
   },
   "controlpanel": {
@@ -191,10 +191,10 @@
     "empty-hover": "&eKliknij, aby wyczyścić sklep.",
     "remove": "&c&l[Usuń sklep]",
     "remove-hover": "&eKliknij, żeby usunąć sklep.",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
-    "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item",
+    "stack": "&aIlość całkowita: &b{0} &e[&d&lChange&e]",
+    "stack-hover": "&eKliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.",
+    "item": "&aPrzedmiot sklepu: {0} &e[&d&lChange&e]",
+    "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
     "commands": {
       "setowner": "/qs setowner [Gracz]",
       "unlimited": "/qs slientunlimited {0} {1} {2} {3}",
@@ -246,7 +246,7 @@
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
       "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "&cTa wersja QuickShop została oznaczona jako wyłączona przez zdalny serwer. Oznacza to, że ta wersja może mieć poważne problemy. Uzyskaj informacje na naszej stronie SpigotMC: {0}. To ostrzeżenie będzie się wyświetlać i spamować konsolę, dopóki nie przełączysz się na nie wyłączoną wersję. Nie wpłynie to jednak na twój serwer.",
     "label": {
       "unstable": "[Niestabilny]",
       "stable": "[Stabilny]",
@@ -258,7 +258,7 @@
       "master": "[Mistrz]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
+  "shop-removed-cause-ongoing-fee": "&cTwój sklep w {0} został usunięty, ponieważ nie masz wystarczającej ilości pieniędzy, aby go utrzymać!",
   "digits-reach-the-limit": "&cOsiągnąłeś limit miejsc po przecinku w cenie.",
   "complete": "&aZakończony!",
   "quickshop-gui-preview": "Podgląd przedmiotów ze Sklepu",
@@ -266,12 +266,12 @@
   "shops-backingup": "Tworzenie kopii zapasowej sklepu z bazy danych...",
   "saved-to-path": "Kopia zapasowa została zapisana w {0}.",
   "backup-failed": "Nie można wykonać kopii zapasowej bazy danych. Sprawdź konsolę, aby uzyskać szczegóły.",
-  "translate-not-completed-yet-click": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!",
-  "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
+  "translate-not-completed-yet-click": "Tłumaczenie języka {0} nie zostało jeszcze ukończone przez {1}. Czy chcesz pomóc nam ulepszyć tłumaczenie? Kliknij tutaj!",
+  "translate-not-completed-yet-url": "Tłumaczenie języka {0} nie zostało jeszcze ukończone przez {1}. Czy chcesz pomóc nam ulepszyć tłumaczenie? Przeglądaj: {2}",
   "language-info-panel": {
     "name": "Język: ",
     "code": "Kod: ",
-    "progress": "Progress: ",
+    "progress": "Postęp: ",
     "help": "Pomóż nam: ",
     "translate-on-crowdin": "[Tłumacz na Crowdin]"
   },
