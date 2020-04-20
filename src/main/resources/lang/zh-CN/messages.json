@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：&b&l简体中文 (zh_CN)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -114,7 +114,8 @@
       "unlimited": "&a商店现在是无限的。",
       "limited": "&a商店现在是有限的。"
     },
-    "no-owner-given": "&c未指定新的所有者. 使用  &a/qs owner <新的店主>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&a新的商店所有者: &e{0}",
     "now-buying": "&a现在 &d收购中 &e{0}",
     "now-selling": "&a现在 &b出售中 &e{0}",
@@ -157,7 +158,8 @@
       "item": "&e改变商店物品",
       "size": "&e修改每份物品的数量",
       "supercreate": "&e越过所有区域保护检查创建商店",
-      "language": "更改当前公会语言"
+      "language": "更改当前公会语言",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
@@ -168,7 +170,7 @@
     "stack-buying": "收购 {0}",
     "item": "{0}",
     "price": "单价：{0}",
-    "stack-price": "{0} 每份",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "无限"
   },
   "controlpanel": {
