@@ -3,7 +3,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cDu hast keine Berechtigung, dies zu tun.",
@@ -114,7 +114,8 @@
       "unlimited": "&aDer Shop ist nun unlimitiert",
       "limited": "&aDer Shop ist nun limitiert"
     },
-    "no-owner-given": "&cKein Besitzer angegeben. Verwende &a/qs setowner <Spieler>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNeuer Besitzer: &e{0}",
     "now-buying": "&e{0} &awerden jetzt &dANGEKAUFT",
     "now-selling": "&e{0} &awerden jetzt &dVERKAUFT",
@@ -157,7 +158,8 @@
       "item": "&eÄndert das Shopitem eines Shops",
       "size": "&eÄndert die Mengenanzahl eines Shops",
       "supercreate": "&eErstellen eines Shops, während alle Schutzprüfungen umgangen werden",
-      "language": "&eÄndert die derzeitig verwendete Sprache"
+      "language": "&eÄndert die derzeitig verwendete Sprache",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
@@ -168,7 +170,7 @@
     "stack-buying": "Kaufe {0}",
     "item": "{0}",
     "price": "{0} p. St.",
-    "stack-price": "{0} pro Menge",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Unlimitiert "
   },
   "controlpanel": {

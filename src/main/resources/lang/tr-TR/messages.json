@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -114,7 +114,8 @@
       "unlimited": "&aMarket şimdi sınırsız",
       "limited": "&aMarket şimdi sınırlı"
     },
-    "no-owner-given": "&cSahip sağlanmadı. &a/qs setowner <player>&c komudunu kullanın.",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aYeni sahip: &e{0}",
     "now-buying": "&aŞimdi &e{0} &dALIYOR",
     "now-selling": "&aŞimdi &e{0} &bSATILIYOR",
@@ -157,7 +158,8 @@
       "item": "&eBir marketin market öğesini değiştir",
       "size": "&eBir marketin her yığınının miktarını değiştir",
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
-      "language": "&eGeçerli dili değiştir"
+      "language": "&eGeçerli dili değiştir",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
@@ -168,7 +170,7 @@
     "stack-buying": "{0} Alıyor",
     "item": "{0}",
     "price": "her biri {0}",
-    "stack-price": "Yığın başına {0}",
+    "stack-price": "{1} tane {2} başına {0}",
     "unlimited": "Sınırsız"
   },
   "controlpanel": {

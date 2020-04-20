@@ -3,7 +3,7 @@
   "translation-version": "Versão de suporte: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -114,7 +114,8 @@
       "unlimited": "&aLoja agora é ilimitada",
       "limited": "&aLoja agora é limitada"
     },
-    "no-owner-given": "&cNo owner provided. Use &a/qs setowner <player>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNovo proprietário: &e{0}",
     "now-buying": "&aNow &dBUYING &e{0}",
     "now-selling": "&aAgora &bVENDENDO &e{0}",
@@ -157,7 +158,8 @@
       "item": "&eChange shop item of a shop",
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
-      "language": "&eChange the currently used language"
+      "language": "&eChange the currently used language",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
@@ -168,7 +170,7 @@
     "stack-buying": "Comprando {0}",
     "item": "{0}",
     "price": "{0} cada",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
