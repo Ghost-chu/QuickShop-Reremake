@@ -3,7 +3,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "37",
+  "language-version": "38",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -114,7 +114,8 @@
       "unlimited": "&aKaupassa on nyt rajattomasti tavaroita",
       "limited": "&aKauppa ei ole enään rajaton"
     },
-    "no-owner-given": "&cEi omistajaa annettu. Käytä &a/qs setowner <pelaaja>&c",
+    "some-shops-removed": "&e{0} &ashop removed",
+    "no-owner-given": "&cNo owner provided",
     "new-owner": "&aUusi omistaja: &e{0}",
     "now-buying": "&aNyt &dOSTETAAN &e{0}",
     "now-selling": "&aKauppasi &a&lMYY&a nyt tuotetta &e{0}",
@@ -157,7 +158,8 @@
       "item": "&eChange shop item of a shop",
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
-      "language": "&eChange the currently used language"
+      "language": "&eChange the currently used language",
+      "removeall": "&eRemove ALL shops of a specified player"
     }
   },
   "signs": {
@@ -168,7 +170,7 @@
     "stack-buying": "Buying {0}",
     "item": "{0}",
     "price": "{0} kpl",
-    "stack-price": "{0} per bulk",
+    "stack-price": "{0} per {1}x {2}",
     "unlimited": "Rajaton"
   },
   "controlpanel": {
