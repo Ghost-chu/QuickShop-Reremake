@@ -114,8 +114,8 @@
       "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
-    "some-shops-removed": "&e{0} &ashop removed",
-    "no-owner-given": "&cNo owner provided",
+    "some-shops-removed": "&e{0} &asklep usunięty",
+    "no-owner-given": "&cNie podano właściciela",
     "new-owner": "&aNowy Właściciel: &e{0}",
     "now-buying": "&aTeraz &dSKUPUJESZ&a &e{0}",
     "now-selling": "&aTeraz &dSPRZEDAJESZ&a &e{0}",
