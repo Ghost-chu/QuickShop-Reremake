@@ -23,8 +23,14 @@ public class SubCommand_RemoveAll implements CommandProcesser {
         if (cmdArg.length == 1) {
             //copy it first
             List<Shop> tempList = new ArrayList<>(plugin.getShopManager().getAllShops());
-            @SuppressWarnings("deprecation") final OfflinePlayer shopOwner = plugin.getServer().getOfflinePlayer(cmdArg[0]);
-            if (shopOwner.getName() == null) {
+            OfflinePlayer shopOwner = null;
+            for (OfflinePlayer player : plugin.getServer().getOfflinePlayers()) {
+                if (player.getName() != null && player.getName().equalsIgnoreCase(cmdArg[0])) {
+                    shopOwner = player;
+                    break;
+                }
+            }
+            if (shopOwner == null) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("unknown-player", null));
                 return;
             }
