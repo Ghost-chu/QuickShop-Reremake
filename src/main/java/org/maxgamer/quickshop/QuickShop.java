@@ -1520,6 +1520,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 99);
             selectedVersion = 99;
         }
+        if (selectedVersion == 99) {
+            getConfig().set("shop.currency-symbol-on-right", false);
+            getConfig().set("config-version", 100);
+            selectedVersion = 100;
+        }
 
         saveConfig();
         reloadConfig();

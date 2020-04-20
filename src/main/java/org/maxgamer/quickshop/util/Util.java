@@ -338,16 +338,20 @@ public class Util {
      * @param n price
      * @return The formatted string.
      */
+    private static final boolean currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right");
+    private static final String alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol");
+    private static final boolean disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format");
+
     public static String format(double n) {
-        if (plugin.getConfig().getBoolean("shop.disable-vault-format")) {
-            return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+        if (disableVaultFormat) {
+            return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
         }
         try {
             String formated = plugin.getEconomy().format(n);
             if (formated == null || formated.isEmpty()) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
-                return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+                return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
             } else {
                 return formated;
             }
@@ -355,7 +359,7 @@ public class Util {
             Util.debugLog("format", e.getMessage());
             Util.debugLog(
                     "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
-            return plugin.getConfig().getString("shop.alternate-currency-symbol") + n;
+            return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
         }
     }
 
@@ -1297,7 +1301,7 @@ public class Util {
                 e.printStackTrace();
                 serverInstance = null;
                 tpsField = null;
-                Util.debugLog("Failed to get TPS "+e.getMessage());
+                Util.debugLog("Failed to get TPS " + e.getMessage());
                 return 20.0;
             }
         }
