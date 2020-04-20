@@ -338,9 +338,9 @@ public class Util {
      * @param n price
      * @return The formatted string.
      */
-    private static final boolean currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right");
-    private static final String alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol");
-    private static final boolean disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format");
+    private static boolean currencySymbolOnRight;
+    private static String alternateCurrencySymbol;
+    private static boolean disableVaultFormat;
 
     public static String format(double n) {
         if (disableVaultFormat) {
@@ -679,6 +679,10 @@ public class Util {
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
         disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger", false);
+
+        currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right");
+        alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol");
+        disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format");
     }
 
     /**
