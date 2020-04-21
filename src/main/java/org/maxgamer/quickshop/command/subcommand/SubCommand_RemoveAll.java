@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.maxgamer.quickshop.util.Util.getPlayerList;
-
+@AllArgsConstructor
 public class SubCommand_RemoveAll implements CommandProcesser {
 
-    private static QuickShop plugin = QuickShop.instance;
+    private QuickShop plugin;
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
