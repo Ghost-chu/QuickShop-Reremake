@@ -1525,6 +1525,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 100);
             selectedVersion = 100;
         }
+        if (selectedVersion == 100) {
+            getConfig().set("integration.towny.ignore-disabled-worlds",false);
+            getConfig().set("config-version", 101);
+            selectedVersion = 101;
+        }
 
         saveConfig();
         reloadConfig();
