@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.integration.towny;
 
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
 
@@ -37,11 +39,14 @@ public class TownyIntegration implements IntegratedPlugin {
 
     private final List<TownyFlags> tradeFlags;
 
+    private final boolean ignoreDisabledWorlds;
+
     public TownyIntegration(QuickShop plugin) {
         createFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
     }
 
     @Override
@@ -51,6 +56,10 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        if(ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())){
+            Util.debugLog("This world disabled Towny.");
+            return true;
+        }
         for (TownyFlags flag : createFlags) {
             switch (flag) {
                 case OWN:
@@ -76,6 +85,10 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        if(ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())){
+            Util.debugLog("This world disabled Towny.");
+            return true;
+        }
         for (TownyFlags flag : tradeFlags) {
             switch (flag) {
                 case OWN:
