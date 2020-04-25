@@ -30,13 +30,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.event.ShopProtectionCheckEvent;
+import org.maxgamer.quickshop.util.holder.Result;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 public class PermissionChecker {
     private final QuickShop plugin;
@@ -53,9 +56,9 @@ public class PermissionChecker {
      *
      * @param player   Target player
      * @param location Target location
-     * @return Success
+     * @return Result represent if you can build there
      */
-    public boolean canBuild(@NotNull Player player, @NotNull Location location) {
+    public Result canBuild(@NotNull Player player, @NotNull Location location) {
         return canBuild(player, location.getBlock());
     }
 
@@ -64,9 +67,9 @@ public class PermissionChecker {
      *
      * @param player Target player
      * @param block  Target block
-     * @return Success
+     * @return Result represent if you can build there
      */
-    public boolean canBuild(@NotNull Player player, @NotNull Block block) {
+    public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
@@ -74,7 +77,7 @@ public class PermissionChecker {
             if (protection != null) {
                 if (!protection.isOwner(player)) {
                     Util.debugLog("LWC reporting player no permission to access this block.");
-                    return false;
+                    return new Result("LWC");
                 }
             }
 
@@ -85,25 +88,60 @@ public class PermissionChecker {
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
             if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
                 Util.debugLog("BlockHub only mode response: " + bhCanBuild);
-                return bhCanBuild;
+                return new Result("BlockHub");
             } else {
                 if (!bhCanBuild) {
                     Util.debugLog("BlockHub reporting player no permission to access this region.");
-                    return false;
+                    return new Result("BlockHub");
                 }
             }
         }
         if (!usePermissionChecker) {
-            return true;
+            return Result.SUCCESS;
         }
-        final AtomicBoolean isCanBuild = new AtomicBoolean(false);
+        final Result isCanBuild = new Result();
 
         BlockBreakEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0),
         // player.getInventory()
         // getItemInMainHand(), player, true, EquipmentSlot.HAND);
 
-        beMainHand = new BlockBreakEvent(block, player);
+        beMainHand = new BlockBreakEvent(block, player) {
+
+            @Override
+            public void setCancelled(boolean cancel) {
+                //tracking cancel plugin
+                if (cancel) {
+                    String className = "";
+                    out:
+                    for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+                        Method[] methods;
+                        try {
+                            methods = Class.forName(element.getClassName()).getDeclaredMethods();
+                        } catch (ClassNotFoundException ignored) {
+                            continue;
+                        }
+                        for (Method method : methods) {
+                            if (method.getParameterCount() == 1 && method.getParameterTypes()[0].equals(BlockBreakEvent.class)) {
+                                for (Annotation annotation : method.getDeclaredAnnotations()) {
+                                    if (annotation.annotationType().equals(EventHandler.class)) {
+                                        className = element.getClassName();
+                                        break out;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
+                        if (listener.getListener().getClass().getName().equals(className)) {
+                            isCanBuild.setResult(false);
+                            isCanBuild.setMessage(listener.getPlugin().getName());
+                        }
+                    }
+                }
+                super.setCancelled(cancel);
+            }
+        };
         // Call for event for protection check start
         Bukkit.getPluginManager()
                 .callEvent(
@@ -124,7 +162,7 @@ public class PermissionChecker {
                     if (!event.isCancelled()) {
                         //Ensure this test will no be logged by some plugin
                         beMainHand.setCancelled(true);
-                        isCanBuild.set(true);
+                        isCanBuild.setResult(true);
                     }
                     HandlerList.unregisterAll(this);
                 }
@@ -133,7 +171,7 @@ public class PermissionChecker {
 
         Bukkit.getPluginManager().callEvent(beMainHand);
 
-        return isCanBuild.get();
+        return isCanBuild;
     }
 
 }
