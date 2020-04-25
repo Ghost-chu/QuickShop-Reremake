@@ -347,6 +347,14 @@ public class Util {
             return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
         }
         try {
+            if (plugin == null) {
+                Util.debugLog("Called format before Plugin booted up, forcing fixing.");
+                plugin = QuickShop.getInstance();
+            }
+            if (plugin.getEconomy() == null) {
+                Util.debugLog("Called format before Economy booted up, using built-in formatter.");
+                return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
+            }
             String formated = plugin.getEconomy().format(n);
             if (formated == null || formated.isEmpty()) {
                 Util.debugLog(
