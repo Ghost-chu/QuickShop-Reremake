@@ -32,6 +32,7 @@ import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
@@ -39,6 +40,9 @@ public class ResidenceIntegration implements IntegratedPlugin {
     final List<String> createLimits;
 
     final List<String> tradeLimits;
+
+    private static final String createFlag = "quickshop-create";
+    private static final String tradeFlag = "quickshop-trade";
 
     public ResidenceIntegration(QuickShop plugin) {
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
@@ -50,38 +54,52 @@ public class ResidenceIntegration implements IntegratedPlugin {
         return "Residence";
     }
 
+    private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
+        Flags result = Flags.getFlag(name);
+        if (result == null) {
+            Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
+            Map<String, Boolean> perGlobalMap = permissions.getFlags();
+            if (permPlayerMap != null) {
+                return permPlayerMap.getOrDefault(name, perGlobalMap.getOrDefault(name, def));
+            } else {
+                return perGlobalMap.getOrDefault(name, def);
+            }
+        } else {
+            return permissions.playerHas(player, result, def);
+        }
+    }
+
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(location);
-
         for (String limit : this.createLimits) {
             if ("FLAG".equalsIgnoreCase(limit)) {
                 if (residence == null) {
                     // Check world permission
-                    if (!Residence.getInstance()
-                            .getWorldFlags()
-                            .getPerms(location.getWorld().getName())
-                            .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
+                    if (!playerHas(Residence.getInstance()
+                                    .getWorldFlags()
+                                    .getPerms(location.getWorld().getName())
+                            , player, createFlag, false)) {
                         return false;
                     }
                 } else {
-                    if (!residence
-                            .getPermissions()
-                            .playerHas(player, Flags.getFlag("quickshop-create"), false)) {
+                    if (!playerHas(residence
+                                    .getPermissions()
+                            , player, createFlag, false)) {
                         return false;
                     }
                 }
             }
             // Not flag
             if (residence == null) {
-                if (!Residence.getInstance()
-                        .getWorldFlags()
-                        .getPerms(location.getWorld().getName())
-                        .playerHas(player, Flags.getFlag(limit), false)) {
+                if (!playerHas(Residence.getInstance()
+                                .getWorldFlags()
+                                .getPerms(location.getWorld().getName())
+                        , player, limit, false)) {
                     return false;
                 }
             } else {
-                if (!residence.getPermissions().playerHas(player, Flags.getFlag(limit), false)) {
+                if (!playerHas(residence.getPermissions(), player, limit, false)) {
                     return false;
                 }
             }
@@ -96,31 +114,31 @@ public class ResidenceIntegration implements IntegratedPlugin {
         for (String limit : this.tradeLimits) {
             if ("FLAG".equalsIgnoreCase(limit)) {
                 if (residence == null) {
-                    // Check world permission
-                    if (!Residence.getInstance()
-                            .getWorldFlags()
-                            .getPerms(location.getWorld().getName())
-                            .playerHas(player, Flags.getFlag("quickshop-trade"), false)) {
+                    //                    // Check world permission
+                    if (!playerHas(Residence.getInstance()
+                                    .getWorldFlags()
+                                    .getPerms(location.getWorld().getName())
+                            , player, tradeFlag, false)) {
                         return false;
                     }
                 } else {
-                    if (!residence
-                            .getPermissions()
-                            .playerHas(player, Flags.getFlag("quickshop-trade"), true)) {
+                    if (!playerHas(residence
+                                    .getPermissions()
+                            , player, tradeFlag, true)) {
                         return false;
                     }
                 }
             }
             // Not flag
             if (residence == null) {
-                if (!Residence.getInstance()
-                        .getWorldFlags()
-                        .getPerms(location.getWorld().getName())
-                        .playerHas(player, Flags.getFlag(limit), false)) {
+                if (!playerHas(Residence.getInstance()
+                                .getWorldFlags()
+                                .getPerms(location.getWorld().getName())
+                        , player, limit, false)) {
                     return false;
                 }
             } else {
-                if (!residence.getPermissions().playerHas(player, Flags.getFlag(limit), false)) {
+                if (!playerHas(residence.getPermissions(), player, limit, false)) {
                     return false;
                 }
             }
@@ -130,8 +148,8 @@ public class ResidenceIntegration implements IntegratedPlugin {
 
     @Override
     public void load() {
-        FlagPermissions.addFlag("quickshop-create");
-        FlagPermissions.addFlag("quickshop-trade");
+        FlagPermissions.addFlag(createFlag);
+        FlagPermissions.addFlag(tradeFlag);
     }
 
     @Override
