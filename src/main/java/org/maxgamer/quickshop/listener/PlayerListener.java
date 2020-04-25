@@ -233,7 +233,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
-        Location location = e.getInventory().getLocation();
+        Location location;
+        try {
+            location = e.getInventory().getLocation();
+        } catch (NullPointerException ex) {
+            //for strange NPE from spigot API fix
+            return;
+        }
         if (location == null) {
             return; /// ignored as workaround, GH-303
         }
