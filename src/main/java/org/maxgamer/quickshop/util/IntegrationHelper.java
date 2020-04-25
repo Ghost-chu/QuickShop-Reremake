@@ -27,6 +27,7 @@ import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
+import org.maxgamer.quickshop.util.holder.Result;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -101,24 +102,24 @@ public class IntegrationHelper {
                 });
     }
 
-    public boolean callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
+    public Result callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin plugin : integrations) {
             if (!plugin.canCreateShopHere(player, location)) {
                 Util.debugLog("Cancelled by " + plugin.getName());
-                return false;
+                return new Result(plugin.getName());
             }
         }
-        return true;
+        return Result.SUCCESS;
     }
 
-    public boolean callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
+    public Result callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
         for (IntegratedPlugin plugin : integrations) {
             if (!plugin.canTradeShopHere(player, location)) {
                 Util.debugLog("Cancelled by " + plugin.getName());
-                return false;
+                return new Result(plugin.getName());
             }
         }
-        return true;
+        return Result.SUCCESS;
     }
 
 }

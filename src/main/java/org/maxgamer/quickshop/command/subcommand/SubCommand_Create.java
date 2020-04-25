@@ -35,6 +35,7 @@ import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.holder.Result;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,9 +70,13 @@ public class SubCommand_Create implements CommandProcesser {
                 continue;
             }
 
-            if (p.isOnline() && !plugin.getPermissionChecker().canBuild(p, b)) {
-                Util.debugLog("Failed permission build check, canceled");
-                return;
+            if (p.isOnline()) {
+                Result result = plugin.getPermissionChecker().canBuild(p, b);
+                if (!result.isSuccess()) {
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
+                    Util.debugLog("Failed permission build check, canceled");
+                    return;
+                }
             }
 
             BlockFace blockFace;
