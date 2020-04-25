@@ -55,17 +55,17 @@ public class ResidenceIntegration implements IntegratedPlugin {
     }
 
     private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
-        Flags result = Flags.getFlag(name);
-        if (result == null) {
+        Flags internalFlag = Flags.getFlag(name);
+        if (internalFlag == null) {
             Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
-            Map<String, Boolean> perGlobalMap = permissions.getFlags();
+            Map<String, Boolean> permGlobalMap = permissions.getFlags();
             if (permPlayerMap != null) {
-                return permPlayerMap.getOrDefault(name, perGlobalMap.getOrDefault(name, def));
+                return permPlayerMap.getOrDefault(name, permGlobalMap.getOrDefault(name, def));
             } else {
-                return perGlobalMap.getOrDefault(name, def);
+                return permGlobalMap.getOrDefault(name, def);
             }
         } else {
-            return permissions.playerHas(player, result, def);
+            return permissions.playerHas(player, internalFlag, def);
         }
     }
 
