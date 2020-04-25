@@ -131,7 +131,7 @@ public class Paste {
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Replaceable Modules Status:\n");
-        finalReport.append("\tItemMatcher: ").append(plugin.getItemMatcher().getName()).append("@").append(plugin.getItemMatcher().getPlugin().getName());
+        finalReport.append("\tItemMatcher: ").append(plugin.getItemMatcher().getName()).append("@").append(plugin.getItemMatcher().getPlugin().getName()).append("\n");
         if (plugin.getEconomy() == null) {
             finalReport.append("\tEconomyCore: ").append("Not loaded").append("@").append("Unknown").append("\n");
         } else {
