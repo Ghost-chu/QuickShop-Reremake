@@ -343,6 +343,8 @@ plugin:
   OpenInv: true
   #If you have PlaceHolderAPI, QuickShop will use PlaceHolderAPI to process all messages.
   PlaceHolderAPI: true
+  #If you have LWC/LWCX,QSRR will check access if protection-checking enabled
+  LWC: true
   #Should QuickShop support for plugin BlockHub to use BlockHub to check region access for players?
   BlockHub:
     enable: true

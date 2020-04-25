@@ -243,6 +243,9 @@ public class QuickShop extends JavaPlugin {
     private Plugin blockHubPlugin;
 
     @Getter
+    private Plugin lwcPlugin;
+
+    @Getter
     private Cache shopCache;
 
     @Getter
@@ -314,6 +317,12 @@ public class QuickShop extends JavaPlugin {
             this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
             if (this.blockHubPlugin != null) {
                 getLogger().info("Successfully loaded BlockHub support!");
+            }
+        }
+        if (getConfig().getBoolean("plugin.LWC")) {
+            this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
+            if (this.lwcPlugin != null) {
+                getLogger().info("Successfully loaded LWC support!");
             }
         }
         if (this.display) {
@@ -1537,6 +1546,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 101) {
             getConfig().set("matcher.work-type", 1);
             getConfig().set("work-type", null);
+            getConfig().set("plugin.LWC", true);
             getConfig().set("config-version", 102);
             selectedVersion = 102;
         }

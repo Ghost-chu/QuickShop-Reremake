@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.util;
 
+import com.griefcraft.lwc.LWCPlugin;
+import com.griefcraft.model.Protection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -70,6 +72,17 @@ public class PermissionChecker {
         }
         final AtomicBoolean isCanBuild = new AtomicBoolean(false);
 
+        if (plugin.getLwcPlugin() != null) {
+            LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
+            Protection protection = lwc.getLWC().findProtection(block.getLocation());
+            if (protection != null) {
+                if (!protection.isOwner(player)) {
+                    Util.debugLog("LWC reporting player no permission to access this block.");
+                    return false;
+                }
+            }
+
+        }
         if (plugin.getBlockHubPlugin() != null) {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
