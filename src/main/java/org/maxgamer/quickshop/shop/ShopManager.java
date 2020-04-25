@@ -45,6 +45,7 @@ import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -648,8 +649,9 @@ public class ShopManager {
 
             if (!bypassProtectionChecks) {
                 plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
-                if (!plugin.getPermissionChecker().canBuild(p, info.getLocation())) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p));
+                Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
+                if (!result.isSuccess()) {
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
                     Util.debugLog("Failed to create shop: Protection check failed:");
                     for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
                         Util.debugLog(belisteners.getPlugin().getName());
@@ -830,9 +832,10 @@ public class ShopManager {
                 shop.onUnload();
                 return;
             }
-            if (!plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation())) {
+            Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
+            if (!result.isSuccess()) {
                 shop.onUnload();
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
                 Util.debugLog("Cancelled by integrations");
                 return;
             }
@@ -951,8 +954,9 @@ public class ShopManager {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
-        if (!plugin.getIntegrationHelper().callIntegrationsCanTrade(p, info.getLocation())) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-trade", p));
+        Result result = plugin.getIntegrationHelper().callIntegrationsCanTrade(p, info.getLocation());
+        if (!result.isSuccess()) {
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-trade", p, result.getMessage()));
             Util.debugLog("Cancel by integrations.");
             return;
         }
