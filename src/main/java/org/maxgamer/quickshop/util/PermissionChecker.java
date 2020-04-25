@@ -67,10 +67,6 @@ public class PermissionChecker {
      * @return Success
      */
     public boolean canBuild(@NotNull Player player, @NotNull Block block) {
-        if (!usePermissionChecker) {
-            return true;
-        }
-        final AtomicBoolean isCanBuild = new AtomicBoolean(false);
 
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
@@ -83,6 +79,13 @@ public class PermissionChecker {
             }
 
         }
+
+        if (!usePermissionChecker) {
+            return true;
+        }
+
+        final AtomicBoolean isCanBuild = new AtomicBoolean(false);
+
         if (plugin.getBlockHubPlugin() != null) {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
