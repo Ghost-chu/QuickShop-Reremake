@@ -1520,7 +1520,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 98;
         }
         if (selectedVersion == 98) {
-            getConfig().set("work-type", 1);
+            getConfig().set("matcher.work-type", 1);
             getConfig().set("config-version", 99);
             selectedVersion = 99;
         }
@@ -1530,9 +1530,15 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 100;
         }
         if (selectedVersion == 100) {
-            getConfig().set("integration.towny.ignore-disabled-worlds",false);
+            getConfig().set("integration.towny.ignore-disabled-worlds", false);
             getConfig().set("config-version", 101);
             selectedVersion = 101;
+        }
+        if (selectedVersion == 101) {
+            getConfig().set("matcher.work-type", 1);
+            getConfig().set("work-type", null);
+            getConfig().set("config-version", 102);
+            selectedVersion = 102;
         }
 
         saveConfig();
