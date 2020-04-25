@@ -80,12 +80,6 @@ public class PermissionChecker {
 
         }
 
-        if (!usePermissionChecker) {
-            return true;
-        }
-
-        final AtomicBoolean isCanBuild = new AtomicBoolean(false);
-
         if (plugin.getBlockHubPlugin() != null) {
             BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
             boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
@@ -99,6 +93,10 @@ public class PermissionChecker {
                 }
             }
         }
+        if (!usePermissionChecker) {
+            return true;
+        }
+        final AtomicBoolean isCanBuild = new AtomicBoolean(false);
 
         BlockBreakEvent beMainHand;
         // beMainHand = new BlockPlaceEvent(block, block.getState(), block.getRelative(0, -1, 0),
