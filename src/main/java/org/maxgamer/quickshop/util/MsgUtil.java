@@ -1440,6 +1440,13 @@ public class MsgUtil {
             setAndUpdate("language-version", 38);
             selectedVersion = 38;
         }
+        if (selectedVersion == 38) {
+            setAndUpdate("integrations-check-failed-create", "&cIntegration {0} denied the shop-creation");
+            setAndUpdate("integrations-check-failed-trade", "&cIntegration {0} denied the Shop trading");
+            setAndUpdate("3rd-plugin-build-check-failed", "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?");
+            setAndUpdate("language-version", 39);
+            selectedVersion = 39;
+        }
 
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
