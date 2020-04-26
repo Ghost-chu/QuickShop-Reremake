@@ -825,7 +825,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull List<Sign> getSigns() {
-        List<Sign> signs = new ArrayList<>(1);
+        List<Sign> signs = new ArrayList<>(4);
         if (this.getLocation().getWorld() == null) {
             return signs;
         }
@@ -838,6 +838,7 @@ public class ContainerShop implements Shop {
         final String signHeader =
                 MsgUtil.getMessageOfflinePlayer("sign.header", player, this.ownerName());
 
+        next:
         for (Block b : blocks) {
             if (b == null) {
                 plugin.getLogger().warning("Null signs in the queue, skipping");
@@ -850,17 +851,14 @@ public class ContainerShop implements Shop {
             if (!isAttached(b)) {
                 continue;
             }
-            org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
+            Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
-            for (int i = 0; i < lines.length; i++) {
-                if (i == 0) {
-                    if (lines[i].contains(signHeader)) {
-                        signs.add(sign);
-                        break;
-                    }
-                } else {
-                    if (Arrays.stream(lines).anyMatch((str) -> !str.isEmpty())) {
-                        break;
+            if (lines.length >= 1) {
+                if (!lines[0].contains(signHeader)) {
+                    for (String line : lines) {
+                        if (!line.isEmpty()) {
+                            break next;
+                        }
                     }
                 }
             }

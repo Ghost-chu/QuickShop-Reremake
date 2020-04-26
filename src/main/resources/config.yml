@@ -278,6 +278,8 @@ shop:
     - "SoulBound"
 
   #Protection check
+  #Note: This will send a FAKE BlockBreakEvent to check if you can break block
+  #It may conflict with some proctction or game plugin, if you don't want this, please disable and using integration below instead
   protection-checking: true
 
   #How many shops can be checked in once? (Container exists check)
