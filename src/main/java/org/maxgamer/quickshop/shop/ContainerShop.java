@@ -857,7 +857,7 @@ public class ContainerShop implements Shop {
                 if (!lines[0].contains(signHeader)) {
                     for (String line : lines) {
                         if (!line.isEmpty()) {
-                            break next;
+                            continue next;
                         }
                     }
                 }
