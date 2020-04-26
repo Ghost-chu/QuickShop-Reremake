@@ -254,7 +254,7 @@ public class ShopProtectionListener extends ProtectionListenerBase implements Li
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSpongeing(SpongeAbsorbEvent event) {
+    public void onSponging(SpongeAbsorbEvent event) {
         if (!useEnhanceProtection) {
             return;
         }
