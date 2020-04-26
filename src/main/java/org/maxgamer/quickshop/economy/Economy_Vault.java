@@ -116,7 +116,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin
                     .getLogger()
                     .warning(
-                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
+                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
                                     + getProviderName()
                                     + ")");
             return false;
@@ -147,7 +147,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         try {
             return plugin.getConfig().getString("shop.alternate-currency-symbol") + balance;
         } catch (Exception e) {
-            return String.valueOf('$' + balance);
+            return Util.format(balance);
         }
     }
 
@@ -183,31 +183,17 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return false;
         }
-        OfflinePlayer pFrom = Bukkit.getOfflinePlayer(from);
-        OfflinePlayer pTo = Bukkit.getOfflinePlayer(to);
-        try {
-            if (Objects.requireNonNull(this.vault).getBalance(pFrom) >= amount) {
-                if (this.vault.withdrawPlayer(pFrom, amount).transactionSuccess()) {
-                    if (!this.vault.depositPlayer(pTo, amount).transactionSuccess()) {
-                        this.vault.depositPlayer(pFrom, amount);
-                        return false;
-                    }
-                    return true;
+        if (this.getBalance(from) >= amount) {
+            if (this.withdraw(from, amount)) {
+                if (this.deposit(to, amount)) {
+                    this.deposit(from, amount);
+                    return false;
                 }
-                return false;
+                return true;
             }
             return false;
-        } catch (Throwable t) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -229,7 +215,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin
                     .getLogger()
                     .warning(
-                            "This seems not QuickShop fault, you should cotact with your economy plugin author. ("
+                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
                                     + getProviderName()
                                     + ")");
             return false;
