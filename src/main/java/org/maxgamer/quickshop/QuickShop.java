@@ -1550,6 +1550,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 102);
             selectedVersion = 102;
         }
+        if (selectedVersion == 102) {
+            getConfig().set("protect.entity", true);
+            getConfig().set("config-version", 103);
+            selectedVersion = 103;
+        }
 
         saveConfig();
         reloadConfig();
