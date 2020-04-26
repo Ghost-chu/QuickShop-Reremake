@@ -49,7 +49,6 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -811,14 +810,9 @@ public class ShopManager {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                     return;
                 }
-                try {
                     if (cacheTaxAccount != null) {
                         plugin.getEconomy().deposit(cacheTaxAccount, createCost);
                     }
-                } catch (Exception e2) {
-                    e2.printStackTrace();
-                    plugin.getLogger().log(Level.WARNING, "QuickShop can't pay tax to account in config.yml, Please set tax account name to a existing player!");
-                }
             }
 
             if (!plugin.isAllowStack()) { //Set to 1 when disabled
