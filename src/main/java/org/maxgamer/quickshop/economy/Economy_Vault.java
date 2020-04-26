@@ -112,6 +112,10 @@ public class Economy_Vault implements EconomyCore, Listener {
             return Objects.requireNonNull(this.vault).depositPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
+            if (p.getName() == null) {
+                plugin.getLogger().warning("Deposit Failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                return false;
+            }
             t.printStackTrace();
             plugin
                     .getLogger()
@@ -144,11 +148,8 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return "Error";
         }
-        try {
-            return plugin.getConfig().getString("shop.alternate-currency-symbol") + balance;
-        } catch (Exception e) {
-            return Util.format(balance);
-        }
+
+        return Util.format(balance);
     }
 
     @Override
@@ -211,6 +212,10 @@ public class Economy_Vault implements EconomyCore, Listener {
             return Objects.requireNonNull(this.vault).withdrawPlayer(p, amount).transactionSuccess();
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
+            if (p.getName() == null) {
+                plugin.getLogger().warning("Withdraw Failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                return false;
+            }
             t.printStackTrace();
             plugin
                     .getLogger()
