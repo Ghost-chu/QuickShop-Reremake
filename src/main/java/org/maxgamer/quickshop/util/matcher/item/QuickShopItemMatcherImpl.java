@@ -22,17 +22,19 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
     private final ItemMetaMatcher itemMetaMatcher;
 
-    private final int workType = plugin.getConfig().getInt("matcher.work-type");
+    private final int workType;
 
 
     public QuickShopItemMatcherImpl(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
+        workType = plugin.getConfig().getInt("matcher.work-type");
     }
 
     public QuickShopItemMatcherImpl() {
         this.plugin = QuickShop.getInstance();
         itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
+        workType = plugin.getConfig().getInt("matcher.work-type");
     }
 
     /**
@@ -119,6 +121,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
         requireStack.setAmount(1);
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
+
         if (workType == 1) {
             return requireStack.isSimilar(givenStack);
         }
