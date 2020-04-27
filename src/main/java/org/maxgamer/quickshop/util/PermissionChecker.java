@@ -108,17 +108,20 @@ public class PermissionChecker {
             @Override
             public void setCancelled(boolean cancel) {
                 //tracking cancel plugin
-                if (cancel) {
+                if (cancel && !isCancelled()) {
+                    isCanBuild.setMessage("[Plugin Not Found]");
+                    out:
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
                         for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
                             if (listener.getListener().getClass().getName().equals(element.getClassName())) {
                                 isCanBuild.setResult(false);
                                 isCanBuild.setMessage(listener.getPlugin().getName());
+                                break out;
                             }
                         }
                     }
-                    super.setCancelled(cancel);
                 }
+                super.setCancelled(cancel);
             }
         };
         // Call for event for protection check start

@@ -74,7 +74,7 @@ public class SubCommand_Create implements CommandProcesser {
                 Result result = plugin.getPermissionChecker().canBuild(p, b);
                 if (!result.isSuccess()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
-                    Util.debugLog("Failed permission build check, canceled");
+                    Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                     return;
                 }
             }
