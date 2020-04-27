@@ -38,9 +38,6 @@ import org.maxgamer.quickshop.event.ShopProtectionCheckEvent;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 public class PermissionChecker {
     private final QuickShop plugin;
 
@@ -112,34 +109,16 @@ public class PermissionChecker {
             public void setCancelled(boolean cancel) {
                 //tracking cancel plugin
                 if (cancel) {
-                    String className = "";
-                    out:
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                        Method[] methods;
-                        try {
-                            methods = Class.forName(element.getClassName()).getDeclaredMethods();
-                        } catch (ClassNotFoundException ignored) {
-                            continue;
-                        }
-                        for (Method method : methods) {
-                            if (method.getParameterCount() == 1 && method.getParameterTypes()[0].equals(BlockBreakEvent.class)) {
-                                for (Annotation annotation : method.getDeclaredAnnotations()) {
-                                    if (annotation.annotationType().equals(EventHandler.class)) {
-                                        className = element.getClassName();
-                                        break out;
-                                    }
-                                }
+                        for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
+                            if (listener.getListener().getClass().getName().equals(element.getClassName())) {
+                                isCanBuild.setResult(false);
+                                isCanBuild.setMessage(listener.getPlugin().getName());
                             }
                         }
                     }
-                    for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
-                        if (listener.getListener().getClass().getName().equals(className)) {
-                            isCanBuild.setResult(false);
-                            isCanBuild.setMessage(listener.getPlugin().getName());
-                        }
-                    }
+                    super.setCancelled(cancel);
                 }
-                super.setCancelled(cancel);
             }
         };
         // Call for event for protection check start
