@@ -31,8 +31,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -651,10 +649,7 @@ public class ShopManager {
                 Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
                 if (!result.isSuccess()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
-                    Util.debugLog("Failed to create shop: Protection check failed:");
-                    for (RegisteredListener belisteners : BlockBreakEvent.getHandlerList().getRegisteredListeners()) {
-                        Util.debugLog(belisteners.getPlugin().getName());
-                    }
+                    Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                     return;
                 }
                 plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
