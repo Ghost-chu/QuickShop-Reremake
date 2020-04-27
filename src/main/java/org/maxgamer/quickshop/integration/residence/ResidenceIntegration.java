@@ -44,7 +44,10 @@ public class ResidenceIntegration implements IntegratedPlugin {
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";
 
+    private final boolean whiteList;
+
     public ResidenceIntegration(QuickShop plugin) {
+        this.whiteList = plugin.getConfig().getBoolean("integration.residence.whitelist-mode");
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
         this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");
     }
@@ -79,7 +82,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, createFlag, false)) {
+                            , player, createFlag, whiteList)) {
                         return false;
                     }
                 } else {
@@ -95,7 +98,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (!playerHas(Residence.getInstance()
                                 .getWorldFlags()
                                 .getPerms(location.getWorld().getName())
-                        , player, limit, false)) {
+                        , player, limit, whiteList)) {
                     return false;
                 }
             } else {
@@ -114,11 +117,11 @@ public class ResidenceIntegration implements IntegratedPlugin {
         for (String limit : this.tradeLimits) {
             if ("FLAG".equalsIgnoreCase(limit)) {
                 if (residence == null) {
-                    //                    // Check world permission
+                    // Check world permission
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, tradeFlag, false)) {
+                            , player, tradeFlag, whiteList)) {
                         return false;
                     }
                 } else {
@@ -134,7 +137,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (!playerHas(Residence.getInstance()
                                 .getWorldFlags()
                                 .getPerms(location.getWorld().getName())
-                        , player, limit, false)) {
+                        , player, limit, whiteList)) {
                     return false;
                 }
             } else {

@@ -72,10 +72,13 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
 
     private final boolean tradeRequireWarZone;
 
+    private final boolean whiteList;
+
     public FactionsUUIDIntegration(QuickShop plugin) {
         this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 
+        this.whiteList = plugin.getConfig().getBoolean("integration.factions.whitelist-mode");
         this.createRequireOpen =
                 plugin.getConfig().getBoolean("integration.factions.create.require.open");
         this.createRequireNormal =
@@ -115,11 +118,10 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
         return "Factions";
     }
 
-    @Override
-    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+    private static boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
         if (faction == null) {
-            return true;
+            return !whiteList;
         }
         if (createRequireOpen && !faction.getOpen()) {
             return false;
@@ -159,47 +161,13 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     }
 
     @Override
-    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        return check(player, location, createRequireOpen, createRequireSafeZone, createRequirePermanent, createRequirePeaceful, createRequireWilderness, createRequireWarZone, createRequireNormal, createRequireOwn, createFlags, whiteList);
+    }
 
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
-        if (faction == null) {
-            return true;
-        }
-        if (tradeRequireOpen && !faction.getOpen()) {
-            return false;
-        }
-        if (tradeRequireSafeZone && !faction.isSafeZone()) {
-            return false;
-        }
-        if (tradeRequirePermanent && !faction.isPermanent()) {
-            return false;
-        }
-        if (tradeRequirePeaceful && !faction.isPeaceful()) {
-            return false;
-        }
-        if (tradeRequireWilderness && !faction.isWilderness()) {
-            return false;
-        }
-        if (tradeRequireOpen && !faction.getOpen()) {
-            return false;
-        }
-        if (tradeRequireWarZone && !faction.isWarZone()) {
-            return false;
-        }
-        if (tradeRequireNormal && !faction.isNormal()) {
-            return false;
-        }
-        if (tradeRequireOwn
-                && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
-            return false;
-        }
-        for (String flag : tradeFlags) {
-            if (!faction.hasAccess(
-                    FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
-                return false;
-            }
-        }
-        return true;
+    @Override
+    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        return check(player, location, tradeRequireOpen, tradeRequireSafeZone, tradeRequirePermanent, tradeRequirePeaceful, tradeRequireWilderness, tradeRequireWarZone, tradeRequireNormal, tradeRequireOwn, tradeFlags, whiteList);
     }
 
     @Override
