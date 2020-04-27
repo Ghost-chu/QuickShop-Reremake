@@ -171,6 +171,7 @@ public class ContainerShop implements Shop {
         if (this.unlimited) {
             return;
         }
+        item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         Inventory inv = this.getInventory();
         int remains = amount;
@@ -480,6 +481,7 @@ public class ContainerShop implements Shop {
         if (this.unlimited) {
             return;
         }
+        item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         Inventory inv = this.getInventory();
         int remains = amount;
