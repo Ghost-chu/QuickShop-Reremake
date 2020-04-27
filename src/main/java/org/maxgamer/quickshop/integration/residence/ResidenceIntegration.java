@@ -82,7 +82,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, createFlag, whiteList)) {
+                            , player, createFlag, !whiteList)) {
                         return false;
                     }
                 } else {
@@ -98,7 +98,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (!playerHas(Residence.getInstance()
                                 .getWorldFlags()
                                 .getPerms(location.getWorld().getName())
-                        , player, limit, whiteList)) {
+                        , player, limit, !whiteList)) {
                     return false;
                 }
             } else {
@@ -121,7 +121,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                     if (!playerHas(Residence.getInstance()
                                     .getWorldFlags()
                                     .getPerms(location.getWorld().getName())
-                            , player, tradeFlag, whiteList)) {
+                            , player, tradeFlag, !whiteList)) {
                         return false;
                     }
                 } else {
@@ -137,7 +137,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
                 if (!playerHas(Residence.getInstance()
                                 .getWorldFlags()
                                 .getPerms(location.getWorld().getName())
-                        , player, limit, whiteList)) {
+                        , player, limit, !whiteList)) {
                     return false;
                 }
             } else {
