@@ -41,8 +41,10 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
 
     private BooleanFlag tradeFlag;
 
+    private final boolean whiteList;
     public PlotSquaredIntegration(QuickShop plugin) {
         this.plugin = plugin;
+        this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
         // PlotAPI plotAPI = new PlotAPI();
     }
 
@@ -60,6 +62,9 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
                         location.getBlockY(),
                         location.getBlockZ());
         Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            return !whiteList;
+        }
         return this.createFlag.isTrue(plot);
     }
 
@@ -72,6 +77,9 @@ public class PlotSquaredIntegration implements IntegratedPlugin {
                         location.getBlockY(),
                         location.getBlockZ());
         Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            return !whiteList;
+        }
         return this.tradeFlag.isFalse(plot);
     }
 

@@ -53,9 +53,11 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
     private final QuickShop plugin;
+    private final boolean whiteList;
 
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
+        this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
         createFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.create"));
@@ -105,6 +107,9 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
+        if (query.getApplicableRegions(wgLoc).getRegions().isEmpty()) {
+            return !whiteList;
+        }
         for (WorldGuardFlags flag : createFlags) {
             switch (flag) {
                 case BUILD:
@@ -150,6 +155,9 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
+        if (query.getApplicableRegions(wgLoc).getRegions().isEmpty()) {
+            return !whiteList;
+        }
         for (WorldGuardFlags flag : tradeFlags) {
             switch (flag) {
                 case BUILD:
