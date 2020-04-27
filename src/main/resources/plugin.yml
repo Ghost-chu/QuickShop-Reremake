@@ -23,6 +23,8 @@ softdepend:
   - WorldGuard
   - Factions
   - ProtocolLib
+  - LWC
+  - BlockHub
 
 api-version: 1.13
 

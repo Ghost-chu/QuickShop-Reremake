@@ -900,7 +900,7 @@ public class ShopManager {
             if (!successB) {
                 plugin.getLogger().warning("Failed to deposit the money for player " + Bukkit.getOfflinePlayer(shop.getOwner()));
                 /* Rollback the trade */
-                if (!eco.deposit(p.getUniqueId(), depositMoney)) {
+                if (!eco.deposit(p.getUniqueId(), total)) {
                     plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit.getOfflinePlayer(shop.getOwner()).getName());
                 }
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
