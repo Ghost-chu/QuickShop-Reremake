@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.util.compatibility;
 
-import fr.neatmonster.nocheatplus.checks.CheckType;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -47,13 +46,13 @@ public class NCPCompatibilityModule implements CompatibilityModule {
                             + player.getName()
                             + " cheats detection until we finished permission checks.");
 
-            NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_REACH);
-            NCPExemptionManager.exemptPermanently(player, CheckType.BLOCKPLACE_FASTPLACE);
+            NCPExemptionManager.exemptPermanently(player);
+            NCPExemptionManager.exemptPermanently(player);
         } else {
             Util.debugLog(
                     "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
-            NCPExemptionManager.unexempt(player, CheckType.BLOCKPLACE_REACH);
-            NCPExemptionManager.unexempt(player, CheckType.BLOCKPLACE_FASTPLACE);
+            NCPExemptionManager.unexempt(player);
+            NCPExemptionManager.unexempt(player);
         }
     }
 }
