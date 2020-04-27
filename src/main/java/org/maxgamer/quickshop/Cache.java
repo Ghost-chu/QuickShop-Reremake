@@ -1,75 +1,41 @@
 package org.maxgamer.quickshop;
 
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
-public class Cache extends TimerTask {
-    private final Object lock = new Object();
+public class Cache {
     private final QuickShop plugin;
-    private final long expireTime = 5000;
-    private final Map<Location, CacheContainer> accessCaching = new HashMap<>(1000);
+    private final com.google.common.cache.Cache<Location, CacheContainer> accessCaching = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).initialCapacity(500).build();
 
     public Cache(QuickShop plugin) {
         this.plugin = plugin;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                cleanCache();
-            }
-        }.runTaskTimerAsynchronously(plugin, 0, expireTime * 20);
     }
 
-    public int getCachingSize() {
+    public long getCachingSize() {
         return accessCaching.size();
     }
 
     public Shop getCaching(Location location, boolean includeAttached) {
         CacheContainer container;
-        synchronized (lock) {
-            container = accessCaching.get(location);
-        }
+            container = accessCaching.getIfPresent(location);
         if (container == null) {
-            return null;
-        }
-        if (isExpired(container)) {
             if (includeAttached) {
                 return plugin.getShopManager().getShopIncludeAttached(location);
             } else {
                 return plugin.getShopManager().getShop(location);
             }
+        }else{
+            return container.getShop();
         }
-        return container.getShop();
     }
 
-    public boolean isExpired(CacheContainer container) {
-        return System.currentTimeMillis() - container.getTime() > expireTime;
-    }
 
     public void setCache(Location location, Shop shop) {
-        synchronized (lock) {
-            accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
-        }
+        accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
     }
-
-    public void cleanCache() {
-        synchronized (lock) {
-            accessCaching.keySet().removeIf(e -> isExpired(accessCaching.get(e)));
-        }
-    }
-
-    /**
-     * The action to be performed by this timer task.
-     */
-    @Override
-    public void run() {
-        cleanCache();
-    }
-
 }
 
 class CacheContainer {
