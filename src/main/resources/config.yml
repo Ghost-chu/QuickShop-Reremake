@@ -361,11 +361,8 @@ effect:
 matcher:
   # Matcher type
   #0= QuickShop item matcher with configurable options below.
-  #Tips:QuickShop matcher will only compare shop item
-  #having attributes(e.g custom name, book content...)
-  #with trade item, which means trade item may be
-  #not equals shop item.
   #1= Bukkit item matcher, can be more accurate.
+  #2= More strict matcher by Bukkit equals method
   work-type: 1
   #For Item
   item:
