@@ -162,7 +162,7 @@ public class VirtualDisplayItem extends DisplayItem {
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //https://wiki.vg/index.php?title=Entity_metadata#Entity
         if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(shop.getItem())).getHandle()));
+            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(originalItemStack)).getHandle()));
             wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         }
 
@@ -171,10 +171,10 @@ public class VirtualDisplayItem extends DisplayItem {
         switch (version) {
             case "v1_13_R1":
             case "v1_13_R2":
-                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
                 break;
             default:
-                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
                 break;
         }
 //        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());

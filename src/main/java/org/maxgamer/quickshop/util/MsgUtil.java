@@ -40,6 +40,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -928,12 +929,9 @@ public class MsgUtil {
                 chatSheetPrinter.printLine(MsgUtil.getMessage("menu.effects", p));
                 chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
             }
-            potionMeta
-                    .getCustomEffects()
-                    .forEach(
-                            (potionEffect ->
-                                    chatSheetPrinter.printLine(
-                                            ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()))));
+            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()));
+            }
         }
         chatSheetPrinter.printFooter();
     }

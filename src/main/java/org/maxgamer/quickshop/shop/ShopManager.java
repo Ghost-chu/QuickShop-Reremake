@@ -85,8 +85,6 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-        try {
-            plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
 
             if (plugin.isLimit()) {
                 int owned = 0;
@@ -117,14 +115,7 @@ public class ShopManager {
             }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
             Bukkit.getPluginManager().callEvent(spce);
-            if (Util.fireCancellableEvent(spce)) {
-                return false;
-            }
-        } finally {
-            plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
-        }
-
-        return true;
+        return !Util.fireCancellableEvent(spce);
     }
 
     /**
@@ -645,14 +636,12 @@ public class ShopManager {
 
 
             if (!bypassProtectionChecks) {
-                plugin.getCompatibilityTool().toggleProtectionListeners(false, p);
                 Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
                 if (!result.isSuccess()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("3rd-plugin-build-check-failed", p, result.getMessage()));
                     Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                     return;
                 }
-                plugin.getCompatibilityTool().toggleProtectionListeners(true, p);
             }
 
             if (plugin.getShopManager().getShop(info.getLocation()) != null) {
