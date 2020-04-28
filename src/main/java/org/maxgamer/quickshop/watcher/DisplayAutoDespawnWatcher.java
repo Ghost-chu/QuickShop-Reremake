@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
@@ -34,46 +35,48 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
     public void run() {
         int range = plugin.getConfig().getInt("shop.display-despawn-range");
 
-        plugin
-                .getShopManager()
-                .getLoadedShops()
-                .stream()
-                .filter(shop -> shop.getDisplay() != null)
-                .forEach(
-                        shop -> {
-                            // Check the range has player?
-                            boolean anyPlayerInRegion =
-                                    Bukkit.getOnlinePlayers().stream()
-                                            .filter(player -> player.getWorld() == shop.getLocation().getWorld())
-                                            .anyMatch(
-                                                    player -> player.getLocation().distance(shop.getLocation()) < range);
-
-                            if (anyPlayerInRegion) {
-                                if (!shop.getDisplay().isSpawned()) {
-                                    Util.debugLog(
-                                            "Respawning the shop "
-                                                    + shop
-                                                    + " the display, cause it was despawned and a player close it");
-                                    Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
-                                }
-                            } else if (shop.getDisplay().isSpawned()) {
-                                removeDisplayItemDelayed(shop);
-                            }
-                        });
+        for (Shop shop : plugin.getShopManager().getLoadedShops()) {
+            if (shop.getDisplay() != null) {
+                // Check the range has player?
+                boolean anyPlayerInRegion = false;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getWorld() == shop.getLocation().getWorld()) {
+                        if (player.getLocation().distance(shop.getLocation()) < range) {
+                            anyPlayerInRegion = true;
+                            break;
+                        }
+                    }
+                }
+                if (anyPlayerInRegion) {
+                    if (!shop.getDisplay().isSpawned()) {
+                        Util.debugLog(
+                                "Respawning the shop "
+                                        + shop
+                                        + " the display, cause it was despawned and a player close it");
+                        Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
+                    }
+                } else if (shop.getDisplay().isSpawned()) {
+                    removeDisplayItemDelayed(shop);
+                }
+            }
+        }
     }
 
     public boolean removeDisplayItemDelayed(Shop shop) {
-        if (shop.getDisplay().isPendingRemoval()) {
-            // Actually remove the pending display
-            Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
-            Bukkit.getScheduler().runTask(plugin, () -> shop.getDisplay().remove());
-            return true;
-        } else {
-            // Delayed to next calling
-            Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
-            shop.getDisplay().pendingRemoval();
-            return false;
+        if (shop.getDisplay() != null) {
+            if (shop.getDisplay().isPendingRemoval()) {
+                // Actually remove the pending display
+                Util.debugLog("Removing the shop " + shop + " the display, cause nobody can see it");
+                Bukkit.getScheduler().runTask(plugin, () -> shop.getDisplay().remove());
+                return true;
+            } else {
+                // Delayed to next calling
+                Util.debugLog("Pending to remove the shop " + shop + " the display, cause nobody can see it");
+                shop.getDisplay().pendingRemoval();
+                return false;
+            }
         }
+        return false;
     }
 
 }

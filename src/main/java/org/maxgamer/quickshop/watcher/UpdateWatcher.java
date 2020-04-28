@@ -23,6 +23,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -74,53 +75,51 @@ public class UpdateWatcher implements Listener {
                                     .getLogger()
                                     .info("Update here: https://www.spigotmc.org/resources/62575/");
 
-                            Bukkit.getOnlinePlayers()
-                                    .forEach(
-                                            player -> {
-                                                if (QuickShop.getPermissionManager()
-                                                        .hasPermission(player, "quickshop.alerts")) {
-                                                    List<String> notifys =
-                                                            MsgUtil.getI18nFile().getStringList("updatenotify.list");
-                                                    Random random = new Random();
-                                                    int notifyNum = -1;
-                                                    if (notifys.size() > 1) {
-                                                        notifyNum = random.nextInt(notifys.size());
-                                                    }
-                                                    String notify;
-                                                    if (notifyNum > 0) { // Translate bug.
-                                                        notify = notifys.get(notifyNum);
-                                                    } else {
-                                                        notify = "New update {0} now avaliable! Please update!";
-                                                    }
-                                                    notify =
-                                                            MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
-                                                    TextComponent updatenow =
-                                                            new TextComponent(
-                                                                    ChatColor.AQUA
-                                                                            + MsgUtil.getMessage("updatenotify.buttontitle", player));
-                                                    TextComponent onekeyupdate =
-                                                            new TextComponent(
-                                                                    ChatColor.YELLOW
-                                                                            + MsgUtil.getMessage(
-                                                                            "updatenotify.onekeybuttontitle", player));
-                                                    updatenow.setClickEvent(
-                                                            new ClickEvent(
-                                                                    ClickEvent.Action.OPEN_URL,
-                                                                    "https://www.spigotmc.org/resources/62575/"));
-                                                    onekeyupdate.setClickEvent(
-                                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
-                                                    TextComponent finallyText =
-                                                            new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
-                                                    player.sendMessage(
-                                                            ChatColor.GREEN
-                                                                    + "---------------------------------------------------");
-                                                    player.sendMessage(ChatColor.GREEN + notify);
-                                                    player.spigot().sendMessage(finallyText);
-                                                    player.sendMessage(
-                                                            ChatColor.GREEN
-                                                                    + "---------------------------------------------------");
-                                                }
-                                            });
+                            for (Player player : Bukkit.getOnlinePlayers()) {
+                                if (QuickShop.getPermissionManager()
+                                        .hasPermission(player, "quickshop.alerts")) {
+                                    List<String> notifys =
+                                            MsgUtil.getI18nFile().getStringList("updatenotify.list");
+                                    Random random = new Random();
+                                    int notifyNum = -1;
+                                    if (notifys.size() > 1) {
+                                        notifyNum = random.nextInt(notifys.size());
+                                    }
+                                    String notify;
+                                    if (notifyNum > 0) { // Translate bug.
+                                        notify = notifys.get(notifyNum);
+                                    } else {
+                                        notify = "New update {0} now avaliable! Please update!";
+                                    }
+                                    notify =
+                                            MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
+                                    TextComponent updatenow =
+                                            new TextComponent(
+                                                    ChatColor.AQUA
+                                                            + MsgUtil.getMessage("updatenotify.buttontitle", player));
+                                    TextComponent onekeyupdate =
+                                            new TextComponent(
+                                                    ChatColor.YELLOW
+                                                            + MsgUtil.getMessage(
+                                                            "updatenotify.onekeybuttontitle", player));
+                                    updatenow.setClickEvent(
+                                            new ClickEvent(
+                                                    ClickEvent.Action.OPEN_URL,
+                                                    "https://www.spigotmc.org/resources/62575/"));
+                                    onekeyupdate.setClickEvent(
+                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                                    TextComponent finallyText =
+                                            new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
+                                    player.sendMessage(
+                                            ChatColor.GREEN
+                                                    + "---------------------------------------------------");
+                                    player.sendMessage(ChatColor.GREEN + notify);
+                                    player.spigot().sendMessage(finallyText);
+                                    player.sendMessage(
+                                            ChatColor.GREEN
+                                                    + "---------------------------------------------------");
+                                }
+                            }
                         } else {
                             QuickShop.instance.getLogger().info("A new BETA version of QuickShop is available!");
                             QuickShop.instance
