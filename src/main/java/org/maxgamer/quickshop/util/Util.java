@@ -1128,7 +1128,9 @@ public class Util {
     public static List<String> parseColours(@NotNull List<String> list) {
         final List<String> newList = new ArrayList<>();
 
-        list.forEach(s -> newList.add(parseColours(s)));
+        for (String s : list) {
+            newList.add(parseColours(s));
+        }
 
         return newList;
     }

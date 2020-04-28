@@ -162,7 +162,7 @@ public class VirtualDisplayItem extends DisplayItem {
         WrappedDataWatcher wpw = new WrappedDataWatcher();
         //https://wiki.vg/index.php?title=Entity_metadata#Entity
         if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
-            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(shop.getItem())).getHandle()));
+            wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(Util.getItemStackName(originalItemStack)).getHandle()));
             wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         }
 
