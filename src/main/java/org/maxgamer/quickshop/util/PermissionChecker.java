@@ -150,8 +150,9 @@ public class PermissionChecker {
                 }
             }
         }, plugin);
-
+        plugin.getCompatibilityTool().toggleProtectionListeners(false, player);
         Bukkit.getPluginManager().callEvent(beMainHand);
+        plugin.getCompatibilityTool().toggleProtectionListeners(true, player);
 
         return isCanBuild;
     }
