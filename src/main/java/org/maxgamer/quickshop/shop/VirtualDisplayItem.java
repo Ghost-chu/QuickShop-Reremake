@@ -171,10 +171,10 @@ public class VirtualDisplayItem extends DisplayItem {
         switch (version) {
             case "v1_13_R1":
             case "v1_13_R2":
-                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
                 break;
             default:
-                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), originalItemStack);
                 break;
         }
 //        wpw.setObject((version == 13 ? 6 : 7), WrappedDataWatcher.Registry.getItemStackSerializer(false), shop.getItem());
