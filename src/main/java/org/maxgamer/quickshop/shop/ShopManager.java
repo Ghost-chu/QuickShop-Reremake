@@ -903,6 +903,10 @@ public class ShopManager {
             }
         }
 
+        if (tax != 0 && cacheTaxAccount != null) {
+            eco.deposit(cacheTaxAccount, CalculateUtil.multiply(total, tax));
+        }
+
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
