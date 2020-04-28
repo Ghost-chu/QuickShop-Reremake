@@ -114,8 +114,8 @@
       "unlimited": "&aMarket şimdi sınırsız",
       "limited": "&aMarket şimdi sınırlı"
     },
-    "some-shops-removed": "&e{0} &ashop removed",
-    "no-owner-given": "&cNo owner provided",
+    "some-shops-removed": "&e{0} &amarket kaldırıldı",
+    "no-owner-given": "&cSahip sağlanmadı",
     "new-owner": "&aYeni sahip: &e{0}",
     "now-buying": "&aŞimdi &e{0} &dALIYOR",
     "now-selling": "&aŞimdi &e{0} &bSATILIYOR",
@@ -159,7 +159,7 @@
       "size": "&eBir marketin her yığınının miktarını değiştir",
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir",
-      "removeall": "&eRemove ALL shops of a specified player"
+      "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır"
     }
   },
   "signs": {
