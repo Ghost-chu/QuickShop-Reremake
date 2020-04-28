@@ -249,7 +249,7 @@ public class Util {
         Map<Object, Object> root = yaml.load(config);
         //noinspection unchecked
         Map<String, Object> item = (Map<String, Object>) root.get("item");
-        int itemDataVersion = Integer.parseInt(String.valueOf(item.get("v")));
+        int itemDataVersion = Integer.parseInt(String.valueOf(item.get("v","0")));
         try {
             // Try load the itemDataVersion to do some checks.
             //noinspection deprecation
