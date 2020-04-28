@@ -17,7 +17,9 @@ public class CompatibilityManager {
      * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
-        this.registeredModules.forEach(module -> module.toggle(player, status));
+        for (CompatibilityModule module : this.registeredModules) {
+            module.toggle(player, status);
+        }
     }
 
     public void register(@NotNull CompatibilityModule module) {

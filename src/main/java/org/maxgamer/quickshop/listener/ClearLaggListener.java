@@ -46,7 +46,9 @@ public class ClearLaggListener implements Listener {
             pendingExclude.add(entity);
         }
 
-        pendingExclude.forEach(clearlaggEvent::removeEntity);
+        for (Entity entity : pendingExclude) {
+            clearlaggEvent.removeEntity(entity);
+        }
         Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");
     }
 
