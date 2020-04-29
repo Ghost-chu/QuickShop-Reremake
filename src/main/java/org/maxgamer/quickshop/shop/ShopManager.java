@@ -463,8 +463,8 @@ public class ShopManager {
         Location loc = shop.getLocation();
         String world = Objects.requireNonNull(loc.getWorld()).getName();
         Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops().get(world);
-        int x = (int) Math.floor((shop.getLocation().getBlockX()) / 16.0);
-        int z = (int) Math.floor((shop.getLocation().getBlockZ()) / 16.0);
+        int x = (int) Math.floor((loc.getBlockX()) / 16.0);
+        int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
         ShopChunk shopChunk = new ShopChunk(world, x, z);
         Map<Location, Shop> inChunk = inWorld.get(shopChunk);
         if (inChunk == null) {
@@ -633,8 +633,6 @@ public class ShopManager {
             // Checking the shop can be created
             Util.debugLog("Calling for protection check...");
             // Fix openInv compatiable issue
-
-
             if (!bypassProtectionChecks) {
                 Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
                 if (!result.isSuccess()) {
@@ -814,7 +812,7 @@ public class ShopManager {
             if (!result.isSuccess()) {
                 shop.onUnload();
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
-                Util.debugLog("Cancelled by integrations");
+                Util.debugLog("Cancelled by integrations: "+result);
                 return;
             }
             /* The shop has hereforth been successfully created */
