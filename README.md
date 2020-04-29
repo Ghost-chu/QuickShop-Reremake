@@ -1,27 +1,27 @@
 # QuickShop-Reremake
 QuickShop is a shop plugin, that allows players to sell items from a chest with no commands.  It allows players to purchase any number of items easily.  In fact, this plugin doesn't even have any commands that a player would ever need!  
 
-Reremake is a fork for QuickShop NotLikeMe, QSRR have more features and bug fixes.  
+Reremake is a fork for QuickShop NotLikeMe, QSRR has more features and bug fixes.  
 
-QuickShop-Reremake make by Minecraft Server SunnySide Community from https://github.com/KaiKikuchi/QuickShop upstream repo.  
+QuickShop-Reremake makes by Minecraft Server SunnySide Community from https://github.com/KaiKikuchi/QuickShop upstream repo.  
 
 ## Support
 Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
 ## Features
 - Easy to use
-- Togglable Display Item on top of chest
-- NBT Data, Enchants, Tool Damage, Potion and Mob Egg support
+- Togglable Display Item on top of the chest
+- NBT Data, Enchants, Tool Damage, Potion, and Mob Egg support
 - Unlimited chest support
 - Blacklist support & bypass permissions
 - Shops that buy items and sell items at the same time are possible (Using double chests)
 - Checks a player can open a chest before letting them create a shop!
 - UUID support
 - More shop protection! [Reremake]
-- Item displayname i18n! [Reremake]
-- Enchantment displayname i18n! [Reremake]
+- Item display name i18n! [Reremake]
+- Enchantment display name i18n! [Reremake]
 - A cool item preview [Reremake]
-- Friendly for region and world protect plugin [Reremake]
+- Friendly for the region and world protect plugin [Reremake]
 - ProtocolLib based Virtual DisplayItem support [Reremake]
 
 
@@ -35,7 +35,7 @@ Github projects have a "releases" link on their home page. If you still don't se
 - [Relatev](http://www.relatev.com/forum.php?mod=viewthread&tid=2251)
 
 ## Contribute
-If you're a developer, you can contribute to the QuickShop code! Just make a fork and install lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
+If you're a developer, you can contribute to the QuickShop code! Just make a fork and install Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
 
 ## Maven
 ```XML
