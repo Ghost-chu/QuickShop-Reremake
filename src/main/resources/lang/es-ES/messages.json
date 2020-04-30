@@ -170,7 +170,7 @@
     "stack-buying": "Compro {0}",
     "item": "{0}",
     "price": "{0} la unidad",
-    "stack-price": "{0} obtuvo {1}x{2}",
+    "stack-price": "{0} por {1}x{2}",
     "unlimited": "Ilimitado"
   },
   "controlpanel": {
