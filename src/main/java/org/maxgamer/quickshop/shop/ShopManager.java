@@ -63,8 +63,9 @@ public class ShopManager {
     private final UUID cacheTaxAccount;
     @Getter
     private final PriceLimiter priceLimiter;
-    private boolean useFastShopSearchAlgorithm;
-    private boolean useOldCanBuildAlgo;
+    private final boolean useFastShopSearchAlgorithm;
+    private final boolean useOldCanBuildAlgo;
+    private final boolean autoSign;
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -75,6 +76,7 @@ public class ShopManager {
         this.cacheTaxAccount = taxPlayer.getUniqueId();
         this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"), plugin.getConfig().getBoolean("shop.allow-free-shop"));
         this.useOldCanBuildAlgo = plugin.getConfig().getBoolean("limits.old-algorithm");
+        this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
 
     /**
@@ -202,7 +204,7 @@ public class ShopManager {
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
 
-        if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
+        if (info.getSignBlock() != null && autoSign) {
             boolean isWaterLogged = false;
             if (info.getSignBlock().getType() == Material.WATER) {
                 isWaterLogged = true;
