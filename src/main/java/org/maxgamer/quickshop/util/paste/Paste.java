@@ -168,7 +168,11 @@ public class Paste {
                     .append(bplugin.isEnabled() ? "Enabled" : "Disabled")
                     .append("#")
                     .append(bplugin.getDescription().getVersion())
-                    .append("\n");
+                    .append("#")
+                    .append(bplugin.getDescription().getAPIVersion());
+            if(bplugin.getDescription().getDepend().contains(plugin.getName()) || bplugin.getDescription().getSoftDepend().contains(plugin.getName())){
+                finalReport.append("#[Addon/Compatible]");
+            }
         }
         finalReport.append("================================================\n");
         finalReport.append("Internal Data:\n");
@@ -309,6 +313,24 @@ public class Paste {
             } catch (Throwable th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
+                finalReport.append("\t\t\n").append("Read failed.").append("\n");
+                finalReport.append("\t*********************************\n");
+            }
+            try {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\ttuinity.yml:\n");
+                finalReport
+                        .append("\t\t\n")
+                        .append(
+                                new String(
+                                        Objects.requireNonNull(
+                                                Util.inputStream2ByteArray(new File(new File("."), "tuinity.yml").getPath())),
+                                        StandardCharsets.UTF_8))
+                        .append("\n");
+                finalReport.append("\t*********************************\n");
+            } catch (Throwable th) {
+                finalReport.append("\t*********************************\n");
+                finalReport.append("\ttuinity.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
                 finalReport.append("\t*********************************\n");
             }
