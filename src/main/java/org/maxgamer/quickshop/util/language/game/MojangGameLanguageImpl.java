@@ -39,7 +39,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         this.plugin = plugin;
         final GameLanguageLoadThread loadThread = new GameLanguageLoadThread();
         languageCode = languageCode.replace("-", "_");
-        loadThread.setLanguageCode(languageCode);
+        loadThread.setLanguageCode(languageCode.toLowerCase());
         loadThread.setMainThreadWaiting(true); // Told thread we're waiting him
         loadThread.setPlugin(plugin);
         loadThread.start();
