@@ -753,7 +753,6 @@ public class MsgUtil {
         sendMessageToOps(content);
         plugin.getLogger().warning(content);
         Objects.requireNonNull(plugin.getLogWatcher()).add(content);
-        Util.debugLog(content);
     }
 
     /**
