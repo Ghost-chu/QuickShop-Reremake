@@ -19,25 +19,22 @@
 
 package org.maxgamer.quickshop.listener;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.Map;
 
-@AllArgsConstructor
-public class ChunkListener implements Listener {
+public class ChunkListener extends QSListener {
 
-    @NotNull
-    private final QuickShop plugin;
+    public ChunkListener(QuickShop plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
