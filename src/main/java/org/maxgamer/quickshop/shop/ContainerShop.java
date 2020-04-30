@@ -56,6 +56,7 @@ public class ContainerShop implements Shop {
 
     @NotNull
     private final Location location;
+    @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
     @Nullable
     private DisplayItem displayItem;
@@ -71,7 +72,7 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
 
     private boolean unlimited;
-
+    @EqualsAndHashCode.Exclude
     private long lastChangedAt;
 
     private ContainerShop(@NotNull ContainerShop s) {
