@@ -54,13 +54,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
-public class DisplayProtectionListener implements Listener {
-    private final QuickShop plugin;
+public class DisplayProtectionListener extends QSListener{
 
     private final boolean useEnhanceProtection;
 
     public DisplayProtectionListener(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
     }
 

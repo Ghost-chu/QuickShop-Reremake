@@ -707,25 +707,25 @@ public class QuickShop extends JavaPlugin {
         LockListener lockListener = new LockListener(this, this.shopCache);
         InternalListener internalListener = new InternalListener(this);
 
-        Bukkit.getPluginManager().registerEvents(blockListener, this);
-        Bukkit.getPluginManager().registerEvents(playerListener, this);
-        Bukkit.getPluginManager().registerEvents(chatListener, this);
+        blockListener.register();
+        playerListener.register();
+        chatListener.register();
 
-        Bukkit.getPluginManager().registerEvents(chunkListener, this);
-        Bukkit.getPluginManager().registerEvents(worldListener, this);
-        Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
+        chunkListener.register();
+        worldListener.register();
+        customInventoryListener.register();
 
-        Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
+        shopProtectListener.register();
         Bukkit.getPluginManager().registerEvents(internalListener, this);
 
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             DisplayBugFixListener displayBugFixListener = new DisplayBugFixListener(this);
-            Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
+            displayBugFixListener.register();
             DisplayProtectionListener inventoryListener = new DisplayProtectionListener(this);
-            Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+            inventoryListener.register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
+                new ClearLaggListener(this).register();
             }
         }
 
@@ -734,7 +734,7 @@ public class QuickShop extends JavaPlugin {
 //        }
 
         if (getConfig().getBoolean("shop.lock")) {
-            Bukkit.getPluginManager().registerEvents(lockListener, this);
+           lockListener.register();
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
