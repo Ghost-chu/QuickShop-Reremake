@@ -99,6 +99,7 @@ public class ContainerShop implements Shop {
      * @param moderator The modertators
      * @param type      The shop type
      * @param unlimited The unlimited
+     * @param plugin    The plugin instance
      */
     public ContainerShop(
             @NotNull QuickShop plugin,
@@ -413,7 +414,7 @@ public class ContainerShop implements Shop {
         // check price restriction
 
 
-        if(plugin.getShopManager().getPriceLimiter().check(item,price) != PriceLimiter.Status.PASS){
+        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
             Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
             if (priceRestriction != null) {
                 if (price < priceRestriction.getKey()) {

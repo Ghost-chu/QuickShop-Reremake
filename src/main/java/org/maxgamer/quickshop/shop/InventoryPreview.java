@@ -55,6 +55,7 @@ public class InventoryPreview implements Listener {
      *
      * @param itemStack The item you want create.
      * @param player    Target player.
+     * @param plugin    The plugin instance.
      */
     public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
         this.plugin = plugin;
