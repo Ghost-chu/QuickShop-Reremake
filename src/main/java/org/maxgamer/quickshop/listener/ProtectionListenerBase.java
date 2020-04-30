@@ -9,14 +9,16 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 
 @Getter
-public class ProtectionListenerBase {
-    private final QuickShop plugin;
-
+public class ProtectionListenerBase extends QSListener {
     private final Cache cache;
 
     public ProtectionListenerBase(@NotNull QuickShop plugin, @Nullable Cache cache) {
+        super(plugin);
         this.cache = cache;
-        this.plugin = plugin;
+    }
+
+    public QuickShop getPlugin(){
+        return plugin;
     }
 
     /**

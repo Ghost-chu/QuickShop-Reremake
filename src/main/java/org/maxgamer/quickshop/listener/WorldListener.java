@@ -19,16 +19,13 @@
 
 package org.maxgamer.quickshop.listener;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
@@ -36,12 +33,11 @@ import org.maxgamer.quickshop.shop.ShopChunk;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+public class WorldListener extends QSListener {
 
-@AllArgsConstructor
-public class WorldListener implements Listener {
-
-    @NotNull
-    private final QuickShop plugin;
+    public WorldListener(QuickShop plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
