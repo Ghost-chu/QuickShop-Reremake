@@ -238,6 +238,7 @@ public class ShopManager {
             } else {
                 plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
             }
+            shop.onLoad();
             bs.update(true);
             shop.setSignText();
         }
@@ -802,15 +803,15 @@ public class ShopManager {
             }
 
             ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
-            shop.onLoad();
-            ShopCreateEvent e = new ShopCreateEvent(shop, p);
-            if (Util.fireCancellableEvent(e)) {
-                shop.onUnload();
-                return;
-            }
+//            shop.onLoad();
+            //ShopCreateEvent e = new ShopCreateEvent(shop, p);
+            //if (Util.fireCancellableEvent(e)) {
+                //shop.onUnload();
+            //    return;
+           // }
             Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
-                shop.onUnload();
+                //shop.onUnload();
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
                 Util.debugLog("Cancelled by integrations: "+result);
                 return;
