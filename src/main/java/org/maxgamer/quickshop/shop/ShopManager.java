@@ -88,13 +88,12 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-
             if (plugin.isLimit()) {
                 int owned = 0;
                 if (useOldCanBuildAlgo) {
                     owned = getPlayerAllShops(p.getUniqueId()).size();
                 } else {
-                    for (Shop shop : getPlayerAllShops(p.getUniqueId())) {
+                    for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
                         if (!shop.isUnlimited()) {
                             owned++;
                         }
@@ -167,7 +166,7 @@ public class ShopManager {
     }
 
     public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
+        final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
         }
@@ -282,7 +281,7 @@ public class ShopManager {
                 return null;
             }
         }
-        Map<Location, Shop> inChunk = getShops(loc.getChunk());
+        final Map<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
         }
@@ -491,8 +490,8 @@ public class ShopManager {
      * @return The list have this player's all shops.
      */
     public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
-        List<Shop> playerShops = new ArrayList<>(10);
-        for(Shop shop : getAllShops()){
+        final List<Shop> playerShops = new ArrayList<>(10);
+        for(final Shop shop : getAllShops()){
             if(shop.getOwner().equals(playerUUID)){
                 playerShops.add(shop);
             }
@@ -508,9 +507,9 @@ public class ShopManager {
      * @return All shop in the database
      */
     public @NotNull List<Shop> getAllShops() {
-        List<Shop> shops = new ArrayList<>();
-        for (Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
-            for (Map<Location, Shop> shopData : shopMapData.values()) {
+        final List<Shop> shops = new ArrayList<>();
+        for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
+            for (final Map<Location, Shop> shopData : shopMapData.values()) {
                 shops.addAll(shopData.values());
             }
         }
@@ -524,8 +523,8 @@ public class ShopManager {
      * @return The list have this world all shops
      */
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        List<Shop> worldShops = new ArrayList<>();
-        for (Shop shop : getAllShops()){
+        final List<Shop> worldShops = new ArrayList<>();
+        for (final Shop shop : getAllShops()){
             if(Objects.equals(shop.getLocation().getWorld(), world)){
                 worldShops.add(shop);
             }
@@ -1069,23 +1068,21 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
-        Shop shop;
-        //Try to get it directly
-        shop = getShop(loc);
+        Shop shop = getShop(loc);
 
         //failed, get attached shop
         if (shop == null) {
-            Block currentBlock = loc.getBlock();
+           final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 //sign
                 if (Util.isWallSign(currentBlock.getType())) {
-                    Block attached = Util.getAttached(currentBlock);
+                    final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
                         shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true);
                     }
                     //double chest
                 } else {
-                    @Nullable Block half = Util.getSecondHalf(currentBlock);
+                    @Nullable final  Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }
