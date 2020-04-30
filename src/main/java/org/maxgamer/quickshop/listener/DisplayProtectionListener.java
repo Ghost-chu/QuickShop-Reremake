@@ -31,7 +31,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
@@ -46,6 +45,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
@@ -54,12 +54,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
-public class DisplayProtectionListener extends QSListener{
+public class DisplayProtectionListener extends ProtectionListenerBase{
 
     private final boolean useEnhanceProtection;
 
-    public DisplayProtectionListener(QuickShop plugin) {
-        super(plugin);
+    public DisplayProtectionListener(QuickShop plugin, Cache cache) {
+        super(plugin,cache);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
     }
 
@@ -73,7 +73,7 @@ public class DisplayProtectionListener extends QSListener{
         }
         final Block targetBlock = event.getToBlock();
         final Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(shopBlock.getLocation());
+        final Shop shop = getShopNature(shopBlock.getLocation(),true);
         if (shop == null) {
             return;
         }
@@ -121,7 +121,7 @@ public class DisplayProtectionListener extends QSListener{
             return;
         }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
+        Shop shop = getShopNature(block.getLocation(),true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -136,7 +136,7 @@ public class DisplayProtectionListener extends QSListener{
         for (Block oBlock : event.getBlocks()) {
             final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
+                shop = getShopNature(otherBlock.getLocation(),true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -161,7 +161,7 @@ public class DisplayProtectionListener extends QSListener{
             return;
         }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
+        Shop shop = getShopNature(block.getLocation(),true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -176,7 +176,7 @@ public class DisplayProtectionListener extends QSListener{
         for (Block oBlock : event.getBlocks()) {
             final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
+                shop = getShopNature(otherBlock.getLocation(),true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -625,7 +625,7 @@ public class DisplayProtectionListener extends QSListener{
         }
         final Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
         final Shop shop =
-                plugin.getShopManager().getShop(waterBlock.getRelative(BlockFace.DOWN).getLocation());
+                getShopPlayer(waterBlock.getRelative(BlockFace.DOWN).getLocation(),true);
         if (shop == null) {
             return;
         }
