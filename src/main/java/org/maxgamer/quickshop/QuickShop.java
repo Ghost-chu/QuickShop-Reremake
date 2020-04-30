@@ -384,7 +384,7 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
-                        getLogger().info("Checking the tax account infos...");
+                        //getLogger().info("Checking the tax account infos...");
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
@@ -393,6 +393,7 @@ public class QuickShop extends JavaPlugin {
                                 if (vault.isValid()) {
                                     if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                         try {
+                                            Util.debugLog("Tax account not exists! Creating...");
                                             vault.getVault().createPlayerAccount(tax);
                                         } catch (Throwable ignored) {
                                         }
