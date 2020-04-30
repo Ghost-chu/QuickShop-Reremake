@@ -71,6 +71,7 @@ public class Language {
      * @param type     The file type for you want get. e.g. messages
      * @return The target file's InputStream.
      */
+    @Nullable
     public InputStream getFile(@Nullable String language, @Nullable String type) {
         if (language == null) {
             language = "en-US";
