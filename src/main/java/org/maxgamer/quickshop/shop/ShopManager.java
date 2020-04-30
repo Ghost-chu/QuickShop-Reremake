@@ -207,19 +207,20 @@ public class ShopManager {
             Util.debugLog("Cancelled by plugin");
             return;
         }
+        shop.onLoad();
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
 
         if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-            if (!Util.isAir(info.getSignBlock().getType())) {
-                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                return;
-            }
             boolean isWaterLogged = false;
             if (info.getSignBlock().getType() == Material.WATER) {
                 isWaterLogged = true;
+            }else{
+                if (!Util.isAir(info.getSignBlock().getType())) {
+                    Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
+                    return;
+                }
             }
-
             info.getSignBlock().setType(Util.getSignMaterial());
             BlockState bs = info.getSignBlock().getState();
             if (isWaterLogged) {
@@ -238,7 +239,6 @@ public class ShopManager {
             } else {
                 plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
             }
-            shop.onLoad();
             bs.update(true);
             shop.setSignText();
         }
