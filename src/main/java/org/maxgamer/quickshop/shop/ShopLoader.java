@@ -286,7 +286,6 @@ public class ShopLoader {
                 }
                 // Load to RAM
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    plugin.getDatabaseHelper().removeShop(shop);
                     plugin.getDatabaseHelper().createShop(shop, null, null);
                     plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
                     shop.update();
