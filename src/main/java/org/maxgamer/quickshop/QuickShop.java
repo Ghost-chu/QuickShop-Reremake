@@ -404,7 +404,7 @@ public class QuickShop extends JavaPlugin {
 
                                 }
                             }
-                        }catch (Throwable ignored){
+                        } catch (Throwable ignored) {
                             Util.debugLog("Failed to fix account issue.");
                         }
                     }
@@ -461,7 +461,7 @@ public class QuickShop extends JavaPlugin {
     public void reloadConfig() {
         try {
             super.reloadConfig();
-        }catch (Throwable t){
+        } catch (Throwable t) {
             t.printStackTrace();
             getLogger().severe("Cannot reading the configration, plugin may won't works!");
         }
@@ -688,42 +688,26 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering Listeners...");
         // Register events
-
         // Listeners (These don't)
-        BlockListener blockListener = new BlockListener(this, this.shopCache);
-        PlayerListener playerListener = new PlayerListener(this);
-        WorldListener worldListener = new WorldListener(this);
+        new BlockListener(this, this.shopCache).register();
+        new PlayerListener(this).register();
+        new WorldListener(this).register();
         // Listeners - We decide which one to use at runtime
-        ChatListener chatListener = new ChatListener(this);
-        ChunkListener chunkListener = new ChunkListener(this);
-
-        CustomInventoryListener customInventoryListener = new CustomInventoryListener(this);
-
-        ShopProtectionListener shopProtectListener = new ShopProtectionListener(this, this.shopCache);
+        new ChatListener(this).register();
+        new ChunkListener(this).register();
+        new CustomInventoryListener(this).register();
+        new ShopProtectionListener(this, this.shopCache).register();
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
-        LockListener lockListener = new LockListener(this, this.shopCache);
         InternalListener internalListener = new InternalListener(this);
-
-        blockListener.register();
-        playerListener.register();
-        chatListener.register();
-
-        chunkListener.register();
-        worldListener.register();
-        customInventoryListener.register();
-
-        shopProtectListener.register();
         Bukkit.getPluginManager().registerEvents(internalListener, this);
 
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-            DisplayBugFixListener displayBugFixListener = new DisplayBugFixListener(this);
-            displayBugFixListener.register();
-            DisplayProtectionListener inventoryListener = new DisplayProtectionListener(this, this.shopCache);
-            inventoryListener.register();
+            new DisplayBugFixListener(this).register();
+            new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
             }
@@ -734,7 +718,8 @@ public class QuickShop extends JavaPlugin {
 //        }
 
         if (getConfig().getBoolean("shop.lock")) {
-           lockListener.register();
+            new LockListener(this, this.shopCache).register();
+            ;
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
