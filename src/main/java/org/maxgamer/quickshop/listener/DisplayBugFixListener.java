@@ -50,7 +50,7 @@ public class DisplayBugFixListener implements Listener {
         final Collection<Entity> entities =
                 e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 1.0, 1, 1.0);
 
-        for (Entity entity : entities) {
+        for (final Entity entity : entities) {
             if (!(entity instanceof ArmorStand)
                     || !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
                 continue;
