@@ -37,7 +37,7 @@ public class ClearLaggListener implements Listener {
         final List<Entity> entities = clearlaggEvent.getEntityList();
         final List<Entity> pendingExclude = new ArrayList<>();
 
-        for (Entity entity : entities) {
+        for (final Entity entity : entities) {
             if (!(entity instanceof Item)
                     || !DisplayItem.checkIsGuardItemStack(((Item) entity).getItemStack())) {
                 continue;
@@ -46,7 +46,7 @@ public class ClearLaggListener implements Listener {
             pendingExclude.add(entity);
         }
 
-        for (Entity entity : pendingExclude) {
+        for (final Entity entity : pendingExclude) {
             clearlaggEvent.removeEntity(entity);
         }
         Util.debugLog("Prevent " + pendingExclude.size() + " displays removal by ClearLagg.");

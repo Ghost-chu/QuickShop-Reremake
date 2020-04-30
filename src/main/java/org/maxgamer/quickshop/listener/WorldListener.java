@@ -83,14 +83,14 @@ public class WorldListener implements Listener {
         // This is a workaround, because I don't get parsed chunk events when a
         // world first loads....
         // So manually tell all of these shops they're loaded.
-        for (Chunk chunk : world.getLoadedChunks()) {
+        for (final Chunk chunk : world.getLoadedChunks()) {
             final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
 
             if (inChunk == null) {
                 continue;
             }
 
-            for (Shop shop : inChunk.values()) {
+            for (final Shop shop : inChunk.values()) {
                 shop.onLoad();
             }
         }
@@ -102,12 +102,12 @@ public class WorldListener implements Listener {
         // This is a workaround, because I don't get parsed chunk events when a
         // world unloads, I think...
         // So manually tell all of these shops they're unloaded.
-        for (Chunk chunk : e.getWorld().getLoadedChunks()) {
+        for (final Chunk chunk : e.getWorld().getLoadedChunks()) {
             final Map<Location, Shop> inChunk = plugin.getShopManager().getShops(chunk);
             if (inChunk == null) {
                 continue;
             }
-            for (Shop shop : inChunk.values()) {
+            for (final Shop shop : inChunk.values()) {
                 if (shop.isLoaded()) { //Don't unload already unloaded shops.
                     shop.onUnload();
                 }

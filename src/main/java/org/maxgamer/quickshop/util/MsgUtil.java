@@ -690,7 +690,7 @@ public class MsgUtil {
     public static String getMessage(
             @NotNull String loc, @Nullable CommandSender player, @NotNull String... args) {
         try {
-            Optional<String> raw = messagei18n.getString(loc);
+            final Optional<String> raw = messagei18n.getString(loc);
             if (!raw.isPresent()) {
                 Util.debugLog("ERR: MsgUtil cannot find the the phrase at " + loc + ", printing the all readed datas: " + messagei18n);
 
