@@ -459,7 +459,12 @@ public class QuickShop extends JavaPlugin {
      */
     @Override
     public void reloadConfig() {
-        super.reloadConfig();
+        try {
+            super.reloadConfig();
+        }catch (Throwable t){
+            t.printStackTrace();
+            getLogger().severe("Cannot reading the configration, plugin may won't works!");
+        }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
