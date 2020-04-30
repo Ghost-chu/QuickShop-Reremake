@@ -1505,7 +1505,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", new ArrayList<>(1));
+            getConfig().set("custom-item-stacksize", Collections.emptyList());
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
