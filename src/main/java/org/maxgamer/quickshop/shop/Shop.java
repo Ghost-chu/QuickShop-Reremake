@@ -126,14 +126,7 @@ public interface Shop {
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-     * @param forceUsername Force returns username of shop
-     * @return owner name
-     */
-    @NotNull
-    String ownerName(boolean forceUsername);
-
-    /**
-     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
      * @return owner name
      */
     @NotNull
