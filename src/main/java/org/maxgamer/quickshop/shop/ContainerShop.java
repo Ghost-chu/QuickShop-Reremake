@@ -459,17 +459,24 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public @NotNull String ownerName(boolean forceUsername) {
+        if(forceUsername || !this.isUnlimited()){
+            String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
+            if (name == null || name.isEmpty()) {
+                return MsgUtil.getMessageOfflinePlayer(
+                        "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
+            }else{
+                return name;
+            }
+        }else {
+                return MsgUtil.getMessageOfflinePlayer(
+                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
+            }
+    }
+
+    @Override
     public @NotNull String ownerName() {
-        if (this.isUnlimited()) {
-            return MsgUtil.getMessageOfflinePlayer(
-                    "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
-        }
-        String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
-        if (name == null || name.isEmpty()) {
-            return MsgUtil.getMessageOfflinePlayer(
-                    "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
-        }
-        return name;
+        return ownerName(false);
     }
 
     /**
@@ -561,7 +568,7 @@ public class ContainerShop implements Shop {
         }
         String[] lines = new String[4];
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName());
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(false));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
@@ -753,7 +760,7 @@ public class ContainerShop implements Shop {
         this.moderator.setOwner(owner);
         //then change the sign
         for (Sign shopSign : signs) {
-            shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName()));
+            shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
         }
         //Event
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
@@ -848,7 +855,9 @@ public class ContainerShop implements Shop {
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         final String signHeader =
-                MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName());
+                MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(false));
+        final String signHeaderUsername =
+                MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(true));
 
         next:
         for (Block b : blocks) {
@@ -866,7 +875,7 @@ public class ContainerShop implements Shop {
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
             if (lines.length >= 1) {
-                if (!lines[0].contains(signHeader)) {
+                if (!(lines[0].contains(signHeader) && lines[0].contains(signHeaderUsername))) {
                     for (String line : lines) {
                         if (!line.isEmpty()) {
                             continue next;
@@ -985,7 +994,7 @@ public class ContainerShop implements Shop {
                                 + ", "
                                 + location.getBlockZ()
                                 + ")");
-        sb.append(" Owner: ").append(this.ownerName()).append(" - ").append(getOwner());
+        sb.append(" Owner: ").append(this.ownerName(false)).append(" - ").append(getOwner());
         if (isUnlimited()) {
             sb.append(" Unlimited: true");
         }
