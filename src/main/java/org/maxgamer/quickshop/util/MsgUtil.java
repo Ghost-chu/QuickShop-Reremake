@@ -530,7 +530,7 @@ public class MsgUtil {
         if ((sender instanceof Player)
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")
                 && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
-                && (plugin.getConfig().getBoolean("sneak-to-control") && !((Player) sender).isSneaking())) {
+                && (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !((Player) sender).isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-control") : plugin.getConfig().getBoolean("shop.interact.sneak-to-control") && !((Player) sender).isSneaking())) {
 
             return;
         }
