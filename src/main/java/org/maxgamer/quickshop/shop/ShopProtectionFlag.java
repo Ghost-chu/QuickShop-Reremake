@@ -23,19 +23,20 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-    private String itemStackString;
+    private final String itemStackString;
 
-    private String mark = "QuickShop DisplayItem";
+    private final String mark = "QuickShop DisplayItem";
 
-    private String shopLocation;
+    private final String shopLocation;
 
-    public ShopProtectionFlag(String shopLocation, String itemStackString) {
+    public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
         this.shopLocation = shopLocation;
         this.itemStackString = itemStackString;
     }
