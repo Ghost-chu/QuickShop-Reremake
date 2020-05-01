@@ -21,10 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -853,15 +850,13 @@ public class ContainerShop implements Shop {
         blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
-        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
-        final String signHeader =
-                MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(false));
-        final String signHeaderUsername =
-                MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(true));
-
+        String signHeader =
+                MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
+        String signHeaderUsername =
+                MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
         for (Block b : blocks) {
             if (b == null) {
-                plugin.getLogger().warning("Null signs in the queue, skipping");
+                Util.debugLog("Null signs in the queue, skipping");
                 continue;
             }
 
@@ -874,13 +869,15 @@ public class ContainerShop implements Shop {
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
             if (lines.length >= 1) {
-                if ((!lines[0].contains(signHeader) || !lines[0].contains(signHeaderUsername)) && !lines[0].isEmpty()) {
+                String header = lines[0];
+                if (!header.equals(signHeader) && !header.equals(signHeaderUsername)) {
                     continue;
                 }
                 //Empty or matching the header
                 signs.add(sign);
             }
         }
+
         //            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
         //                signs.add(sign);
         //            } else {
