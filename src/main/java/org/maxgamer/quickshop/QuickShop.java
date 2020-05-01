@@ -876,7 +876,7 @@ public class QuickShop extends JavaPlugin {
                 locks = "Disabled";
             }
             String sneak_action;
-            if (getConfig().getBoolean("shop.sneak-to-create") || getConfig().getBoolean("shop.sneak-to-trade")) {
+            if (getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control")) {
                 sneak_action = "Enabled";
             } else {
                 sneak_action = "Disabled";
@@ -1559,6 +1559,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("cachingpool", null);
             getConfig().set("config-version", 105);
             selectedVersion = 105;
+        }
+        if (selectedVersion == 105) {
+            getConfig().set("shop.interact.sneak-to-create", getConfig().getBoolean("shop.sneak-to-create"));
+            getConfig().set("shop.sneak-to-create", null);
+            getConfig().set("shop.interact.sneak-to-trade", getConfig().getBoolean("shop.sneak-to-trade"));
+            getConfig().set("shop.sneak-to-trade", null);
+            getConfig().set("shop.interact.sneak-to-control", getConfig().getBoolean("shop.sneak-to-control"));
+            getConfig().set("shop.sneak-to-control", null);
+            getConfig().set("shop.interact.switch-mode", false);
+            getConfig().set("config-version", 106);
+            selectedVersion = 106;
         }
 
         saveConfig();
