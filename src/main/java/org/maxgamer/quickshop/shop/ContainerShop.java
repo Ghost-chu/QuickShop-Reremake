@@ -925,8 +925,12 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setUnlimited(boolean unlimited) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(getOwner());
+        List<Sign> signs = this.getSigns();
         this.unlimited = unlimited;
-        this.setSignText();
+        for (Sign shopSign : signs) {
+            shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName()));
+        }
         update();
     }
 
