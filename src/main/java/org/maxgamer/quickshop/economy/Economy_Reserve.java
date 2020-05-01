@@ -116,7 +116,7 @@ public class Economy_Reserve implements EconomyCore {
      * @return Their current balance.
      */
     @Override
-    public double getBalance(UUID name) {
+    public double getBalance(@NotNull UUID name) {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
         } catch (Throwable throwable) {
@@ -136,7 +136,7 @@ public class Economy_Reserve implements EconomyCore {
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
     @Override
-    public boolean transfer(UUID from, UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
         } catch (Throwable throwable) {
@@ -155,7 +155,7 @@ public class Economy_Reserve implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(UUID name, double amount) {
+    public boolean withdraw(@NotNull UUID name, double amount) {
         try {
             if (!plugin.getConfig().getBoolean("shop.allow-economy-loan")) {
                 if (getBalance(name) < amount) {

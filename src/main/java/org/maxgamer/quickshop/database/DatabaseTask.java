@@ -12,7 +12,7 @@ import java.sql.SQLException;
 @ToString()
 public class DatabaseTask {
 
-    private static final Database database = QuickShop.getInstance().getDatabase();
+    private final Database database = QuickShop.getInstance().getDatabase();
     private final String statement;
     private final Task task;
 
@@ -22,7 +22,7 @@ public class DatabaseTask {
     }
 
     public void run() {
-        try (PreparedStatement ps = database.getConnection().prepareStatement(statement)) {
+        try (final PreparedStatement ps = database.getConnection().prepareStatement(statement)) {
             task.edit(ps);
             ps.execute();
             task.onSuccess();
@@ -32,7 +32,7 @@ public class DatabaseTask {
     }
 
     public void run(@NonNull Connection connection) {
-        try (PreparedStatement ps = connection.prepareStatement(statement)) {
+        try (final PreparedStatement ps = connection.prepareStatement(statement)) {
             task.edit(ps);
             ps.execute();
             task.onSuccess();
