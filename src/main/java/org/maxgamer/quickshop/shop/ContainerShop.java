@@ -21,7 +21,10 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -457,18 +460,19 @@ public class ContainerShop implements Shop {
 
     @Override
     public @NotNull String ownerName(boolean forceUsername) {
-        if(forceUsername || !this.isUnlimited()){
-            String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
-            if (name == null || name.isEmpty()) {
-                return MsgUtil.getMessageOfflinePlayer(
-                        "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
-            }else{
-                return name;
-            }
-        }else {
-                return MsgUtil.getMessageOfflinePlayer(
-                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
-            }
+        String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
+        if (name == null || name.isEmpty()) {
+            name =  MsgUtil.getMessageOfflinePlayer(
+                    "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
+        }
+        if(forceUsername) {
+            return name;
+        }
+        if(isUnlimited()){
+            return MsgUtil.getMessageOfflinePlayer(
+                    "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
+        }
+        return name;
     }
 
     @Override
@@ -565,7 +569,7 @@ public class ContainerShop implements Shop {
         }
         String[] lines = new String[4];
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
-        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName(false));
+        lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
         if (this.isSelling()) {
             if (this.getItem().getAmount() > 1) {
                 if (this.getRemainingStock() == -1) {
@@ -868,14 +872,16 @@ public class ContainerShop implements Shop {
             }
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
-            if (lines.length >= 1) {
-                String header = lines[0];
-                if (!header.equals(signHeader) && !header.equals(signHeaderUsername)) {
-                    continue;
-                }
-                //Empty or matching the header
-                signs.add(sign);
+            String header = lines[0];
+            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty() ){
+                signs.add(sign); //NEW SIGN
+                continue;
             }
+            if (header.equals(signHeader) || header.equals(signHeaderUsername)) {
+                signs.add(sign);
+                continue; //TEXT SIGN
+            }
+            //Empty or matching the header
         }
 
         //            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
@@ -1041,12 +1047,12 @@ public class ContainerShop implements Shop {
             if (!createBackup) {
                 createBackup = Util.backupDatabase();
                 if (createBackup) {
-                    plugin.log("Deleting shop "+this+" request by invalid inventory.");
+                    plugin.log("Deleting shop " + this + " request by invalid inventory.");
                     this.delete();
                     Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
                 }
             } else {
-                plugin.log("Deleting shop "+this+" request by invalid inventory.");
+                plugin.log("Deleting shop " + this + " request by invalid inventory.");
                 this.delete();
                 Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
             }
@@ -1118,7 +1124,7 @@ public class ContainerShop implements Shop {
                 this.createBackup = Util.backupDatabase();
             }
             if (createBackup) {
-                plugin.log("Deleting shop "+this+" request by non-shopable container.");
+                plugin.log("Deleting shop " + this + " request by non-shopable container.");
                 this.delete();
             } else {
                 Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
