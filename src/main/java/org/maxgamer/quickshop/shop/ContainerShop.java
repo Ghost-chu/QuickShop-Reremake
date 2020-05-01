@@ -56,6 +56,7 @@ public class ContainerShop implements Shop {
 
     @NotNull
     private final Location location;
+    @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
     @Nullable
     private DisplayItem displayItem;
@@ -71,7 +72,7 @@ public class ContainerShop implements Shop {
     private ShopType shopType;
 
     private boolean unlimited;
-
+    @EqualsAndHashCode.Exclude
     private long lastChangedAt;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -99,6 +100,7 @@ public class ContainerShop implements Shop {
      * @param moderator The modertators
      * @param type      The shop type
      * @param unlimited The unlimited
+     * @param plugin    The plugin instance
      */
     public ContainerShop(
             @NotNull QuickShop plugin,
@@ -413,7 +415,7 @@ public class ContainerShop implements Shop {
         // check price restriction
 
 
-        if(plugin.getShopManager().getPriceLimiter().check(item,price) != PriceLimiter.Status.PASS){
+        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
             Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
             if (priceRestriction != null) {
                 if (price < priceRestriction.getKey()) {

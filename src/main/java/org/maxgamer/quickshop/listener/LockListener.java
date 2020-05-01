@@ -25,7 +25,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -38,7 +37,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-public class LockListener extends ProtectionListenerBase implements Listener {
+public class LockListener extends ProtectionListenerBase{
 
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);

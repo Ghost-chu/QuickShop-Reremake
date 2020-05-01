@@ -19,23 +19,20 @@
 
 package org.maxgamer.quickshop.listener;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
-@AllArgsConstructor
-public class CustomInventoryListener implements Listener {
+public class CustomInventoryListener extends QSListener{
 
-    @NotNull
-    private final QuickShop plugin;
+    public CustomInventoryListener(QuickShop plugin) {
+        super(plugin);
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryInteractEvent e) {

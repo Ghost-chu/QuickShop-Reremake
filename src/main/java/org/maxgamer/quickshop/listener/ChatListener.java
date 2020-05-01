@@ -19,23 +19,20 @@
 
 package org.maxgamer.quickshop.listener;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
 /**
  * @author Netherfoam
  */
-@AllArgsConstructor
-public class ChatListener implements Listener {
+public class ChatListener extends QSListener {
 
-    @NotNull
-    private final QuickShop plugin;
+    public ChatListener(QuickShop plugin) {
+        super(plugin);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e) {
