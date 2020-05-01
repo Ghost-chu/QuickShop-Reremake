@@ -40,8 +40,8 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         final GameLanguageLoadThread loadThread = new GameLanguageLoadThread();
         languageCode = languageCode.replace("-", "_");
         loadThread.setLanguageCode(languageCode.toLowerCase());
-        loadThread.setMainThreadWaiting(true); // Told thread we're waiting him
-        loadThread.setPlugin(plugin);
+        loadThread.setMainThreadWaiting(true); // Told thread we're waiting it
+        loadThread.setPlugin(plugin); // Transfer instance
         loadThread.start();
         int count = 0;
         while (count < 7) {
@@ -152,6 +152,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
 @Getter
 @Setter
+//TODO Refactor: After two months what i write it and now i can't understand these code...
 class GameLanguageLoadThread extends Thread {
     private JsonObject lang;
 
