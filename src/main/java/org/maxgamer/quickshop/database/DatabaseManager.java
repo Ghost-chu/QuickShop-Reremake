@@ -91,6 +91,7 @@ public class DatabaseManager {
             Connection connection = this.database.getConnection();
             //start our commit
             connection.setAutoCommit(false);
+            Timer ctimer = new Timer(true);
             while (true) {
                 if (!connection.isValid(3000)) {
                     warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
@@ -108,7 +109,7 @@ public class DatabaseManager {
 
                 task.run(connection);
                 long tookTime = timer.endTimer();
-                if (tookTime > 500) {
+                if (tookTime > 300) {
                     warningSender.sendWarn(
                             "Database performance warning: It took too long time ("
                                     + tookTime
@@ -118,6 +119,13 @@ public class DatabaseManager {
             if (!connection.getAutoCommit()) {
                 connection.commit();
                 connection.setAutoCommit(true);
+            }
+            long tookTime = ctimer.endTimer();
+            if (tookTime > 5500) {
+                warningSender.sendWarn(
+                        "Database performance warning: It took too long time ("
+                                + tookTime
+                                + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
             }
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();

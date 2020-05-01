@@ -29,13 +29,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class MySQLCore implements DatabaseCore {
 
-    private static final ArrayList<Connection> POOL = new ArrayList<>();
+    private final List<Connection> POOL = new ArrayList<>();
 
-    private static final int MAX_CONNECTIONS = 8;
+    private final int MAX_CONNECTIONS = 8;
 
     /**
      * The connection properties... user, pass, autoReconnect..
