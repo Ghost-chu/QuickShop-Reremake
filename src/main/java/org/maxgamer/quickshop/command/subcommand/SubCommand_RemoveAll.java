@@ -38,6 +38,7 @@ public class SubCommand_RemoveAll implements CommandProcesser {
             int i = 0;
             for (Shop shop : tempList) {
                 if (shop.getOwner().equals(shopOwner.getUniqueId())) {
+                    plugin.log("Deleting shop "+shop+" request by /qs removeall command.");
                     shop.delete();
                     i++;
                 }
