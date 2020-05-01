@@ -874,11 +874,12 @@ public class ContainerShop implements Shop {
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
             if (lines.length >= 1) {
-                if (!lines[0].contains(signHeader)) {
-                    break;
+                if ((!lines[0].contains(signHeader) || !lines[0].contains(signHeaderUsername)) && !lines[0].isEmpty()) {
+                    continue;
                 }
+                //Empty or matching the header
+                signs.add(sign);
             }
-            signs.add(sign);
         }
         //            if (currentLine.contains(signHeader) || currentLine.isEmpty()) {
         //                signs.add(sign);
