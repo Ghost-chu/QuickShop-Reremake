@@ -909,7 +909,7 @@ public class ContainerShop implements Shop {
     @NotNull
     @Override
     public List<UUID> getStaffs() {
-        return this.moderator.getStaffs();
+        return new ArrayList<>(this.moderator.getStaffs()); //Clone only, so make sure external calling will use addStaff
     }
 
     @Override
@@ -1132,5 +1132,6 @@ public class ContainerShop implements Shop {
             }
         }
     }
+
 
 }
