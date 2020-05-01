@@ -115,7 +115,8 @@ public class BlockListener extends ProtectionListenerBase {
                 action.setAction(ShopAction.CANCELLED);
             }
 
-            shop.onUnload();
+            //shop.onUnload();
+            plugin.log("Deleting shop "+shop+" request by block break.");
             shop.delete();
             MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
@@ -144,6 +145,7 @@ public class BlockListener extends ProtectionListenerBase {
                         return;
                     }
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("break-shop-use-supertool", p));
+                    plugin.log("Deleting shop "+shop+" request by block break (super tool).");
                     shop.delete();
                     return;
                 }

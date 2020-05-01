@@ -76,6 +76,7 @@ public class SubCommand_Clean implements CommandProcesser {
         }
 
         for (Shop shop : pendingRemoval) {
+            plugin.log("Deleting shop "+shop+" request by /qs clean command.");
             shop.delete();
         }
 

@@ -65,8 +65,9 @@ public class SubCommand_Remove implements CommandProcesser {
 
             if (shop.getModerator().isModerator(((Player) sender).getUniqueId())
                     || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-                shop.onUnload();
+                //shop.onUnload();
                 shop.delete();
+                plugin.log("Deleting shop "+shop+" request by /qs remove command.");
             } else {
                 MsgUtil.sendMessage(sender, ChatColor.RED + MsgUtil.getMessage("no-permission", sender));
             }

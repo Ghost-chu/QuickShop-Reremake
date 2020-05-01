@@ -1039,10 +1039,12 @@ public class ContainerShop implements Shop {
             if (!createBackup) {
                 createBackup = Util.backupDatabase();
                 if (createBackup) {
+                    plugin.log("Deleting shop "+this+" request by invalid inventory.");
                     this.delete();
                     Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
                 }
             } else {
+                plugin.log("Deleting shop "+this+" request by invalid inventory.");
                 this.delete();
                 Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
             }
@@ -1114,6 +1116,7 @@ public class ContainerShop implements Shop {
                 this.createBackup = Util.backupDatabase();
             }
             if (createBackup) {
+                plugin.log("Deleting shop "+this+" request by non-shopable container.");
                 this.delete();
             } else {
                 Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
