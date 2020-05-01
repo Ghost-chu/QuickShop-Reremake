@@ -54,6 +54,7 @@ public class SubCommand_Paste implements CommandProcesser {
                 String pasteResult = paste.paste(pasteText);
                 if (pasteResult != null) {
                     MsgUtil.sendMessage(sender, pasteResult);
+                    plugin.log(pasteResult);
                 } else {
                     MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
                     File file = new File(plugin.getDataFolder(), "paste");
