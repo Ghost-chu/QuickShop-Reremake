@@ -84,6 +84,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                     if (shop.getItem().getType() == Material.AIR) {
                         MsgUtil.sendMessage(sender,
                                 ChatColor.YELLOW + "Shop " + shop + " removing cause item data is damaged.");
+                        plugin.log("Deleting shop "+shop+" request by /qs cleanghost command.");
                         shop.delete();
                         continue;
                     }
@@ -98,6 +99,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                         MsgUtil.sendMessage(sender,
                                 ChatColor.YELLOW + "Shop " + shop + " removing cause target world not loaded.");
                         shop.delete();
+                        plugin.log("Deleting shop "+shop+" request by /qs cleanghost command.");
                         continue;
                     }
                     //noinspection ConstantConditions
@@ -105,6 +107,7 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                         MsgUtil.sendMessage(sender,
                                 ChatColor.YELLOW + "Shop " + shop + " removing cause owner data is damaged.");
                         shop.delete();
+                        plugin.log("Deleting shop "+shop+" request by /qs cleanghost command.");
                         continue;
                     }
                     // Shop exist check

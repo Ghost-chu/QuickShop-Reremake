@@ -448,6 +448,7 @@ public class QuickShop extends JavaPlugin {
      * @param s The string to log. It will be prefixed with the date and time.
      */
     public void log(@NotNull String s) {
+        Util.debugLog("[SHOP LOG] "+s);
         if (this.getLogWatcher() == null) {
             return;
         }
