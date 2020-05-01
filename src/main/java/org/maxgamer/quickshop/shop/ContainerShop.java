@@ -745,8 +745,10 @@ public class ContainerShop implements Shop {
     @Override
     public void setOwner(@NotNull UUID owner) {
         this.moderator.setOwner(owner);
+        for (Sign shopSign : this.getSigns()) {
+            shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", Bukkit.getOfflinePlayer(owner), this.ownerName()));
+        }
         Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
-        this.setSignText();
         update();
     }
 
