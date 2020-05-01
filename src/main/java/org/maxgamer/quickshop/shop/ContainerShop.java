@@ -854,8 +854,9 @@ public class ContainerShop implements Shop {
         blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
-        String signHeader =
-                MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
+        String adminShopHeader =
+                MsgUtil.getMessageOfflinePlayer("signs.header", null,MsgUtil.getMessageOfflinePlayer(
+                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
         String signHeaderUsername =
                 MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
         for (Block b : blocks) {
@@ -877,7 +878,7 @@ public class ContainerShop implements Shop {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
-            if (header.equals(signHeader) || header.equals(signHeaderUsername)) {
+            if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                 signs.add(sign);
                 continue; //TEXT SIGN
             }
