@@ -64,7 +64,7 @@ public class ShopManager {
     @Getter
     private final PriceLimiter priceLimiter;
     private final boolean useFastShopSearchAlgorithm;
-    private final boolean useOldCanBuildAlgo;
+    private final boolean useOldCanBuildAlgorithm;
     private final boolean autoSign;
 
     public ShopManager(@NotNull QuickShop plugin) {
@@ -75,7 +75,7 @@ public class ShopManager {
 
         this.cacheTaxAccount = taxPlayer.getUniqueId();
         this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"), plugin.getConfig().getBoolean("shop.allow-free-shop"));
-        this.useOldCanBuildAlgo = plugin.getConfig().getBoolean("limits.old-algorithm");
+        this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
 
@@ -90,7 +90,7 @@ public class ShopManager {
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
             if (plugin.isLimit()) {
                 int owned = 0;
-                if (useOldCanBuildAlgo) {
+                if (useOldCanBuildAlgorithm) {
                     owned = getPlayerAllShops(p.getUniqueId()).size();
                 } else {
                     for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
