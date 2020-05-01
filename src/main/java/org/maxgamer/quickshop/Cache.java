@@ -2,6 +2,8 @@ package org.maxgamer.quickshop;
 
 import com.google.common.cache.CacheBuilder;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +20,8 @@ public class Cache {
         return accessCaching.size();
     }
 
-    public Shop getCaching(Location location, boolean includeAttached) {
+    @Nullable
+    public Shop getCaching(@NotNull Location location, boolean includeAttached) {
         CacheContainer container;
             container = accessCaching.getIfPresent(location);
         if (container == null) {
@@ -32,16 +35,15 @@ public class Cache {
         }
     }
 
-
-    public void setCache(Location location, Shop shop) {
+    public void setCache(@NotNull Location location, @Nullable Shop shop) {
         accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
     }
 }
 
 class CacheContainer {
-    private Shop shop;
+    private final  Shop shop;
 
-    private long time;
+    private final long time;
 
     public CacheContainer(Shop shop, long time) {
         this.shop = shop;
@@ -51,18 +53,10 @@ class CacheContainer {
     public long getTime() {
         return time;
     }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
     public Shop getShop() {
         return shop;
     }
 
-    public void setShop(final Shop shop) {
-        this.shop = shop;
-    }
 
 }
 

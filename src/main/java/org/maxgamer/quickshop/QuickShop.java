@@ -384,7 +384,7 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0) > 0) {
-                        getLogger().info("Checking the tax account infos...");
+                        //getLogger().info("Checking the tax account infos...");
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
@@ -393,6 +393,7 @@ public class QuickShop extends JavaPlugin {
                                 if (vault.isValid()) {
                                     if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                         try {
+                                            Util.debugLog("Tax account not exists! Creating...");
                                             vault.getVault().createPlayerAccount(tax);
                                         } catch (Throwable ignored) {
                                         }
@@ -403,7 +404,7 @@ public class QuickShop extends JavaPlugin {
 
                                 }
                             }
-                        }catch (Throwable ignored){
+                        } catch (Throwable ignored) {
                             Util.debugLog("Failed to fix account issue.");
                         }
                     }
@@ -458,7 +459,12 @@ public class QuickShop extends JavaPlugin {
      */
     @Override
     public void reloadConfig() {
-        super.reloadConfig();
+        try {
+            super.reloadConfig();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            getLogger().severe("Cannot reading the configration, plugin may won't works!");
+        }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
@@ -682,44 +688,28 @@ public class QuickShop extends JavaPlugin {
 
         getLogger().info("Registering Listeners...");
         // Register events
-
         // Listeners (These don't)
-        BlockListener blockListener = new BlockListener(this, this.shopCache);
-        PlayerListener playerListener = new PlayerListener(this);
-        WorldListener worldListener = new WorldListener(this);
+        new BlockListener(this, this.shopCache).register();
+        new PlayerListener(this).register();
+        new WorldListener(this).register();
         // Listeners - We decide which one to use at runtime
-        ChatListener chatListener = new ChatListener(this);
-        ChunkListener chunkListener = new ChunkListener(this);
-
-        CustomInventoryListener customInventoryListener = new CustomInventoryListener(this);
-
-        ShopProtectionListener shopProtectListener = new ShopProtectionListener(this, this.shopCache);
+        new ChatListener(this).register();
+        new ChunkListener(this).register();
+        new CustomInventoryListener(this).register();
+        new ShopProtectionListener(this, this.shopCache).register();
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
-        LockListener lockListener = new LockListener(this, this.shopCache);
         InternalListener internalListener = new InternalListener(this);
-
-        Bukkit.getPluginManager().registerEvents(blockListener, this);
-        Bukkit.getPluginManager().registerEvents(playerListener, this);
-        Bukkit.getPluginManager().registerEvents(chatListener, this);
-
-        Bukkit.getPluginManager().registerEvents(chunkListener, this);
-        Bukkit.getPluginManager().registerEvents(worldListener, this);
-        Bukkit.getPluginManager().registerEvents(customInventoryListener, this);
-
-        Bukkit.getPluginManager().registerEvents(shopProtectListener, this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
 
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
-            DisplayBugFixListener displayBugFixListener = new DisplayBugFixListener(this);
-            Bukkit.getPluginManager().registerEvents(displayBugFixListener, this);
-            DisplayProtectionListener inventoryListener = new DisplayProtectionListener(this);
-            Bukkit.getPluginManager().registerEvents(inventoryListener, this);
+            new DisplayBugFixListener(this).register();
+            new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                Bukkit.getPluginManager().registerEvents(new ClearLaggListener(), this);
+                new ClearLaggListener(this).register();
             }
         }
 
@@ -728,7 +718,8 @@ public class QuickShop extends JavaPlugin {
 //        }
 
         if (getConfig().getBoolean("shop.lock")) {
-            Bukkit.getPluginManager().registerEvents(lockListener, this);
+            new LockListener(this, this.shopCache).register();
+            ;
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
@@ -1514,7 +1505,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", new ArrayList<>(1));
+            getConfig().set("custom-item-stacksize", Collections.emptyList());
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1562,6 +1553,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.residence.whitelist-mode", true);
             getConfig().set("config-version", 104);
             selectedVersion = 104;
+        }
+        if (selectedVersion == 104) {
+            getConfig().set("cachingpool", null);
+            getConfig().set("config-version", 105);
+            selectedVersion = 105;
         }
 
         saveConfig();

@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 104
+config-version: 105
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -420,13 +420,6 @@ matcher:
     suspiciousStew: true
     #Plugin should check the shulkerBox contents?
     shulkerBox: true
-cachingpool:
-  # Did you want use caching pool?
-  # Only use it when you see some method eat too many long time, because may cause actions more slowly if you server too small.
-  enable: false
-  # How many size for caching pool?
-  # When objects more than this number, it will removed some old object.
-  maxsize: 100000000
 mixedeconomy:
   deposit: "eco give {0} {1}"
   withdraw: "eco take {0} {1}"

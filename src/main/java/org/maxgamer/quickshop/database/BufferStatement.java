@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.database;
 
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.Util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,7 +42,6 @@ public class BufferStatement {
      */
     public BufferStatement(@NotNull String query, @NotNull Object... values) {
         this.query = query;
-        Util.debugLog(query);
         this.values = values;
     }
 
@@ -68,7 +66,6 @@ public class BufferStatement {
      */
     PreparedStatement prepareStatement(@NotNull Connection con) throws SQLException {
         PreparedStatement ps;
-        Util.debugLog(query);
         ps = con.prepareStatement(query);
         for (int i = 1; i <= values.length; i++) {
             ps.setObject(i, values[i - 1]);
