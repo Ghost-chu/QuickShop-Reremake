@@ -129,7 +129,7 @@ public class MojangAPI {
                         .returnContent()
                         .asString("UTF-8")
                         .trim();
-        Files.write(data, cacheFile, StandardCharsets.UTF_8);
+        Files.write(data.getBytes(StandardCharsets.UTF_8), cacheFile);
         return data;
     }
 

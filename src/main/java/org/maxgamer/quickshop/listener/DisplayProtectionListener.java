@@ -31,7 +31,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
@@ -46,6 +45,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.DisplayItem;
 import org.maxgamer.quickshop.shop.DisplayType;
@@ -54,13 +54,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
-public class DisplayProtectionListener implements Listener {
-    private final QuickShop plugin;
+public class DisplayProtectionListener extends ProtectionListenerBase{
 
     private final boolean useEnhanceProtection;
 
-    public DisplayProtectionListener(QuickShop plugin) {
-        this.plugin = plugin;
+    public DisplayProtectionListener(QuickShop plugin, Cache cache) {
+        super(plugin,cache);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
     }
 
@@ -72,9 +71,9 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        Block targetBlock = event.getToBlock();
-        Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(shopBlock.getLocation());
+        final Block targetBlock = event.getToBlock();
+        final Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
+        final Shop shop = getShopNature(shopBlock.getLocation(),true);
         if (shop == null) {
             return;
         }
@@ -121,8 +120,8 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
+        final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+        Shop shop = getShopNature(block.getLocation(),true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -135,9 +134,9 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         for (Block oBlock : event.getBlocks()) {
-            Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+            final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
+                shop = getShopNature(otherBlock.getLocation(),true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -161,8 +160,8 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(block.getLocation());
+        final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+        Shop shop = getShopNature(block.getLocation(),true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -175,9 +174,9 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         for (Block oBlock : event.getBlocks()) {
-            Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
+            final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = plugin.getShopManager().getShopIncludeAttached(otherBlock.getLocation());
+                shop = getShopNature(otherBlock.getLocation(),true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -201,7 +200,7 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        ItemStack itemStack = event.getFuel();
+        final ItemStack itemStack = event.getFuel();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             sendAlert(
@@ -219,7 +218,7 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        ItemStack itemStack = event.getFuel();
+        final ItemStack itemStack = event.getFuel();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
             Block furnace = event.getBlock();
@@ -279,7 +278,7 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        ItemStack stack = e.getItem().getItemStack();
+        final ItemStack stack = e.getItem().getItemStack();
         if (!DisplayItem.checkIsGuardItemStack(stack)) {
             return;
         }
@@ -346,7 +345,7 @@ public class DisplayProtectionListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        Entity entity = event.getEntity();
+        final Entity entity = event.getEntity();
         if (entity instanceof InventoryHolder) {
             Util.inventoryCheck(((InventoryHolder) entity).getInventory());
         }
@@ -501,8 +500,8 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
+        final ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+        final ItemStack stackOffHand = e.getPlayer().getInventory().getItemInOffHand();
         if (DisplayItem.checkIsGuardItemStack(stack)) {
             e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR, 0));
             // You shouldn't be able to pick up that...
@@ -530,7 +529,7 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        ItemStack itemStack = event.getEntity().getItemStack();
+        final ItemStack itemStack = event.getEntity().getItemStack();
         if (DisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
         }
@@ -600,8 +599,8 @@ public class DisplayProtectionListener implements Listener {
         if (event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-        Item item = (Item) event.getCaught();
-        ItemStack is = item.getItemStack();
+        final Item item = (Item) event.getCaught();
+        final ItemStack is = item.getItemStack();
         if (!DisplayItem.checkIsGuardItemStack(is)) {
             return;
         }
@@ -624,9 +623,9 @@ public class DisplayProtectionListener implements Listener {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
-        Shop shop =
-                plugin.getShopManager().getShop(waterBlock.getRelative(BlockFace.DOWN).getLocation());
+        final Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
+        final Shop shop =
+                getShopPlayer(waterBlock.getRelative(BlockFace.DOWN).getLocation(),true);
         if (shop == null) {
             return;
         }

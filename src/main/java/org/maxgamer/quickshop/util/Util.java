@@ -136,7 +136,7 @@ public class Util {
      * @return True if it can be made into a shop, otherwise false.
      */
     public static boolean canBeShop(@NotNull Block b) {
-        BlockState bs = b.getState();
+        final BlockState bs = b.getState();
 
         if (isBlacklistWorld(b.getWorld())) {
             return false;
@@ -181,7 +181,7 @@ public class Util {
             return 0;
         }
         int items = 0;
-        for (ItemStack iStack : inv.getStorageContents()) {
+        for (final ItemStack iStack : inv.getStorageContents()) {
             //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
@@ -210,7 +210,7 @@ public class Util {
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
 
         ItemStack[] contents = inv.getStorageContents();
-        for (ItemStack iStack : contents) {
+        for (final ItemStack iStack : contents) {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
@@ -310,10 +310,11 @@ public class Util {
         if (disableDebugLogger) {
             return;
         }
-        lock.writeLock().lock();
+        lock.writeLock().lock(); //TODO MOVE IT
         if (debugLogs.size() >= 2000) {
             debugLogs.clear();
         }
+        //TODO <- MOVE TO THERE SHOULD BE FINE
         if (!devMode) {
             for (String log : logs) {
                 debugLogs.add("[DEBUG] " + log);
@@ -321,10 +322,10 @@ public class Util {
             lock.writeLock().unlock();
             return;
         }
-        StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
-        String className = stackTraceElement.getClassName();
-        String methodName = stackTraceElement.getMethodName();
-        int codeLine = stackTraceElement.getLineNumber();
+        final StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
+        final String className = stackTraceElement.getClassName();
+        final String methodName = stackTraceElement.getMethodName();
+        final int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
             debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
             QuickShop.instance.getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
@@ -411,9 +412,9 @@ public class Util {
      */
     @Nullable
     public static Block getAttached(@NotNull Block b) {
-        BlockData blockData = b.getBlockData();
+        final BlockData blockData = b.getBlockData();
         if (blockData instanceof Directional) {
-            Directional directional = (Directional) blockData;
+            final Directional directional = (Directional) blockData;
             return b.getRelative(directional.getFacing().getOppositeFace());
         } else {
             return null;
@@ -555,7 +556,7 @@ public class Util {
         if (!(b.getState() instanceof Container)) {
             return false;
         }
-        Container container = (Container) b.getState();
+        final Container container = (Container) b.getState();
         return (container.getInventory() instanceof DoubleChestInventory);
     }
 
@@ -978,10 +979,11 @@ public class Util {
      * @return is UUID
      */
     public static boolean isUUID(@NotNull String string) {
-        if (string.length() != 36 && string.length() != 32) {
+        final int length = string.length();
+        if (length != 36 && length != 32) {
             return false;
         }
-        String[] components = string.split("-");
+        final String[] components = string.split("-");
         return components.length == 5;
     }
 

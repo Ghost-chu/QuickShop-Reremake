@@ -47,7 +47,6 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Manage a lot of shops.
@@ -64,7 +63,9 @@ public class ShopManager {
     private final UUID cacheTaxAccount;
     @Getter
     private final PriceLimiter priceLimiter;
-    private boolean useFastShopSearchAlgorithm = false;
+    private final boolean useFastShopSearchAlgorithm;
+    private final boolean useOldCanBuildAlgo;
+    private final boolean autoSign;
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -74,6 +75,8 @@ public class ShopManager {
 
         this.cacheTaxAccount = taxPlayer.getUniqueId();
         this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"), plugin.getConfig().getBoolean("shop.allow-free-shop"));
+        this.useOldCanBuildAlgo = plugin.getConfig().getBoolean("limits.old-algorithm");
+        this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
 
     /**
@@ -85,28 +88,17 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-
             if (plugin.isLimit()) {
                 int owned = 0;
-                if (!plugin.getConfig().getBoolean("limits.old-algorithm")) {
-                    for (Map<ShopChunk, Map<Location, Shop>> shopmap : getShops().values()) {
-                        for (Map<Location, Shop> shopLocs : shopmap.values()) {
-                            for (Shop shop : shopLocs.values()) {
-                                if (shop.getOwner().equals(p.getUniqueId()) && !shop.isUnlimited()) {
-                                    owned++;
-                                }
-                            }
-                        }
-                    }
+                if (useOldCanBuildAlgo) {
+                    owned = getPlayerAllShops(p.getUniqueId()).size();
                 } else {
-                    Iterator<Shop> it = getShopIterator();
-                    while (it.hasNext()) {
-                        if (it.next().getOwner().equals(p.getUniqueId())) {
+                    for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
+                        if (!shop.isUnlimited()) {
                             owned++;
                         }
                     }
                 }
-
                 int max = plugin.getShopLimit(p);
                 if (owned + 1 > max) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
@@ -174,7 +166,7 @@ public class ShopManager {
     }
 
     public @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ) {
-        Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
+        final Map<ShopChunk, Map<Location, Shop>> inWorld = this.getShops(world);
         if (inWorld == null) {
             return null;
         }
@@ -207,26 +199,25 @@ public class ShopManager {
             Util.debugLog("Cancelled by plugin");
             return;
         }
+        shop.onLoad();
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
 
-        if (info.getSignBlock() != null && plugin.getConfig().getBoolean("shop.auto-sign")) {
-            if (!Util.isAir(info.getSignBlock().getType())) {
-                Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                return;
-            }
+        if (info.getSignBlock() != null && autoSign) {
             boolean isWaterLogged = false;
             if (info.getSignBlock().getType() == Material.WATER) {
                 isWaterLogged = true;
+            }else{
+                if (!Util.isAir(info.getSignBlock().getType())) {
+                    Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
+                    return;
+                }
             }
-
             info.getSignBlock().setType(Util.getSignMaterial());
             BlockState bs = info.getSignBlock().getState();
-            if (isWaterLogged) {
-                if (bs.getBlockData() instanceof Waterlogged) {
-                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                    waterable.setWaterlogged(true); // Looks like sign directly put in water
-                }
+            if (isWaterLogged && (bs.getBlockData() instanceof Waterlogged)) {
+                Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                waterable.setWaterlogged(true); // Looks like sign directly put in water
             }
             if (bs.getBlockData() instanceof WallSign) {
                 WallSign signBlockDataType = (WallSign) bs.getBlockData();
@@ -290,7 +281,7 @@ public class ShopManager {
                 return null;
             }
         }
-        Map<Location, Shop> inChunk = getShops(loc.getChunk());
+        final Map<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
             return null;
         }
@@ -499,7 +490,13 @@ public class ShopManager {
      * @return The list have this player's all shops.
      */
     public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
-        return getAllShops().stream().filter(shop -> shop.getOwner().equals(playerUUID)).collect(Collectors.toList());
+        final List<Shop> playerShops = new ArrayList<>(10);
+        for(final Shop shop : getAllShops()){
+            if(shop.getOwner().equals(playerUUID)){
+                playerShops.add(shop);
+            }
+        }
+        return playerShops;
     }
 
     /**
@@ -510,9 +507,9 @@ public class ShopManager {
      * @return All shop in the database
      */
     public @NotNull List<Shop> getAllShops() {
-        List<Shop> shops = new ArrayList<>();
-        for (Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
-            for (Map<Location, Shop> shopData : shopMapData.values()) {
+        final List<Shop> shops = new ArrayList<>();
+        for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
+            for (final Map<Location, Shop> shopData : shopMapData.values()) {
                 shops.addAll(shopData.values());
             }
         }
@@ -526,7 +523,13 @@ public class ShopManager {
      * @return The list have this world all shops
      */
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
-        return getAllShops().stream().filter(shop -> Objects.equals(shop.getLocation().getWorld(), world)).collect(Collectors.toList());
+        final List<Shop> worldShops = new ArrayList<>();
+        for (final Shop shop : getAllShops()){
+            if(Objects.equals(shop.getLocation().getWorld(), world)){
+                worldShops.add(shop);
+            }
+        }
+        return worldShops;
     }
 
     private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
@@ -802,15 +805,15 @@ public class ShopManager {
             }
 
             ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING);
-            shop.onLoad();
-            ShopCreateEvent e = new ShopCreateEvent(shop, p);
-            if (Util.fireCancellableEvent(e)) {
-                shop.onUnload();
-                return;
-            }
+//            shop.onLoad();
+            //ShopCreateEvent e = new ShopCreateEvent(shop, p);
+            //if (Util.fireCancellableEvent(e)) {
+                //shop.onUnload();
+            //    return;
+           // }
             Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
-                shop.onUnload();
+                //shop.onUnload();
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
                 Util.debugLog("Cancelled by integrations: "+result);
                 return;
@@ -1065,23 +1068,21 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
-        Shop shop;
-        //Try to get it directly
-        shop = getShop(loc);
+        Shop shop = getShop(loc);
 
         //failed, get attached shop
         if (shop == null) {
-            Block currentBlock = loc.getBlock();
+           final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 //sign
                 if (Util.isWallSign(currentBlock.getType())) {
-                    Block attached = Util.getAttached(currentBlock);
+                    final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
                         shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true);
                     }
                     //double chest
                 } else {
-                    @Nullable Block half = Util.getSecondHalf(currentBlock);
+                    @Nullable final  Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }
