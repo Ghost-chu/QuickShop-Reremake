@@ -850,7 +850,6 @@ public class ContainerShop implements Shop {
         final String signHeader =
                 MsgUtil.getMessageOfflinePlayer("signs.header", player, this.ownerName());
 
-        next:
         for (Block b : blocks) {
             if (b == null) {
                 plugin.getLogger().warning("Null signs in the queue, skipping");
@@ -867,11 +866,7 @@ public class ContainerShop implements Shop {
             String[] lines = sign.getLines();
             if (lines.length >= 1) {
                 if (!lines[0].contains(signHeader)) {
-                    for (String line : lines) {
-                        if (!line.isEmpty()) {
-                            continue next;
-                        }
-                    }
+                    break;
                 }
             }
             signs.add(sign);
