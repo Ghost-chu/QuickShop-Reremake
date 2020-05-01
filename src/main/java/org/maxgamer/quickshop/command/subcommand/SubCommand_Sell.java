@@ -67,8 +67,10 @@ public class SubCommand_Sell implements CommandProcesser {
                     shop.update();
                     MsgUtil.sendMessage(sender,
                             MsgUtil.getMessage("command.now-selling", sender, Util.getItemStackName(shop.getItem())));
+                    return;
                 } else {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-managed-shop", sender));
+                    return;
                 }
             }
         }
