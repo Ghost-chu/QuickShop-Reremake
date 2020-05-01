@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.database;
 
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.Util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,7 +46,7 @@ public class Database {
                 if (!core.getConnection().isValid(30)) {
                     throw new ConnectionException("The database does not appear to be valid!");
                 }
-            } catch (AbstractMethodError e) {
+            } catch (AbstractMethodError ignored) {
                 // You don't need to validate this core.
             }
         } catch (SQLException e) {
@@ -70,7 +69,6 @@ public class Database {
      * @param objs  The string values for each ? in the given query.
      */
     public void execute(@NotNull String query, @NotNull Object... objs) {
-        Util.debugLog(query);
         BufferStatement bs = new BufferStatement(query, objs);
         core.queue(bs);
     }

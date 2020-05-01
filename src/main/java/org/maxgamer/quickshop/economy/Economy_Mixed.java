@@ -38,7 +38,7 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(UUID name, double amount) {
+    public boolean deposit(@NotNull UUID name, double amount) {
         if (getBalance(name) < amount) {
             return false;
         }
@@ -57,12 +57,12 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public double getBalance(UUID name) {
+    public double getBalance(@NotNull UUID name) {
         return core.getBalance(name);
     }
 
     @Override
-    public boolean transfer(UUID from, UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         boolean result;
         result = withdraw(from, amount);
         if (!result) {
@@ -76,7 +76,7 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean withdraw(UUID name, double amount) {
+    public boolean withdraw(@NotNull UUID name, double amount) {
         if (getBalance(name) > amount) {
             return false;
         }

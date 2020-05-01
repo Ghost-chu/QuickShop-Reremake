@@ -38,6 +38,7 @@ public enum EconomyType {
         this.id = id;
     }
 
+    @NotNull
     public static EconomyType fromID(int id) {
         for (EconomyType type : EconomyType.values()) {
             if (type.id == id) {
