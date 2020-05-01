@@ -952,7 +952,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean isDeleted() {
-        return isDeleted;
+        return this.isDeleted;
     }
 
     @Override
