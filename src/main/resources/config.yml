@@ -451,6 +451,9 @@ integration:
     #SHOPTYPE = Player must create the shop on SHOP type plot.
     trade: []
   #WorldGuard Integration Component
+  #CHANGE NEEDS RESTART THE SERVER
+  #CHANGE NEEDS RESTART THE SERVER
+  #CHANGE NEEDS RESTART THE SERVER
   worldguard:
     enable: false
     whitelist-mode: true
@@ -458,7 +461,7 @@ integration:
       #You can use multi checks in same time.
       #Priority: UP to DOWN
       #
-      #Avaliable field:
+    #Avaliable field:
     #FLAG = Region must set quickshop-create flag available for players.
     #BUILD = Player must have ability to build at the target region.
     #CHEST_ACCESS = Player must can access chest.
