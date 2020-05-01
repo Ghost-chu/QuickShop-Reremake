@@ -116,7 +116,7 @@ public class PlayerListener extends QSListener {
         }
         // Purchase handling
         if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
-            if (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !p.isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-trade") : !p.isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-trade")) {
+            if (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !p.isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-trade") : plugin.getConfig().getBoolean("shop.interact.sneak-to-trade") && !p.isSneaking()) {
                 return;
             }
             shop.onClick();
