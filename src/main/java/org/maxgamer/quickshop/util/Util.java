@@ -60,10 +60,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/**
- * @author MACHENIKE
- */
-
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
@@ -91,6 +87,7 @@ public class Util {
      * @param strArray Target array
      * @return str
      */
+    @NotNull
     public static String array2String(@NotNull String[] strArray) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strArray.length; i++) {
@@ -328,7 +325,7 @@ public class Util {
         final int codeLine = stackTraceElement.getLineNumber();
         for (String log : logs) {
             debugLogs.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            QuickShop.instance.getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         lock.writeLock().unlock();
     }
@@ -343,6 +340,7 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
 
+    @NotNull
     public static String format(double n) {
         if (disableVaultFormat) {
             return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
@@ -379,6 +377,7 @@ public class Util {
      * @param blockFace given blockFace
      * @return the right side for given blockFace, UP and DOWN will return itself
      */
+    @NotNull
     public static BlockFace getRightSide(@NonNull BlockFace blockFace) {
         switch (blockFace) {
             case EAST:
@@ -400,6 +399,7 @@ public class Util {
      *
      * @return vertical BlockFace list (unmodifiable)
      */
+    @NotNull
     public static List<BlockFace> getVerticalFacing() {
         return verticalFacing;
     }
@@ -427,12 +427,13 @@ public class Util {
      * @param c The class to get name
      * @return The class prefix
      */
+    @NotNull
     public static String getClassPrefix(@NotNull Class<?> c) {
         String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
     }
-
+    @NotNull
     public static String getItemStackName(@NotNull ItemStack itemStack) {
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
@@ -517,6 +518,7 @@ public class Util {
      * @param material mat
      * @return min, max
      */
+    @Nullable
     public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
         return restrictedPrices.get(material);
     }
@@ -584,6 +586,7 @@ public class Util {
      * @param item The ItemStack of tools to check
      * @return The percentage 'health' the tool has. (Opposite of total damage)
      */
+    @NotNull
     public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item.getItemMeta() instanceof Damageable)) {
             Util.debugLog(item.getType().name() + " not Damageable.");
@@ -603,6 +606,7 @@ public class Util {
      * @deprecated Use Bukkit util not this one.
      */
     @Deprecated
+    @NotNull
     public static BlockFace getYawFace(float yaw) {
         if (yaw > 315 && yaw <= 45) {
             return BlockFace.NORTH;
@@ -993,6 +997,7 @@ public class Util {
      * @param strList Target list
      * @return str
      */
+    @NotNull
     public static String list2String(@NotNull List<String> strList) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < strList.size(); i++) {
@@ -1116,6 +1121,7 @@ public class Util {
      * @param text the text
      * @return parsed text
      */
+    @NotNull
     public static String parseColours(@NotNull String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
@@ -1127,6 +1133,7 @@ public class Util {
      * @param list the list
      * @return parsed list
      */
+    @NotNull
     public static List<String> parseColours(@NotNull List<String> list) {
         final List<String> newList = new ArrayList<>();
 
@@ -1143,6 +1150,7 @@ public class Util {
      * @param ugly The string such as IRON_INGOT
      * @return A nicer version, such as Iron Ingot
      */
+    @NotNull
     public static String prettifyText(@NotNull String ugly) {
         String[] nameParts = ugly.split("_");
         if (nameParts.length == 1) {
@@ -1164,6 +1172,7 @@ public class Util {
      * @param string text
      * @return Processed text.
      */
+    @NotNull
     public static String firstUppercase(@NotNull String string) {
         if (string.length() > 1) {
             return Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
@@ -1178,6 +1187,7 @@ public class Util {
      * @param fileName Target file.
      * @return Target file's content.
      */
+    @NotNull
     public static String readToString(@NotNull String fileName) {
         File file = new File(fileName);
         return readToString(file);
@@ -1189,6 +1199,7 @@ public class Util {
      * @param file Target file.
      * @return Target file's content.
      */
+    @NotNull
     public static String readToString(@NotNull File file) {
         byte[] filecontent = new byte[(int) file.length()];
         try {
@@ -1233,6 +1244,7 @@ public class Util {
      * @param iStack target ItemStack
      * @return String serialized itemStack
      */
+    @NotNull
     public static String serialize(@NotNull ItemStack iStack) {
         YamlConfiguration cfg = new YamlConfiguration();
         cfg.set("item", iStack);
@@ -1244,6 +1256,7 @@ public class Util {
      *
      * @return The class prefix
      */
+    @NotNull
     public static String getClassPrefix() {
 
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -1259,7 +1272,7 @@ public class Util {
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         return "[" + className + "-" + methodName + "] ";
     }
-
+@NotNull
     public static String getNMSVersion() {
         String name = Bukkit.getServer().getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
@@ -1270,6 +1283,7 @@ public class Util {
      *
      * @return The material now using.
      */
+    @NotNull
     public static Material getSignMaterial() {
 
         Material signMaterial =
@@ -1303,6 +1317,7 @@ public class Util {
      *
      * @return TPS (e.g 19.92)
      */
+    @NotNull
     public static Double getTPS() {
         if (serverInstance == null || tpsField == null) {
             try {
@@ -1330,6 +1345,7 @@ public class Util {
     }
 
     //TODO: Need caching
+    @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {
         if (className == null) {
             className = "MinecraftServer";
