@@ -295,12 +295,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.removeall")
                 .executor(new SubCommand_RemoveAll(plugin))
                 .build());
-        registerCmd(CommandContainer.builder()
-                .prefix("backup")
-                .permission("quickshop.backup")
-                .executor(new SubCommand_Backup(plugin))
-                .hidden(true)
-                .build());
+//        registerCmd(CommandContainer.builder()
+//                .prefix("backup")
+//                .permission("quickshop.backup")
+//                .executor(new SubCommand_Backup(plugin))
+//                .hidden(true)
+//                .build());
     }
 
     public void registerCmd(@NotNull CommandContainer container) {
