@@ -108,7 +108,7 @@
   "how-many-sell": "&aWpisz ilość jaką chcesz &dSPRZEDAĆ&a na chat. Posiadasz &e{0}&a przedmiotów. Wpisz &ball&a, jeśli chcesz sprzedać wszystko.",
   "not-allowed-to-create": "&cTu nie zrobisz sklepu.",
   "blacklisted-item": "&cNie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście",
-  "how-much-to-trade-for": "&aWpisz na czacie, ile chcesz wymienić za &e{1}x {0}&a.",
+  "how-much-to-trade-for": "&aWpisz na czacie cenę za &e{1}x {0}&a.",
   "command": {
     "toggle-unlimited": {
       "unlimited": "&aSklep jest teraz nieograniczony",
