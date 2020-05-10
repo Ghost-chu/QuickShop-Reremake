@@ -109,9 +109,14 @@ public class PermissionChecker {
             public void setCancelled(boolean cancel) {
                 //tracking cancel plugin
                 if (cancel && !isCancelled()) {
-                    isCanBuild.setMessage("[Plugin Not Found]");
+                    Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
+                    for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+                       Util.debugLog(element.getClassName()+element.getMethodName()+element.getLineNumber());
+                    }
+                    isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+
                         for (RegisteredListener listener : getHandlerList().getRegisteredListeners()) {
                             if (listener.getListener().getClass().getName().equals(element.getClassName())) {
                                 isCanBuild.setResult(false);
