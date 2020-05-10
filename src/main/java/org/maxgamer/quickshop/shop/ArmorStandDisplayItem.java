@@ -51,7 +51,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
 
     private static boolean isTool(Material material) {
         String nlc = material.name().toLowerCase();
-        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe");
+        return nlc.contains("sword") || nlc.contains("shovel") || nlc.contains("axe"); //TODO: Needs a better impl. Maybe NamespacedKey
     }
 
     @Override

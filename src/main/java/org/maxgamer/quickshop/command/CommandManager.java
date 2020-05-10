@@ -303,14 +303,26 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 //                .build());
     }
 
+    /**
+     * This is a interface to allow addons to register the subcommand into quickshop command manager.
+     * @param container The command container to register
+     */
     public void registerCmd(@NotNull CommandContainer container) {
         cmds.add(container);
     }
 
+    /**
+     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     * @param container The command container to unregister
+     */
     public void unregisterCmd(@NotNull CommandContainer container) {
         cmds.remove(container);
     }
 
+    /**
+     * Gets a list contains all registered commands
+     * @return All registered commands.
+     */
     @NotNull
     public List<CommandContainer> getRegisteredCommands() {
         return new ArrayList<>(this.getCmds());
