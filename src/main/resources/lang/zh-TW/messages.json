@@ -73,10 +73,10 @@
   "success-change-owner-to-server": "&a成功將商店擁有者轉交給伺服器!",
   "flush-finished": "&a已經成功更新訊息。",
   "purchase-failed": "&c交易失敗: 發生錯誤, 請聯繫伺服器管理員。",
-  "no-pending-action": "&cYou do not have any pending actions",
-  "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "no-pending-action": "&c您沒有待處理的操作",
+  "permission-denied-3rd-party": "&c存取被拒: 第三方插件 [{0}]。",
   "menu": {
-    "successful-purchase": "&aSuccessfully purchased:",
+    "successful-purchase": "&a成功購買:",
     "successfully-sold": "&a成功出售：",
     "item-name-and-price": "&a共 &e{2} &a元的 &e{0} &a個 &e{1}",
     "sell-tax": "&a您付了 &e{0} &a元的稅。",
