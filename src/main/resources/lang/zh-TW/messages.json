@@ -263,9 +263,9 @@
   "complete": "&a完成!",
   "quickshop-gui-preview": "QuickShop GUI Item Preview",
   "shops-recovering": "正在嘗試從備份檔案中還原所有商店...",
-  "shops-backingup": "Creating Shop-backup from database...",
-  "saved-to-path": "The Backup was saved to {0}.",
-  "backup-failed": "Cannot backup the database. Check the console for details.",
+  "shops-backingup": "正在把商店資料備份到資料庫...",
+  "saved-to-path": "備份檔案已經被儲存到 {0}。",
+  "backup-failed": "無法備份商店資料庫，試著查看控制台來檢視錯誤。",
   "translate-not-completed-yet-click": "{0} 的翻譯完成度為 {1}，您想幫助我們改進翻譯嗎？點擊這裡！",
   "translate-not-completed-yet-url": "{0} 的翻譯完成度為 {1}，您想幫助我們改進翻譯嗎？前往Crowdin：{2}",
   "language-info-panel": {
