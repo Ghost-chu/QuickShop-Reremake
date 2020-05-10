@@ -36,23 +36,23 @@ public class NCPCompatibilityModule implements CompatibilityModule {
      * Calls CompatibilityModule to toggle the detection status for playerb between on and off
      *
      * @param player The player
-     * @param status On or Off
+     * @param checking On or Off
      */
     @Override
-    public void toggle(@NotNull Player player, boolean status) {
-        if (status) {
+    public void toggle(@NotNull Player player, boolean checking) {
+        if (checking) {
             Util.debugLog(
                     "Calling NoCheatPlus ignore "
                             + player.getName()
                             + " cheats detection until we finished permission checks.");
 
-            NCPExemptionManager.exemptPermanently(player);
-            NCPExemptionManager.exemptPermanently(player);
+            NCPExemptionManager.unexempt(player);
+            NCPExemptionManager.unexempt(player);
         } else {
             Util.debugLog(
                     "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
-            NCPExemptionManager.unexempt(player);
-            NCPExemptionManager.unexempt(player);
+            NCPExemptionManager.exemptPermanently(player);
+            NCPExemptionManager.exemptPermanently(player);
         }
     }
 }
