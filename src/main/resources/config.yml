@@ -462,7 +462,7 @@ integration:
   #CHANGE NEEDS RESTART THE SERVER
   worldguard:
     enable: false
-    whitelist-mode: true
+    whitelist-mode: false
       #Player if want create a shop, player must pass which checks?
       #You can use multi checks in same time.
       #Priority: UP to DOWN

@@ -1548,7 +1548,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 103;
         }
         if (selectedVersion == 103) {
-            getConfig().set("integration.worldguard.whitelist-mode", true);
+            getConfig().set("integration.worldguard.whitelist-mode", false);
             getConfig().set("integration.factions.whitelist-mode", true);
             getConfig().set("integration.plotsquared.whitelist-mode", true);
             getConfig().set("integration.residence.whitelist-mode", true);
