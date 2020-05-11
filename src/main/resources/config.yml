@@ -462,6 +462,7 @@ integration:
   #CHANGE NEEDS RESTART THE SERVER
   worldguard:
     enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: false
       #Player if want create a shop, player must pass which checks?
       #You can use multi checks in same time.
@@ -489,9 +490,11 @@ integration:
     #Player if want create a shop, player must have quickshop-create flag
     #Player if want trade a shop, player must have quickshop-trade flag
     enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
   residence:
     enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
       #Player if want create a shop, player must pass which checks?
       #You can use multi checks in same time.
@@ -514,6 +517,7 @@ integration:
     trade: []
   factions:
     enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
     #Player if want create a shop, player must pass which checks?
     create:
