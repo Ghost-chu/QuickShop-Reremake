@@ -54,7 +54,7 @@ public class BlockListener extends ProtectionListenerBase {
     /*
      * Removes chests when they're destroyed.
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.NORMAL,ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
 
         final Block b = e.getBlock();
@@ -102,12 +102,7 @@ public class BlockListener extends ProtectionListenerBase {
                 return;
             }
 
-            if (!shop.getModerator().isOwner(p.getUniqueId())
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
-                e.setCancelled(true);
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-permission", p));
-                return;
-            }
+
             // Cancel their current menu... Doesnt cancel other's menu's.
             final Info action = super.getPlugin().getShopManager().getActions().get(p.getUniqueId());
 
