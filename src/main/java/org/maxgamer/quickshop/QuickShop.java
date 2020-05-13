@@ -587,7 +587,7 @@ public class QuickShop extends JavaPlugin {
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
-        getConfig().options().copyDefaults(true); // Load defaults.
+        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
         // getConfig().options().copyDefaults(true);
