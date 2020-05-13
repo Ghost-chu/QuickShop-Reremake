@@ -42,11 +42,13 @@ public class ChatSheetPrinter {
     private CommandSender p;
 
     public void printCenterLine(@NotNull String text) {
-        MsgUtil.sendMessage(p,
-                chatColor
-                        + MsgUtil.getMessage("tableformat.left_half_line", p)
-                        + text
-                        + MsgUtil.getMessage("tableformat.right_half_line", p));
+        if (!text.isEmpty()) {
+            MsgUtil.sendMessage(p,
+                    chatColor
+                            + MsgUtil.getMessage("tableformat.left_half_line", p)
+                            + text
+                            + MsgUtil.getMessage("tableformat.right_half_line", p));
+        }
     }
 
     public void printExecuteableCmdLine(
@@ -72,7 +74,9 @@ public class ChatSheetPrinter {
     public void printLine(@NotNull String text) {
         String[] texts = text.split("\n");
         for (String str : texts) {
-            MsgUtil.sendMessage(p, chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + str);
+            if (!str.isEmpty()) {
+                MsgUtil.sendMessage(p, chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + str);
+            }
         }
     }
 
