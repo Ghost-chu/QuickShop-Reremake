@@ -38,7 +38,7 @@ config-version: 106
 #zh-CN
 #zh-TW
 
-language: en
+language: en-US
 
 #After you setup this, quickshop will download items/blocks/enchs and potions translation from MOJANGAPI
 #You can find supported language in your Minecraft Client Languages menu, fill this with the language Code.
