@@ -44,7 +44,7 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
-import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegration;
+import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationHolder;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.towny.TownyIntegration;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
@@ -781,7 +781,7 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getBoolean("integration.plotsquared.enable")) {
             Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
             if (plotSquared != null && plotSquared.isEnabled()) {
-                this.integrationHelper.register(new PlotSquaredIntegration(this));
+                this.integrationHelper.register(PlotSquaredIntegrationHolder.getPlotSquaredIntegration(this));
             }
         }
         if (getConfig().getBoolean("integration.residence.enable")) {
