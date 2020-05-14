@@ -106,7 +106,6 @@ public class ShopManager {
                 }
             }
             ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
-            Bukkit.getPluginManager().callEvent(spce);
         return !Util.fireCancellableEvent(spce);
     }
 
