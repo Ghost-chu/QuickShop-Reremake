@@ -183,6 +183,11 @@
             <id>reserve-repo</id>
             <url>https://dl.bintray.com/theneweconomy/java/</url>
         </repository>
+        <!-- PlotSquared -->
+        <repository>
+            <id>IntellectualSites</id>
+            <url>https://mvn.intellectualsites.com/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -378,8 +383,58 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--PlotSquared 5-->
         <dependency>
             <groupId>com.plotsquared</groupId>
+            <artifactId>PlotSquared</artifactId>
+            <version>5.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>worldedit-core</artifactId>
+                    <groupId>com.sk89q.worldedit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>Jenkins4J</artifactId>
+                    <groupId>com.github.Sauilitired</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>okhttp</artifactId>
+                    <groupId>com.squareup.okhttp3</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>okio</artifactId>
+                    <groupId>com.squareup.okio</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>kotlin-stdlib</artifactId>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>text-serializer-gson</artifactId>
+                    <groupId>net.kyori</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lombok</artifactId>
+                    <groupId>org.projectlombok</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--PlotSquared 4-->
+        <dependency>
+            <groupId>com.github.intellectualsite</groupId>
             <artifactId>PlotSquared</artifactId>
             <version>4</version>
             <scope>system</scope>
