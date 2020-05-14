@@ -284,7 +284,7 @@ public class PlayerListener extends QSListener {
         final Location loc2 = p.getLocation();
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
             if (info.getAction() == ShopAction.BUY) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("buy-action-cancelled", p));
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
             } else if (info.getAction() == ShopAction.CREATE) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-creation-cancelled", p));
