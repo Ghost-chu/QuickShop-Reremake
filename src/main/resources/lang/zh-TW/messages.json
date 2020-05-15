@@ -74,7 +74,7 @@
   "flush-finished": "&a已經成功更新訊息。",
   "purchase-failed": "&c交易失敗：發生錯誤，請聯繫伺服器管理員。",
   "no-pending-action": "&c您沒有待處理的操作",
-  "permission-denied-3rd-party": "&c存取被拒: 第三方插件 [{0}]。",
+  "permission-denied-3rd-party": "&c存取被拒：第三方插件 [{0}]。",
   "menu": {
     "successful-purchase": "&a成功購買：",
     "successfully-sold": "&a成功出售：",
