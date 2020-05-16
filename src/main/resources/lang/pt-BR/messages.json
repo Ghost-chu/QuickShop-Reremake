@@ -1,7 +1,7 @@
 {
-  "translation-author": "Tradutor: ThiagoROX",
-  "translation-version": "Versão de suporte: Reremake",
-  "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
+  "translation-author": "Tradutor: IceZombie13",
+  "translation-version": "Versão: Reremake",
+  "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
   "language-version": "39",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
@@ -281,13 +281,13 @@
   "shop-freezed-at-location": "&eA sua loja {0} em {1} foi congelada!",
   "denied-put-in-item": "&cYou cannot put this item into your shop!",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &ball&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &ball&a in chat to sell all.",
+  "how-many-sell-stack": "&aDigite no chat, quantos pacotes você deseja &eVENDER&a. Há &e{0}&a itens em cada pacote e você tem &e{1}&a pacotes disponíveis. Digite &ball no chat para vender tudo.",
   "language": {
     "name": "&eNome: &6{0}",
     "code": "&eCódigo: &6{0}",
-    "translate-progress": "&eTranslation Progress: &b{0}%",
+    "translate-progress": "&eProgresso da tradução: &b{0}%",
     "approval-progress": "&eProgresso de aprovação: &b{0}%",
-    "qa-issues": "&eQuality assurance issues: &b{0}%",
-    "help-us": "&a[Help us improve the translation quality]"
+    "qa-issues": "&eProblemas de garantia de qualidade: &b{0}%",
+    "help-us": "&a[Ajude-nos a melhorar a qualidade da tradução]"
   }
 }
