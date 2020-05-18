@@ -149,7 +149,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             return "Error";
         }
 
-        return Util.format(balance);
+        return Util.format(balance, true);
     }
 
     @Override
