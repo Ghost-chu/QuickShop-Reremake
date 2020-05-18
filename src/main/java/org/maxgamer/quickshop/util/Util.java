@@ -340,9 +340,13 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
 
-    @NotNull
     public static String format(double n) {
-        if (disableVaultFormat) {
+        return format(n, disableVaultFormat);
+    }
+
+    @NotNull
+    public static String format(double n, boolean internalFormat) {
+        if (internalFormat) {
             return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
         }
         try {

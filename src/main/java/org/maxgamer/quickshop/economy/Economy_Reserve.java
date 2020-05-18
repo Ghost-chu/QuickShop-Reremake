@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -102,11 +103,7 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     private String formatInternal(double balance) {
-        try {
-            return plugin.getConfig().getString("shop.alternate-currency-symbol") + balance;
-        } catch (Exception e) {
-            return String.valueOf('$' + balance);
-        }
+        return Util.format(balance, true);
     }
 
     /**
