@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.maxgamer.quickshop.util.Util.getPlayerList;
@@ -87,7 +88,7 @@ public class SubCommand_SetOwner implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return getPlayerList(cmdArg);
+        return cmdArg.length <= 1 ? getPlayerList() : Collections.emptyList();
     }
 
 }

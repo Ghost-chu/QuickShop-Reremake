@@ -135,7 +135,7 @@ public class SubCommand_Staff implements CommandProcesser {
         } else if (cmdArg.length == 2) {
             String prefix = cmdArg[0].toLowerCase();
             if ("add".equals(prefix) || "del".equals(cmdArg[0])) {
-                return Util.getPlayerList(cmdArg);
+                return Util.getPlayerList();
             }
         }
         return Collections.emptyList();

@@ -79,6 +79,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         .build());
         registerCmd(
                 CommandContainer.builder()
+                        .prefix("transfer")
+                        .permission("quickshop.transfer")
+                        .executor(new SubCommand_Transfer(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
                         .prefix("setowner")
                         .permission("quickshop.setowner")
                         .executor(new SubCommand_SetOwner(plugin))

@@ -11,6 +11,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.maxgamer.quickshop.util.Util.getPlayerList;
@@ -52,6 +53,6 @@ public class SubCommand_RemoveAll implements CommandProcesser {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return getPlayerList(cmdArg);
+        return cmdArg.length <= 1 ? getPlayerList() : Collections.emptyList();
     }
 }
