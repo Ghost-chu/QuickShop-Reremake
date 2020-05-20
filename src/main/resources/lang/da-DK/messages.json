@@ -3,7 +3,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&cKunne ikke finde en QuickShop. Du skal kigge på en.",
   "no-anythings-in-your-hand": "&cDer er intet i din hånd.",
   "no-permission": "&cDu har ikke rettighederne til at gøre dette.",
@@ -114,7 +114,9 @@
       "unlimited": "&aShop is now unlimited",
       "limited": "&aShop is now limited"
     },
-    "some-shops-removed": "&e{0} &ashop removed",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNo owner provided",
     "new-owner": "&aNew owner: &e{0}",
     "now-buying": "&aNow &dBUYING &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
-      "removeall": "&eRemove ALL shops of a specified player"
+      "removeall": "&eRemove ALL shops of a specified player",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
