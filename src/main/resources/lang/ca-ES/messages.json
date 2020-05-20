@@ -3,7 +3,7 @@
   "translation-version": "Versiò suportada: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "1",
+  "language-version": "40",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. Has de mirar a una.",
   "no-anythings-in-your-hand": "Ni hi ha res a la teva mà.",
   "no-permission": "No tens permisos per a fer això.",
@@ -114,7 +114,9 @@
       "unlimited": "&aLa botiga ara és il·limitada.",
       "limited": "&aLa butiga ara és limitada."
     },
-    "some-shops-removed": "&e{0} &abotiga el·liminada.",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNo s'ha proporcionat cap amo.",
     "new-owner": "&aNou amo: &e{0}&a.",
     "now-buying": "&aAra &dCOMPRANT &e{0}&a.",
@@ -159,7 +161,8 @@
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
-      "removeall": "&eRemove ALL shops of a specified player"
+      "removeall": "&eRemove ALL shops of a specified player",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
