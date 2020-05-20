@@ -3,7 +3,7 @@
   "translation-version": "Versão: Reremake",
   "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -114,7 +114,9 @@
       "unlimited": "&aLoja agora é ilimitada",
       "limited": "&aLoja agora é limitada"
     },
-    "some-shops-removed": "&eLoja {0} &aremovida",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNenhum proprietário informado",
     "new-owner": "&aNovo proprietário: &e{0}",
     "now-buying": "&aAgora &dCOMPRANDO &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eAltera a quantidade por pacote da loja",
       "supercreate": "&eCria uma loja ignorando todas as verificações de proteção",
       "language": "&eAlterar o idioma atualmente utilizado",
-      "removeall": "&eRemover TODAS as lojas de um jogador"
+      "removeall": "&eRemover TODAS as lojas de um jogador",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
