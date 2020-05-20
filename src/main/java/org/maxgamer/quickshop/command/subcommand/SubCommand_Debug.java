@@ -33,14 +33,13 @@ import org.maxgamer.quickshop.util.Util;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 public class SubCommand_Debug implements CommandProcesser {
 
     private final QuickShop plugin;
+    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm"));
 
     @Override
     public void onCommand(
@@ -93,15 +92,7 @@ public class SubCommand_Debug implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        final ArrayList<String> list = new ArrayList<>();
-
-        list.add("debug");
-        list.add("dev");
-        list.add("devmode");
-        list.add("handlerlist");
-        list.add("jvm");
-
-        return list;
+        return tabCompleteList;
     }
 
     public void switchDebug(@NotNull CommandSender sender) {
@@ -125,7 +116,7 @@ public class SubCommand_Debug implements CommandProcesser {
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
         try {
-            final Class clazz = Class.forName(event);
+            final Class<?> clazz = Class.forName(event);
             final Method method = clazz.getMethod("getHandlerList");
             final Object[] obj = new Object[0];
             final HandlerList list = (HandlerList) method.invoke(null, obj);

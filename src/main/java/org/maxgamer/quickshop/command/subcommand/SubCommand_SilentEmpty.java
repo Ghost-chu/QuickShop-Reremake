@@ -31,9 +31,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_SilentEmpty implements CommandProcesser {
 
@@ -73,13 +70,6 @@ public class SubCommand_SilentEmpty implements CommandProcesser {
         inventory.clear();
         MsgUtil.sendControlPanelInfo(sender, shop);
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("empty-success", sender));
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

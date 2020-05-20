@@ -35,7 +35,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +44,7 @@ import java.util.UUID;
 public class SubCommand_Staff implements CommandProcesser {
 
     private final QuickShop plugin;
+    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("add", "del", "list", "clear"));
 
     @Override
     public void onCommand(
@@ -59,18 +60,13 @@ public class SubCommand_Staff implements CommandProcesser {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
             return;
         }
-        boolean hitShop = false;
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop == null || !shop.getModerator().isModerator(((Player) sender).getUniqueId())) {
                 continue;
             }
-            hitShop = true;
             switch (cmdArg.length) {
-                case 0:
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
-                    return;
                 case 1:
                     switch (cmdArg[0]) {
                         case "clear":
@@ -106,7 +102,6 @@ public class SubCommand_Staff implements CommandProcesser {
                     if (offlinePlayerName == null) {
                         offlinePlayerName = "null";
                     }
-
                     switch (cmdArg[0]) {
                         case "add":
                             shop.addStaff(offlinePlayer.getUniqueId());
@@ -119,17 +114,15 @@ public class SubCommand_Staff implements CommandProcesser {
                             return;
                         default:
                             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                            return;
                     }
-
-                    break;
                 default:
-                    Util.debugLog("No any args matched");
-                    break;
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
+                    return;
             }
         }
-        if (!hitShop) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-        }
+        //no match shop
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull
@@ -137,40 +130,14 @@ public class SubCommand_Staff implements CommandProcesser {
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
 
-        if (cmdArg.length < 2) {
-            final ArrayList<String> tabList = new ArrayList<>();
-            if (cmdArg.length == 1) {
-                final String prefix = cmdArg[0].toLowerCase();
-
-                if ("add".startsWith(prefix)) {
-                    tabList.add("add");
-                }
-
-                if ("del".startsWith(prefix)) {
-                    tabList.add("del");
-                }
-
-                if ("list".startsWith(prefix)) {
-                    tabList.add("list");
-                }
-
-                if ("clear".startsWith(prefix)) {
-                    tabList.add("clear");
-                }
-            } else {
-                tabList.add("add");
-                tabList.add("del");
-                tabList.add("list");
-                tabList.add("clear");
+        if (cmdArg.length == 1) {
+            return tabCompleteList;
+        } else if (cmdArg.length == 2) {
+            String prefix = cmdArg[0].toLowerCase();
+            if ("add".equals(prefix) || "del".equals(cmdArg[0])) {
+                return Util.getPlayerList(cmdArg);
             }
-
-            return tabList;
-        }
-
-        if ("add".equals(cmdArg[0]) || "del".equals(cmdArg[0])) {
-            return Util.getPlayerList(cmdArg);
         }
         return Collections.emptyList();
     }
-
 }

@@ -28,9 +28,6 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_SilentUnlimited implements CommandProcesser {
     private final QuickShop plugin;
@@ -68,13 +65,6 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
         }
 
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.toggle-unlimited.limited", sender));
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

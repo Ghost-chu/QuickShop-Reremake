@@ -30,9 +30,6 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_Unlimited implements CommandProcesser {
 
@@ -76,13 +73,6 @@ public class SubCommand_Unlimited implements CommandProcesser {
         }
 
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

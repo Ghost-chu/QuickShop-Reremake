@@ -32,8 +32,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -120,13 +118,6 @@ public class SubCommand_Find implements CommandProcesser {
         MsgUtil.sendMessage(p,
                 MsgUtil.getMessage(
                         "nearby-shop-this-way", sender, Integer.toString((int) Math.floor(Math.sqrt(minDistanceSquared)))));
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

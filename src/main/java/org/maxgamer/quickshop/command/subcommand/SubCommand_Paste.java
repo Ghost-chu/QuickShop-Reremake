@@ -32,8 +32,6 @@ import org.maxgamer.quickshop.util.paste.Paste;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -80,11 +78,5 @@ public class SubCommand_Paste implements CommandProcesser {
         }.runTaskAsynchronously(plugin);
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 
 }
