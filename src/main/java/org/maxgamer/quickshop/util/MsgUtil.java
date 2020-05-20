@@ -1444,6 +1444,13 @@ public class MsgUtil {
             setAndUpdate("language-version", 39);
             selectedVersion = 39;
         }
+        if (selectedVersion == 39) {
+            setAndUpdate("command.transfer-success", "&aTransferred &e{0} &ashop(s) to &e{1}");
+            setAndUpdate("command.transfer-success-other", "&aTransferred &e{0} {1}&a's shop(s) to &e{2}");
+            setAndUpdate("command.description.transfer", "&eTransfer someone's ALL shops to other");
+            setAndUpdate("language-version", 40);
+            selectedVersion = 40;
+        }
 
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
