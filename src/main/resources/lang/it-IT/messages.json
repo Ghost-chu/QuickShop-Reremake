@@ -3,7 +3,7 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&cImpossibile trovare un QuickShop. Devi guardarlo.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
@@ -114,7 +114,9 @@
       "unlimited": "&aIl negozio è ora illimitato",
       "limited": "&aIl negozio è ora limitato"
     },
-    "some-shops-removed": "&{0} &ashop rimosso",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNessun proprietario fornito",
     "new-owner": "&aNuovo proprietario: &e{0}",
     "now-buying": "&aOra &dACQUISTANDO &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eCambia per quantità di negozi",
       "supercreate": "&eCrea un negozio aggirando tutti i controlli di protezione",
       "language": "&eCambia la lingua attualmente in uso",
-      "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato"
+      "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
