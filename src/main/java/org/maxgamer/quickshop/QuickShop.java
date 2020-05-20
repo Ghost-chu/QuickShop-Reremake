@@ -74,7 +74,6 @@ public class QuickShop extends JavaPlugin {
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
      */
-    @Getter
     @Deprecated
     public static QuickShop instance;
 
@@ -250,6 +249,11 @@ public class QuickShop extends JavaPlugin {
 
     @Getter
     private boolean allowStack;
+
+    @NotNull
+    public static QuickShop getInstance() {
+        return instance;
+    }
 
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
