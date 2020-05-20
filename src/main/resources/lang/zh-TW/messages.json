@@ -3,7 +3,7 @@
   "translation-version": "支援版本：Reremake（重製重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&c無法找到儲物箱商店。您需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -114,7 +114,9 @@
       "unlimited": "&a這個商店現在已經沒有數量限制",
       "limited": "&a這個商店現在已經恢復數量限制"
     },
-    "some-shops-removed": "&e{0} &a商店已經刪除",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&c未指定新的商店店主",
     "new-owner": "&a新商店主人：&e{0}",
     "now-buying": "&a商店正在 &d收購 &e{0}",
@@ -159,7 +161,8 @@
       "size": "&e修改每份物品的數量",
       "supercreate": "&e創建一個略過所有保護檢查的商店",
       "language": "&e修改正在使用的語言",
-      "removeall": "&e刪除該玩家的所有商店"
+      "removeall": "&e刪除該玩家的所有商店",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
