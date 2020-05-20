@@ -26,9 +26,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_Reload implements CommandProcesser {
 
@@ -42,11 +39,5 @@ public class SubCommand_Reload implements CommandProcesser {
         plugin.getServer().getPluginManager().enablePlugin(plugin);
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 
 }

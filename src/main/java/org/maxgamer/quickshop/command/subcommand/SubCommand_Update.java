@@ -31,8 +31,6 @@ import org.maxgamer.quickshop.util.UpdateInfomation;
 import org.maxgamer.quickshop.util.Updater;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 @AllArgsConstructor
 public class SubCommand_Update implements CommandProcesser {
@@ -97,13 +95,6 @@ public class SubCommand_Update implements CommandProcesser {
                         ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
             }
         }.runTaskAsynchronously(plugin);
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }
