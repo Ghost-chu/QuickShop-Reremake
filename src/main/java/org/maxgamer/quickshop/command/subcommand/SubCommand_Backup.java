@@ -27,9 +27,6 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Collections;
-import java.util.List;
-
 @AllArgsConstructor
 public class SubCommand_Backup implements CommandProcesser {
 
@@ -46,11 +43,5 @@ public class SubCommand_Backup implements CommandProcesser {
 
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 
 }

@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 public interface CommandProcesser {
@@ -53,7 +54,9 @@ public interface CommandProcesser {
      * @return The result for tab-complete lists
      */
     @Nullable
-    List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg);
+    default List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return Collections.emptyList();
+    }
 
 }

@@ -8,15 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-
-import java.util.Collections;
-import java.util.List;
 @AllArgsConstructor
 public class SubCommand_Item implements CommandProcesser {
     private QuickShop plugin;
@@ -62,8 +58,4 @@ public class SubCommand_Item implements CommandProcesser {
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 }

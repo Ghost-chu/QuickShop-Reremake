@@ -14,6 +14,7 @@ import org.maxgamer.quickshop.database.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -104,6 +105,6 @@ public class SubCommand_Convert implements CommandProcesser {
             str.add("mysql");
             return str;
         }
-        return null;
+        return Collections.emptyList();
     }
 }

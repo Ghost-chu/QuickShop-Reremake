@@ -29,7 +29,8 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +38,8 @@ import java.util.Objects;
 public class SubCommand_Reset implements CommandProcesser {
 
     private final QuickShop plugin;
+    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("lang", "config", "messages"));
+
 
     @Override
     @SneakyThrows
@@ -86,11 +89,7 @@ public class SubCommand_Reset implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        ArrayList<String> tab = new ArrayList<>();
-        tab.add("lang");
-        tab.add("config");
-        tab.add("messages");
-        return tab;
+        return tabCompleteList;
     }
 
 }

@@ -36,7 +36,7 @@ import org.maxgamer.quickshop.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -122,11 +122,7 @@ public class SubCommand_SuperCreate implements CommandProcesser {
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        final ArrayList<String> list = new ArrayList<>();
-
-        list.add(MsgUtil.getMessage("tabcomplete.amount", sender));
-
-        return list;
+        return cmdArg.length == 1 ? Collections.singletonList(MsgUtil.getMessage("tabcomplete.amount", sender)) : Collections.emptyList();
     }
 
 }

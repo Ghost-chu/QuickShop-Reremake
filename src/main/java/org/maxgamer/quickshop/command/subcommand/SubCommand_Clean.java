@@ -30,7 +30,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -84,11 +83,5 @@ public class SubCommand_Clean implements CommandProcesser {
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaned", sender, Integer.toString(i)));
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 
 }

@@ -30,8 +30,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 @AllArgsConstructor
 public class SubCommand_Recovery implements CommandProcesser {
@@ -61,13 +59,6 @@ public class SubCommand_Recovery implements CommandProcesser {
             }
         }.runTaskAsynchronously(plugin);
 
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

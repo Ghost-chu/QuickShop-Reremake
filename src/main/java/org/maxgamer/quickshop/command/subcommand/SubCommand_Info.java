@@ -31,8 +31,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.MsgUtil;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -99,11 +97,5 @@ public class SubCommand_Info implements CommandProcesser {
         MsgUtil.sendMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
     }
 
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
-    }
 
 }
