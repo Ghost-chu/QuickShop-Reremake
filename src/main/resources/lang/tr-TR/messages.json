@@ -115,7 +115,7 @@
       "limited": "&aMarket şimdi sınırlı"
     },
     "transfer-success": "&e{0} &amarket &e{1} &aoyuncusuna devredildi",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "transfer-success-other": "&e{1} &aoyuncusunun &e{0} &amarketi &e{2} &aoyuncusuna devredildi",
     "some-shops-removed": "&e{0} &amarket kaldırıldı",
     "no-owner-given": "&cSahip sağlanmadı",
     "new-owner": "&aYeni sahip: &e{0}",
