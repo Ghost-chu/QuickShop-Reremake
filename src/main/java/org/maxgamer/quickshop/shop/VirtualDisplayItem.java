@@ -25,6 +25,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Bukkit;
@@ -332,6 +333,9 @@ public class VirtualDisplayItem extends DisplayItem {
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
                         }
                         Player player = event.getPlayer();
+                        if (player instanceof TemporaryPlayer) {
+                            return;
+                        }
                         if (player == null || !player.isOnline()) {
                             Util.debugLog("Cancelled packet sending cause player logged out when sending packets.");
                             return;
