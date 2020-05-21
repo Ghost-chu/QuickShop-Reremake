@@ -38,10 +38,11 @@ public class SubCommand_Transfer implements CommandProcesser {
                 targetPlayerName = "null";
             }
             final UUID targetPlayerUUID = targetPlayer.getUniqueId();
-            for (Shop shop : plugin.getShopManager().getPlayerAllShops(((Player) sender).getUniqueId())) {
+            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(((Player) sender).getUniqueId());
+            for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success", sender, sender.getName(), targetPlayerName));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success", sender, Integer.toString(shopList.size()), targetPlayerName));
         } else if (cmdArg.length == 2) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
@@ -58,10 +59,11 @@ public class SubCommand_Transfer implements CommandProcesser {
                 targetPlayerName = "null";
             }
             final UUID targetPlayerUUID = targetPlayer.getUniqueId();
-            for (Shop shop : plugin.getShopManager().getPlayerAllShops(fromPlayer.getUniqueId())) {
+            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer.getUniqueId());
+            for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success-other", sender, fromPlayerName, targetPlayerName));
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.transfer-success-other", sender, Integer.toString(shopList.size()), fromPlayerName, targetPlayerName));
 
         } else MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.wrong-args", sender));
     }
