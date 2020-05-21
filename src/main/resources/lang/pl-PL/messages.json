@@ -115,7 +115,7 @@
       "limited": "&aSklep jest teraz limitowany"
     },
     "transfer-success": "&aPrzeniesiono &e{0} &asklep(y/ów) do &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "transfer-success-other": "&aPrzeniesiono &{0} sklep(y/ów) {1} do &e{2}",
     "some-shops-removed": "&e{0} &asklep(y/ów) usunięto",
     "no-owner-given": "&cNie podano właściciela",
     "new-owner": "&aNowy Właściciel: &e{0}",
