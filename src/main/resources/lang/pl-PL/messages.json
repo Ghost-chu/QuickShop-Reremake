@@ -114,9 +114,9 @@
       "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success": "&aPrzeniesiono &e{0} &asklep(y/ów) do &e{1}",
     "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "some-shops-removed": "&e{0} &asklep(y/ów) usunięto",
     "no-owner-given": "&cNie podano właściciela",
     "new-owner": "&aNowy Właściciel: &e{0}",
     "now-buying": "&aTeraz &dSKUPUJESZ&a &e{0}",
@@ -162,7 +162,7 @@
       "supercreate": "&eUtwórz sklep podczas omijania wszystkich kontroli ochrony",
       "language": "&eZmień aktualnie używany język",
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych"
     }
   },
   "signs": {
