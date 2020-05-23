@@ -19,7 +19,10 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -31,6 +34,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
+import org.maxgamer.quickshop.shop.ShopLoader;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -38,6 +42,8 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -352,6 +358,32 @@ public class Paste {
                 .append(plugin.getShopLoader().getOriginShopsInDatabase().size())
                 .append("\n");
         finalReport.append("================================================\n");
+        finalReport.append("================================================\n");
+        finalReport.append("Shops in DB(RealTime):\n");
+        int totalDB = 0;
+        ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
+        while (resultSet.next()){
+            totalDB++;
+            ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(resultSet);
+            finalReport.append("\t").append(origin.getModerators()).append("#")
+                    .append(origin.getWorld())
+                    .append("#")
+                    .append(origin.getX())
+                    .append("#")
+                    .append(origin.getY())
+                    .append("#")
+                    .append(origin.getZ())
+                    .append("#")
+                    .append(origin.getType())
+                    .append("#")
+                    .append(origin.getPrice())
+                    .append("\n");
+        }
+        finalReport
+                .append("Total: ")
+                .append(totalDB)
+                .append("\n");
+        finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
         plugin
                 .getShopLoader()
@@ -430,5 +462,58 @@ public class Paste {
         }
         return null;
     }
+    @Getter
+    @Setter
+    public class ShopDatabaseInfoOrigin {
+        private String item;
 
+        private String moderators;
+
+        private double price;
+
+        private int type;
+
+        private boolean unlimited;
+
+        private String world;
+
+        private int x;
+
+        private int y;
+
+        private int z;
+
+        ShopDatabaseInfoOrigin(ResultSet rs) {
+            try {
+                this.x = rs.getInt("x");
+                this.y = rs.getInt("y");
+                this.z = rs.getInt("z");
+                this.world = rs.getString("world");
+                this.item = rs.getString("itemConfig");
+                this.moderators = rs.getString("owner");
+                this.price = rs.getDouble("price");
+                this.type = rs.getInt("type");
+                this.unlimited = rs.getBoolean("unlimited");
+            } catch (SQLException sqlex) {
+            }
+        }
+
+        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+            this.item = itemConfig;
+            this.moderators = owner;
+            this.price = price;
+            this.type = type;
+            this.unlimited = unlimited;
+        }
+
+        @Override
+        public String toString() {
+            return new Gson().toJson(this);
+        }
+
+    }
 }
