@@ -377,6 +377,8 @@ public class Paste {
                     .append(origin.getType())
                     .append("#")
                     .append(origin.getPrice())
+                    .append("#")
+                    .append(origin.getItem())
                     .append("\n");
         }
         finalReport
