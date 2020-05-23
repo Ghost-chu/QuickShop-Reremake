@@ -358,7 +358,6 @@ public class Paste {
                 .append(plugin.getShopLoader().getOriginShopsInDatabase().size())
                 .append("\n");
         finalReport.append("================================================\n");
-        finalReport.append("================================================\n");
         finalReport.append("Shops in DB(RealTime):\n");
         int totalDB = 0;
         ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
