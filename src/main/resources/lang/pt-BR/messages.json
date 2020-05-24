@@ -10,7 +10,7 @@
   "integrations-check-failed-create": "&cIntegração {0} negou a criação da loja",
   "integrations-check-failed-trade": "&cIntegração {0} negou a negociação da loja",
   "3rd-plugin-build-check-failed": "&c3rd plugin &l{0}&r&c negou as verificações de permissão, você configurou as permissões?",
-  "no-creative-break": "&cVocê não pode quebrar outras lojas de jogadores no modo criativo, mude para o modo de sobrevivência ou tente usar a super-ferramenta {0}.",
+  "no-creative-break": "&cVocê não pode quebrar lojas de outros jogadores no modo criativo, mude para o modo sobrevivência ou tente usar a super-ferramenta {0}.",
   "trading-in-creative-mode-is-disabled": "&cVocê não pode negociar com a loja no modo criativo.",
   "supertool-is-disabled": "&cSuper-ferramenta foi desativada, não será possível quebrar nenhuma loja.",
   "no-double-chests": "&cVocê não pode criar a loja com baú duplo.",
