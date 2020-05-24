@@ -168,6 +168,8 @@ public class DatabaseHelper {
             public void onFailed(SQLException e) {
                 if (onFailed != null) {
                     onFailed.accept(e);
+                } else {
+                    e.printStackTrace();
                 }
             }
         }));
@@ -182,7 +184,6 @@ public class DatabaseHelper {
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
                 + (db.getCore() instanceof MySQLCore ? " LIMIT 1" : "");
-
         plugin.getDatabaseManager().add(new DatabaseTask(sqlString, (ps) -> {
             Location location = shop.getLocation();
             ps.setInt(1, location.getBlockX());
