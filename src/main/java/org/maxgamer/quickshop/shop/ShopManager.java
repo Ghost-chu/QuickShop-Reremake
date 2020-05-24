@@ -199,34 +199,32 @@ public class ShopManager {
             return;
         }
         if (info.getSignBlock() != null && autoSign) {
-            boolean isWaterLogged = false;
-            if (info.getSignBlock().getType() == Material.WATER) {
-                isWaterLogged = true;
+            if (Util.isAir(info.getSignBlock().getType()) || info.getSignBlock().getType() == Material.WATER) {
+                info.getSignBlock().setType(Util.getSignMaterial());
+                BlockState bs = info.getSignBlock().getState();
+                if (info.getSignBlock().getType() == Material.WATER && (bs.getBlockData() instanceof Waterlogged)) {
+                    Waterlogged waterable = (Waterlogged) bs.getBlockData();
+                    waterable.setWaterlogged(true); // Looks like sign directly put in water
+                }
+                if (bs.getBlockData() instanceof WallSign) {
+                    WallSign signBlockDataType = (WallSign) bs.getBlockData();
+                    BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
+                    if (bf != null) {
+                        signBlockDataType.setFacing(bf);
+                        bs.setBlockData(signBlockDataType);
+                    }
+                } else {
+                    plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
+                }
+                bs.update(true);
+                shop.setSignText();
             } else {
-                if (!Util.isAir(info.getSignBlock().getType()) && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
             }
-            info.getSignBlock().setType(Util.getSignMaterial());
-            BlockState bs = info.getSignBlock().getState();
-            if (isWaterLogged && (bs.getBlockData() instanceof Waterlogged)) {
-                Waterlogged waterable = (Waterlogged) bs.getBlockData();
-                waterable.setWaterlogged(true); // Looks like sign directly put in water
-            }
-            if (bs.getBlockData() instanceof WallSign) {
-                WallSign signBlockDataType = (WallSign) bs.getBlockData();
-                BlockFace bf = info.getLocation().getBlock().getFace(info.getSignBlock());
-                if (bf != null) {
-                    signBlockDataType.setFacing(bf);
-                    bs.setBlockData(signBlockDataType);
-                }
-            } else {
-                plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
-            }
-            bs.update(true);
-            shop.setSignText();
         }
         //load the shop finally
         shop.onLoad();
