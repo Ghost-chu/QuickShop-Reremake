@@ -564,7 +564,6 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
