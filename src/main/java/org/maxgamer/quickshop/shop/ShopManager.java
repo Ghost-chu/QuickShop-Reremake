@@ -193,21 +193,18 @@ public class ShopManager {
         if (player == null) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
-        ShopCreateEvent ssShopCreateEvent = new ShopCreateEvent(shop, player);
-        if (Util.fireCancellableEvent(ssShopCreateEvent)) {
+        ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, player);
+        if (Util.fireCancellableEvent(shopCreateEvent)) {
             Util.debugLog("Cancelled by plugin");
             return;
         }
-        shop.onLoad();
-        //sync add to prevent compete issue
-        addShop(shop.getLocation().getWorld().getName(), shop);
-
         if (info.getSignBlock() != null && autoSign) {
             boolean isWaterLogged = false;
             if (info.getSignBlock().getType() == Material.WATER) {
                 isWaterLogged = true;
-            }else{
-                if (!Util.isAir(info.getSignBlock().getType())) {
+            } else {
+                if (!Util.isAir(info.getSignBlock().getType()) && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                    MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
                 }
@@ -231,6 +228,11 @@ public class ShopManager {
             bs.update(true);
             shop.setSignText();
         }
+        //load the shop finally
+        shop.onLoad();
+        //sync add to prevent compete issue
+        addShop(shop.getLocation().getWorld().getName(), shop);
+        //save to database
         plugin.getDatabaseHelper().createShop(
                 shop,
                 null,
@@ -662,7 +664,7 @@ public class ShopManager {
                 }
             }
 
-            if (plugin.getConfig().getBoolean("shop.auto-sign")) {
+            if (autoSign) {
                 if (info.getSignBlock() == null) {
                     if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                         MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
@@ -670,7 +672,7 @@ public class ShopManager {
                     }
                 }
                 Material signType = info.getSignBlock().getType();
-                if (!Util.isAir(signType) && signType != Material.WATER && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                if (signType != Material.WATER && !Util.isAir(signType) && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("failed-to-put-sign", p));
                     return;
                 }
