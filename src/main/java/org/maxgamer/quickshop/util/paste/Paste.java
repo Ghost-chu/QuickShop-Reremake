@@ -358,32 +358,12 @@ public class Paste {
                 .append(plugin.getShopLoader().getOriginShopsInDatabase().size())
                 .append("\n");
         finalReport.append("================================================\n");
-        finalReport.append("Shops in DB(RealTime):\n");
         int totalDB = 0;
         ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
-        while (resultSet.next()){
+        while (resultSet.next()) {
             totalDB++;
-            ShopDatabaseInfoOrigin origin = new ShopDatabaseInfoOrigin(resultSet);
-            finalReport.append("\t").append(origin.getModerators()).append("#")
-                    .append(origin.getWorld())
-                    .append("#")
-                    .append(origin.getX())
-                    .append("#")
-                    .append(origin.getY())
-                    .append("#")
-                    .append(origin.getZ())
-                    .append("#")
-                    .append(origin.getType())
-                    .append("#")
-                    .append(origin.getPrice())
-                    .append("#")
-                    .append(origin.getItem())
-                    .append("\n");
         }
-        finalReport
-                .append("Total: ")
-                .append(totalDB)
-                .append("\n");
+        finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
         plugin
