@@ -3,7 +3,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Тимбашня, пеноматериалы Нидерландов, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&cНе удалось найти QuickShop. Вам нужно посмотреть.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руке.",
   "no-permission": "&cУ вас нет прав на это.",
@@ -114,7 +114,9 @@
       "unlimited": "&aМагазин теперь неограничен",
       "limited": "&aМагазин теперь ограничен"
     },
-    "some-shops-removed": "&e{0} &ashop removed",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNo owner provided",
     "new-owner": "&aНовый владелец: &e{0}",
     "now-buying": "&aNow &dBUYING &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eChange per bulk amount of a shop",
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
-      "removeall": "&eRemove ALL shops of a specified player"
+      "removeall": "&eRemove ALL shops of a specified player",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {

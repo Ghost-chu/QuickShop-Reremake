@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -114,7 +114,9 @@
       "unlimited": "&a商店已更改为无限模式",
       "limited": "&a商店已更改为普通模式。"
     },
-    "some-shops-removed": "&e{0} &a商店已被移除",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&c未指定新的商店所有者",
     "new-owner": "&a新的商店所有者: &e{0}",
     "now-buying": "&a现在 &d收购中 &e{0}",
@@ -159,7 +161,8 @@
       "size": "&e修改每份物品的数量",
       "supercreate": "&e越过所有区域保护检查创建商店",
       "language": "&e切换正在使用的语言",
-      "removeall": "&e删除指定玩家的 所有 商店"
+      "removeall": "&e删除指定玩家的 所有 商店",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
