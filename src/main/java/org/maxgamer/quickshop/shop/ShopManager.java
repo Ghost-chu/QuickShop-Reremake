@@ -175,7 +175,7 @@ public class ShopManager {
     /**
      * Returns a map of Chunk - Shop
      *
-     * @param world The name of the world (case sensitive) to get the list of shops from
+     * @param world The name of the world (case-sensitive) to get the list of shops from
      * @return a map of Chunk - Shop
      */
     public @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world) {
