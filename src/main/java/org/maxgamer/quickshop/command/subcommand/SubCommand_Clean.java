@@ -58,7 +58,6 @@ public class SubCommand_Clean implements CommandProcesser {
             try {
                 if (shop.getLocation().getWorld() != null
                         && shop.isSelling()
-                        && !shop.isUnlimited()
                         && shop.getRemainingStock() == 0
                         && shop instanceof ContainerShop) {
                     ContainerShop cs = (ContainerShop) shop;
