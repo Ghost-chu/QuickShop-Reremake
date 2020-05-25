@@ -3,7 +3,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "Nie masz na to uprawnień.",
@@ -114,7 +114,9 @@
       "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
-    "some-shops-removed": "&e{0} &asklep usunięty",
+    "transfer-success": "&aPrzeniesiono &e{0} &asklep(y/ów) do &e{1}",
+    "transfer-success-other": "&aPrzeniesiono &{0} sklep(y/ów) {1} do &e{2}",
+    "some-shops-removed": "&e{0} &asklep(y/ów) usunięto",
     "no-owner-given": "&cNie podano właściciela",
     "new-owner": "&aNowy Właściciel: &e{0}",
     "now-buying": "&aTeraz &dSKUPUJESZ&a &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eZmień na dużą ilość sklepu",
       "supercreate": "&eUtwórz sklep podczas omijania wszystkich kontroli ochrony",
       "language": "&eZmień aktualnie używany język",
-      "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza"
+      "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
+      "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych"
     }
   },
   "signs": {
