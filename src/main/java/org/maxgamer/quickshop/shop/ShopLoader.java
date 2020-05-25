@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -383,7 +384,9 @@ public class ShopLoader {
 
     @Getter
     @Setter
+    @ToString
     public class ShopDatabaseInfoOrigin {
+        @ToString.Exclude
         private String item;
 
         private String moderators;
@@ -428,11 +431,6 @@ public class ShopLoader {
             this.price = price;
             this.type = type;
             this.unlimited = unlimited;
-        }
-
-        @Override
-        public String toString() {
-            return new Gson().toJson(this);
         }
 
     }
