@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -114,6 +114,8 @@
       "unlimited": "&aMarket şimdi sınırsız",
       "limited": "&aMarket şimdi sınırlı"
     },
+    "transfer-success": "&e{0} &amarket &e{1} &aoyuncusuna devredildi",
+    "transfer-success-other": "&e{1} &aoyuncusunun &e{0} &amarketi &e{2} &aoyuncusuna devredildi",
     "some-shops-removed": "&e{0} &amarket kaldırıldı",
     "no-owner-given": "&cSahip sağlanmadı",
     "new-owner": "&aYeni sahip: &e{0}",
@@ -159,7 +161,8 @@
       "size": "&eBir marketin her yığınının miktarını değiştir",
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir",
-      "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır"
+      "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır",
+      "transfer": "&eBirinin TÜM marketlerini bir başkasına devret"
     }
   },
   "signs": {

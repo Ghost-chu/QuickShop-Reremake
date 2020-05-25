@@ -3,7 +3,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Mitwirkende: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken und Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "39",
+  "language-version": "40",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cEs befindet sich kein Gegenstand in deiner Hand.",
   "no-permission": "&cDu hast keine Berechtigung für diesen Befehl!",
@@ -114,7 +114,9 @@
       "unlimited": "&aDer Shop ist nun unlimitiert",
       "limited": "&aDer Shop ist nun limitiert"
     },
-    "some-shops-removed": "&e{0} &aShop entfernt",
+    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
+    "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cKein Eigentümer angegeben",
     "new-owner": "&aNeuer Besitzer: &e{0}",
     "now-buying": "&e{0} &awerden jetzt &dANGEKAUFT",
@@ -159,7 +161,8 @@
       "size": "&eÄndert die Mengenanzahl eines Shops",
       "supercreate": "&eErstellen eines Shops, während alle Schutzprüfungen umgangen werden",
       "language": "&eÄndert die derzeitig verwendete Sprache",
-      "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers"
+      "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
+      "transfer": "&eTransfer someone's ALL shops to other"
     }
   },
   "signs": {
