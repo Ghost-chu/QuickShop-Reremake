@@ -217,7 +217,6 @@ public class ShopManager {
                     plugin.getLogger().warning("Sign material " + bs.getType().name() + " not a WallSign, make sure you using correct sign material.");
                 }
                 bs.update(true);
-                shop.setSignText();
             } else {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     MsgUtil.sendMessage(player, MsgUtil.getMessage("failed-to-put-sign", player));
@@ -228,6 +227,8 @@ public class ShopManager {
         }
         //load the shop finally
         shop.onLoad();
+        //first init
+        shop.setSignText();
         //sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
         //save to database
