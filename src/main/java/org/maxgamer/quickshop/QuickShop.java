@@ -1574,6 +1574,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 106);
             selectedVersion = 106;
         }
+        if (selectedVersion == 106) {
+            getConfig().set("use-enchantment-for-enchanted-book", false);
+            getConfig().set("config-version", 107);
+            selectedVersion = 107;
+        }
 
         saveConfig();
         reloadConfig();
