@@ -292,6 +292,8 @@ shop:
   #SPRUCE_WALL_SIGN
   sign-material: OAK_WALL_SIGN
 
+  use-enchantment-for-enchanted-book: false
+
   #The worlds name for you didn't want create new shop.
   blacklist-world:
     - disabled_world_name
