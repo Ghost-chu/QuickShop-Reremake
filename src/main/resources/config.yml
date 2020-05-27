@@ -292,6 +292,11 @@ shop:
   #SPRUCE_WALL_SIGN
   sign-material: OAK_WALL_SIGN
 
+  #If this is enabled, the enchantment name will be shown
+  #in the sign instead of 'Enchanted Book'
+  #
+  #NOTE: Only one ecnhantment is shown
+  #      This may be chosen arbitrarily
   use-enchantment-for-enchanted-book: false
 
   #The worlds name for you didn't want create new shop.
