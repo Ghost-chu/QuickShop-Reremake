@@ -462,7 +462,12 @@ public class Util {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         Map.Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        return MsgUtil.getEnchi18n(entry.getKey()) + " " + RomanNumber.toRoman(entry.getValue());
+        String name = MsgUtil.getEnchi18n(entry.getKey());
+        if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
+            return name;
+        } else {
+            return name + " " + RomanNumber.toRoman(entry.getValue());
+        }
     }
 
     /**
