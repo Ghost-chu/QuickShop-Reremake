@@ -27,6 +27,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -35,6 +36,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -437,13 +439,35 @@ public class Util {
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
     }
+    public static boolean useEnchantmentForEnchantedBook() {
+        return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
+    }
     @NotNull
     public static String getItemStackName(@NotNull ItemStack itemStack) {
+        if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
+            ItemMeta meta = itemStack.getItemMeta();
+            if (meta instanceof EnchantmentStorageMeta && ((EnchantmentStorageMeta) meta).hasStoredEnchants()) {
+                return getFirstEnchantmentName((EnchantmentStorageMeta) meta);
+            }
+        }
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()) {
             return itemStack.getItemMeta().getDisplayName();
         }
         return MsgUtil.getItemi18n(itemStack.getType().name());
+    }
+    @NotNull
+    public static String getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
+        if (meta == null || !meta.hasStoredEnchants()) {
+            throw new IllegalArgumentException("Item does not have an enchantment!");
+        }
+        Map.Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
+        String name = MsgUtil.getEnchi18n(entry.getKey());
+        if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
+            return name;
+        } else {
+            return name + " " + RomanNumber.toRoman(entry.getValue());
+        }
     }
 
     /**
