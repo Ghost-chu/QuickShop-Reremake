@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 106
+config-version: 107
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -291,6 +291,13 @@ shop:
   #OAK_WALL_SIGN
   #SPRUCE_WALL_SIGN
   sign-material: OAK_WALL_SIGN
+
+  #If this is enabled, the enchantment name will be shown
+  #in the sign instead of 'Enchanted Book'
+  #
+  #NOTE: Only one ecnhantment is shown
+  #      This may be chosen arbitrarily
+  use-enchantment-for-enchanted-book: false
 
   #The worlds name for you didn't want create new shop.
   blacklist-world:
