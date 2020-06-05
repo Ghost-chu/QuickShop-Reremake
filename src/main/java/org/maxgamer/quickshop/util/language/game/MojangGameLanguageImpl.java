@@ -201,6 +201,13 @@ class GameLanguageLoadThread extends Thread {
                 if (assetJson != null) {
                     AssetJson versionJson = new AssetJson(assetJson);
                     String hash = versionJson.getLanguageHash(languageCode1);
+                    if (hash == null) {
+                        plugin
+                                .getLogger()
+                                .info("Cannot get file hash for language " + languageCode1 + ", fallback to en_us...");
+                        languageCode1 = "en_us";
+                        hash = versionJson.getLanguageHash(languageCode1);
+                    }
                     if (hash != null) {
                         cachingLanguageHash = hash;
                         String langJson = mojangAPI.downloadTextFileFromMojang(hash);
