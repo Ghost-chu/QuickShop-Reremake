@@ -204,7 +204,7 @@ class GameLanguageLoadThread extends Thread {
                     if (hash == null) {
                         plugin
                                 .getLogger()
-                                .info("Cannot get file hash for language " + languageCode1 + ", fallback to en_us...");
+                                .warning("Cannot get file hash for language " + languageCode1 + ", fallback to en_us...");
                         languageCode1 = "en_us";
                         hash = versionJson.getLanguageHash(languageCode1);
                     }
