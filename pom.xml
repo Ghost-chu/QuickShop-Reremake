@@ -68,10 +68,14 @@
                         </filter>
                     </filters>
                     <relocations>
-<!--                        <relocation>-->
-<!--                            <pattern>io.github.portlek.configs</pattern>-->
-<!--                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>-->
-<!--                        </relocation>-->
+                        <!--                        <relocation>-->
+                        <!--                            <pattern>io.github.portlek.configs</pattern>-->
+                        <!--                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>-->
+                        <!--                        </relocation>-->
+                        <relocation>
+                            <pattern>com.fasterxml.jackson.core</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jackson.core</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>io.sentry</pattern>
                             <shadedPattern>org.maxgamer.quickshop.sentry</shadedPattern>
