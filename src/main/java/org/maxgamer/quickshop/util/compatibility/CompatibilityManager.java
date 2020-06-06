@@ -9,6 +9,9 @@ import java.util.Set;
 public class CompatibilityManager {
     private final Set<CompatibilityModule> registeredModules = new HashSet<>(5);
 
+    public CompatibilityManager() {
+    }
+
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin
      * listener, set true to enable back all disabled plugin liseners. WIP

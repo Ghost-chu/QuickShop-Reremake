@@ -47,11 +47,9 @@ public class NCPCompatibilityModule implements CompatibilityModule {
                             + " cheats detection until we finished permission checks.");
 
             NCPExemptionManager.unexempt(player);
-            NCPExemptionManager.unexempt(player);
         } else {
             Util.debugLog(
                     "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
-            NCPExemptionManager.exemptPermanently(player);
             NCPExemptionManager.exemptPermanently(player);
         }
     }
