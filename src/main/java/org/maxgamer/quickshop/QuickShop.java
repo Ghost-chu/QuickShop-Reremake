@@ -56,6 +56,7 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -328,6 +329,9 @@ public class QuickShop extends JavaPlugin {
             if (this.lwcPlugin != null) {
                 getLogger().info("Successfully loaded LWC support!");
             }
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+            compatibilityTool.register(new NCPCompatibilityModule(this));
         }
         if (this.display) {
             //VirtualItem support
