@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.listener;
 
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -43,28 +42,22 @@ public class CustomInventoryListener extends QSListener{
 
     @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryMoveItemEvent e) {
-        if (e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder) {
-            e.setCancelled(true);
-            return;
-        }
-        if (e.getSource() instanceof QuickShopPreviewInventoryHolder) {
+        if (e.getDestination().getHolder() instanceof QuickShopPreviewInventoryHolder || e.getSource().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryClickEvent e) {
         if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
-            e.setResult(Result.DENY);
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void invEvent(InventoryDragEvent e) {
         if (e.getInventory().getHolder() instanceof QuickShopPreviewInventoryHolder) {
             e.setCancelled(true);
-            e.setResult(Result.DENY);
         }
     }
 }
