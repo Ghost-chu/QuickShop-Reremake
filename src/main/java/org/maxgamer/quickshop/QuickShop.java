@@ -330,7 +330,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded LWC support!");
             }
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus")) {
+        if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
             compatibilityTool.register(new NCPCompatibilityModule(this));
         }
         if (this.display) {
