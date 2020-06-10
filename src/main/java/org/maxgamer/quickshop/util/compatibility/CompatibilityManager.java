@@ -2,6 +2,7 @@ package org.maxgamer.quickshop.util.compatibility;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +22,17 @@ public class CompatibilityManager {
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
         for (CompatibilityModule module : this.registeredModules) {
-            module.toggle(player, status);
+            try {
+                module.toggle(player, status);
+            } catch (Throwable e) {
+                unregister(module);
+                Util.debugLog("Unregistered module " + module.getName() + " for an error: " + e.getMessage());
+            }
         }
+    }
+
+    public void clear() {
+        registeredModules.clear();
     }
 
     public void register(@NotNull CompatibilityModule module) {
