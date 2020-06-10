@@ -46,6 +46,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualDisplayItem extends DisplayItem {
@@ -320,16 +321,21 @@ public class VirtualDisplayItem extends DisplayItem {
                     if (!shop.isLoaded() || !isDisplay || !isFull || !Util.isLoaded(shop.getLocation())) {
                         return;
                     }
+                    //chunk x
                     int x = event.getPacket().getIntegers().read(0);
                     //chunk z
                     int z = event.getPacket().getIntegers().read(1);
                     asyncPacketSendQueue.offer(() -> {
-                        //chunk x
-
-                        //check later to prevent deadlock
+                        //lazy initialize
                         if (chunkLocation == null) {
                             World world = shop.getLocation().getWorld();
-                            Chunk chunk = shop.getLocation().getChunk();
+                            Chunk chunk = null;
+                            try {
+                                //sync getting chunk
+                                chunk = Bukkit.getScheduler().callSyncMethod(plugin, () -> shop.getLocation().getChunk()).get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                throw new RuntimeException("An error occurred when getting chunk from the world", e);
+                            }
                             chunkLocation = new ShopChunk(world.getName(), chunk.getX(), chunk.getZ());
                         }
                         Player player = event.getPlayer();
