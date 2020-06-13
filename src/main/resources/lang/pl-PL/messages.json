@@ -26,7 +26,7 @@
   "success-removed-shop": "&aSklep usunięty.",
   "shops-arent-locked": "&cPamiętaj, sklepy NIE są chronione przed kradzieżą! Jeśli chcesz zatrzymać złodziei, zablokuj je za pomocą LWC, Lockette, itp!",
   "shop-creation-cancelled": "&cTworzenie sklepu anulowane.",
-  "shop-purchase-cancelled": "&cZakup Sklep anulowany.",
+  "shop-purchase-cancelled": "&cZakup w sklepie został anulowany.",
   "shop-stock-too-low": "&cW sklepie pozostało tylko {0} {1}!",
   "you-cant-afford-to-buy": "&cTo kosztuje {0}, ale masz tylko {1}",
   "negative-amount": "&cNie możesz handlować ujemnymi kwotami",
