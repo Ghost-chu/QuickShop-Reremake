@@ -48,7 +48,7 @@ public class RuntimeCheck {
             while (moi < 3) {
                 moi++;
                 plugin.getLogger().severe("WARN: QSRR compatibility on Mohist 1.13+ modded server currently unknown, report any issue to Mohist issue tracker or QuickShop issue tracker.");
-                if (DisplayType.fromID(plugin.getConfig().getInt("shop.display-type")) != DisplayType.VIRTUALITEM) {//Even VIRTUALITEM still WIP, but we should install checker first.
+                if (DisplayType.fromID(plugin.getConfig().getInt("shop.display-type")) != DisplayType.VIRTUALITEM) {
                     plugin.getLogger().warning("Switch to Virtual display item to make sure displays won't duped by mods.");
                 }
             }
