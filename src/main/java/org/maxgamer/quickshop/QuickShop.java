@@ -628,7 +628,6 @@ public class QuickShop extends JavaPlugin {
                 break;
         }
         itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
-
         Util.initialize();
         try {
             MsgUtil.loadCfgMessages();
