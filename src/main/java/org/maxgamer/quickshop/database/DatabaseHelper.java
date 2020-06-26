@@ -118,7 +118,7 @@ public class DatabaseHelper {
                 Util.debugLog("Setting up the column EXTRA...");
             }else {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops ADD COLUMN extra TEXT AFTER `type`NOT NULL DEFAULT `{}`");
+                        .getDbPrefix() + "shops ADD COLUMN extra TEXT AFTER `type` NOT NULL DEFAULT `{}`");
                 Util.debugLog("Setting up the column EXTRA...");
             }
             ps.execute();
