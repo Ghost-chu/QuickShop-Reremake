@@ -112,10 +112,17 @@ public class DatabaseHelper {
         }
         try {
             // Reremake - DataStorage @TODO needs testing
-            ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                    .getDbPrefix() + "shops MODIFY COLUMN extra TEXT NOT NULL AFTER type");
-            ps.execute();
-            ps.close();
+            if(plugin.getDatabase().getCore() instanceof MySQLCore) {
+                ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
+                        .getDbPrefix() + "shops MODIFY COLUMN extra LONGTEXT NOT NULL AFTER type");
+                ps.execute();
+                ps.close();
+            }else {
+                ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
+                        .getDbPrefix() + "shops MODIFY COLUMN extra TEXT NOT NULL AFTER type");
+                ps.execute();
+                ps.close();
+            }
         } catch (SQLException e) {
             //ignore
         }
