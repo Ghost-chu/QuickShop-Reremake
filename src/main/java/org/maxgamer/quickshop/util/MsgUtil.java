@@ -298,7 +298,7 @@ public class MsgUtil {
             messagei18n.set("language-version", versi);
         }
         updateMessages(messagei18n.getInt("language-version"));
-        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
+        messagei18n.loadFromString(messagei18n.saveToString());
 
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
@@ -326,7 +326,7 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml"))));
         enchi18n.setDefaults(enchi18nYAML);
-        Util.parseColours(enchi18n);
+        //Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
             String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
@@ -367,7 +367,7 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml"))));
         itemi18n.setDefaults(itemi18nYAML);
-        Util.parseColours(itemi18n);
+        //Util.parseColours(itemi18n);
         Material[] itemsi18n = Material.values();
         for (Material material : itemsi18n) {
             String itemi18nString = itemi18n.getString("itemi18n." + material.name());
@@ -407,7 +407,7 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml"))));
         potioni18n.setDefaults(potioni18nYAML);
-        Util.parseColours(potioni18n);
+        //Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
             if (potionI18n != null && !potionI18n.isEmpty()) {
@@ -1453,7 +1453,7 @@ public class MsgUtil {
         }
 
         messagei18n.save();
-        messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
+        messagei18n.loadFromString(messagei18n.saveToString());
     }
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
@@ -1485,8 +1485,9 @@ public class MsgUtil {
             if (msg == null || msg.isEmpty()) {
                 continue;
             }
-            sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(Util.parseColours(msg)));
         }
     }
+
 
 }
