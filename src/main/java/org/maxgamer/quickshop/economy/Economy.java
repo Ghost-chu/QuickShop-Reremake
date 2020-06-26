@@ -21,10 +21,10 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.UUID;
 
@@ -63,8 +63,7 @@ public class Economy implements EconomyCore {
      */
     @Override
     public String format(double balance) {
-        //return Util.parseColours(core.format(balance));
-        return TextComponent.toLegacyText(TextComponent.fromLegacyText(core.format(balance)));
+        return Util.parseColours(core.format(balance));
         // Fix color issue from some stupid economy plugin....
     }
 
