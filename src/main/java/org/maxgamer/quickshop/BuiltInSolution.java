@@ -35,7 +35,7 @@ class BuiltInSolution {
      * @return The reason of error.
      */
     static BootError databaseError() {
-        return new BootError(QuickShop.instance.getLogger(),
+        return new BootError(QuickShop.getInstance().getLogger(),
                 "Error connecting to the database",
                 "Make sure your database service is running.",
                 "Or check the configuration in your config.yml");
@@ -51,21 +51,21 @@ class BuiltInSolution {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null
                 && Bukkit.getPluginManager().getPlugin("Reserve") == null) {
             // Vault not installed
-            return new BootError(QuickShop.instance.getLogger(),
+            return new BootError(QuickShop.getInstance().getLogger(),
                     "Vault or Reserve is not installed or loaded!",
                     "Make sure you installed Vault or Reserve.");
         }
         // Vault is installed
         if (Bukkit.getPluginManager().getPlugin("CMI") != null) {
             // Found may in-compatiable plugin
-            return new BootError(QuickShop.instance.getLogger(),
+            return new BootError(QuickShop.getInstance().getLogger(),
                     "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
                     "Make sure you have an economy plugin hooked into Vault or Reserve.",
                     ChatColor.YELLOW + "Incompatibility detected: CMI Installed",
                     "Download CMI Edition of Vault might fix this.");
         }
 
-        return new BootError(QuickShop.instance.getLogger(),
+        return new BootError(QuickShop.getInstance().getLogger(),
                 "No Economy plugin detected, did you installed and loaded them? Make sure they loaded before QuickShop.",
                 "Install an economy plugin to get Vault or Reserve working.");
     }
