@@ -633,30 +633,30 @@ public class MsgUtil {
 //            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
 //        }
 
-
-        // Refill
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
-            String text =
-                    MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill", sender);
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
-        }
-
-        // Empty
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-            String text =
-                    MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
-            String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
-            String clickCommand =
-                    MsgUtil.getMessage(
-                            "controlpanel.commands.empty",
-                            sender,
-                            Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
-                            String.valueOf(shop.getLocation().getBlockX()),
-                            String.valueOf(shop.getLocation().getBlockY()),
-                            String.valueOf(shop.getLocation().getBlockZ()));
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+        if (!shop.isUnlimited()) {
+            // Refill
+            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
+                String text =
+                        MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
+                String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill", sender);
+                chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+            }
+            // Empty
+            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
+                String text =
+                        MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
+                String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
+                String clickCommand =
+                        MsgUtil.getMessage(
+                                "controlpanel.commands.empty",
+                                sender,
+                                Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                                String.valueOf(shop.getLocation().getBlockX()),
+                                String.valueOf(shop.getLocation().getBlockY()),
+                                String.valueOf(shop.getLocation().getBlockZ()));
+                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+            }
         }
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
@@ -698,7 +698,7 @@ public class MsgUtil {
             }
             String filled = fillArgs(raw.get(), args);
             if (player instanceof OfflinePlayer) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()&& plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
                     try {
                         filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
                     } catch (Exception ignored) {
@@ -788,7 +788,7 @@ public class MsgUtil {
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
                         p,
-                        Integer.toString(amount*shop.getItem().getAmount()),
+                        Integer.toString(amount * shop.getItem().getAmount()),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
         printEnchantment(p, shop, chatSheetPrinter);
