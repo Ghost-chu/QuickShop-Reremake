@@ -91,8 +91,8 @@ public class RealDisplayItem extends DisplayItem {
                 this.item.teleport(location);
                 return;
             }
-            fixDisplayMovedOld();
         }
+        fixDisplayMovedOld();
     }
 
     public void fixDisplayMovedOld() {
