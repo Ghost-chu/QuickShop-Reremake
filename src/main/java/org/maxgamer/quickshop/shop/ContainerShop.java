@@ -46,6 +46,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
@@ -77,7 +78,7 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
 
-    private List<ShopExtra> extra;
+    private final Map<String, Map<String, String>> extra;
 
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
@@ -115,7 +116,7 @@ public class ContainerShop implements Shop {
             @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull List<ShopExtra> dataStorage) {
+            @NotNull Map<String, Map<String, String>> extra) {
         this.location = location;
         this.price = price;
         this.moderator = moderator;
@@ -126,6 +127,7 @@ public class ContainerShop implements Shop {
         }
         this.shopType = type;
         this.unlimited = unlimited;
+        this.extra = extra;
         initDisplayItem();
         this.lastChangedAt = System.currentTimeMillis();
     }
@@ -1157,13 +1159,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public synchronized @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
-        String namespace = plugin.getName();
-        for(ShopExtra table : this.extra){
-            if(table.getNamespace().equals(namespace)){
-                return new HashMap<>(table.getData());
-            }
-        }
-        return new HashMap<>();
+        return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
     }
 
     /**
@@ -1174,14 +1170,8 @@ public class ContainerShop implements Shop {
      */
     @Override
     public synchronized void setExtra(@NotNull Plugin plugin, Map<String, String> data) {
-        String namespace = plugin.getName();
-        for (ShopExtra table : this.extra){
-            if(table.getNamespace().equals(namespace)){
-                table.setData(data);
-                return;
-            }
-        }
-        this.extra.add(new ShopExtra(plugin.getName(),data));
+        this.extra.put(plugin.getName(),data);
+        this.lastChangedAt = System.currentTimeMillis();
         this.update();
     }
 
