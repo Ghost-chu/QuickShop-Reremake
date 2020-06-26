@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Deprecated
 public class Colorizer {
 
     private static final Map<String, String> colorCodes = new HashMap<>();
@@ -36,6 +36,7 @@ public class Colorizer {
         }
     }
 
+    @Deprecated
     public static String setColors(String text) {
         for (String color : colorCodes.keySet()) {
             text = text.replaceAll("(?i)<" + color + ">", ChatColor.COLOR_CHAR + colorCodes.get(color));
@@ -45,6 +46,7 @@ public class Colorizer {
         return text;
     }
 
+    @Deprecated
     public static String stripColors(String text) {
         for (String color : colorCodes.keySet()) {
             text = text.replaceAll("(?i)<" + color + ">", "");
