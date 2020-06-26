@@ -1,7 +1,7 @@
 {
-  "translation-author": "Traducteur : Ghost_chu, Andre_601",
+  "translation-author": "Traducteur : Ghost_chu, Andre_601, HiiRaZ",
   "translation-version": "Version suportée: Reremake",
-  "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601et brunopaiva15",
+  "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
   "language-version": "40",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
@@ -114,9 +114,9 @@
       "unlimited": "&aCe shop est désormais illimité",
       "limited": "&aCe shop est désormais limité"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success": "&aTransfert du shop &e{0} &aà &e{1}",
+    "transfer-success-other": "&aTransfert du shop &e{0} &aà &e{1}",
+    "some-shops-removed": "&e{0} &ashop(s) supprimé(s)",
     "no-owner-given": "&cAucun propriétaire indiqué",
     "new-owner": "&aNouveau propriétaire: &e{0}",
     "now-buying": "&dACHAT de &e{0}",
@@ -162,7 +162,7 @@
       "supercreate": "&eCréer une boutique en contournant tous les contrôles de protection",
       "language": "Modifier la langue actuelle",
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre"
     }
   },
   "signs": {
