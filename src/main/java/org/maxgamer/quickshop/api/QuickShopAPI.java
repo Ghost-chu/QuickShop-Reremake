@@ -7,6 +7,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.util.IntegrationHelper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 
 public class QuickShopAPI {
     private static QuickShop plugin;
@@ -70,4 +71,10 @@ public class QuickShopAPI {
     public static @Nullable CommandManager getCommandManager() {
         return plugin.getCommandManager();
     }
+
+    /**
+     * Gets ItemMatcher instance to allow using the same matcher that quickshop using to matching the items.
+     * @return ItemMatcher
+     */
+    public static @Nullable ItemMatcher getItemMatcher() {return plugin.getItemMatcher();}
 }
