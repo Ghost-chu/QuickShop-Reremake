@@ -89,10 +89,8 @@ public class RealDisplayItem extends DisplayItem {
         if (this.item != null) {
             if (location != null) {
                 this.item.teleport(location);
-            } else {
-                fixDisplayMovedOld();
+                return;
             }
-        } else {
             fixDisplayMovedOld();
         }
     }
