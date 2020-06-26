@@ -1148,7 +1148,7 @@ public class Util {
 
     // Code from HexChat ^ ^
     // QuickShop also supports Bukkit way and HexChat way, just use that what is you want.
-    private static Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+    private static final Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
 
     /**
      * Parse colors for the Text.
