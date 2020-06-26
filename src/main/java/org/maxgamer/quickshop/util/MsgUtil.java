@@ -485,13 +485,13 @@ public class MsgUtil {
                     sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
                 } catch (InvalidConfigurationException e) {
                     Util.debugLog("Unknown error, send by plain text.");
-                    p.getPlayer().sendMessage(msgData[0] + msgData[1] + msgData[2]);
+                    MsgUtil.sendMessage(p.getPlayer(),msgData[0] + msgData[1] + msgData[2]);
                 } catch (ArrayIndexOutOfBoundsException e2) {
                     try {
                         sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), "");
                     } catch (Exception any) {
                         // Normal msg
-                        p.getPlayer().sendMessage(message);
+                        MsgUtil.sendMessage(p.getPlayer(),message);
                     }
                 }
             }
@@ -766,7 +766,7 @@ public class MsgUtil {
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                        player.sendMessage(message);
+                       MsgUtil.sendMessage(player,message);
                     }
                 }
             }
@@ -1485,7 +1485,7 @@ public class MsgUtil {
             if (msg == null || msg.isEmpty()) {
                 continue;
             }
-            sender.sendMessage(msg);
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
         }
     }
 
