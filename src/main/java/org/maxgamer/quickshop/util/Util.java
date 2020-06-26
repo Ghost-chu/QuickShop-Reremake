@@ -60,7 +60,10 @@ import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
@@ -1143,6 +1146,10 @@ public class Util {
         }
     }
 
+    // Code from HexChat ^ ^
+    // QuickShop also supports Bukkit way and HexChat way, just use that what is you want.
+    private static Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+
     /**
      * Parse colors for the Text.
      *
@@ -1152,8 +1159,47 @@ public class Util {
     @NotNull
     public static String parseColours(@NotNull String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
+        Matcher matcher = hexPattern.matcher(text);
+        if (matcher.find()) {
+            final StringBuffer buffer = new StringBuffer();
+            do {
+                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1)).toString());
+            } while (matcher.find());
+            matcher.appendTail(buffer);
+            return buffer.toString();
+        }
         return text;
     }
+
+    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
+    //     ONLY FOR FUN ^ ^
+//    /**
+//     * Replace &g to random HEX color
+//     * @param text original message contains &g
+//     * @return Processed message
+//     */
+//    public static String parseRandomHexText(@NotNull String text){
+//        String newStr = text.replaceFirst("&g","&x"+randomHexGen());
+//        while (!newStr.equals(text)){
+//            text = newStr;
+//            newStr = newStr.replaceFirst("&g","&x"+randomHexGen());
+//        }
+//        return newStr;
+//    }
+//
+//    public static String randomHexGen(){
+//        StringBuilder hex = new StringBuilder();
+//        for (int i = 0; i < 6; i++) {
+//            if(random.nextBoolean()) {
+//                hex.append("&");
+//                hex.append((char)random.nextInt('0', '9'));
+//            }else{
+//                hex.append("&");
+//                hex.append((char)random.nextInt('a', 'f'));
+//            }
+//        }
+//        return hex.toString();
+//    }
 
     /**
      * Parse colors for the List.
