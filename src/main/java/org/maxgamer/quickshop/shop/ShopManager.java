@@ -47,6 +47,7 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manage a lot of shops.
@@ -737,7 +738,7 @@ public class ShopManager {
                 info.getItem().setAmount(1);
             }
 
-            ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING,new ArrayList<>());
+            ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING, new ConcurrentHashMap<>());
 //            shop.onLoad();
             //ShopCreateEvent e = new ShopCreateEvent(shop, p);
             //if (Util.fireCancellableEvent(e)) {
