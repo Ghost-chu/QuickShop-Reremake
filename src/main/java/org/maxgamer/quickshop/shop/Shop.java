@@ -386,5 +386,11 @@ public interface Shop {
      */
     void setExtra(@NotNull Plugin plugin, Map<String, String> data);
 
+    /**
+     * Gets shop status is stacking shop
+     * @return The shop stacking status
+     */
+    boolean isStackingShop();
+
 
 }

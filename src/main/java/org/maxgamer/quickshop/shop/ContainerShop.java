@@ -626,7 +626,7 @@ public class ContainerShop implements Shop {
         lines[2] =
                 MsgUtil.getMessageOfflinePlayer(
                         "signs.item", player, Util.getItemStackName(this.getItem()));
-        if (plugin.isAllowStack() && this.getItem().getAmount() > 1) { //FIXME: A trash impl, need use a better way
+        if (this.isStackingShop()) {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice()), Integer.toString(item.getAmount()), Util.getItemStackName(item));
         } else {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
@@ -1173,6 +1173,15 @@ public class ContainerShop implements Shop {
         this.extra.put(plugin.getName(),data);
         this.lastChangedAt = System.currentTimeMillis();
         this.update();
+    }
+
+    /**
+     * Gets shop status is stacking shop
+     * @return The shop stacking status
+     */
+    @Override
+    public boolean isStackingShop(){
+        return plugin.isAllowStack() && this.item.getAmount() > 1;
     }
 
 

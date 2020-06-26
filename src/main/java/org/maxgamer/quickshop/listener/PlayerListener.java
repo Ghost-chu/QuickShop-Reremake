@@ -161,7 +161,7 @@ public class PlayerListener extends QSListener {
                 if (items < 0) {
                     items = 0;
                 }
-                if (plugin.isAllowStack() && shop.getItem().getAmount() > 1) { //FIXME: A trash impl, need use a better way
+                if (shop.isStackingShop()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-sell-stack", p, Integer.toString(shop.getItem().getAmount()), Integer.toString(items)));
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-sell", p, Integer.toString(items)));
