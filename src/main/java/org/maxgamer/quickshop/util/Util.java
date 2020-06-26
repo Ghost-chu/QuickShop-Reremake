@@ -62,8 +62,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
@@ -1148,7 +1146,7 @@ public class Util {
 
     // Code from HexChat ^ ^
     // QuickShop also supports Bukkit way and HexChat way, just use that what is you want.
-    private static final Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+    //private static final Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
 
     /**
      * Parse colors for the Text.
@@ -1159,15 +1157,15 @@ public class Util {
     @NotNull
     public static String parseColours(@NotNull String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
-        Matcher matcher = hexPattern.matcher(text);
-        if (matcher.find()) {
-            final StringBuffer buffer = new StringBuffer();
-            do {
-                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1)).toString());
-            } while (matcher.find());
-            matcher.appendTail(buffer);
-            return buffer.toString();
-        }
+//        Matcher matcher = hexPattern.matcher(text);
+//        if (matcher.find()) {
+//            final StringBuffer buffer = new StringBuffer();
+//            do {
+//                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1)).toString());
+//            } while (matcher.find());
+//            matcher.appendTail(buffer);
+//            return buffer.toString();
+//        }
         return text;
     }
 
