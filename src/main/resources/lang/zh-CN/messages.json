@@ -114,9 +114,9 @@
       "unlimited": "&a商店已更改为无限模式",
       "limited": "&a商店已更改为普通模式。"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success": "&a将&e {0} &a商店转移到&e {1}",
+    "transfer-success-other": "&a将&e {0} {1}&a的商店转移到&e {2}",
+    "some-shops-removed": "&e{0} &a的商店已经移除",
     "no-owner-given": "&c未指定新的商店所有者",
     "new-owner": "&a新的商店所有者: &e{0}",
     "now-buying": "&a现在 &d收购中 &e{0}",
@@ -162,7 +162,7 @@
       "supercreate": "&e越过所有区域保护检查创建商店",
       "language": "&e切换正在使用的语言",
       "removeall": "&e删除指定玩家的 所有 商店",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&e我们将某人的所有商店转移给其他人"
     }
   },
   "signs": {
