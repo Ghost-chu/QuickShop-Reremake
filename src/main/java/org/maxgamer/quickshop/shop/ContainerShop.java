@@ -34,10 +34,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
 import org.maxgamer.quickshop.util.Util;
@@ -75,6 +77,8 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
 
+    private ShopExtra[] extra;
+
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
         this.shopType = s.shopType;
@@ -88,6 +92,7 @@ public class ContainerShop implements Shop {
         this.lastChangedAt = System.currentTimeMillis();
         this.isDeleted = s.isDeleted;
         this.createBackup = s.createBackup;
+        this.extra = s.extra;
     }
 
     /**
@@ -109,7 +114,8 @@ public class ContainerShop implements Shop {
             @NotNull ItemStack item,
             @NotNull ShopModerator moderator,
             boolean unlimited,
-            @NotNull ShopType type) {
+            @NotNull ShopType type,
+            @NotNull ShopExtra[] dataStorage) {
         this.location = location;
         this.price = price;
         this.moderator = moderator;
@@ -655,7 +661,8 @@ public class ContainerShop implements Shop {
                             x,
                             y,
                             z,
-                            world);
+                            world,
+                            this.saveExtraToJson());
         } catch (Exception e) {
             e.printStackTrace();
             plugin
@@ -1133,6 +1140,51 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
             }
         }
+    }
+
+    @Override
+    public @NotNull String saveExtraToJson() {
+        return JsonUtil.getGson().toJson(this.extra);
+    }
+
+    /**
+     * Gets the plugin's k-v map to storage the data.
+     * It is spilt by plugin name, different name have different map, the data won't conflict.
+     * But if you plugin name is too common, add a prefix will be a good idea.
+     *
+     * @param plugin Plugin instance
+     * @return The data table
+     */
+    @Override
+    public synchronized @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
+        String namespace = plugin.getName();
+        for(ShopExtra table : this.extra){
+            if(table.getNamespace().equals(namespace)){
+                return new HashMap<>(table.getData());
+            }
+        }
+        return new HashMap<>();
+    }
+
+    /**
+     * Save the extra data to the shop.
+     *
+     * @param plugin Plugin instace
+     * @param data   The data table
+     */
+    @Override
+    public synchronized void setExtra(@NotNull Plugin plugin, Map<String, String> data) {
+        String namespace = plugin.getName();
+        for (ShopExtra table : this.extra){
+            if(table.getNamespace().equals(namespace)){
+                table.setData(data);
+                return;
+            }
+        }
+        ShopExtra[] newExtra = Arrays.copyOf(this.extra,extra.length+1);
+        newExtra[this.extra.length+1] = new ShopExtra(namespace,data);
+        this.extra = newExtra;
+        this.update();
     }
 
 

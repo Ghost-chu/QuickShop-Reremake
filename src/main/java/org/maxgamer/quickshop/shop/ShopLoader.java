@@ -104,7 +104,8 @@ public class ShopLoader {
                                 data.getItem(),
                                 data.getModerators(),
                                 data.isUnlimited(),
-                                data.getType());
+                                data.getType(),
+                                data.getExtra());
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
@@ -280,7 +281,8 @@ public class ShopLoader {
                                 data.getItem(),
                                 data.getModerators(),
                                 data.isUnlimited(),
-                                data.getType());
+                                data.getType(),
+                                data.getExtra());
                 shopsInDatabase.add(shop);
                 if (shopNullCheck(shop)) {
                     continue;
@@ -332,6 +334,8 @@ public class ShopLoader {
 
         private int z;
 
+        private ShopExtra[] extra;
+
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
                 this.x = origin.getX();
@@ -344,6 +348,7 @@ public class ShopLoader {
                 this.item = deserializeItem(origin.getItem());
                 this.moderators = deserializeModerator(origin.getModerators());
                 this.location = new Location(world, x, y, z);
+                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), ShopExtra[].class);
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
@@ -405,6 +410,8 @@ public class ShopLoader {
 
         private int z;
 
+        private String extra;
+
         ShopDatabaseInfoOrigin(ResultSet rs) {
             try {
                 this.x = rs.getInt("x");
@@ -416,12 +423,13 @@ public class ShopLoader {
                 this.price = rs.getDouble("price");
                 this.type = rs.getInt("type");
                 this.unlimited = rs.getBoolean("unlimited");
+                this.extra = rs.getString("extra");
             } catch (SQLException sqlex) {
                 exceptionHandler(sqlex, null);
             }
         }
 
-        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited) {
+        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited, String extra) {
             this.x = x;
             this.y = y;
             this.z = z;
@@ -431,6 +439,7 @@ public class ShopLoader {
             this.price = price;
             this.type = type;
             this.unlimited = unlimited;
+            this.extra = extra;
         }
 
     }
