@@ -334,7 +334,7 @@ public class ShopLoader {
 
         private int z;
 
-        private List<ShopExtra> extra;
+        private Map<String, Map<String, String>> extra;
 
         ShopDatabaseInfo(ShopDatabaseInfoOrigin origin) {
             try {
@@ -349,7 +349,7 @@ public class ShopLoader {
                 this.moderators = deserializeModerator(origin.getModerators());
                 this.location = new Location(world, x, y, z);
                 //noinspection unchecked
-                this.extra = (List<ShopExtra>)JsonUtil.getGson().fromJson(origin.getExtra(), List.class);
+                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
