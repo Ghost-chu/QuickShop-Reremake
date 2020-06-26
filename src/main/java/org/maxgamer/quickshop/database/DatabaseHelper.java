@@ -114,15 +114,18 @@ public class DatabaseHelper {
             // Reremake - DataStorage @TODO needs testing
             if(plugin.getDatabase().getCore() instanceof MySQLCore) {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops MODIFY COLUMN extra LONGTEXT AFTER type");
+                        .getDbPrefix() + "shops MODIFY COLUMN extra LONGTEXT AFTER `type`");
+                Util.debugLog("Setting up the column EXTRA...");
             }else {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops MODIFY COLUMN extra TEXT AFTER type");
+                        .getDbPrefix() + "shops MODIFY COLUMN extra TEXT AFTER `type`");
+                Util.debugLog("Setting up the column EXTRA...");
             }
             ps.execute();
             ps.close();
         } catch (SQLException e) {
             //ignore
+            Util.debugLog("Error to create EXTRA column: "+e.getMessage());
         }
         if (plugin.getDatabase().getCore() instanceof MySQLCore) {
             try {
