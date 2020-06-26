@@ -24,10 +24,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface Shop {
@@ -359,6 +361,30 @@ public interface Shop {
      * @return The time stamp
      */
     long getLastChangedAt();
+
+    /**
+     * Save the plugin extra data to Json format
+     * @return The json string
+     */
+    @NotNull
+    String saveExtraToJson();
+
+    /**
+     * Gets the plugin's k-v map to storage the data.
+     * It is spilt by plugin name, different name have different map, the data won't conflict.
+     * But if you plugin name is too common, add a prefix will be a good idea.
+     * @param plugin Plugin instance
+     * @return The data table
+     */
+    @NotNull
+    Map<String, String> getExtra(@NotNull Plugin plugin);
+
+    /**
+     * Save the extra data to the shop.
+     * @param plugin Plugin instace
+     * @param data The data table
+     */
+    void setExtra(@NotNull Plugin plugin, Map<String, String> data);
 
 
 }
