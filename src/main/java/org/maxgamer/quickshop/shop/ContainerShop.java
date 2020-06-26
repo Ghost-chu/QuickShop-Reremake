@@ -77,7 +77,7 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
 
-    private ShopExtra[] extra;
+    private List<ShopExtra> extra;
 
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
@@ -115,7 +115,7 @@ public class ContainerShop implements Shop {
             @NotNull ShopModerator moderator,
             boolean unlimited,
             @NotNull ShopType type,
-            @NotNull ShopExtra[] dataStorage) {
+            @NotNull List<ShopExtra> dataStorage) {
         this.location = location;
         this.price = price;
         this.moderator = moderator;
@@ -1181,9 +1181,7 @@ public class ContainerShop implements Shop {
                 return;
             }
         }
-        ShopExtra[] newExtra = Arrays.copyOf(this.extra,extra.length+1);
-        newExtra[this.extra.length+1] = new ShopExtra(namespace,data);
-        this.extra = newExtra;
+        this.extra.add(new ShopExtra(plugin.getName(),data));
         this.update();
     }
 
