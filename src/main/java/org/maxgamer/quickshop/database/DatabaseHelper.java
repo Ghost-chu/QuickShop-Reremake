@@ -114,11 +114,11 @@ public class DatabaseHelper {
             // Reremake - DataStorage @TODO needs testing
             if(plugin.getDatabase().getCore() instanceof MySQLCore) {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops MODIFY COLUMN extra LONGTEXT AFTER `type`");
+                        .getDbPrefix() + "shops ADD extra LONGTEXT AFTER `type` NOT NULL DEFAULT `{}`");
                 Util.debugLog("Setting up the column EXTRA...");
             }else {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops MODIFY COLUMN extra TEXT AFTER `type`");
+                        .getDbPrefix() + "shops ADD COLUMN extra TEXT AFTER `type`NOT NULL DEFAULT `{}`");
                 Util.debugLog("Setting up the column EXTRA...");
             }
             ps.execute();
