@@ -112,15 +112,14 @@ public class DatabaseHelper {
         }
         try {
             // Reremake - DataStorage @TODO needs testing
-            if(plugin.getDatabase().getCore() instanceof MySQLCore) {
+            if (plugin.getDatabase().getCore() instanceof MySQLCore) {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops ADD extra LONGTEXT AFTER `type` NOT NULL DEFAULT `{}`");
-                Util.debugLog("Setting up the column EXTRA...");
-            }else {
+                        .getDbPrefix() + "shops ADD extra LONGTEXT NOT NULL DEFAULT `{}`");
+            } else {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops ADD COLUMN extra TEXT AFTER `type` NOT NULL DEFAULT `{}`");
-                Util.debugLog("Setting up the column EXTRA...");
+                        .getDbPrefix() + "shops ADD COLUMN extra TEXT NOT NULL DEFAULT `{}`");
             }
+            Util.debugLog("Setting up the column EXTRA...");
             ps.execute();
             ps.close();
         } catch (SQLException e) {
