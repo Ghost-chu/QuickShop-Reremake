@@ -114,7 +114,7 @@
       "unlimited": "&aLa tienda ahora es ilimitada.",
       "limited": "&aLa tienda ahora es limitada."
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
+    "transfer-success": "&aTransferido &e{0} &ashop(s) a &e{1}",
     "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
     "some-shops-removed": "&e{0} &ashop(s) removed",
     "no-owner-given": "&cNo hay dueño proporcionado",
