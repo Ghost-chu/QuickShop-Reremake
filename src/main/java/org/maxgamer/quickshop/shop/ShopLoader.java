@@ -425,6 +425,10 @@ public class ShopLoader {
                 this.type = rs.getInt("type");
                 this.unlimited = rs.getBoolean("unlimited");
                 this.extra = rs.getString("extra");
+                //handle old shops
+                if (extra == null) {
+                    extra = "{}";
+                }
             } catch (SQLException sqlex) {
                 exceptionHandler(sqlex, null);
             }
