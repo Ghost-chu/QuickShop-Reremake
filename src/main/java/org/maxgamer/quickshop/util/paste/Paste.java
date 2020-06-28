@@ -31,7 +31,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
-import org.maxgamer.quickshop.shop.ShopLoader;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -440,9 +439,10 @@ public class Paste {
         }
         return null;
     }
+
+    @SuppressWarnings("InnerClassMayBeStatic")
     @Getter
     @Setter
-    @ToString
     public class ShopDatabaseInfoOrigin {
         @ToString.Exclude
         private String item;
@@ -474,7 +474,7 @@ public class Paste {
                 this.price = rs.getDouble("price");
                 this.type = rs.getInt("type");
                 this.unlimited = rs.getBoolean("unlimited");
-            } catch (SQLException sqlex) {
+            } catch (SQLException ignored) {
             }
         }
 
