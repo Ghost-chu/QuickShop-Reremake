@@ -107,6 +107,7 @@ public class ContainerShop implements Shop {
      * @param type      The shop type
      * @param unlimited The unlimited
      * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
      */
     public ContainerShop(
             @NotNull QuickShop plugin,
