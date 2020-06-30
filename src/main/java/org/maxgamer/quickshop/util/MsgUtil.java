@@ -1477,6 +1477,19 @@ public class MsgUtil {
 //    }
     }
 
+    public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {
+        if (messages == null) {
+            return;
+        }
+        for (String msg : messages) {
+            if (msg == null || msg.isEmpty()) {
+                continue;
+            }
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
+        }
+
+    }
+
     public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
             return;
