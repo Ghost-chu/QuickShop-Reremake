@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 */
 public class ChatSheetPrinter {
     final ChatColor chatColor = ChatColor.DARK_PURPLE;
-
     private CommandSender p;
 
     public void printCenterLine(@NotNull String text) {
@@ -62,13 +61,11 @@ public class ChatSheetPrinter {
     }
 
     public void printFooter() {
-        MsgUtil.sendMessage(p, chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendColoredMessage(p, chatColor, MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printHeader() {
-        MsgUtil.sendMessage(p, "");
-        MsgUtil.sendMessage(p, "");
-        MsgUtil.sendMessage(p, chatColor + MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendColoredMessage(p, chatColor, MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printLine(@NotNull String text) {
