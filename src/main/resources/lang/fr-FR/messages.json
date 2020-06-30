@@ -26,7 +26,7 @@
   "success-removed-shop": "&aBoutique supprimée avec succès.",
   "shops-arent-locked": "&cSouvenez-vous que les boutiques ne sont pas protégées contre le pillage! Tu dois les verrouiller ou protéger ta zone pour éviter le vol!",
   "shop-creation-cancelled": "&cCréation de la boutique annulée.",
-  "shop-purchase-cancelled": "&cAchat en boutique annulé.",
+  "shop-purchase-cancelled": "&cAchat de la boutique annulé.",
   "shop-stock-too-low": "&cIl ne reste que {0} {1} dans cette boutique!",
   "you-cant-afford-to-buy": "&cCette transaction coûte {0}, mais vous ne disposez que de {1}",
   "negative-amount": "&cVous ne pouvez pas échanger une quantité négative",
