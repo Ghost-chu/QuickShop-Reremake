@@ -115,8 +115,8 @@
       "limited": "&aLa tienda ahora es limitada."
     },
     "transfer-success": "&aTransferido &e{0} &ashop(s) a &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success-other": "&aTransferidas &e{0} {1}&a tienda(s) a &e{2}",
+    "some-shops-removed": "&e{0} &atienda(s) eliminada",
     "no-owner-given": "&cNo hay dueño proporcionado",
     "new-owner": "&aNuevo dueño: &e{0}",
     "now-buying": "&aAhora &dCOMPRANDO &e{0}",
@@ -162,7 +162,7 @@
       "supercreate": "&Crear una tienda circunvalando todas las comprobaciones de seguridad",
       "language": "&eCambiar el idioma actual",
       "removeall": "&eElimina todas las tiendas de un jugador especificado",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransferir TODAS las tiendas de alguien a otros"
     }
   },
   "signs": {
