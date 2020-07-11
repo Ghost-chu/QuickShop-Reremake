@@ -44,6 +44,7 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
+import org.maxgamer.quickshop.integration.lands.LandsIntegration;
 import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationHolder;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
 import org.maxgamer.quickshop.integration.towny.TownyIntegration;
@@ -655,7 +656,7 @@ public class QuickShop extends JavaPlugin {
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
         // This should be inited before shop manager
-        if (this.display && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+        if (this.display) {
             if (getConfig().getBoolean("shop.display-auto-despawn")) {
                 this.enabledAsyncDisplayDespawn = true;
                 this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
@@ -801,6 +802,12 @@ public class QuickShop extends JavaPlugin {
             Plugin factions = Bukkit.getPluginManager().getPlugin("Factions");
             if (factions != null && factions.isEnabled()) {
                 this.integrationHelper.register(new FactionsUUIDIntegration(this));
+            }
+        }
+        if (getConfig().getBoolean("integration.lands.enable")) {
+            Plugin lands = Bukkit.getPluginManager().getPlugin("Lands");
+            if (lands != null && lands.isEnabled()) {
+                this.integrationHelper.register(new LandsIntegration(this));
             }
         }
     }

@@ -442,8 +442,9 @@ integration:
   #Towny Integration Component
   towny:
     enable: false
+    #If ignore disabled world checking
     ignore-disabled-worlds: true
-    #Player if want create a shop, player must pass which checks?
+    #If a player want to create a shop, player must pass which checks?
     #You can use multi checks in same time.
     #Priority: UP to DOWN.
     #
@@ -454,7 +455,7 @@ integration:
     create:
       - SHOPTYPE
       - MODIFY
-    #Player if want trade with the shop, player must pass which checks?
+    #If a player want to trade with the shop, player must pass which checks?
     #You can use multi checks in same time.
     #Priority: UP to DOWN.
     #
@@ -471,7 +472,7 @@ integration:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: false
-      #Player if want create a shop, player must pass which checks?
+      #If a player want to create a shop, player must pass which checks?
       #You can use multi checks in same time.
       #Priority: UP to DOWN
       #
@@ -483,7 +484,7 @@ integration:
     create:
       - FLAG
       - CHEST_ACCESS
-        #Player if want create a shop, player must pass which checks?
+        #If a player want to create a shop, player must pass which checks?
         #You can use multi checks in same time.
         #Priority: UP to DOWN
         #
@@ -494,18 +495,26 @@ integration:
       #INTERACT = Player must have ability to interact in the target region.
     trade: []
   plotsquared:
-    #Player if want create a shop, player must have quickshop-create flag
-    #Player if want trade a shop, player must have quickshop-trade flag
+    #If a player want to create a shop, player must have quickshop-create flag
+    #If a player want to trade a shop, player must have quickshop-trade flag
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
+  lands:
+    #If a player want to create a shop, player must have be trusted or is owner
+    #Player can always trade with a shop.
+    enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
+    whitelist-mode: false
+    #If ignore disabled world checking
+    ignore-disabled-worlds: true
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
-      #Player if want create a shop, player must pass which checks?
-      #You can use multi checks in same time.
-      #Priority: UP to DOWN
+      #If a player want to create a shop, player must pass which checks?
+      #You can use multi checks in the same time.
+    #Priority: UP to DOWN
     #
     #Avaliable field:
     #FLAG = Region must set quickshop.create flag available for players.
@@ -514,7 +523,7 @@ integration:
       - FLAG
       - interact
       - use
-      #Player if want trade a shop, player must pass which checks?
+      #If a player want to trade with a shop, player must pass which checks?
       #You can use multi checks in same time.
       #Priority: UP to DOWN
       #
@@ -526,7 +535,7 @@ integration:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
-    #Player if want create a shop, player must pass which checks?
+    #If a player want to create a shop, player must pass which checks?
     create:
       #Faction require the status must match with under:
       require:
