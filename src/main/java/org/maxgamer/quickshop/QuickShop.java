@@ -1590,6 +1590,14 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 107);
             selectedVersion = 107;
         }
+        if (selectedVersion == 107) {
+            getConfig().set("integration.lands.enable", false);
+            getConfig().set("integration.lands.whitelist-mode", false);
+            getConfig().set("integration.lands.ignore-disabled-worlds", true);
+            getConfig().set("config-version", 108);
+            selectedVersion = 108;
+        }
+
 
         saveConfig();
         reloadConfig();
