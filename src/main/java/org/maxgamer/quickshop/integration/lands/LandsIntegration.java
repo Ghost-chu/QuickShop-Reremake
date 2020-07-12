@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
+import org.maxgamer.quickshop.integration.IntegrationStage;
 
+@IntegrationStage
 public class LandsIntegration implements IntegratedPlugin {
 
     private final boolean ignoreDisabledWorlds;

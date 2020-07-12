@@ -25,6 +25,7 @@ softdepend:
   - ProtocolLib
   - LWC
   - BlockHub
+  - Lands
 
 api-version: 1.13
 
