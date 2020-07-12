@@ -23,7 +23,7 @@ public class LandsIntegration implements IntegratedPlugin {
 
     @Override
     public @NotNull String getName() {
-        return "LandsIntegration";
+        return "Lands";
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LandsIntegration implements IntegratedPlugin {
         if (land != null) {
             return land.getOwnerUID().equals(player.getUniqueId()) || land.isTrusted(player.getUniqueId());
         } else {
-            return whitelist;
+            return !whitelist;
         }
     }
 
