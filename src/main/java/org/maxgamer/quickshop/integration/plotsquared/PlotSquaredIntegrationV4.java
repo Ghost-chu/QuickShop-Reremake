@@ -85,6 +85,11 @@ public class PlotSquaredIntegrationV4 implements IntegratedPlugin {
     }
 
     @Override
+    public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
+        return false;
+    }
+
+    @Override
     public void load() {
         this.createFlag = new BooleanFlag("quickshop-create");
         this.tradeFlag = new BooleanFlag("quickshop-trade");
