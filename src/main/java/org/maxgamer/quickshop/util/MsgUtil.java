@@ -1482,10 +1482,15 @@ public class MsgUtil {
             return;
         }
         for (String msg : messages) {
-            if (msg == null || msg.isEmpty()) {
-                continue;
+            try {
+                if (msg == null || msg.isEmpty()) {
+                    continue;
+                }
+                sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
+            } catch (Throwable throwable) {
+                Util.debugLog("Failed to send formatted text.");
+                sender.sendMessage(msg);
             }
-            sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
         }
 
     }
@@ -1495,10 +1500,15 @@ public class MsgUtil {
             return;
         }
         for (String msg : messages) {
-            if (msg == null || msg.isEmpty()) {
-                continue;
+            try {
+                if (msg == null || msg.isEmpty()) {
+                    continue;
+                }
+                sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
+            } catch (Throwable throwable) {
+                Util.debugLog("Failed to send formatted text.");
+                sender.sendMessage(msg);
             }
-            sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
         }
     }
 

@@ -40,7 +40,6 @@ public class ReflectFactory {
                     console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
             return cachedVersion;
         } catch (Exception e) {
-            e.printStackTrace();
             cachedVersion = "Unknown";
             return cachedVersion;
         }

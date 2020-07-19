@@ -59,7 +59,6 @@ public class SentryErrorReporter {
             , InvalidPluginException.class
             , UnsupportedClassVersionError.class
             , LinkageError.class);
-    private final IncompatibleChecker checker = new IncompatibleChecker();
     private Context context;
     private QuickShop plugin;
     /* Pre-init it if it called before the we create it... */
@@ -168,10 +167,7 @@ public class SentryErrorReporter {
         if (UpdateWatcher.hasNewUpdate) { // We only receive latest reports.
             return false;
         }
-        if (checker
-                .isIncompatible(
-                        Util
-                                .getNMSVersion())) { // Ignore errors if user install quickshop on unsupported
+        if (!plugin.getRuntimeCatcher().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }
