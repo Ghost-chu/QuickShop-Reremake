@@ -37,4 +37,6 @@ public class CommandContainer {
 
     private String prefix; // E.g /qs <prefix>
 
+    private String description; // Will show in the /qs help
+
 }
