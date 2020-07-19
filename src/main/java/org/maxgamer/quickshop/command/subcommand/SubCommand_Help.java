@@ -53,6 +53,10 @@ public class SubCommand_Help implements CommandProcesser {
                         continue commandCheckLoop;
                     }
                 }
+                String commandDesc = MsgUtil.getMessage("command.description." + container.getPrefix(), s);
+                if (container.getDescription() != null) {
+                    commandDesc = container.getDescription();
+                }
                 MsgUtil.sendMessage(s,
                         ChatColor.GREEN
                                 + "/"
@@ -61,7 +65,7 @@ public class SubCommand_Help implements CommandProcesser {
                                 + container.getPrefix()
                                 + ChatColor.YELLOW
                                 + " - "
-                                + MsgUtil.getMessage("command.description." + container.getPrefix(), s));
+                                + commandDesc);
             }
         }
     }
