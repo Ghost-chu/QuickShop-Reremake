@@ -175,15 +175,17 @@ public class ArmorStandDisplayItem extends DisplayItem {
         ArmorStand armorStand = (ArmorStand) entity;
         // Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
-        armorStand.setHelmet(guardedIstack);
-        try {
-            armorStand
-                    .getPersistentDataContainer()
-                    .set(
-                            new NamespacedKey(plugin, "displayMark"),
-                            DisplayItemPersistentDataType.INSTANCE,
-                            DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
-        } catch (Throwable ignored) {
+        Objects.requireNonNull(armorStand.getEquipment()).setHelmet(guardedIstack);
+        if (plugin.getRuntimeCatcher().getGameVersion().isPersistentStorageApiSupports()) {
+            try {
+                armorStand
+                        .getPersistentDataContainer()
+                        .set(
+                                new NamespacedKey(plugin, "displayMark"),
+                                DisplayItemPersistentDataType.INSTANCE,
+                                DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
+            } catch (Throwable ignored) {
+            }
         }
     }
 

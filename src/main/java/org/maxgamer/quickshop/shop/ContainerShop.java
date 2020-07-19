@@ -149,7 +149,11 @@ public class ContainerShop implements Shop {
                     break;
                 case VIRTUALITEM:
                     try {
+                        if (!plugin.getRuntimeCatcher().getGameVersion().isVirtualDisplaySupports()) {
+                            throw new IllegalStateException("Version not supports Virtual DisplayItem.");
+                        }
                         this.displayItem = new VirtualDisplayItem(this);
+
                     } catch (Throwable e) {
                         Util.debugLog(e.getMessage());
                         Arrays.stream(e.getStackTrace()).forEach(ex -> Util.debugLog(ex.getClassName() + "#" + ex.getMethodName() + "#" + ex.getLineNumber()));

@@ -252,6 +252,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private boolean allowStack;
 
+    @Getter
+    private RuntimeCatcher runtimeCatcher;
+
     @NotNull
     public static QuickShop getInstance() {
         return instance;
@@ -583,7 +586,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         try {
-            new RuntimeCheck(this);
+            runtimeCatcher = new RuntimeCatcher(this);
         } catch (RuntimeException e) {
             bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions

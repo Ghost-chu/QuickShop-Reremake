@@ -1,21 +1,25 @@
 package org.maxgamer.quickshop;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.DisplayType;
-import org.maxgamer.quickshop.util.IncompatibleChecker;
+import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
-public class RuntimeCheck {
-    public RuntimeCheck(@NotNull QuickShop plugin) {
+public class RuntimeCatcher {
+    @Getter
+    private GameVersion gameVersion;
+
+    public RuntimeCatcher(@NotNull QuickShop plugin) {
+        String nmsVersion = Util.getNMSVersion();
+        gameVersion = GameVersion.get(nmsVersion);
         if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
             plugin.getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
-        String nmsVersion = Util.getNMSVersion();
-        IncompatibleChecker incompatibleChecker = new IncompatibleChecker();
         plugin.getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
-        if (incompatibleChecker.isIncompatible(nmsVersion)) {
+        if (!gameVersion.isCoreSupports()) {
             throw new RuntimeException("Your Minecraft version is nolonger supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
         }
         try {
