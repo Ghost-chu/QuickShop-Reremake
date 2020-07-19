@@ -182,7 +182,7 @@ public abstract class DisplayItem {
         itemStack = itemStack.clone();
         //itemStack.setAmount(1);
         ItemMeta iMeta = itemStack.getItemMeta();
-        if (QuickShop.instance.getConfig().getBoolean("shop.display-item-use-name")) {
+        if (plugin.getConfig().getBoolean("shop.display-item-use-name")) {
             if (iMeta.hasDisplayName()) {
                 iMeta.setDisplayName(iMeta.getDisplayName());
             } else {
