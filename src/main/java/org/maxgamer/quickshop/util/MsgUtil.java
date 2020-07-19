@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -70,17 +71,20 @@ public class MsgUtil {
 
     private static final Map<UUID, LinkedList<String>> player_messages = Maps.newConcurrentMap();
 
-    private static final QuickShop plugin = QuickShop.instance;
+    private static final QuickShop plugin = QuickShop.getInstance();
 
     private static TextComponent errorComponent;
 
     private static final DecimalFormat decimalFormat =
             new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
     public static GameLanguage gameLanguage;
+    @Getter
     private static YamlConfiguration enchi18n;
     private static boolean inited;
+    @Getter
     private static YamlConfiguration itemi18n;
     private static IFile messagei18n;
+    @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
 
