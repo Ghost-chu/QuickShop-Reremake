@@ -46,7 +46,6 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
@@ -1164,7 +1163,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public synchronized @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
-        return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        return this.extra.get(plugin.getName());
     }
 
     /**
