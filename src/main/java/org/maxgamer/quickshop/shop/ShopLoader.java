@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
@@ -349,7 +350,10 @@ public class ShopLoader {
                 this.moderators = deserializeModerator(origin.getModerators());
                 this.location = new Location(world, x, y, z);
                 //noinspection unchecked
-                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
+                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), ConcurrentHashMap.class);
+                if (this.extra == null) {
+                    this.extra = new ConcurrentHashMap<>();
+                }
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
