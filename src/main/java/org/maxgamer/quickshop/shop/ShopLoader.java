@@ -350,7 +350,7 @@ public class ShopLoader {
                 this.moderators = deserializeModerator(origin.getModerators());
                 this.location = new Location(world, x, y, z);
                 //noinspection unchecked
-                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), ConcurrentHashMap.class);
+                this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
                 if (this.extra == null) {
                     this.extra = new ConcurrentHashMap<>();
                 }
