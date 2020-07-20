@@ -1163,7 +1163,7 @@ public class ContainerShop implements Shop {
      * @return The data table
      */
     @Override
-    public synchronized @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
+    public @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
         return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
     }
 
@@ -1174,10 +1174,12 @@ public class ContainerShop implements Shop {
      * @param data   The data table
      */
     @Override
-    public synchronized void setExtra(@NotNull Plugin plugin, Map<String, String> data) {
-        this.extra.put(plugin.getName(),data);
-        this.lastChangedAt = System.currentTimeMillis();
-        this.update();
+    public void setExtra(@NotNull Plugin plugin, Map<String, String> data) {
+        this.extra.put(plugin.getName(), data);
+        synchronized (this) {
+            this.lastChangedAt = System.currentTimeMillis();
+            this.update();
+        }
     }
 
     /**
