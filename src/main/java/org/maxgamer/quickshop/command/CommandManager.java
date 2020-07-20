@@ -311,9 +311,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     /**
      * This is a interface to allow addons to register the subcommand into quickshop command manager.
+     *
      * @param container The command container to register
+     * @throws IllegalStateException Will throw the error if register conflict.
      */
-    public void registerCmd(@NotNull CommandContainer container) {
+    public void registerCmd(@NotNull CommandContainer container) throws IllegalStateException {
+        if (cmds.contains(container)) {
+            Util.debugLog("Dupe subcommand registering: " + container);
+            return;
+        }
+        for (CommandContainer commandContainer : cmds) {
+            if (commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix())) {
+                Util.debugLog("Subcommand conflict: " + container + " and " + commandContainer);
+                throw new IllegalStateException("Conflict register " + container + " and " + commandContainer);
+            }
+        }
         cmds.add(container);
     }
 
