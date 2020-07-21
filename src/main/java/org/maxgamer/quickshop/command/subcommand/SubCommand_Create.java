@@ -27,6 +27,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -43,21 +44,25 @@ public class SubCommand_Create implements CommandProcesser {
 
     private final QuickShop plugin;
 
-    private final Map<Material, String> mapping;
+    private final Map<Material, String> mapping = new HashMap<>();
 
     public SubCommand_Create(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        mapping = new HashMap<>();
-        ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-        Objects.requireNonNull(section).getKeys(false).forEach(
-                key -> {
-                    Material material = Material.getMaterial(key);
-                    if (material == null) {
-                        return;
-                    }
-                    mapping.put(material, section.getString(key));
-                }
-        );
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
+                Objects.requireNonNull(section).getKeys(false).forEach(
+                        key -> {
+                            Material material = Material.getMaterial(key);
+                            if (material == null) {
+                                return;
+                            }
+                            mapping.put(material, section.getString(key));
+                        }
+                );
+            }
+        }.runTask(plugin);
     }
 
     @Override
