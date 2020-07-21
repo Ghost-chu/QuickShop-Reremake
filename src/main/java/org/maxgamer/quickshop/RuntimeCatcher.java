@@ -9,7 +9,7 @@ import org.maxgamer.quickshop.util.Util;
 
 public class RuntimeCatcher {
     @Getter
-    private GameVersion gameVersion;
+    private final GameVersion gameVersion;
 
     public RuntimeCatcher(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
@@ -20,7 +20,10 @@ public class RuntimeCatcher {
         }
         plugin.getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
         if (!gameVersion.isCoreSupports()) {
-            throw new RuntimeException("Your Minecraft version is nolonger supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
+            throw new RuntimeException("Your Minecraft version is no-longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
+        }
+        if (gameVersion == GameVersion.UNKNOWN) {
+            plugin.getLogger().warning("Alert: QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
         }
         try {
             plugin.getServer().spigot();
