@@ -1164,7 +1164,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull Map<String, String> getExtra(@NotNull Plugin plugin) {
-        return this.extra.get(plugin.getName());
+        return this.extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
     }
 
     /**
@@ -1174,7 +1174,7 @@ public class ContainerShop implements Shop {
      * @param data   The data table
      */
     @Override
-    public void setExtra(@NotNull Plugin plugin, Map<String, String> data) {
+    public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data) {
         this.extra.put(plugin.getName(), data);
         synchronized (this) {
             this.lastChangedAt = System.currentTimeMillis();
