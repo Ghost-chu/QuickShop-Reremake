@@ -257,18 +257,18 @@ public class DatabaseHelper {
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, String world, String extra) {
         String sqlString = "UPDATE " + plugin
-                .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ? WHERE x = ? AND y = ? and z = ? and world = ? and extra = ?";
+                .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?, extra = ? WHERE x = ? AND y = ? and z = ? and world = ?";
         plugin.getDatabaseManager().add(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
             ps.setString(2, Util.serialize(item));
             ps.setInt(3, unlimited);
             ps.setInt(4, shopType);
             ps.setDouble(5, price);
-            ps.setInt(6, x);
-            ps.setInt(7, y);
-            ps.setInt(8, z);
-            ps.setString(9, world);
-            ps.setString(10,extra);
+            ps.setString(6, extra);
+            ps.setInt(7, x);
+            ps.setInt(8, y);
+            ps.setInt(9, z);
+            ps.setString(10, world);
         }));
         //db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
 
