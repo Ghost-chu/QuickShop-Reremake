@@ -31,9 +31,9 @@ public enum GameVersion {
     v1_16_R1(true, true, true),
     v1_16_R2(true, true, true),
     UNKNOWN(true, true, true);
-    private boolean coreSupports;
-    private boolean virtualDisplaySupports;
-    private boolean persistentStorageApiSupports;
+    private final boolean coreSupports;
+    private final boolean virtualDisplaySupports;
+    private final boolean persistentStorageApiSupports;
 
     GameVersion(boolean coreSupports, boolean virtualDisplaySupports, boolean persistentStorageApiSupports) {
         this.coreSupports = coreSupports;
