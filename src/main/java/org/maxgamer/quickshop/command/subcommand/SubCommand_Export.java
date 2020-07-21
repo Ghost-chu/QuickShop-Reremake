@@ -32,6 +32,8 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class SubCommand_Export implements CommandProcesser {
@@ -47,11 +49,9 @@ public class SubCommand_Export implements CommandProcesser {
         }
         File file = new File(plugin.getDataFolder(), "export.txt");
         if (file.exists()) {
-            file.delete();
-            file.createNewFile();
-        } else {
-            file.createNewFile();
+            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
         }
+        file.createNewFile();
 
         new BukkitRunnable() {
             @SneakyThrows
