@@ -30,7 +30,6 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @AllArgsConstructor
@@ -48,13 +47,10 @@ public class SubCommand_Clean implements CommandProcesser {
 
         MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.cleaning", sender));
 
-        final Iterator<Shop> shIt = plugin.getShopManager().getShopIterator();
         final List<Shop> pendingRemoval = new ArrayList<>();
         int i = 0;
 
-        while (shIt.hasNext()) {
-            final Shop shop = shIt.next();
-
+        for (Shop shop : plugin.getShopManager().getAllShops()) {
             try {
                 if (shop.getLocation().getWorld() != null
                         && shop.isSelling()
