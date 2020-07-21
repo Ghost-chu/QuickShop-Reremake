@@ -36,7 +36,9 @@ import java.util.UUID;
 
 /**
  * @author creatorfromhell
+ * @deprecated Reserve no-longer active after Minecraft 1.14.
  */
+@Deprecated
 public class Economy_Reserve implements EconomyCore {
 
     private final String errorMsg =
@@ -49,12 +51,20 @@ public class Economy_Reserve implements EconomyCore {
     @Nullable
     private EconomyAPI reserve = null;
 
+    /**
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
+     */
+    @Deprecated
     public Economy_Reserve(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         setup();
     }
 
+    /**
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
+     */
     @SuppressWarnings("ConstantConditions")
+    @Deprecated
     private void setup() {
         try {
             if (((Reserve) Bukkit.getPluginManager().getPlugin("Reserve")).economyProvided()) {
@@ -71,7 +81,9 @@ public class Economy_Reserve implements EconomyCore {
      * @param name   The exact (case insensitive) username to give money to
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
+    @Deprecated
     @Override
     public boolean deposit(UUID name, double amount) {
         try {
@@ -89,7 +101,9 @@ public class Economy_Reserve implements EconomyCore {
      *
      * @param balance The given number
      * @return The balance in human readable text.
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
+    @Deprecated
     @Override
     public String format(double balance) {
         try {
@@ -111,8 +125,10 @@ public class Economy_Reserve implements EconomyCore {
      *
      * @param name The name of the account
      * @return Their current balance.
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
     @Override
+    @Deprecated
     public double getBalance(@NotNull UUID name) {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
@@ -131,8 +147,10 @@ public class Economy_Reserve implements EconomyCore {
      * @param to     The player who is receiving money
      * @param amount The amount to transfer
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
+     * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
     @Override
+    @Deprecated
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
