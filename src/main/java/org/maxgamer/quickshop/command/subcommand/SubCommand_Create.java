@@ -23,11 +23,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -38,31 +36,16 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.Result;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class SubCommand_Create implements CommandProcesser {
 
     private final QuickShop plugin;
 
-    private final Map<Material, String> mapping = new HashMap<>();
 
     public SubCommand_Create(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-                Objects.requireNonNull(section).getKeys(false).forEach(
-                        key -> {
-                            Material material = Material.getMaterial(key);
-                            if (material == null) {
-                                return;
-                            }
-                            mapping.put(material, section.getString(key));
-                        }
-                );
-            }
-        }.runTask(plugin);
     }
 
     @Override
@@ -77,20 +60,8 @@ public class SubCommand_Create implements CommandProcesser {
         ItemStack item = p.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            if (cmdArg.length < 2) {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
                 return;
-            }
-            for (Map.Entry<Material, String> matEntry : mapping.entrySet()) {
-                if (matEntry.getKey().name().equalsIgnoreCase(cmdArg[1]) || matEntry.getValue().equalsIgnoreCase(cmdArg[1])) {
-                    item = new ItemStack(matEntry.getKey());
-                    break;
-                }
-            }
-            if (item.getType() == Material.AIR) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
-                return;
-            }
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
@@ -170,9 +141,6 @@ public class SubCommand_Create implements CommandProcesser {
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
-        }
-        if (cmdArg.length == 2) {
-            return new ArrayList<>(this.mapping.values());
         }
 
         return Collections.emptyList();
