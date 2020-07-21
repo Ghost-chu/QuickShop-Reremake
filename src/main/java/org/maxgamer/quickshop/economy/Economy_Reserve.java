@@ -52,6 +52,7 @@ public class Economy_Reserve implements EconomyCore {
     private EconomyAPI reserve = null;
 
     /**
+     * @param plugin Main instance
      * @deprecated Reserve no-longer active after Minecraft 1.14.
      */
     @Deprecated
