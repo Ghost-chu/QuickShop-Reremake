@@ -617,15 +617,17 @@ public class MsgUtil {
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-            String text = MsgUtil.getMessage(
-                    "controlpanel.stack",
-                    sender,
-                    Integer.toString(shop.getItem().getAmount()));
-            String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.stack", sender);
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+        if (QuickShop.getInstance().isAllowStack()) {
+            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
+                String text = MsgUtil.getMessage(
+                        "controlpanel.stack",
+                        sender,
+                        Integer.toString(shop.getItem().getAmount()));
+                String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
+                String clickCommand = MsgUtil.getMessage("controlpanel.commands.stack", sender);
+                chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
 
+            }
         }
 //        //Set item
 //        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
