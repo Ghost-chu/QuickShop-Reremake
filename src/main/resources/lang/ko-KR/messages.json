@@ -1,7 +1,7 @@
 {
   "translation-author": "번역: 치키이예",
   "translation-version": "지원 버전: Reremake",
-  "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
+  "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
   "language-version": "40",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
@@ -194,10 +194,10 @@
     "empty-hover": "&e눌러서 상점 비우기",
     "remove": "&c&l[상점 제거]",
     "remove-hover": "&e 클릭해서 상점 삭제.",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
-    "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item",
+    "stack": "&a대량 가격: &b{0} &e[&d&l변경&e]",
+    "stack-hover": "대량당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.",
+    "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
+    "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
     "commands": {
       "setowner": "/qs setowner ",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
@@ -208,7 +208,7 @@
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
       "stack": "/qs size ",
-      "item": "/qs item"
+      "item": "/qs item "
     }
   },
   "tableformat": {
@@ -230,26 +230,26 @@
     "buttontitle": "[지금 업데이트]",
     "onekeybuttontitle": "[즉시 업데이트]",
     "list": [
-      "{0} was released. You are still using {1}!",
-      "Boom! New update {0} incoming. Update!",
-      "Surprise! {0} came out. You are on {1}",
-      "Looks like you need to update. {0} was released!",
-      "Ooops! {0} was now released. You are on {1}!",
-      "I swear, QS has been updated to {0}. Why have you not updated yet?",
-      "Fixing and re... Sorry, but {0} was released!",
-      "Err! Nope. This is not an error. {0} has been released!",
+      "{0} 이/가 출시되었습니다, 하지만 당신은 현재 {1} 을/를 사용중입니다.",
+      "짠! {0} 출시! 업데이트하세요!",
+      "짜잔! {0} 출시! 당신은 아직 {1} 을 사용중이네요!",
+      "보아하니 당신은 업데이트가 필요한 것처럼 보이네요 {0} 가 공개됐어요!",
+      "저런! {0} 가 출시됐어요! 당신은 {1} 인데!",
+      "내가 약속하는데 퀵샵은 {0} 으로 업데이트 되었습니다 왜 아직 업데이트 안해요?",
+      "수정 후 재로ㄷ... 죄송합니다 하지만 {0}이 출시했습니다!",
+      "에러! 가 아니라 {0} 이제 출시!",
       "세상에! {0}가 출시됐어요! 왜 아직도 {1}을 사용하죠?",
       "오늘의 뉴스: 퀵샵이 {0} 으로 업데이트 되었습니다!",
-      "Plugin k.i.a. You should update to {0}!",
-      "Update {0} ignited. Save update!",
-      "There is an update available Commander. {0} has just came out!",
-      "Look my style---{0} updated. You're still using {1}",
+      "플러그인 사망.. 당신은 {0}으로 업데이트 해야해요!",
+      "업데이트 {0} 이(가) 점화됨 업데이트를 구하세요!",
+      "업데이트가 있습니다, 사령관님! {0} 이 출시했습니다!",
+      "내 스타일좀 봐! {0} 업데이트! 넌 아직 {1} 을 쓰는중!",
       "ㅋㅋㅋㅋㅋㅋㅋㅋ 새로운 {0} 업데이트!",
-      "What do you think? {0} has been released! Update!",
-      "Doctor, QuickShop has a new update {0}! You should update~",
-      "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
+      "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!",
+      "닥터, QuickShop에 새로운 업데이트 {0} 이(가) 있어! 업데이트 해야죠~",
+      "Ko~ko~da~yo~ QuickShop에 새로운 업데이트 {0} ~"
     ],
-    "remote-disable-warning": "&cThis version of QuickShop has been marked as disabled by the remote server. That means that this version may have serious issues. Receive details from our SpigotMC page: {0}. This warning will appear and spam your console until you switch to a not disabled version. This won't affect your server, however.",
+    "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오: {0}. 이 경고는 당신의 콘솔에 허가된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
     "label": {
       "unstable": "[불안정함]",
       "stable": "[안정됨]",
@@ -261,7 +261,7 @@
       "master": "[Master]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
+  "shop-removed-cause-ongoing-fee": "&c{0} 위치에 있는 당신의 상점이 유지 비용이 없어 제거되었습니다!",
   "digits-reach-the-limit": "&cYou have reached the limits of decimals in the price.",
   "complete": "&a완료!",
   "quickshop-gui-preview": "QuickShop GUI Item Preview",
