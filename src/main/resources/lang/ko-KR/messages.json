@@ -86,7 +86,7 @@
     "shop-information": "&a상점 정보 :",
     "owner": "&a주인 : {0}",
     "item": "&a아이템 : &e{0}",
-    "item-holochat-error": "&c[Error]",
+    "item-holochat-error": "&c[오류]",
     "preview": "&b[아이템 미리보기]",
     "space": "&a빈 공간 : &e{0}",
     "stock": "&a재고품 &e{0}",
@@ -96,7 +96,7 @@
     "damage-percent-remaining": "&a남은 내구도 : &e{0}%",
     "this-shop-is-buying": "&a이 상점은 아이템을 &d구매&a중인 상점입니다.",
     "this-shop-is-selling": "&a이 상점은 아이템을 &d판매&a중인 상점입니다.",
-    "shop-stack": "&a갯수: &e{0}",
+    "shop-stack": "&a묶음의 갯수: &e{0}",
     "effects": "&a효과",
     "commands": {
       "preview": "/qs silentpreview {0} {1} {2} {3}"
@@ -158,7 +158,7 @@
       "about": "&eQuickShop 의 정보를 보여줍니다.",
       "help": "&eQuickShop 의 도움말을 보여줍니다.",
       "item": "&e상점의 상점 항목을 변경합니다.",
-      "size": "&e상점의 대량 금액별로 변경합니다.",
+      "size": "&e상점의 묶음의 갯수를 변경합니다.",
       "supercreate": "&e모든 보호를 무시하고 상점을 개설합니다.",
       "language": "&e현재 사용되는 언어를 변경합니다.",
       "removeall": "&e지정된 플레이어의 모든 상점을 제거합니다.",
@@ -194,8 +194,8 @@
     "empty-hover": "&e눌러서 상점 비우기",
     "remove": "&c&l[상점 제거]",
     "remove-hover": "&e 클릭해서 상점 삭제.",
-    "stack": "&a대량 가격: &b{0} &e[&d&l변경&e]",
-    "stack-hover": "대량당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.",
+    "stack": "&a묶음의 개당 가격: &b{0} &e[&d&l변경&e]",
+    "stack-hover": "묶음당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.",
     "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
     "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
     "commands": {
@@ -286,11 +286,11 @@
   "how-many-buy-stack": "&e채팅에 입력하세요, 묶음을 얼마나 &b구매&a할것인지 &e{0}&a 개의 아이템의 하나의 묶음마다 들어있으며 당신은 &e{1}&a개의 묶음을 구매할수 있습니다 &ball&a을 입력하여 모두 구매할수 있습니다",
   "how-many-sell-stack": "&e채팅에 입력하세요, 묶음을 얼마나 &d판매&a할것인지 &e{0}&a 개의 아이템의 하나의 묶음마다 들어있으며 당신은 &e{1}&a개의 묶음을 가지고 있습니다 &ball&a을 입력하여 모두 판매할수 있습니다",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslation Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality assurance issues: &b{0}%",
-    "help-us": "&a[Help us improve the translation quality]"
+    "name": "&e이름: &6{0}",
+    "code": "&e코드: &6{0}",
+    "translate-progress": "&e번역률: &b{0}%",
+    "approval-progress": "&e승인 진행률: &b{0}%",
+    "qa-issues": "&e품질 보증문제: &b{0}%",
+    "help-us": "&a[번역 품질을 향상시킬 수 있도록 도와주세요.]"
   }
 }
