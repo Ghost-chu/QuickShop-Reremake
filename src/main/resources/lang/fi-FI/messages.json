@@ -199,15 +199,15 @@
     "item": "&aKaupan tuote: {0} &e[&d&|Vaihda&e]",
     "item-hover": "&ePaina vaihtaaksesi kaupan esinettä",
     "commands": {
-      "setowner": "/qs setowner [Pelaaja]",
+      "setowner": "/qs setowner ",
       "unlimited": "/qs slientunlimited {0} {1} {2} {3}",
       "buy": "/qs silentbuy {0} {1} {2} {3}",
       "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price [Uusi hinta]",
-      "refill": "/qs refill [summa]",
+      "price": "/qs price ",
+      "refill": "/qs refill ",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size [Määrä]",
+      "stack": "/qs size ",
       "item": "/qs item"
     }
   },
