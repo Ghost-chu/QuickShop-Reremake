@@ -253,9 +253,9 @@
     "label": {
       "unstable": "[불안정함]",
       "stable": "[안정됨]",
-      "lts": "[LTS]",
-      "qualityverifyed": "[Quality]",
-      "github": "[GitHub]",
+      "lts": "[장기 지원 버전]",
+      "qualityverifyed": "[품질]",
+      "github": "[깃헙(GitHub)]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
       "master": "[Master]"
