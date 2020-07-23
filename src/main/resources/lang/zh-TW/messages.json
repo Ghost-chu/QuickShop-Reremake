@@ -199,15 +199,15 @@
     "item": "&a商店物品：{0} &e[&d&l修改&e]",
     "item-hover": "&e點擊修改商店物品",
     "commands": {
-      "setowner": "/qs setowner [玩家名稱]",
+      "setowner": "/qs setowner ",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
       "buy": "/qs silentbuy {0} {1} {2} {3}",
       "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price [新價格]",
-      "refill": "/qs refill [數量]",
+      "price": "/qs price ",
+      "refill": "/qs refill ",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size [數量]",
+      "stack": "/qs size ",
       "item": "/qs item"
     }
   },
