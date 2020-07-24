@@ -199,15 +199,15 @@
     "item": "&aЭлемент магазина: {0} &e[&d&lChange&e]",
     "item-hover": "&eНажмите, чтобы изменить элемент магазина",
     "commands": {
-      "setowner": "/qs setowner [Игрок]",
+      "setowner": "/qs setowner ",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
       "buy": "/qs silentbuy {0} {1} {2} {3}",
       "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price [новая цена]",
-      "refill": "/qs refill [количество]",
+      "price": "/qs price ",
+      "refill": "/qs refill ",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs размер [Amount]",
+      "stack": "/qs size ",
       "item": "/qs item"
     }
   },
