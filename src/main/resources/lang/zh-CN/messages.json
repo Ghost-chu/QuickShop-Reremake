@@ -199,15 +199,15 @@
     "item": "&a无限模式: {0} &e[&d&l切换&e]",
     "item-hover": "&e点击以更改商店物品",
     "commands": {
-      "setowner": "/qs setowner [玩家id]",
+      "setowner": "/qs setowner ",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
       "buy": "/qs silentbuy {0} {1} {2} {3}",
       "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price [修改后的新价格]",
-      "refill": "/qs refill [补货数量]",
+      "price": "/qs price ",
+      "refill": "/qs refill ",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size [数量]",
+      "stack": "/qs size ",
       "item": "/qs item"
     }
   },
