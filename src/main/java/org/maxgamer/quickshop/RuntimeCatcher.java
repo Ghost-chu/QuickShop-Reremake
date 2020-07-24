@@ -2,7 +2,6 @@ package org.maxgamer.quickshop;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.DisplayType;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
@@ -30,35 +29,6 @@ public class RuntimeCatcher {
         } catch (Throwable e) {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
-        }
-        if (plugin.getServer().getName().toLowerCase().contains("catserver") || Util.isClassAvailable("moe.luohuayu.CatServer") || Util.isClassAvailable("catserver.server.CatServer")) {
-            // Send FATAL ERROR TO CatServer's users.
-            int csi = 0;
-            while (csi < 101) {
-                csi++;
-                plugin.getLogger().severe("FATAL: QSRR can't run on CatServer Community/Personal/Pro/Async.");
-                plugin.getLogger().severe("FATAL: Don't report any bugs or other issues to the Ghost-chu's QuickShop-Reremake repo as we do not support CatServer");
-            }
-            try {
-                Thread.sleep(180000); //Make sure CS user 100% can see alert sent above.
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            plugin.setBootError(new BootError(plugin.getLogger(), "Cannot load on CatServer, don't asking us for support or we will send an army of angry bees your way."));
-            return;
-        }
-        if ((plugin.getServer().getName().toLowerCase().contains("mohist") || Util.isClassAvailable("red.mohist.mohist"))) {
-            //Because it passed compatible checker checks, Mohist version must is 1.13+.
-            //We doesn't need check the mohist is 1.12 or not.
-            //Because QuickShop doesn't support ANY 1.12 server.
-            int moi = 0;
-            while (moi < 3) {
-                moi++;
-                plugin.getLogger().severe("WARN: QSRR compatibility on Mohist 1.13+ modded server currently unknown, report any issue to Mohist issue tracker or QuickShop issue tracker.");
-                if (DisplayType.fromID(plugin.getConfig().getInt("shop.display-type")) != DisplayType.VIRTUALITEM) {
-                    plugin.getLogger().warning("Switch to Virtual display item to make sure displays won't duped by mods.");
-                }
-            }
         }
 
         if (Util.isDevEdition()) {
