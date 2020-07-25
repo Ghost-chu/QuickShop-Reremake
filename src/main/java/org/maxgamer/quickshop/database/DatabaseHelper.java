@@ -115,20 +115,23 @@ public class DatabaseHelper {
             //ignore
         }
         try {
-            // Reremake - DataStorage @TODO needs testing
-            if (db.getCore() instanceof MySQLCore) {
-                ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops ADD extra LONGTEXT");
-            } else {
-                ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "shops ADD COLUMN extra TEXT");
+            if (!db.hasColumn(plugin
+                    .getDbPrefix() + "shops", "extra")) {
+                // Reremake - DataStorage @TODO needs testing
+                if (db.getCore() instanceof MySQLCore) {
+                    ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
+                            .getDbPrefix() + "shops ADD extra LONGTEXT");
+                } else {
+                    ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
+                            .getDbPrefix() + "shops ADD COLUMN extra TEXT");
+                }
+                Util.debugLog("Setting up the column EXTRA...");
+                ps.execute();
+                ps.close();
             }
-            Util.debugLog("Setting up the column EXTRA...");
-            ps.execute();
-            ps.close();
         } catch (SQLException e) {
             //ignore
-            Util.debugLog("Error to create EXTRA column: "+e.getMessage());
+            Util.debugLog("Error to create EXTRA column: " + e.getMessage());
         }
         if (db.getCore() instanceof MySQLCore) {
             try {
@@ -173,7 +176,7 @@ public class DatabaseHelper {
                 ps.setString(7, location.getWorld().getName());
                 ps.setInt(8, shop.isUnlimited() ? 1 : 0);
                 ps.setInt(9, shop.getShopType().toID());
-                ps.setString(10,shop.saveExtraToJson());
+                ps.setString(10, shop.saveExtraToJson());
             }
 
             @Override
