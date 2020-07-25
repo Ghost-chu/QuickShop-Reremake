@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
+import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.event.ShopCreateEvent;
 import org.maxgamer.quickshop.event.ShopPreCreateEvent;
 import org.maxgamer.quickshop.event.ShopPurchaseEvent;
@@ -89,24 +90,24 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
-            if (plugin.isLimit()) {
-                int owned = 0;
-                if (useOldCanBuildAlgorithm) {
-                    owned = getPlayerAllShops(p.getUniqueId()).size();
-                } else {
-                    for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
-                        if (!shop.isUnlimited()) {
-                            owned++;
-                        }
+        if (plugin.isLimit()) {
+            int owned = 0;
+            if (useOldCanBuildAlgorithm) {
+                owned = getPlayerAllShops(p.getUniqueId()).size();
+            } else {
+                for (final Shop shop : getPlayerAllShops(p.getUniqueId())) {
+                    if (!shop.isUnlimited()) {
+                        owned++;
                     }
                 }
-                int max = plugin.getShopLimit(p);
-                if (owned + 1 > max) {
-                    MsgUtil.sendMessage(p, MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
-                    return false;
-                }
             }
-            ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
+            int max = plugin.getShopLimit(p);
+            if (owned + 1 > max) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("reached-maximum-can-create", p, String.valueOf(owned), String.valueOf(max)));
+                return false;
+            }
+        }
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
         return !Util.fireCancellableEvent(spce);
     }
 
@@ -492,8 +493,8 @@ public class ShopManager {
      */
     public @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID) {
         final List<Shop> playerShops = new ArrayList<>(10);
-        for(final Shop shop : getAllShops()){
-            if(shop.getOwner().equals(playerUUID)){
+        for (final Shop shop : getAllShops()) {
+            if (shop.getOwner().equals(playerUUID)) {
                 playerShops.add(shop);
             }
         }
@@ -525,8 +526,8 @@ public class ShopManager {
      */
     public @NotNull List<Shop> getShopsInWorld(@NotNull World world) {
         final List<Shop> worldShops = new ArrayList<>();
-        for (final Shop shop : getAllShops()){
-            if(Objects.equals(shop.getLocation().getWorld(), world)){
+        for (final Shop shop : getAllShops()) {
+            if (Objects.equals(shop.getLocation().getWorld(), world)) {
                 worldShops.add(shop);
             }
         }
@@ -561,37 +562,20 @@ public class ShopManager {
             return; // Cancelled
         }
         // Money handling
-        double tax = getTax(shop, p);
+        // BUYING MODE  Shop Owner -> Player
+        double taxModifier = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-        Util.debugLog("Before pay owner: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
-        if (shouldPayOwner) {
-            boolean successA = eco.withdraw(shop.getOwner(), total); // Withdraw owner's money
-            if (!successA) {
+
+        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
+            if (!EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
-                return;
+            }
+        } else {
+            if (!EconomyTransaction.builder().core(eco).amount(total).from(null).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
             }
         }
-        Util.debugLog("After pay owner: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        Util.debugLog("Before deposit: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
-        boolean successB = eco.deposit(p.getUniqueId(), depositMoney); // Deposit player's money
-        Util.debugLog("After deposit: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        if (!successB) {
-            plugin.getLogger().warning("Failed to deposit the money " + depositMoney + " to player " + e.getPlayer().getName());
-            /* Rollback the trade */
-            if (shouldPayOwner) {
-                if (!eco.deposit(shop.getOwner(), total)) {
-                    plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit.getOfflinePlayer(shop.getOwner()).getName());
-                }
-            }
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
-            return;
-        }
-        // Purchase successfully
-        if (tax != 0 && cacheTaxAccount != null) {
-            eco.deposit(cacheTaxAccount, CalculateUtil.multiply(total, tax));
-        }
+
         // Notify the owner of the purchase.
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
 
@@ -601,7 +585,7 @@ public class ShopManager {
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
         Bukkit.getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
@@ -631,8 +615,8 @@ public class ShopManager {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
         }
-        if(plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")){
-            Util.debugLog("Player "+p+" no permission to create stacks shop, forcing creating single item shop");
+        if (plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")) {
+            Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
             info.getItem().setAmount(1);
         }
         Util.debugLog("actionCreate");
@@ -732,9 +716,9 @@ public class ShopManager {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                     return;
                 }
-                    if (cacheTaxAccount != null) {
-                        plugin.getEconomy().deposit(cacheTaxAccount, createCost);
-                    }
+                if (cacheTaxAccount != null) {
+                    plugin.getEconomy().deposit(cacheTaxAccount, createCost);
+                }
             }
 
             if (!plugin.isAllowStack()) { //Set to 1 when disabled
@@ -745,14 +729,14 @@ public class ShopManager {
 //            shop.onLoad();
             //ShopCreateEvent e = new ShopCreateEvent(shop, p);
             //if (Util.fireCancellableEvent(e)) {
-                //shop.onUnload();
+            //shop.onUnload();
             //    return;
-           // }
+            // }
             Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
                 //shop.onUnload();
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
-                Util.debugLog("Cancelled by integrations: "+result);
+                Util.debugLog("Cancelled by integrations: " + result);
                 return;
             }
             /* The shop has hereforth been successfully created */
@@ -805,42 +789,26 @@ public class ShopManager {
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }
-        double tax = getTax(shop, p);
+        double taxModifier = getTax(shop, p);
+        double total = amount * shop.getPrice();
         // Money handling
-        double total = CalculateUtil.multiply(amount, shop.getPrice());
-
-        Util.debugLog("Before withdraw for player: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        boolean successA = eco.withdraw(p.getUniqueId(), total); // Withdraw owner's money
-        Util.debugLog("After withdraw for player: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        if (!successA) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
-            return;
-        }
-        boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
-        Util.debugLog("Pay owner: " + shouldPayOwner);
-        if (shouldPayOwner) {
-            double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
-            boolean successB = eco.deposit(shop.getOwner(), depositMoney);
-            if (!successB) {
-                plugin.getLogger().warning("Failed to deposit the money for player " + Bukkit.getOfflinePlayer(shop.getOwner()));
-                /* Rollback the trade */
-                if (!eco.deposit(p.getUniqueId(), total)) {
-                    plugin.getLogger().warning("Failed to rollback the purchase actions for player " + Bukkit.getOfflinePlayer(shop.getOwner()).getName());
-                }
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
+        // SELLING Player -> Shop Owner
+        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
+            if (!EconomyTransaction.builder().core(eco).from(p.getUniqueId()).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
+                return;
+            }
+        } else {
+            if (!EconomyTransaction.builder().core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
                 return;
             }
         }
-        Util.debugLog("After pay owner (if enabled): " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        Util.debugLog("Before pay tax: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
-        if (tax != 0 && cacheTaxAccount != null) {
-            eco.deposit(cacheTaxAccount, CalculateUtil.multiply(total, tax));
-        }
-        Util.debugLog("After pay tax: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
+
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format((CalculateUtil.multiply(tax, total))));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format(taxModifier * total));
         } else {
             msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########");
         }
@@ -852,7 +820,7 @@ public class ShopManager {
         MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
         shop.sell(p, amount);
         MsgUtil.sendPurchaseSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, tax);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
         Bukkit.getPluginManager().callEvent(se);
     }
 
@@ -1012,7 +980,7 @@ public class ShopManager {
 
         //failed, get attached shop
         if (shop == null) {
-           final Block currentBlock = loc.getBlock();
+            final Block currentBlock = loc.getBlock();
             if (!fromAttach) {
                 //sign
                 if (Util.isWallSign(currentBlock.getType())) {
@@ -1022,7 +990,7 @@ public class ShopManager {
                     }
                     //double chest
                 } else {
-                    @Nullable final  Block half = Util.getSecondHalf(currentBlock);
+                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
                     if (half != null) {
                         shop = getShop(half.getLocation());
                     }

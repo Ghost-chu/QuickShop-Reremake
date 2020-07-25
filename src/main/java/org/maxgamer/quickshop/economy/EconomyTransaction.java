@@ -20,6 +20,9 @@ public class EconomyTransaction {
     @NotNull
     private final EconomyCore core;
     private TransactionSteps steps; //For rollback
+    private final double total; //
+    private final double tax;
+    private final UUID taxAccount;
 
 
     /**
@@ -30,12 +33,19 @@ public class EconomyTransaction {
      * @param core The economy core
      */
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, @NotNull EconomyCore core) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core) {
         this.from = from;
         this.to = to;
         this.core = core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
+        this.taxAccount = taxAccount;
+        if (taxModifier != 0.0d) { //Calc total money and apply tax
+            this.total = taxModifier * amount;
+        } else {
+            this.total = amount;
+        }
+        this.tax = amount - total; //Calc total tax
         if (from == null && to == null) {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
@@ -69,16 +79,20 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit() {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
         steps = TransactionSteps.WITHDRAW;
-        if (from != null && !core.withdraw(from, amount)) {
-            Util.debugLog("Failed to withdraw " + amount + " from player " + from.toString() + " account");
+        if (from != null && !core.withdraw(from, total)) {
+            Util.debugLog("Failed to withdraw " + total + " from player " + from.toString() + " account");
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
-        if (to != null && !core.deposit(to, amount)) {
-            Util.debugLog("Failed to deposit " + amount + " to player " + to.toString() + " account");
+        if (to != null && !core.deposit(to, total)) {
+            Util.debugLog("Failed to deposit " + total + " to player " + to.toString() + " account");
             return false;
+        }
+        steps = TransactionSteps.TAX;
+        if (taxAccount != null && !core.deposit(taxAccount, tax)) {
+            Util.debugLog("Failed to deposit tax account: " + tax); //Ignore
         }
         steps = TransactionSteps.DONE;
         return true;
@@ -106,6 +120,9 @@ public class EconomyTransaction {
                 return rollbackSteps;
             }
         }
+        if (taxAccount != null && !core.deposit(taxAccount, tax)) { //Rollback withdraw
+            rollbackSteps.add(RollbackSteps.ROLLBACK_TAX); //Ignore fails
+        }
         rollbackSteps.add(RollbackSteps.ROLLBACK_DONE);
         return rollbackSteps;
     }
@@ -113,6 +130,7 @@ public class EconomyTransaction {
     private enum RollbackSteps {
         ROLLBACK_WITHDRAW,
         ROLLBACK_DEPOSIT,
+        ROLLBACK_TAX,
         ROLLBACK_DONE
     }
 
@@ -120,6 +138,7 @@ public class EconomyTransaction {
         WAIT,
         WITHDRAW,
         DEPOSIT,
+        TAX,
         DONE
     }
 
