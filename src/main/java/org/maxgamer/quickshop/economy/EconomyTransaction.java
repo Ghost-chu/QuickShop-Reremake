@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.economy;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Builder
 public class EconomyTransaction {
     @Nullable
     private final UUID from;
@@ -41,8 +43,12 @@ public class EconomyTransaction {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //Fetch some stupid plugin caching
-        core.getBalance(from);
-        core.getBalance(to);
+        if (from != null) {
+            core.getBalance(from);
+        }
+        if (to != null) {
+            core.getBalance(to);
+        }
     }
 
     /**
