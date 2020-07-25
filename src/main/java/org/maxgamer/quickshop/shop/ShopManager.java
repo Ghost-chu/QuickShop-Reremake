@@ -563,7 +563,7 @@ public class ShopManager {
         // Money handling
         double tax = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-
+        Util.debugLog("Before pay owner: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
         if (shouldPayOwner) {
             boolean successA = eco.withdraw(shop.getOwner(), total); // Withdraw owner's money
@@ -572,8 +572,11 @@ public class ShopManager {
                 return;
             }
         }
+        Util.debugLog("After pay owner: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
+        Util.debugLog("Before deposit: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
         boolean successB = eco.deposit(p.getUniqueId(), depositMoney); // Deposit player's money
+        Util.debugLog("After deposit: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         if (!successB) {
             plugin.getLogger().warning("Failed to deposit the money " + depositMoney + " to player " + e.getPlayer().getName());
             /* Rollback the trade */
@@ -806,13 +809,15 @@ public class ShopManager {
         // Money handling
         double total = CalculateUtil.multiply(amount, shop.getPrice());
 
-
+        Util.debugLog("Before withdraw for player: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         boolean successA = eco.withdraw(p.getUniqueId(), total); // Withdraw owner's money
+        Util.debugLog("After withdraw for player: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         if (!successA) {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
             return;
         }
         boolean shouldPayOwner = !shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited());
+        Util.debugLog("Pay owner: " + shouldPayOwner);
         if (shouldPayOwner) {
             double depositMoney = CalculateUtil.multiply(total, CalculateUtil.subtract(1, tax));
             boolean successB = eco.deposit(shop.getOwner(), depositMoney);
@@ -826,11 +831,12 @@ public class ShopManager {
                 return;
             }
         }
-
+        Util.debugLog("After pay owner (if enabled): " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
+        Util.debugLog("Before pay tax: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         if (tax != 0 && cacheTaxAccount != null) {
             eco.deposit(cacheTaxAccount, CalculateUtil.multiply(total, tax));
         }
-
+        Util.debugLog("After pay tax: " + p.getName() + ": " + eco.getBalance(p.getUniqueId()));
         String msg;
         // Notify the shop owner
         if (plugin.getConfig().getBoolean("show-tax")) {
