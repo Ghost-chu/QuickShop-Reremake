@@ -100,7 +100,7 @@ public class EconomyTransaction {
         DONE
     }
 
-    public static class EconomyTransactionException extends Exception {
+    public static class EconomyTransactionException extends RuntimeException {
         public EconomyTransactionException(String msg) {
             super(msg);
         }
