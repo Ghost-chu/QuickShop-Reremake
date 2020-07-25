@@ -69,6 +69,7 @@ public class EconomyTransaction {
      * @param continueWhenFailed Continue when some parts of the rollback fails.
      * @return A list contains all steps executed. If "continueWhenFailed" is false, it only contains all success steps before hit the error. Else all.
      */
+    @NotNull
     public List<RollbackSteps> rollback(boolean continueWhenFailed) {
         List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
         if (to != null && !core.withdraw(to, amount)) { //Rollback deposit
