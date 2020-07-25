@@ -1004,7 +1004,7 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-        return getShopIncludeAttached_Fast(loc, fromAttach, true);
+        return getShopIncludeAttached_Fast(loc, fromAttach, fromAttach);
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
