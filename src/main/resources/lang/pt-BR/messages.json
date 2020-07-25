@@ -199,15 +199,15 @@
     "item": "&aEstoque ilimitado: {0} &e[&d&lMudar&e]",
     "item-hover": "&eClique para mudar o item da loja",
     "commands": {
-      "setowner": "/qs setowner [jogador]",
+      "setowner": "/qs setowner ",
       "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
       "buy": "/qs silentbuy {0} {1} {2} {3}",
       "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price [NOVO PREÇO]",
-      "refill": "/qs refill [quantidade]",
+      "price": "/qs price ",
+      "refill": "/qs refill ",
       "empty": "/qs silentempty {0} {1} {2} {3}",
       "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size [Amount]",
+      "stack": "/qs size ",
       "item": "/qs item"
     }
   },
