@@ -11,18 +11,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Builder
 public class EconomyTransaction {
     @Nullable
     private final UUID from;
     @Nullable
     private final UUID to;
-
     private final double amount;
-
     @NotNull
     private final EconomyCore core;
-
     private TransactionSteps steps; //For rollback
 
 
@@ -33,6 +29,7 @@ public class EconomyTransaction {
      * @param to   The account that money to, be null is ignored.
      * @param core The economy core
      */
+    @Builder
     public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, @NotNull EconomyCore core) {
         this.from = from;
         this.to = to;
