@@ -48,19 +48,22 @@ public class EconomyTransaction {
     /**
      * Commit the transaction
      *
-     * @throws EconomyTransactionException Exception will throw if the transaction failed.
+     * @return The transaction success.
      */
-    public void commit() throws EconomyTransactionException {
+    public boolean commit() {
         Util.debugLog("Transaction begin: " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         steps = TransactionSteps.WITHDRAW;
         if (from != null && !core.withdraw(from, amount)) {
-            throw new EconomyTransactionException("Failed to withdraw " + amount + " from player " + from.toString() + " account");
+            Util.debugLog("Failed to withdraw " + amount + " from player " + from.toString() + " account");
+            return false;
         }
         steps = TransactionSteps.DEPOSIT;
         if (to != null && !core.deposit(to, amount)) {
-            throw new EconomyTransactionException("Failed to deposit " + amount + " to player " + to.toString() + " account");
+            Util.debugLog("Failed to deposit " + amount + " to player " + to.toString() + " account");
+            return false;
         }
         steps = TransactionSteps.DONE;
+        return true;
     }
 
     /**
