@@ -843,7 +843,7 @@ public class QuickShop extends JavaPlugin {
             }
             this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            databaseHelper = new DatabaseHelper(this, database);
+            databaseHelper = new DatabaseHelper(this, database, databaseManager);
         } catch (Database.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {

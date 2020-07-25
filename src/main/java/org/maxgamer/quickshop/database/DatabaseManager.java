@@ -153,7 +153,7 @@ public class DatabaseManager {
         if (useQueue) {
             sqlQueue.offer(task);
         } else {
-            task.run();
+            task.run(database.getConnection());
         }
     }
 
