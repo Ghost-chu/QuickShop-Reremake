@@ -112,6 +112,7 @@ public class ShopLoader {
                 shopsInDatabase.add(shop);
                 this.costCalc(singleShopLoadTimer);
                 if (shopNullCheck(shop)) {
+                    Util.debugLog("Trouble database loading debug: " + data.toString());
                     Util.debugLog("Somethings gone wrong, skipping the loading...");
                     loadAfterWorldLoaded++;
                     singleShopLoaded(singleShopLoadTimer);
