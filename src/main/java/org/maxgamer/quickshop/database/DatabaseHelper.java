@@ -44,11 +44,15 @@ public class DatabaseHelper {
     private final Database db;
 
     @NotNull
+    private final DatabaseManager manager;
+
+    @NotNull
     private final QuickShop plugin;
 
-    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db) throws SQLException {
+    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db, DatabaseManager manager) throws SQLException {
         this.db = db;
         this.plugin = plugin;
+        this.manager = manager;
         if (!db.hasTable(plugin.getDbPrefix() + "shops")) {
             createShopsTable();
         }
@@ -112,7 +116,7 @@ public class DatabaseHelper {
         }
         try {
             // Reremake - DataStorage @TODO needs testing
-            if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+            if (db.getCore() instanceof MySQLCore) {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
                         .getDbPrefix() + "shops ADD extra LONGTEXT");
             } else {
@@ -126,7 +130,7 @@ public class DatabaseHelper {
             //ignore
             Util.debugLog("Error to create EXTRA column: "+e.getMessage());
         }
-        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+        if (db.getCore() instanceof MySQLCore) {
             try {
                 ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
                         .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
@@ -144,18 +148,18 @@ public class DatabaseHelper {
         //        .getDbPrefix() + "messages WHERE time < ?", weekAgo);
         String sqlString = "DELETE FROM " + plugin
                 .getDbPrefix() + "messages WHERE time < ?";
-        plugin.getDatabaseManager().add(new DatabaseTask(sqlString, ps -> ps.setLong(1, weekAgo)));
+        manager.add(new DatabaseTask(sqlString, ps -> ps.setLong(1, weekAgo)));
     }
 
     public void cleanMessageForPlayer(@NotNull UUID player) {
         String sqlString = "DELETE FROM " + plugin.getDbPrefix() + "messages WHERE owner = ?";
-        plugin.getDatabaseManager().add(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
+        manager.add(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
     }
 
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
-        plugin.getDatabaseHelper().removeShop(shop); //First purge old exist shop before create new shop.
+        removeShop(shop); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        plugin.getDatabaseManager().add(new DatabaseTask(sqlString, new DatabaseTask.Task() {
+        manager.add(new DatabaseTask(sqlString, new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) throws SQLException {
                 Location location = shop.getLocation();
@@ -201,7 +205,7 @@ public class DatabaseHelper {
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
                 + (db.getCore() instanceof MySQLCore ? " LIMIT 1" : "");
-        plugin.getDatabaseManager().add(new DatabaseTask(sqlString, (ps) -> {
+        manager.add(new DatabaseTask(sqlString, (ps) -> {
             Location location = shop.getLocation();
             ps.setInt(1, location.getBlockX());
             ps.setInt(2, location.getBlockY());
@@ -226,7 +230,7 @@ public class DatabaseHelper {
     public void sendMessage(@NotNull UUID player, @NotNull String message, long time) {
 
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
-        plugin.getDatabaseManager().add(
+        manager.add(
                 new DatabaseTask(
                         sqlString,
                         (ps) -> {
@@ -240,7 +244,7 @@ public class DatabaseHelper {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db
                 .getCore() instanceof MySQLCore ? " LIMIT 1" : "");
-        plugin.getDatabaseManager().add(
+        manager.add(
                 //plugin.getDB().getConnection().createStatement()
                 //         .executeUpdate("UPDATE " + plugin.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
                 //                 + "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
@@ -258,7 +262,7 @@ public class DatabaseHelper {
                            double price, int x, int y, int z, String world, String extra) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?, extra = ? WHERE x = ? AND y = ? and z = ? and world = ?";
-        plugin.getDatabaseManager().add(new DatabaseTask(sqlString, ps -> {
+        manager.add(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
             ps.setString(2, Util.serialize(item));
             ps.setInt(3, unlimited);
