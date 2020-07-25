@@ -49,12 +49,27 @@ public class EconomyTransaction {
     }
 
     /**
+     * Commit the transaction by the Fail-Safe way
+     * Automatic rollback when commit failed
+     *
+     * @return The transaction success.
+     */
+    public boolean failSafeCommit() {
+        Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        boolean result = commit();
+        if (!result) {
+            rollback(true);
+        }
+        return result;
+    }
+
+    /**
      * Commit the transaction
      *
      * @return The transaction success.
      */
     public boolean commit() {
-        Util.debugLog("Transaction begin: " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         steps = TransactionSteps.WITHDRAW;
         if (from != null && !core.withdraw(from, amount)) {
             Util.debugLog("Failed to withdraw " + amount + " from player " + from.toString() + " account");
@@ -75,6 +90,7 @@ public class EconomyTransaction {
      * @param continueWhenFailed Continue when some parts of the rollback fails.
      * @return A list contains all steps executed. If "continueWhenFailed" is false, it only contains all success steps before hit the error. Else all.
      */
+    @SuppressWarnings("UnusedReturnValue")
     @NotNull
     public List<RollbackSteps> rollback(boolean continueWhenFailed) {
         List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
