@@ -790,7 +790,7 @@ public class ShopManager {
             return; // Cancelled
         }
         double taxModifier = getTax(shop, p);
-        double total = amount * shop.getPrice();
+        double total = CalculateUtil.multiply(amount, shop.getPrice());
         // Money handling
         // SELLING Player -> Shop Owner
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
