@@ -342,6 +342,7 @@ public class Util {
     private static boolean currencySymbolOnRight;
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
+    private static boolean useDecimalFormat;
 
     public static String format(double n) {
         return format(n, disableVaultFormat);
@@ -350,31 +351,37 @@ public class Util {
     @NotNull
     public static String format(double n, boolean internalFormat) {
         if (internalFormat) {
-            return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
+            return getInternalFormat(n);
+        }
+
+        if (plugin == null) {
+            Util.debugLog("Called format before Plugin booted up, forcing fixing.");
+            plugin = QuickShop.getInstance();
+        }
+        if (plugin.getEconomy() == null) {
+            Util.debugLog("Called format before Economy booted up, using built-in formatter.");
+            return getInternalFormat(n);
         }
         try {
-            if (plugin == null) {
-                Util.debugLog("Called format before Plugin booted up, forcing fixing.");
-                plugin = QuickShop.getInstance();
-            }
-            if (plugin.getEconomy() == null) {
-                Util.debugLog("Called format before Economy booted up, using built-in formatter.");
-                return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
-            }
-            String formated = plugin.getEconomy().format(n);
-            if (formated == null || formated.isEmpty()) {
+            String formatted = plugin.getEconomy().format(n);
+            if (formatted == null || formatted.isEmpty()) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
-                return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
+                return getInternalFormat(n);
             } else {
-                return formated;
+                return formatted;
             }
         } catch (NumberFormatException e) {
             Util.debugLog("format", e.getMessage());
             Util.debugLog(
                     "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
-            return currencySymbolOnRight ? n + alternateCurrencySymbol : alternateCurrencySymbol + n;
+            return getInternalFormat(n);
         }
+    }
+
+    private static String getInternalFormat(double amount) {
+        String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+        return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
     }
 
 
@@ -440,9 +447,11 @@ public class Util {
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
     }
+
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
+
     @NotNull
     public static String getItemStackName(@NotNull ItemStack itemStack) {
         if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
@@ -457,6 +466,7 @@ public class Util {
         }
         return MsgUtil.getItemi18n(itemStack.getType().name());
     }
+
     @NotNull
     public static String getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
         if (meta == null || !meta.hasStoredEnchants()) {
@@ -722,9 +732,10 @@ public class Util {
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
         disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger", false);
 
-        currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right");
-        alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol");
-        disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format");
+        currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
+        alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
+        disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
+        useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
     }
 
     /**
@@ -1344,7 +1355,8 @@ public class Util {
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         return "[" + className + "-" + methodName + "] ";
     }
-@NotNull
+
+    @NotNull
     public static String getNMSVersion() {
         String name = Bukkit.getServer().getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
