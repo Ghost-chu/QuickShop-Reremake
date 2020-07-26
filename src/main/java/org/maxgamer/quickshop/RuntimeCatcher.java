@@ -24,11 +24,23 @@ public class RuntimeCatcher {
         if (gameVersion == GameVersion.UNKNOWN) {
             plugin.getLogger().warning("Alert: QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
         }
-        try {
-            plugin.getServer().spigot();
-        } catch (Throwable e) {
+
+        if (!isSpigotBasedServer(plugin)) {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
+        }
+        if (isForgeBasedServer(plugin)) {
+            plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
+            plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
+            try {
+                Thread.sleep(300000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        if (isFabricBasedServer(plugin)) {
+            plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
+            plugin.getLogger().warning("WARN: You won't get any support under Fabric platform. Server will continue loading after 30s.");
         }
 
         if (Util.isDevEdition()) {
@@ -41,5 +53,32 @@ public class RuntimeCatcher {
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
+    }
+
+    private boolean isSpigotBasedServer(@NotNull QuickShop plugin) {
+        //Class checking
+        if (!Util.isClassAvailable("org.spigotmc.SpigotConfig")) {
+            return false;
+        }
+        //API test
+        try {
+            plugin.getServer().spigot();
+        } catch (Throwable e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isForgeBasedServer(@NotNull QuickShop plugin) {
+        //Forge server detect - Arclight
+        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
+            return true;
+        }
+        return Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo");
+    }
+
+    private boolean isFabricBasedServer(@NotNull QuickShop plugin) {
+        //Nobody really make it right!?
+        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
 }
