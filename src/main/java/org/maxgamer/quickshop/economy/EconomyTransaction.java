@@ -34,19 +34,19 @@ public class EconomyTransaction {
      * @param core The economy core
      */
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double balance, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core) {
         this.from = from;
         this.to = to;
         this.core = core;
-        this.amount = balance;
+        this.amount = amount;
         this.steps = TransactionSteps.WAIT;
         this.taxAccount = taxAccount;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
-            this.total = CalculateUtil.multiply(taxModifier, balance);
+            this.total = CalculateUtil.multiply(taxModifier, amount);
         } else {
-            this.total = balance;
+            this.total = amount;
         }
-        this.tax = CalculateUtil.subtract(balance, total); //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, total); //Calc total tax
         if (from == null && to == null) {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
