@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class EconomyTransaction {
         this.steps = TransactionSteps.WAIT;
         this.taxAccount = taxAccount;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
-            this.total = taxModifier * amount;
+            this.total = CalculateUtil.multiply(taxModifier, amount);
         } else {
             this.total = amount;
         }
-        this.tax = amount - total; //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, total); //Calc total tax
         if (from == null && to == null) {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
@@ -142,9 +143,4 @@ public class EconomyTransaction {
         DONE
     }
 
-    public static class EconomyTransactionException extends RuntimeException {
-        public EconomyTransactionException(String msg) {
-            super(msg);
-        }
-    }
 }
