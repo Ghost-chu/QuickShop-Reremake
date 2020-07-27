@@ -24,6 +24,7 @@ public class EconomyTransaction {
     private final double total; //
     private final double tax;
     private final UUID taxAccount;
+    private final boolean allowLoan;
 
 
     /**
@@ -34,13 +35,14 @@ public class EconomyTransaction {
      * @param core The economy core
      */
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
         this.core = core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
         this.taxAccount = taxAccount;
+        this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
             this.total = CalculateUtil.multiply(taxModifier, amount);
         } else {
@@ -81,9 +83,12 @@ public class EconomyTransaction {
      */
     public boolean commit() {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        if (core.getBalance(from) < total) {
+            return false;
+        }
         steps = TransactionSteps.WITHDRAW;
-        if (from != null && !core.withdraw(from, total)) {
-            Util.debugLog("Failed to withdraw " + total + " from player " + from.toString() + " account");
+        if (from != null && !core.withdraw(from, amount)) {
+            Util.debugLog("Failed to withdraw " + amount + " from player " + from.toString() + " account");
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
@@ -109,18 +114,26 @@ public class EconomyTransaction {
     @NotNull
     public List<RollbackSteps> rollback(boolean continueWhenFailed) {
         List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
-        if (to != null && !core.withdraw(to, amount)) { //Rollback deposit
-            if (!continueWhenFailed) {
-                rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
-                return rollbackSteps;
+        if (steps == TransactionSteps.WAIT) {
+            return rollbackSteps; //We did nothing, just checks balance
+        }
+        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.WITHDRAW) {
+            if (from != null && !core.deposit(from, amount)) { //Rollback withdraw
+                if (!continueWhenFailed) {
+                    rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
+                    return rollbackSteps;
+                }
             }
         }
-        if (to != null && !core.deposit(to, amount)) { //Rollback withdraw
-            if (!continueWhenFailed) {
-                rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
-                return rollbackSteps;
+        if (steps == TransactionSteps.DEPOSIT) {
+            if (to != null && !core.withdraw(to, total)) { //Rollback deposit
+                if (!continueWhenFailed) {
+                    rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
+                    return rollbackSteps;
+                }
             }
         }
+
         if (taxAccount != null && !core.deposit(taxAccount, tax)) { //Rollback withdraw
             rollbackSteps.add(RollbackSteps.ROLLBACK_TAX); //Ignore fails
         }
