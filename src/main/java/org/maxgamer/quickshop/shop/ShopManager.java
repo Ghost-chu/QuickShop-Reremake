@@ -712,12 +712,10 @@ public class ShopManager {
                 createCost = 0;
             }
             if (createCost > 0) {
-                if (!plugin.getEconomy().withdraw(p.getUniqueId(), createCost)) {
+
+                if (!EconomyTransaction.builder().taxAccount(cacheTaxAccount).taxModifier(0.0).core(plugin.getEconomy()).from(p.getUniqueId()).to(null).amount(createCost).build().failSafeCommit()) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                     return;
-                }
-                if (cacheTaxAccount != null) {
-                    plugin.getEconomy().deposit(cacheTaxAccount, createCost);
                 }
             }
 
@@ -794,12 +792,12 @@ public class ShopManager {
         // Money handling
         // SELLING Player -> Shop Owner
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
-            if (!EconomyTransaction.builder().core(eco).from(p.getUniqueId()).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
+            if (!EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
                 return;
             }
         } else {
-            if (!EconomyTransaction.builder().core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
+            if (!EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build().failSafeCommit()) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
                 return;
             }
