@@ -970,7 +970,7 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-        return getShopIncludeAttached_Fast(loc, fromAttach, fromAttach);
+        return getShopIncludeAttached_Fast(loc, fromAttach, true);
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
@@ -984,7 +984,7 @@ public class ShopManager {
                 if (Util.isWallSign(currentBlock.getType())) {
                     final Block attached = Util.getAttached(currentBlock);
                     if (attached != null) {
-                        shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true);
+                        shop = this.getShopIncludeAttached_Fast(attached.getLocation(), true, useCache);
                     }
                     //double chest
                 } else {
