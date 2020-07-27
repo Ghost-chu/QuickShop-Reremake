@@ -25,6 +25,8 @@ public class EconomyTransaction {
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
+    @Nullable
+    private String lastError = null;
 
 
     /**
@@ -50,6 +52,7 @@ public class EconomyTransaction {
         }
         this.tax = CalculateUtil.subtract(amount, total); //Calc total tax
         if (from == null && to == null) {
+            lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //Fetch some stupid plugin caching
@@ -82,25 +85,41 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit() {
+        return this.commit(new TransactionCallback() {
+        });
+    }
+
+    /**
+     * Commit the transaction with callback
+     *
+     * @param callback The result callback
+     * @return The transaction success.
+     */
+    public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
         if (core.getBalance(from) < total && !allowLoan) {
+            this.lastError = "From hadn't enough money";
+            callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.WITHDRAW;
         if (from != null && !core.withdraw(from, amount)) {
-            Util.debugLog("Failed to withdraw " + amount + " from player " + from.toString() + " account");
+            this.lastError = "Failed to withdraw " + amount + " from player " + from.toString() + " account";
+            callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
         if (to != null && !core.deposit(to, total)) {
-            Util.debugLog("Failed to deposit " + total + " to player " + to.toString() + " account");
+            this.lastError = "Failed to deposit " + total + " to player " + to.toString() + " account";
+            callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.TAX;
         if (taxAccount != null && !core.deposit(taxAccount, tax)) {
-            Util.debugLog("Failed to deposit tax account: " + tax); //Ignore
+            this.lastError = "Failed to deposit tax account: " + tax;
         }
         steps = TransactionSteps.DONE;
+        callback.onSuccess(this);
         return true;
     }
 
@@ -117,7 +136,7 @@ public class EconomyTransaction {
         if (steps == TransactionSteps.WAIT) {
             return rollbackSteps; //We did nothing, just checks balance
         }
-        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.WITHDRAW) {
+        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.WITHDRAW || steps == TransactionSteps.TAX) {
             if (from != null && !core.deposit(from, amount)) { //Rollback withdraw
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
@@ -125,12 +144,18 @@ public class EconomyTransaction {
                 }
             }
         }
-        if (steps == TransactionSteps.DEPOSIT) {
+        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
             if (to != null && !core.withdraw(to, total)) { //Rollback deposit
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
                     return rollbackSteps;
                 }
+            }
+        }
+
+        if (steps == TransactionSteps.TAX) {
+            if (taxAccount != null && !core.withdraw(taxAccount, tax)) {
+                this.lastError = "Failed to withdraw tax account when rollback: " + tax;
             }
         }
 
@@ -154,6 +179,17 @@ public class EconomyTransaction {
         DEPOSIT,
         TAX,
         DONE
+    }
+
+    interface TransactionCallback {
+        default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+            Util.debugLog("Transaction succeed.");
+        }
+
+        default void onFailed(@NotNull EconomyTransaction economyTransaction) {
+            Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+        }
+
     }
 
 }
