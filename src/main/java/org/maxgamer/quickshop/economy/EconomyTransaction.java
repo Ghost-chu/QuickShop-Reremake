@@ -83,7 +83,7 @@ public class EconomyTransaction {
      */
     public boolean commit() {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        if (core.getBalance(from) < total) {
+        if (core.getBalance(from) < total && !allowLoan) {
             return false;
         }
         steps = TransactionSteps.WITHDRAW;
