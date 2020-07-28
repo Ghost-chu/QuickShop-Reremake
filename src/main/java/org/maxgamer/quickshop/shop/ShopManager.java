@@ -72,6 +72,7 @@ public class ShopManager {
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
+        Util.debugLog("Loading caching tax account...");
         // noinspection ConstantConditions
         OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
 

@@ -47,8 +47,13 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
 
+    private final UUID taxAccountUUID;
+
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        Util.debugLog("Loading caching tax account...");
+        //noinspection deprecation
+        this.taxAccountUUID = Bukkit.getOfflinePlayer(Objects.requireNonNull(plugin.getConfig().getString("tax-account", "tax"))).getUniqueId();
         setupEconomy();
     }
 
@@ -113,7 +118,11 @@ public class Economy_Vault implements EconomyCore, Listener {
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
-                plugin.getLogger().warning("Deposit Failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                if (this.taxAccountUUID == name) {
+                    plugin.getLogger().warning("Deposit failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                } else {
+                    plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + name + ". Provider (" + getProviderName() + ")");
+                }
                 return false;
             }
             t.printStackTrace();
@@ -213,7 +222,11 @@ public class Economy_Vault implements EconomyCore, Listener {
         } catch (Throwable t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
-                plugin.getLogger().warning("Withdraw Failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                if (this.taxAccountUUID == name) {
+                    plugin.getLogger().warning("Withdraw failed and player name is NULL, you should check if your tax account in config.yml or shop owner is haven't played before. Provider (" + getProviderName() + ")");
+                } else {
+                    plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + name + ". Provider (" + getProviderName() + ")");
+                }
                 return false;
             }
             t.printStackTrace();
