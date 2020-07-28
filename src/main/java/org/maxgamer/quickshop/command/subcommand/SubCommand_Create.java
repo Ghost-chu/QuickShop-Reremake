@@ -86,7 +86,7 @@ public class SubCommand_Create implements CommandProcesser {
             try {
                 blockFace = p.getFacing();
             } catch (Throwable throwable) {
-                blockFace = Util.getYawFace(p.getLocation().getYaw());
+                blockFace = Util.getYawFace(p.getLocation().getYaw()); //FIXME: Update this when drop 1.13 supports
             }
 
             if (!plugin.getShopManager().canBuildShop(p, b, blockFace)) {

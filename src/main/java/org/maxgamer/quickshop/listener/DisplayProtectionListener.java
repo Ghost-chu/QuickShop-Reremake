@@ -306,7 +306,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         if (DisplayItem.getNowUsing() != DisplayType.ARMORSTAND) {
             return;
         }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) {
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
             return;
         }
         event.setCancelled(true);
@@ -323,7 +323,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         if (!(event.getEntity() instanceof ArmorStand)) {
             return;
         }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) {
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
             return;
         }
         event.setDroppedExp(0);
@@ -341,7 +341,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         if (!(event.getEntity() instanceof ArmorStand)) {
             return;
         }
-        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) {
+        if (!DisplayItem.checkIsGuardItemStack(((ArmorStand) event.getEntity()).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
             return;
         }
         event.setCancelled(true);

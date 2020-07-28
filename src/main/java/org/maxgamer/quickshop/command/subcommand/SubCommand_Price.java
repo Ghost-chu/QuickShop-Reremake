@@ -157,6 +157,7 @@ public class SubCommand_Price implements CommandProcesser {
                         MsgUtil.getMessage(
                                 "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee)));
                 try {
+                    //noinspection deprecation
                     plugin
                             .getEconomy()
                             .deposit(

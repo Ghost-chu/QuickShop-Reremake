@@ -18,7 +18,7 @@ import static org.maxgamer.quickshop.util.Util.getPlayerList;
 @AllArgsConstructor
 public class SubCommand_RemoveAll implements CommandProcesser {
 
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

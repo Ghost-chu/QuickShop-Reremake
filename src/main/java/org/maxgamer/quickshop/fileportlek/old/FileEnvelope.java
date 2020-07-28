@@ -154,7 +154,11 @@ public abstract class FileEnvelope implements IFile {
     @Override
     public ItemStack getCustomItemStack(@NotNull String path) {
         try {
-            return Util.deserialize(path);
+            ItemStack deserialize = Util.deserialize(path);
+            if (deserialize != null) {
+                return deserialize;
+            }
+            return new ItemStack(Material.AIR);
         } catch (Exception exception) {
             return new ItemStack(Material.AIR);
         }

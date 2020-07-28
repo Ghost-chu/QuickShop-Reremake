@@ -13,7 +13,7 @@ public class LandsIntegration implements IntegratedPlugin {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;
-    me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
+    final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
 
     public LandsIntegration(QuickShop plugin) {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);

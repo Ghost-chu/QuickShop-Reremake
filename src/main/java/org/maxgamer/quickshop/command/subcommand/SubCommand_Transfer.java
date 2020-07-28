@@ -32,6 +32,7 @@ public class SubCommand_Transfer implements CommandProcesser {
                 MsgUtil.sendMessage(sender, "Only player can run this command");
                 return;
             }
+            //noinspection deprecation
             final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[0]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {
@@ -48,11 +49,14 @@ public class SubCommand_Transfer implements CommandProcesser {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
                 return;
             }
+            //noinspection deprecation
             final OfflinePlayer fromPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[0]);
             String fromPlayerName = fromPlayer.getName();
             if (fromPlayerName == null) {
                 fromPlayerName = "null";
             }
+            //FIXME: Update this when drop 1.15 supports
+            //noinspection deprecation
             final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(cmdArg[1]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {

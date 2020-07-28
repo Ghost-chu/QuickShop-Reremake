@@ -15,7 +15,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 @AllArgsConstructor
 public class SubCommand_Item implements CommandProcesser {
-    private QuickShop plugin;
+    private final QuickShop plugin;
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
