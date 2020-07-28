@@ -114,7 +114,7 @@ public class SubCommand_Find implements CommandProcesser {
                 .teleportEntity(
                         p,
                         Util.lookAt(loc, lookat).add(0, -1.62, 0),
-                        PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                        PlayerTeleportEvent.TeleportCause.PLUGIN);
         MsgUtil.sendMessage(p,
                 MsgUtil.getMessage(
                         "nearby-shop-this-way", sender, Integer.toString((int) Math.floor(Math.sqrt(minDistanceSquared)))));

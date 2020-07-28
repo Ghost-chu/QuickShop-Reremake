@@ -333,17 +333,18 @@ public class Util {
         lock.writeLock().unlock();
     }
 
+
+    private static boolean currencySymbolOnRight;
+    private static String alternateCurrencySymbol;
+    private static boolean disableVaultFormat;
+    private static boolean useDecimalFormat;
+
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
      *
      * @param n price
      * @return The formatted string.
      */
-    private static boolean currencySymbolOnRight;
-    private static String alternateCurrencySymbol;
-    private static boolean disableVaultFormat;
-    private static boolean useDecimalFormat;
-
     public static String format(double n) {
         return format(n, disableVaultFormat);
     }
