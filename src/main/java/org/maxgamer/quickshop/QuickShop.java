@@ -653,6 +653,7 @@ public class QuickShop extends JavaPlugin {
         //Load the database
         setupDBonEnableding = true;
         setupDatabase();
+
         setupDBonEnableding = false;
 
         /* Initalize the tools */
@@ -667,7 +668,7 @@ public class QuickShop extends JavaPlugin {
             }
         }
         this.shopManager = new ShopManager(this);
-        this.databaseManager = new DatabaseManager(this, database);
+
         this.permissionChecker = new PermissionChecker(this);
 
         ConfigurationSection limitCfg = this.getConfig().getConfigurationSection("limits");
@@ -841,8 +842,9 @@ public class QuickShop extends JavaPlugin {
                 dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
             this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
+            this.databaseManager = new DatabaseManager(this, this.database);
             // Make the database up to date
-            databaseHelper = new DatabaseHelper(this, database, databaseManager);
+            this.databaseHelper = new DatabaseHelper(this, this.database, this.databaseManager);
         } catch (Database.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {
