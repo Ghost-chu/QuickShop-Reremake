@@ -555,8 +555,9 @@ public class MsgUtil {
                                     ? (" (" + shop.getOwner() + ")")
                                     : "")),
                     MsgUtil.getMessage("controlpanel.setowner-hover", sender),
-                    MsgUtil.getMessage("controlpanel.commands.setowner", sender));
+                    "/qs setowner ");
         }
+
 
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
@@ -564,9 +565,8 @@ public class MsgUtil {
                     MsgUtil.getMessage("controlpanel.unlimited", sender, bool2String(shop.isUnlimited()));
             String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover", sender);
             String clickCommand =
-                    MsgUtil.getMessage(
-                            "controlpanel.commands.unlimited",
-                            sender,
+                    MsgUtil.fillArgs(
+                            "/qs silentunlimited {0} {1} {2} {3}",
                             Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                             String.valueOf(shop.getLocation().getBlockX()),
                             String.valueOf(shop.getLocation().getBlockY()),
@@ -580,9 +580,8 @@ public class MsgUtil {
                 String text = MsgUtil.getMessage("controlpanel.mode-selling", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
                 String clickCommand =
-                        MsgUtil.getMessage(
-                                "controlpanel.commands.buy",
-                                sender,
+                        MsgUtil.fillArgs(
+                                "/qs silentbuy {0} {1} {2} {3}",
                                 Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
@@ -592,9 +591,8 @@ public class MsgUtil {
                 String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
                 String clickCommand =
-                        MsgUtil.getMessage(
-                                "controlpanel.commands.sell",
-                                sender,
+                        MsgUtil.fillArgs(
+                                "/qs silentsell {0} {1} {2} {3}",
                                 Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
@@ -606,9 +604,8 @@ public class MsgUtil {
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text =
-                    MsgUtil.getMessage(
-                            "controlpanel.price",
-                            sender,
+                    MsgUtil.fillArgs(
+                            "/qs price ",
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
@@ -624,7 +621,7 @@ public class MsgUtil {
                         sender,
                         Integer.toString(shop.getItem().getAmount()));
                 String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.stack", sender);
+                String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
 
             }
@@ -645,7 +642,7 @@ public class MsgUtil {
                 String text =
                         MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
                 String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
-                String clickCommand = MsgUtil.getMessage("controlpanel.commands.refill", sender);
+                String clickCommand = "/qs refill ";
                 chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
             }
             // Empty
@@ -654,9 +651,8 @@ public class MsgUtil {
                         MsgUtil.getMessage("controlpanel.empty", sender, String.valueOf(shop.getPrice()));
                 String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
                 String clickCommand =
-                        MsgUtil.getMessage(
-                                "controlpanel.commands.empty",
-                                sender,
+                        MsgUtil.fillArgs(
+                                "/qs silentempty {0} {1} {2} {3}",
                                 Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
@@ -671,9 +667,8 @@ public class MsgUtil {
                     MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
             String clickCommand =
-                    MsgUtil.getMessage(
-                            "controlpanel.commands.remove",
-                            sender,
+                    MsgUtil.fillArgs(
+                            "/qs silentremove {0} {1} {2} {3}",
                             Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                             String.valueOf(shop.getLocation().getBlockX()),
                             String.valueOf(shop.getLocation().getBlockY()),
@@ -978,9 +973,8 @@ public class MsgUtil {
                 normalmessage.setClickEvent(
                         new ClickEvent(
                                 ClickEvent.Action.RUN_COMMAND,
-                                MsgUtil.getMessage(
-                                        "menu.commands.preview",
-                                        player,
+                                MsgUtil.fillArgs(
+                                        "/qs silentpreview {0} {1} {2} {3}",
                                         Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
                                         String.valueOf(shop.getLocation().getBlockX()),
                                         String.valueOf(shop.getLocation().getBlockY()),
@@ -1456,6 +1450,11 @@ public class MsgUtil {
             setAndUpdate("command.description.transfer", "&eTransfer someone's ALL shops to other");
             setAndUpdate("language-version", 40);
             selectedVersion = 40;
+        }
+        if (selectedVersion == 40) {
+            setAndUpdate("controlpanel.commands", null);
+            setAndUpdate("menu.commands", null);
+            setAndUpdate("language-version", 41);
         }
 
         messagei18n.save();
