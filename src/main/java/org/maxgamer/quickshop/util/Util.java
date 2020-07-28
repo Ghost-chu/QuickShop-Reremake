@@ -940,30 +940,35 @@ public class Util {
      * @param p The player performing the action.
      * @return true if a nearby shop was found, false otherwise.
      */
-    @Deprecated
     public static boolean isOtherShopWithinHopperReach(@NotNull Block b, @NotNull Player p) {
-        // Check 5 relative positions that can be affected by a hopper: behind, in front of, to the
-        // right,
-        // to the left and underneath.
-        Block[] blocks = new Block[5];
-        blocks[0] = b.getRelative(0, 0, -1);
-        blocks[1] = b.getRelative(0, 0, 1);
-        blocks[2] = b.getRelative(1, 0, 0);
-        blocks[3] = b.getRelative(-1, 0, 0);
-        blocks[4] = b.getRelative(0, 1, 0);
-        for (Block c : blocks) {
-            Shop firstShop = plugin.getShopManager().getShop(c.getLocation());
-            // If firstShop is null but is container, it can be used to drain contents from a shop created
-            // on secondHalf.
-            Block secondHalf = getSecondHalf(c);
-            Shop secondShop =
-                    secondHalf == null ? null : plugin.getShopManager().getShop(secondHalf.getLocation());
-            if (firstShop != null && !p.getUniqueId().equals(firstShop.getOwner())
-                    || secondShop != null && !p.getUniqueId().equals(secondShop.getOwner())) {
-                return true;
-            }
+        Block bshop = getAttached(b);
+        if (bshop == null) {
+            return false;
         }
-        return false;
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation());
+        return shop != null && shop.getModerator().isModerator(p.getUniqueId());
+//        // Check 5 relative positions that can be affected by a hopper: behind, in front of, to the
+//        // right,
+//        // to the left and underneath.
+//        Block[] blocks = new Block[5];
+//        blocks[0] = b.getRelative(0, 0, -1);
+//        blocks[1] = b.getRelative(0, 0, 1);
+//        blocks[2] = b.getRelative(1, 0, 0);
+//        blocks[3] = b.getRelative(-1, 0, 0);
+//        blocks[4] = b.getRelative(0, 1, 0);
+//        for (Block c : blocks) {
+//            Shop firstShop = plugin.getShopManager().getShop(c.getLocation());
+//            // If firstShop is null but is container, it can be used to drain contents from a shop created
+//            // on secondHalf.
+//            Block secondHalf = getSecondHalf(c);
+//            Shop secondShop =
+//                    secondHalf == null ? null : plugin.getShopManager().getShop(secondHalf.getLocation());
+//            if (firstShop != null && !p.getUniqueId().equals(firstShop.getOwner())
+//                    || secondShop != null && !p.getUniqueId().equals(secondShop.getOwner())) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     /**
