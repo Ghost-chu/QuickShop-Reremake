@@ -119,7 +119,7 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
                 if (this.taxAccountUUID.equals(name)) {
-                    plugin.getLogger().warning("Deposit failed and player name is NULL, you should check if your tax account in config.yml. Provider (" + getProviderName() + ")");
+                    plugin.getLogger().warning("Deposit failed and player name is NULL, you should check if your tax account in config.yml are existed on the server. Provider (" + getProviderName() + ")");
                 } else {
                     plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + name + ". Provider (" + getProviderName() + ")");
                 }
@@ -223,9 +223,9 @@ public class Economy_Vault implements EconomyCore, Listener {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
                 if (this.taxAccountUUID.equals(name)) {
-                    plugin.getLogger().warning("Withdraw failed and player name is NULL, you should check if your tax account in config.yml. Provider (" + getProviderName() + ")");
+                    plugin.getLogger().warning("Withdraw failed and player name is NULL, you should check if your tax account in config.yml are existed on the server. Provider: " + getProviderName());
                 } else {
-                    plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + name + ". Provider (" + getProviderName() + ")");
+                    plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + name + ", Provider: " + getProviderName());
                 }
                 return false;
             }
