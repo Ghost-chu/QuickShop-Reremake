@@ -970,7 +970,7 @@ public class ShopManager {
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-        return getShopIncludeAttached_Fast(loc, fromAttach, true);
+        return getShopIncludeAttached_Fast(loc, fromAttach, QuickShop.getInstance().getShopCache() != null);
     }
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
