@@ -17,7 +17,7 @@ public class RuntimeCatcher {
             plugin.getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
-        plugin.getLogger().info("Running QuickShop-Reremake on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
+        plugin.getLogger().info("Running QuickShop-" + QuickShop.getFork() + " on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
         if (!gameVersion.isCoreSupports()) {
             throw new RuntimeException("Your Minecraft version is no-longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
         }
