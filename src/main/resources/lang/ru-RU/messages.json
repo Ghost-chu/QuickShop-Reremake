@@ -3,7 +3,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Тимбашня, пеноматериалы Нидерландов, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&cНе удалось найти QuickShop. Вам нужно посмотреть.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руке.",
   "no-permission": "&cУ вас нет прав на это.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aЭтот магазин &dПОКУПАЕТ&a предметы.",
     "this-shop-is-selling": "&aЭтот магазин &bПРОДАЕТ&a предметы.",
     "shop-stack": "&aСумма кол-ва: &e{0}",
-    "effects": "&aЭффекты",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&aЭффекты"
   },
   "bypassing-lock": "&cИгнорирование блокировки QuickShop!",
   "that-is-locked": "&cЭтот магазин заблокирован.",
@@ -197,19 +194,7 @@
     "stack": "&aСуммарная сумма: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eЩелкните, чтобы установить количество элементов на единицу. Установите значение 1 для нормального поведения.",
     "item": "&aЭлемент магазина: {0} &e[&d&lChange&e]",
-    "item-hover": "&eНажмите, чтобы изменить элемент магазина",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&eНажмите, чтобы изменить элемент магазина"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
