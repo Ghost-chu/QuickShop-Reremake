@@ -60,7 +60,6 @@ import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Util {
@@ -1186,7 +1185,7 @@ public class Util {
         return text;
     }
 
-    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
+//    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
     //     ONLY FOR FUN ^ ^
 //    /**
 //     * Replace &g to random HEX color
