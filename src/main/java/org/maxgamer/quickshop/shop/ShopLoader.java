@@ -173,7 +173,7 @@ public class ShopLoader {
         long singleShopLoadTime = singleShopLoadTimer.endTimer();
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
-        if (singleShopLoadTime > 150) {
+        if (singleShopLoadTime > 1500) {
             warningSender.sendWarn("Database performance bottleneck: Detected slow database, it may mean bad network connection, slow database server or database fault. Please check the database!");
         }
     }
