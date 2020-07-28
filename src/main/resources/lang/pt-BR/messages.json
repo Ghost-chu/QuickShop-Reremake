@@ -3,7 +3,7 @@
   "translation-version": "Versão: Reremake",
   "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aEsta loja está &dCOMPRANDO&a itens.",
     "this-shop-is-selling": "&aEsta loja está &bVENDENDO&a itens.",
     "shop-stack": "&aQuantidade em lote: &e{0}",
-    "effects": "&aEfeitos",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&aEfeitos"
   },
   "bypassing-lock": "&cIgnorarando um bloqueio da loja!",
   "that-is-locked": "&cEssa loja está bloqueada.",
@@ -197,19 +194,7 @@
     "stack": "&aQuantiade em pacotes: &b{0} &e[&d&lMudar&e]",
     "stack-hover": "&eClique para definir o valor do pacote. Deixe 1 para comportamento normal.",
     "item": "&aEstoque ilimitado: {0} &e[&d&lMudar&e]",
-    "item-hover": "&eClique para mudar o item da loja",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&eClique para mudar o item da loja"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
