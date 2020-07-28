@@ -151,7 +151,7 @@ public class MsgUtil {
         Util.debugLog(right);
         TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
         ComponentBuilder cBuilder = new ComponentBuilder(json);
-        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
         player.spigot().sendMessage(centerItem);
     }
 
@@ -447,6 +447,7 @@ public class MsgUtil {
                 if (Util.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
+                    //noinspection deprecation
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
@@ -980,7 +981,7 @@ public class MsgUtil {
                                         String.valueOf(shop.getLocation().getBlockY()),
                                         String.valueOf(shop.getLocation().getBlockZ()))));
             }
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             return normalmessage;
         } catch (Throwable t) {
             t.printStackTrace();

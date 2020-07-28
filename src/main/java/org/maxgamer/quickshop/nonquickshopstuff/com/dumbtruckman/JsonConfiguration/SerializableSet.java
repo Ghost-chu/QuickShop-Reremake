@@ -31,7 +31,7 @@ public class SerializableSet implements Set, ConfigurationSerializable {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Map<String, Object> serialize() {
+    public @NotNull Map<String, Object> serialize() {
         Map<String, Object> serializedForm = new HashMap<>(backingSet.size());
         List<Object> contents = new ArrayList(backingSet);
         serializedForm.put("contents", contents);

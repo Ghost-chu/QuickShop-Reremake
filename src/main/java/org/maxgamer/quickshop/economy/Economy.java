@@ -42,7 +42,7 @@ public class Economy implements EconomyCore {
     }
 
     public static EconomyType getNowUsing() {
-        return EconomyType.fromID(QuickShop.instance.getConfig().getInt("economy-type"));
+        return EconomyType.fromID(QuickShop.getInstance().getConfig().getInt("economy-type"));
     }
 
     @Override

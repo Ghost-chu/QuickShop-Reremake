@@ -389,6 +389,7 @@ public class ShopLoader {
                     shopModerator = ShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
+                    //noinspection deprecation
                     moderatorJson = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId().toString();
                     shopModerator = new ShopModerator(UUID.fromString(moderatorJson)); // New one
                 }

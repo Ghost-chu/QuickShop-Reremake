@@ -46,12 +46,12 @@ public class Updater {
      * @return True=Have a new update; False=No new update or check update failed.
      */
     public static UpdateInfomation checkUpdate() {
-        if (!QuickShop.instance.getConfig().getBoolean("updater")) {
+        if (!QuickShop.getInstance().getConfig().getBoolean("updater")) {
             return new UpdateInfomation(false, null);
         }
         try {
 
-            String localPluginVersion = QuickShop.instance.getDescription().getVersion();
+            String localPluginVersion = QuickShop.getInstance().getDescription().getVersion();
             String spigotPluginVersion =
                     HttpRequest.get(new URL("https://api.spigotmc.org/legacy/update.php?resource=62575"))
                             .execute()
@@ -88,7 +88,7 @@ public class Updater {
         if (uurl == null) {
             throw new IOException("Failed read the URL, cause it is empty.");
         }
-        QuickShop.instance.getLogger().info("Downloading from " + uurl);
+        QuickShop.getInstance().getLogger().info("Downloading from " + uurl);
         InputStream is =
                 HttpRequest.get(new URL(uurl))
                         .header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion())
@@ -109,7 +109,7 @@ public class Updater {
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
         if (!(uurlSize < 1) && downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");
-            QuickShop.instance.getLogger().info("Failed to download update: Size not match, downloaded: " + downloaded + " excepted: " + uurlSize);
+            QuickShop.getInstance().getLogger().info("Failed to download update: Size not match, downloaded: " + downloaded + " excepted: " + uurlSize);
             throw new IOException("Size not match, download mayb broken, aborting.");
         }
         Util.debugLog("Download complete.");
@@ -132,8 +132,8 @@ public class Updater {
         for (File plugin : plugins) {
             try {
                 PluginDescriptionFile desc =
-                        QuickShop.instance.getPluginLoader().getPluginDescription(plugin);
-                if (!desc.getName().equals(QuickShop.instance.getDescription().getName())) {
+                        QuickShop.getInstance().getPluginLoader().getPluginDescription(plugin);
+                if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
                     continue;
                 }
                 Util.debugLog("Selected: " + plugin.getPath());

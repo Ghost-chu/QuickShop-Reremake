@@ -399,7 +399,7 @@ public class QuickShop extends JavaPlugin {
                         //getLogger().info("Checking the tax account infos...");
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
-                            OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
+                            OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount)); //FIXME: Should we use player UUID?
                             if (!tax.hasPlayedBefore()) {
                                 Economy_Vault vault = (Economy_Vault) core;
                                 if (vault.isValid()) {
@@ -421,7 +421,7 @@ public class QuickShop extends JavaPlugin {
                         }
                     }
                     break;
-                case RESERVE:
+                case RESERVE: //TODO: Remove Reserve supporting
                     core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
@@ -731,7 +731,6 @@ public class QuickShop extends JavaPlugin {
 
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
-            ;
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();

@@ -56,7 +56,7 @@ public class ChatSheetPrinter {
                 new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
         message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
         p.spigot().sendMessage(message);
     }
 
@@ -83,7 +83,7 @@ public class ChatSheetPrinter {
                 new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
         message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
         if (additionText.length >= 1) {
             p.spigot().sendMessage(new ComponentBuilder().append(message).append(additionText).create());
         } else {

@@ -38,7 +38,7 @@ import org.maxgamer.quickshop.util.Util;
  */
 public abstract class DisplayItem {
 
-    protected static final QuickShop plugin = QuickShop.instance;
+    protected static final QuickShop plugin = QuickShop.getInstance();
 
     private static final Gson gson = JsonUtil.getGson();
 

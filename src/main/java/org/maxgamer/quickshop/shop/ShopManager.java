@@ -72,7 +72,7 @@ public class ShopManager {
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
-        //noinspection ConstantConditions
+        // noinspection ConstantConditions
         OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
 
         this.cacheTaxAccount = taxPlayer.getUniqueId();

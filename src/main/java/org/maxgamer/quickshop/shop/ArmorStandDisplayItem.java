@@ -81,7 +81,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         if (!(entity instanceof ArmorStand)) {
             return false;
         }
-        return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand());
+        return DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand()); //FIXME: Update this when drop 1.13 supports
     }
 
     @Override
@@ -149,7 +149,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
             ArmorStand eArmorStand = (ArmorStand) entity;
 
             if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {
+                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {  //FIXME: Update this when drop 1.13 supports
                     Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId() + " at " + eArmorStand.getLocation());
                     entity.remove();
                     removed = true;

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 @AllArgsConstructor
 public class SubCommand_Size implements CommandProcesser {
-    private QuickShop plugin;
+    private final QuickShop plugin;
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

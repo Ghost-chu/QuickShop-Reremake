@@ -67,11 +67,11 @@ public class UpdateWatcher implements Listener {
                         }
 
                         if (!info.isBeta()) {
-                            QuickShop.instance
+                            QuickShop.getInstance()
                                     .getLogger()
                                     .info(
                                             "A new version of QuickShop has been released! [" + info.getVersion() + "]");
-                            QuickShop.instance
+                            QuickShop.getInstance()
                                     .getLogger()
                                     .info("Update here: https://www.spigotmc.org/resources/62575/");
 
@@ -121,16 +121,16 @@ public class UpdateWatcher implements Listener {
                                 }
                             }
                         } else {
-                            QuickShop.instance.getLogger().info("A new BETA version of QuickShop is available!");
-                            QuickShop.instance
+                            QuickShop.getInstance().getLogger().info("A new BETA version of QuickShop is available!");
+                            QuickShop.getInstance()
                                     .getLogger()
                                     .info("Update here: https://www.spigotmc.org/resources/62575/");
-                            QuickShop.instance
+                            QuickShop.getInstance()
                                     .getLogger()
                                     .info("This is a BETA version, which means you should use it with caution.");
                         }
                     }
-                }.runTaskTimerAsynchronously(QuickShop.instance, 1, 20 * 60 * 60);
+                }.runTaskTimerAsynchronously(QuickShop.getInstance(), 1, 20 * 60 * 60);
     }
 
     public static void uninit() {
@@ -188,7 +188,7 @@ public class UpdateWatcher implements Listener {
                                             + "This is a BETA version, which means you should use it with caution.");
                 }
             }
-        }.runTaskLater(QuickShop.instance, 80);
+        }.runTaskLater(QuickShop.getInstance(), 80);
     }
 
 }
