@@ -563,33 +563,33 @@ public class Util {
         return restrictedPrices.get(material);
     }
 
-    /**
-     * Returns the chest attached to the given chest. The given block must be a chest.
-     *
-     * @param b he chest to check.
-     * @return the block which is also a chest and connected to b.
-     * @deprecated
-     */
-    @Nullable
-    @Deprecated
-    public static Block getSecondHalf_old(@NotNull Block b) {
-        // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
-        //         //     return null;
-        if (!isDoubleChest(b)) {
-            return null;
-        }
-        Block[] blocks = new Block[4];
-        blocks[0] = b.getRelative(1, 0, 0);
-        blocks[1] = b.getRelative(-1, 0, 0);
-        blocks[2] = b.getRelative(0, 0, 1);
-        blocks[3] = b.getRelative(0, 0, -1);
-        for (Block c : blocks) {
-            if (c.getType() == b.getType()) {
-                return c;
-            }
-        }
-        return null;
-    }
+//    /**
+//     * Returns the chest attached to the given chest. The given block must be a chest.
+//     *
+//     * @param b he chest to check.
+//     * @return the block which is also a chest and connected to b.
+//     * @deprecated
+//     */
+//    @Nullable
+//    @Deprecated
+//    public static Block getSecondHalf_old(@NotNull Block b) {
+//        // if (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST)
+//        //         //     return null;
+//        if (!isDoubleChest(b)) {
+//            return null;
+//        }
+//        Block[] blocks = new Block[4];
+//        blocks[0] = b.getRelative(1, 0, 0);
+//        blocks[1] = b.getRelative(-1, 0, 0);
+//        blocks[2] = b.getRelative(0, 0, 1);
+//        blocks[3] = b.getRelative(0, 0, -1);
+//        for (Block c : blocks) {
+//            if (c.getType() == b.getType()) {
+//                return c;
+//            }
+//        }
+//        return null;
+//    }
 
     public static boolean isDoubleChest(@Nullable Block b) {
         if (b == null) {
