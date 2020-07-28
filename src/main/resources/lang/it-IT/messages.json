@@ -3,7 +3,7 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&cImpossibile trovare un QuickShop. Devi guardarlo.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aQuesto negozio sta &dACQUISTANDO& oggetti.",
     "this-shop-is-selling": "&aQuesto negozio sta &bVENDENDO& oggetti.",
     "shop-stack": "&aQuantità di bulk: &e{0}",
-    "effects": "&aEffetti",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&aEffetti"
   },
   "bypassing-lock": "&cBypassa un blocco QuickShop!",
   "that-is-locked": "&cQuesto negozio è bloccato.",
@@ -197,19 +194,7 @@
     "stack": "&aPer quantità di massa: &b{0} &e[&d&lCambia&e]",
     "stack-hover": "&eClicca per impostare la quantità di elemento per bulk. Imposta a 1 per comportamento normale.",
     "item": "&aElemento negozio: {0} &e[&d&lCambia&e]",
-    "item-hover": "&eClick per cambiare l'elemento del negozio",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&eClick per cambiare l'elemento del negozio"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
