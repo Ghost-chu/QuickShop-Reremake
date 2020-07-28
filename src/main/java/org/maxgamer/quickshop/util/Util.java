@@ -55,7 +55,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -1491,34 +1490,34 @@ public class Util {
         return material.name().toUpperCase().endsWith("_DYE");
     }
 
-    /**
-     * Calc the string md5
-     *
-     * @param s string
-     * @return md5
-     */
-    @NotNull
-    public static String md5(final String s) {
-        try {
-            final MessageDigest instance = MessageDigest.getInstance("MD5");
-            instance.update(s.getBytes(StandardCharsets.UTF_8));
-            final byte[] digest = instance.digest();
-            final StringBuilder sb = new StringBuilder();
-            for (int b : digest) {
-                int n = b;
-                if (n < 0) {
-                    n += 256;
-                }
-                if (n < 16) {
-                    sb.append("0");
-                }
-                sb.append(Integer.toHexString(n));
-            }
-            return sb.toString().toLowerCase();
-        } catch (Exception ex) {
-            return "";
-        }
-    }
+//    /**
+//     * Calc the string md5
+//     *
+//     * @param s string
+//     * @return md5
+//     */
+//    @NotNull
+//    public static String md5(final String s) {
+//        try {
+//            final MessageDigest instance = MessageDigest.getInstance("MD5");
+//            instance.update(s.getBytes(StandardCharsets.UTF_8));
+//            final byte[] digest = instance.digest();
+//            final StringBuilder sb = new StringBuilder();
+//            for (int b : digest) {
+//                int n = b;
+//                if (n < 0) {
+//                    n += 256;
+//                }
+//                if (n < 16) {
+//                    sb.append("0");
+//                }
+//                sb.append(Integer.toHexString(n));
+//            }
+//            return sb.toString().toLowerCase();
+//        } catch (Exception ex) {
+//            return "";
+//        }
+//    }
 
     /**
      * Call a event and check it is cancelled.
