@@ -91,7 +91,7 @@ public class Updater {
         QuickShop.getInstance().getLogger().info("Downloading from " + uurl);
         InputStream is =
                 HttpRequest.get(new URL(uurl))
-                        .header("User-Agent", "QuickShop-Reremake " + QuickShop.getVersion())
+                        .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                         .execute()
                         .getInputStream();
         ByteArrayOutputStream os = new ByteArrayOutputStream();

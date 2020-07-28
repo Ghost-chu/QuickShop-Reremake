@@ -403,7 +403,7 @@ public class Metrics {
     public JsonObject getPluginData() {
         JsonObject data = new JsonObject();
 
-        String pluginName = "QuickShop-Reremake";
+        String pluginName = "QuickShop-" + QuickShop.getFork();
         String pluginVersion = plugin.getDescription().getVersion();
 
         data.addProperty("pluginName", pluginName); // Append the name of the plugin

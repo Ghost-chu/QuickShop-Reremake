@@ -61,7 +61,7 @@ public class Paste {
     public @NotNull String genNewPaste() {
         StringBuilder finalReport = new StringBuilder();
         finalReport.append("###############################\n");
-        finalReport.append("QuickShop-Reremake Paste Result\n");
+        finalReport.append("QuickShop-" + QuickShop.getFork() + " Paste Result\n");
         finalReport.append("###############################\n");
         finalReport.append("\n");
         finalReport.append("\n");
@@ -172,7 +172,7 @@ public class Paste {
                     .append(bplugin.getDescription().getVersion())
                     .append(" # ")
                     .append(bplugin.getDescription().getAPIVersion());
-            if(bplugin.getDescription().getDepend().contains(plugin.getName()) || bplugin.getDescription().getSoftDepend().contains(plugin.getName())){
+            if (bplugin.getDescription().getDepend().contains(plugin.getName()) || bplugin.getDescription().getSoftDepend().contains(plugin.getName())) {
                 finalReport.append(" # [Addon/Compatible]");
             }
             //finalReport.append(" # ").append(bplugin.getClass().getPackage().getName()).append(".").append(bplugin.getClass().getName());
