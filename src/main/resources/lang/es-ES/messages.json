@@ -3,7 +3,7 @@
   "translation-version": "&c&lVersión soportada: &b&lReremake",
   "translation-contributors": "Colaboradores: Torre del tiempo, espuma, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de lenguaje: &b&lEspañol (es_ES)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna QuickShop. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aEsta tienda está &dCOMPRANDO&a artículos.",
     "this-shop-is-selling": "&aEsta tienda está &dVENDIENDO&a artículos.",
     "shop-stack": "&aCantidad de stacks: &e{0}",
-    "effects": "&aEfectos",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&aEfectos"
   },
   "bypassing-lock": "&c¡Omitiendo el bloqueo de una QuickShop!",
   "that-is-locked": "&cEsta tienda está bloqueada.",
@@ -197,19 +194,7 @@
     "stack": "&aCantidad de artículos por stack: &b{0} &e[&d&lCambiar&e]",
     "stack-hover": "&eClic para establecer la cantidad de artículos por stack. Introduce 1 para comportamiento por defecto.",
     "item": "&aObjeto de Tienda: {0} &e[&d&lCambiar&e]",
-    "item-hover": "&eClic para cambiar el artículo de la tienda",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&eClic para cambiar el artículo de la tienda"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
