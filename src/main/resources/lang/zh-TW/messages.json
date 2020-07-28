@@ -3,7 +3,7 @@
   "translation-version": "支援版本：Reremake（重製重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&c無法找到儲物箱商店。您需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&a此商店是 &d收購物品&a 的商店。",
     "this-shop-is-selling": "&a此商店是 &b出售物品&a 的商店。",
     "shop-stack": "&a每份物品的數量：&e{0}",
-    "effects": "&a藥水效果",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&a藥水效果"
   },
   "bypassing-lock": "&c您使用繞過權限打開了一個上鎖的商店！",
   "that-is-locked": "&c此商店已經上鎖。",
@@ -197,19 +194,7 @@
     "stack": "&a每份數量：&b{0} &e[&d&l修改&e]",
     "stack-hover": "&e點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。",
     "item": "&a商店物品：{0} &e[&d&l修改&e]",
-    "item-hover": "&e點擊修改商店物品",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&e點擊修改商店物品"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
