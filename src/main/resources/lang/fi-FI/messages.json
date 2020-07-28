@@ -3,7 +3,7 @@
   "translation-version": "Tuettu versio: Reremake",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Kielialue: Suomi (fi_FI)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&cQuickShoppia ei löytynyt. Sinun täytyy katsoa yhtä.",
   "no-anythings-in-your-hand": "&cKädessäsi ei ole mitään.",
   "no-permission": "&cSinulla ei ole oikeutta tehdä noin.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aTämä kauppa &a&lOSTAA &atuotteita.",
     "this-shop-is-selling": "&aTämä kauppa &c&lMYY &atavaroita.",
     "shop-stack": "&aIrtotavaran määrä: &e{0}",
-    "effects": "&aEfektit: &e{0}",
-    "commands": {
-      "preview": "/qs hiljainenkatselu {0} {1} {2} {3}"
-    }
+    "effects": "&aEfektit: &e{0}"
   },
   "bypassing-lock": "&cOhitetaan QuickShop lukitus!",
   "that-is-locked": "&cTämä kauppa on lukossa.",
@@ -197,19 +194,7 @@
     "stack": "&aMäärä bulkkia kohden: &b{0} &e[&d&lVaihda&e]",
     "stack-hover": "&eKlikkaa asettaaksesi tavaran määrä bulkkia kohden. Aseta 1 normaalia käytöstä varten.",
     "item": "&aKaupan tuote: {0} &e[&d&|Vaihda&e]",
-    "item-hover": "&ePaina vaihtaaksesi kaupan esinettä",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs slientunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&ePaina vaihtaaksesi kaupan esinettä"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
