@@ -3,7 +3,7 @@
   "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (Ko)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&c퀵샵을 찾을수 없습니다. 상점을 보고있어야만합니다!",
   "no-anythings-in-your-hand": "&c당신의 손에 아무것도 없습니다.",
   "no-permission": "&c이것을 하기위해선 권한이 필요합니다.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&a이 상점은 아이템을 &d구매&a중인 상점입니다.",
     "this-shop-is-selling": "&a이 상점은 아이템을 &d판매&a중인 상점입니다.",
     "shop-stack": "&a묶음의 갯수: &e{0}",
-    "effects": "&a효과",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&a효과"
   },
   "bypassing-lock": "&a QuickShop의 잠금을 무시합니다!",
   "that-is-locked": "&c이 상점은 잠겨있습니다.",
@@ -197,19 +194,7 @@
     "stack": "&a묶음의 개당 가격: &b{0} &e[&d&l변경&e]",
     "stack-hover": "묶음당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.",
     "item": "&a상점 아이템: {0} &e[&d&l변경&e]",
-    "item-hover": "&e클릭하여 상점의 아이템을 변경합니다",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item "
-    }
+    "item-hover": "&e클릭하여 상점의 아이템을 변경합니다"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
