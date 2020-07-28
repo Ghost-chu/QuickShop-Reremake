@@ -76,7 +76,6 @@ public class Util {
     private static final List<String> debugLogs = new LinkedList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private static Yaml yaml = null;
-    private static DumperOptions yamlOptions = null;
     private static boolean devMode = false;
     private static QuickShop plugin;
     private static Object serverInstance;
@@ -240,7 +239,7 @@ public class Util {
     @Nullable
     public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
         if (yaml == null) {
-            yamlOptions = new DumperOptions();
+            DumperOptions yamlOptions = new DumperOptions();
             yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
             yamlOptions.setIndent(2);
             yaml = new Yaml(yamlOptions); //Caching it!
@@ -345,6 +344,7 @@ public class Util {
      * @param n price
      * @return The formatted string.
      */
+    @NotNull
     public static String format(double n) {
         return format(n, disableVaultFormat);
     }
@@ -668,7 +668,7 @@ public class Util {
         restrictedPrices.clear();
         worldBlacklist.clear();
         customStackSize.clear();
-        plugin = QuickShop.instance;
+        plugin = QuickShop.getInstance();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
         for (String s : plugin.getConfig().getStringList("shop-blocks")) {
@@ -1458,7 +1458,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        String version = QuickShop.instance.getDescription().getVersion().toLowerCase();
+        String version = QuickShop.getInstance().getDescription().getVersion().toLowerCase();
         return (version.contains("dev")
                 || version.contains("develop")
                 || version.contains("alpha")
@@ -1536,7 +1536,7 @@ public class Util {
      * @return The caching folder
      */
     public static File getCacheFolder() {
-        File cache = new File(QuickShop.instance.getDataFolder(), "cache");
+        File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
         if (!cache.exists()) {
             cache.mkdirs();
         }

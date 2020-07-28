@@ -49,7 +49,7 @@ public class DisplayBugFixListener extends QSListener{
 
         for (final Entity entity : entities) {
             if (!(entity instanceof ArmorStand)
-                    || !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) {
+                    || !DisplayItem.checkIsGuardItemStack(((ArmorStand) entity).getItemInHand())) { //FIXME: Update this when drop 1.13 supports
                 continue;
             }
 

@@ -96,6 +96,7 @@ public class SubCommand_Staff implements CommandProcesser {
                             return;
                     }
                 case 2:
+                    //noinspection deprecation
                     final OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(cmdArg[1]);
                     String offlinePlayerName = offlinePlayer.getName();
 

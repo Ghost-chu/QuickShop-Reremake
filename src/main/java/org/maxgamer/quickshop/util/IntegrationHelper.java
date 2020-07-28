@@ -37,19 +37,20 @@ public class IntegrationHelper {
     private final Set<IntegratedPlugin> integrations = new HashSet<>(5);
 
     public void register(@NotNull IntegratedPlugin clazz) {
-        if (!isIntegrationClass(clazz)) {
+        if (!isIntegrationClass(clazz.getClass())) {
             throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
         }
         Util.debugLog("Registering " + clazz.getName());
         integrations.add(clazz);
     }
 
-    private boolean isIntegrationClass(@NotNull IntegratedPlugin clazz) {
-        return clazz.getClass().getDeclaredAnnotation(IntegrationStage.class) != null;
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private boolean isIntegrationClass(@NotNull Class<?> clazz) {
+        return clazz.getDeclaredAnnotation(IntegrationStage.class) != null;
     }
 
     public void unregister(@NotNull IntegratedPlugin clazz) {
-        if (!isIntegrationClass(clazz)) {
+        if (!isIntegrationClass(clazz.getClass())) {
             throw new InvaildIntegratedPluginClass();
         }
         //Prevent it being removed

@@ -75,7 +75,7 @@ public abstract class ItemNMS {
             return null;
         }
         Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
-        Object nbtTagCompound = nbtTagCompoundClass.newInstance();
+        Object nbtTagCompound = nbtTagCompoundClass.getDeclaredConstructor().newInstance();
 
         itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
         return nbtTagCompound.toString();

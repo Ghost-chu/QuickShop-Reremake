@@ -49,7 +49,7 @@ public class DatabaseHelper {
     @NotNull
     private final QuickShop plugin;
 
-    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db, DatabaseManager manager) throws SQLException {
+    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db, @NotNull DatabaseManager manager) throws SQLException {
         this.db = db;
         this.plugin = plugin;
         this.manager = manager;

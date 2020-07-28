@@ -344,8 +344,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 if (meta1 instanceof SkullMeta) {
                     //getOwningPlayer will let server query playerProfile in server thread
                     //Causing huge lag, so using String instead
-                    String player1 = ((SkullMeta) meta1).getOwner();
-                    String player2 = ((SkullMeta) meta2).getOwner();
+                    String player1 = ((SkullMeta) meta1).getOwner(); //FIXME: Update this when drop 1.15 supports
+                    String player2 = ((SkullMeta) meta2).getOwner(); //FIXME: Update this when drop 1.15 supports
                     return Objects.equals(player1, player2);
                 }
                 return true;
