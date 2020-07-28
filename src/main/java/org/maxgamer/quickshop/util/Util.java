@@ -470,7 +470,7 @@ public class Util {
 
     @NotNull
     public static String getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
-        if (meta == null || !meta.hasStoredEnchants()) {
+        if (!meta.hasStoredEnchants()) {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         Map.Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
