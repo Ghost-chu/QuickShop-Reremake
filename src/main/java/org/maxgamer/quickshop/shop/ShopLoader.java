@@ -35,7 +35,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.WarningSender;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,7 +59,7 @@ public class ShopLoader {
     private int loadAfterChunkLoaded = 0;
     private int loadAfterWorldLoaded = 0;
     private int totalLoaded = 0;
-    private final WarningSender warningSender;
+    //private final WarningSender warningSender;
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -69,7 +68,7 @@ public class ShopLoader {
      */
     public ShopLoader(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        this.warningSender = new WarningSender(plugin, 15000);
+        //this.warningSender = new WarningSender(plugin, 15000);
     }
 
     public void loadShops() {
@@ -173,9 +172,9 @@ public class ShopLoader {
         long singleShopLoadTime = singleShopLoadTimer.endTimer();
         loadTimes.add(singleShopLoadTime);
         Util.debugLog("Loaded shop used time " + singleShopLoadTime + "ms");
-        if (singleShopLoadTime > 1500) {
-            warningSender.sendWarn("Database performance bottleneck: Detected slow database, it may mean bad network connection, slow database server or database fault. Please check the database!");
-        }
+//        if (singleShopLoadTime > 1500) {
+//            warningSender.sendWarn("Database performance bottleneck: Detected slow database, it may mean bad network connection, slow database server or database fault. Please check the database!");
+//        }
     }
 
     private double costCalc(@NotNull Timer timer) {
