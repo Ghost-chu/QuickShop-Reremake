@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "40",
+  "language-version": "41",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -97,10 +97,7 @@
     "this-shop-is-buying": "&aBu market öğe %dSATIN ALIYOR&a.",
     "this-shop-is-selling": "&aBu market öğe %bSATIYOR&a.",
     "shop-stack": "&aYığının miktarı: &e{0}",
-    "effects": "&aEfektler",
-    "commands": {
-      "preview": "/qs silentpreview {0} {1} {2} {3}"
-    }
+    "effects": "&aEfektler"
   },
   "bypassing-lock": "&cBir QuickShop kilidi atlanıyor!",
   "that-is-locked": "&cBu market kilitli.",
@@ -197,19 +194,7 @@
     "stack": "Yığın başına miktar: &b{0} &e[&d&lDeğiştir&e]",
     "stack-hover": "&eYığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.",
     "item": "&aMarket Öğesi: {0} &e[&d&lDeğiştir&e]",
-    "item-hover": "&eMarket öğesini değiştirmek için tıkla",
-    "commands": {
-      "setowner": "/qs setowner ",
-      "unlimited": "/qs silentunlimited {0} {1} {2} {3}",
-      "buy": "/qs silentbuy {0} {1} {2} {3}",
-      "sell": "/qs silentsell {0} {1} {2} {3}",
-      "price": "/qs price ",
-      "refill": "/qs refill ",
-      "empty": "/qs silentempty {0} {1} {2} {3}",
-      "remove": "/qs silentremove {0} {1} {2} {3}",
-      "stack": "/qs size ",
-      "item": "/qs item"
-    }
+    "item-hover": "&eMarket öğesini değiştirmek için tıkla"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
