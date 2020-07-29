@@ -896,7 +896,8 @@ public class ContainerShop implements Shop {
             }
             if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                 signs.add(sign);
-                continue; //TEXT SIGN
+                //TEXT SIGN
+                //continue
             }
             //Empty or matching the header
         }
