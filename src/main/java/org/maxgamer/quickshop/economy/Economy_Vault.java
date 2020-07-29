@@ -48,9 +48,11 @@ public class Economy_Vault implements EconomyCore, Listener {
     private net.milkbowl.vault.economy.Economy vault;
 
     private final UUID taxAccountUUID;
+    private final boolean allowLoan;
 
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         Util.debugLog("Loading caching tax account...");
         //noinspection deprecation
         this.taxAccountUUID = Bukkit.getOfflinePlayer(Objects.requireNonNull(plugin.getConfig().getString("tax-account", "tax"))).getUniqueId();
@@ -213,7 +215,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
-            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && (getBalance(name) < amount)) {
+            if ((!allowLoan) && (getBalance(name) < amount)) {
                 return false;
             }
             return Objects.requireNonNull(this.vault).withdrawPlayer(p, amount).transactionSuccess();
