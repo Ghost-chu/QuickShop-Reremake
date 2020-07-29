@@ -40,11 +40,9 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                 // Check the range has player?
                 boolean anyPlayerInRegion = false;
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getWorld() == shop.getLocation().getWorld()) {
-                        if (player.getLocation().distance(shop.getLocation()) < range) {
-                            anyPlayerInRegion = true;
-                            break;
-                        }
+                    if ((player.getWorld() == shop.getLocation().getWorld()) && (player.getLocation().distance(shop.getLocation()) < range)) {
+                        anyPlayerInRegion = true;
+                        break;
                     }
                 }
                 if (anyPlayerInRegion) {

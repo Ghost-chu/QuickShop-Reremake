@@ -92,7 +92,7 @@ public class QuickShop extends JavaPlugin {
      * The shop limites.
      */
     @Getter
-    private final HashMap<String, Integer> limits = new HashMap<>(15);
+    private final Map<String, Integer> limits = new HashMap<>(15);
     @Getter
     private IntegrationHelper integrationHelper;
     /**
@@ -371,7 +371,7 @@ public class QuickShop extends JavaPlugin {
                             }
                         }
                     }
-                } catch (Throwable ignored) {
+                } catch (Exception ignored) {
                 }
             }
         }
@@ -407,7 +407,7 @@ public class QuickShop extends JavaPlugin {
                                         try {
                                             Util.debugLog("Tax account not exists! Creating...");
                                             vault.getVault().createPlayerAccount(tax);
-                                        } catch (Throwable ignored) {
+                                        } catch (Exception ignored) {
                                         }
                                         if (!vault.getVault().hasAccount(tax)) {
                                             getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
@@ -416,7 +416,7 @@ public class QuickShop extends JavaPlugin {
 
                                 }
                             }
-                        } catch (Throwable ignored) {
+                        } catch (Exception ignored) {
                             Util.debugLog("Failed to fix account issue.");
                         }
                     }
@@ -474,7 +474,7 @@ public class QuickShop extends JavaPlugin {
     public void reloadConfig() {
         try {
             super.reloadConfig();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             getLogger().severe("Cannot reading the configration, plugin may won't works!");
         }
@@ -537,7 +537,7 @@ public class QuickShop extends JavaPlugin {
         Util.debugLog("Unloading all shops...");
         try {
             Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
-        } catch (Throwable th) {
+        } catch (Exception th) {
             // ignore, we didn't care that
         }
 
@@ -660,12 +660,10 @@ public class QuickShop extends JavaPlugin {
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
         // This should be inited before shop manager
-        if (this.display) {
-            if (getConfig().getBoolean("shop.display-auto-despawn")) {
-                this.enabledAsyncDisplayDespawn = true;
-                this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-                this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
-            }
+        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
+            this.enabledAsyncDisplayDespawn = true;
+            this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+            this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
         this.shopManager = new ShopManager(this);
 
@@ -766,13 +764,6 @@ public class QuickShop extends JavaPlugin {
         }
         registerIntegrations();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
-        try {
-            String[] easterEgg = new FunnyEasterEgg().getRandomEasterEgg();
-            if (!(easterEgg == null)) {
-                Arrays.stream(easterEgg).forEach(str -> getLogger().info(str));
-            }
-        } catch (Throwable ignore) {
-        }
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -854,7 +845,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().severe("Error connecting to the database.");
             }
             return false;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
@@ -1622,12 +1613,12 @@ public class QuickShop extends JavaPlugin {
 //            if (logger != null) {
 //                try {
 //                    logger.set(this, new QuickShopLogger(this));
-//                } catch (Throwable th) {
+//                } catch (Exception th) {
 //                    logger.setAccessible(true);
 //                    logger.set(this, new QuickShopLogger(this));
 //                }
 //            }
-//        } catch (Throwable ignored) {
+//        } catch (Exception ignored) {
 //        }
 //    }
 

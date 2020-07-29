@@ -19,10 +19,12 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -38,7 +40,7 @@ public class UbuntuPaster implements PasteInterface {
      * @throws Exception the throws
      */
     @NotNull
-    public String pasteTheText(@NotNull String text) throws Exception {
+    public String pasteTheText(@NotNull String text) throws IOException {
         URL url = new URL("https://paste.ubuntu.com");
         URLConnection conn = url.openConnection();
         conn.setRequestProperty("accept", "*/*");
@@ -50,6 +52,7 @@ public class UbuntuPaster implements PasteInterface {
         conn.setDoInput(true);
         conn.setConnectTimeout(50000);
         conn.setReadTimeout(100000);
+        @Cleanup
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // poster=aaaaaaa&syntax=text&expiration=&content=%21%40
         String builder =
@@ -61,6 +64,7 @@ public class UbuntuPaster implements PasteInterface {
                         + URLEncoder.encode(text, "UTF-8");
         out.print(builder);
         out.flush(); // Drop
+        @Cleanup
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         Util.debugLog("Request Completed: " + conn.getURL());
         String link = conn.getURL().toString();

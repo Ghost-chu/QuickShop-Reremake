@@ -50,7 +50,7 @@ public class DisplayItemPersistentDataType
             @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
         try {
             return gson.toJson(complex);
-        } catch (Throwable th) {
+        } catch (Exception th) {
             new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
             return "";
         }
@@ -62,7 +62,7 @@ public class DisplayItemPersistentDataType
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
             return gson.fromJson(primitive, ShopProtectionFlag.class);
-        } catch (Throwable th) {
+        } catch (Exception th) {
             new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
             return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
         }

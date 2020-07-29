@@ -37,9 +37,9 @@ import java.util.Map;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class ResidenceIntegration implements IntegratedPlugin {
-    final List<String> createLimits;
+    private final List<String> createLimits;
 
-    final List<String> tradeLimits;
+    private final List<String> tradeLimits;
 
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";

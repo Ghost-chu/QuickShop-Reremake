@@ -42,7 +42,12 @@ public class SubCommand_Info implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         int buying, selling, doubles, chunks, worlds, doubleschests;
-        buying = selling = doubles = chunks = worlds = doubleschests = 0;
+        buying = 0;
+        selling = 0;
+        doubles = 0;
+        chunks = 0;
+        worlds = 0;
+        doubleschests = 0;
         int nostock = 0;
 
         for (Map<ShopChunk, Map<Location, Shop>> inWorld :

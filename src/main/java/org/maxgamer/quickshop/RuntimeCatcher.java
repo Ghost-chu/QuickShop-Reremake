@@ -29,7 +29,7 @@ public class RuntimeCatcher {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
         }
-        if (isForgeBasedServer(plugin)) {
+        if (isForgeBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
             plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
             try {
@@ -38,7 +38,7 @@ public class RuntimeCatcher {
                 e.printStackTrace();
             }
         }
-        if (isFabricBasedServer(plugin)) {
+        if (isFabricBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
             plugin.getLogger().warning("WARN: You won't get any support under Fabric platform. Server will continue loading after 30s.");
         }
@@ -63,13 +63,13 @@ public class RuntimeCatcher {
         //API test
         try {
             plugin.getServer().spigot();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    private boolean isForgeBasedServer(@NotNull QuickShop plugin) {
+    private boolean isForgeBasedServer() {
         //Forge server detect - Arclight
         if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
             return true;
@@ -77,7 +77,7 @@ public class RuntimeCatcher {
         return Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo");
     }
 
-    private boolean isFabricBasedServer(@NotNull QuickShop plugin) {
+    private boolean isFabricBasedServer() {
         //Nobody really make it right!?
         return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
