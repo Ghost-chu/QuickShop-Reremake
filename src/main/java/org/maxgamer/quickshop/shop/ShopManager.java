@@ -402,7 +402,7 @@ public class ShopManager {
                 actionCreate(p, info, message, bypassProtectionChecks);
             }
             if (info.getAction() == ShopAction.BUY) {
-                actionTrade(p, actions, info, message);
+                actionTrade(p, info, message);
             }
         });
     }
@@ -837,7 +837,7 @@ public class ShopManager {
         return false;
     }
 
-    private void actionTrade(@NotNull Player p, @NotNull Map<UUID, Info> actions, @NotNull Info info, @NotNull String message) {
+    private void actionTrade(@NotNull Player p, @NotNull Info info, @NotNull String message) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -968,9 +968,9 @@ public class ShopManager {
         }
     }
 
-    private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-        return getShopIncludeAttached_Fast(loc, fromAttach, QuickShop.getInstance().getShopCache() != null);
-    }
+    //private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
+    //    return getShopIncludeAttached_Fast(loc, fromAttach, QuickShop.getInstance().getShopCache() != null);
+    //}
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
         Shop shop = getShop(loc);

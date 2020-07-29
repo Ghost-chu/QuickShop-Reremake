@@ -236,12 +236,16 @@ public class PlayerListener extends QSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         Location location;
-        try {
-            location = e.getInventory().getLocation();
-        } catch (NullPointerException ex) {
-            //for strange NPE from spigot API fix
+        //for strange NPE from spigot API fix
+        //noinspection ConstantConditions
+        if (e.getInventory() == null) {
             return;
         }
+        if (e.getInventory().getLocation() == null) {
+            return;
+        }
+        location = e.getInventory().getLocation();
+
         if (location == null) {
             return; /// ignored as workaround, GH-303
         }

@@ -26,7 +26,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.Objects;
 
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
@@ -83,15 +82,14 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
     @Override
     public @NotNull String getItem(@NotNull Material material) {
-        try {
-            JsonElement element = Objects.requireNonNull(lang).get("item.minecraft." + material.name().toLowerCase());
-            if (element == null) {
-                return getBlock(material);
-            } else {
-                return element.getAsString();
-            }
-        } catch (NullPointerException npe) {
+        if (lang == null) {
             return super.getItem(material);
+        }
+        JsonElement element = lang.get("item.minecraft." + material.name().toLowerCase());
+        if (element == null) {
+            return getBlock(material);
+        } else {
+            return element.getAsString();
         }
     }
 
@@ -106,11 +104,17 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getItem(material);
         }
-        try {
-            return lang.get("block.minecraft." + material.name().toLowerCase()).getAsString();
-        } catch (NullPointerException e) {
+//        try {
+//            return lang.get("block.minecraft." + material.name().toLowerCase()).getAsString();
+//        } catch (NullPointerException e) {
+//            return super.getItem(material);
+//        }
+
+        JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
+        if (jsonElement == null) {
             return super.getItem(material);
         }
+        return jsonElement.getAsString();
     }
 
     @Override
@@ -118,11 +122,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getPotion(potionEffectType);
         }
-        try {
-            return lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase()).getAsString();
-        } catch (NullPointerException e) {
+//        try {
+//            return lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase()).getAsString();
+//        } catch (NullPointerException e) {
+//            return super.getPotion(potionEffectType);
+//        }
+        JsonElement jsonElement = lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase());
+        if (jsonElement == null) {
             return super.getPotion(potionEffectType);
         }
+        return jsonElement.getAsString();
     }
 
     @Override
@@ -130,11 +139,12 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getEnchantment(enchantment);
         }
-        try {
-            return lang.get("enchantment.minecraft." + enchantment.getKey().getKey().toLowerCase()).getAsString();
-        } catch (NullPointerException e) {
+        JsonElement jsonElement = lang.get("enchantment.minecraft." + enchantment.getKey().getKey().toLowerCase());
+        if (jsonElement == null) {
             return super.getEnchantment(enchantment);
         }
+        return jsonElement.getAsString();
+
     }
 
     @Override
@@ -142,11 +152,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getEntity(entityType);
         }
-        try {
-            return lang.get("entity.minecraft." + entityType.name().toLowerCase()).getAsString();
-        } catch (NullPointerException e) {
+//        try {
+//            return lang.get("entity.minecraft." + entityType.name().toLowerCase()).getAsString();
+//        } catch (NullPointerException e) {
+//            return super.getEntity(entityType);
+//        }
+        JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
+        if (jsonElement == null) {
             return super.getEntity(entityType);
         }
+        return jsonElement.getAsString();
     }
 }
 

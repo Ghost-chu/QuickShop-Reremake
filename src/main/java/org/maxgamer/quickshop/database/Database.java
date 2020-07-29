@@ -143,7 +143,7 @@ public class Database {
     /**
      * Represents a connection error, generally when the server can't connect to MySQL or something.
      */
-    public final static class ConnectionException extends Exception {
+    public static final class ConnectionException extends Exception {
         private static final long serialVersionUID = 8348749992936357317L;
 
         private ConnectionException(String msg) {
