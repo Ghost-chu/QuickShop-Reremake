@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 public class ShopProtectionFlag {
     private final String itemStackString;
 
-    private final static String mark = "QuickShop DisplayItem";
+    private static final String mark = "QuickShop DisplayItem";
 
     private final String shopLocation;
 

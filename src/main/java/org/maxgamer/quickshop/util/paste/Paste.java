@@ -338,7 +338,7 @@ public class Paste {
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
                 finalReport.append("\t*********************************\n");
             }
-        } catch (Exception th) {
+        } catch (Exception ignored) {
             finalReport.append("\tFailed to get data\n");
         }
         finalReport.append("================================================\n");

@@ -26,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -61,6 +62,6 @@ public class BootError {
     }
 
     public String[] getErrors() {
-        return errors;
+        return Arrays.copyOf(errors, errors.length);
     }
 }

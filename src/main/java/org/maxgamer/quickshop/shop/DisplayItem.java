@@ -303,10 +303,16 @@ public abstract class DisplayItem {
      */
     public abstract boolean isSpawned();
 
+    /**
+     * Sets this display item should be remove
+     */
     public void pendingRemoval() {
         pendingRemoval = true;
     }
 
+    /**
+     * Gets this display item should be remove
+     */
     public boolean isPendingRemoval() {
         return pendingRemoval;
     }

@@ -41,7 +41,7 @@ public class MojangAPI {
 
     private static final String assetsUrl = "https://resources.download.minecraft.net/";
 
-    private static final String pathTemplate = "minecraft/lang/{0}.json";
+    //private static final String pathTemplate = "minecraft/lang/{0}.json";
 
     private static final Gson gson = JsonUtil.getGson();
 

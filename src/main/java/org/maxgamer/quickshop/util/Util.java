@@ -1118,11 +1118,9 @@ public class Util {
      */
     @Deprecated
     public static boolean mapMatches(@NotNull Map<?, ?> map1, @NotNull Map<?, ?> map2) {
+        Set<? extends Entry<?, ?>> objectSet = map2.entrySet();
         for (Object obj : map1.keySet()) {
-            if (!map2.containsKey(obj)) {
-                return false;
-            }
-            if (map1.get(obj) != map2.get(obj)) {
+            if (!objectSet.contains(obj)) {
                 return false;
             }
         }

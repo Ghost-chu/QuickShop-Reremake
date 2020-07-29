@@ -40,7 +40,7 @@ public class EngineHubPaster {
         return new PasteTask(content);
     }
 
-    private final static class PasteTask implements Callable<URL> {
+    private static final class PasteTask implements Callable<URL> {
         private final String content;
 
         private PasteTask(String content) {
