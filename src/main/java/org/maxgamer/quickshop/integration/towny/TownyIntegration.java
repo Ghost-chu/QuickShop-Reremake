@@ -56,7 +56,7 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        if(ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())){
+        if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
             Util.debugLog("This world disabled Towny.");
             return true;
         }
@@ -85,7 +85,7 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        if(ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())){
+        if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
             Util.debugLog("This world disabled Towny.");
             return true;
         }

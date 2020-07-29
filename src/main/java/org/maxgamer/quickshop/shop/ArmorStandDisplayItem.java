@@ -175,12 +175,12 @@ public class ArmorStandDisplayItem extends DisplayItem {
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         Objects.requireNonNull(armorStand.getEquipment()).setHelmet(guardedIstack);
         if (plugin.getRuntimeCatcher().getGameVersion().isPersistentStorageApiSupports()) {
-                armorStand
-                        .getPersistentDataContainer()
-                        .set(
-                                new NamespacedKey(plugin, "displayMark"),
-                                DisplayItemPersistentDataType.INSTANCE,
-                                DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
+            armorStand
+                    .getPersistentDataContainer()
+                    .set(
+                            new NamespacedKey(plugin, "displayMark"),
+                            DisplayItemPersistentDataType.INSTANCE,
+                            DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
 
         }
     }

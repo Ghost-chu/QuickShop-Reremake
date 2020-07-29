@@ -19,7 +19,7 @@ public class QuickShopAPI {
      * @param qs The QuickShop plugin instance
      */
     public static void setupApi(@NotNull JavaPlugin qs) {
-        if(!(qs instanceof QuickShop)){
+        if (!(qs instanceof QuickShop)) {
             throw new IllegalArgumentException("You can't setup API, it should only access by QuickShop internal calling.");
         }
         plugin = (QuickShop) qs;
@@ -74,7 +74,10 @@ public class QuickShopAPI {
 
     /**
      * Gets ItemMatcher instance to allow using the same matcher that quickshop using to matching the items.
+     *
      * @return ItemMatcher
      */
-    public static @Nullable ItemMatcher getItemMatcher() {return plugin.getItemMatcher();}
+    public static @Nullable ItemMatcher getItemMatcher() {
+        return plugin.getItemMatcher();
+    }
 }

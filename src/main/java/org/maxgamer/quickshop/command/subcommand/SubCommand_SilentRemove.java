@@ -65,7 +65,7 @@ public class SubCommand_SilentRemove implements CommandProcesser {
         }
 
         //shop.onUnload();
-        plugin.log("Deleting shop "+shop+" request by /qs silentremove (control panel) command.");
+        plugin.log("Deleting shop " + shop + " request by /qs silentremove (control panel) command.");
         shop.delete();
     }
 }

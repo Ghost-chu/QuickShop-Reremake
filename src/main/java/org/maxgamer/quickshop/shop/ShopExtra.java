@@ -5,6 +5,7 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+
 @AllArgsConstructor
 @Data
 public class ShopExtra {

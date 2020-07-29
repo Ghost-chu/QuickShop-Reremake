@@ -6,11 +6,12 @@ import org.maxgamer.quickshop.QuickShop;
 
 public abstract class QSListener implements Listener {
     final QuickShop plugin;
-    public QSListener (QuickShop plugin){
+
+    public QSListener(QuickShop plugin) {
         this.plugin = plugin;
     }
 
-    public void register(){
-        Bukkit.getPluginManager().registerEvents(this,plugin);
+    public void register() {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 }
