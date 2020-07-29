@@ -20,21 +20,35 @@ public class Cache {
         return accessCaching.size();
     }
 
+
+    /**
+     * Gets shop from plugin caching
+     *
+     * @param location        The shop location that you want to get
+     * @param includeAttached Include attached shops
+     * @return The shop, null for no shops found in caching and memory
+     */
     @Nullable
     public Shop getCaching(@NotNull Location location, boolean includeAttached) {
         CacheContainer container;
-            container = accessCaching.getIfPresent(location);
+        container = accessCaching.getIfPresent(location);
         if (container == null) {
             if (includeAttached) {
                 return plugin.getShopManager().getShopIncludeAttached(location);
             } else {
                 return plugin.getShopManager().getShop(location);
             }
-        }else{
+        } else {
             return container.getShop();
         }
     }
 
+    /**
+     * Update and invalidate the caching
+     *
+     * @param location The location that you want to update
+     * @param shop     null for invalidate and Shop object for update
+     */
     public void setCache(@NotNull Location location, @Nullable Shop shop) {
         if (shop == null) {
             accessCaching.invalidate(location);
@@ -55,15 +69,23 @@ class CacheContainer {
         this.time = time;
     }
 
+    /**
+     * Gets container created at.
+     *
+     * @return The timestamp
+     */
     public long getTime() {
         return time;
     }
 
+    /**
+     * Gets container shop
+     *
+     * @return The shop
+     */
     @NotNull
     public Shop getShop() {
         return shop;
     }
-
-
 }
 

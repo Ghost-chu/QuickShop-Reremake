@@ -130,7 +130,7 @@ public class SubCommand_Debug implements CommandProcesser {
                                 + ChatColor.GREEN
                                 + listener1.getListener().getClass().getCanonicalName());
             }
-        } catch (Throwable th) {
+        } catch (Exception th) {
             MsgUtil.sendMessage(sender, "ERR " + th.getMessage());
             th.printStackTrace();
         }

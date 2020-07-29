@@ -23,10 +23,7 @@ import lombok.Cleanup;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class HttpRequest implements Closeable {
 
@@ -385,7 +382,7 @@ public final class HttpRequest implements Closeable {
     /**
      * Used with {@link #bodyForm(Form)}.
      */
-    public final static class Form {
+    public static final class Form {
         private final List<String> elements = new ArrayList<>();
 
         private Form() {
@@ -436,7 +433,7 @@ public final class HttpRequest implements Closeable {
     /**
      * Used to buffer the response in memory.
      */
-    public final static class BufferedResponse {
+    public static final class BufferedResponse {
         private final byte[] data;
 
         private BufferedResponse(byte[] data) {
@@ -449,7 +446,7 @@ public final class HttpRequest implements Closeable {
          * @return the data
          */
         public byte[] asBytes() {
-            return data;
+            return Arrays.copyOf(data, data.length);
         }
 
         /**
