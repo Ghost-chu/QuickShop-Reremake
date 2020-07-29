@@ -173,9 +173,9 @@ public class Paste {
                     .append(" # ")
                     .append(bplugin.getDescription().getAPIVersion());
             if (bplugin.getDescription().getDepend().contains(plugin.getName()) || bplugin.getDescription().getSoftDepend().contains(plugin.getName())) {
-                finalReport.append(" # [Addon/Compatible]");
+                finalReport.append(" # [Addon/Compatible Module]");
             }
-            //finalReport.append(" # ").append(bplugin.getClass().getPackage().getName()).append(".").append(bplugin.getClass().getName());
+            finalReport.append(" # ").append(bplugin.getClass().getPackage().getName()).append(".").append(bplugin.getClass().getName());
             finalReport.append("\n");
         }
         finalReport.append("================================================\n");
