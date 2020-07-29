@@ -36,16 +36,21 @@ public class Cache {
     }
 
     public void setCache(@NotNull Location location, @Nullable Shop shop) {
+        if (shop == null) {
+            accessCaching.invalidate(location);
+            return;
+        }
         accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
     }
 }
 
 class CacheContainer {
-    private final  Shop shop;
+    @NotNull
+    private final Shop shop;
 
     private final long time;
 
-    public CacheContainer(Shop shop, long time) {
+    public CacheContainer(@NotNull Shop shop, long time) {
         this.shop = shop;
         this.time = time;
     }
@@ -53,6 +58,8 @@ class CacheContainer {
     public long getTime() {
         return time;
     }
+
+    @NotNull
     public Shop getShop() {
         return shop;
     }
