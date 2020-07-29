@@ -55,12 +55,12 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
     @NotNull
-    private ItemStack item;
-
-    @NotNull
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
+    private final Map<String, Map<String, String>> extra;
+    @NotNull
+    private ItemStack item;
     @Nullable
     private DisplayItem displayItem;
     @EqualsAndHashCode.Exclude
@@ -71,14 +71,10 @@ public class ContainerShop implements Shop {
     private volatile boolean createBackup = false;
     private ShopModerator moderator;
     private double price;
-
     private ShopType shopType;
-
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-
-    private final Map<String, Map<String, String>> extra;
 
     private ContainerShop(@NotNull ContainerShop s) {
         this.displayItem = s.displayItem;
@@ -475,13 +471,13 @@ public class ContainerShop implements Shop {
     public @NotNull String ownerName(boolean forceUsername) {
         String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
         if (name == null || name.isEmpty()) {
-            name =  MsgUtil.getMessageOfflinePlayer(
+            name = MsgUtil.getMessageOfflinePlayer(
                     "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
         }
-        if(forceUsername) {
+        if (forceUsername) {
             return name;
         }
-        if(isUnlimited()){
+        if (isUnlimited()) {
             return MsgUtil.getMessageOfflinePlayer(
                     "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
         }
@@ -871,7 +867,7 @@ public class ContainerShop implements Shop {
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
         String adminShopHeader =
-                MsgUtil.getMessageOfflinePlayer("signs.header", null,MsgUtil.getMessageOfflinePlayer(
+                MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
                         "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
         String signHeaderUsername =
                 MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
@@ -890,7 +886,7 @@ public class ContainerShop implements Shop {
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
             String header = lines[0];
-            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty() ){
+            if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
@@ -1185,10 +1181,11 @@ public class ContainerShop implements Shop {
 
     /**
      * Gets shop status is stacking shop
+     *
      * @return The shop stacking status
      */
     @Override
-    public boolean isStackingShop(){
+    public boolean isStackingShop() {
         return plugin.isAllowStack() && this.item.getAmount() > 1;
     }
 

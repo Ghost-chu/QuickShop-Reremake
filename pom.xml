@@ -144,10 +144,10 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>ustc</id>
-            <url>http://mirrors.ustc.edu.cn/</url>
-        </repository>
+        <!--        <repository>-->
+        <!--            <id>ustc</id>-->
+        <!--            <url>http://mirrors.ustc.edu.cn/</url>-->
+        <!--        </repository>-->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>

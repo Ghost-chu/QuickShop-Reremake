@@ -16,9 +16,13 @@ public final class JsonUtil {
         return gson;
     }
 
-    public static Gson getOutputGson() { return outputGson;}
+    public static Gson getOutputGson() {
+        return outputGson;
+    }
 
-    public static Gson getHumanReadableGson() { return humanReadableGson; }
+    public static Gson getHumanReadableGson() {
+        return humanReadableGson;
+    }
 
 
 }

@@ -331,6 +331,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     /**
      * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     *
      * @param container The command container to unregister
      */
     public void unregisterCmd(@NotNull CommandContainer container) {
@@ -339,6 +340,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     /**
      * Gets a list contains all registered commands
+     *
      * @return All registered commands.
      */
     @NotNull

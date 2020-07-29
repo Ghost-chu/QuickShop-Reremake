@@ -47,6 +47,7 @@ import org.maxgamer.quickshop.util.Util;
 
 public class BlockListener extends ProtectionListenerBase {
     private final boolean update_sign_when_inventory_moving;
+
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
         this.update_sign_when_inventory_moving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
@@ -55,7 +56,7 @@ public class BlockListener extends ProtectionListenerBase {
     /*
      * Removes chests when they're destroyed.
      */
-    @EventHandler(priority = EventPriority.NORMAL,ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         final Block b = e.getBlock();
 //        if (b.getState() instanceof Sign) { //FIXME: It seems dupe with LockListener, remove it if can be removed
@@ -109,7 +110,7 @@ public class BlockListener extends ProtectionListenerBase {
             }
 
             //shop.onUnload();
-            plugin.log("Deleting shop "+shop+" request by block break.");
+            plugin.log("Deleting shop " + shop + " request by block break.");
             shop.delete();
             MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
         } else if (Util.isWallSign(b.getType())) {
@@ -138,7 +139,7 @@ public class BlockListener extends ProtectionListenerBase {
                         return;
                     }
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("break-shop-use-supertool", p));
-                    plugin.log("Deleting shop "+shop+" request by block break (super tool).");
+                    plugin.log("Deleting shop " + shop + " request by block break (super tool).");
                     shop.delete();
                     return;
                 }
