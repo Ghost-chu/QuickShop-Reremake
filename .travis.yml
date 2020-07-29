@@ -12,15 +12,15 @@ install: skip
 #  - cd $PROJECT_NAME #Cd into project
 #  - mvn clean #Clean up
 #  - mvn -T 4 install #Install
-#after_success:
-#  - rm -rf push # GITHUB - CLEANUP
-#  #Script to release to Github Release
-#  - mkdir push
-#  - cp -r ./target/*.jar ./push/
-#  - rm -f ./push/original-*.jar
-#  - rm -f ./push/*-shaded.jar
-#  - rm -f ./push/*-sources.jar
-#  - mv -f ./push/*-javadoc.jar ./push/JavaDocument.zip
+after_success:
+  - rm -rf push # GITHUB - CLEANUP
+  #Script to release to Github Release
+  - mkdir push
+  - cp -r ./target/*.jar ./push/
+  - rm -f ./push/original-*.jar
+  - rm -f ./push/*-shaded.jar
+  - rm -f ./push/*-sources.jar
+  - mv -f ./push/*-javadoc.jar ./push/JavaDocument.zip
 #  #Script to release to Bukkit Dev
 #  - mkdir devbukkit
 #  - cp -r ./target/*.jar ./devbukkit/
