@@ -23,6 +23,17 @@
         <system>GitHub Issues</system>
     </issueManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <scm>
         <url>https://github.com/${developer}/${project.version}</url>
         <connection>scm:git:git://github.com/${developer}/${project.version}.git</connection>
