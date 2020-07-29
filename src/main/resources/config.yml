@@ -475,7 +475,7 @@ integration:
       #If a player want to create a shop, player must pass which checks?
       #You can use multi checks in same time.
       #Priority: UP to DOWN
-      #
+    #
     #Avaliable field:
     #FLAG = Region must set quickshop-create flag available for players.
     #BUILD = Player must have ability to build at the target region.
@@ -488,7 +488,7 @@ integration:
         #You can use multi checks in same time.
         #Priority: UP to DOWN
         #
-        #Avaliable field:
+      #Avaliable field:
       #FLAG = Region must set quickshop-trade flag available for players.
       #BUILD = Player must have ability to build at the target region.
       #CHEST_ACCESS = Player must can access chest.
@@ -513,7 +513,7 @@ integration:
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
       #If a player want to create a shop, player must pass which checks?
-      #You can use multi checks in the same time.
+    #You can use multi checks in the same time.
     #Priority: UP to DOWN
     #
     #Avaliable field:

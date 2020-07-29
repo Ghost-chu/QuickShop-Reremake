@@ -41,18 +41,6 @@ public enum GameVersion {
         this.persistentStorageApiSupports = persistentStorageApiSupports;
     }
 
-    public boolean isCoreSupports() {
-        return coreSupports;
-    }
-
-    public boolean isVirtualDisplaySupports() {
-        return virtualDisplaySupports;
-    }
-
-    public boolean isPersistentStorageApiSupports() {
-        return persistentStorageApiSupports;
-    }
-
     /**
      * Matches the version that QuickShop supports or not
      *
@@ -67,6 +55,18 @@ public enum GameVersion {
             }
         }
         return UNKNOWN;
+    }
+
+    public boolean isCoreSupports() {
+        return coreSupports;
+    }
+
+    public boolean isVirtualDisplaySupports() {
+        return virtualDisplaySupports;
+    }
+
+    public boolean isPersistentStorageApiSupports() {
+        return persistentStorageApiSupports;
     }
 
 }

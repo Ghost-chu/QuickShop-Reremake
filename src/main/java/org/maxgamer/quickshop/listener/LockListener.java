@@ -37,7 +37,7 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-public class LockListener extends ProtectionListenerBase{
+public class LockListener extends ProtectionListenerBase {
 
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);

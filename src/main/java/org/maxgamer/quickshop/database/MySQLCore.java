@@ -35,10 +35,8 @@ import java.util.Properties;
 
 public class MySQLCore implements DatabaseCore {
 
-    private final List<Connection> POOL = new ArrayList<>();
-
     private static final int MAX_CONNECTIONS = 8;
-
+    private final List<Connection> POOL = new ArrayList<>();
     /**
      * The connection properties... user, pass, autoReconnect..
      */

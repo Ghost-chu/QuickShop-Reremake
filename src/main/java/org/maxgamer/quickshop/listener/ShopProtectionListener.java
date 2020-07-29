@@ -68,7 +68,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                 if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
                 } else {
-                    plugin.log("Deleting shop "+shop+" request by block break (explode).");
+                    plugin.log("Deleting shop " + shop + " request by block break (explode).");
                     shop.delete();
                 }
             }
@@ -162,7 +162,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
             if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
-                plugin.log("Deleting shop "+shop+" request by block break (explode).");
+                plugin.log("Deleting shop " + shop + " request by block break (explode).");
                 shop.delete();
             }
         }
@@ -224,7 +224,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
             event.setCancelled(true);
             return;
         }
-        plugin.log("Deleting shop "+shop+" request by mob changing.");
+        plugin.log("Deleting shop " + shop + " request by mob changing.");
         shop.delete();
     }
 

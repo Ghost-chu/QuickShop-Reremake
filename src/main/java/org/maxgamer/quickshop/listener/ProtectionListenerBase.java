@@ -17,7 +17,7 @@ public class ProtectionListenerBase extends QSListener {
         this.cache = cache;
     }
 
-    public QuickShop getPlugin(){
+    public QuickShop getPlugin() {
         return plugin;
     }
 
