@@ -61,7 +61,7 @@ public class Paste {
     public @NotNull String genNewPaste() {
         StringBuilder finalReport = new StringBuilder();
         finalReport.append("###############################\n");
-        finalReport.append("QuickShop-" + QuickShop.getFork() + " Paste Result\n");
+        finalReport.append("QuickShop-").append(QuickShop.getFork()).append(" Paste Result\n");
         finalReport.append("###############################\n");
         finalReport.append("\n");
         finalReport.append("\n");
