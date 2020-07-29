@@ -57,7 +57,7 @@ public class SubCommand_Debug implements CommandProcesser {
                 break;
             case "handlerlist":
                 if (cmdArg.length < 2) {
-                    MsgUtil.sendMessage(sender, "You must given a event");
+                    MsgUtil.sendMessage(sender, "You must given a event class");
                     break;
                 }
 
