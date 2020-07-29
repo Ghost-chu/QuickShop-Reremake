@@ -61,13 +61,13 @@ public class PermissionManager {
 //                    Util.debugLog("Permission Node: " + container.getPermission());
 //                    //                    Util.debugLog("Primary Group: " + container.getGroupName());
 //                    //                    Util.debugLog("Other infos: " + container.getOtherInfos());
-                } catch (Throwable th) {
+                } catch (Exception th) {
                     th.printStackTrace();
                     Util.debugLog("Exception throwed when getting debug messages.");
                 }
             }
             return result;
-        } catch (Throwable th) {
+        } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             plugin

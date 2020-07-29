@@ -357,12 +357,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             return true;
         }
 
-        if (sender instanceof Player) {
-            if (plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
-                Player player = (Player) sender;
-                ((Player) sender)
-                        .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
-            }
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+            Player player = (Player) sender;
+            ((Player) sender)
+                    .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
 
         String[] passthroughArgs;
@@ -378,7 +376,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         // if (cmdArg.length == 0)
         //     return rootContainer.getExecutor().onCommand(sender, commandLabel, temp);
         for (CommandContainer container : cmds) {
-            if (!container.getPrefix().toLowerCase().equals(cmdArg[0])) {
+            if (!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
                 continue;
             }
             List<String> requirePermissions = container.getPermissions();
@@ -421,11 +419,9 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (plugin.getBootError() != null) {
             return null;
         }
-        if (sender instanceof Player) {
-            if (plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
-                Player player = (Player) sender;
-                ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
-            }
+        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+            Player player = (Player) sender;
+            ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length == 0 || cmdArg.length == 1) {
             // No args

@@ -57,7 +57,6 @@ public abstract class DisplayItem {
         //this.originalItemStack.setAmount(1);
     }
 
-
     /**
      * Check the itemStack is contains protect flag.
      *
@@ -96,7 +95,7 @@ public abstract class DisplayItem {
                 if (shopProtectionFlag == null) {
                     continue;
                 }
-                if (defaultMark.equals(shopProtectionFlag.getMark())) {
+                if (defaultMark.equals(ShopProtectionFlag.getMark())) {
                     return true;
                 }
                 if (shopProtectionFlag.getShopLocation() != null) {
@@ -111,16 +110,6 @@ public abstract class DisplayItem {
         }
 
         return false;
-    }
-
-    /**
-     * Get plugin now is using which one DisplayType
-     *
-     * @return Using displayType.
-     */
-    @NotNull
-    public static DisplayType getNowUsing() {
-        return DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
     }
 
     /**
@@ -157,7 +146,7 @@ public abstract class DisplayItem {
                 if (shopProtectionFlag == null) {
                     continue;
                 }
-                if (!shopProtectionFlag.getMark().equals(defaultMark)) {
+                if (!ShopProtectionFlag.getMark().equals(defaultMark)) {
                     continue;
                 }
                 if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
@@ -168,6 +157,26 @@ public abstract class DisplayItem {
             }
         }
         return false;
+    }
+
+    /**
+     * Get plugin now is using which one DisplayType
+     *
+     * @return Using displayType.
+     */
+    @NotNull
+    public static DisplayType getNowUsing() {
+        return DisplayType.fromID(plugin.getConfig().getInt("shop.display-type"));
+    }
+
+    /**
+     * Gets the original ItemStack (without protection mark, should same with shop trading item.
+     *
+     * @return ItemStack
+     */
+    @NotNull
+    public ItemStack getOriginalItemStack() {
+        return originalItemStack;
     }
 
     /**

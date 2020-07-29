@@ -24,7 +24,7 @@ public class CompatibilityManager {
         for (CompatibilityModule module : this.registeredModules) {
             try {
                 module.toggle(player, status);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 unregister(module);
                 Util.debugLog("Unregistered module " + module.getName() + " for an error: " + e.getMessage());
             }

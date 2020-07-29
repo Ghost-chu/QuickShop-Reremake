@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.collect.Maps;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -192,14 +193,12 @@ public class MsgUtil {
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw.get(), args);
-            if (player != null) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
-                    filled = PlaceholderAPI.setPlaceholders(player, filled);
-                    Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
-                }
+            if (player != null && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                filled = PlaceholderAPI.setPlaceholders(player, filled);
+                Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
             }
             return filled;
-        } catch (Throwable th) {
+        } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
@@ -440,6 +439,7 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
+            @Cleanup
             ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
@@ -699,22 +699,20 @@ public class MsgUtil {
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw.get(), args);
-            if (player instanceof OfflinePlayer) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
-                    try {
-                        filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-                    } catch (Exception ignored) {
-                        if (((OfflinePlayer) player).getPlayer() != null) {
-                            try {
-                                filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
-                            } catch (Exception ignore) {
-                            }
+            if ((player instanceof OfflinePlayer) && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                try {
+                    filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+                } catch (Exception ignored) {
+                    if (((OfflinePlayer) player).getPlayer() != null) {
+                        try {
+                            filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
+                        } catch (Exception ignore) {
                         }
                     }
                 }
             }
             return filled;
-        } catch (Throwable th) {
+        } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
@@ -983,7 +981,7 @@ public class MsgUtil {
             }
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             return normalmessage;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return errorComponent;
         }
@@ -1493,7 +1491,7 @@ public class MsgUtil {
                     continue;
                 }
                 sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
             }
@@ -1511,7 +1509,7 @@ public class MsgUtil {
                     continue;
                 }
                 sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
             }

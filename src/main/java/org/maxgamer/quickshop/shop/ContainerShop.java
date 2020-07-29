@@ -154,7 +154,7 @@ public class ContainerShop implements Shop {
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         Util.debugLog(e.getMessage());
                         Arrays.stream(e.getStackTrace()).forEach(ex -> Util.debugLog(ex.getClassName() + "#" + ex.getMethodName() + "#" + ex.getLineNumber()));
                         plugin.getConfig().set("shop.display-type", 0);

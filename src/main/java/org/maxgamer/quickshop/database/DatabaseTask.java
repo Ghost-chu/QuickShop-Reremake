@@ -21,7 +21,7 @@ public class DatabaseTask {
 
 
     public void run(@NonNull Connection connection) {
-        try (final PreparedStatement ps = connection.prepareStatement(statement)) {
+        try (PreparedStatement ps = connection.prepareStatement(statement)) {
             task.edit(ps);
             ps.execute();
             task.onSuccess();

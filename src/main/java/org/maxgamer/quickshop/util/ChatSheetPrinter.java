@@ -37,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  A utils for print sheet on chat.
 */
 public class ChatSheetPrinter {
-    final ChatColor chatColor = ChatColor.DARK_PURPLE;
+    private final ChatColor chatColor = ChatColor.DARK_PURPLE;
     private CommandSender p;
 
     public void printCenterLine(@NotNull String text) {

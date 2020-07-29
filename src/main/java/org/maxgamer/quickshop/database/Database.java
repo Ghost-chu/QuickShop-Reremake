@@ -88,7 +88,7 @@ public class Database {
         String query = "SELECT * FROM " + table + " LIMIT 0,1";
         try {
             @Cleanup PreparedStatement ps = this.getConnection().prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            @Cleanup ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getString(column) != null) {
                     return true;
@@ -109,7 +109,7 @@ public class Database {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean hasTable(@NotNull String table) throws SQLException {
-        ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
+        @Cleanup ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         while (rs.next()) {
             if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
                 rs.close();
@@ -143,7 +143,7 @@ public class Database {
     /**
      * Represents a connection error, generally when the server can't connect to MySQL or something.
      */
-    public static class ConnectionException extends Exception {
+    public final static class ConnectionException extends Exception {
         private static final long serialVersionUID = 8348749992936357317L;
 
         private ConnectionException(String msg) {

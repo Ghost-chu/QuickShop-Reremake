@@ -31,7 +31,7 @@ public class ReflectionUtil {
     public static Class getClass(String name) {
         try {
             return Class.forName(name);
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return Class.class;
         }
     }
@@ -42,7 +42,7 @@ public class ReflectionUtil {
             Method m = clazz.getDeclaredMethod(method, parameterTypes);
             m.setAccessible(true);
             return m;
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -53,7 +53,7 @@ public class ReflectionUtil {
             Field f = clazz.getDeclaredField(field);
             f.setAccessible(true);
             return f.get(target);
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class ReflectionUtil {
     public static Object getFieldValue(Field field, Object target) {
         try {
             return field.get(target);
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
         }
         return null;
     }
@@ -71,7 +71,7 @@ public class ReflectionUtil {
         try {
             field.set(target, value);
             return true;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class ReflectionUtil {
                 field.set(target, value);
                 return true;
             }
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
         }
         return false;
     }
@@ -94,7 +94,7 @@ public class ReflectionUtil {
             Field f = clazz.getDeclaredField(field);
             f.setAccessible(true);
             return f;
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }

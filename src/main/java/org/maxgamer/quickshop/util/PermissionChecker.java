@@ -71,12 +71,10 @@ public class PermissionChecker {
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
             Protection protection = lwc.getLWC().findProtection(block.getLocation());
-            if (protection != null) {
-                if (!protection.isOwner(player)) {
+                if (protection != null && !protection.isOwner(player)) {
                     Util.debugLog("LWC reporting player no permission to access this block.");
                     return new Result("LWC");
                 }
-            }
 
         }
 
@@ -141,7 +139,7 @@ public class PermissionChecker {
         Bukkit.getPluginManager().registerEvents(new Listener() {
             @EventHandler(priority = EventPriority.HIGHEST)
             public void onTestEvent(BlockBreakEvent event) {
-                if (event == beMainHand) {
+                if (event.equals(beMainHand)) {
                     // Call for event for protection check end
                     Bukkit.getPluginManager().callEvent(
                             new ShopProtectionCheckEvent(

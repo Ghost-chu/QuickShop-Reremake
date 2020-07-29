@@ -87,15 +87,15 @@ public class ArmorStandDisplayItem extends DisplayItem {
     @Override
     public void fixDisplayMoved() {
         Location location = this.getDisplayLocation();
-        if (this.armorStand != null) {
-            if (location != null) {
-                this.armorStand.teleport(location);
-            } else {
-                fixDisplayMovedOld();
-            }
+        //if (this.armorStand != null) {
+        if (location != null) {
+            this.armorStand.teleport(location);
         } else {
             fixDisplayMovedOld();
         }
+//        } else {
+//            fixDisplayMovedOld();
+//        }
     }
 
     public void fixDisplayMovedOld() {
@@ -148,12 +148,10 @@ public class ArmorStandDisplayItem extends DisplayItem {
             }
             ArmorStand eArmorStand = (ArmorStand) entity;
 
-            if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId())) {
-                if (DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {  //FIXME: Update this when drop 1.13 supports
-                    Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId() + " at " + eArmorStand.getLocation());
-                    entity.remove();
-                    removed = true;
-                }
+            if (!eArmorStand.getUniqueId().equals(this.armorStand.getUniqueId()) && DisplayItem.checkIsTargetShopDisplay(eArmorStand.getItemInHand(), this.shop)) {//FIXME: Update this when drop 1.13 supports
+                Util.debugLog("Removing dupes ArmorEntity " + eArmorStand.getUniqueId() + " at " + eArmorStand.getLocation());
+                entity.remove();
+                removed = true;
             }
         }
         return removed;
@@ -177,15 +175,13 @@ public class ArmorStandDisplayItem extends DisplayItem {
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         Objects.requireNonNull(armorStand.getEquipment()).setHelmet(guardedIstack);
         if (plugin.getRuntimeCatcher().getGameVersion().isPersistentStorageApiSupports()) {
-            try {
                 armorStand
                         .getPersistentDataContainer()
                         .set(
                                 new NamespacedKey(plugin, "displayMark"),
                                 DisplayItemPersistentDataType.INSTANCE,
                                 DisplayItem.createShopProtectionFlag(this.originalItemStack, shop));
-            } catch (Throwable ignored) {
-            }
+
         }
     }
 

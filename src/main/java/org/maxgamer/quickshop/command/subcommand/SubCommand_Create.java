@@ -85,7 +85,7 @@ public class SubCommand_Create implements CommandProcesser {
             BlockFace blockFace;
             try {
                 blockFace = p.getFacing();
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 blockFace = Util.getYawFace(p.getLocation().getYaw()); //FIXME: Update this when drop 1.13 supports
             }
 

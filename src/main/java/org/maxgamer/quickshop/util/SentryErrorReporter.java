@@ -127,7 +127,7 @@ public class SentryErrorReporter {
                     }
                 }
             }.runTaskAsynchronously(plugin);
-        } catch (Throwable th) {
+        } catch (Exception th) {
             plugin.getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             plugin.getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
             this.disable = true;
@@ -164,7 +164,7 @@ public class SentryErrorReporter {
         if (!enabled) {
             return false;
         }
-        if (UpdateWatcher.hasNewUpdate) { // We only receive latest reports.
+        if (UpdateWatcher.isHasNewUpdate()) { // We only receive latest reports.
             return false;
         }
         if (!plugin.getRuntimeCatcher().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
@@ -293,7 +293,7 @@ public class SentryErrorReporter {
                 if (pasteURL != null && !pasteURL.isEmpty()) {
                     lastPaste = pasteURL;
                 }
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 // Ignore
                 pasteURL = this.lastPaste;
             }
@@ -315,7 +315,7 @@ public class SentryErrorReporter {
                 throwable.printStackTrace();
             }
             return this.context.getLastEventId();
-        } catch (Throwable th) {
+        } catch (Exception th) {
             th.printStackTrace();
             return null;
         }

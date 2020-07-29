@@ -40,7 +40,7 @@ import java.util.Random;
 
 //TODO: This is a shit, need refactor
 public class UpdateWatcher implements Listener {
-    public static boolean hasNewUpdate = false;
+    private static boolean hasNewUpdate = false;
 
     private static BukkitTask cronTask = null;
 
@@ -50,6 +50,10 @@ public class UpdateWatcher implements Listener {
         originalVer = originalVer.replaceAll(QuickShop.getFork(), "");
         originalVer = originalVer.trim();
         return originalVer;
+    }
+
+    public static boolean isHasNewUpdate() {
+        return hasNewUpdate;
     }
 
     public static void init() {

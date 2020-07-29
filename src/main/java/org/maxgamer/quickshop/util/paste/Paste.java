@@ -258,7 +258,7 @@ public class Paste {
             //                        .inputStream2ByteArray(new File(new File(".", "logs"),
             // "latest.log").getPath())), StandardCharsets.UTF_8)).append("\n");
             //                finalReport.append("\t*********************************\n");
-            //            } catch (Throwable th) {
+            //            } catch (Exception th) {
             //                finalReport.append("\t*********************************\n");
             //                finalReport.append("\tlatest.log:\n");
             //                finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -277,7 +277,7 @@ public class Paste {
                                         StandardCharsets.UTF_8))
                         .append("\n");
                 finalReport.append("\t*********************************\n");
-            } catch (Throwable th) {
+            } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tbukkit.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -296,7 +296,7 @@ public class Paste {
                                         StandardCharsets.UTF_8))
                         .append("\n");
                 finalReport.append("\t*********************************\n");
-            } catch (Throwable th) {
+            } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tspigot.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -314,7 +314,7 @@ public class Paste {
                                         StandardCharsets.UTF_8))
                         .append("\n");
                 finalReport.append("\t*********************************\n");
-            } catch (Throwable th) {
+            } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
@@ -332,13 +332,13 @@ public class Paste {
                                         StandardCharsets.UTF_8))
                         .append("\n");
                 finalReport.append("\t*********************************\n");
-            } catch (Throwable th) {
+            } catch (Exception th) {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\ttuinity.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
                 finalReport.append("\t*********************************\n");
             }
-        } catch (Throwable th) {
+        } catch (Exception th) {
             finalReport.append("\tFailed to get data\n");
         }
         finalReport.append("================================================\n");
@@ -355,6 +355,7 @@ public class Paste {
                 .append("\n");
         finalReport.append("================================================\n");
         int totalDB = 0;
+        @Cleanup
         ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
         while (resultSet.next()) {
             totalDB++;
@@ -394,7 +395,7 @@ public class Paste {
             report =
                     report.replaceAll(
                             Objects.requireNonNull(configurationSection.getString("database")), "[PROTECTED]");
-        } catch (Throwable tg) {
+        } catch (Exception tg) {
             // Ignore
         }
         return report;
@@ -440,10 +441,9 @@ public class Paste {
         return null;
     }
 
-    @SuppressWarnings("InnerClassMayBeStatic")
     @Getter
     @Setter
-    public class ShopDatabaseInfoOrigin {
+    public static class ShopDatabaseInfoOrigin {
         @ToString.Exclude
         private String item;
 

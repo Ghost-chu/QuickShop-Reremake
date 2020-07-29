@@ -63,5 +63,4 @@ public class BootError {
     public String[] getErrors() {
         return errors;
     }
-
 }

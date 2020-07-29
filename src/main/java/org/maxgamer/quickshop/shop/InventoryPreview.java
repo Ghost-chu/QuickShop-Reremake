@@ -46,7 +46,6 @@ public class InventoryPreview implements Listener {
 
     private final ItemStack itemStack;
     private final Player player;
-    private final QuickShop plugin;
     @Nullable
     private Inventory inventory;
 
@@ -58,7 +57,6 @@ public class InventoryPreview implements Listener {
      * @param plugin    The plugin instance.
      */
     public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
-        this.plugin = plugin;
         this.itemStack = itemStack.clone();
         this.player = player;
         ItemMeta itemMeta = this.itemStack.getItemMeta();

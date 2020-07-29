@@ -29,10 +29,10 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 public class AssetJson {
-    final String pathTemplate = "minecraft/lang/{0}.json";
+    private static final String pathTemplate = "minecraft/lang/{0}.json";
 
     @NotNull
-    final String gameAssets;
+    private final String gameAssets;
 
     public AssetJson(@NotNull String json) {
         this.gameAssets = json;

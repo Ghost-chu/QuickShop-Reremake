@@ -41,7 +41,7 @@ import java.util.UUID;
 @Deprecated
 public class Economy_Reserve implements EconomyCore {
 
-    private final String errorMsg =
+    private static final String errorMsg =
             "QuickShop got an error when calling your Economy system, this is NOT a QuickShop error, please do not report this issue to the QuickShop's Issue tracker, ask your Economy plugin's author.";
 
     private final QuickShop plugin;
@@ -71,7 +71,7 @@ public class Economy_Reserve implements EconomyCore {
             if (((Reserve) Bukkit.getPluginManager().getPlugin("Reserve")).economyProvided()) {
                 reserve = ((Reserve) Bukkit.getPluginManager().getPlugin("Reserve")).economy();
             }
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             reserve = null;
         }
     }
@@ -89,10 +89,10 @@ public class Economy_Reserve implements EconomyCore {
     public boolean deposit(UUID name, double amount) {
         try {
             return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger().warning(errorMsg);
             return false;
         }
     }
@@ -109,10 +109,10 @@ public class Economy_Reserve implements EconomyCore {
     public String format(double balance) {
         try {
             return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger().warning(errorMsg);
             return formatInternal(balance);
         }
     }
@@ -133,10 +133,10 @@ public class Economy_Reserve implements EconomyCore {
     public double getBalance(@NotNull UUID name) {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger().warning(errorMsg);
             return 0.0;
         }
     }
@@ -155,10 +155,10 @@ public class Economy_Reserve implements EconomyCore {
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger().warning(errorMsg);
             return false;
         }
     }
@@ -173,16 +173,14 @@ public class Economy_Reserve implements EconomyCore {
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
         try {
-            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan")) {
-                if (getBalance(name) < amount) {
-                    return false;
-                }
+            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name) < amount) {
+                return false;
             }
             return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             plugin.getSentryErrorReporter().ignoreThrow();
             throwable.printStackTrace();
-            plugin.getLogger().warning(this.errorMsg);
+            plugin.getLogger().warning(errorMsg);
             return false;
         }
     }

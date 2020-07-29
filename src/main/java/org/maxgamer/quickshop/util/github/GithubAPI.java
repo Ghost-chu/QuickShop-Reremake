@@ -24,13 +24,14 @@ import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class GithubAPI {
     private final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
     @Nullable
-    public ReleaseJsonContainer.AssetsBean getLatestRelease() throws Exception {
+    public ReleaseJsonContainer.AssetsBean getLatestRelease() throws IOException {
         String json =
                 HttpRequest.get(
                         new URL(
