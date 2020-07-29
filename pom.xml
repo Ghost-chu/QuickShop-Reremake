@@ -55,7 +55,7 @@
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <createSourcesJar>false</createSourcesJar>
+                    <!--<createSourcesJar>false</createSourcesJar>-->
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
