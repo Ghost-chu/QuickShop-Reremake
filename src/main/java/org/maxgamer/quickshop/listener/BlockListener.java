@@ -46,9 +46,10 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 public class BlockListener extends ProtectionListenerBase {
-
+    private final boolean update_sign_when_inventory_moving;
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
+        this.update_sign_when_inventory_moving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
     }
 
     /*
@@ -56,20 +57,17 @@ public class BlockListener extends ProtectionListenerBase {
      */
     @EventHandler(priority = EventPriority.NORMAL,ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
-
         final Block b = e.getBlock();
-
-        if (b.getState() instanceof Sign) { //FIXME: It seems dupe with LockListener, remove it if can be removed
-            Sign sign = (Sign) b.getState();
-            if (super.getPlugin().getConfig().getBoolean("lockette.enable")
-                    && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
-                // Ignore break lockette sign
-                Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
-                return;
-            }
-        }
-
+//        if (b.getState() instanceof Sign) { //FIXME: It seems dupe with LockListener, remove it if can be removed
+//            Sign sign = (Sign) b.getState();
+//            if (super.getPlugin().getConfig().getBoolean("lockette.enable")
+//                    && sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+//                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
+//                // Ignore break lockette sign
+//                Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
+//                return;
+//            }
+//        }
         final Player p = e.getPlayer();
         // If the shop was a chest
         if (Util.canBeShop(b)) {
@@ -178,7 +176,7 @@ public class BlockListener extends ProtectionListenerBase {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (!super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true)) {
+        if (!this.update_sign_when_inventory_moving) {
             return;
         }
 
