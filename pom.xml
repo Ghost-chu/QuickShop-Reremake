@@ -55,7 +55,8 @@
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <!--<createSourcesJar>false</createSourcesJar>-->
+                    <createSourcesJar>false</createSourcesJar>
+                    <createTestSourcesJar>false</createTestSourcesJar>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -124,6 +125,9 @@
             <resource>
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>src/main/resources/bin</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>
