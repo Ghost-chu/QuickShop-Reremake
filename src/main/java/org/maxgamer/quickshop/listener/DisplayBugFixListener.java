@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.Collection;
 
 
-public class DisplayBugFixListener extends QSListener{
+public class DisplayBugFixListener extends QSListener {
     public DisplayBugFixListener(QuickShop plugin) {
         super(plugin);
     }

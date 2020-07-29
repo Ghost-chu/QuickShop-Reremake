@@ -35,7 +35,7 @@ public class NCPCompatibilityModule implements CompatibilityModule {
     /**
      * Calls CompatibilityModule to toggle the detection status for playerb between on and off
      *
-     * @param player The player
+     * @param player   The player
      * @param checking On or Off
      */
     @Override

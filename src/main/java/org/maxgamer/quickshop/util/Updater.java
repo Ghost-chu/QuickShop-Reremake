@@ -46,7 +46,7 @@ public class Updater {
      *
      * @return True=Have a new update; False=No new update or check update failed.
      */
-    public static UpdateInfomation checkUpdate() {
+    public synchronized static UpdateInfomation checkUpdate() {
         if (!QuickShop.getInstance().getConfig().getBoolean("updater")) {
             return new UpdateInfomation(false, null);
         }
@@ -74,7 +74,7 @@ public class Updater {
         }
     }
 
-    public static byte[] downloadUpdatedJar() throws Exception {
+    public synchronized static byte[] downloadUpdatedJar() throws Exception {
         @Nullable String uurl;
         long uurlSize;
         ReleaseJsonContainer.AssetsBean bean =
@@ -115,7 +115,7 @@ public class Updater {
         return os.toByteArray();
     }
 
-    public static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
+    public synchronized static void replaceTheJar(byte[] data) throws RuntimeException, IOException {
         File pluginFolder = new File("plugins");
         if (!pluginFolder.exists()) {
             throw new RuntimeException("Can't find the plugins folder.");
@@ -151,11 +151,11 @@ public class Updater {
         outputStream.close();
     }
 
-    public static boolean hasUpdate(String versionNow) {
+    public synchronized static boolean hasUpdate(String versionNow) {
         return hasUpdate(QuickShop.getVersion(), versionNow);
     }
 
-    public static boolean hasUpdate(String versionPre, String versionNow) {
+    public synchronized static boolean hasUpdate(String versionPre, String versionNow) {
         if (versionNow == null) {
             return false;
         }
