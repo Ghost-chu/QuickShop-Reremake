@@ -26,7 +26,8 @@ Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 
 
 ## Builds
-Github projects have a "releases" link on their home page. If you still don't see it, [click here](https://github.com/Ghost-chu/QuickShop-Reremake/releases) for QuickShop-Reremake all builds(Beta and Release).
+Github projects have a "releases" link on their home page. If you still don't see it, [click here](https://github.com/Ghost-chu/QuickShop-Reremake/releases) for QuickShop-Reremake stable release.  
+Or use our [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/) for snapshot builds.
 
 ## Links
 - [SpigotMC](https://www.spigotmc.org/resources/quickshop-reremake-now-support-1-14.62575/)  
