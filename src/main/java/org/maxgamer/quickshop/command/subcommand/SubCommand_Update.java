@@ -64,7 +64,7 @@ public class SubCommand_Update implements CommandProcesser {
 
                 try {
                     pluginBin = Updater.downloadUpdatedJar();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
                     e.printStackTrace();
