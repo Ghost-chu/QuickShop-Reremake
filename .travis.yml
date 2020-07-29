@@ -6,12 +6,12 @@ cache:
 jdk:
   - openjdk8
 install: skip
-script:
-  - export PROJECT_NAME=QuickShop-Reremake #Set project name
-  - git clone --depth=1 https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
-  - cd $PROJECT_NAME #Cd into project
-  - mvn clean #Clean up
-  - mvn -T 4 install #Install
+#script:
+#  - export PROJECT_NAME=QuickShop-Reremake #Set project name
+#  - git clone --depth=1 https://github.com/Ghost-chu/$PROJECT_NAME.git $PROJECT_NAME #Clone project
+#  - cd $PROJECT_NAME #Cd into project
+#  - mvn clean #Clean up
+#  - mvn -T 4 install #Install
 after_success:
   - rm -rf push # GITHUB - CLEANUP
   #Script to release to Github Release
@@ -21,15 +21,15 @@ after_success:
   - rm -f ./push/*-shaded.jar
   - rm -f ./push/*-sources.jar
   - mv -f ./push/*-javadoc.jar ./push/JavaDocument.zip
-  #Script to release to Bukkit Dev
-  - mkdir devbukkit
-  - cp -r ./target/*.jar ./devbukkit/
-  - rm -f ./devbukkit/original-*.jar
-  - rm -f ./devbukkit/*-javadoc.jar
-  - rm -f ./devbukkit/*-shaded.jar
-  - rm -f ./devbukkit/*-sources.jar
-  - rm -f ./target/original-*.jar
-  - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
+#  #Script to release to Bukkit Dev
+#  - mkdir devbukkit
+#  - cp -r ./target/*.jar ./devbukkit/
+#  - rm -f ./devbukkit/original-*.jar
+#  - rm -f ./devbukkit/*-javadoc.jar
+#  - rm -f ./devbukkit/*-shaded.jar
+#  - rm -f ./devbukkit/*-sources.jar
+#  - rm -f ./target/original-*.jar
+#  - ls ./devbukkit -1 | grep ".jar$" > jarname.txt
 deploy:
   skip_cleanup: true
   provider: releases
@@ -41,20 +41,20 @@ deploy:
   on:
     tags: true
   overwrite: true
-after_deploy:
-  #Confirm release to Bukkit Dev
-  - chmod +x deploy.sh
-  - "./deploy.sh $Curse_token"
-  #Deploy to the mvn-repo
-  - echo "Deploying to the Github..."
-  - git clone --depth=1 https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
-  - mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
-  - cd maven-repo
-  - git add .
-  - git commit -m "Auto update by Travis-CI bot"
-  - git push --force
-  - cd ..
-  - echo "Finish upload to Maven Repository"
+#after_deploy:
+#  #Confirm release to Bukkit Dev
+#  - chmod +x deploy.sh
+#  - "./deploy.sh $Curse_token"
+#  #Deploy to the mvn-repo
+#  - echo "Deploying to the Github..."
+#  - git clone --depth=1 https://$Github_token@github.com/Ghost-chu/maven-repo.git maven-repo
+#  - mvn deploy -DaltDeploymentRepository=mvn-repo::default::file:./maven-repo
+#  - cd maven-repo
+#  - git add .
+#  - git commit -m "Auto update by Travis-CI bot"
+#  - git push --force
+#  - cd ..
+#  - echo "Finish upload to Maven Repository"
 #after_script:
 #  #Upload data to BinaryRepository
 #  - git clone --depth=1 https://$Github_token@github.com/Ghost-chu/BinaryRepository.git BinaryRepository
