@@ -23,6 +23,8 @@ Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
 - A cool item preview [Reremake]
 - Friendly for the region and world protect plugin [Reremake]
 - ProtocolLib based Virtual DisplayItem support [Reremake]
+- Powerful API [Reremake]
+- Optimized performance [Reremake]
 
 
 ## Builds
@@ -30,10 +32,11 @@ Github projects have a "releases" link on their home page. If you still don't se
 Or use our [CodeMC.io Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/) for snapshot builds.
 
 ## Links
-- [SpigotMC](https://www.spigotmc.org/resources/quickshop-reremake-now-support-1-14.62575/)  
+- [SpigotMC](https://www.spigotmc.org/resources/62575/)  
 - [BukkitDev](https://dev.bukkit.org/projects/quickshop-reremake)  
 - [Minecraft Chinese Forum (MCBBS)](http://www.mcbbs.net/thread-809496-1-1.html)
 - [Relatev](http://www.relatev.com/forum.php?mod=viewthread&tid=2251)
+- [Jenkins](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/)
 
 ## Contribute
 If you're a developer, you can contribute to the QuickShop code! Just make a fork and install Lombok plugin, then make a pull request when you're done! Please try to follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version number. Thank you very much!
