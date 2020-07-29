@@ -128,6 +128,7 @@ public interface Shop {
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
      * @param forceUsername Force returns username of shop
      * @return owner name
      */
@@ -136,6 +137,7 @@ public interface Shop {
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
      * @return owner name
      */
     @NotNull
@@ -364,6 +366,7 @@ public interface Shop {
 
     /**
      * Save the plugin extra data to Json format
+     *
      * @return The json string
      */
     @NotNull
@@ -373,6 +376,7 @@ public interface Shop {
      * Gets the plugin's k-v map to storage the data.
      * It is spilt by plugin name, different name have different map, the data won't conflict.
      * But if you plugin name is too common, add a prefix will be a good idea.
+     *
      * @param plugin Plugin instance
      * @return The data table
      */
@@ -381,13 +385,15 @@ public interface Shop {
 
     /**
      * Save the extra data to the shop.
+     *
      * @param plugin Plugin instace
-     * @param data The data table
+     * @param data   The data table
      */
     void setExtra(@NotNull Plugin plugin, Map<String, String> data);
 
     /**
      * Gets shop status is stacking shop
+     *
      * @return The shop stacking status
      */
     boolean isStackingShop();

@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.maxgamer.quickshop.util.Util.getPlayerList;
+
 @AllArgsConstructor
 public class SubCommand_RemoveAll implements CommandProcesser {
 
@@ -39,7 +40,7 @@ public class SubCommand_RemoveAll implements CommandProcesser {
             int i = 0;
             for (Shop shop : tempList) {
                 if (shop.getOwner().equals(shopOwner.getUniqueId())) {
-                    plugin.log("Deleting shop "+shop+" request by /qs removeall command.");
+                    plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
                     shop.delete();
                     i++;
                 }

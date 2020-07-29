@@ -73,12 +73,10 @@ public class MsgUtil {
     private static final Map<UUID, LinkedList<String>> player_messages = Maps.newConcurrentMap();
 
     private static final QuickShop plugin = QuickShop.getInstance();
-
-    private static TextComponent errorComponent;
-
     private static final DecimalFormat decimalFormat =
             new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
     public static GameLanguage gameLanguage;
+    private static TextComponent errorComponent;
     @Getter
     private static YamlConfiguration enchi18n;
     private static boolean inited;
@@ -490,13 +488,13 @@ public class MsgUtil {
                     sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
                 } catch (InvalidConfigurationException e) {
                     Util.debugLog("Unknown error, send by plain text.");
-                    MsgUtil.sendMessage(p.getPlayer(),msgData[0] + msgData[1] + msgData[2]);
+                    MsgUtil.sendMessage(p.getPlayer(), msgData[0] + msgData[1] + msgData[2]);
                 } catch (ArrayIndexOutOfBoundsException e2) {
                     try {
                         sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), "");
                     } catch (Exception any) {
                         // Normal msg
-                        MsgUtil.sendMessage(p.getPlayer(),message);
+                        MsgUtil.sendMessage(p.getPlayer(), message);
                     }
                 }
             }
@@ -766,7 +764,7 @@ public class MsgUtil {
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                       MsgUtil.sendMessage(player,message);
+                        MsgUtil.sendMessage(player, message);
                     }
                 }
             }

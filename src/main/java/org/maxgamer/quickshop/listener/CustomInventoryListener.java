@@ -27,7 +27,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
-public class CustomInventoryListener extends QSListener{
+public class CustomInventoryListener extends QSListener {
 
     public CustomInventoryListener(QuickShop plugin) {
         super(plugin);

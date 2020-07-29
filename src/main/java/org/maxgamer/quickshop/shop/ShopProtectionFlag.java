@@ -30,10 +30,8 @@ import org.jetbrains.annotations.NotNull;
 @EqualsAndHashCode
 @ToString
 public class ShopProtectionFlag {
-    private final String itemStackString;
-
     private static final String mark = "QuickShop DisplayItem";
-
+    private final String itemStackString;
     private final String shopLocation;
 
     public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
