@@ -170,16 +170,6 @@ public abstract class DisplayItem {
     }
 
     /**
-     * Gets the original ItemStack (without protection mark, should same with shop trading item.
-     *
-     * @return ItemStack
-     */
-    @NotNull
-    public ItemStack getOriginalItemStack() {
-        return originalItemStack;
-    }
-
-    /**
      * Create a new itemStack with protect flag.
      *
      * @param itemStack Old itemStack
@@ -218,6 +208,16 @@ public abstract class DisplayItem {
     public static ShopProtectionFlag createShopProtectionFlag(
             @NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
+    }
+
+    /**
+     * Gets the original ItemStack (without protection mark, should same with shop trading item.
+     *
+     * @return ItemStack
+     */
+    @NotNull
+    public ItemStack getOriginalItemStack() {
+        return originalItemStack;
     }
 
     /**

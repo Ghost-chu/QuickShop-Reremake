@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.shop.ShopChunk;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 public class WorldListener extends QSListener {
 
     public WorldListener(QuickShop plugin) {

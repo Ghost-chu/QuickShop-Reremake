@@ -41,14 +41,12 @@ import java.util.UUID;
 public class Economy_Vault implements EconomyCore, Listener {
 
     private final QuickShop plugin;
-
+    private final UUID taxAccountUUID;
+    private final boolean allowLoan;
     @Getter
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
-
-    private final UUID taxAccountUUID;
-    private final boolean allowLoan;
 
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;

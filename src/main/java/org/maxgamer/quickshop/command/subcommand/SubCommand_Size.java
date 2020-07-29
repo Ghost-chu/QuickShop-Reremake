@@ -15,6 +15,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
 import java.util.List;
+
 @AllArgsConstructor
 public class SubCommand_Size implements CommandProcesser {
     private final QuickShop plugin;
