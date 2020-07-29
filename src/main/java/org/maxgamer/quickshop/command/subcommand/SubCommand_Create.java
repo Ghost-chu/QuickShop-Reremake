@@ -60,8 +60,8 @@ public class SubCommand_Create implements CommandProcesser {
         ItemStack item = p.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
-                return;
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+            return;
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);

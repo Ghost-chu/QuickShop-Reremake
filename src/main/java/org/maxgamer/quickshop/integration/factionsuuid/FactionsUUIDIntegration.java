@@ -113,11 +113,6 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
                 plugin.getConfig().getBoolean("integration.factions.trade.require.warzone");
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "Factions";
-    }
-
     private static boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
         if (faction == null) {
@@ -158,6 +153,11 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
             }
         }
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "Factions";
     }
 
     @Override

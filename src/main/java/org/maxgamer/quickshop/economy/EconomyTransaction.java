@@ -20,11 +20,11 @@ public class EconomyTransaction {
     private final double amount;
     @NotNull
     private final EconomyCore core;
-    private TransactionSteps steps; //For rollback
     private final double total; //
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
+    private TransactionSteps steps; //For rollback
     @Nullable
     private String lastError = null;
 

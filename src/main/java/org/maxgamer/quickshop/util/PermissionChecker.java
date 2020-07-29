@@ -71,10 +71,10 @@ public class PermissionChecker {
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
             Protection protection = lwc.getLWC().findProtection(block.getLocation());
-                if (protection != null && !protection.isOwner(player)) {
-                    Util.debugLog("LWC reporting player no permission to access this block.");
-                    return new Result("LWC");
-                }
+            if (protection != null && !protection.isOwner(player)) {
+                Util.debugLog("LWC reporting player no permission to access this block.");
+                return new Result("LWC");
+            }
 
         }
 
@@ -109,7 +109,7 @@ public class PermissionChecker {
                 if (cancel && !isCancelled()) {
                     Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                       Util.debugLog(element.getClassName()+element.getMethodName()+element.getLineNumber());
+                        Util.debugLog(element.getClassName() + element.getMethodName() + element.getLineNumber());
                     }
                     isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:

@@ -61,7 +61,7 @@ public class PlayerListener extends QSListener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if(e.getHand() != EquipmentSlot.HAND){
+        if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
         if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getClickedBlock() != null) {
@@ -293,7 +293,7 @@ public class PlayerListener extends QSListener {
             } else if (info.getAction() == ShopAction.CREATE) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-creation-cancelled", p));
                 Util.debugLog(p.getName() + " too far with the shop location.");
-            } 
+            }
             plugin.getShopManager().getActions().remove(p.getUniqueId());
         }
     }
