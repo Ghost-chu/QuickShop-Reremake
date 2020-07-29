@@ -54,12 +54,12 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
-public class DisplayProtectionListener extends ProtectionListenerBase{
+public class DisplayProtectionListener extends ProtectionListenerBase {
 
     private final boolean useEnhanceProtection;
 
     public DisplayProtectionListener(QuickShop plugin, Cache cache) {
-        super(plugin,cache);
+        super(plugin, cache);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
     }
 
@@ -73,7 +73,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         }
         final Block targetBlock = event.getToBlock();
         final Block shopBlock = targetBlock.getRelative(BlockFace.DOWN);
-        final Shop shop = getShopNature(shopBlock.getLocation(),true);
+        final Shop shop = getShopNature(shopBlock.getLocation(), true);
         if (shop == null) {
             return;
         }
@@ -121,7 +121,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
             return;
         }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = getShopNature(block.getLocation(),true);
+        Shop shop = getShopNature(block.getLocation(), true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -136,7 +136,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         for (Block oBlock : event.getBlocks()) {
             final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = getShopNature(otherBlock.getLocation(),true);
+                shop = getShopNature(otherBlock.getLocation(), true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -161,7 +161,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
             return;
         }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = getShopNature(block.getLocation(),true);
+        Shop shop = getShopNature(block.getLocation(), true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
@@ -176,7 +176,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         for (Block oBlock : event.getBlocks()) {
             final Block otherBlock = oBlock.getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
             if (Util.canBeShop(otherBlock)) {
-                shop = getShopNature(otherBlock.getLocation(),true);
+                shop = getShopNature(otherBlock.getLocation(), true);
                 if (shop != null) {
                     event.setCancelled(true);
                     sendAlert(
@@ -625,7 +625,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase{
         }
         final Block waterBlock = event.getBlockClicked().getRelative(event.getBlockFace());
         final Shop shop =
-                getShopPlayer(waterBlock.getRelative(BlockFace.DOWN).getLocation(),true);
+                getShopPlayer(waterBlock.getRelative(BlockFace.DOWN).getLocation(), true);
         if (shop == null) {
             return;
         }
