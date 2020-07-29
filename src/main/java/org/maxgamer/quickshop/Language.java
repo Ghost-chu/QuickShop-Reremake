@@ -82,7 +82,6 @@ public class Language {
         if (type == null || type.isEmpty()) {
             throw new IllegalArgumentException("Type cannot be null or empty");
         }
-        @Cleanup
         InputStream inputStream = plugin.getResource("lang/" + language + "/" + type + ".json");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
@@ -91,6 +90,13 @@ public class Language {
         if (inputStream == null) {
             Util.debugLog("Gets default language input stream failed, using fallback.");
             inputStream = plugin.getResource("lang-original/messages.json");
+        }
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
         return inputStream;
         // File name should call    type-language.yml    ---> config-zh.yml
