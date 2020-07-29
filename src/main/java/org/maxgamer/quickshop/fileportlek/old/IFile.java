@@ -69,7 +69,7 @@ public interface IFile {
      * @param <T>      object type
      * @return if path does not exist returns and set the path with fallback object
      */
-    @NotNull <T> T getOrSet(@NotNull final String path, @NotNull T fallback);
+    @NotNull <T> T getOrSet(@NotNull String path, @NotNull T fallback);
 
     /**
      * Gets location
@@ -77,7 +77,7 @@ public interface IFile {
      * @param path location path to get
      * @return {@link Location}
      */
-    @NotNull Location getLocation(@NotNull final String path);
+    @NotNull Location getLocation(@NotNull String path);
 
     /**
      * Sets location into the path
@@ -85,7 +85,7 @@ public interface IFile {
      * @param path     location path to set
      * @param location {@link Location}
      */
-    void setLocation(@NotNull final String path, @NotNull final Location location);
+    void setLocation(@NotNull String path, @NotNull Location location);
 
     /**
      * Pattern:
@@ -96,7 +96,7 @@ public interface IFile {
      * @param path itemstack path to get
      * @return {@link ItemStack}
      */
-    @NotNull ItemStack getCustomItemStack(@NotNull final String path);
+    @NotNull ItemStack getCustomItemStack(@NotNull String path);
 
     /**
      * Sets custom itemstack to path
@@ -104,7 +104,7 @@ public interface IFile {
      * @param path      itemstack path to set
      * @param itemStack {@link ItemStack}
      */
-    void setCustomItemStack(@NotNull final String path, @NotNull final ItemStack itemStack);
+    void setCustomItemStack(@NotNull String path, @NotNull ItemStack itemStack);
 
     /**
      * Gets string
@@ -112,7 +112,7 @@ public interface IFile {
      * @param path string path to get
      * @return {@link String}
      */
-    @NotNull Optional<String> getString(@NotNull final String path);
+    @NotNull Optional<String> getString(@NotNull String path);
 
     /**
      * Sets object to path
@@ -120,7 +120,7 @@ public interface IFile {
      * @param path   object path to set
      * @param object {@link Object}
      */
-    void set(@NotNull final String path, @Nullable final Object object);
+    void set(@NotNull String path, @Nullable Object object);
 
     /**
      * Gets string list
@@ -128,7 +128,7 @@ public interface IFile {
      * @param path string list path to get
      * @return string list
      */
-    @NotNull List<String> getStringList(@NotNull final String path);
+    @NotNull List<String> getStringList(@NotNull String path);
 
     /**
      * Gets int
@@ -136,7 +136,7 @@ public interface IFile {
      * @param path integer path to get
      * @return {@link Integer}
      */
-    int getInt(@NotNull final String path);
+    int getInt(@NotNull String path);
 
     /**
      * Gets double
@@ -144,7 +144,7 @@ public interface IFile {
      * @param path double path to get
      * @return {@link Double}
      */
-    double getDouble(@NotNull final String path);
+    double getDouble(@NotNull String path);
 
     /**
      * Gets long
@@ -160,7 +160,7 @@ public interface IFile {
      * @param path byte path to get
      * @return {@link Byte}
      */
-    byte getByte(@NotNull final String path);
+    byte getByte(@NotNull String path);
 
     /**
      * Gets short
@@ -176,7 +176,7 @@ public interface IFile {
      * @param path boolean path to get
      * @return {@link Boolean}
      */
-    boolean getBoolean(@NotNull final String path);
+    boolean getBoolean(@NotNull String path);
 
     /**
      * Creates configuration section into path
@@ -192,7 +192,7 @@ public interface IFile {
      * @param path configurations section path to get
      * @return if there isn't section returns {@link MckFileConfiguration}
      */
-    @NotNull ConfigurationSection getSection(@NotNull final String path);
+    @NotNull ConfigurationSection getSection(@NotNull String path);
 
     /**
      * Gets configuration section from path if there is no section It will create
@@ -200,6 +200,6 @@ public interface IFile {
      * @param path configurations section path to get
      * @return {@link ConfigurationSection}
      */
-    @NotNull ConfigurationSection getOrCreateSection(@NotNull final String path);
+    @NotNull ConfigurationSection getOrCreateSection(@NotNull String path);
 
 }

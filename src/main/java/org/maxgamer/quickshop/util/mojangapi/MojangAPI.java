@@ -37,13 +37,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class MojangAPI {
-    final String versionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
+    private static final String versionManifestUrl = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
 
-    final String assetsUrl = "https://resources.download.minecraft.net/";
+    private static final String assetsUrl = "https://resources.download.minecraft.net/";
 
-    final String pathTemplate = "minecraft/lang/{0}.json";
+    private static final String pathTemplate = "minecraft/lang/{0}.json";
 
-    final Gson gson = JsonUtil.getGson();
+    private static final Gson gson = JsonUtil.getGson();
 
     private final QuickShop plugin;
 
@@ -123,7 +123,7 @@ public class MojangAPI {
         String data;
         plugin.getLogger().info("Downloading assets file...");
         data =
-                HttpRequest.get(new URL(this.assetsUrl + hash.substring(0, 2) + "/" + hash))
+                HttpRequest.get(new URL(assetsUrl + hash.substring(0, 2) + "/" + hash))
                         .execute()
                         .expectResponseCode(200)
                         .returnContent()

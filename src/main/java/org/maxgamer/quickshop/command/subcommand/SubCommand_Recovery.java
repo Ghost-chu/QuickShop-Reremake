@@ -53,7 +53,7 @@ public class SubCommand_Recovery implements CommandProcesser {
                 try {
                     Util.backupDatabase();
                     plugin.getShopLoader().recoverFromFile(Util.readToString(file));
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

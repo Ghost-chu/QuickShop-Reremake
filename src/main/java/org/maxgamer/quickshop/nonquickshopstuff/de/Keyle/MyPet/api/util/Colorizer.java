@@ -38,8 +38,8 @@ public class Colorizer {
 
     @Deprecated
     public static String setColors(String text) {
-        for (String color : colorCodes.keySet()) {
-            text = text.replaceAll("(?i)<" + color + ">", ChatColor.COLOR_CHAR + colorCodes.get(color));
+        for (Map.Entry<String, String> color : colorCodes.entrySet()) {
+            text = text.replaceAll("(?i)<" + color.getKey() + ">", ChatColor.COLOR_CHAR + color.getValue());
         }
         text = text.replaceAll("(?i)<([0-9a-fk-or])>", ChatColor.COLOR_CHAR + "$1");
         text = ChatColor.translateAlternateColorCodes('&', text);

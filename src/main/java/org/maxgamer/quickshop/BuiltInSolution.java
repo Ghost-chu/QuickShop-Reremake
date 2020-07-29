@@ -19,14 +19,12 @@
 
 package org.maxgamer.quickshop;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 /**
  * A class to check known issue cause plugin failed enable.
  */
-@AllArgsConstructor
 class BuiltInSolution {
 
     /**

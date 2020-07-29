@@ -21,7 +21,9 @@ package org.maxgamer.quickshop.util.paste;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 public interface PasteInterface {
-    String pasteTheText(@NotNull String text) throws Exception;
+    String pasteTheText(@NotNull String text) throws IOException;
 
 }

@@ -29,7 +29,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
-    public final Shop shop;
+    private final Shop shop;
 
     @Getter
     private final int amount;

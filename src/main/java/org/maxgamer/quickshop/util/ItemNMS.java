@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Getter
@@ -52,7 +53,7 @@ public abstract class ItemNMS {
                     Class.forName("net.minecraft.server." + nmsVersion + ".ItemStack")
                             .getDeclaredMethod("save", nbtTagCompoundClass);
 
-        } catch (Throwable t) {
+        } catch (Exception t) {
             QuickShop.getInstance().getLogger().info("A error happend:");
             t.printStackTrace();
             QuickShop.getInstance()
@@ -70,7 +71,7 @@ public abstract class ItemNMS {
      * @throws Throwable throws
      */
     @Nullable
-    public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws Throwable {
+    public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
         if (bStack.getType() == Material.AIR) {
             return null;
         }

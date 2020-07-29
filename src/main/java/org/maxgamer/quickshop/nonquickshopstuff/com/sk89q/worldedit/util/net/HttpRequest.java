@@ -19,6 +19,7 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net;
  */
 
 import com.google.common.io.Closer;
+import lombok.Cleanup;
 
 import java.io.*;
 import java.net.*;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequest implements Closeable {
+public final class HttpRequest implements Closeable {
 
     private static final int CONNECT_TIMEOUT = 1000 * 10;
 
@@ -229,6 +230,7 @@ public class HttpRequest implements Closeable {
             conn.connect();
 
             if (body != null) {
+                @Cleanup
                 DataOutputStream out = new DataOutputStream(conn.getOutputStream());
                 out.write(body);
                 out.flush();
@@ -356,7 +358,7 @@ public class HttpRequest implements Closeable {
         try {
             String field = conn.getHeaderField("Content-Length");
             if (field != null) {
-                long len = Long.parseLong(field);
+                //long len = Long.parseLong(field);
                 //                if (len >= 0) { // Let's just not deal with really big numbers
                 //                    contentLength = len;
                 //                }
@@ -383,8 +385,8 @@ public class HttpRequest implements Closeable {
     /**
      * Used with {@link #bodyForm(Form)}.
      */
-    public static class Form {
-        public final List<String> elements = new ArrayList<>();
+    public final static class Form {
+        private final List<String> elements = new ArrayList<>();
 
         private Form() {
         }
@@ -434,7 +436,7 @@ public class HttpRequest implements Closeable {
     /**
      * Used to buffer the response in memory.
      */
-    public static class BufferedResponse {
+    public final static class BufferedResponse {
         private final byte[] data;
 
         private BufferedResponse(byte[] data) {

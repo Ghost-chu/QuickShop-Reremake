@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.io.Files;
+import lombok.Cleanup;
 import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -746,6 +747,7 @@ public class Util {
     @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
         try {
+            @Cleanup
             InputStream in = new FileInputStream(filePath);
             byte[] data = toByteArray(in);
             in.close();
@@ -823,7 +825,7 @@ public class Util {
                                             + itemStack.getType().name());
                         }
                     }
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     // Ignore
                 }
             }
@@ -889,7 +891,7 @@ public class Util {
             if (mat == Material.VOID_AIR) {
                 return true;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             // ignore
         }
         return false;
@@ -1290,6 +1292,7 @@ public class Util {
     public static String readToString(@NotNull File file) {
         byte[] filecontent = new byte[(int) file.length()];
         try {
+            @Cleanup
             FileInputStream in = new FileInputStream(file);
             in.read(filecontent);
             in.close();
@@ -1395,7 +1398,7 @@ public class Util {
                         "QuickShop can't found any usable sign material, we will use default Sign Material.");
         try {
             return Material.OAK_WALL_SIGN;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return Material.matchMaterial("WALL_SIGN");
         }
     }

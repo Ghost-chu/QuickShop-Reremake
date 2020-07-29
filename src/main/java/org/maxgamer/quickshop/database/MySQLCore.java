@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.database;
 
+import lombok.Cleanup;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +37,7 @@ public class MySQLCore implements DatabaseCore {
 
     private final List<Connection> POOL = new ArrayList<>();
 
-    private final int MAX_CONNECTIONS = 8;
+    private static final int MAX_CONNECTIONS = 8;
 
     /**
      * The connection properties... user, pass, autoReconnect..
@@ -85,6 +86,7 @@ public class MySQLCore implements DatabaseCore {
     @Override
     public void queue(@NotNull BufferStatement bs) {
         try {
+            @Cleanup
             Connection con = this.getConnection();
             while (con == null) {
                 try {
@@ -95,6 +97,7 @@ public class MySQLCore implements DatabaseCore {
                 // Try again
                 con = this.getConnection();
             }
+            @Cleanup
             PreparedStatement ps = bs.prepareStatement(con);
             ps.execute();
             ps.close();
@@ -115,10 +118,8 @@ public class MySQLCore implements DatabaseCore {
             Connection connection = POOL.get(i);
             try {
                 // If we have a current connection, fetch it
-                if (connection != null && !connection.isClosed()) {
-                    if (connection.isValid(10)) {
-                        return connection;
-                    }
+                if (connection != null && !connection.isClosed() && connection.isValid(10)) {
+                    return connection;
                     // Else, it is invalid, so we return another connection.
                 }
                 connection = DriverManager.getConnection(this.url, info);

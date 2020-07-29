@@ -8,6 +8,6 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class ShopExtra {
-    @NotNull String namespace;
-    @NotNull Map<String, String> data;
+    private @NotNull String namespace;
+    private @NotNull Map<String, String> data;
 }

@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.util;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public class CalculateUtil {
+public final class CalculateUtil {
     private static final MathContext mathContext = MathContext.DECIMAL32;
 
     private CalculateUtil() {

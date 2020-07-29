@@ -86,11 +86,9 @@ public class RealDisplayItem extends DisplayItem {
     @Override
     public void fixDisplayMoved() {
         Location location = this.getDisplayLocation();
-        if (this.item != null) {
-            if (location != null) {
-                this.item.teleport(location);
-                return;
-            }
+        if (this.item != null && location != null) {
+            this.item.teleport(location);
+            return;
         }
         fixDisplayMovedOld();
     }

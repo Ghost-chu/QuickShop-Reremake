@@ -165,7 +165,7 @@ public class Metrics {
      * @param data   The data to send.
      * @throws Exception If the request failed.
      */
-    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
+    private static void sendData(Plugin plugin, JsonObject data) throws IllegalAccessException, IOException {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
@@ -429,7 +429,7 @@ public class Metrics {
     public abstract static class CustomChart {
 
         // The id of the chart
-        final String chartId;
+        protected final String chartId;
 
         /**
          * Class constructor.
@@ -453,7 +453,7 @@ public class Metrics {
                     return null;
                 }
                 chart.add("data", data);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 if (logFailedRequests) {
                     Bukkit.getLogger()
                             .log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);

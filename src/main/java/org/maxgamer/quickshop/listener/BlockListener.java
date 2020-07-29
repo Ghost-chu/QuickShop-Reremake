@@ -224,7 +224,7 @@ public class BlockListener extends ProtectionListenerBase {
             BlockFace placingChestFacing = ((Directional) (placingBlock.getState().getBlockData())).getFacing();
             for (BlockFace face : Util.getVerticalFacing()) {
                 //just check the right side and left side
-                if (face != placingChestFacing && face != placingChestFacing.getOppositeFace()) {
+                if (!face.equals(placingChestFacing) && !face.equals(placingChestFacing.getOppositeFace())) {
                     Block nearByBlock = placingBlock.getRelative(face);
                     if (nearByBlock.getType() == Material.CHEST
                             //non double chest

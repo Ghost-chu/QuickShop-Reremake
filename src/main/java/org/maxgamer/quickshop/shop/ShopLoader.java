@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -86,6 +87,7 @@ public class ShopLoader {
         try {
             this.plugin.getLogger().info("Loading shops from the database...");
             Timer fetchTimer = new Timer(true);
+            @Cleanup
             ResultSet rs = plugin.getDatabaseHelper().selectAllShops();
             this.plugin
                     .getLogger()

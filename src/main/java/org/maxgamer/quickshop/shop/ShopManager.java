@@ -279,10 +279,8 @@ public class ShopManager {
      * @return The shop at that location
      */
     public @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking) {
-        if (!skipShopableChecking) {
-            if (!Util.isShoppables(loc.getBlock().getType())) {
-                return null;
-            }
+        if (!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
+            return null;
         }
         final Map<Location, Shop> inChunk = getShops(loc.getChunk());
         if (inChunk == null) {
@@ -401,7 +399,7 @@ public class ShopManager {
                 return;
             }
             if (info.getAction() == ShopAction.CREATE) {
-                actionCreate(p, actions, info, message, bypassProtectionChecks);
+                actionCreate(p, info, message, bypassProtectionChecks);
             }
             if (info.getAction() == ShopAction.BUY) {
                 actionTrade(p, actions, info, message);
@@ -535,7 +533,7 @@ public class ShopManager {
         return worldShops;
     }
 
-    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop shop, int amount) {
+    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(p, info, shop)) {
             return;
         }
@@ -610,7 +608,7 @@ public class ShopManager {
         return tax;
     }
 
-    private void actionCreate(@NotNull Player p, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String
+    private void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String
             message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
@@ -761,7 +759,7 @@ public class ShopManager {
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Map<UUID, Info> actions2, @NotNull Info info, @NotNull String message, @NotNull Shop
+    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
             shop, int amount) {
         if (shopIsNotValid(p, info, shop)) {
             return;
@@ -921,7 +919,7 @@ public class ShopManager {
                     return;
                 }
             }
-            actionBuy(p, eco, actions, info, message, shop, amount);
+            actionBuy(p, eco, info, shop, amount);
         } else if (shop.isSelling()) {
             try {
                 amount = Integer.parseInt(message);
@@ -963,7 +961,7 @@ public class ShopManager {
                     return;
                 }
             }
-            actionSell(p, eco, actions, info, message, shop, amount);
+            actionSell(p, eco, info, shop, amount);
         } else {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());

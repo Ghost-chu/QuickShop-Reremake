@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -60,9 +61,10 @@ public class SubCommand_Paste implements CommandProcesser {
                     file =
                             new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
                     try {
-                        final boolean createResult = file.createNewFile();
+                        boolean createResult = file.createNewFile();
                         Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
-                        final FileWriter fwriter = new FileWriter(file);
+                        @Cleanup
+                        FileWriter fwriter = new FileWriter(file);
                         fwriter.write(pasteText);
                         fwriter.flush();
                         fwriter.close();

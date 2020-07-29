@@ -61,7 +61,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
             economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -115,7 +115,7 @@ public class Economy_Vault implements EconomyCore, Listener {
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
             return Objects.requireNonNull(this.vault).depositPlayer(p, amount).transactionSuccess();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
                 if (this.taxAccountUUID.equals(name)) {
@@ -175,7 +175,7 @@ public class Economy_Vault implements EconomyCore, Listener {
 
         try {
             return Objects.requireNonNull(this.vault).getBalance(offlinePlayer);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
             plugin
@@ -213,13 +213,11 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
         OfflinePlayer p = Bukkit.getOfflinePlayer(name);
         try {
-            if (!plugin.getConfig().getBoolean("shop.allow-economy-loan")) {
-                if (getBalance(name) < amount) {
-                    return false;
-                }
+            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && (getBalance(name) < amount)) {
+                return false;
             }
             return Objects.requireNonNull(this.vault).withdrawPlayer(p, amount).transactionSuccess();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (p.getName() == null) {
                 if (this.taxAccountUUID.equals(name)) {
