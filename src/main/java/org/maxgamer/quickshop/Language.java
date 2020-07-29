@@ -82,6 +82,7 @@ public class Language {
         if (type == null || type.isEmpty()) {
             throw new IllegalArgumentException("Type cannot be null or empty");
         }
+        @Cleanup
         InputStream inputStream = plugin.getResource("lang/" + language + "/" + type + ".json");
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
