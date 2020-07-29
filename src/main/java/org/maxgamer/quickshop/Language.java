@@ -85,6 +85,10 @@ public class Language {
             Util.debugLog("Using the default language because we can't get the InputStream.");
             inputStream = plugin.getResource("lang/en-US/" + type + ".json");
         }
+        if (inputStream == null) {
+            Util.debugLog("Gets default language input stream failed, using fallback.");
+            inputStream = plugin.getResource("lang-original/messages.json");
+        }
         return inputStream;
         // File name should call    type-language.yml    ---> config-zh.yml
     }
