@@ -151,29 +151,39 @@ public class Updater {
         outputStream.close();
     }
 
-    public synchronized static boolean hasUpdate(String versionNow) {
-        return hasUpdate(QuickShop.getVersion(), versionNow);
+    public synchronized static boolean hasUpdate(String versionRemote) {
+        return hasUpdate(QuickShop.getVersion(), versionRemote);
     }
 
-    public synchronized static boolean hasUpdate(String versionPre, String versionNow) {
-        if (versionNow == null) {
+    private static int[] parseStringArray(String[] input, int targetLength) {
+        int[] result = new int[targetLength];
+        for (int i = 0; i < targetLength; i++) {
+            if (i >= input.length) {
+                result[i] = 0;
+            } else {
+                result[i] = Integer.parseInt(input[i]);
+            }
+        }
+        return result;
+    }
+
+    public synchronized static boolean hasUpdate(String versionLocal, String versionRemote) {
+        if (versionRemote == null) {
             return false;
         }
-        if (!versionNow.equals(versionPre)) {
-            Matcher matcher = pattern.matcher(versionNow);
+        if (!versionRemote.equals(versionLocal)) {
+            Matcher matcher = pattern.matcher(versionRemote);
             if (matcher.find()) {
                 String result = matcher.group(0);
                 if (result != null && !result.isEmpty()) {
-                    String[] now = matcher.group(0).split("\\.");
-                    String[] previous = versionPre.split("\\.");
-                    for (int i = 0; i < now.length; i++) {
-                        if (i < previous.length) {
-                            int nowSub = Integer.parseInt(now[i]);
-                            int preSub = Integer.parseInt(previous[i]);
-                            if (nowSub == preSub) {
-                                continue;
-                            }
-                            return nowSub > preSub;
+                    String[] remote = matcher.group(0).split("\\.");
+                    String[] local = versionLocal.split("\\.");
+                    int maxLength = Math.max(remote.length, local.length);
+                    int[] parsedRemote = parseStringArray(remote, maxLength);
+                    int[] parsedLocal = parseStringArray(local, maxLength);
+                    for (int i = 0; i < parsedRemote.length; i++) {
+                        if (parsedLocal[i] != parsedRemote[i]) {
+                            return parsedRemote[i] > parsedLocal[i];
                         }
                     }
                 }
