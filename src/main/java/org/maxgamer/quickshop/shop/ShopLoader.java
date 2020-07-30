@@ -130,9 +130,11 @@ public class ShopLoader {
                         if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
                             backupedDatabaseInDeleteProcess = Util.backupDatabase();
                             if (backupedDatabaseInDeleteProcess) {
+                                plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
                                 plugin.getDatabaseHelper().removeShop(shop);
                             }
                         } else {
+                            plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
                             plugin.getDatabaseHelper().removeShop(shop);
                         }
                         singleShopLoaded(singleShopLoadTimer);
