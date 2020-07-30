@@ -97,7 +97,7 @@ public class EconomyTransaction {
      */
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        if (core.getBalance(from) < total && !allowLoan) {
+        if (from != null && core.getBalance(from) < total && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
