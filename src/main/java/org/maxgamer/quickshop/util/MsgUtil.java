@@ -604,12 +604,12 @@ public class MsgUtil {
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text =
                     MsgUtil.fillArgs(
-                            "/qs price ",
+                            MsgUtil.getMessage("controlpanel.price", sender),
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
+            String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
