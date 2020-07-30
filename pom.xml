@@ -96,6 +96,11 @@
                             <pattern>com.dumptruckman.bukkit.configuration</pattern>
                             <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.offbytwo.jenkins</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jenkins</shadedPattern>
+                        </relocation>
+
                     </relocations>
                 </configuration>
                 <executions>
@@ -569,6 +574,12 @@
             <version>3.1.1</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.offbytwo.jenkins</groupId>
+            <artifactId>jenkins-client</artifactId>
+            <version>0.3.8</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
