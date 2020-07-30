@@ -1,10 +1,10 @@
 package org.maxgamer.quickshop;
 
-import lombok.Cleanup;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -20,7 +20,6 @@ public class BuildInfo {
     private final String pomArtifactId;
 
     public BuildInfo(@NotNull QuickShop plugin) {
-        @Cleanup
         InputStream inputStream = plugin.getResource("BUILDINFO");
         if (inputStream == null) {
             buildId = "Unknown";
@@ -42,5 +41,9 @@ public class BuildInfo {
         pomVersion = buildInfo.getString("pom-version", "Unknown");
         pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
+        try {
+            inputStream.close();
+        } catch (IOException ignored) {
+        }
     }
 }
