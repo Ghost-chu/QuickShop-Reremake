@@ -44,14 +44,14 @@ If you're a developer, you can contribute to the QuickShop code! Just make a for
 ## Maven
 ```XML
 <repository>
-   <id>quickshop-repo</id>
-   <url>https://raw.githubusercontent.com/Ghost-chu/maven-repo/master/</url>
+    <id>quickshop-repo</id>
+    <url>https://repo.codemc.io/</url>
 </repository>
 
 <dependency>
-   <groupId>org.maxgamer.quickshop</groupId>
-   <artifactId>QuickShop</artifactId>
-   <version>{VERSION}</version>
-   <scope>provided</scope>
+    <groupId>org.maxgamer</groupId>
+    <artifactId>QuickShop</artifactId>
+    <version>{VERSION}</version>
+    <scope>provided</scope>
 </dependency>
 ```
