@@ -260,6 +260,9 @@ public class QuickShop extends JavaPlugin {
         return instance;
     }
 
+    @Getter
+    private BuildInfo buildInfo;
+
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
      * may not is "Reremake x.x.x" If running QS offical, Will throw exception.
@@ -498,6 +501,7 @@ public class QuickShop extends JavaPlugin {
     public void onLoad() {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
+        this.buildInfo = new BuildInfo(this);
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
