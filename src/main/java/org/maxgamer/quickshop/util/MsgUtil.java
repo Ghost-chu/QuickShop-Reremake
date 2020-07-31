@@ -275,6 +275,7 @@ public class MsgUtil {
             } catch (IOException ignore) {
             }
             if (oldMsgFile.exists()) {
+                Util.debugLog("Deleting old MsgFile");
                 oldMsgFile.delete();
             }
             plugin.getLogger().info("Successfully converted, Continue loading...");
