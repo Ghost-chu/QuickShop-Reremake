@@ -20,7 +20,7 @@ public class EconomyTransaction {
     private final double amount;
     @NotNull
     private final EconomyCore core;
-    private final double total; //
+    private final double actualAmount; //
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
@@ -46,11 +46,11 @@ public class EconomyTransaction {
         this.taxAccount = taxAccount;
         this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
-            this.total = CalculateUtil.multiply(taxModifier, amount);
+            this.actualAmount = CalculateUtil.multiply(1 - taxModifier, amount);
         } else {
-            this.total = amount;
+            this.actualAmount = amount;
         }
-        this.tax = CalculateUtil.subtract(amount, total); //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, actualAmount); //Calc total tax
         if (from == null && to == null) {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
@@ -106,8 +106,8 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        if (from != null && core.getBalance(from) < total && !allowLoan) {
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        if (from != null && core.getBalance(from) < actualAmount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
@@ -119,8 +119,8 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
-        if (to != null && !core.deposit(to, total)) {
-            this.lastError = "Failed to deposit " + total + " to player " + to.toString() + " account";
+        if (to != null && !core.deposit(to, actualAmount)) {
+            this.lastError = "Failed to deposit " + actualAmount + " to player " + to.toString() + " account";
             callback.onFailed(this);
             return false;
         }
@@ -155,7 +155,7 @@ public class EconomyTransaction {
             }
         }
         if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
-            if (to != null && !core.withdraw(to, total)) { //Rollback deposit
+            if (to != null && !core.withdraw(to, actualAmount)) { //Rollback deposit
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
                     return rollbackSteps;
