@@ -493,12 +493,14 @@ public class QuickShop extends JavaPlugin {
             logWatcher = null;
         }
     }
-
+    boolean onLoadCalled = false;
     /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
     @Override
     public void onLoad() {
+        this.onLoadCalled = true;
+        getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(this);
@@ -521,6 +523,7 @@ public class QuickShop extends JavaPlugin {
         }
 
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
+        getLogger().info("QuickShop Reremake - Early boot step - Booted up...");
     }
 
     @Override
@@ -577,6 +580,13 @@ public class QuickShop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
+            try {
+                onLoad();
+            } catch (Throwable ignored) {
+            }
+        }
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */

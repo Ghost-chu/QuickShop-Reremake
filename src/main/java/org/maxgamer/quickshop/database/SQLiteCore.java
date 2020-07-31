@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.database;
 
-import lombok.Cleanup;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +61,7 @@ public class SQLiteCore implements DatabaseCore {
             }
             synchronized (dbFile) {
                 try {
-                    @Cleanup
+
                     PreparedStatement ps = bs.prepareStatement(Objects.requireNonNull(getConnection()));
                     ps.execute();
                     ps.close();

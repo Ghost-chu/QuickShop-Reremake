@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.database;
 
-import lombok.Cleanup;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +69,7 @@ public class DatabaseHelper {
      */
 
     private void createShopsTable() throws SQLException {
-        @Cleanup Statement st = db.getConnection().createStatement();
+         Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + plugin
                 .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
         st.execute(createTable);
@@ -83,7 +82,7 @@ public class DatabaseHelper {
      * @throws SQLException If the connection is invalid
      */
     private boolean createMessagesTable() throws SQLException {
-        @Cleanup Statement st = db.getConnection().createStatement();
+        Statement st = db.getConnection().createStatement();
         String createTable = "CREATE TABLE " + plugin.getDbPrefix()
                 + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
         if (plugin.getDatabase().getCore() instanceof MySQLCore) {
