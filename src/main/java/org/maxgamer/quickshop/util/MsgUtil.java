@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.collect.Maps;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -440,7 +439,7 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
-            @Cleanup
+
             ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");

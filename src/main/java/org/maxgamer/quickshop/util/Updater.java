@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import lombok.Cleanup;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -87,7 +86,7 @@ public class Updater {
             throw new IOException("Failed read the URL, cause it is empty.");
         }
         QuickShop.getInstance().getLogger().info("Downloading from " + uurl);
-        @Cleanup
+
         InputStream is =
                 HttpRequest.get(new URL(uurl))
                         .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
@@ -144,7 +143,7 @@ public class Updater {
         if (quickshop == null) {
             throw new RuntimeException("Failed to get QuickShop Jar File.");
         }
-        @Cleanup
+
         OutputStream outputStream = new FileOutputStream(quickshop, false);
         outputStream.write(data);
         outputStream.flush();
