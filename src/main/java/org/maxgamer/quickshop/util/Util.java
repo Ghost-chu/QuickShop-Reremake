@@ -61,6 +61,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Deprecated
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
 
