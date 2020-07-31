@@ -241,13 +241,16 @@ public class MsgUtil {
         // Init nJson
         IFile nJson;
         if (plugin.getResource("lang/" + languageCode + "/messages.json") == null) {
+            Util.debugLog("Loading up the language file from plugin fallback resources.");
             nJson =
                     new JSONFile(
                             plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
         } else {
             if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+                Util.debugLog("Creating the built-in language file to drive....");
                 plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
             }
+            Util.debugLog("Loading up the language file from plugin i18n resources and local drive.");
             nJson =
                     new JSONFile(
                             plugin,
