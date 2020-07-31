@@ -86,6 +86,16 @@ public class EconomyTransaction {
      */
     public boolean commit() {
         return this.commit(new TransactionCallback() {
+            @Override
+            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+                //Fetch some stupid plugin caching
+                if (from != null) {
+                    core.getBalance(from);
+                }
+                if (to != null) {
+                    core.getBalance(to);
+                }
+            }
         });
     }
 
