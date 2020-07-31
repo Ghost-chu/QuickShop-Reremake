@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.database;
 
-import lombok.Cleanup;
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -89,7 +88,6 @@ public class DatabaseManager {
      */
     private synchronized void runTask() { // synchronized for QUICKSHOP-WX
         try {
-            @Cleanup
             Connection connection = this.database.getConnection();
             //start our commit
             connection.setAutoCommit(false);
@@ -129,6 +127,7 @@ public class DatabaseManager {
                                 + tookTime
                                 + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
             }
+            connection.close();
         } catch (SQLException sqle) {
             plugin.getSentryErrorReporter().ignoreThrow();
             this.plugin

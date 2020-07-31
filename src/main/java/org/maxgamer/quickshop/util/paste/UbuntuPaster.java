@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util.paste;
 
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.Util;
 
@@ -52,7 +51,7 @@ public class UbuntuPaster implements PasteInterface {
         conn.setDoInput(true);
         conn.setConnectTimeout(50000);
         conn.setReadTimeout(100000);
-        @Cleanup
+
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // poster=aaaaaaa&syntax=text&expiration=&content=%21%40
         String builder =
@@ -64,7 +63,7 @@ public class UbuntuPaster implements PasteInterface {
                         + URLEncoder.encode(text, "UTF-8");
         out.print(builder);
         out.flush(); // Drop
-        @Cleanup
+
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         Util.debugLog("Request Completed: " + conn.getURL());
         String link = conn.getURL().toString();

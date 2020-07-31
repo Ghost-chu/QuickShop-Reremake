@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -40,7 +39,6 @@ public class Copied implements Consumer<InputStream> {
     @Override
     public void accept(@NotNull InputStream inputStream) {
         try {
-            @Cleanup
             OutputStream out = new FileOutputStream(file);
             final byte[] buf = new byte[1024];
             int len;
