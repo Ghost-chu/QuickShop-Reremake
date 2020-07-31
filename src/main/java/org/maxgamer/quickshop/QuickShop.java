@@ -581,7 +581,7 @@ public class QuickShop extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad not called, QuickShop trying fixing them...");
+            getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
             try {
                 onLoad();
             } catch (Throwable ignored) {
