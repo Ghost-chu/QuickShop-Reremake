@@ -365,6 +365,7 @@ public class Paste {
         while (resultSet.next()) {
             totalDB++;
         }
+        resultSet.close();
         finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");

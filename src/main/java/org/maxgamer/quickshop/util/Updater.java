@@ -104,6 +104,7 @@ public class Updater {
             downloaded += len;
             Util.debugLog("File Downloader:  " + downloaded + "/" + uurlSize + " bytes.");
         }
+        is.close();
         Util.debugLog("Downloaded: " + downloaded + " Server:" + uurlSize);
         if (!(uurlSize < 1) && downloaded != uurlSize) {
             Util.debugLog("Size not match, download may broken.");

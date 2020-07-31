@@ -146,6 +146,7 @@ public class ShopLoader {
                 }
                 singleShopLoaded(singleShopLoadTimer);
             }
+            rs.close();
             long totalUsedTime = totalLoadTimer.endTimer();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
