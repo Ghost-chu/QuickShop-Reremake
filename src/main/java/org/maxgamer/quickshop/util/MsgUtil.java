@@ -66,7 +66,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-
+@Deprecated
 public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
