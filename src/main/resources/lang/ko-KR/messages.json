@@ -24,7 +24,7 @@
   "you-cant-afford-to-change-price": "&c상점 가격을 변경하는 데 {0}원이 소모됩니다!",
   "success-created-shop": "&c상점이 정상적으로 생성되었습니다.",
   "success-removed-shop": "&c상점을 제거했습니다.",
-  "shops-arent-locked": "&c기억하세요, 상점은 도둑질로부터 보호되지 \"\"않습니다!!!\"\" 도둑질로부터 보호하고 싶으면 잠금 플러그인을 이용하여 상자를 잠궈주세요!",
+  "shops-arent-locked": "&c기억하세요, 상점은 도둑질로부터 보호되지 &4&l않습니다!!! &c도둑질로부터 보호하고 싶으면 잠금 플러그인을 이용하여 상자를 잠궈주세요!",
   "shop-creation-cancelled": "&c상점 생성이 취소되었습니다.",
   "shop-purchase-cancelled": "&c상점 구입이 취소되었습니다.",
   "shop-stock-too-low": "&c상점에는 오직 {0} {1} 개의 상품이 남아 있습니다!",
