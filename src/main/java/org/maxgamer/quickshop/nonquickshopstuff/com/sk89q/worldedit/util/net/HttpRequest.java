@@ -19,7 +19,6 @@ package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net;
  */
 
 import com.google.common.io.Closer;
-import lombok.Cleanup;
 
 import java.io.*;
 import java.net.*;
@@ -227,7 +226,7 @@ public final class HttpRequest implements Closeable {
             conn.connect();
 
             if (body != null) {
-                @Cleanup
+
                 DataOutputStream out = new DataOutputStream(conn.getOutputStream());
                 out.write(body);
                 out.flush();

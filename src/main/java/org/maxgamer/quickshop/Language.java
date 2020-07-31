@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.Copied;
@@ -55,7 +54,6 @@ public class Language {
         }
 
         try {
-            @Cleanup
             InputStream is = getFile(language, type);
             new Copied(targetFile).accept(is);
             is.close();

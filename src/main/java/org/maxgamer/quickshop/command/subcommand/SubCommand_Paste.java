@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +62,7 @@ public class SubCommand_Paste implements CommandProcesser {
                     try {
                         boolean createResult = file.createNewFile();
                         Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
-                        @Cleanup
+
                         FileWriter fwriter = new FileWriter(file);
                         fwriter.write(pasteText);
                         fwriter.flush();
