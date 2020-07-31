@@ -48,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
 import org.maxgamer.quickshop.shop.Shop;
@@ -537,6 +538,10 @@ public class MsgUtil {
                 && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
                 && (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !((Player) sender).isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-control") : plugin.getConfig().getBoolean("shop.interact.sneak-to-control") && !((Player) sender).isSneaking())) {
 
+            return;
+        }
+        if (!Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
+            Util.debugLog("ControlPanel blocked by 3rd-party");
             return;
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
