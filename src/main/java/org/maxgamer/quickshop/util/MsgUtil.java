@@ -246,6 +246,9 @@ public class MsgUtil {
                     new JSONFile(
                             plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
         } else {
+            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+            }
             nJson =
                     new JSONFile(
                             plugin,
