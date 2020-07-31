@@ -250,6 +250,12 @@ public class MsgUtil {
                     new JSONFile(
                             plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
         } else {
+            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+                Util.debugLog("Creating the built-in language file to drive....");
+                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+            }
+            Util.debugLog("Loading up the language file from plugin i18n resources and local drive.");
+
             nJson =
                     new JSONFile(
                             plugin,
@@ -611,12 +617,13 @@ public class MsgUtil {
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             String text =
                     MsgUtil.fillArgs(
+                            MsgUtil.getMessage("controlpanel.price", sender),
                             "/qs price ",
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
-            String clickCommand = MsgUtil.getMessage("controlpanel.commands.price", sender);
+            String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
