@@ -46,7 +46,7 @@ public class EconomyTransaction {
         this.taxAccount = taxAccount;
         this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
-            this.actualAmount = CalculateUtil.multiply(1 - taxModifier, amount);
+            this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
             this.actualAmount = amount;
         }
