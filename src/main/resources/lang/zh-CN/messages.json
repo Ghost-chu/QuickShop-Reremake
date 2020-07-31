@@ -94,9 +94,9 @@
     "price-per-stack": "&a每&e{2}个 {0} 价格 {1}",
     "total-value-of-chest": "&a共计商店数: &e{0}",
     "damage-percent-remaining": "&e{0}% &a剩余",
-    "this-shop-is-buying": "&a这个商店现在开始&d收购&a物品。",
-    "this-shop-is-selling": "&a这个商店现在开始&d出售&a物品。",
-    "shop-stack": "&a每份物品的数量：&e{0}",
+    "this-shop-is-buying": "&a这个商店现在正在&d收购&a物品。",
+    "this-shop-is-selling": "&a这个商店现在正在&d出售&a物品。",
+    "shop-stack": "&a每次交易物品数量：&e{0}",
     "effects": "&a效果"
   },
   "bypassing-lock": "&c你绕过了QuickShop的锁！",
