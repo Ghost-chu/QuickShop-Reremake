@@ -90,9 +90,11 @@ public class Database {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getString(column) != null) {
+                    rs.close();
                     return true;
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             return false;
         }
