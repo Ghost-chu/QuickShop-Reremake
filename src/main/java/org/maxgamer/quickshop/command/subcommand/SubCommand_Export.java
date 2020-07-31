@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -63,7 +62,6 @@ public class SubCommand_Export implements CommandProcesser {
                         .getShopLoader()
                         .getOriginShopsInDatabase()
                         .forEach((shop -> finalReport.append(shop).append("\n")));
-                @Cleanup
                 BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
                 outputStream.write(finalReport.toString());
                 outputStream.close();

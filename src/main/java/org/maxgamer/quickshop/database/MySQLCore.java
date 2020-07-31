@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.database;
 
-import lombok.Cleanup;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +83,7 @@ public class MySQLCore implements DatabaseCore {
     @Override
     public void queue(@NotNull BufferStatement bs) {
         try {
-            @Cleanup
+
             Connection con = this.getConnection();
             while (con == null) {
                 try {
@@ -95,7 +94,7 @@ public class MySQLCore implements DatabaseCore {
                 // Try again
                 con = this.getConnection();
             }
-            @Cleanup
+
             PreparedStatement ps = bs.prepareStatement(con);
             ps.execute();
             ps.close();
