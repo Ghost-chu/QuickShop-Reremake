@@ -571,7 +571,7 @@ public class ShopManager {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
-                plugin.log("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -746,7 +746,7 @@ public class ShopManager {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
-                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
             }
         }
@@ -811,7 +811,7 @@ public class ShopManager {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
-                plugin.log("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
