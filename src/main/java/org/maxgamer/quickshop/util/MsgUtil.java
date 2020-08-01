@@ -546,7 +546,7 @@ public class MsgUtil {
 
             return;
         }
-        if (!Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
+        if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
             Util.debugLog("ControlPanel blocked by 3rd-party");
             return;
         }
