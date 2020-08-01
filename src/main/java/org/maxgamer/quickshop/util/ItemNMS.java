@@ -64,11 +64,14 @@ public abstract class ItemNMS {
     }
 
     /**
-     * Save ItemStack to Json passthrough the NMS.
+     * Save ItemStack to Json through the NMS.
      *
      * @param bStack ItemStack
      * @return The json for ItemStack.
-     * @throws Throwable throws
+     * @throws InvocationTargetException throws
+     * @throws IllegalAccessException    throws
+     * @throws NoSuchMethodException     throws
+     * @throws InstantiationException    throws
      */
     @Nullable
     public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
