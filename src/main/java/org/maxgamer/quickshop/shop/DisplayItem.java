@@ -312,6 +312,8 @@ public abstract class DisplayItem {
 
     /**
      * Gets this display item should be remove
+     *
+     * @return the status
      */
     public boolean isPendingRemoval() {
         return pendingRemoval;
