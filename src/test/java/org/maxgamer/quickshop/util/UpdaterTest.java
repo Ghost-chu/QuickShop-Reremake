@@ -1,9 +1,8 @@
-package util;
+package org.maxgamer.quickshop.util;
 
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.maxgamer.quickshop.util.Updater;
 
 public class UpdaterTest {
 
