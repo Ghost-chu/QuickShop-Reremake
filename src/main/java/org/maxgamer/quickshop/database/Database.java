@@ -21,10 +21,7 @@ package org.maxgamer.quickshop.database;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Database {
 
@@ -84,13 +81,13 @@ public class Database {
         if (!hasTable(table)) {
             return false;
         }
-        String query = "SELECT * FROM " + table + " LIMIT 0,1";
+        String query = "SELECT * FROM " + table + " LIMIT 1";
         try {
             PreparedStatement ps = this.getConnection().prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                if (rs.getString(column) != null) {
-                    rs.close();
+            ResultSetMetaData metaData = rs.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                if (metaData.getColumnLabel(i).equals(column)) {
                     return true;
                 }
             }
