@@ -618,7 +618,6 @@ public class MsgUtil {
             String text =
                     MsgUtil.fillArgs(
                             MsgUtil.getMessage("controlpanel.price", sender),
-                            "/qs price ",
                             (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
