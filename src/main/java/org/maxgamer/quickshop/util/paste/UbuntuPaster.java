@@ -36,7 +36,7 @@ public class UbuntuPaster implements PasteInterface {
      *
      * @param text The text you want paste.
      * @return Target paste URL.
-     * @throws Exception the throws
+     * @throws IOException the throws
      */
     @NotNull
     public String pasteTheText(@NotNull String text) throws IOException {

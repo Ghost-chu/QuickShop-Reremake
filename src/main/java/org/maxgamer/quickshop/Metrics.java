@@ -163,7 +163,8 @@ public class Metrics {
      *
      * @param plugin Any plugin. It's just used to get a logger instance.
      * @param data   The data to send.
-     * @throws Exception If the request failed.
+     * @throws IllegalAccessException If the method called from main thread
+     * @throws IOException            If the request failed.
      */
     private static void sendData(Plugin plugin, JsonObject data) throws IllegalAccessException, IOException {
         if (data == null) {
