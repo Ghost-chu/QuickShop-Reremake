@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -24,23 +25,29 @@ public class EconomyTransaction {
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
+    @Getter
     private TransactionSteps steps; //For rollback
     @Nullable
+    @Getter
     private String lastError = null;
-
 
     /**
      * Create a transaction
      *
-     * @param from The account that money from, be null is ignored.
-     * @param to   The account that money to, be null is ignored.
-     * @param core The economy core
+     * @param from        The account that money from, be null is ignored.
+     * @param to          The account that money to, be null is ignored.
+     * @param core        economy core
+     * @param allowLoan   allow loan?
+     * @param amount      the amount of money
+     * @param taxAccount  tax account
+     * @param taxModifier tax modifier
      */
+
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @Nullable EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
-        this.core = core;
+        this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
         this.taxAccount = taxAccount;
@@ -57,10 +64,10 @@ public class EconomyTransaction {
         }
         //Fetch some stupid plugin caching
         if (from != null) {
-            core.getBalance(from);
+            this.core.getBalance(from);
         }
         if (to != null) {
-            core.getBalance(to);
+            this.core.getBalance(to);
         }
     }
 
@@ -183,7 +190,7 @@ public class EconomyTransaction {
         ROLLBACK_DONE
     }
 
-    private enum TransactionSteps {
+    public enum TransactionSteps {
         WAIT,
         WITHDRAW,
         DEPOSIT,
