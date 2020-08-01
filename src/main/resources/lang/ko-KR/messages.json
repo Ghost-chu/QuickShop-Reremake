@@ -46,7 +46,7 @@
   "average-price-nearby": "&a근처 평균 가격: &e{0} 원",
   "shop-has-changed": "&c유저님이 사용하려고 했던 상점이 유저님이 클릭한 이후로 변경되었습니다! 상점을 다시 클릭해주세요!",
   "shop-not-exist": "&c그곳에는 상점이 없습니다.",
-  "nearby-shop-this-way": "&a상점은  당신을 기준으로 {0}블록 떨어진 곳에 있습니다.",
+  "nearby-shop-this-way": "&a그 상점은 당신을 기준으로 {0}블록 떨어진 곳에 있습니다.",
   "no-nearby-shop": "&c근처에서는 {0} 상점이 없습니다.",
   "buying-more-than-selling": "&c주의: 당신이 구매하려는 수량이 판매하는 수량보다 많습니다!",
   "not-enough-space": "&c이 중 {0} 개를 더 사용할 수 있는 공간만 있습니다!",
