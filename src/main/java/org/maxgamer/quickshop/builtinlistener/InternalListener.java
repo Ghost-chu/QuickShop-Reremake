@@ -68,6 +68,7 @@ public class InternalListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPrePurchase(ShopPurchaseEvent event) {
         plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " before trading.");
+        plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " before trading.");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -106,6 +107,7 @@ public class InternalListener implements Listener {
 
         }
         plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " after trading.");
+        plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " before trading.");
     }
 
 }
