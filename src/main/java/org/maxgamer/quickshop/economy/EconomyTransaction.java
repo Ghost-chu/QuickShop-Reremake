@@ -34,8 +34,8 @@ public class EconomyTransaction {
     /**
      * Create a transaction
      *
-     * @param from        The account that money from, be null is ignored.
-     * @param to          The account that money to, be null is ignored.
+     * @param from        The account that money from, but null will be ignored.
+     * @param to          The account that money to, but null will be ignored.
      * @param core        economy core
      * @param allowLoan   allow loan?
      * @param amount      the amount of money
@@ -44,7 +44,7 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @Nullable EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
