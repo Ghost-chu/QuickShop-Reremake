@@ -66,6 +66,11 @@ public class InternalListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopPrePurchase(ShopPurchaseEvent event) {
+        plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " before trading.");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPurchase(ShopSuccessPurchaseEvent event) {
         if (event.getShop().getShopType() == ShopType.BUYING) {
             plugin.log(
