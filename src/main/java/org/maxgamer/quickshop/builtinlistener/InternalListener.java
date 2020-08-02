@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
+import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
 public class InternalListener implements Listener {
@@ -81,8 +82,10 @@ public class InternalListener implements Listener {
                             + event.getShop().ownerName()
                             + " shop "
                             + event.getShop()
-                            + " for items x"
-                            + event.getAmount()
+                            + " for"
+                            + Util.getItemStackName(event.getShop().getItem())
+                            + "x" +
+                            +event.getAmount()
                             + " for "
                             + plugin.getEconomy().format(event.getBalance())
                             + " ("
@@ -97,7 +100,9 @@ public class InternalListener implements Listener {
                             + event.getShop().ownerName()
                             + " shop "
                             + event.getShop()
-                            + " for items x"
+                            + " for "
+                            + Util.getItemStackName(event.getShop().getItem())
+                            + " x"
                             + event.getAmount()
                             + " for "
                             + plugin.getEconomy().format(event.getBalance())
@@ -107,7 +112,7 @@ public class InternalListener implements Listener {
 
         }
         plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " after trading.");
-        plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " before trading.");
+        plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " after trading.");
     }
 
 }
