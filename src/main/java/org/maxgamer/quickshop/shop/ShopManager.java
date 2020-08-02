@@ -572,6 +572,7 @@ public class ShopManager {
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
@@ -747,6 +748,7 @@ public class ShopManager {
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
             }
         }
@@ -812,6 +814,7 @@ public class ShopManager {
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
             return;
         }
