@@ -72,6 +72,12 @@ public class MySQLCore implements DatabaseCore {
 
     @Override
     public void close() {
+        try {
+            for (Connection connection : POOL) {
+                connection.close();
+            }
+        } catch (SQLException ignored) {
+        }
         // Nothing, because queries are executed immediately for MySQL
     }
 
