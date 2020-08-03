@@ -74,6 +74,9 @@ public class MySQLCore implements DatabaseCore {
     public void close() {
         try {
             for (Connection connection : POOL) {
+                if (!connection.getAutoCommit()) {
+                    connection.commit();
+                }
                 connection.close();
             }
         } catch (SQLException ignored) {
