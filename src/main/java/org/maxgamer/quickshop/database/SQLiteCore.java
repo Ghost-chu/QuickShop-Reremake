@@ -50,6 +50,10 @@ public class SQLiteCore implements DatabaseCore {
     @Override
     public void close() {
         flush();
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+        }
     }
 
     @Override
