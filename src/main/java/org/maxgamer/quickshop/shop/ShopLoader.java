@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -87,7 +86,7 @@ public class ShopLoader {
         try {
             this.plugin.getLogger().info("Loading shops from the database...");
             Timer fetchTimer = new Timer(true);
-            @Cleanup
+
             ResultSet rs = plugin.getDatabaseHelper().selectAllShops();
             this.plugin
                     .getLogger()
@@ -130,9 +129,11 @@ public class ShopLoader {
                         if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
                             backupedDatabaseInDeleteProcess = Util.backupDatabase();
                             if (backupedDatabaseInDeleteProcess) {
+                                plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
                                 plugin.getDatabaseHelper().removeShop(shop);
                             }
                         } else {
+                            plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
                             plugin.getDatabaseHelper().removeShop(shop);
                         }
                         singleShopLoaded(singleShopLoadTimer);
@@ -145,6 +146,7 @@ public class ShopLoader {
                 }
                 singleShopLoaded(singleShopLoadTimer);
             }
+            rs.close();
             long totalUsedTime = totalLoadTimer.endTimer();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin

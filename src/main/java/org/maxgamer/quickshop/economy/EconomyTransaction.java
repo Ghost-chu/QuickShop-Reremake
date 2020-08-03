@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -20,47 +21,53 @@ public class EconomyTransaction {
     private final double amount;
     @NotNull
     private final EconomyCore core;
-    private final double total; //
+    private final double actualAmount; //
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
+    @Getter
     private TransactionSteps steps; //For rollback
     @Nullable
+    @Getter
     private String lastError = null;
-
 
     /**
      * Create a transaction
      *
-     * @param from The account that money from, be null is ignored.
-     * @param to   The account that money to, be null is ignored.
-     * @param core The economy core
+     * @param from        The account that money from, but null will be ignored.
+     * @param to          The account that money to, but null will be ignored.
+     * @param core        economy core
+     * @param allowLoan   allow loan?
+     * @param amount      the amount of money
+     * @param taxAccount  tax account
+     * @param taxModifier tax modifier
      */
+
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, @NotNull EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
-        this.core = core;
+        this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
         this.taxAccount = taxAccount;
         this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
-            this.total = CalculateUtil.multiply(taxModifier, amount);
+            this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
-            this.total = amount;
+            this.actualAmount = amount;
         }
-        this.tax = CalculateUtil.subtract(amount, total); //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, actualAmount); //Calc total tax
         if (from == null && to == null) {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //Fetch some stupid plugin caching
         if (from != null) {
-            core.getBalance(from);
+            this.core.getBalance(from);
         }
         if (to != null) {
-            core.getBalance(to);
+            this.core.getBalance(to);
         }
     }
 
@@ -86,6 +93,16 @@ public class EconomyTransaction {
      */
     public boolean commit() {
         return this.commit(new TransactionCallback() {
+            @Override
+            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+                //Fetch some stupid plugin caching
+                if (from != null) {
+                    core.getBalance(from);
+                }
+                if (to != null) {
+                    core.getBalance(to);
+                }
+            }
         });
     }
 
@@ -96,8 +113,8 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + total + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        if (from != null && core.getBalance(from) < total && !allowLoan) {
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        if (from != null && core.getBalance(from) < actualAmount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
@@ -109,8 +126,8 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
-        if (to != null && !core.deposit(to, total)) {
-            this.lastError = "Failed to deposit " + total + " to player " + to.toString() + " account";
+        if (to != null && !core.deposit(to, actualAmount)) {
+            this.lastError = "Failed to deposit " + actualAmount + " to player " + to.toString() + " account";
             callback.onFailed(this);
             return false;
         }
@@ -145,7 +162,7 @@ public class EconomyTransaction {
             }
         }
         if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
-            if (to != null && !core.withdraw(to, total)) { //Rollback deposit
+            if (to != null && !core.withdraw(to, actualAmount)) { //Rollback deposit
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
                     return rollbackSteps;
@@ -173,7 +190,7 @@ public class EconomyTransaction {
         ROLLBACK_DONE
     }
 
-    private enum TransactionSteps {
+    public enum TransactionSteps {
         WAIT,
         WITHDRAW,
         DEPOSIT,
