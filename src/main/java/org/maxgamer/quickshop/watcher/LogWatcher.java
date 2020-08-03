@@ -42,7 +42,9 @@ public class LogWatcher extends BukkitRunnable {
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
+            //TODO:split large log files
             if (!log.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
             }
             logFileWriter = new FileWriter(log, true);

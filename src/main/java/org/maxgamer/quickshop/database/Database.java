@@ -19,13 +19,9 @@
 
 package org.maxgamer.quickshop.database;
 
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Database {
 
@@ -85,15 +81,17 @@ public class Database {
         if (!hasTable(table)) {
             return false;
         }
-        String query = "SELECT * FROM " + table + " LIMIT 0,1";
+        String query = "SELECT * FROM " + table + " LIMIT 1";
         try {
-            @Cleanup PreparedStatement ps = this.getConnection().prepareStatement(query);
-            @Cleanup ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                if (rs.getString(column) != null) {
+            PreparedStatement ps = this.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                if (metaData.getColumnLabel(i).equals(column)) {
                     return true;
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             return false;
         }
@@ -109,7 +107,7 @@ public class Database {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean hasTable(@NotNull String table) throws SQLException {
-        @Cleanup ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
+        ResultSet rs = getConnection().getMetaData().getTables(null, null, "%", null);
         while (rs.next()) {
             if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
                 rs.close();
