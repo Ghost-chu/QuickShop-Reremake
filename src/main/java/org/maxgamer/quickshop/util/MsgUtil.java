@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.collect.Maps;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -49,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
 import org.maxgamer.quickshop.shop.Shop;
@@ -73,10 +73,12 @@ public class MsgUtil {
     private static final Map<UUID, LinkedList<String>> player_messages = Maps.newConcurrentMap();
 
     private static final QuickShop plugin = QuickShop.getInstance();
+
+    private static TextComponent errorComponent;
+
     private static final DecimalFormat decimalFormat =
             new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
     public static GameLanguage gameLanguage;
-    private static TextComponent errorComponent;
     @Getter
     private static YamlConfiguration enchi18n;
     private static boolean inited;
@@ -191,12 +193,14 @@ public class MsgUtil {
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw.get(), args);
-            if (player != null && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
-                filled = PlaceholderAPI.setPlaceholders(player, filled);
-                Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+            if (player != null) {
+                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                    filled = PlaceholderAPI.setPlaceholders(player, filled);
+                    Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
+                }
             }
             return filled;
-        } catch (Exception th) {
+        } catch (Throwable th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
@@ -246,6 +250,12 @@ public class MsgUtil {
                     new JSONFile(
                             plugin, new File(plugin.getDataFolder(), "messages.json"), "lang-original/messages.json", true);
         } else {
+            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
+                Util.debugLog("Creating the built-in language file to drive....");
+                plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
+            }
+            Util.debugLog("Loading up the language file from plugin i18n resources and local drive.");
+
             nJson =
                     new JSONFile(
                             plugin,
@@ -437,7 +447,6 @@ public class MsgUtil {
     public static void loadTransactionMessages() {
         player_messages.clear(); // Delete old messages
         try {
-            @Cleanup
             ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
@@ -535,6 +544,10 @@ public class MsgUtil {
                 && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
                 && (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !((Player) sender).isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-control") : plugin.getConfig().getBoolean("shop.interact.sneak-to-control") && !((Player) sender).isSneaking())) {
 
+            return;
+        }
+        if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
+            Util.debugLog("ControlPanel blocked by 3rd-party");
             return;
         }
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
@@ -697,20 +710,22 @@ public class MsgUtil {
                 return invaildMsg + ": " + loc;
             }
             String filled = fillArgs(raw.get(), args);
-            if ((player instanceof OfflinePlayer) && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
-                try {
-                    filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
-                } catch (Exception ignored) {
-                    if (((OfflinePlayer) player).getPlayer() != null) {
-                        try {
-                            filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
-                        } catch (Exception ignore) {
+            if (player instanceof OfflinePlayer) {
+                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                    try {
+                        filled = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, filled);
+                    } catch (Exception ignored) {
+                        if (((OfflinePlayer) player).getPlayer() != null) {
+                            try {
+                                filled = PlaceholderAPI.setPlaceholders(((OfflinePlayer) player).getPlayer(), filled);
+                            } catch (Exception ignore) {
+                            }
                         }
                     }
                 }
             }
             return filled;
-        } catch (Exception th) {
+        } catch (Throwable th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
@@ -979,7 +994,7 @@ public class MsgUtil {
             }
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             return normalmessage;
-        } catch (Exception t) {
+        } catch (Throwable t) {
             t.printStackTrace();
             return errorComponent;
         }
@@ -1489,7 +1504,7 @@ public class MsgUtil {
                     continue;
                 }
                 sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
-            } catch (Exception throwable) {
+            } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
             }
@@ -1507,7 +1522,7 @@ public class MsgUtil {
                     continue;
                 }
                 sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
-            } catch (Exception throwable) {
+            } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
             }

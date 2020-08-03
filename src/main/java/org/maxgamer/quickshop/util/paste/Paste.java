@@ -360,11 +360,12 @@ public class Paste {
                 .append("\n");
         finalReport.append("================================================\n");
         int totalDB = 0;
-        @Cleanup
+
         ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
         while (resultSet.next()) {
             totalDB++;
         }
+        resultSet.close();
         finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");

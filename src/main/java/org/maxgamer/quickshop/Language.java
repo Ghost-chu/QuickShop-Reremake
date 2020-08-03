@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop;
 
-import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.Copied;
@@ -55,7 +54,6 @@ public class Language {
         }
 
         try {
-            @Cleanup
             InputStream is = getFile(language, type);
             new Copied(targetFile).accept(is);
             is.close();
@@ -86,17 +84,6 @@ public class Language {
         if (inputStream == null) {
             Util.debugLog("Using the default language because we can't get the InputStream.");
             inputStream = plugin.getResource("lang/en-US/" + type + ".json");
-        }
-        if (inputStream == null) {
-            Util.debugLog("Gets default language input stream failed, using fallback.");
-            inputStream = plugin.getResource("lang-original/messages.json");
-        }
-        try {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
         }
         return inputStream;
         // File name should call    type-language.yml    ---> config-zh.yml

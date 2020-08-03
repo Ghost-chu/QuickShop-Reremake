@@ -54,7 +54,7 @@
   "empty-success": "&a清空商品成功",
   "admin-shop": "管理員商店",
   "unknown-owner": "未知",
-  "owner-bypass-check": "&e略過了所有檢查，交易成功。(您是商店店主！)",
+  "owner-bypass-check": "&e略過了所有檢查，交易成功。（您是商店店主！）",
   "reached-maximum-can-create": "&c您創建的商店數量 {0}/{1} 已經達到上限！",
   "restricted-prices": "&c{0} 元是無效的價格：最高 {1} 元，最低 {2} 元。",
   "no-enough-money-to-keep-shops": "&c您的金錢不夠繳稅，所以您所有的商店已經被刪除...",
