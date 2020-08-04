@@ -114,7 +114,7 @@ public class EconomyTransaction {
      */
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        if (from != null && core.getBalance(from) < actualAmount && !allowLoan) {
+        if (from != null && core.getBalance(from) < amount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
@@ -134,6 +134,8 @@ public class EconomyTransaction {
         steps = TransactionSteps.TAX;
         if (taxAccount != null && !core.deposit(taxAccount, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
+            callback.onFailed(this);
+            return false;
         }
         steps = TransactionSteps.DONE;
         callback.onSuccess(this);
@@ -153,7 +155,7 @@ public class EconomyTransaction {
         if (steps == TransactionSteps.WAIT) {
             return rollbackSteps; //We did nothing, just checks balance
         }
-        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.WITHDRAW || steps == TransactionSteps.TAX) {
+        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
             if (from != null && !core.deposit(from, amount)) { //Rollback withdraw
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
@@ -161,7 +163,7 @@ public class EconomyTransaction {
                 }
             }
         }
-        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
+        if (steps == TransactionSteps.TAX) {
             if (to != null && !core.withdraw(to, actualAmount)) { //Rollback deposit
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
@@ -170,15 +172,6 @@ public class EconomyTransaction {
             }
         }
 
-        if (steps == TransactionSteps.TAX) {
-            if (taxAccount != null && !core.withdraw(taxAccount, tax)) {
-                this.lastError = "Failed to withdraw tax account when rollback: " + tax;
-            }
-        }
-
-        if (taxAccount != null && !core.deposit(taxAccount, tax)) { //Rollback withdraw
-            rollbackSteps.add(RollbackSteps.ROLLBACK_TAX); //Ignore fails
-        }
         rollbackSteps.add(RollbackSteps.ROLLBACK_DONE);
         return rollbackSteps;
     }
