@@ -567,7 +567,7 @@ public class ShopManager {
             transaction = EconomyTransaction.builder().core(eco).amount(total).from(null).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         }
         if (!transaction.failSafeCommit()) {
-            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.WITHDRAW) {
+            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
@@ -743,7 +743,7 @@ public class ShopManager {
         if (createCost > 0) {
             EconomyTransaction economyTransaction = EconomyTransaction.builder().taxAccount(cacheTaxAccount).taxModifier(0.0).core(plugin.getEconomy()).from(p.getUniqueId()).to(null).amount(createCost).build();
             if (!economyTransaction.failSafeCommit()) {
-                if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.WITHDRAW) {
+                if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
@@ -809,7 +809,7 @@ public class ShopManager {
             transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         }
         if (!transaction.failSafeCommit()) {
-            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.WITHDRAW) {
+            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
             } else {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
