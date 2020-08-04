@@ -133,7 +133,7 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.TAX;
-        if (taxAccount != null && !core.deposit(taxAccount, tax)) {
+        if (tax > 0 && taxAccount != null && !core.deposit(taxAccount, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
             callback.onFailed(this);
             return false;
