@@ -83,7 +83,6 @@ public class MySQLCore implements DatabaseCore {
                 connection.close();
             }
         } catch (SQLException ignored) {
-            ignored.printStackTrace();
         }
         // Nothing, because queries are executed immediately for MySQL
     }
