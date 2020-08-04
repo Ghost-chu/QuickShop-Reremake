@@ -74,7 +74,7 @@ public class MySQLCore implements DatabaseCore {
     public void close() {
         try {
             for (Connection connection : POOL) {
-                if (connection == null) {
+                if (connection == null || connection.isClosed()) {
                     continue;
                 }
                 if (!connection.getAutoCommit()) {
@@ -83,6 +83,7 @@ public class MySQLCore implements DatabaseCore {
                 connection.close();
             }
         } catch (SQLException ignored) {
+            ignored.printStackTrace();
         }
         // Nothing, because queries are executed immediately for MySQL
     }
