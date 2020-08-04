@@ -9,7 +9,7 @@
   "no-permission": "&cJe hebt hiervoor geen rechten.",
   "integrations-check-failed-create": "&cIntegratie {0} heeft de aanmaak van de winkel geweigerd",
   "integrations-check-failed-trade": "&cIntegratie {0} heeft de aanmaak van de winkel geweigerd",
-  "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?",
+  "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c heeft de controle van de permissions geweigerd, hebt u permissions ingesteld?",
   "no-creative-break": "&cYou cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cYou cannot trade with this shop while being in creative mode.",
   "supertool-is-disabled": "&cSupertool is disabled. Cannot break any shops.",
