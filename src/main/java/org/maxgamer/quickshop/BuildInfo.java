@@ -15,7 +15,6 @@ public class BuildInfo {
     private final String buildUrl;
     private final String gitCommit;
     private final String gitBranch;
-    private final String pomVersion;
     private final String pomGruopId;
     private final String pomArtifactId;
 
@@ -27,7 +26,6 @@ public class BuildInfo {
             buildUrl = "Unknown";
             gitCommit = "Custom Build";
             gitBranch = "Unknown";
-            pomVersion = "Unknown";
             pomGruopId = "Unknown";
             pomArtifactId = "Unknown";
             return;
@@ -38,7 +36,6 @@ public class BuildInfo {
         buildUrl = buildInfo.getString("build-url", "Unknown");
         gitCommit = buildInfo.getString("git-commit", "Invalid");
         gitBranch = buildInfo.getString("git-branch", "Unknown");
-        pomVersion = buildInfo.getString("pom-version", "Unknown");
         pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
         try {
