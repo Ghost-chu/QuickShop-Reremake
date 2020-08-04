@@ -114,6 +114,7 @@ public class EconomyTransaction {
      */
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        steps = TransactionSteps.CHECK;
         if (from != null && core.getBalance(from) < amount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
@@ -152,7 +153,7 @@ public class EconomyTransaction {
     @NotNull
     public List<RollbackSteps> rollback(boolean continueWhenFailed) {
         List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
-        if (steps == TransactionSteps.WAIT) {
+        if (steps == TransactionSteps.CHECK) {
             return rollbackSteps; //We did nothing, just checks balance
         }
         if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
@@ -185,6 +186,7 @@ public class EconomyTransaction {
 
     public enum TransactionSteps {
         WAIT,
+        CHECK,
         WITHDRAW,
         DEPOSIT,
         TAX,
