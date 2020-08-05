@@ -402,21 +402,23 @@ public class QuickShop extends JavaPlugin {
                         //getLogger().info("Checking the tax account infos...");
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
-                            OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount)); //FIXME: Should we use player UUID?
-                            if (!tax.hasPlayedBefore()) {
-                                Economy_Vault vault = (Economy_Vault) core;
-                                if (vault.isValid()) {
-                                    if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
-                                        try {
-                                            Util.debugLog("Tax account not exists! Creating...");
-                                            vault.getVault().createPlayerAccount(tax);
-                                        } catch (Exception ignored) {
+                            if (!(taxAccount == null || taxAccount.isEmpty())) {
+                                OfflinePlayer tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount)); //FIXME: Should we use player UUID?
+                                if (!tax.hasPlayedBefore()) {
+                                    Economy_Vault vault = (Economy_Vault) core;
+                                    if (vault.isValid()) {
+                                        if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
+                                            try {
+                                                Util.debugLog("Tax account not exists! Creating...");
+                                                vault.getVault().createPlayerAccount(tax);
+                                            } catch (Exception ignored) {
+                                            }
+                                            if (!vault.getVault().hasAccount(tax)) {
+                                                getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
+                                            }
                                         }
-                                        if (!vault.getVault().hasAccount(tax)) {
-                                            getLogger().warning("Tax account's player never played this server before, that may cause server lagg or economy system error, you should change that name. But if this warning not cause any issues, you can safety ignore this.");
-                                        }
-                                    }
 
+                                    }
                                 }
                             }
                         } catch (Exception ignored) {
