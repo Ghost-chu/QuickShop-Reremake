@@ -73,10 +73,14 @@ public class ShopManager {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
         Util.debugLog("Loading caching tax account...");
-        // noinspection ConstantConditions
-        OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax-account", "tax"));
-
-        this.cacheTaxAccount = taxPlayer.getUniqueId();
+        String taxAccount = plugin.getConfig().getString("tax-account", "tax");
+        if (!(taxAccount == null || taxAccount.isEmpty())) {
+            OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(taxAccount);
+            this.cacheTaxAccount = taxPlayer.getUniqueId();
+        } else {
+            //disable tax account
+            cacheTaxAccount = null;
+        }
         this.priceLimiter = new PriceLimiter(plugin.getConfig().getDouble("shop.minimum-price"), plugin.getConfig().getInt("shop.maximum-price"), plugin.getConfig().getBoolean("shop.allow-free-shop"));
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
