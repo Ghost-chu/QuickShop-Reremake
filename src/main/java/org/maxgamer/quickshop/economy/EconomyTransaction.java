@@ -133,10 +133,10 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.TAX;
-        if (taxAccount != null && !core.deposit(taxAccount, tax)) {
+        if (tax > 0 && taxAccount != null && !core.deposit(taxAccount, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
-            callback.onFailed(this);
-            return false;
+            callback.onTaxFailed(this);
+            //Tax never should failed.
         }
         steps = TransactionSteps.DONE;
         callback.onSuccess(this);
@@ -155,6 +155,9 @@ public class EconomyTransaction {
         List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
         if (steps == TransactionSteps.CHECK) {
             return rollbackSteps; //We did nothing, just checks balance
+        }
+        if (steps == TransactionSteps.WITHDRAW) {
+            return rollbackSteps; //We did nothing, because the trade failed so no anybody money changes.
         }
         if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
             if (from != null && !core.deposit(from, amount)) { //Rollback withdraw
@@ -200,6 +203,10 @@ public class EconomyTransaction {
 
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+        }
+
+        default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
+            Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
         }
 
     }
