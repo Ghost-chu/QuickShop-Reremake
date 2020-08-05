@@ -135,8 +135,7 @@ public class EconomyTransaction {
         steps = TransactionSteps.TAX;
         if (tax > 0 && taxAccount != null && !core.deposit(taxAccount, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
-            callback.onFailed(this);
-            return false;
+            //Tax never should failed.
         }
         steps = TransactionSteps.DONE;
         callback.onSuccess(this);
