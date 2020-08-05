@@ -2,7 +2,7 @@ package org.maxgamer.quickshop;
 
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +18,7 @@ public class BuildInfo {
     private final String pomGruopId;
     private final String pomArtifactId;
 
-    public BuildInfo(@NotNull QuickShop plugin) {
-        InputStream inputStream = plugin.getResource("BUILDINFO");
+    public BuildInfo(@Nullable InputStream inputStream) {
         if (inputStream == null) {
             buildId = "Unknown";
             buildTag = "Unknown";
