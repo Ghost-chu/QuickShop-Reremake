@@ -52,8 +52,9 @@ public class Economy_Vault implements EconomyCore, Listener {
         this.plugin = plugin;
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         Util.debugLog("Loading caching tax account...");
+        String taxAccount = plugin.getConfig().getString("tax-account");
         //noinspection deprecation
-        this.taxAccountUUID = Bukkit.getOfflinePlayer(Objects.requireNonNull(plugin.getConfig().getString("tax-account", "tax"))).getUniqueId();
+        this.taxAccountUUID = taxAccount == null || taxAccount.isEmpty() ? null : Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
         setupEconomy();
     }
 
