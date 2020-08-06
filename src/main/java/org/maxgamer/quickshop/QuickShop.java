@@ -505,7 +505,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
-        this.buildInfo = new BuildInfo(this);
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
