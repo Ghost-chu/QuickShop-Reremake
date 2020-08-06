@@ -194,13 +194,36 @@ public class Paste {
         try {
             finalReport.append("\t*********************************\n");
             finalReport.append("\tconfig.yml:\n");
-            finalReport
-                    .append("\t\t\n")
-                    .append(
-                            new String(
-                                    Objects.requireNonNull(
-                                            Util.inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")),
-                                    StandardCharsets.UTF_8))
+            finalReport.append("\t\t\n");
+            String config = new String(
+                    Objects.requireNonNull(
+                            Util.inputStream2ByteArray(plugin.getDataFolder() + "/config.yml")),
+                    StandardCharsets.UTF_8);
+            // Process the data to protect passwords.
+            try {
+                ConfigurationSection configurationSection =
+                        plugin.getConfig().getConfigurationSection("database");
+                config =
+                        config.replaceAll(
+                                Objects.requireNonNull(
+                                        Objects.requireNonNull(configurationSection).getString("user")),
+                                "[PROTECTED]");
+                config =
+                        config.replaceAll(
+                                Objects.requireNonNull(configurationSection.getString("password")), "[PROTECTED]");
+                config =
+                        config.replaceAll(
+                                Objects.requireNonNull(configurationSection.getString("host")), "[PROTECTED]");
+                config =
+                        config.replaceAll(
+                                Objects.requireNonNull(configurationSection.getString("port")), "[PROTECTED]");
+                config =
+                        config.replaceAll(
+                                Objects.requireNonNull(configurationSection.getString("database")), "[PROTECTED]");
+            } catch (Exception tg) {
+                // Ignore
+            }
+            finalReport.append(config)
                     .append("\n");
             finalReport.append("\t*********************************\n");
             finalReport.append("\tmessages.json:\n");
@@ -379,32 +402,8 @@ public class Paste {
                 .append("\n");
         finalReport.append("================================================\n");
 
-        // Process the data to protect passwords.
-        String report = finalReport.toString();
-        try {
-            ConfigurationSection configurationSection =
-                    plugin.getConfig().getConfigurationSection("database");
-            report =
-                    report.replaceAll(
-                            Objects.requireNonNull(
-                                    Objects.requireNonNull(configurationSection).getString("user")),
-                            "[PROTECTED]");
-            report =
-                    report.replaceAll(
-                            Objects.requireNonNull(configurationSection.getString("password")), "[PROTECTED]");
-            report =
-                    report.replaceAll(
-                            Objects.requireNonNull(configurationSection.getString("host")), "[PROTECTED]");
-            report =
-                    report.replaceAll(
-                            Objects.requireNonNull(configurationSection.getString("port")), "[PROTECTED]");
-            report =
-                    report.replaceAll(
-                            Objects.requireNonNull(configurationSection.getString("database")), "[PROTECTED]");
-        } catch (Exception tg) {
-            // Ignore
-        }
-        return report;
+
+        return finalReport.toString();
     }
 
     @Nullable
