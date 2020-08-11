@@ -208,6 +208,11 @@ public class DatabaseHelper {
 
     public void removeShop(Shop shop) {
         plugin.log("[DATABASE HELPER] Removing shop in the database: " + shop.toString());
+        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
+            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
+                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
+            }
+        }
         //TODO: Trace the delete from
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + plugin.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y

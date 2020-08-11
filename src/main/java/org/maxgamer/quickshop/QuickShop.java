@@ -1612,7 +1612,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 108);
             selectedVersion = 108;
         }
-
+        if (selectedVersion == 108) {
+            getConfig().set("debug.shop-deletion", false);
+            getConfig().set("config-version", 109);
+            selectedVersion = 109;
+        }
 
         saveConfig();
         reloadConfig();
