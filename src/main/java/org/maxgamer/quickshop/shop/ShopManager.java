@@ -148,7 +148,9 @@ public class ShopManager {
                         continue;
                     }
                     for (Shop shop : inChunk.values()) {
-                        shop.onUnload();
+                        if (shop.isLoaded()) {
+                            shop.onUnload();
+                        }
                     }
                 }
             }

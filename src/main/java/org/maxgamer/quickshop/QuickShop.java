@@ -545,14 +545,13 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
+            for (Shop shop : Objects.requireNonNull(this.getShopManager().getLoadedShops())) {
+                if (shop.isLoaded()) {
+                    shop.onUnload();
+                }
+            }
         } catch (Exception th) {
             // ignore, we didn't care that
-        }
-
-        Util.debugLog("Cleaning up database queues...");
-        if (this.getDatabaseManager() != null) {
-            this.getDatabaseManager().unInit();
         }
 
         Util.debugLog("Unregistering tasks...");
@@ -567,6 +566,11 @@ public class QuickShop extends JavaPlugin {
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
             shopManager.clear();
+        }
+
+        Util.debugLog("Cleaning up database queues...");
+        if (this.getDatabaseManager() != null) {
+            this.getDatabaseManager().unInit();
         }
         /* Close Database */
         if (database != null) {
