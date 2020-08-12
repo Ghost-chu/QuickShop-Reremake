@@ -126,16 +126,20 @@ public class ShopLoader {
                         Util.debugLog("Target block can't be a shop, removing it from the database...");
                         // shop.delete();
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
-                        if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
-                            backupedDatabaseInDeleteProcess = Util.backupDatabase();
-                            if (backupedDatabaseInDeleteProcess) {
-                                plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
-                                plugin.getDatabaseHelper().removeShop(shop);
-                            }
-                        } else {
-                            plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
-                            plugin.getDatabaseHelper().removeShop(shop);
-                        }
+
+                        //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
+                        //TODO: Old shop will be deleted when in same location creating new shop.
+
+//                        if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
+//                            backupedDatabaseInDeleteProcess = Util.backupDatabase();
+//                            if (backupedDatabaseInDeleteProcess) {
+//                                plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
+//                                plugin.getDatabaseHelper().removeShop(shop);
+//                            }
+//                        } else {
+//                            plugin.log("[SHOP LOADER] Removing shop in the database: " + shop.toString() + " - The block can't be shop");
+//                            plugin.getDatabaseHelper().removeShop(shop);
+//                        }
                         singleShopLoaded(singleShopLoadTimer);
                         continue;
                     }
