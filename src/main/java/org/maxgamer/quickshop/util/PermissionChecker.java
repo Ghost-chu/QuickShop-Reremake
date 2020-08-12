@@ -68,6 +68,11 @@ public class PermissionChecker {
      */
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
+        if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
+            Util.debugLog("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
+            return Result.SUCCESS;
+        }
+
         if (plugin.getLwcPlugin() != null) {
             LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
             Protection protection = lwc.getLWC().findProtection(block.getLocation());
