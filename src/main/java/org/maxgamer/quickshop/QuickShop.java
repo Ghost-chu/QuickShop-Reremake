@@ -1617,6 +1617,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 109);
             selectedVersion = 109;
         }
+        if (selectedVersion == 109) {
+            getConfig().set("shop.protection-checking-blacklist", Collections.singletonList("disabled_world"));
+            getConfig().set("config-version", 110);
+            selectedVersion = 110;
+        }
+
 
         saveConfig();
         reloadConfig();
