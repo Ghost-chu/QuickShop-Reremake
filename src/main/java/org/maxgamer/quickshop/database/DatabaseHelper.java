@@ -207,6 +207,7 @@ public class DatabaseHelper {
                     onFailed.accept(e);
                 } else {
                     e.printStackTrace();
+                    plugin.getLogger().warning("Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!");
                 }
             }
         }));
