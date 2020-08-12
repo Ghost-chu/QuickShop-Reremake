@@ -360,19 +360,19 @@ public class ContainerShop implements Shop {
         if (isLoaded) {
             this.onUnload();
         }
-        // Delete the signs around it
-        for (Sign s : this.getSigns()) {
-            s.getBlock().setType(Material.AIR);
-        }
-        // Delete it from the database
-        // Refund if necessary
-        if (plugin.getConfig().getBoolean("shop.refund")) {
-            plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
-        }
         if (memoryOnly) {
             // Delete it from memory
             plugin.getShopManager().removeShop(this);
         } else {
+            // Delete the signs around it
+            for (Sign s : this.getSigns()) {
+                s.getBlock().setType(Material.AIR);
+            }
+            // Delete it from the database
+            // Refund if necessary
+            if (plugin.getConfig().getBoolean("shop.refund")) {
+                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
+            }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
         }
@@ -1132,17 +1132,18 @@ public class ContainerShop implements Shop {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock() + " container was missing, remove...");
+            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock() + " container was missing, unload from memory...");
             this.onUnload();
-            if (!createBackup) {
-                this.createBackup = Util.backupDatabase();
-            }
-            if (createBackup) {
-                plugin.log("Deleting shop " + this + " request by non-shopable container.");
-                this.delete();
-            } else {
-                Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
-            }
+            this.delete(true);
+//            if (!createBackup) {
+//                this.createBackup = Util.backupDatabase();
+//            }
+//            if (createBackup) {
+//                plugin.log("Deleting shop " + this + " request by non-shopable container.");
+//                this.delete();
+//            } else {
+//                Util.debugLog("Failed to create backup, shop at " + this.toString() + " won't to delete.");
+//            }
         }
     }
 

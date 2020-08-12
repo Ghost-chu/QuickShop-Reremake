@@ -182,7 +182,13 @@ public class DatabaseHelper {
                 ps.setInt(4, location.getBlockX());
                 ps.setInt(5, location.getBlockY());
                 ps.setInt(6, location.getBlockZ());
-                ps.setString(7, location.getWorld().getName());
+                String worldName = "undefined";
+                if (location.getWorld() != null) {
+                    worldName = location.getWorld().getName();
+                } else {
+                    plugin.getLogger().warning("Warning: Shop " + shop + " had null world name due we will save it as undefined world to trying keep data.");
+                }
+                ps.setString(7, worldName);
                 ps.setInt(8, shop.isUnlimited() ? 1 : 0);
                 ps.setInt(9, shop.getShopType().toID());
                 ps.setString(10, shop.saveExtraToJson());
@@ -201,6 +207,7 @@ public class DatabaseHelper {
                     onFailed.accept(e);
                 } else {
                     e.printStackTrace();
+                    plugin.getLogger().warning("Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!");
                 }
             }
         }));

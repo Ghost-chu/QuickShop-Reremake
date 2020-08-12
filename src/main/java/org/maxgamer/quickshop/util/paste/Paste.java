@@ -180,7 +180,16 @@ public class Paste {
             if (bplugin.getDescription().getDepend().contains(plugin.getName()) || bplugin.getDescription().getSoftDepend().contains(plugin.getName())) {
                 finalReport.append(" # [Addon/Compatible Module]");
             }
-            finalReport.append(" # ").append(bplugin.getClass().getPackage().getName()).append(".").append(bplugin.getClass().getName());
+            finalReport.append(" # ");
+            Class<?> pluginClass = bplugin.getClass();
+            if (pluginClass == null) {
+                continue;
+            }
+            Package pluginPackage = pluginClass.getPackage();
+            if (pluginPackage == null) {
+                continue;
+            }
+            finalReport.append(pluginPackage.getName()).append(".").append(pluginClass.getName());
             finalReport.append("\n");
         }
         finalReport.append("================================================\n");
