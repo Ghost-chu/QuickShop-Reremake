@@ -34,7 +34,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.paste.Paste;
-import org.maxgamer.quickshop.watcher.UpdateWatcher;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -164,7 +163,10 @@ public class SentryErrorReporter {
         if (!enabled) {
             return false;
         }
-        if (UpdateWatcher.isHasNewUpdate()) { // We only receive latest reports.
+        if (plugin.getUpdateWatcher() == null) {
+            return false;
+        }
+        if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
             return false;
         }
         if (!plugin.getRuntimeCatcher().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
