@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.util.updater.impl;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
@@ -13,10 +12,14 @@ import org.maxgamer.quickshop.util.updater.VersionType;
 
 import java.io.*;
 import java.net.URL;
-
-@AllArgsConstructor
 public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
+
+    private BuildInfo lastRemoteBuildInfo;
+
+    public JenkinsUpdater(BuildInfo pluginBuildInfo) {
+        this.pluginBuildInfo = pluginBuildInfo;
+    }
 
     @Override
     public @NotNull VersionType getCurrentRunning() {
@@ -24,14 +27,43 @@ public class JenkinsUpdater implements QuickUpdater {
     }
 
     @Override
-    public boolean isLatest(@NotNull VersionType versionType) throws IOException {
-        InputStream inputStream = HttpRequest.get(new URL("https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/lastSuccessfulBuild/artifact/target/BUILDINFO"))
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                .execute()
-                .expectResponseCode(200)
-                .getInputStream();
+    public int getRemoteServerBuildId() {
+        if (this.lastRemoteBuildInfo == null) {
+            isLatest(getCurrentRunning());
+        }
+        if (this.lastRemoteBuildInfo == null) {
+            return -1;
+        }
+        return Integer.parseInt(this.lastRemoteBuildInfo.getBuildId());
+    }
+
+    @Override
+    public @NotNull String getRemoteServerVersion() {
+        if (this.lastRemoteBuildInfo == null) {
+            isLatest(getCurrentRunning());
+        }
+        if (this.lastRemoteBuildInfo == null) {
+            return "Error";
+        }
+        return this.lastRemoteBuildInfo.getBuildTag();
+    }
+
+    @Override
+    public boolean isLatest(@NotNull VersionType versionType) {
+        InputStream inputStream;
+        try {
+            inputStream = HttpRequest.get(new URL("https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/lastSuccessfulBuild/artifact/target/BUILDINFO"))
+                    .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
+                    .execute()
+                    .expectResponseCode(200)
+                    .getInputStream();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            return true;
+        }
         BuildInfo buildInfo = new BuildInfo(inputStream);
-        return buildInfo.getBuildId().equalsIgnoreCase(pluginBuildInfo.getBuildId()) || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
+        this.lastRemoteBuildInfo = buildInfo;
+        return Integer.parseInt(buildInfo.getBuildId()) >= Integer.parseInt(pluginBuildInfo.getBuildId()) || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
     }
 
     @Override
