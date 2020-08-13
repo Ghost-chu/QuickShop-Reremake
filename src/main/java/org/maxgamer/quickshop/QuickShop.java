@@ -255,6 +255,10 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private RuntimeCatcher runtimeCatcher;
 
+    @Getter
+    @Nullable
+    private UpdateWatcher updateWatcher;
+
     @NotNull
     public static QuickShop getInstance() {
         return instance;
@@ -561,7 +565,7 @@ public class QuickShop extends JavaPlugin {
             logWatcher.close(); // Closes the file
         }
         /* Unload UpdateWatcher */
-        UpdateWatcher.uninit();
+        this.updateWatcher.uninit();
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
@@ -581,7 +585,15 @@ public class QuickShop extends JavaPlugin {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
         this.compatibilityTool.clear();
         new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+
+        Util.debugLog("Cleanup tasks...");
+        try {
+            Bukkit.getScheduler().cancelTasks(this);
+        } catch (Throwable ignored) {
+        }
+
         Util.debugLog("All shutdown work is finished.");
+
     }
 
     @Override
@@ -756,7 +768,11 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.clean();
 
         getLogger().info("Registering UpdateWatcher...");
-        UpdateWatcher.init();
+        if (this.getConfig().getBoolean("updater", true)) {
+            updateWatcher = new UpdateWatcher();
+            updateWatcher.init();
+        }
+
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
