@@ -27,10 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.UpdateInfomation;
-import org.maxgamer.quickshop.util.Updater;
-
-import java.io.IOException;
 
 @AllArgsConstructor
 public class SubCommand_Update implements CommandProcesser {
@@ -45,15 +41,12 @@ public class SubCommand_Update implements CommandProcesser {
             public void run() {
                 MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Checking for updates...");
 
-                final UpdateInfomation updateInfomation = Updater.checkUpdate();
-                final String updateVersion = updateInfomation.getVersion();
-
-                if (updateVersion == null) {
-                    MsgUtil.sendMessage(sender, ChatColor.RED + "Failed check the update, connection issue?");
+                if (plugin.getUpdateWatcher() == null) {
+                    MsgUtil.sendMessage(sender, ChatColor.RED + "Updater seems has been disabled");
                     return;
                 }
 
-                if (!Updater.hasUpdate(updateVersion)) {
+                if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
                     MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
@@ -63,7 +56,7 @@ public class SubCommand_Update implements CommandProcesser {
                 final byte[] pluginBin;
 
                 try {
-                    pluginBin = Updater.downloadUpdatedJar();
+                    plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
                 } catch (Exception e) {
                     MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
@@ -71,25 +64,19 @@ public class SubCommand_Update implements CommandProcesser {
                     return;
                 }
 
-                if (pluginBin.length < 1) {
-                    MsgUtil.sendMessage(sender,
-                            ChatColor.RED + "Download failed, check your connection before contact the author.");
-                    return;
-                }
-
-                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
-
-                try {
-                    Updater.replaceTheJar(pluginBin);
-                } catch (IOException ioe) {
-                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
-                    plugin.getSentryErrorReporter().ignoreThrow();
-                    ioe.printStackTrace();
-                    return;
-                } catch (RuntimeException re) {
-                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, " + re.getMessage());
-                    return;
-                }
+//                MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Installing update...");
+//
+//                try {
+//                    Updater.replaceTheJar(pluginBin);
+//                } catch (IOException ioe) {
+//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
+//                    plugin.getSentryErrorReporter().ignoreThrow();
+//                    ioe.printStackTrace();
+//                    return;
+//                } catch (RuntimeException re) {
+//                    MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, " + re.getMessage());
+//                    return;
+//                }
 
                 MsgUtil.sendMessage(sender,
                         ChatColor.GREEN + "Successfully, restart your server to apply the changes!");
