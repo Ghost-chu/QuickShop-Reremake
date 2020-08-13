@@ -126,40 +126,41 @@ public class UpdateWatcher implements Listener {
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
-        if (this.updater.isLatest(this.updater.getCurrentRunning())
-                || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts")) {
-            return;
-        }
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                    List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
-                    Random random = new Random();
-                    int notifyNum = random.nextInt(notifys.size());
-                    String notify = notifys.get(notifyNum);
+                if (getUpdater().isLatest(getUpdater().getCurrentRunning())
+                        || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts")) {
+                    return;
+                }
+                List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
+                Random random = new Random();
+                int notifyNum = random.nextInt(notifys.size());
+                String notify = notifys.get(notifyNum);
                 notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
 
-                    TextComponent updatenow =
-                            new TextComponent(
-                                    ChatColor.AQUA + MsgUtil.getMessage("updatenotify.buttontitle", e.getPlayer()));
-                    TextComponent onekeyupdate =
+                TextComponent updatenow =
+                        new TextComponent(
+                                ChatColor.AQUA + MsgUtil.getMessage("updatenotify.buttontitle", e.getPlayer()));
+                TextComponent onekeyupdate =
                             new TextComponent(
                                     ChatColor.YELLOW
                                             + MsgUtil.getMessage("updatenotify.onekeybuttontitle", e.getPlayer()));
                     updatenow.setClickEvent(
                             new ClickEvent(
                                     ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
-                    onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
-                    TextComponent finallyText =
-                            new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
-                    e.getPlayer()
-                            .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                    e.getPlayer().sendMessage(ChatColor.GREEN + notify);
-                    e.getPlayer().spigot().sendMessage(finallyText);
-                    e.getPlayer()
-                            .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                TextComponent finallyText =
+                        new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
+                e.getPlayer()
+                        .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                e.getPlayer().sendMessage(ChatColor.GREEN + notify);
+                e.getPlayer().spigot().sendMessage(finallyText);
+                e.getPlayer()
+                        .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
             }
-        }.runTaskLater(QuickShop.getInstance(), 80);
+        }.runTaskLaterAsynchronously(QuickShop.getInstance(), 80);
     }
 
 }
