@@ -315,17 +315,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
      * @param container The command container to register
      * @throws IllegalStateException Will throw the error if register conflict.
      */
-    public void registerCmd(@NotNull CommandContainer container) throws IllegalStateException {
+    public void registerCmd(@NotNull CommandContainer container) {
         if (cmds.contains(container)) {
             Util.debugLog("Dupe subcommand registering: " + container);
             return;
         }
-        for (CommandContainer commandContainer : cmds) {
-            if (commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix())) {
-                Util.debugLog("Subcommand conflict: " + container + " and " + commandContainer);
-                throw new IllegalStateException("Conflict register " + container + " and " + commandContainer);
-            }
-        }
+        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
         cmds.add(container);
     }
 
