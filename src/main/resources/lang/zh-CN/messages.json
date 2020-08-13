@@ -170,7 +170,7 @@
     "stack-buying": "收购 {0}",
     "item": "{0}",
     "price": "单价：{0}",
-    "stack-price": "每 {1}x {2} 价格 {0}",
+    "stack-price": "每{1}x {0}",
     "unlimited": "无限"
   },
   "controlpanel": {
