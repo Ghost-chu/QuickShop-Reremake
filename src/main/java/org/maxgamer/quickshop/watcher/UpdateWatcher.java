@@ -29,55 +29,44 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.UpdateInfomation;
-import org.maxgamer.quickshop.util.Updater;
+import org.maxgamer.quickshop.util.updater.QuickUpdater;
+import org.maxgamer.quickshop.util.updater.VersionType;
+import org.maxgamer.quickshop.util.updater.impl.JenkinsUpdater;
 
 import java.util.List;
 import java.util.Random;
 
 //TODO: This is a shit, need refactor
 public class UpdateWatcher implements Listener {
-    private static boolean hasNewUpdate = false;
 
-    private static BukkitTask cronTask = null;
+    private final QuickUpdater updater = new JenkinsUpdater(QuickShop.getInstance().getBuildInfo());
+    private BukkitTask cronTask = null;
 
-    private static UpdateInfomation info = null;
-
-    public static String fixVer(@NotNull String originalVer) {
-        originalVer = originalVer.replaceAll(QuickShop.getFork(), "");
-        originalVer = originalVer.trim();
-        return originalVer;
+    public QuickUpdater getUpdater() {
+        return updater;
     }
 
-    public static boolean isHasNewUpdate() {
-        return hasNewUpdate;
+    public BukkitTask getCronTask() {
+        return cronTask;
     }
 
-    public static void init() {
+    public void init() {
         cronTask =
                 new BukkitRunnable() {
-
                     @Override
                     public void run() {
-                        info = Updater.checkUpdate();
-
-                        if (Updater.hasUpdate(info.getVersion())) {
-                            hasNewUpdate = true;
-                        } else {
+                        if (updater.isLatest(VersionType.STABLE)) {
                             return;
                         }
-
-                        if (!info.isBeta()) {
-                            QuickShop.getInstance()
-                                    .getLogger()
-                                    .info(
-                                            "A new version of QuickShop has been released! [" + info.getVersion() + "]");
-                            QuickShop.getInstance()
-                                    .getLogger()
-                                    .info("Update here: https://www.spigotmc.org/resources/62575/");
+                        QuickShop.getInstance()
+                                .getLogger()
+                                .info(
+                                        "A new version of QuickShop has been released! [" + updater.getRemoteServerVersion() + "]");
+                        QuickShop.getInstance()
+                                .getLogger()
+                                .info("Update here: https://www.spigotmc.org/resources/62575/");
 
                             for (Player player : Bukkit.getOnlinePlayers()) {
                                 if (QuickShop.getPermissionManager()
@@ -96,7 +85,7 @@ public class UpdateWatcher implements Listener {
                                         notify = "New update {0} now avaliable! Please update!";
                                     }
                                     notify =
-                                            MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
+                                            MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
                                     TextComponent updatenow =
                                             new TextComponent(
                                                     ChatColor.AQUA
@@ -122,23 +111,13 @@ public class UpdateWatcher implements Listener {
                                     player.sendMessage(
                                             ChatColor.GREEN
                                                     + "---------------------------------------------------");
-                                }
                             }
-                        } else {
-                            QuickShop.getInstance().getLogger().info("A new BETA version of QuickShop is available!");
-                            QuickShop.getInstance()
-                                    .getLogger()
-                                    .info("Update here: https://www.spigotmc.org/resources/62575/");
-                            QuickShop.getInstance()
-                                    .getLogger()
-                                    .info("This is a BETA version, which means you should use it with caution.");
                         }
                     }
                 }.runTaskTimerAsynchronously(QuickShop.getInstance(), 1, 20 * 60 * 60);
     }
 
-    public static void uninit() {
-        hasNewUpdate = false;
+    public void uninit() {
         if (cronTask == null) {
             return;
         }
@@ -147,19 +126,18 @@ public class UpdateWatcher implements Listener {
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
-        if (!hasNewUpdate
+        if (this.updater.isLatest(this.updater.getCurrentRunning())
                 || !QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts")) {
             return;
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!info.isBeta()) {
                     List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
                     Random random = new Random();
                     int notifyNum = random.nextInt(notifys.size());
                     String notify = notifys.get(notifyNum);
-                    notify = MsgUtil.fillArgs(notify, info.getVersion(), QuickShop.getVersion());
+                notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
 
                     TextComponent updatenow =
                             new TextComponent(
@@ -180,17 +158,6 @@ public class UpdateWatcher implements Listener {
                     e.getPlayer().spigot().sendMessage(finallyText);
                     e.getPlayer()
                             .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                } else {
-                    e.getPlayer()
-                            .sendMessage(ChatColor.GRAY + "A new BETA version of QuickShop has been released!");
-                    e.getPlayer()
-                            .sendMessage(
-                                    ChatColor.GRAY + "Update here: https://www.spigotmc.org/resources/62575/");
-                    e.getPlayer()
-                            .sendMessage(
-                                    ChatColor.GRAY
-                                            + "This is a BETA version, which means you should use it with caution.");
-                }
             }
         }.runTaskLater(QuickShop.getInstance(), 80);
     }
