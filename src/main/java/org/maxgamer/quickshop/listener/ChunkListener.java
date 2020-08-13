@@ -38,6 +38,7 @@ public class ChunkListener extends QSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
+
         if (e.isNewChunk()) {
             return;
         }

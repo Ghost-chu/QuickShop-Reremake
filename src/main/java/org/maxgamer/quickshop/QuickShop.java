@@ -255,6 +255,10 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private RuntimeCatcher runtimeCatcher;
 
+    @Getter
+    @Nullable
+    private UpdateWatcher updateWatcher;
+
     @NotNull
     public static QuickShop getInstance() {
         return instance;
@@ -505,7 +509,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
-        this.buildInfo = new BuildInfo(this);
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
@@ -545,14 +549,13 @@ public class QuickShop extends JavaPlugin {
         }
         Util.debugLog("Unloading all shops...");
         try {
-            Objects.requireNonNull(this.getShopManager().getLoadedShops()).forEach(Shop::onUnload);
+            for (Shop shop : Objects.requireNonNull(this.getShopManager().getLoadedShops())) {
+                if (shop.isLoaded()) {
+                    shop.onUnload();
+                }
+            }
         } catch (Exception th) {
             // ignore, we didn't care that
-        }
-
-        Util.debugLog("Cleaning up database queues...");
-        if (this.getDatabaseManager() != null) {
-            this.getDatabaseManager().unInit();
         }
 
         Util.debugLog("Unregistering tasks...");
@@ -562,11 +565,16 @@ public class QuickShop extends JavaPlugin {
             logWatcher.close(); // Closes the file
         }
         /* Unload UpdateWatcher */
-        UpdateWatcher.uninit();
+        this.updateWatcher.uninit();
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
             shopManager.clear();
+        }
+
+        Util.debugLog("Cleaning up database queues...");
+        if (this.getDatabaseManager() != null) {
+            this.getDatabaseManager().unInit();
         }
         /* Close Database */
         if (database != null) {
@@ -577,7 +585,15 @@ public class QuickShop extends JavaPlugin {
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
         this.compatibilityTool.clear();
         new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+
+        Util.debugLog("Cleanup tasks...");
+        try {
+            Bukkit.getScheduler().cancelTasks(this);
+        } catch (Throwable ignored) {
+        }
+
         Util.debugLog("All shutdown work is finished.");
+
     }
 
     @Override
@@ -752,7 +768,11 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.clean();
 
         getLogger().info("Registering UpdateWatcher...");
-        UpdateWatcher.init();
+        if (this.getConfig().getBoolean("updater", true)) {
+            updateWatcher = new UpdateWatcher();
+            updateWatcher.init();
+        }
+
         getLogger().info("QuickShop Loaded! " + enableTimer.endTimer() + " ms.");
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
@@ -1607,6 +1627,16 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.lands.ignore-disabled-worlds", true);
             getConfig().set("config-version", 108);
             selectedVersion = 108;
+        }
+        if (selectedVersion == 108) {
+            getConfig().set("debug.shop-deletion", false);
+            getConfig().set("config-version", 109);
+            selectedVersion = 109;
+        }
+        if (selectedVersion == 109) {
+            getConfig().set("shop.protection-checking-blacklist", Collections.singletonList("disabled_world"));
+            getConfig().set("config-version", 110);
+            selectedVersion = 110;
         }
 
 

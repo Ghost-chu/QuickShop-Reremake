@@ -182,7 +182,13 @@ public class DatabaseHelper {
                 ps.setInt(4, location.getBlockX());
                 ps.setInt(5, location.getBlockY());
                 ps.setInt(6, location.getBlockZ());
-                ps.setString(7, location.getWorld().getName());
+                String worldName = "undefined";
+                if (location.getWorld() != null) {
+                    worldName = location.getWorld().getName();
+                } else {
+                    plugin.getLogger().warning("Warning: Shop " + shop + " had null world name due we will save it as undefined world to trying keep data.");
+                }
+                ps.setString(7, worldName);
                 ps.setInt(8, shop.isUnlimited() ? 1 : 0);
                 ps.setInt(9, shop.getShopType().toID());
                 ps.setString(10, shop.saveExtraToJson());
@@ -201,6 +207,7 @@ public class DatabaseHelper {
                     onFailed.accept(e);
                 } else {
                     e.printStackTrace();
+                    plugin.getLogger().warning("Warning: Shop " + shop.toString() + " failed save to database, the shop may disappear after plugin reload or server restart!");
                 }
             }
         }));
@@ -208,6 +215,11 @@ public class DatabaseHelper {
 
     public void removeShop(Shop shop) {
         plugin.log("[DATABASE HELPER] Removing shop in the database: " + shop.toString());
+        if (plugin.getConfig().getBoolean("debug.shop-deletion")) {
+            for (StackTraceElement stackTraceElement : new Exception().getStackTrace()) {
+                plugin.log("at [" + stackTraceElement.getClassName() + "] [" + stackTraceElement.getMethodName() + "] (" + stackTraceElement.getLineNumber() + ") - " + stackTraceElement.getFileName());
+            }
+        }
         //TODO: Trace the delete from
 //		db.getConnection().createStatement()
 //				.executeUpdate("DELETE FROM " + plugin.getDbPrefix() + "shops WHERE x = " + x + " AND y = " + y
