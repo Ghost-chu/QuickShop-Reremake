@@ -288,7 +288,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
                 return true;
             });
             addIfEnable(itemMatcherConfig, "itemflags", ((meta1, meta2) -> Arrays.deepEquals(meta1.getItemFlags().toArray(), meta2.getItemFlags().toArray())));
-            addIfEnable(itemMatcherConfig, "book", ((meta1, meta2) -> {
+            addIfEnable(itemMatcherConfig, "books", ((meta1, meta2) -> {
                 if (meta1 instanceof BookMeta != meta2 instanceof BookMeta) {
                     return false;
                 }
