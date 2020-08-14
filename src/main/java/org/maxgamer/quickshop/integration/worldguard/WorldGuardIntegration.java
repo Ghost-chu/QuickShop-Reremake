@@ -53,12 +53,15 @@ public class WorldGuardIntegration implements IntegratedPlugin {
 
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
+    private final boolean anyOwner;
+
     private final QuickShop plugin;
     private final boolean whiteList;
 
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
         this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
+        this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
         createFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.create"));
@@ -132,7 +135,12 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
                         return false;
                     }
-                    break;
+                case OWN:
+                    if (anyOwner) {
+                        return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
+                    } else {
+                        return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
+                    }
             }
         }
         return true;
@@ -181,7 +189,12 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
                         return false;
                     }
-                    break;
+                case OWN:
+                    if (anyOwner) {
+                        return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
+                    } else {
+                        return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
+                    }
             }
         }
         return true;

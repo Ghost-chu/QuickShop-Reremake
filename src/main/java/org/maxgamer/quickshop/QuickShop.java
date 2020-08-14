@@ -1639,6 +1639,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 110);
             selectedVersion = 110;
         }
+        if (selectedVersion == 110) {
+            getConfig().set("integration.worldguard.any-owner", true);
+            getConfig().set("config-version", 111);
+            selectedVersion = 111;
+        }
 
 
         saveConfig();

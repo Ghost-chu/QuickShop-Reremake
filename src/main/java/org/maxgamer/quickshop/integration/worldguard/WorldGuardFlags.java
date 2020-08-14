@@ -27,7 +27,8 @@ public enum WorldGuardFlags {
     FLAG,
     BUILD,
     CHEST_ACCESS,
-    INTERACT;
+    INTERACT,
+    OWN;
 
     public static List<WorldGuardFlags> deserialize(List<String> list) {
         List<WorldGuardFlags> result = new ArrayList<>();
