@@ -137,9 +137,13 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     }
                 case OWN:
                     if (anyOwner) {
-                        return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
+                        if (query.getApplicableRegions(wgLoc).getRegions().stream().noneMatch(region -> region.isOwner(localPlayer))) {
+                            return false;
+                        }
                     } else {
-                        return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
+                        if (!query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer)) {
+                            return false;
+                        }
                     }
             }
         }
