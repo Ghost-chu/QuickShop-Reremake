@@ -45,21 +45,25 @@ import java.util.List;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration implements IntegratedPlugin {
-    private final List<WorldGuardFlags> createFlags;
+    private List<WorldGuardFlags> createFlags;
 
-    private final List<WorldGuardFlags> tradeFlags;
+    private List<WorldGuardFlags> tradeFlags;
 
     private final StateFlag createFlag = new StateFlag("quickshop-create", false);
 
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
-    private final boolean anyOwner;
+    private boolean anyOwner;
 
     private final QuickShop plugin;
-    private final boolean whiteList;
+    private boolean whiteList;
 
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    public void load() {
         this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
         this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
         createFlags =
@@ -68,10 +72,6 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-    }
-
-    @Override
-    public void load() {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
@@ -79,7 +79,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
             registry.register(this.tradeFlag);
             plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
             Util.debugLog("Success register " + getName() + " flags.");
-        } catch (FlagConflictException e) {
+        } catch (FlagConflictException | IllegalStateException e) {
             e.printStackTrace();
         }
     }
@@ -173,7 +173,6 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {
                         return false;
                     }
-
                     break;
                 case FLAG:
                     if (!query.testState(wgLoc, localPlayer, this.tradeFlag)) {
