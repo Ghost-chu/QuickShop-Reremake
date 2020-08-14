@@ -76,5 +76,4 @@ public interface IntegratedPlugin {
      * Will execute when Quickshop unloading
      */
     void unload();
-
 }
