@@ -1,20 +1,21 @@
 /*
  * This file is a part of project QuickShop, the name is WorldGuardIntegration.java
- * Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
- * Copyright (C) Bukkit Commons Studio and contributors
+ *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
+ *  Copyright (C) PotatoCraft Studio and contributors
  *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU Lesser General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- * for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *  for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package org.maxgamer.quickshop.integration.worldguard;
@@ -44,30 +45,33 @@ import java.util.List;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration implements IntegratedPlugin {
-    private final List<WorldGuardFlags> createFlags;
+    private List<WorldGuardFlags> createFlags;
 
-    private final List<WorldGuardFlags> tradeFlags;
+    private List<WorldGuardFlags> tradeFlags;
 
     private final StateFlag createFlag = new StateFlag("quickshop-create", false);
 
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
+    private boolean anyOwner;
+
     private final QuickShop plugin;
-    private final boolean whiteList;
+    private boolean whiteList;
 
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
+    }
+
+    @Override
+    public void load() {
         this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
+        this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
         createFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.create"));
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-    }
-
-    @Override
-    public void load() {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
@@ -75,7 +79,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
             registry.register(this.tradeFlag);
             plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
             Util.debugLog("Success register " + getName() + " flags.");
-        } catch (FlagConflictException e) {
+        } catch (FlagConflictException | IllegalStateException e) {
             e.printStackTrace();
         }
     }
@@ -131,7 +135,16 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
                         return false;
                     }
-                    break;
+                case OWN:
+                    if (anyOwner) {
+                        if (query.getApplicableRegions(wgLoc).getRegions().stream().noneMatch(region -> region.isOwner(localPlayer))) {
+                            return false;
+                        }
+                    } else {
+                        if (!query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer)) {
+                            return false;
+                        }
+                    }
             }
         }
         return true;
@@ -164,7 +177,6 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {
                         return false;
                     }
-
                     break;
                 case FLAG:
                     if (!query.testState(wgLoc, localPlayer, this.tradeFlag)) {
@@ -180,7 +192,12 @@ public class WorldGuardIntegration implements IntegratedPlugin {
                     if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
                         return false;
                     }
-                    break;
+                case OWN:
+                    if (anyOwner) {
+                        return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
+                    } else {
+                        return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
+                    }
             }
         }
         return true;
