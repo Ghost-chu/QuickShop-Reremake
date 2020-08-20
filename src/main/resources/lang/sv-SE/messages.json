@@ -63,7 +63,7 @@
   "failed-to-put-sign": "&cInte tillräckligt med utrymme runt butiken för att placera butiksskylten.",
   "failed-to-paste": "&cMisslyckades att ladda upp data till Pastebin. Kontrollera din internetanslutning och försök igen. (Se konsolen för detaljer)",
   "warn-to-paste": "&eSamlar in data och laddar upp det till Pastebin, det kan ta ett tag. &c&lVarning:&c Datan hålls offentlig i en vecka! Det kan läcka din serverkonfiguration och annan känslig information. Se till att du bara skickar den till &lbetrodd personal/utvecklas.",
-  "price-too-high": "&cThe shop price is too high! You cannot create one with a price higher than {0}.",
+  "price-too-high": "&cButikspriset är för högt! Du kan inte skapa ett med ett pris högre än {0}.",
   "you-cant-create-shop-in-there": "&cYou don't have permission to create a shop at this location.",
   "unknown-player": "&cTarget player doesn't exist, please check the username you typed.",
   "shop-staff-cleared": "&aSuccessfully removed all staff members from your shop.",
