@@ -268,14 +268,14 @@
   "shop-cannot-trade-when-freezing": "&cDu kan inte handla med denna butik eftersom den är fryst.",
   "shop-freezed-at-location": "&eDin butik {0} vid {1} blev frusen!",
   "denied-put-in-item": "&cDu kan inte lägga in detta objekt i din butik!",
-  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &ball&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &ball&a in chat to sell all.",
+  "how-many-buy-stack": "&eAnge i chatten, hur många paket du vill &bKÖPA&a. Det finns &e{0}&a föremål i varje paket och du kan köpa &e{1}&a paket. Ange &ball&a i chatten för att köpa alla.",
+  "how-many-sell-stack": "&aAnge i chatten, hur många paket du vill &dSÄLJA&a. Det finns &e{0}&a föremål per paket och du har &e{1}&a paket tillgängliga. Ange &ball&a i chatten för att sälja alla.",
   "language": {
-    "name": "&eName: &6{0}",
-    "code": "&eCode: &6{0}",
-    "translate-progress": "&eTranslation Progress: &b{0}%",
-    "approval-progress": "&eApproval Progress: &b{0}%",
-    "qa-issues": "&eQuality assurance issues: &b{0}%",
-    "help-us": "&a[Help us improve the translation quality]"
+    "name": "&eNamn: &6{0}",
+    "code": "&eKod: &6{0}",
+    "translate-progress": "&eÖversättningsframsteg: &b{0}%",
+    "approval-progress": "&eGodkända Framsteg: &b{0}%",
+    "qa-issues": "&eKvalitetsförsäkringsfrågor: &b{0}%",
+    "help-us": "&a[Hjälp oss att förbättra översättningens kvalitet]"
   }
 }
