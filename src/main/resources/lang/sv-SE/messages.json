@@ -60,7 +60,7 @@
   "no-enough-money-to-keep-shops": "&cDu har inte tillräckligt med pengar för att behålla dina butiker! Alla butiker har tagits bort...",
   "nothing-to-flush": "&aDu har inga nya butiksmeddelanden.",
   "break-shop-use-supertool": "&eDu kan förstöra butiken med SuperVerktyget.",
-  "failed-to-put-sign": "&cNot enough space around the shop to place the info sign.",
+  "failed-to-put-sign": "&cInte tillräckligt med utrymme runt butiken för att placera butiksskylten.",
   "failed-to-paste": "&cFailed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)",
   "warn-to-paste": "&eCollecting data and uploading it to Pastebin, this may take a while. &c&lWarning:&c The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to &ltrusted staff/developers.",
   "price-too-high": "&cThe shop price is too high! You cannot create one with a price higher than {0}.",
