@@ -109,12 +109,12 @@
   "command": {
     "toggle-unlimited": {
       "unlimited": "&aButiken är nu obegränsad",
-      "limited": "&aShop is now limited"
+      "limited": "&aButiken är nu begränsad"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
-    "no-owner-given": "&cNo owner provided",
+    "transfer-success": "&aÖverförde &e{0} &abutik(er) till &e{1}",
+    "transfer-success-other": "&aÖverförde &e{0} {1}&a's butik(er) till &e{2}",
+    "some-shops-removed": "&{0} &abutik(er) borttagen",
+    "no-owner-given": "&cIngen ägare angiven",
     "new-owner": "&aNy ägare: &e{0}",
     "now-buying": "&dBUYING&a numera&e{0}",
     "now-selling": "&bSELLING&a numera&e{0}",
@@ -128,11 +128,11 @@
     "no-trade-item": "&aVar god håll en bytesvara i handen för att byta",
     "trade-item-now": "&aByter nu &e{0}x {1}",
     "no-amount-given": "&cInget belopp angivet. Använd &a/qs refill <antal>&c",
-    "now-debuging": "&aSuccessfully enabled developer mode. Reloading QuickShop...",
-    "now-nolonger-debuging": "&aSuccessfully disabled Developer mode. Reloading QuickShop...",
-    "wrong-args": "&cInvalid arguments. Use &l/qs help &rto preview the list of commands.",
+    "now-debuging": "&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...",
+    "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
+    "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att förhandsgranska listan över kommandon.",
     "description": {
-      "title": "&aQuickShop help",
+      "title": "&aQuickShop-hjälp",
       "unlimited": "&eGives a shop unlimited stock.",
       "setowner": "&eChanges the ownership of a shop.",
       "owner": "&eChanges the ownership of a shop.",
@@ -188,13 +188,13 @@
     "refill": "&aRefill: Refill the items &e[&d&lOK&e]",
     "refill-hover": "&eClick to refill the shop.",
     "empty": "&aEmpty: Remove all items &e[&d&lOK&e]",
-    "empty-hover": "&eClick to clear the inventory of the shop.",
-    "remove": "&c&l[Remove Shop]",
-    "remove-hover": "&eClick to remove this shop.",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
-    "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item"
+    "empty-hover": "&eKlicka för att rensa butikens lager.",
+    "remove": "&c&l[Ta bort butik]",
+    "remove-hover": "&eKlicka för att ta bort denna butik.",
+    "stack": "&aPer paket-belopp: &b{0} &e[&d&lÄndra&e]",
+    "stack-hover": "&eKlicka för att ställa in mängden föremål per paket. Ange 1 för normalt beteende.",
+    "item": "&aButikens produkt: {0} &e[&d&lÄndra&e]",
+    "item-hover": "&eKlicka för att ändra butiksprodukten"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -207,18 +207,18 @@
     "failed": "&c✘"
   },
   "tabcomplete": {
-    "price": "[price]",
-    "range": "[range]",
-    "amount": "[amount]"
+    "price": "[pris]",
+    "range": "[intervall]",
+    "amount": "[antal]"
   },
   "updatenotify": {
-    "buttontitle": "[Update Now]",
-    "onekeybuttontitle": "[OneKey Update]",
+    "buttontitle": "[Uppdatera nu]",
+    "onekeybuttontitle": "[OneKey-uppdatering]",
     "list": [
-      "{0} was released. You are still using {1}!",
-      "Boom! New update {0} incoming. Update!",
-      "Surprise! {0} came out. You are on {1}",
-      "Looks like you need to update. {0} was released!",
+      "{0} släpptes. Du använder fortfarande {1}!",
+      "Boom! Ny uppdatering {0} på gång. Uppdatera!",
+      "Överraskning! {0} kom ut. Du är kvar på {1}",
+      "Ser ut som du behöver uppdatera. {0} har släppts!",
       "Ooops! {0} was now released. You are on {1}!",
       "I swear, QS has been updated to {0}. Why have you not updated yet?",
       "Fixing and re... Sorry, but {0} was released!",
