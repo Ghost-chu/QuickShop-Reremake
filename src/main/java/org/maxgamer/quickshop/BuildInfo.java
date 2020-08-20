@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
 
 @Getter
 public class BuildInfo {
-    private final String buildId;
+    private final int buildId;
     private final String buildTag;
     private final String buildUrl;
     private final String gitCommit;
@@ -40,7 +40,7 @@ public class BuildInfo {
 
     public BuildInfo(@Nullable InputStream inputStream) {
         if (inputStream == null) {
-            buildId = "Unknown";
+            buildId = 0;
             buildTag = "Unknown";
             buildUrl = "Unknown";
             gitCommit = "Custom Build";
@@ -50,7 +50,7 @@ public class BuildInfo {
             return;
         }
         YamlConfiguration buildInfo = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
-        buildId = buildInfo.getString("build-id", "Unknown");
+        buildId = buildInfo.getInt("build-id", 0);
         buildTag = buildInfo.getString("build-tag", "Unknown");
         buildUrl = buildInfo.getString("build-url", "Unknown");
         gitCommit = buildInfo.getString("git-commit", "Invalid");
