@@ -102,7 +102,7 @@
   "bypassing-lock": "&cIgnorerar ett butikslås!",
   "that-is-locked": "&cDenna butik är låst.",
   "how-many-buy": "&aAnge i chatten, hur många du vill &bKÖPA&a. Du kan köpa &e{0}&a. Ange &ball&a för att köpa alla.",
-  "how-many-sell": "&aAnge i chatten, hur mycket du vill &dSELL&a. Du har &{0}& tillgängliga. Ange &ball&a i chatten, för att sälja alla.",
+  "how-many-sell": "&aAnge i chatten, hur mycket du vill &dSÄLJA&a. Du har &{0}& tillgängliga. Ange &ball&a i chatten, för att sälja alla.",
   "not-allowed-to-create": "&cDu får inte skapa en butik här.",
   "blacklisted-item": "&cDu kan inte sälja detta föremål eftersom det finns på svartlistan",
   "how-much-to-trade-for": "&aAnge i chatten, hur mycket du vill sälja &e{1}x {0}&a för.",
