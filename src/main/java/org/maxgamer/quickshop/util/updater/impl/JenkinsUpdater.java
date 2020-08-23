@@ -54,7 +54,7 @@ public class JenkinsUpdater implements QuickUpdater {
         if (this.lastRemoteBuildInfo == null) {
             return -1;
         }
-        return Integer.parseInt(this.lastRemoteBuildInfo.getBuildId());
+        return this.lastRemoteBuildInfo.getBuildId();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class JenkinsUpdater implements QuickUpdater {
         }
         BuildInfo buildInfo = new BuildInfo(inputStream);
         this.lastRemoteBuildInfo = buildInfo;
-        return Integer.parseInt(buildInfo.getBuildId()) >= Integer.parseInt(pluginBuildInfo.getBuildId()) || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
+        return buildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
     }
 
     @Override

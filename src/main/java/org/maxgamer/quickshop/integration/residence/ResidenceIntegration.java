@@ -90,22 +90,23 @@ public class ResidenceIntegration implements IntegratedPlugin {
                         return false;
                     }
                 }
-            }
-            // Not flag
-            if (residence == null) {
-                if (!playerHas(Residence.getInstance()
-                                .getWorldFlags()
-                                .getPerms(location.getWorld().getName())
-                        , player, limit, !whiteList)) {
-                    return false;
-                }
             } else {
-                if (!playerHas(residence.getPermissions(), player, limit, false)) {
-                    return false;
+                // Not flag
+                if (residence == null) {
+                    if (!playerHas(Residence.getInstance()
+                                    .getWorldFlags()
+                                    .getPerms(location.getWorld().getName())
+                            , player, limit, !whiteList)) {
+                        return false;
+                    }
+                } else {
+                    if (!playerHas(residence.getPermissions(), player, limit, false)) {
+                        return false;
+                    }
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -129,22 +130,23 @@ public class ResidenceIntegration implements IntegratedPlugin {
                         return false;
                     }
                 }
-            }
-            // Not flag
-            if (residence == null) {
-                if (!playerHas(Residence.getInstance()
-                                .getWorldFlags()
-                                .getPerms(location.getWorld().getName())
-                        , player, limit, !whiteList)) {
-                    return false;
-                }
             } else {
-                if (!playerHas(residence.getPermissions(), player, limit, false)) {
-                    return false;
+                // Not flag
+                if (residence == null) {
+                    if (!playerHas(Residence.getInstance()
+                                    .getWorldFlags()
+                                    .getPerms(location.getWorld().getName())
+                            , player, limit, !whiteList)) {
+                        return false;
+                    }
+                } else {
+                    if (!playerHas(residence.getPermissions(), player, limit, false)) {
+                        return false;
+                    }
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @Override

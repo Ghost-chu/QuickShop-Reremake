@@ -757,6 +757,7 @@ public class ShopManager {
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                     QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
+                return;
             }
         }
 

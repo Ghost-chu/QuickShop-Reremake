@@ -566,7 +566,9 @@ public class QuickShop extends JavaPlugin {
             logWatcher.close(); // Closes the file
         }
         /* Unload UpdateWatcher */
-        this.updateWatcher.uninit();
+        if (this.updateWatcher != null) {
+            this.updateWatcher.uninit();
+        }
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
@@ -768,8 +770,9 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
 
-        getLogger().info("Registering UpdateWatcher...");
+
         if (this.getConfig().getBoolean("updater", true)) {
+            getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }
