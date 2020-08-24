@@ -120,7 +120,7 @@
     "now-selling": "&e{0} &awerden jetzt &dVERKAUFT",
     "cleaning": "&aEntferne Shops ohne Lager...",
     "reloading": "&aWird neu geladen...",
-    "cleaned": "&e{0}&a Shops wurden entfernt.",
+    "cleaned": "&aEntfernte &e{0}&ein Shop.",
     "no-type-given": "&cVerwendung: /qs find <item>",
     "bulk-size-not-set": "&cVerwendung: /qs size <Anzahl>",
     "bulk-size-now": "&aHandle jetzt {0}x {1}",
