@@ -872,7 +872,11 @@ public class MsgUtil {
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
             for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
+                Integer level = entries.getValue();
+                if (level == null) {
+                    level = 1;
+                }
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level));
             }
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
@@ -882,7 +886,11 @@ public class MsgUtil {
             if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
                 for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
+                    Integer level = entries.getValue();
+                    if (level == null) {
+                        level = 1;
+                    }
+                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level));
                 }
             }
         }
