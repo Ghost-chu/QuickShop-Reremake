@@ -46,7 +46,7 @@ public class RuntimeCatcher {
         }
 
         if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
-            plugin.getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5964");
+            plugin.getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
             plugin.getConfig().set("matcher.work-type", 0);
             plugin.saveConfig();
         }
