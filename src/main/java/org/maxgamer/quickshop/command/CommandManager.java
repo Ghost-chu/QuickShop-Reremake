@@ -350,7 +350,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
-        if (plugin.getBootError() != null && !cmdArg[0].equalsIgnoreCase("paste")) {
+        if (plugin.getBootError() != null && (cmdArg.length == 1 && !cmdArg[0].equalsIgnoreCase("paste"))) {
             plugin.getBootError().printErrors(sender);
             return true;
         }
@@ -362,7 +362,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
 
         String[] passthroughArgs;
-        if (cmdArg.length != 0) {
+        if (cmdArg.length > 0) {
             passthroughArgs = new String[cmdArg.length - 1];
             System.arraycopy(cmdArg, 1, passthroughArgs, 0, passthroughArgs.length);
         } else {
