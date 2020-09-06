@@ -289,9 +289,7 @@ public class Util {
             yamlConfiguration.loadFromString(config);
             return yamlConfiguration.getItemStack("item");
         } catch (Exception e) {
-            e.printStackTrace();
-            yamlConfiguration.loadFromString(config);
-            return yamlConfiguration.getItemStack("item");
+            throw new InvalidConfigurationException("Exception in deserialize item", e);
         }
     }
 
@@ -324,7 +322,7 @@ public class Util {
             lock.writeLock().unlock();
             return;
         }
-        final StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
+        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[1];
         final String className = stackTraceElement.getClassName();
         final String methodName = stackTraceElement.getMethodName();
         final int codeLine = stackTraceElement.getLineNumber();
@@ -1336,6 +1334,7 @@ public class Util {
         cfg.set("item", iStack);
         return cfg.saveToString();
     }
+
 
     /**
      * Return the Class name.

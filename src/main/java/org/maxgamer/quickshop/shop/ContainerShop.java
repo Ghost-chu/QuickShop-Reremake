@@ -470,17 +470,17 @@ public class ContainerShop implements Shop {
 
     @Override
     public @NotNull String ownerName(boolean forceUsername) {
-        String name = Bukkit.getOfflinePlayer(this.getOwner()).getName();
+        OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
+        String name = player.getName();
         if (name == null || name.isEmpty()) {
             name = MsgUtil.getMessageOfflinePlayer(
-                    "unknown-owner", Bukkit.getOfflinePlayer(this.getOwner()));
+                    "unknown-owner", player);
         }
         if (forceUsername) {
             return name;
         }
         if (isUnlimited()) {
-            return MsgUtil.getMessageOfflinePlayer(
-                    "admin-shop", Bukkit.getOfflinePlayer(this.getOwner()));
+            return MsgUtil.getMessageOfflinePlayer("admin-shop", player);
         }
         return name;
     }
