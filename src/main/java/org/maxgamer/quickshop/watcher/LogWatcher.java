@@ -28,15 +28,16 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.*;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LogWatcher extends BukkitRunnable {
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS").withZone(ZoneOffset.UTC);
     private FileWriter logFileWriter = null;
 
     private PrintWriter pw;
@@ -68,9 +69,7 @@ public class LogWatcher extends BukkitRunnable {
     }
 
     public void log(@NonNull String log) {
-        Date date = Calendar.getInstance().getTime();
-        Timestamp time = new Timestamp(date.getTime());
-        this.add("[" + time + "] " + log);
+        this.add("[" + dateTimeFormatter.format(Instant.now()) + "] " + log);
     }
 
     public void add(@NotNull String s) {

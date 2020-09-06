@@ -51,6 +51,7 @@ public class EconomyTransaction {
     @Getter
     private String lastError = null;
 
+
     /**
      * Create a transaction
      *
