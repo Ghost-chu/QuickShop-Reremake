@@ -594,6 +594,10 @@ protect:
 custom-item-stacksize: []
 
 debug:
+  #Should we disable debug logger?
+  #It will save lots of execution time but lack information when reporting bugs and asking support
+  disable-debuglogger: false
+  #logging stacktrace when deleting shop
   shop-deletion: false
 
 
