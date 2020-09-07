@@ -726,7 +726,7 @@ public class Util {
 
         }
         worldBlacklist = plugin.getConfig().getStringList("shop.blacklist-world");
-        disableDebugLogger = plugin.getConfig().getBoolean("disable-debuglogger", false);
+        disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
 
         currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");

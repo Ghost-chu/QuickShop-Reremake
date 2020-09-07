@@ -1652,6 +1652,7 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("logging.log-actions", getConfig().getBoolean("log-actions"));
             getConfig().set("logging.log-balance", true);
             getConfig().set("logging.file-size", 10);
+            getConfig().set("debug.disable-debuglogger", false);
             getConfig().set("trying-fix-banlance-insuffient", false);
             getConfig().set("log-actions", null);
             getConfig().set("config-version", 112);
