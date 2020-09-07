@@ -45,6 +45,7 @@ public class EconomyTransaction {
     private final double tax;
     private final UUID taxAccount;
     private final boolean allowLoan;
+    private final boolean tryingFixBanlanceInsuffient;
     @Getter
     private TransactionSteps steps; //For rollback
     @Nullable
@@ -83,12 +84,20 @@ public class EconomyTransaction {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
-        //Fetch some stupid plugin caching
-        if (from != null) {
-            this.core.getBalance(from);
+        //For passing Test
+        if (QuickShop.getInstance() != null) {
+            this.tryingFixBanlanceInsuffient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
+        } else {
+            this.tryingFixBanlanceInsuffient = false;
         }
-        if (to != null) {
-            this.core.getBalance(to);
+        if (tryingFixBanlanceInsuffient) {
+            //Fetch some stupid plugin caching
+            if (from != null) {
+                this.core.getBalance(from);
+            }
+            if (to != null) {
+                this.core.getBalance(to);
+            }
         }
     }
 
@@ -116,12 +125,14 @@ public class EconomyTransaction {
         return this.commit(new TransactionCallback() {
             @Override
             public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                //Fetch some stupid plugin caching
-                if (from != null) {
-                    core.getBalance(from);
-                }
-                if (to != null) {
-                    core.getBalance(to);
+                if (tryingFixBanlanceInsuffient) {
+                    //Fetch some stupid plugin caching
+                    if (from != null) {
+                        core.getBalance(from);
+                    }
+                    if (to != null) {
+                        core.getBalance(to);
+                    }
                 }
             }
         });

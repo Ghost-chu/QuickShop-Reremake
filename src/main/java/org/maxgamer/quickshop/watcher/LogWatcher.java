@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.io.*;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Queue;
@@ -37,7 +38,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class LogWatcher extends BukkitRunnable {
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS").withZone(ZoneOffset.UTC);
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
     private FileWriter logFileWriter = null;
 
     private PrintWriter pw;
