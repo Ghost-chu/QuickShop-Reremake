@@ -59,6 +59,7 @@ import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
+import org.maxgamer.quickshop.util.compatibility.SpartanCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -344,6 +345,9 @@ public class QuickShop extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
             compatibilityTool.register(new NCPCompatibilityModule(this));
+        }
+        if (Bukkit.getPluginManager().getPlugin("Spartan") != null) {
+            compatibilityTool.register(new SpartanCompatibilityModule(this));
         }
         if (this.display) {
             //VirtualItem support
