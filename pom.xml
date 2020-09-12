@@ -391,6 +391,13 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>me.vagdedes.spartan</groupId>
+            <artifactId>SpartanAPI</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>de.themoep.idconverter</groupId>
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
