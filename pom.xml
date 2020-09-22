@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.4.9</version>
+    <version>4.0.4.10</version>
 
     <licenses>
         <license>
@@ -389,6 +389,13 @@
                     <groupId>com.google.guava</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>me.vagdedes.spartan</groupId>
+            <artifactId>SpartanAPI</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.themoep.idconverter</groupId>

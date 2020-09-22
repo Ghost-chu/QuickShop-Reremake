@@ -71,7 +71,7 @@ import java.util.logging.Level;
 public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
-    private static final Map<UUID, LinkedList<String>> player_messages = Maps.newConcurrentMap();
+    private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
 
     private static final QuickShop plugin = QuickShop.getInstance();
 
@@ -111,21 +111,24 @@ public class MsgUtil {
         Player player = p.getPlayer();
         if (player != null) {
             UUID pName = p.getUniqueId();
-            LinkedList<String> msgs = player_messages.get(pName);
+            LinkedList<String> msgs = outGoingPlayerMessages.get(pName);
             if (msgs != null) {
                 for (String msg : msgs) {
                     if (p.getPlayer() != null) {
                         Util.debugLog("Accepted the msg for player " + p.getName() + " : " + msg);
                         String[] msgData = msg.split("##########");
-                        try {
-                            ItemStack data = Util.deserialize(msgData[1]);
-                            if (data == null) {
-                                throw new InvalidConfigurationException();
+                        if (msgData.length == 3) {
+                            try {
+                                ItemStack data = Util.deserialize(msgData[1]);
+                                if (data == null) {
+                                    MsgUtil.sendMessage(p.getPlayer(), msg);
+                                } else {
+                                    sendItemholochat(player, msgData[0], data, msgData[2]);
+                                }
+                            } catch (InvalidConfigurationException e) {
+                                MsgUtil.sendMessage(p.getPlayer(), msg);
                             }
-                            sendItemholochat(player, msgData[0], data, msgData[2]);
-                        } catch (InvalidConfigurationException e) {
-                            MsgUtil.sendMessage(p.getPlayer(), msgData[0] + msgData[1] + msgData[2]);
-                        } catch (ArrayIndexOutOfBoundsException e2) {
+                        } else {
                             MsgUtil.sendMessage(p.getPlayer(), msg);
                         }
                     }
@@ -148,8 +151,9 @@ public class MsgUtil {
         if (json == null) {
             return;
         }
+
         Util.debugLog(left);
-        Util.debugLog(itemStack.toString());
+        Util.debugLog(json);
         Util.debugLog(right);
         TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
         ComponentBuilder cBuilder = new ComponentBuilder(json);
@@ -195,7 +199,7 @@ public class MsgUtil {
             }
             String filled = fillArgs(raw.get(), args);
             if (player != null) {
-                if (plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled() && plugin.getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+                if (plugin.getConfig().getBoolean("plugin.PlaceHolderAPI") && plugin.getPlaceHolderAPI() != null && plugin.getPlaceHolderAPI().isEnabled()) {
                     filled = PlaceholderAPI.setPlaceholders(player, filled);
                     Util.debugLog("Processed message " + filled + " by PlaceHolderAPI.");
                 }
@@ -446,7 +450,7 @@ public class MsgUtil {
      * loads all player purchase messages from the database.
      */
     public static void loadTransactionMessages() {
-        player_messages.clear(); // Delete old messages
+        outGoingPlayerMessages.clear(); // Delete old messages
         try {
             ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
@@ -460,7 +464,7 @@ public class MsgUtil {
                 }
                 String message = rs.getString("message");
                 LinkedList<String> msgs =
-                        player_messages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                        outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
@@ -476,40 +480,75 @@ public class MsgUtil {
      * @param message     The message to send them Sends the given player a message if they're online.
      *                    Else, if they're not online, queues it for them in the database.
      * @param isUnlimited The shop is or unlimited
+     *
+     *  Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
+    @Deprecated
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
-        if (plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages") && isUnlimited) {
+        if (isUnlimited && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
         Util.debugLog(message);
         String[] msgData = message.split("##########");
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
         if (!p.isOnline()) {
-            LinkedList<String> msgs = player_messages.get(player);
-            if (msgs == null) {
-                msgs = new LinkedList<>();
-            }
-            player_messages.put(player, msgs);
+            LinkedList<String> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
             msgs.add(message);
+            outGoingPlayerMessages.put(player, msgs);
             plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
         } else {
             if (p.getPlayer() != null) {
-                try {
-                    sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
-                } catch (InvalidConfigurationException e) {
-                    Util.debugLog("Unknown error, send by plain text.");
-                    MsgUtil.sendMessage(p.getPlayer(), msgData[0] + msgData[1] + msgData[2]);
-                } catch (ArrayIndexOutOfBoundsException e2) {
+                if (msgData.length == 3) {
                     try {
-                        sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), "");
+                        sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
                     } catch (Exception any) {
+                        Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
                         MsgUtil.sendMessage(p.getPlayer(), message);
                     }
+                } else {
+                    // Normal msg
+                    MsgUtil.sendMessage(p.getPlayer(), message);
                 }
             }
         }
     }
+
+    /**
+     * @param shop    The shop purchased
+     * @param player  The name of the player to message
+     * @param message The message to send, if the given player are online it will be send immediately,
+     *                Else, if they're not online, queues them in the database.
+     */
+    public static void send(@NotNull Shop shop, @NotNull UUID player, @NotNull String message) {
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
+            return; // Ignore unlimited shops messages.
+        }
+        Util.debugLog(message);
+        String[] msgData = message.split("##########");
+        OfflinePlayer p = Bukkit.getOfflinePlayer(player);
+        if (!p.isOnline()) {
+            LinkedList<String> msgs = outGoingPlayerMessages.getOrDefault(player, new LinkedList<>());
+            msgs.add(message);
+            outGoingPlayerMessages.put(player, msgs);
+            plugin.getDatabaseHelper().sendMessage(player, message, System.currentTimeMillis());
+        } else {
+            if (p.getPlayer() != null) {
+                if (msgData.length == 3) {
+                    try {
+                        sendItemholochat(p.getPlayer(), msgData[0], shop.getItem(), msgData[2]);
+                    } catch (Exception any) {
+                        Util.debugLog("Unknown error, send by plain text.");
+                        // Normal msg
+                        MsgUtil.sendMessage(p.getPlayer(), message);
+                    }
+                } else {
+                    // Normal msg
+                    MsgUtil.sendMessage(p.getPlayer(), message);
+                }
+            }
+        }
+        }
 
     public static @NotNull String getSubString(
             @NotNull String text, @NotNull String left, @NotNull String right) {
@@ -871,9 +910,7 @@ public class MsgUtil {
         }
         if (!enchs.isEmpty()) {
             chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.enchants", p));
-            for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
-            }
+            printEnchantment(chatSheetPrinter, enchs);
         }
         if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
@@ -881,10 +918,18 @@ public class MsgUtil {
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(MsgUtil.getMessage("menu.stored-enchants", p));
-                for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
-                }
+                printEnchantment(chatSheetPrinter, enchs);
             }
+        }
+    }
+
+    private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
+        for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+            Integer level = entries.getValue();
+            if (level == null) {
+                level = 1;
+            }
+            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level));
         }
     }
 

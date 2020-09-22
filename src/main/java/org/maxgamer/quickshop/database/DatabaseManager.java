@@ -88,6 +88,9 @@ public class DatabaseManager {
      * Internal method, runTasks in queue.
      */
     private synchronized void runTask() { // synchronized for QUICKSHOP-WX
+        if (sqlQueue.isEmpty()) {
+            return;
+        }
         try {
             Connection connection = this.database.getConnection();
             //start our commit
