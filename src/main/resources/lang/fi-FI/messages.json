@@ -111,9 +111,9 @@
       "unlimited": "&aKaupassa on nyt rajattomasti tavaroita",
       "limited": "&aKauppa ei ole enään rajaton"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success": "&aSiirretty &e{0} &akauppa(a) &e{1}:lle",
+    "transfer-success-other": "&aSiirretty &e{0} {1}&a:n kauppa(a) &e{2}:lle",
+    "some-shops-removed": "&e{0} &akauppa(a) poistettu",
     "no-owner-given": "&cEi omistajaa annettu",
     "new-owner": "&aUusi omistaja: &e{0}",
     "now-buying": "&aNyt &dOSTETAAN &e{0}",
@@ -159,7 +159,7 @@
       "supercreate": "&eLuo kauppa ohittamalla kaikki suojaustarkistukset",
       "language": "&eVaihda tällä hetkellä käytettyä kieltä",
       "removeall": "&ePoista KAIKKI kaupat kyseiseltä pelaajalta",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eSiirrä jonkun KAIKKI kaupat toiselle"
     }
   },
   "signs": {

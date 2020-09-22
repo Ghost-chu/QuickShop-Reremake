@@ -59,6 +59,7 @@ import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
+import org.maxgamer.quickshop.util.compatibility.SpartanCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -345,6 +346,9 @@ public class QuickShop extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
             compatibilityTool.register(new NCPCompatibilityModule(this));
         }
+        if (Bukkit.getPluginManager().getPlugin("Spartan") != null) {
+            compatibilityTool.register(new SpartanCompatibilityModule(this));
+        }
         if (this.display) {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -494,7 +498,7 @@ public class QuickShop extends JavaPlugin {
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         language = new Language(this); // Init locale
-        if (this.getConfig().getBoolean("log-actions")) {
+        if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
         } else {
             logWatcher = null;
@@ -1647,7 +1651,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 111);
             selectedVersion = 111;
         }
-
+        if (selectedVersion == 111) {
+            getConfig().set("logging.enable", getConfig().getBoolean("log-actions"));
+            getConfig().set("logging.log-actions", getConfig().getBoolean("log-actions"));
+            getConfig().set("logging.log-balance", true);
+            getConfig().set("logging.file-size", 10);
+            getConfig().set("debug.disable-debuglogger", false);
+            getConfig().set("trying-fix-banlance-insuffient", false);
+            getConfig().set("log-actions", null);
+            getConfig().set("config-version", 112);
+            selectedVersion = 112;
+        }
 
         saveConfig();
         reloadConfig();

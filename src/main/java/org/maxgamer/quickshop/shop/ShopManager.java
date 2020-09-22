@@ -590,7 +590,7 @@ public class ShopManager {
         if (space == amount) {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-space", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()));
         }
-        MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
+        MsgUtil.send(shop, shop.getOwner(), msg);
         shop.buy(p, amount);
         MsgUtil.sendSellSuccess(p, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
@@ -839,7 +839,7 @@ public class ShopManager {
             msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()), Util.getItemStackName(shop.getItem()));
         }
 
-        MsgUtil.send(shop.getOwner(), msg, shop.isUnlimited());
+        MsgUtil.send(shop, shop.getOwner(), msg);
         shop.sell(p, amount);
         MsgUtil.sendPurchaseSuccess(p, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
