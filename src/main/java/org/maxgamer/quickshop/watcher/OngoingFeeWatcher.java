@@ -86,6 +86,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
     public void removeShop(@NotNull Shop shop) {
         Bukkit.getScheduler().runTask(plugin, (@NotNull Runnable) shop::delete);
         MsgUtil.send(
+                shop,
                 shop.getOwner(),
                 MsgUtil.getMessageOfflinePlayer(
                         "shop-removed-cause-ongoing-fee",
@@ -97,8 +98,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                                 + " Y:"
                                 + shop.getLocation().getBlockY()
                                 + " Z:"
-                                + shop.getLocation().getBlockZ()),
-                shop.isUnlimited());
+                                + shop.getLocation().getBlockZ()));
     }
 
 }
