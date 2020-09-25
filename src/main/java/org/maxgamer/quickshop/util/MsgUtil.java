@@ -619,7 +619,7 @@ public class MsgUtil {
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentunlimited {0} {1} {2} {3}",
-                            Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                            ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                             String.valueOf(shop.getLocation().getBlockX()),
                             String.valueOf(shop.getLocation().getBlockY()),
                             String.valueOf(shop.getLocation().getBlockZ()));
@@ -634,7 +634,7 @@ public class MsgUtil {
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentbuy {0} {1} {2} {3}",
-                                Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
                                 String.valueOf(shop.getLocation().getBlockZ()));
@@ -645,7 +645,7 @@ public class MsgUtil {
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentsell {0} {1} {2} {3}",
-                                Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
                                 String.valueOf(shop.getLocation().getBlockZ()));
@@ -705,7 +705,7 @@ public class MsgUtil {
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentempty {0} {1} {2} {3}",
-                                Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                                 String.valueOf(shop.getLocation().getBlockX()),
                                 String.valueOf(shop.getLocation().getBlockY()),
                                 String.valueOf(shop.getLocation().getBlockZ()));
@@ -721,7 +721,7 @@ public class MsgUtil {
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentremove {0} {1} {2} {3}",
-                            Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                            ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                             String.valueOf(shop.getLocation().getBlockX()),
                             String.valueOf(shop.getLocation().getBlockY()),
                             String.valueOf(shop.getLocation().getBlockZ()));
@@ -1033,7 +1033,7 @@ public class MsgUtil {
                                 ClickEvent.Action.RUN_COMMAND,
                                 MsgUtil.fillArgs(
                                         "/qs silentpreview {0} {1} {2} {3}",
-                                        Objects.requireNonNull(shop.getLocation().getWorld()).getName(),
+                                        ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
                                         String.valueOf(shop.getLocation().getBlockX()),
                                         String.valueOf(shop.getLocation().getBlockY()),
                                         String.valueOf(shop.getLocation().getBlockZ()))));

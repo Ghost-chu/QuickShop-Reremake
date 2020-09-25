@@ -30,6 +30,7 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ServerUtil;
 import org.maxgamer.quickshop.util.Util;
 
 @AllArgsConstructor
@@ -49,7 +50,7 @@ public class SubCommand_SilentSell implements CommandProcesser {
                         .getShopManager()
                         .getShop(
                                 new Location(
-                                        plugin.getServer().getWorld(cmdArg[0]),
+                                        ServerUtil.fromWorldNameID(cmdArg[0]),
                                         Integer.parseInt(cmdArg[1]),
                                         Integer.parseInt(cmdArg[2]),
                                         Integer.parseInt(cmdArg[3])));
