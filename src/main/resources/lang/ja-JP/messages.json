@@ -193,8 +193,8 @@
     "remove-hover": "&eクリックでショップを削除します",
     "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
-    "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item"
+    "item": "&aショップアイテム: {0} &e[&d&l変更&e]",
+    "item-hover": "&eショップアイテムを変更するにはクリックしてください"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -215,18 +215,18 @@
     "buttontitle": "[更新する]",
     "onekeybuttontitle": "[ワンキーアップデート]",
     "list": [
-      "{0} was released. You are still using {1}!",
+      "{0} がリリースされました。まだ {1} を使用しています！",
       "Boom! New update {0} incoming. Update!",
       "Surprise! {0} came out. You are on {1}",
       "Looks like you need to update. {0} was released!",
-      "Ooops! {0} was now released. You are on {1}!",
+      "おっと！ {0} がリリースされました。今は {1} です！",
       "I swear, QS has been updated to {0}. Why have you not updated yet?",
       "Fixing and re... Sorry, but {0} was released!",
       "Err! Nope. This is not an error. {0} has been released!",
       "ああ、神様！ {0} が出ました！ まだ {1} を使用しているのはなぜですか？",
       "今日のニュース：QuickShop が {0} に更新されました！",
       "Plugin k.i.a. You should update to {0}!",
-      "Update {0} ignited. Save update!",
+      "{0} を更新しました。アップデートしましょう！",
       "There is an update available Commander. {0} has just came out!",
       "Look my style---{0} updated. You're still using {1}",
       "ああ！ 新しい更新 {0}！ 更新を！",
@@ -249,7 +249,7 @@
   "shop-removed-cause-ongoing-fee": "&cYour shop at {0} was removed because you didn't have enough money to keep it!",
   "digits-reach-the-limit": "&cYou have reached the limits of decimals in the price.",
   "complete": "&a完了!",
-  "quickshop-gui-preview": "QuickShop GUI Item Preview",
+  "quickshop-gui-preview": "QuickShop GUI アイテムプレビュー",
   "shops-recovering": "バックアップからショップを復元しています...",
   "shops-backingup": "Creating Shop-backup from database...",
   "saved-to-path": "The Backup was saved to {0}.",
@@ -259,7 +259,7 @@
   "language-info-panel": {
     "name": "言語: ",
     "code": "コード: ",
-    "progress": "Progress: ",
+    "progress": "進捗: ",
     "help": "ヘルプ: ",
     "translate-on-crowdin": "[Crowdinで翻訳]"
   },
