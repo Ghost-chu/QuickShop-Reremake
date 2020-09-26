@@ -645,7 +645,7 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("config-version") == 0) {
             getConfig().set("config-version", 1);
         }
-        updateConfig(getConfig().getInt("config-version"));
+        updateConfig(getConfig().getInt("config-version", 1));
 
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
