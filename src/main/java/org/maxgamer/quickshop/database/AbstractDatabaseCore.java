@@ -32,13 +32,17 @@ public abstract class AbstractDatabaseCore {
 
     public void waitForConnection() {
         try {
+            lock.lock();
             conditionLock.await();
+            lock.unlock();
         } catch (InterruptedException ignored) {
         }
     }
 
     public void signalForNewConnection() {
+        lock.lock();
         conditionLock.signal();
+        lock.unlock();
     }
 
     abstract void close();
