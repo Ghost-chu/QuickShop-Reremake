@@ -1657,7 +1657,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 112) {
             getConfig().set("integration.lands.delete-on-lose-permission", false);
             getConfig().set("config-version", 113);
-            selectedVersion = 1123;
+            selectedVersion = 113;
         }
         saveConfig();
         reloadConfig();
