@@ -23,20 +23,14 @@ package org.maxgamer.quickshop.database;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
+public abstract class AbstractDatabaseCore {
 
-public interface DatabaseCore {
+    abstract void close();
 
-    void close();
+    abstract DatabaseConnection getConnection();
 
-    void flush();
+    abstract public @NotNull String getName();
 
-    void queue(BufferStatement bs);
-
-    Connection getConnection();
-
-    @NotNull String getName();
-
-    @NotNull Plugin getPlugin();
+    abstract public @NotNull Plugin getPlugin();
 
 }
