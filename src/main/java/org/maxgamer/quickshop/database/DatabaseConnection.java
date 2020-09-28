@@ -1,5 +1,7 @@
 package org.maxgamer.quickshop.database;
 
+import org.maxgamer.quickshop.QuickShop;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -47,7 +49,10 @@ public class DatabaseConnection implements AutoCloseable {
     }
 
     public void release() {
-        using = false;
+        if (using) {
+            using = false;
+            QuickShop.getInstance().getDatabaseManager().getDatabase().signalForNewConnection();
+        }
     }
 
     public boolean isUsing() {

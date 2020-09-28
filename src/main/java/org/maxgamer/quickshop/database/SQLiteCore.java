@@ -80,7 +80,9 @@ public class SQLiteCore extends AbstractDatabaseCore {
                 return connection = genConnection();
             }
         }
-        return null;
+        //If all connection is unusable, wait a moment
+        waitForConnection();
+        return getConnection();
     }
 
     @Nullable

@@ -148,59 +148,62 @@ public class DatabaseManager {
     /**
      * Internal method, runTasks in queue.
      */
-    private synchronized void runTask() { // synchronized for QUICKSHOP-WX
-        if (sqlQueue.isEmpty()) {
-            return;
-        }
-        DatabaseConnection dbconnection = this.database.getConnection();
-        Connection connection = dbconnection.get();
-        try {
-            //start our commit
-            connection.setAutoCommit(false);
-            Timer ctimer = new Timer(true);
-            while (true) {
-                if (!dbconnection.isValid()) {
-                    warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                    //connection isn't stable, let autocommit on
-                    dbconnection.release();
-                    dbconnection.close();
-                    return; // Waiting next crycle and hope it success reconnected.
-                }
+    private void runTask() { // synchronized for QUICKSHOP-WX
+        synchronized (sqlQueue) {
+            if (sqlQueue.isEmpty()) {
+                return;
+            }
+            DatabaseConnection dbconnection = this.database.getConnection();
+            Connection connection = dbconnection.get();
+            try {
+                //start our commit
+                connection.setAutoCommit(false);
+                Timer ctimer = new Timer(true);
+                while (true) {
+                    if (!dbconnection.isValid()) {
+                        warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                        //connection isn't stable, let autocommit on
+                        dbconnection.release();
+                        dbconnection.close();
+                        return; // Waiting next crycle and hope it success reconnected.
+                    }
 
-                Timer timer = new Timer(true);
-                DatabaseTask task = sqlQueue.poll();
-                if (task == null) {
-                    break;
-                }
-                Util.debugLog("Executing the SQL task: " + task);
+                    Timer timer = new Timer(true);
+                    DatabaseTask task = sqlQueue.poll();
+                    if (task == null) {
+                        break;
+                    }
+                    Util.debugLog("Executing the SQL task: " + task);
 
-                task.run(connection);
-                long tookTime = timer.endTimer();
-                if (tookTime > 300) {
+                    task.run(connection);
+                    long tookTime = timer.endTimer();
+                    if (tookTime > 300) {
+                        warningSender.sendWarn(
+                                "Database performance warning: It took too long time ("
+                                        + tookTime
+                                        + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
+                    }
+                }
+                if (!connection.getAutoCommit()) {
+                    connection.commit();
+                    connection.setAutoCommit(true);
+                }
+                long tookTime = ctimer.endTimer();
+                if (tookTime > 5500) {
                     warningSender.sendWarn(
                             "Database performance warning: It took too long time ("
                                     + tookTime
                                     + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
                 }
+
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                this.plugin
+                        .getLogger()
+                        .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
+            } finally {
+                dbconnection.release();
             }
-            if (!connection.getAutoCommit()) {
-                connection.commit();
-                connection.setAutoCommit(true);
-            }
-            long tookTime = ctimer.endTimer();
-            if (tookTime > 5500) {
-                warningSender.sendWarn(
-                        "Database performance warning: It took too long time ("
-                                + tookTime
-                                + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
-            }
-        } catch (SQLException sqle) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            this.plugin
-                    .getLogger()
-                    .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
-        } finally {
-            dbconnection.release();
         }
 
 //        try {
@@ -231,7 +234,9 @@ public class DatabaseManager {
      */
     public void addDelayTask(DatabaseTask task) {
         if (useQueue) {
-            sqlQueue.offer(task);
+            synchronized (sqlQueue) {
+                sqlQueue.offer(task);
+            }
         } else {
             runInstantTask(task);
         }
@@ -240,7 +245,7 @@ public class DatabaseManager {
     /**
      * Unload the DatabaseManager, run at onDisable()
      */
-    public void unInit() {
+    public synchronized void unInit() {
         if (task != null && !task.isCancelled()) {
             task.cancel();
         }
