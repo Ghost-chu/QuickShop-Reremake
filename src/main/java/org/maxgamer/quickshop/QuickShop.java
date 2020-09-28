@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -67,6 +68,7 @@ import org.maxgamer.quickshop.watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.Map.Entry;
@@ -635,7 +637,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         // getConfig().options().copyDefaults(true);
-        if (getConfig().getInt("config-version") == 0) {
+        if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
         updateConfig(getConfig().getInt("config-version", 1));
@@ -968,6 +970,7 @@ public class QuickShop extends JavaPlugin {
 
     @SuppressWarnings("UnusedAssignment")
     private void updateConfig(int selectedVersion) {
+        //fixConfiguration();
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1657,8 +1660,14 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 112) {
             getConfig().set("integration.lands.delete-on-lose-permission", false);
             getConfig().set("config-version", 113);
-            selectedVersion = 1123;
+            selectedVersion = 113;
         }
+        if (selectedVersion == 113) {
+            getConfig().set("config-damaged", false);
+            getConfig().set("config-version", 114);
+            selectedVersion = 114;
+        }
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
@@ -1686,5 +1695,6 @@ public class QuickShop extends JavaPlugin {
 //        } catch (Exception ignored) {
 //        }
 //    }
+
 
 }
