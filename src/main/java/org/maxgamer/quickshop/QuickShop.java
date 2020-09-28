@@ -635,7 +635,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         // getConfig().options().copyDefaults(true);
-        if (getConfig().getInt("config-version") == 0) {
+        if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
         updateConfig(getConfig().getInt("config-version", 1));
