@@ -23,7 +23,23 @@ package org.maxgamer.quickshop.database;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 public abstract class AbstractDatabaseCore {
+    private final ReentrantLock lock = new ReentrantLock(true);
+    private final Condition conditionLock = lock.newCondition();
+
+    public void waitForConnection() {
+        try {
+            conditionLock.await();
+        } catch (InterruptedException ignored) {
+        }
+    }
+
+    public void signalForNewConnection() {
+        conditionLock.signal();
+    }
 
     abstract void close();
 

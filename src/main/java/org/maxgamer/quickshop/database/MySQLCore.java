@@ -123,9 +123,9 @@ public class MySQLCore extends AbstractDatabaseCore {
             }
 
         }
-        //If all connection is unusable, return null
-        return null;
-
+        //If all connection is unusable, wait a moment
+        waitForConnection();
+        return getConnection();
     }
 
     @Override
