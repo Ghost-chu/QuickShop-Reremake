@@ -1654,7 +1654,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 112);
             selectedVersion = 112;
         }
-
+        if (selectedVersion == 112) {
+            getConfig().set("integration.lands.delete-on-lose-permission", false);
+            getConfig().set("config-version", 113);
+            selectedVersion = 1123;
+        }
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
