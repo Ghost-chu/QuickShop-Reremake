@@ -122,8 +122,8 @@ send-shop-protection-alert: false
 #Still WIP
 server-platform: 0
 
-#BETA=Use caching for shop finding to optimize performance if possible
-use-caching: false
+#Use caching for shop finding to optimize performance if possible
+use-caching: true
 
 #MySQL database settings.
 database:
