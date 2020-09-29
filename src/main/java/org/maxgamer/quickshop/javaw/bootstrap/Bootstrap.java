@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is BootStrap.java
+ * This file is a part of project QuickShop, the name is Bootstrap.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.javaw.bootstrap;
 
 import javax.swing.*;
 
-public class BootStrap {
+public class Bootstrap {
     public static void main(String[] args) {
         System.out.println("QuickShop is a Spigot plugin.");
         System.out.println("You cannot directly execute this jar file, please install it as server plugin following the tutorials.");
