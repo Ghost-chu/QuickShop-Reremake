@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ConfigurationFixer.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -55,8 +54,6 @@ public class ConfigurationFixer {
                 plugin.getConfig().set(key, builtInConfig.get(key));
             }
         });
-
-
         plugin.getLogger().info("QuickShop fixed the damaged parts in configuration that we can found. We recommend you restart the server and make fix apply.");
         plugin.getConfig().set("config-damaged", false);
         plugin.saveConfig();
