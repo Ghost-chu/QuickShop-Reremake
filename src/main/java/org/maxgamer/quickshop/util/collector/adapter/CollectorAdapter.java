@@ -188,24 +188,27 @@ public class CollectorAdapter {
     @CollectResolver(field = CollectType.CONFIG)
     public Map<?, ?> collectConfig(@NotNull QuickShop plugin) {
         //TODO
+        return null;
     }
 
     @CollectResolver(field = CollectType.SERVER_CONFIG)
     public Map<?, ?> collectServerConfig(@NotNull QuickShop plugin) {
         //TODO
+        return null;
     }
 
     @CollectResolver(field = CollectType.LANGUAGE)
     public Map<?, ?> collectI18n(@NotNull QuickShop plugin) {
         //TODO
+        return null;
     }
 
     @CollectResolver(field = CollectType.LOGS)
     public Map<?, ?> collectLogs(@NotNull QuickShop plugin) {
         Map<String, String> map = new HashMap<>();
         map.put("qs_debug", Util.list2String(Util.getDebugLogs()));
-        map.put("qs_shop", ); //TODO shop log
-        map.put("qs_sentry", ); //TODO sentry log
+//        map.put("qs_shop", ); //TODO shop log
+//        map.put("qs_sentry", ); //TODO sentry log
         return map;
 
     }
