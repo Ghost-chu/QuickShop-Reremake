@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is RuntimeCatcher.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -50,8 +49,6 @@ public class RuntimeCatcher {
             plugin.getConfig().set("matcher.work-type", 0);
             plugin.saveConfig();
         }
-
-
         if (!isSpigotBasedServer(plugin)) {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
