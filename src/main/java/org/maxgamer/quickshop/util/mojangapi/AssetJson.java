@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is AssetJson.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -42,6 +41,10 @@ public class AssetJson {
     @Nullable
     public String getLanguageHash(@NotNull String languageCode) {
         languageCode = languageCode.replace("-", "_").toLowerCase().trim();
+        if (languageCode.equals("en_us")) {
+            Util.debugLog("Using built-in language processor cause the language has been set to en_us.");
+            return null;
+        }
         JsonObject json = new JsonParser().parse(this.gameAssets).getAsJsonObject();
         if (json == null || json.isJsonNull()) {
             Util.debugLog("Cannot parse the json: " + this.gameAssets);
