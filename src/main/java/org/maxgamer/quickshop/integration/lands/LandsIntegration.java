@@ -93,12 +93,16 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
     }
 
     private void deleteShopInLand(Land land, UUID target) {
+        //Getting all shop with world-chunk-shop mapping
         for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+            //Matching world
             World world = Bukkit.getWorld(entry.getKey());
             if (world != null) {
+                //Matching chunk
                 for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
                     ShopChunk shopChunk = chunkedShopEntry.getKey();
                     if (land.hasChunk(world, shopChunk.getX(), shopChunk.getZ())) {
+                        //Matching Owner and delete it
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
