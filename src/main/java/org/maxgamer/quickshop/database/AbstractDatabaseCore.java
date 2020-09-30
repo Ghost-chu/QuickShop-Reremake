@@ -30,7 +30,7 @@ public abstract class AbstractDatabaseCore {
     private final ReentrantLock lock = new ReentrantLock(true);
     private final Condition conditionLock = lock.newCondition();
 
-    public void waitForConnection() {
+    void waitForConnection() {
         try {
             lock.lock();
             conditionLock.await();
@@ -39,7 +39,7 @@ public abstract class AbstractDatabaseCore {
         }
     }
 
-    public void signalForNewConnection() {
+    void signalForNewConnection() {
         lock.lock();
         conditionLock.signal();
         lock.unlock();
