@@ -26,7 +26,6 @@ public class Bootstrap {
         System.out.println("QuickShop is a Spigot plugin.");
         System.out.println("You cannot directly execute this jar file, please install it as server plugin following the tutorials.");
         System.out.println("https://www.spigotmc.org/wiki/spigot-installation.");
-        //判断bai当前系统是否du支持Java AWT Desktop扩展
         if (java.awt.Desktop.isDesktopSupported()) {
             try {
                 java.net.URI uri = java.net.URI.create("https://www.spigotmc.org/wiki/spigot-installation/#plugins");
