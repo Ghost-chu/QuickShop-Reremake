@@ -32,11 +32,15 @@ public class SpartanCompatibilityModule implements CompatibilityModule {
                             + player.getName()
                             + " cheats detection until we finished permission checks.");
 
-            API.startCheck(player, Enums.HackType.Nuker);
+            for (Enums.HackType value : Enums.HackType.values()) {
+                API.startCheck(player, value);
+            }
         } else {
             Util.debugLog(
                     "Calling Spartan continue follow " + player.getName() + " cheats detection.");
-            API.stopCheck(player, Enums.HackType.Nuker);
+            for (Enums.HackType value : Enums.HackType.values()) {
+                API.stopCheck(player, value);
+            }
         }
     }
 }
