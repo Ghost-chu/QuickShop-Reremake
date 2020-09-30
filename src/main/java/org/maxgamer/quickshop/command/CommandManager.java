@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is CommandManager.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -350,9 +349,16 @@ public class CommandManager implements TabCompleter, CommandExecutor {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
-        if (plugin.getBootError() != null && (cmdArg.length == 1 && !cmdArg[0].equalsIgnoreCase("paste"))) {
-            plugin.getBootError().printErrors(sender);
-            return true;
+        if (plugin.getBootError() != null) {
+            if (cmdArg.length != 1) {
+                plugin.getBootError().printErrors(sender);
+                return true;
+
+            }
+            if (!cmdArg[0].equalsIgnoreCase("paste")) {
+                plugin.getBootError().printErrors(sender);
+                return true;
+            }
         }
 
         if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
