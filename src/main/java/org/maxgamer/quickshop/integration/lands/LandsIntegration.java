@@ -48,7 +48,6 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
     private final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
     private final boolean deleteWhenLosePermission;
     private final QuickShop plugin;
-    private boolean isRegisterEvent = false;
 
     public LandsIntegration(QuickShop plugin) {
         this.plugin = plugin;
@@ -126,10 +125,7 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
 
     @Override
     public void load() {
-        if (!isRegisterEvent) {
-            Bukkit.getPluginManager().registerEvents(this, plugin);
-            isRegisterEvent = true;
-        }
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
