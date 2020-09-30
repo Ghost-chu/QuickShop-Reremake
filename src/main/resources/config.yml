@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 112
+config-version: 114
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -122,8 +122,8 @@ send-shop-protection-alert: false
 #Still WIP
 server-platform: 0
 
-#BETA=Use caching for shop finding to optimize performance if possible
-use-caching: false
+#Use caching for shop finding to optimize performance if possible
+use-caching: true
 
 #MySQL database settings.
 database:
@@ -527,6 +527,9 @@ integration:
     whitelist-mode: false
     #If ignore disabled world checking
     ignore-disabled-worlds: true
+    #Should we delete the shop in the land when the shop owner lose the permission
+    #in this land?
+    delete-on-lose-permission: false
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
@@ -600,6 +603,10 @@ debug:
   #logging stacktrace when deleting shop
   shop-deletion: false
 
+
+
+#Keep this is false, DO NOT TOUCH IT!
+config-damaged: false
 
 
 

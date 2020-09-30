@@ -31,12 +31,20 @@ import java.sql.SQLException;
 @ToString()
 public class DatabaseTask {
 
+    private final static Task emptyTask = ps -> {
+
+    };
     private final String statement;
     private final Task task;
 
     public DatabaseTask(String statement, Task task) {
         this.statement = statement;
         this.task = task;
+    }
+
+    public DatabaseTask(String statement) {
+        this.statement = statement;
+        this.task = emptyTask;
     }
 
 

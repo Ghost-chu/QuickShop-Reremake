@@ -20,6 +20,7 @@
 
 package org.maxgamer.quickshop.database;
 
+import lombok.Getter;
 import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -30,8 +31,7 @@ import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.WarningSender;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
@@ -44,7 +44,8 @@ public class DatabaseManager {
     private final Queue<DatabaseTask> sqlQueue = new LinkedBlockingQueue<>();
 
     @NotNull
-    private final Database database;
+    @Getter
+    private final AbstractDatabaseCore database;
 
     @NotNull
     private final QuickShop plugin;
@@ -59,84 +60,150 @@ public class DatabaseManager {
      * Queued database manager. Use queue to solve run SQL make server lagg issue.
      *
      * @param plugin plugin main class
-     * @param db     database
+     * @param dbCore database core
      */
-    public DatabaseManager(@NotNull QuickShop plugin, @NotNull Database db) {
+    public DatabaseManager(@NotNull QuickShop plugin, @NotNull AbstractDatabaseCore dbCore) throws ConnectionException {
         this.plugin = plugin;
         this.warningSender = new WarningSender(plugin, 600000);
-        this.database = db;
+        if (!dbCore.getConnection().isValid()) {
+            throw new DatabaseManager.ConnectionException("The database does not appear to be valid!");
+        }
+        this.database = dbCore;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
 
-        if (!useQueue) {
-            return;
+        if (useQueue) {
+            try {
+                task =
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                plugin.getDatabaseManager().runTask();
+                            }
+                        }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
+            } catch (IllegalPluginAccessException e) {
+                Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
+                plugin.getDatabaseManager().runTask();
+            }
         }
+    }
+
+    /**
+     * Returns true if the table exists
+     *
+     * @param table The table to check for
+     * @return True if the table is found
+     * @throws SQLException Throw exception when failed execute somethins on SQL
+     */
+    boolean hasTable(@NotNull String table) throws SQLException {
+        DatabaseConnection connection = database.getConnection();
+        ResultSet rs = connection.get().getMetaData().getTables(null, null, "%", null);
+        boolean match = false;
+        while (rs.next()) {
+            if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                match = true;
+                break;
+            }
+        }
+        rs.close();
+        connection.release();
+        return match;
+    }
+
+    /**
+     * Returns true if the given table has the given column
+     *
+     * @param table  The table
+     * @param column The column
+     * @return True if the given table has the given column
+     * @throws SQLException If the database isn't connected
+     */
+    public boolean hasColumn(@NotNull String table, @NotNull String column) throws SQLException {
+        if (!hasTable(table)) {
+            return false;
+        }
+
+        DatabaseConnection connection = database.getConnection();
+        String query = "SELECT * FROM " + table + " LIMIT 1";
+        boolean match = false;
         try {
-            task =
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            plugin.getDatabaseManager().runTask();
-                        }
-                    }.runTaskTimerAsynchronously(plugin, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
-        } catch (IllegalPluginAccessException e) {
-            Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
-            plugin.getDatabaseManager().runTask();
+            PreparedStatement ps = connection.get().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                if (metaData.getColumnLabel(i).equals(column)) {
+                    match = true;
+                    break;
+                }
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            return match;
+        } finally {
+            connection.release();
         }
+        return match; // Uh, wtf.
     }
 
     /**
      * Internal method, runTasks in queue.
      */
-    private synchronized void runTask() { // synchronized for QUICKSHOP-WX
-        if (sqlQueue.isEmpty()) {
-            return;
-        }
-        try {
-            Connection connection = this.database.getConnection();
-            //start our commit
-            connection.setAutoCommit(false);
-            Timer ctimer = new Timer(true);
-            while (true) {
-                if (!connection.isValid(3000)) {
-                    warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                    //connection isn't stable, let autocommit on
-                    connection = database.getConnection();
-                    continue; // Waiting next crycle and hope it success reconnected.
-                }
+    private void runTask() { // synchronized for QUICKSHOP-WX
+        synchronized (sqlQueue) {
+            if (sqlQueue.isEmpty()) {
+                return;
+            }
+            DatabaseConnection dbconnection = this.database.getConnection();
+            Connection connection = dbconnection.get();
+            try {
+                //start our commit
+                connection.setAutoCommit(false);
+                Timer ctimer = new Timer(true);
+                while (true) {
+                    if (!dbconnection.isValid()) {
+                        warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
+                        //connection isn't stable, let autocommit on
+                        dbconnection.release();
+                        dbconnection.close();
+                        return; // Waiting next crycle and hope it success reconnected.
+                    }
 
-                Timer timer = new Timer(true);
-                DatabaseTask task = sqlQueue.poll();
-                if (task == null) {
-                    break;
-                }
-                Util.debugLog("Executing the SQL task: " + task);
+                    Timer timer = new Timer(true);
+                    DatabaseTask task = sqlQueue.poll();
+                    if (task == null) {
+                        break;
+                    }
+                    Util.debugLog("Executing the SQL task: " + task);
 
-                task.run(connection);
-                long tookTime = timer.endTimer();
-                if (tookTime > 300) {
+                    task.run(connection);
+                    long tookTime = timer.endTimer();
+                    if (tookTime > 300) {
+                        warningSender.sendWarn(
+                                "Database performance warning: It took too long time ("
+                                        + tookTime
+                                        + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
+                    }
+                }
+                if (!connection.getAutoCommit()) {
+                    connection.commit();
+                    connection.setAutoCommit(true);
+                }
+                long tookTime = ctimer.endTimer();
+                if (tookTime > 5500) {
                     warningSender.sendWarn(
                             "Database performance warning: It took too long time ("
                                     + tookTime
                                     + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
                 }
+
+            } catch (SQLException sqle) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+                this.plugin
+                        .getLogger()
+                        .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
+            } finally {
+                dbconnection.release();
             }
-            if (!connection.getAutoCommit()) {
-                connection.commit();
-                connection.setAutoCommit(true);
-            }
-            long tookTime = ctimer.endTimer();
-            if (tookTime > 5500) {
-                warningSender.sendWarn(
-                        "Database performance warning: It took too long time ("
-                                + tookTime
-                                + "ms) to execute the task, it may cause the network connection with MySQL server or just MySQL server too slow, change to a better MySQL server or switch to a local SQLite database!");
-            }
-            connection.close();
-        } catch (SQLException sqle) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            this.plugin
-                    .getLogger()
-                    .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
         }
 
 //        try {
@@ -154,23 +221,49 @@ public class DatabaseManager {
      *
      * @param task The DatabaseTask you want add in queue.
      */
-    public void add(DatabaseTask task) {
+    public void runInstantTask(DatabaseTask task) {
+        DatabaseConnection connection = database.getConnection();
+        task.run(connection.get());
+        connection.release();
+    }
+
+    /**
+     * Add DatabaseTask to queue waiting flush to database,
+     *
+     * @param task The DatabaseTask you want add in queue.
+     */
+    public void addDelayTask(DatabaseTask task) {
         if (useQueue) {
-            sqlQueue.offer(task);
+            synchronized (sqlQueue) {
+                sqlQueue.offer(task);
+            }
         } else {
-            task.run(database.getConnection());
+            runInstantTask(task);
         }
     }
 
     /**
      * Unload the DatabaseManager, run at onDisable()
      */
-    public void unInit() {
+    public synchronized void unInit() {
         if (task != null && !task.isCancelled()) {
             task.cancel();
         }
         plugin.getLogger().info("Please wait for the data to flush its data...");
         runTask();
+        database.close();
     }
 
+
+    /**
+     * Represents a connection error, generally when the server can't connect to MySQL or something.
+     */
+    public static final class ConnectionException extends Exception {
+        private static final long serialVersionUID = 8348749992936357317L;
+
+        private ConnectionException(String msg) {
+            super(msg);
+        }
+
+    }
 }

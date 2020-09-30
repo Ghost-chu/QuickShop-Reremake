@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is BuildInfo.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -20,7 +19,7 @@
 
 package org.maxgamer.quickshop;
 
-import lombok.Getter;
+import lombok.Data;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-@Getter
+@Data
 public class BuildInfo {
     private final int buildId;
     private final String buildTag;

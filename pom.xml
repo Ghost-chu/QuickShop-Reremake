@@ -1,6 +1,5 @@
 <!--
   ~ This file is a part of project QuickShop, the name is pom.xml
-  ~  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
   ~  Copyright (C) PotatoCraft Studio and contributors
   ~
   ~  This program is free software: you can redistribute it and/or modify it
@@ -24,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.4.10</version>
+    <version>4.0.4.11</version>
 
     <licenses>
         <license>
@@ -123,6 +122,13 @@
                         </relocation>
 
                     </relocations>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>org.maxgamer.quickshop.javaw.bootstrap.Bootstrap</mainClass>
+                        </transformer>
+
+                    </transformers>
                 </configuration>
                 <executions>
                     <execution>
@@ -381,7 +387,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
