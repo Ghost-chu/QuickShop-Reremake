@@ -34,8 +34,9 @@ public class DatabaseConnection implements AutoCloseable {
                 }
                 connection.close();
             }
-            release();
         } catch (SQLException ignored) {
+        } finally {
+            release();
         }
     }
 
