@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is QuickShop.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -640,7 +639,7 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
-        updateConfig(getConfig().getInt("config-version", 1));
+        updateConfig(getConfig().getInt("config-version"));
 
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
