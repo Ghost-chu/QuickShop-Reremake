@@ -24,6 +24,7 @@ import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.land.Land;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,6 +34,11 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.shop.ShopChunk;
+
+import java.util.Map;
+import java.util.UUID;
 
 @IntegrationStage
 public class LandsIntegration implements IntegratedPlugin, Listener {
@@ -82,14 +88,31 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
         if (!deleteWhenLosePermission) {
             return;
         }
-        plugin.getShopManager().getAllShops().forEach((shop -> {
-            if (event.getLand().hasChunk(shop.getLocation().getWorld(), shop.getLocation().getChunk().getX(), shop.getLocation().getChunk().getZ())) {
-                if (event.getTarget().equals(shop.getOwner())) {
-                    plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + event.getLand().getName());
-                    shop.delete();
+        deleteShopInLand(event.getLand(), event.getTarget());
+    }
+
+    private void deleteShopInLand(Land land, UUID target) {
+        //Getting all shop with world-chunk-shop mapping
+        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+            //Matching world
+            World world = Bukkit.getWorld(entry.getKey());
+            if (world != null) {
+                //Matching chunk
+                for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                    ShopChunk shopChunk = chunkedShopEntry.getKey();
+                    if (land.hasChunk(world, shopChunk.getX(), shopChunk.getZ())) {
+                        //Matching Owner and delete it
+                        Map<Location, Shop> shops = chunkedShopEntry.getValue();
+                        for (Shop shop : shops.values()) {
+                            if (target.equals(shop.getOwner())) {
+                                plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + land.getName());
+                                shop.delete();
+                            }
+                        }
+                    }
                 }
             }
-        }));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -97,14 +120,7 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
         if (!deleteWhenLosePermission) {
             return;
         }
-        plugin.getShopManager().getAllShops().forEach((shop -> {
-            if (event.getLand().hasChunk(shop.getLocation().getWorld(), shop.getLocation().getChunk().getX(), shop.getLocation().getChunk().getZ())) {
-                if (event.getLandPlayer().getUID().equals(shop.getOwner())) {
-                    plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + event.getLand().getName());
-                    shop.delete();
-                }
-            }
-        }));
+        deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
     }
 
     @Override
