@@ -179,7 +179,7 @@
     "setowner-hover": "&e点击来修改店主",
     "unlimited": "&a无限模式: {0} &e[&d&l切换&e]",
     "unlimited-hover": "&e点击以切换无限模式",
-    "mode-selling": "&a商店模式: &b收购 &e[&d&l更改&e]",
+    "mode-selling": "&a商店模式: &b出售 &e[&d&l更改&e]",
     "mode-selling-hover": "&e点击可将商店切换为 收购 模式。",
     "mode-buying": "&a商店模式: &b收购 &e[&d&l更改&e]",
     "mode-buying-hover": "&e点击可将商店切换为 出售 模式。",

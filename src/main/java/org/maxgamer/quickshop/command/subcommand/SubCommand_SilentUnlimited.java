@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ServerUtil;
 
 @AllArgsConstructor
 public class SubCommand_SilentUnlimited implements CommandProcesser {
@@ -45,7 +46,7 @@ public class SubCommand_SilentUnlimited implements CommandProcesser {
                         .getShopManager()
                         .getShop(
                                 new Location(
-                                        plugin.getServer().getWorld(cmdArg[0]),
+                                        ServerUtil.fromWorldNameID(cmdArg[0]),
                                         Integer.parseInt(cmdArg[1]),
                                         Integer.parseInt(cmdArg[2]),
                                         Integer.parseInt(cmdArg[3])));
