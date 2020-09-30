@@ -359,7 +359,7 @@ public class QuickShop extends JavaPlugin {
                 }
             }
 
-            if (DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+            if (DisplayItem.getNowUsing() == DisplayType.REALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 try {
                     Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
                     for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
