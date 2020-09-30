@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is LandsIntegration.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -20,25 +19,36 @@
 
 package org.maxgamer.quickshop.integration.lands;
 
+import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
+import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.land.Land;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 
 @IntegrationStage
-public class LandsIntegration implements IntegratedPlugin {
+public class LandsIntegration implements IntegratedPlugin, Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;
     private final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
+    private final boolean deleteWhenLosePermission;
+    private final QuickShop plugin;
 
     public LandsIntegration(QuickShop plugin) {
+        this.plugin = plugin;
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.lands.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.lands.whitelist-mode");
+        deleteWhenLosePermission = plugin.getConfig().getBoolean("integration.lands.delete-on-lose-permission");
     }
 
     @Override
@@ -67,14 +77,43 @@ public class LandsIntegration implements IntegratedPlugin {
         return true;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLandsPermissionChanges(LandUntrustPlayerEvent event) {
+        if (!deleteWhenLosePermission) {
+            return;
+        }
+        plugin.getShopManager().getAllShops().forEach((shop -> {
+            if (event.getLand().hasChunk(shop.getLocation().getWorld(), shop.getLocation().getChunk().getX(), shop.getLocation().getChunk().getZ())) {
+                if (event.getTarget().equals(shop.getOwner())) {
+                    plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + event.getLand().getName());
+                    shop.delete();
+                }
+            }
+        }));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLandsMember(PlayerLeaveLandEvent event) {
+        if (!deleteWhenLosePermission) {
+            return;
+        }
+        plugin.getShopManager().getAllShops().forEach((shop -> {
+            if (event.getLand().hasChunk(shop.getLocation().getWorld(), shop.getLocation().getChunk().getX(), shop.getLocation().getChunk().getZ())) {
+                if (event.getLandPlayer().getUID().equals(shop.getOwner())) {
+                    plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + event.getLand().getName());
+                    shop.delete();
+                }
+            }
+        }));
+    }
+
     @Override
     public void load() {
-
-
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void unload() {
-
+        HandlerList.unregisterAll(this);
     }
 }

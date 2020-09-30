@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is Economy_Vault.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -60,6 +59,9 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     private boolean setupEconomy() {
+        if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
+            return false; // QUICKSHOP-YS I can't believe it broken almost a year and nobody found it, my sentry exploded.
+        }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
             economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);

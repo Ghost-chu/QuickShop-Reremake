@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ShopManager.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -584,7 +583,7 @@ public class ShopManager {
             return;
         }
 
-        // Notify the owner of the purchase.
+        // Notify the owner of the purchase. //TODO: move to a standalone method
         String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
 
         if (space == amount) {
@@ -755,7 +754,7 @@ public class ShopManager {
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
-                    QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    plugin.log("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
                 }
                 return;
             }
@@ -828,7 +827,7 @@ public class ShopManager {
         }
 
         String msg;
-        // Notify the shop owner
+        // Notify the shop owner //TODO: move to a standalone method
         if (plugin.getConfig().getBoolean("show-tax")) {
             msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format(CalculateUtil.multiply(taxModifier, total)));
         } else {

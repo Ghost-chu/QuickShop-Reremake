@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is QuickShop.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -29,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -67,6 +67,7 @@ import org.maxgamer.quickshop.watcher.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.Map.Entry;
@@ -106,11 +107,6 @@ public class QuickShop extends JavaPlugin {
     private BootError bootError;
     @Getter
     private CommandManager commandManager;
-    /**
-     * The database for storing all our data for persistence
-     */
-    @Getter
-    private Database database;
     /**
      * Contains all SQL tasks
      */
@@ -363,7 +359,7 @@ public class QuickShop extends JavaPlugin {
                 }
             }
 
-            if (DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+            if (DisplayItem.getNowUsing() == DisplayType.REALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 try {
                     Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
                     for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
@@ -490,7 +486,7 @@ public class QuickShop extends JavaPlugin {
             super.reloadConfig();
         } catch (Exception t) {
             t.printStackTrace();
-            getLogger().severe("Cannot reading the configration, plugin may won't works!");
+            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
         }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
@@ -563,16 +559,6 @@ public class QuickShop extends JavaPlugin {
             // ignore, we didn't care that
         }
 
-        Util.debugLog("Unregistering tasks...");
-        // if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
-        if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
-        }
-        /* Unload UpdateWatcher */
-        if (this.updateWatcher != null) {
-            this.updateWatcher.uninit();
-        }
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
@@ -583,15 +569,23 @@ public class QuickShop extends JavaPlugin {
         if (this.getDatabaseManager() != null) {
             this.getDatabaseManager().unInit();
         }
-        /* Close Database */
-        if (database != null) {
-            this.database.close();
-        }
+
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
         this.compatibilityTool.clear();
         new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+
+        Util.debugLog("Unregistering tasks...");
+        // if (itemWatcherTask != null)
+        //    itemWatcherTask.cancel();
+        if (logWatcher != null) {
+            logWatcher.close(); // Closes the file
+        }
+        /* Unload UpdateWatcher */
+        if (this.updateWatcher != null) {
+            this.updateWatcher.uninit();
+        }
 
         Util.debugLog("Cleanup tasks...");
         try {
@@ -642,7 +636,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         // getConfig().options().copyDefaults(true);
-        if (getConfig().getInt("config-version") == 0) {
+        if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
         updateConfig(getConfig().getInt("config-version"));
@@ -858,7 +852,7 @@ public class QuickShop extends JavaPlugin {
     private boolean setupDatabase() {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-            DatabaseCore dbCore;
+            AbstractDatabaseCore dbCore;
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
@@ -876,11 +870,10 @@ public class QuickShop extends JavaPlugin {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
-            this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
-            this.databaseManager = new DatabaseManager(this, this.database);
+            this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new DatabaseHelper(this, this.database, this.databaseManager);
-        } catch (Database.ConnectionException e) {
+            this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
+        } catch (DatabaseManager.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
@@ -944,7 +937,7 @@ public class QuickShop extends JavaPlugin {
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-            String databaseType = this.getDatabase().getCore().getName();
+            String databaseType = this.getDatabaseManager().getDatabase().getName();
             String displayType = DisplayItem.getNowUsing().name();
             String itemMatcherType = this.getItemMatcher().getName();
             String useStackItem = String.valueOf(this.isAllowStack());
@@ -976,6 +969,7 @@ public class QuickShop extends JavaPlugin {
 
     @SuppressWarnings("UnusedAssignment")
     private void updateConfig(int selectedVersion) {
+        //fixConfiguration();
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1662,7 +1656,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 112);
             selectedVersion = 112;
         }
-
+        if (selectedVersion == 112) {
+            getConfig().set("integration.lands.delete-on-lose-permission", false);
+            getConfig().set("config-version", 113);
+            selectedVersion = 113;
+        }
+        if (selectedVersion == 113) {
+            getConfig().set("config-damaged", false);
+            getConfig().set("config-version", 114);
+            selectedVersion = 114;
+        }
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
@@ -1690,5 +1694,6 @@ public class QuickShop extends JavaPlugin {
 //        } catch (Exception ignored) {
 //        }
 //    }
+
 
 }
