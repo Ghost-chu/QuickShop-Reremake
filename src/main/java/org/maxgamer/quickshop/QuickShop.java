@@ -359,7 +359,7 @@ public class QuickShop extends JavaPlugin {
                 }
             }
 
-            if (DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
+            if (DisplayItem.getNowUsing() == DisplayType.REALITEM && Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 try {
                     Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
                     for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
@@ -486,7 +486,7 @@ public class QuickShop extends JavaPlugin {
             super.reloadConfig();
         } catch (Exception t) {
             t.printStackTrace();
-            getLogger().severe("Cannot reading the configration, plugin may won't works!");
+            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
         }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
