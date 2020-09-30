@@ -486,7 +486,7 @@ public class QuickShop extends JavaPlugin {
             super.reloadConfig();
         } catch (Exception t) {
             t.printStackTrace();
-            getLogger().severe("Cannot reading the configration, plugin may won't works!");
+            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
         }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
