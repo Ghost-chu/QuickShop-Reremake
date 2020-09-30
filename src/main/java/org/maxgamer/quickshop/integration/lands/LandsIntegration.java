@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is LandsIntegration.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -28,6 +27,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -114,6 +114,6 @@ public class LandsIntegration implements IntegratedPlugin, Listener {
 
     @Override
     public void unload() {
-        //TODO Unregister lands events
+        HandlerList.unregisterAll(this);
     }
 }
