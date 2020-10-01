@@ -397,7 +397,7 @@ public class ShopManager {
         if (shop != null) {
             return shop;
         }
-        for (Shop shopWithoutCache : this.getAllShops()) {
+        for (Shop shopWithoutCache : this.getLoadedShops()) {
             if (shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
                 return shopWithoutCache;
             }
