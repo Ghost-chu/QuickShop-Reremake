@@ -3,7 +3,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Тимбашня, пеноматериалы Нидерландов, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&cНе удалось найти QuickShop. Вам нужно посмотреть.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руке.",
   "no-permission": "&cУ вас нет прав на это.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cПокупка не удалась: внутренняя ошибка. Пожалуйста, свяжитесь с администратором сервера.",
   "no-pending-action": "&cУ вас нет ожидающих действий",
   "permission-denied-3rd-party": "&cДоступ запрещен: сторонний плагин [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aУспешно куплено:",
     "successfully-sold": "&aУспешно продано:",
@@ -122,6 +124,7 @@
     "reloading": "&aПерезагружаю конфигурацию...",
     "cleaned": "&aУдалено &e{0}&магазинов.",
     "no-type-given": "&cИспользовать: /qs find <предмет>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cИспользование: /qs размер <amount>",
     "bulk-size-now": "&aСейчас торговля &e{0}x {1}",
     "invalid-bulk-amount": "&cДанное значение {0} больше чем максимальный размер стека или меньше одного",
@@ -159,7 +162,8 @@
       "supercreate": "&eСоздать магазин при обрыве всех проверок защиты",
       "language": "&eИзменить используемый язык",
       "removeall": "&eУдалить все магазины указанного игрока",
-      "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие"
+      "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
