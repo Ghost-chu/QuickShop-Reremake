@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
@@ -144,7 +145,7 @@ public class Paste {
         } else {
             finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getCore().getName()).append("@").append(plugin.getEconomy().getCore().getPlugin().getName()).append("\n");
         }
-        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabase().getCore().getName()).append("@").append(plugin.getDatabase().getCore().getPlugin().getName()).append("\n");
+        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Worlds:\n");
@@ -393,11 +394,12 @@ public class Paste {
         finalReport.append("================================================\n");
         int totalDB = 0;
 
-        ResultSet resultSet = plugin.getDatabaseHelper().selectAllShops();
-        while (resultSet.next()) {
-            totalDB++;
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
+            while (warpRS.getResultSet().next()) {
+                totalDB++;
+            }
         }
-        resultSet.close();
+
         finalReport.append("Shops in DB(RealTime): ").append(totalDB).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Shops in Mem:\n");
