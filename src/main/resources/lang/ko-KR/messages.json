@@ -75,7 +75,7 @@
   "purchase-failed": "&c구매 실패: 내부 오류. 서버의 관리자에게 문의하세요",
   "no-pending-action": "&c처리 대기중인 내역이 없습니다.",
   "permission-denied-3rd-party": "&c액세스가 거부되었습니다: 플러그인 [{0}].",
-  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "shops-removed-in-world": "&e총 &b{0}&e개의 상점이 &b{1}&e월드에서 삭제되었습니다.",
   "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&a성공적으로 구매했습니다:",
