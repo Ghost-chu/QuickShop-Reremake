@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is MsgUtil.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -49,7 +48,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
-import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
@@ -452,8 +450,8 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         outGoingPlayerMessages.clear(); // Delete old messages
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
-            ResultSet rs = warpRS.getResultSet();
+        try {
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
@@ -591,6 +589,7 @@ public class MsgUtil {
             Util.debugLog("ControlPanel blocked by 3rd-party");
             return;
         }
+        plugin.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("controlpanel.infomation", sender));
@@ -619,11 +618,8 @@ public class MsgUtil {
             String hoverText = MsgUtil.getMessage("controlpanel.unlimited-hover", sender);
             String clickCommand =
                     MsgUtil.fillArgs(
-                            "/qs silentunlimited {0} {1} {2} {3}",
-                            ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                            String.valueOf(shop.getLocation().getBlockX()),
-                            String.valueOf(shop.getLocation().getBlockY()),
-                            String.valueOf(shop.getLocation().getBlockZ()));
+                            "/qs silentunlimited {0}",
+                            shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
         // Buying/Selling Mode
@@ -634,22 +630,16 @@ public class MsgUtil {
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-selling-hover", sender);
                 String clickCommand =
                         MsgUtil.fillArgs(
-                                "/qs silentbuy {0} {1} {2} {3}",
-                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                                String.valueOf(shop.getLocation().getBlockX()),
-                                String.valueOf(shop.getLocation().getBlockY()),
-                                String.valueOf(shop.getLocation().getBlockZ()));
+                                "/qs silentbuy {0}",
+                                shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
                 String clickCommand =
                         MsgUtil.fillArgs(
-                                "/qs silentsell {0} {1} {2} {3}",
-                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                                String.valueOf(shop.getLocation().getBlockX()),
-                                String.valueOf(shop.getLocation().getBlockY()),
-                                String.valueOf(shop.getLocation().getBlockZ()));
+                                "/qs silentsell {0}",
+                                shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
             }
         }
@@ -705,11 +695,8 @@ public class MsgUtil {
                 String hoverText = MsgUtil.getMessage("controlpanel.empty-hover", sender);
                 String clickCommand =
                         MsgUtil.fillArgs(
-                                "/qs silentempty {0} {1} {2} {3}",
-                                ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                                String.valueOf(shop.getLocation().getBlockX()),
-                                String.valueOf(shop.getLocation().getBlockY()),
-                                String.valueOf(shop.getLocation().getBlockZ()));
+                                "/qs silentempty {0}",
+                                shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
             }
         }
@@ -721,11 +708,8 @@ public class MsgUtil {
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
             String clickCommand =
                     MsgUtil.fillArgs(
-                            "/qs silentremove {0} {1} {2} {3}",
-                            ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                            String.valueOf(shop.getLocation().getBlockX()),
-                            String.valueOf(shop.getLocation().getBlockY()),
-                            String.valueOf(shop.getLocation().getBlockZ()));
+                            "/qs silentremove {0}",
+                            shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
 
@@ -1033,11 +1017,8 @@ public class MsgUtil {
                         new ClickEvent(
                                 ClickEvent.Action.RUN_COMMAND,
                                 MsgUtil.fillArgs(
-                                        "/qs silentpreview {0} {1} {2} {3}",
-                                        ServerUtil.toWorldNameID(shop.getLocation().getWorld()),
-                                        String.valueOf(shop.getLocation().getBlockX()),
-                                        String.valueOf(shop.getLocation().getBlockY()),
-                                        String.valueOf(shop.getLocation().getBlockZ()))));
+                                        "/qs silentpreview {0}",
+                                        shop.getRuntimeRandomUniqueId().toString())));
             }
             normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
             return normalmessage;

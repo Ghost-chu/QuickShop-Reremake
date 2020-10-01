@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is DatabaseCore.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -23,34 +22,20 @@ package org.maxgamer.quickshop.database;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+import java.sql.Connection;
 
-public abstract class AbstractDatabaseCore {
-    private final ReentrantLock lock = new ReentrantLock(true);
-    private final Condition conditionLock = lock.newCondition();
+public interface DatabaseCore {
 
-    void waitForConnection() {
-        try {
-            lock.lock();
-            conditionLock.await();
-            lock.unlock();
-        } catch (InterruptedException ignored) {
-        }
-    }
+    void close();
 
-    void signalForNewConnection() {
-        lock.lock();
-        conditionLock.signal();
-        lock.unlock();
-    }
+    void flush();
 
-    abstract void close();
+    void queue(BufferStatement bs);
 
-    abstract DatabaseConnection getConnection();
+    Connection getConnection();
 
-    abstract public @NotNull String getName();
+    @NotNull String getName();
 
-    abstract public @NotNull Plugin getPlugin();
+    @NotNull Plugin getPlugin();
 
 }

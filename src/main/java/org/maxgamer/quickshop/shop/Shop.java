@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is Shop.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -398,6 +397,14 @@ public interface Shop {
      * @return The shop stacking status
      */
     boolean isStackingShop();
+
+    /**
+     * WARNING: This UUID will changed after plugin reload, shop reload or server restart
+     * DO NOT USE IT TO STORE DATA!
+     *
+     * @return Random UUID
+     */
+    @NotNull UUID getRuntimeRandomUniqueId();
 
 
 }
