@@ -301,6 +301,11 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .permission("quickshop.removeall")
                 .executor(new SubCommand_RemoveAll(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("removeworld")
+                .permission("quickshop.removeworld")
+                .executor(new SubCommand_RemoveWorld(plugin))
+                .build());
 //        registerCmd(CommandContainer.builder()
 //                .prefix("backup")
 //                .permission("quickshop.backup")
