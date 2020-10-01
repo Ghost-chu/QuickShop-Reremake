@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&aSatın alma başarısız oldu: İç Hata. Lütfen Sunucu Yöneticisine başvurunuz.",
   "no-pending-action": "&cBekleyen aksiyonunuz yok",
   "permission-denied-3rd-party": "&cİzin reddedildi: 3. Parti Eklenti [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aBaşarıyla satın alındı:",
     "successfully-sold": "&aBaşarıyla satıldı:",
@@ -122,6 +124,7 @@
     "reloading": "&aYeniden Yükleniyor...",
     "cleaned": "&e{0}&a market kaldırıldı.",
     "no-type-given": "&cKullanım: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cKullanım: /qs size <miktar>",
     "bulk-size-now": "&aŞimdi &e{0} tane {1}&a ticaret ediliyor",
     "invalid-bulk-amount": "&cVerilen değer {0} maks yığın miktarından fazla veya birinden az",
@@ -159,7 +162,8 @@
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir",
       "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır",
-      "transfer": "&eBirinin TÜM marketlerini bir başkasına devret"
+      "transfer": "&eBirinin TÜM marketlerini bir başkasına devret",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
