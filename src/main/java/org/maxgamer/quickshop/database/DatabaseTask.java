@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is DatabaseTask.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -31,20 +30,12 @@ import java.sql.SQLException;
 @ToString()
 public class DatabaseTask {
 
-    private final static Task emptyTask = ps -> {
-
-    };
     private final String statement;
     private final Task task;
 
     public DatabaseTask(String statement, Task task) {
         this.statement = statement;
         this.task = task;
-    }
-
-    public DatabaseTask(String statement) {
-        this.statement = statement;
-        this.task = emptyTask;
     }
 
 
