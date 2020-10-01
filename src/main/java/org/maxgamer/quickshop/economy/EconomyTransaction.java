@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is EconomyTransaction.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -85,6 +84,7 @@ public class EconomyTransaction {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //For passing Test
+        //noinspection ConstantConditions
         if (QuickShop.getInstance() != null) {
             this.tryingFixBanlanceInsuffient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         } else {
