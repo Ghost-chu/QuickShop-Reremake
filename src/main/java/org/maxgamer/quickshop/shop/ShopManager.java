@@ -393,14 +393,25 @@ public class ShopManager {
 
     @Nullable
     public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId) {
+        return getShopFromRuntimeRandomUniqueId(runtimeRandomUniqueId, false);
+    }
+
+    @Nullable
+    public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid) {
         Shop shop = shopRuntimeUUIDCaching.getIfPresent(runtimeRandomUniqueId);
-        if (shop != null) {
+        if (shop == null) {
+            for (Shop shopWithoutCache : this.getLoadedShops()) {
+                if (shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
+                    return shopWithoutCache;
+                }
+            }
+            return null;
+        }
+        if (includeInvalid) {
             return shop;
         }
-        for (Shop shopWithoutCache : this.getLoadedShops()) {
-            if (shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
-                return shopWithoutCache;
-            }
+        if (shop.isValid()) {
+            return shop;
         }
         return null;
     }

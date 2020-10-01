@@ -962,6 +962,9 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isValid() {
         this.checkDisplay();
+        if (this.isDeleted) {
+            return false;
+        }
         return Util.canBeShop(this.getLocation().getBlock());
     }
 
