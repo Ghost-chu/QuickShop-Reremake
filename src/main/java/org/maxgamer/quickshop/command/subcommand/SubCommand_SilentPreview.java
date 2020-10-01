@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is SubCommand_SilentPreview.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +29,9 @@ import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.InventoryPreview;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.ServerUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 public class SubCommand_SilentPreview implements CommandProcesser {
@@ -47,20 +46,27 @@ public class SubCommand_SilentPreview implements CommandProcesser {
             return;
         }
 
-        if (cmdArg.length < 4) {
+        if (cmdArg.length < 1) {
             Util.debugLog("Exception on command, cancel.");
             return;
         }
 
-        final Shop shop =
-                plugin
-                        .getShopManager()
-                        .getShop(
-                                new Location(
-                                        ServerUtil.fromWorldNameID(cmdArg[0]),
-                                        Integer.parseInt(cmdArg[1]),
-                                        Integer.parseInt(cmdArg[2]),
-                                        Integer.parseInt(cmdArg[3])));
+        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
+
+//        if (cmdArg.length < 4) {
+//            Util.debugLog("Exception on command, cancel.");
+//            return;
+//        }
+//
+//        final Shop shop =
+//                plugin
+//                        .getShopManager()
+//                        .getShop(
+//                                new Location(
+//                                        plugin.getServer().getWorld(cmdArg[0]),
+//                                        Integer.parseInt(cmdArg[1]),
+//                                        Integer.parseInt(cmdArg[2]),
+//                                        Integer.parseInt(cmdArg[3])));
 
         if (!(shop instanceof ContainerShop)) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));

@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -49,6 +51,7 @@ import org.maxgamer.quickshop.util.holder.Result;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Manage a lot of shops.
@@ -68,6 +71,13 @@ public class ShopManager {
     private final boolean useFastShopSearchAlgorithm;
     private final boolean useOldCanBuildAlgorithm;
     private final boolean autoSign;
+    private final Cache<UUID, Shop> shopRuntimeUUIDCaching = CacheBuilder.newBuilder()
+            .expireAfterAccess(120, TimeUnit.SECONDS)
+            .maximumSize(50)
+            .weakValues()
+            .initialCapacity(5)
+            .build();
+
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -373,6 +383,35 @@ public class ShopManager {
                     // Oooops, no any shops matched.
                 }
             }
+        }
+        return null;
+    }
+
+    public void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {
+        shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
+    }
+
+    @Nullable
+    public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId) {
+        return getShopFromRuntimeRandomUniqueId(runtimeRandomUniqueId, false);
+    }
+
+    @Nullable
+    public Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid) {
+        Shop shop = shopRuntimeUUIDCaching.getIfPresent(runtimeRandomUniqueId);
+        if (shop == null) {
+            for (Shop shopWithoutCache : this.getLoadedShops()) {
+                if (shopWithoutCache.getRuntimeRandomUniqueId().equals(runtimeRandomUniqueId)) {
+                    return shopWithoutCache;
+                }
+            }
+            return null;
+        }
+        if (includeInvalid) {
+            return shop;
+        }
+        if (shop.isValid()) {
+            return shop;
         }
         return null;
     }

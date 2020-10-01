@@ -147,3 +147,6 @@ permissions:
   quickshop.removeall:
     description: Permission to use /qs removeall
     default: op
+  quickshop.removeworld:
+    description: Permission to us /qs removeworld
+    default: op
