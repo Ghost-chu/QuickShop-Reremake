@@ -71,6 +71,13 @@ public class ShopManager {
     private final boolean useFastShopSearchAlgorithm;
     private final boolean useOldCanBuildAlgorithm;
     private final boolean autoSign;
+    private final Cache<UUID, Shop> shopRuntimeUUIDCaching = CacheBuilder.newBuilder()
+            .expireAfterAccess(120, TimeUnit.SECONDS)
+            .maximumSize(50)
+            .weakValues()
+            .initialCapacity(5)
+            .build();
+
 
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -379,13 +386,6 @@ public class ShopManager {
         }
         return null;
     }
-
-    private final Cache<UUID, Shop> shopRuntimeUUIDCaching = CacheBuilder.newBuilder()
-            .expireAfterAccess(120, TimeUnit.SECONDS)
-            .maximumSize(30)
-            .weakValues()
-            .initialCapacity(5)
-            .build();
 
     public void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop) {
         shopRuntimeUUIDCaching.put(shop.getRuntimeRandomUniqueId(), shop);
