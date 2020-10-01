@@ -75,7 +75,7 @@
   "purchase-failed": "&c支付失败：内部错误，请联系服务器管理员",
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
-  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "shops-removed-in-world": "&e共计 &b{0}&e 个商店已在世界 &b{1}&e 中删除.",
   "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a支付成功：",
