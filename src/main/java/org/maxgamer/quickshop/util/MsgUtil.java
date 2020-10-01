@@ -1497,6 +1497,15 @@ public class MsgUtil {
             setAndUpdate("language-version", 41);
         }
 
+        if (selectedVersion == 41) {
+            setAndUpdate("shops-removed-in-world", "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.");
+            setAndUpdate("command.description.removeworld", "&eRemove ALL shops in a specified world");
+            setAndUpdate("command.no-world-given", "&cPlease specify a world name");
+            setAndUpdate("world-not-exists", "&cThe world &e{0}&c not exists");
+
+            setAndUpdate("language-version", 42);
+        }
+
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
