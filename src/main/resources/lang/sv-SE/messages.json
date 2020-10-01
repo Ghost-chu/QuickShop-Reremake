@@ -3,7 +3,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta mot en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cKöpet misslyckades: Internt fel. Kontakta serveradministratören.",
   "no-pending-action": "&cDu har inga väntande transaktioner",
   "permission-denied-3rd-party": "&cTillstånd nekat: tredje parts plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aFramgångsrikt köpt:",
     "successfully-sold": "&aFramgångsrikt sålt:",
@@ -122,6 +124,7 @@
     "reloading": "&aLaddar om...",
     "cleaned": "&aTog bort &{0}&a butiker.",
     "no-type-given": "&cKommando: /qs find <föremål>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cKommando: /qs size <antal>",
     "bulk-size-now": "&aByter nu &e{0}x {1}",
     "invalid-bulk-amount": "&cDet angivna värdet {0} är större än max eller lägre än ett",
@@ -159,7 +162,8 @@
       "supercreate": "&eSkapa en butik genom att kringgå alla skyddskontroller",
       "language": "&eÄndra det språk som används för nuvarande",
       "removeall": "&eTa bort alla butiker från en angiven spelare",
-      "transfer": "&eÖverför alla butiker från en spelare till en annan"
+      "transfer": "&eÖverför alla butiker från en spelare till en annan",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
