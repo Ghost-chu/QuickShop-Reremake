@@ -65,11 +65,7 @@ public class MySQLCore extends AbstractDatabaseCore {
         info.setProperty("useSSL", String.valueOf(useSSL));
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
-            try {
-                POOL.add(new DatabaseConnection(DriverManager.getConnection(this.url, info)));
-            } catch (SQLException throwables) {
-                throw new IllegalStateException("Unable to create a new connection", throwables);
-            }
+            POOL.add(null);
         }
     }
 
@@ -91,7 +87,6 @@ public class MySQLCore extends AbstractDatabaseCore {
                 }
             }
         }
-        // Nothing, because queries are executed immediately for MySQL
     }
 
     /**
@@ -105,27 +100,32 @@ public class MySQLCore extends AbstractDatabaseCore {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             DatabaseConnection connection = POOL.get(i);
             // If we have a current connection, fetch it
-            if (connection != null && !connection.isUsing()) {
+            if (connection == null) {
+                return genConnection(i);
+            } else if (!connection.isUsing()) {
                 if (connection.isValid()) {
                     return connection;
                 } else {
-                    // Else, it is invalid, so we return another connection.
+                    // Else, it is invalid, return another connection.
                     connection.close();
-                    try {
-                        connection = new DatabaseConnection(DriverManager.getConnection(this.url, info));
-                        POOL.set(i, connection);
-                        return connection;
-                    } catch (SQLException e) {
-                        throw new RuntimeException("Unable to create a new connection", e);
-                    }
+                    return genConnection(i);
                 }
-
             }
 
         }
         //If all connection is unusable, wait a moment
         waitForConnection();
         return getConnection();
+    }
+
+    private DatabaseConnection genConnection(int index) {
+        try {
+            DatabaseConnection connection = new DatabaseConnection(DriverManager.getConnection(this.url, info));
+            POOL.set(index, connection);
+            return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to create a new connection", e);
+        }
     }
 
     @Override
