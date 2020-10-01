@@ -3,7 +3,7 @@
   "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cPurchase failed: Internal Error. Please contact the Server Administrator.",
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
@@ -122,6 +124,7 @@
     "reloading": "&aReloading...",
     "cleaned": "&aRemoved &e{0}&a shops.",
     "no-type-given": "&cUsage: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUsage: /qs size <amount>",
     "bulk-size-now": "&aNow trading &e{0}x {1}",
     "invalid-bulk-amount": "&cThe given value {0} is larger than max stack size or lower than one",
@@ -159,7 +162,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
