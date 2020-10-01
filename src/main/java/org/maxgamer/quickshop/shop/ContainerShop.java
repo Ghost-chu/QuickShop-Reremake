@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ContainerShop.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -70,6 +69,8 @@ public class ContainerShop implements Shop {
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
+    @EqualsAndHashCode.Exclude
+    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
     private ShopType shopType;
@@ -961,6 +962,9 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isValid() {
         this.checkDisplay();
+        if (this.isDeleted) {
+            return false;
+        }
         return Util.canBeShop(this.getLocation().getBlock());
     }
 
@@ -1189,6 +1193,17 @@ public class ContainerShop implements Shop {
     @Override
     public boolean isStackingShop() {
         return plugin.isAllowStack() && this.item.getAmount() > 1;
+    }
+
+    /**
+     * WARNING: This UUID will changed after plugin reload, shop reload or server restart
+     * DO NOT USE IT TO STORE DATA!
+     *
+     * @return Random UUID
+     */
+    @Override
+    public @NotNull UUID getRuntimeRandomUniqueId() {
+        return this.runtimeRandomUniqueId;
     }
 
 

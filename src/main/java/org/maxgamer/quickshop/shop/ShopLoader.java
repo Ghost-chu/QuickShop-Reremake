@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ShopLoader.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -33,7 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
@@ -85,10 +83,11 @@ public class ShopLoader {
     public void loadShops(@Nullable String worldName) {
         boolean backupedDatabaseInDeleteProcess = false;
         Timer totalLoadTimer = new Timer(true);
-        this.plugin.getLogger().info("Loading shops from the database...");
-        Timer fetchTimer = new Timer(true);
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
-            ResultSet rs = warpRS.getResultSet();
+        try {
+            this.plugin.getLogger().info("Loading shops from the database...");
+            Timer fetchTimer = new Timer(true);
+
+            ResultSet rs = plugin.getDatabaseHelper().selectAllShops();
             this.plugin
                     .getLogger()
                     .info("Used " + fetchTimer.endTimer() + "ms to fetch all shops from the database.");
@@ -151,6 +150,7 @@ public class ShopLoader {
                 }
                 singleShopLoaded(singleShopLoadTimer);
             }
+            rs.close();
             long totalUsedTime = totalLoadTimer.endTimer();
             long avgPerShop = mean(loadTimes.toArray(new Long[0]));
             this.plugin
@@ -249,6 +249,25 @@ public class ShopLoader {
         logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
         logger.warning(
                 "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warning("  >> Database Info");
+        try {
+            logger.warning("Connected: " + plugin.getDatabase().getConnection().isClosed());
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("Connected: " + "FALSE - Failed to load status.");
+        }
+
+        try {
+            logger.warning("Readonly: " + plugin.getDatabase().getConnection().isReadOnly());
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("Readonly: " + "FALSE - Failed to load status.");
+        }
+
+        try {
+            logger.warning("ClientInfo: " + plugin.getDatabase().getConnection().getClientInfo());
+        } catch (SQLException | NullPointerException e) {
+            logger.warning("ClientInfo: " + "FALSE - Failed to load status.");
+        }
+
         logger.warning("#######################################");
         if (errors > 10) {
             logger.severe(
@@ -336,13 +355,13 @@ public class ShopLoader {
                 this.x = origin.getX();
                 this.y = origin.getY();
                 this.z = origin.getZ();
-                this.world = Bukkit.getWorld(origin.getWorld());
-                this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators());
                 this.type = ShopType.fromID(origin.getType());
+                this.world = Bukkit.getWorld(origin.getWorld());
                 this.item = deserializeItem(origin.getItem());
+                this.moderators = deserializeModerator(origin.getModerators());
+                this.location = new Location(world, x, y, z);
                 //noinspection unchecked
                 this.extra = JsonUtil.getGson().fromJson(origin.getExtra(), Map.class);
                 if (this.extra == null) {

@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is SQLiteCore.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -27,15 +26,21 @@ import org.maxgamer.quickshop.QuickShop;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Objects;
 
-public class SQLiteCore extends AbstractDatabaseCore {
+public class SQLiteCore implements DatabaseCore {
     private final File dbFile;
 
+    private final LinkedList<BufferStatement> queue = new LinkedList<>();
     @NotNull
     private final QuickShop plugin;
-    private DatabaseConnection connection;
+    private Connection connection;
+    private volatile Thread watcher;
 
     public SQLiteCore(@NotNull QuickShop plugin, @NotNull File dbFile) {
         this.plugin = plugin;
@@ -43,22 +48,45 @@ public class SQLiteCore extends AbstractDatabaseCore {
     }
 
     @Override
-    void close() {
-        if (!connection.isUsing()) {
-            if (connection != null && !connection.isValid()) {
+    public void close() {
+        flush();
+        try {
+            if (connection != null) {
                 connection.close();
             }
-        } else {
-            //Wait until the connection is finished
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ignored) {
-            } finally {
-                close();
+        } catch (SQLException ignored) {
+        }
+    }
+
+    @Override
+    public void flush() {
+        while (!queue.isEmpty()) {
+            BufferStatement bs;
+            synchronized (queue) {
+                bs = queue.removeFirst();
+            }
+            synchronized (dbFile) {
+                try {
+
+                    PreparedStatement ps = bs.prepareStatement(Objects.requireNonNull(getConnection()));
+                    ps.execute();
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
+    @Override
+    public void queue(@NotNull BufferStatement bs) {
+        synchronized (queue) {
+            queue.add(bs);
+        }
+        if (watcher == null || !watcher.isAlive()) {
+            startWatcher();
+        }
+    }
 
     /**
      * Gets the database connection for executing queries on.
@@ -67,48 +95,37 @@ public class SQLiteCore extends AbstractDatabaseCore {
      */
     @Nullable
     @Override
-    DatabaseConnection getConnection() {
-        if (this.connection == null) {
-            return connection = genConnection();
-        }
-        // If we have a current connection, fetch it
-        if (!this.connection.isUsing()) {
-            if (connection.isValid()) {
+    public Connection getConnection() {
+        try {
+            // If we have a current connection, fetch it
+            if (this.connection != null && !this.connection.isClosed()) {
                 return this.connection;
-            } else {
-                connection.close();
-                return connection = genConnection();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        //If all connection is unusable, wait a moment
-        waitForConnection();
-        return getConnection();
-    }
-
-    @Nullable
-    private DatabaseConnection genConnection() {
         if (this.dbFile.exists()) {
+            // So we need a new connection
             try {
                 Class.forName("org.sqlite.JDBC");
-                this.connection = new DatabaseConnection(DriverManager.getConnection("jdbc:sqlite:" + this.dbFile));
+                this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.dbFile);
                 return this.connection;
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException("Sqlite driver is not found", e);
-            } catch (SQLException e) {
-                throw new IllegalStateException("Start sqlite database connection failed", e);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+                return null;
             }
         } else {
-            // So we need a new file.
+            // So we need a new file too.
             try {
                 // Create the file
-                //noinspection ResultOfMethodCallIgnored
                 this.dbFile.createNewFile();
+                // Now we won't need a new file, just a connection.
+                // This will return that new connection.
+                return this.getConnection();
             } catch (IOException e) {
-                throw new IllegalStateException("Sqlite database file create failed", e);
+                e.printStackTrace();
+                return null;
             }
-            // Now we won't need a new file, just a connection.
-            // This will return that new connection.
-            return this.genConnection();
         }
     }
 
@@ -120,6 +137,20 @@ public class SQLiteCore extends AbstractDatabaseCore {
     @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
+    }
+
+    private void startWatcher() {
+        watcher =
+                new Thread(
+                        () -> {
+                            try {
+                                Thread.sleep(30000);
+                            } catch (InterruptedException e) {
+                                // ignore
+                            }
+                            flush();
+                        });
+        watcher.start();
     }
 
 }
