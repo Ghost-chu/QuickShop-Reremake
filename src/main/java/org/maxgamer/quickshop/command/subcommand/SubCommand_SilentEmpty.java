@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +28,9 @@ import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.ServerUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 public class SubCommand_SilentEmpty implements CommandProcesser {
