@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is MsgUtil.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -49,7 +48,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
-import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
@@ -452,8 +450,8 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         outGoingPlayerMessages.clear(); // Delete old messages
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
-            ResultSet rs = warpRS.getResultSet();
+        try {
+            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;

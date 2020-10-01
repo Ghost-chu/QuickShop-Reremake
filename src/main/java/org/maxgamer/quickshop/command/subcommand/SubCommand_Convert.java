@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is SubCommand_Convert.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -65,7 +64,7 @@ public class SubCommand_Convert implements CommandProcesser {
             return;
         }
         if (cmdArg[0].equalsIgnoreCase("mysql")) {
-            if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
+            if (plugin.getDatabase().getCore() instanceof MySQLCore) {
                 sender.sendMessage(ChatColor.RED + "Please switch to SQLite before converting to MySQL.");
                 return;
             }
@@ -76,22 +75,24 @@ public class SubCommand_Convert implements CommandProcesser {
             String port = dbCfg.getString("port");
             String databaseStr = dbCfg.getString("database");
             boolean useSSL = dbCfg.getBoolean("usessl");
-            AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
-            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
+            DatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+            Database database = new Database(dbCore);
+            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), database);
             sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+            this.transferShops(new DatabaseHelper(plugin, database, databaseManager), sender);
             databaseManager.unInit();
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
 
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
-            if (plugin.getDatabaseManager().getDatabase() instanceof SQLiteCore) {
+            if (plugin.getDatabase().getCore() instanceof SQLiteCore) {
                 sender.sendMessage(ChatColor.GREEN + "Please switch to MySQL before converting to SQLite.");
                 return;
             }
-            AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
-            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
+            DatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
+            Database database = new Database(core);
+            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), database);
             sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+            this.transferShops(new DatabaseHelper(plugin, database, databaseManager), sender);
             databaseManager.unInit();
             sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
 

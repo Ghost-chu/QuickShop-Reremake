@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ServiceInjector.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -24,7 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.database.AbstractDatabaseCore;
+import org.maxgamer.quickshop.database.DatabaseCore;
 import org.maxgamer.quickshop.economy.EconomyCore;
 import org.maxgamer.quickshop.util.language.game.GameLanguage;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -60,9 +59,9 @@ public class ServiceInjector {
         }
     }
 
-    public static @NotNull AbstractDatabaseCore getDatabaseCore(@NotNull AbstractDatabaseCore def) {
-        @Nullable RegisteredServiceProvider<? extends AbstractDatabaseCore> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(AbstractDatabaseCore.class);
+    public static @NotNull DatabaseCore getDatabaseCore(@NotNull DatabaseCore def) {
+        @Nullable RegisteredServiceProvider<? extends DatabaseCore> registeredServiceProvider =
+                Bukkit.getServicesManager().getRegistration(DatabaseCore.class);
         if (registeredServiceProvider == null) {
             return def;
         } else {
