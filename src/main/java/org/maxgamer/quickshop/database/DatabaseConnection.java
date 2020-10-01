@@ -16,7 +16,7 @@ public class DatabaseConnection implements AutoCloseable {
 
     public boolean isValid() {
         try {
-            return connection.isValid(30000);
+            return !connection.isClosed() && connection.isValid(8000);
         } catch (SQLException ignored) {
             return false;
         } catch (AbstractMethodError ignored) {
