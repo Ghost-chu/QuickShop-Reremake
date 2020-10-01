@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -75,6 +75,8 @@
   "purchase-failed": "&c支付失败：内部错误，请联系服务器管理员",
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&a支付成功：",
     "successfully-sold": "&a出售成功：",
@@ -122,6 +124,7 @@
     "reloading": "&a重载中...",
     "cleaned": "&a清理了 &e{0} &a个商店.",
     "no-type-given": "&c用法: /qs find <物品名称>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&c用法: /qs size <数量>",
     "bulk-size-now": "&a现在开始交易 &e{0} 个 {1}",
     "invalid-bulk-amount": "&c给定的值 {0} 大于最大堆叠大小或小于1",
@@ -159,7 +162,8 @@
       "supercreate": "&e越过所有区域保护检查创建商店",
       "language": "&e切换正在使用的语言",
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
-      "transfer": "&e将某人的所有商店转移给其他人"
+      "transfer": "&e将某人的所有商店转移给其他人",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
