@@ -3,7 +3,7 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&cImpossibile trovare un QuickShop. Devi guardarlo.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cAcquisto fallito: Errore interno. Si prega di contattare l'amministratore del server.",
   "no-pending-action": "&cNon hai alcuna azione in sospeso",
   "permission-denied-3rd-party": "&cPermesso negato: Plugin di terze parti [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aAcquistato con successo:",
     "successfully-sold": "&aVenduto con successo:",
@@ -122,6 +124,7 @@
     "reloading": "&aReloading...",
     "cleaned": "&aRimosso &e{0}&a negozi.",
     "no-type-given": "&cUtilizzo: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUtilizzo: /qs size <amount>",
     "bulk-size-now": "&aScambio &e{0}x {1}",
     "invalid-bulk-amount": "&cIl valore specificato {0} è maggiore della dimensione massima dello stack o inferiore a uno",
@@ -159,7 +162,8 @@
       "supercreate": "&eCrea un negozio aggirando tutti i controlli di protezione",
       "language": "&eCambia la lingua attualmente in uso",
       "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
