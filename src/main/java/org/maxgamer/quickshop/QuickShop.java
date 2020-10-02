@@ -975,9 +975,14 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
-    @SuppressWarnings("UnusedAssignment")
+
     private void updateConfig(int selectedVersion) {
         //fixConfiguration();
+        GameVersion gameVersion = getRuntimeCatcher().getGameVersion();
+        if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
+            getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
+            getConfig().set("matcher.work-type", 0);
+        }
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();

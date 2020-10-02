@@ -44,11 +44,6 @@ public class RuntimeCatcher {
             plugin.getLogger().warning("Alert: QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
         }
 
-        if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
-            plugin.getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-            plugin.getConfig().set("matcher.work-type", 0);
-            plugin.saveConfig();
-        }
         if (!isSpigotBasedServer(plugin)) {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
