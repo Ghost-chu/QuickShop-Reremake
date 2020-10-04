@@ -75,8 +75,8 @@
   "purchase-failed": "&cOsto epäonnistui: Sisäinen ongelme. Ota yhteyttä palvelimen järjestelmänvalvojaan.",
   "no-pending-action": "&cSinulla ei ole mitään odottavia toimintapyyntöjä",
   "permission-denied-3rd-party": "&cOikeus kielletty: 3:n osapuolen lisäosa [{0}].",
-  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
-  "world-not-exists": "&cThe world &e{0}&c not exists",
+  "shops-removed-in-world": "&b{0}&eKauppa(a) on poistettu maailmasta &b{1}&e.",
+  "world-not-exists": "&cMaailmaa &e{0}&c ei ole olemassa",
   "menu": {
     "successful-purchase": "&aOnnistuneesti ostettu:",
     "successfully-sold": "&aOnnistuneesti myyty:",
@@ -124,7 +124,7 @@
     "reloading": "&aLadataan uudelleen...",
     "cleaned": "&aPoistettu &e{0}&a kauppaa.",
     "no-type-given": "&cKäytä: /qs find <tavara>",
-    "no-world-given": "&cPlease specify a world name",
+    "no-world-given": "&cAnna maailman nimi",
     "bulk-size-not-set": "&cKäyttö: /qs size <määrä>",
     "bulk-size-now": "&aNyt vaihdossa &e{0}x {1}",
     "invalid-bulk-amount": "&cAnnettu arvo {0} on suurempi kuin maksimi pino koko tai pienempi kuin yksi",
@@ -163,7 +163,7 @@
       "language": "&eVaihda tällä hetkellä käytettyä kieltä",
       "removeall": "&ePoista KAIKKI kaupat kyseiseltä pelaajalta",
       "transfer": "&eSiirrä jonkun KAIKKI kaupat toiselle",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&ePoista KAIKKI kaupat kyseisestä maailmasta"
     }
   },
   "signs": {
