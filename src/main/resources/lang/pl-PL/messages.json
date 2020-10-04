@@ -75,8 +75,8 @@
   "purchase-failed": "&cZakup nie powiódł się: Błąd wewnętrzny. Skontaktuj się z administratorem serwera.",
   "no-pending-action": "&cNie masz żadnych oczekujących akcji",
   "permission-denied-3rd-party": "&cOdmowa uprawnień: Wtyczka osób trzecich [{0}].",
-  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
-  "world-not-exists": "&cThe world &e{0}&c not exists",
+  "shops-removed-in-world": "&eCałkowity &b{0}&e sklepy zostały usunięte ze świata &b{1}&e.",
+  "world-not-exists": "&cŚwiat &e{0}&c nie istnieje",
   "menu": {
     "successful-purchase": "&aZakupiono:",
     "successfully-sold": "&aSprzedano:",
@@ -124,7 +124,7 @@
     "reloading": "&aPrzeładowanie...",
     "cleaned": "&aUsunięto &e{0}&a sklepy.",
     "no-type-given": "&cUżycie: /qs find <item>",
-    "no-world-given": "&cPlease specify a world name",
+    "no-world-given": "&cProszę podać nazwę świata",
     "bulk-size-not-set": "&cUżycie: /qs size <amount>",
     "bulk-size-now": "&aTeraz handluj &{0}x {1}",
     "invalid-bulk-amount": "&cPodana wartość {0} jest większa niż maksymalna wielkość stacku lub mniejsza niż jeden",
@@ -163,7 +163,7 @@
       "language": "&eZmień aktualnie używany język",
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie"
     }
   },
   "signs": {
