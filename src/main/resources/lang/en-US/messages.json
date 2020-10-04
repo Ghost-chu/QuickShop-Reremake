@@ -76,7 +76,7 @@
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
   "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
-  "world-not-exists": "&cThe world &e{0}&c not exists",
+  "world-not-exists": "&cThe world &e{0}&c doesn't exist",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
