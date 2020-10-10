@@ -75,7 +75,7 @@
   "purchase-failed": "&cZakup nie powiódł się: Błąd wewnętrzny. Skontaktuj się z administratorem serwera.",
   "no-pending-action": "&cNie masz żadnych oczekujących akcji",
   "permission-denied-3rd-party": "&cOdmowa uprawnień: Wtyczka osób trzecich [{0}].",
-  "shops-removed-in-world": "&eCałkowity &b{0}&e sklepy zostały usunięte ze świata &b{1}&e.",
+  "shops-removed-in-world": "&eWszystkie &b{0}&e sklepy zostały usunięte ze świata &b{1}&e.",
   "world-not-exists": "&cŚwiat &e{0}&c nie istnieje",
   "menu": {
     "successful-purchase": "&aZakupiono:",
