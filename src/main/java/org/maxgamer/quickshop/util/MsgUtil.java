@@ -1495,6 +1495,7 @@ public class MsgUtil {
             setAndUpdate("controlpanel.commands", null);
             setAndUpdate("menu.commands", null);
             setAndUpdate("language-version", 41);
+            selectedVersion = 41;
         }
 
         if (selectedVersion == 41) {
@@ -1502,8 +1503,14 @@ public class MsgUtil {
             setAndUpdate("command.description.removeworld", "&eRemove ALL shops in a specified world");
             setAndUpdate("command.no-world-given", "&cPlease specify a world name");
             setAndUpdate("world-not-exists", "&cThe world &e{0}&c not exists");
-
             setAndUpdate("language-version", 42);
+            selectedVersion = 42;
+        }
+        if (selectedVersion == 42) {
+            setAndUpdate("player-bought-from-your-store-tax", "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).");
+            setAndUpdate("player-bought-from-your-store", "&c{0} purchased {1} {2} from your shop, and you earned {3}.");
+            setAndUpdate("language-version", 43);
+            selectedVersion = 43;
         }
 
         messagei18n.save();
