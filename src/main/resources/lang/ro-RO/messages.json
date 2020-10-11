@@ -3,7 +3,7 @@
   "translation-version": "Versiune suport: Reproducere",
   "translation-contributors": "Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601",
   "translation-country": "Zona de Limbă: Engleză (ro_US)",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&cNu am putut gasi un magazin. Trebuie sa te uiti la unul.",
   "no-anythings-in-your-hand": "&cNu este nimic in mana.",
   "no-permission": "&cNu ai permisiunea să faci asta.\".",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cPurchase failed: Internal Error. Please contact the Server Administrator.",
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
@@ -122,6 +124,7 @@
     "reloading": "&aReloading...",
     "cleaned": "&aA eliminat &{0} magazine.",
     "no-type-given": "&fFoloseste /qs gaseste <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&fFoloseste marimea /qs size <amount>",
     "bulk-size-now": "&aAcum tranzacționarea &e{0}x {1}",
     "invalid-bulk-amount": "&cValoarea data {0} este mai mare decat dimensiunea maxima a stivei sau mai mica decat una",
@@ -159,7 +162,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
