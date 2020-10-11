@@ -78,13 +78,13 @@ public class SubCommand_SuperCreate implements CommandProcesser {
                 blockFace = Util.getYawFace(p.getLocation().getYaw());
             }
 
-            if (!plugin.getShopManager().canBuildShop(p, b, blockFace)) {
+            //if (!plugin.getShopManager().canBuildShop(p, b, blockFace)) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
                 // So telling them a message would cause spam etc.
                 Util.debugLog("Util report you can't build shop there.");
-                return;
-            }
+               return;
+            //}
 
             if (Util.getSecondHalf(b) != null
                     && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
