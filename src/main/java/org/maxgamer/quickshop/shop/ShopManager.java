@@ -596,15 +596,17 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
             return;
         }
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        if (Util.fireCancellableEvent(e)) {
-            return; // Cancelled
-        }
+
         // Money handling
         // BUYING MODE  Shop Owner -> Player
         double taxModifier = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount, total);
+        if (Util.fireCancellableEvent(e)) {
+            return; // Cancelled
+        }else{
+            total = e.getPrice(); //Allow addon to set it
+        }
         EconomyTransaction transaction;
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
             transaction = EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
@@ -842,12 +844,16 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(pSpace)));
             return;
         }
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        if (Util.fireCancellableEvent(e)) {
-            return; // Cancelled
-        }
+
         double taxModifier = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
+
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount,total);
+        if (Util.fireCancellableEvent(e)) {
+            return; // Cancelled
+        }else{
+            total = e.getPrice(); //Allow addon to set it
+        }
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
