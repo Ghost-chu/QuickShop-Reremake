@@ -3,7 +3,7 @@
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "41",
+  "language-version": "42",
   "not-looking-at-shop": "&c無法找到儲物箱商店。您需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -75,6 +75,8 @@
   "purchase-failed": "&c交易失敗：發生錯誤，請聯繫伺服器管理員。",
   "no-pending-action": "&c您沒有待處理的操作",
   "permission-denied-3rd-party": "&c存取被拒：第三方插件 [{0}]。",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&a成功購買：",
     "successfully-sold": "&a成功出售：",
@@ -122,6 +124,7 @@
     "reloading": "&a重新載入中...",
     "cleaned": "&a已經刪除 &e{0} &a個商店。",
     "no-type-given": "&c用法：/qs find <物品>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&c用法：/qs size <數量>",
     "bulk-size-now": "&a正在交易 &e{0} 個 {1}",
     "invalid-bulk-amount": "&c指定的值 {0} 大於最大堆疊或小於 1",
@@ -159,7 +162,8 @@
       "supercreate": "&e創建一個略過所有保護檢查的商店",
       "language": "&e修改正在使用的語言",
       "removeall": "&e刪除該玩家的所有商店",
-      "transfer": "&e我們將某人的所有商店轉移給其他人"
+      "transfer": "&e我們將某人的所有商店轉移給其他人",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
