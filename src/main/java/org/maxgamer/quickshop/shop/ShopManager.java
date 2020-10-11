@@ -870,9 +870,9 @@ public class ShopManager {
         String msg;
         // Notify the shop owner //TODO: move to a standalone method
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format(CalculateUtil.multiply(taxModifier, total)));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total), Util.format(CalculateUtil.multiply(taxModifier, total)));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########");
+            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total));
         }
         // Transfers the item from A to B
         if (stock == amount) {
