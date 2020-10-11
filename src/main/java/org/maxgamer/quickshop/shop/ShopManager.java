@@ -764,11 +764,13 @@ public class ShopManager {
 
         // Create the sample shop
         ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING, new ConcurrentHashMap<>());
-        Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
-        if (!result.isSuccess()) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
-            Util.debugLog("Cancelled by integrations: " + result);
-            return;
+        if (!bypassProtectionChecks) {
+            Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
+            if (!result.isSuccess()) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
+                Util.debugLog("Cancelled by integrations: " + result);
+                return;
+            }
         }
 
         //Calling ShopCreateEvent
