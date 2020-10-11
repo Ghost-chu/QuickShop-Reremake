@@ -170,7 +170,7 @@ public class SentryErrorReporter {
         if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
             return false;
         }
-        if (!plugin.getRuntimeCatcher().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
+        if (!plugin.getEnvironmentChecker().getGameVersion().isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }

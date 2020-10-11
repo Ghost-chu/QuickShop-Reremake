@@ -256,7 +256,7 @@ public class QuickShop extends JavaPlugin {
     private boolean allowStack;
 
     @Getter
-    private RuntimeCatcher runtimeCatcher;
+    private EnvironmentChecker environmentChecker;
 
     @Getter
     @Nullable
@@ -626,7 +626,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         try {
-            runtimeCatcher = new RuntimeCatcher(this);
+            environmentChecker = new EnvironmentChecker(this);
         } catch (RuntimeException e) {
             bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions
@@ -977,12 +977,6 @@ public class QuickShop extends JavaPlugin {
 
 
     private void updateConfig(int selectedVersion) {
-        //fixConfiguration();
-        GameVersion gameVersion = getRuntimeCatcher().getGameVersion();
-        if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
-            getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-            getConfig().set("matcher.work-type", 0);
-        }
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1678,6 +1672,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-damaged", false);
             getConfig().set("config-version", 114);
             selectedVersion = 114;
+        }
+        if (getEnvironmentChecker().hasCustomItemSavingBug()) {
+            getLogger().warning("Force using QS Matcher due to having custom item saving bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
+            getConfig().set("matcher.work-type", 0);
         }
         new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
         saveConfig();
