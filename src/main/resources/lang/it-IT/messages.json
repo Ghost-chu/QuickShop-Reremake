@@ -162,8 +162,8 @@
       "supercreate": "&eCrea un negozio aggirando tutti i controlli di protezione",
       "language": "&eCambia la lingua attualmente in uso",
       "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
-      "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "transfer": "&eTrasferisci tutti i negozi di qualcuno ad un altro player",
+      "removeworld": "&eRimuovi tutti i negozi in uno specifico mondo"
     }
   },
   "signs": {
