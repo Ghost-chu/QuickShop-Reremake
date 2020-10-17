@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import com.google.common.io.Files;
 import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -55,6 +54,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -109,7 +109,7 @@ public class Util {
      * @return The result for backup
      */
     public static boolean backupDatabase() {
-        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+        if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
             return true; // Backup and logs by MySQL
         }
         File dataFolder = plugin.getDataFolder();
@@ -121,7 +121,7 @@ public class Util {
         String uuid = UUID.randomUUID().toString().replaceAll("_", "");
         File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
         try {
-            Files.copy(sqlfile, bksqlfile);
+            Files.copy(sqlfile.toPath(), bksqlfile.toPath());
         } catch (Exception e1) {
             e1.printStackTrace();
             plugin.getLogger().warning("Failed to backup the database.");
