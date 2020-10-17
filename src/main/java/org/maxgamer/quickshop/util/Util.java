@@ -68,6 +68,7 @@ public class Util {
             new EnumMap<>(Material.class);
 
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
+    private static int bypassedCustomStackSize = -1;
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
@@ -228,7 +229,7 @@ public class Util {
      * @return Game StackSize or Custom
      */
     public static int getItemMaxStackSize(@NotNull Material material) {
-        return customStackSize.getOrDefault(material, material.getMaxStackSize());
+        return customStackSize.getOrDefault(material, bypassedCustomStackSize == -1 ? material.getMaxStackSize() : bypassedCustomStackSize);
     }
 
     /**
@@ -716,6 +717,9 @@ public class Util {
                 continue;
             }
 
+            if (data[0].equalsIgnoreCase("*")) {
+                bypassedCustomStackSize = Integer.parseInt(data[1]);
+            }
             Material mat = Material.matchMaterial(data[0]);
             if (mat == null || mat == Material.AIR) {
                 plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
