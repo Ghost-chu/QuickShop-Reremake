@@ -22,20 +22,34 @@ package org.maxgamer.quickshop.database;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
-public interface DatabaseCore {
+public abstract class AbstractDatabaseCore {
+    private final ReentrantLock lock = new ReentrantLock(true);
+    private final Condition conditionLock = lock.newCondition();
 
-    void close();
+    void waitForConnection() {
+        try {
+            lock.lock();
+            conditionLock.await();
+            lock.unlock();
+        } catch (InterruptedException ignored) {
+        }
+    }
 
-    void flush();
+    void signalForNewConnection() {
+        lock.lock();
+        conditionLock.signal();
+        lock.unlock();
+    }
 
-    void queue(BufferStatement bs);
+    abstract void close();
 
-    Connection getConnection();
+    abstract DatabaseConnection getConnection();
 
-    @NotNull String getName();
+    abstract public @NotNull String getName();
 
-    @NotNull Plugin getPlugin();
+    abstract public @NotNull Plugin getPlugin();
 
 }

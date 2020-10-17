@@ -40,8 +40,6 @@ import java.util.function.Consumer;
  */
 public class DatabaseHelper {
 
-    @NotNull
-    private final Database db;
 
     @NotNull
     private final DatabaseManager manager;
@@ -49,14 +47,13 @@ public class DatabaseHelper {
     @NotNull
     private final QuickShop plugin;
 
-    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull Database db, @NotNull DatabaseManager manager) throws SQLException {
-        this.db = db;
+    public DatabaseHelper(@NotNull QuickShop plugin, @NotNull DatabaseManager manager) throws SQLException {
         this.plugin = plugin;
         this.manager = manager;
-        if (!db.hasTable(plugin.getDbPrefix() + "shops")) {
+        if (!manager.hasTable(plugin.getDbPrefix() + "shops")) {
             createShopsTable();
         }
-        if (!db.hasTable(plugin.getDbPrefix() + "messages")) {
+        if (!manager.hasTable(plugin.getDbPrefix() + "messages")) {
             createMessagesTable();
         }
         checkColumns();
@@ -64,93 +61,78 @@ public class DatabaseHelper {
 
     /**
      * Creates the database table 'shops'.
-     *
-     * @throws SQLException If the connection is invalid.
      */
 
-    private void createShopsTable() throws SQLException {
-        Statement st = db.getConnection().createStatement();
-        String createTable = "CREATE TABLE " + plugin
-                .getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
-        st.execute(createTable);
+    private void createShopsTable() {
+        String sqlString = "CREATE TABLE " + plugin.getDbPrefix() + "shops (owner  VARCHAR(255) NOT NULL, price  double(32, 2) NOT NULL, itemConfig TEXT CHARSET utf8 NOT NULL, x  INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, unlimited  boolean, type  boolean, PRIMARY KEY (x, y, z, world) );";
+        manager.runInstantTask(new DatabaseTask(sqlString));
     }
 
     /**
      * Creates the database table 'messages'
-     *
-     * @return Create failed or successed.
-     * @throws SQLException If the connection is invalid
      */
-    private boolean createMessagesTable() throws SQLException {
-        Statement st = db.getConnection().createStatement();
+    private void createMessagesTable() {
         String createTable = "CREATE TABLE " + plugin.getDbPrefix()
                 + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) NOT NULL, time  BIGINT(32) NOT NULL );";
-        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+        if (manager.getDatabase() instanceof MySQLCore) {
             createTable = "CREATE TABLE " + plugin.getDbPrefix()
                     + "messages (owner  VARCHAR(255) NOT NULL, message  TEXT(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL , time  BIGINT(32) NOT NULL );";
         }
-        return st.execute(createTable);
+        manager.runInstantTask(new DatabaseTask(createTable));
     }
 
     /**
      * Verifies that all required columns exist.
      */
     private void checkColumns() {
-        PreparedStatement ps = null;
-        try {
-            // V3.4.2
+        DatabaseTask.Task checkTask = new DatabaseTask.Task() {
+            @Override
+            public void edit(PreparedStatement ps) {
 
-            ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                    .getDbPrefix() + "shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner");
-            ps.execute();
-            ps.close();
-        } catch (SQLException e) {
-            //ignore
-        }
+            }
+
+            @Override
+            public void onFailed(SQLException e) {
+
+            }
+        };
+        // V3.4.2
+        manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                .getDbPrefix() + "shops MODIFY COLUMN price double(32,2) NOT NULL AFTER owner", checkTask));
+        // V3.4.3
+        manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message", checkTask));
+        //Extra column
         try {
-            // V3.4.3
-            ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                    .getDbPrefix() + "messages MODIFY COLUMN time BIGINT(32) NOT NULL AFTER message");
-            ps.execute();
-            ps.close();
-        } catch (SQLException e) {
-            //ignore
-        }
-        try {
-            if (!db.hasColumn(plugin
-                    .getDbPrefix() + "shops", "extra")) {
+            if (!manager.hasColumn(plugin.getDbPrefix() + "shops", "extra")) {
+                String sqlString;
                 // Reremake - DataStorage @TODO needs testing
-                if (db.getCore() instanceof MySQLCore) {
-                    ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                            .getDbPrefix() + "shops ADD extra LONGTEXT");
+                if (manager.getDatabase() instanceof MySQLCore) {
+                    sqlString = "ALTER TABLE " + plugin
+                            .getDbPrefix() + "shops ADD extra LONGTEXT";
                 } else {
-                    ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                            .getDbPrefix() + "shops ADD COLUMN extra TEXT");
+                    sqlString = "ALTER TABLE " + plugin
+                            .getDbPrefix() + "shops ADD COLUMN extra TEXT";
                 }
+                manager.runInstantTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
+                    @Override
+                    public void edit(PreparedStatement ps) throws SQLException {
+                    }
+
+                    @Override
+                    public void onFailed(SQLException e) {
+                        Util.debugLog("Error to create EXTRA column: " + e.getMessage());
+                    }
+                }));
                 Util.debugLog("Setting up the column EXTRA...");
-                ps.execute();
-                ps.close();
             }
         } catch (SQLException e) {
-            //ignore
             Util.debugLog("Error to create EXTRA column: " + e.getMessage());
+            //ignore
         }
-        if (db.getCore() instanceof MySQLCore) {
-            try {
-                ps = db.getConnection().prepareStatement("ALTER TABLE " + plugin
-                        .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner");
-                ps.execute();
-                ps.close();
-            } catch (SQLException e) {
-                //ignore
-            }
-        }
-
-        if (ps != null) {
-            try {
-                ps.close();
-            } catch (SQLException ignored) {
-            }
+        if (manager.getDatabase() instanceof MySQLCore) {
+            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+                    .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
         }
 
     }
@@ -160,18 +142,18 @@ public class DatabaseHelper {
         //        .getDbPrefix() + "messages WHERE time < ?", weekAgo);
         String sqlString = "DELETE FROM " + plugin
                 .getDbPrefix() + "messages WHERE time < ?";
-        manager.add(new DatabaseTask(sqlString, ps -> ps.setLong(1, weekAgo)));
+        manager.addDelayTask(new DatabaseTask(sqlString, ps -> ps.setLong(1, weekAgo)));
     }
 
     public void cleanMessageForPlayer(@NotNull UUID player) {
         String sqlString = "DELETE FROM " + plugin.getDbPrefix() + "messages WHERE owner = ?";
-        manager.add(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
+        manager.addDelayTask(new DatabaseTask(sqlString, (ps) -> ps.setString(1, player.toString())));
     }
 
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         removeShop(shop); //First purge old exist shop before create new shop.
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        manager.add(new DatabaseTask(sqlString, new DatabaseTask.Task() {
+        manager.addDelayTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) throws SQLException {
                 Location location = shop.getLocation();
@@ -228,8 +210,8 @@ public class DatabaseHelper {
         String sqlString = "DELETE FROM "
                 + plugin.getDbPrefix()
                 + "shops WHERE x = ? AND y = ? AND z = ? AND world = ?"
-                + (db.getCore() instanceof MySQLCore ? " LIMIT 1" : "");
-        manager.add(new DatabaseTask(sqlString, (ps) -> {
+                + (manager.getDatabase() instanceof MySQLCore ? " LIMIT 1" : "");
+        manager.addDelayTask(new DatabaseTask(sqlString, (ps) -> {
             Location location = shop.getLocation();
             ps.setInt(1, location.getBlockX());
             ps.setInt(2, location.getBlockY());
@@ -239,22 +221,26 @@ public class DatabaseHelper {
 
     }
 
-    public ResultSet selectAllMessages() throws SQLException {
-        Statement st = db.getConnection().createStatement();
-        String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + "messages";
-        return st.executeQuery(selectAllShops);
+    public WarpedResultSet selectAllMessages() throws SQLException {
+        return selectTable("messages");
     }
 
-    public ResultSet selectAllShops() throws SQLException {
-        Statement st = db.getConnection().createStatement();
-        String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + "shops";
-        return st.executeQuery(selectAllShops);
+    private WarpedResultSet selectTable(String table) throws SQLException {
+        DatabaseConnection databaseConnection = manager.getDatabase().getConnection();
+        Statement st = databaseConnection.get().createStatement();
+        String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + table;
+        ResultSet resultSet = st.executeQuery(selectAllShops);
+        return new WarpedResultSet(resultSet, databaseConnection);
+    }
+
+    public WarpedResultSet selectAllShops() throws SQLException {
+        return selectTable("shops");
     }
 
     public void sendMessage(@NotNull UUID player, @NotNull String message, long time) {
 
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
-        manager.add(
+        manager.addDelayTask(
                 new DatabaseTask(
                         sqlString,
                         (ps) -> {
@@ -266,9 +252,9 @@ public class DatabaseHelper {
 
     public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
         String sqlString = "UPDATE " + plugin
-                .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (db
-                .getCore() instanceof MySQLCore ? " LIMIT 1" : "");
-        manager.add(
+                .getDbPrefix() + "shops SET owner = ? WHERE x = ? AND y = ? AND z = ? AND world = ?" + (
+                manager.getDatabase() instanceof MySQLCore ? " LIMIT 1" : "");
+        manager.addDelayTask(
                 //plugin.getDB().getConnection().createStatement()
                 //         .executeUpdate("UPDATE " + plugin.getDbPrefix() + "shops SET owner = \"" + ownerUUID.toString()
                 //                 + "\" WHERE x = " + x + " AND y = " + y + " AND z = " + z
@@ -286,7 +272,7 @@ public class DatabaseHelper {
                            double price, int x, int y, int z, String world, String extra) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?, extra = ? WHERE x = ? AND y = ? and z = ? and world = ?";
-        manager.add(new DatabaseTask(sqlString, ps -> {
+        manager.addDelayTask(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
             ps.setString(2, Util.serialize(item));
             ps.setInt(3, unlimited);
