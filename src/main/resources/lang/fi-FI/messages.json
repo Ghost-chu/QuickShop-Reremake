@@ -32,7 +32,7 @@
   "negative-amount": "&cHöpsö! Et voi myydä negatiivisia määriä!",
   "not-a-number": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
   "not-a-integer": "&cVoit ainoastaan antaa numeroita, kirjoitit {0}.",
-  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
+  "player-bought-from-your-store": "&cPelaaja {0} osti {1} {2} kaupastasi ja sait siitä {3}.",
   "shop-out-of-stock": "&5Kaupastasi koordinaateissa {0}, {1}, {2} on loppunut {3}!",
   "shop-has-no-space": "&cKaupassa on {1} paikkaa tuotteelle {0}.",
   "you-dont-have-that-many-items": "&cSinulla on vain {0} {1}",
