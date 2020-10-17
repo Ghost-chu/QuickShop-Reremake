@@ -48,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
@@ -450,8 +451,8 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         outGoingPlayerMessages.clear(); // Delete old messages
-        try {
-            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
+            ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
