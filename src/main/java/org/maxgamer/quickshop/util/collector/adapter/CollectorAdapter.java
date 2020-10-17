@@ -118,7 +118,7 @@ public class CollectorAdapter {
         } else {
             data.put("economy_core", plugin.getEconomy().getCore().getName() + "@" + plugin.getEconomy().getCore().getPlugin().getName());
         }
-        data.put("database_core", plugin.getDatabase().getCore().getName() + "@" + plugin.getDatabase().getCore().getPlugin().getName());
+        data.put("database_core", plugin.getDatabaseManager().getDatabase().getName() + "@" + plugin.getDatabaseManager().getDatabase().getPlugin().getName());
         data.put("gamelanguage_processor", MsgUtil.gameLanguage.getName() + "@" + MsgUtil.gameLanguage.getPlugin().getName());
         return data;
     }
