@@ -20,7 +20,7 @@
   "price-too-cheap": "&cHinnan pitää olla korkeampi kuin &e${0}",
   "no-price-change": "&cTuo ei vaihtaisi kaupan hintaa!",
   "you-cant-afford-a-new-shop": "&cKaupan luominen maksaa {0}.",
-  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
+  "player-bought-from-your-store-tax": "&cPelaaja {0} osti {1} {2} kaupastasi ja sait siitä {3} ja {4} veroina.",
   "you-cant-afford-to-change-price": "&cHinnan vaihtaminen maksaa {0}.",
   "success-created-shop": "&cKauppa luotu.",
   "success-removed-shop": "&aKauppa poistettiin onnistuneesti",
