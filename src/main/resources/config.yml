@@ -597,7 +597,7 @@ protect:
 # Example:
 #
 #custom-item-stacksize:
-# - *:128
+# - "*:128"
 # - STONE:128
 #
 custom-item-stacksize: [ ]
