@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.util.paste;
 
-import com.google.gson.Gson;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,8 +39,6 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -457,59 +455,4 @@ public class Paste {
         return null;
     }
 
-    @Getter
-    @Setter
-    public static class ShopDatabaseInfoOrigin {
-        @ToString.Exclude
-        private String item;
-
-        private String moderators;
-
-        private double price;
-
-        private int type;
-
-        private boolean unlimited;
-
-        private String world;
-
-        private int x;
-
-        private int y;
-
-        private int z;
-
-        ShopDatabaseInfoOrigin(ResultSet rs) {
-            try {
-                this.x = rs.getInt("x");
-                this.y = rs.getInt("y");
-                this.z = rs.getInt("z");
-                this.world = rs.getString("world");
-                this.item = rs.getString("itemConfig");
-                this.moderators = rs.getString("owner");
-                this.price = rs.getDouble("price");
-                this.type = rs.getInt("type");
-                this.unlimited = rs.getBoolean("unlimited");
-            } catch (SQLException ignored) {
-            }
-        }
-
-        ShopDatabaseInfoOrigin(int x, int y, int z, String world, String itemConfig, String owner, double price, int type, boolean unlimited) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.world = world;
-            this.item = itemConfig;
-            this.moderators = owner;
-            this.price = price;
-            this.type = type;
-            this.unlimited = unlimited;
-        }
-
-        @Override
-        public String toString() {
-            return new Gson().toJson(this);
-        }
-
-    }
 }

@@ -446,7 +446,7 @@ public class ShopLoader {
 
         @Override
         public String toString() {
-            return new Gson().toJson(this);
+            return JsonUtil.getGson().toJson(this);
         }
     }
 
