@@ -1665,11 +1665,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 114);
             selectedVersion = 114;
         }
+        if (selectedVersion == 114) {
+            getConfig().set("shop.interact.interact-mode", getConfig().getBoolean("shop.interact.switch-mode") ? 0 : 1);
+            getConfig().set("shop.interact.switch-mode", null);
+            getConfig().set("config-version", 115);
+            selectedVersion = 115;
+        }
         if (getEnvironmentChecker().hasCustomItemSavingBug()) {
             getLogger().warning("Force using QS Matcher due to having custom item saving bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
             getConfig().set("matcher.work-type", 0);
         }
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))))).fix();
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");
