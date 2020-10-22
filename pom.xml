@@ -313,7 +313,7 @@
             <artifactId>OpenInv</artifactId>
             <version>3.3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/OpenInv.jar</systemPath>
+            <systemPath>${project.basedir}/lib/OpenInv.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -345,7 +345,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.0.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Clearlag.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Clearlag.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
@@ -401,14 +401,14 @@
             <artifactId>SpartanAPI</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+            <systemPath>${project.basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.themoep.idconverter</groupId>
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Towny-0.95.2.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -554,7 +554,7 @@
             <artifactId>Residence</artifactId>
             <version>4.4.8.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Residence4.8.8.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
@@ -606,7 +606,7 @@
             <artifactId>BlockHub</artifactId>
             <version>3.1.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
+            <systemPath>${project.basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.offbytwo.jenkins</groupId>
