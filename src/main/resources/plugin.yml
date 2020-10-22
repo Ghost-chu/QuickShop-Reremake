@@ -1,5 +1,5 @@
-name: ${name}
-main: ${package}.${name}
+name: ${project.name}
+main: ${project.package}.${project.name}
 version: ${project.version}
 authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
 
