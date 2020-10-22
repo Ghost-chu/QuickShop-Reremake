@@ -60,6 +60,7 @@ public class DatabaseManager {
      *
      * @param plugin plugin main class
      * @param dbCore database core
+     * @throws ConnectionException when database connection failed
      */
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull AbstractDatabaseCore dbCore) throws ConnectionException {
         this.plugin = plugin;
