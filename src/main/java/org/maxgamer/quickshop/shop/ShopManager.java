@@ -605,7 +605,7 @@ public class ShopManager {
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }else{
-            total = e.getPrice(); //Allow addon to set it
+            total = e.getTotal(); //Allow addon to set it
         }
         EconomyTransaction transaction;
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
@@ -852,7 +852,7 @@ public class ShopManager {
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }else{
-            total = e.getPrice(); //Allow addon to set it
+            total = e.getTotal(); //Allow addon to set it
         }
         // Money handling
         // SELLING Player -> Shop Owner
