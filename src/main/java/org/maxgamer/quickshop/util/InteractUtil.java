@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is Bootstrap.java
+ * This file is a part of project QuickShop, the name is InteractUtil.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it

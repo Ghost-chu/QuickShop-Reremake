@@ -85,6 +85,7 @@ public class EconomyTransaction {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //For passing Test
+        //no inspection
         if (QuickShop.getInstance() != null) {
             this.tryingFixBanlanceInsuffient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         } else {

@@ -31,7 +31,6 @@ import java.sql.SQLException;
 public class DatabaseTask {
 
     private final static Task emptyTask = ps -> {
-
     };
     private final String statement;
     private final Task task;
