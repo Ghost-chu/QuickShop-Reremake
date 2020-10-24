@@ -48,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
+import org.maxgamer.quickshop.database.WarpedResultSet;
 import org.maxgamer.quickshop.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.fileportlek.old.IFile;
 import org.maxgamer.quickshop.fileportlek.old.JSONFile;
@@ -424,7 +425,8 @@ public class MsgUtil {
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
-            String potionI18n = potioni18n.getString("potioni18n." + potion.getName().trim());
+            if(potion == null){continue;}
+            String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
             if (potionI18n != null && !potionI18n.isEmpty()) {
                 continue;
             }
@@ -450,8 +452,8 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         outGoingPlayerMessages.clear(); // Delete old messages
-        try {
-            ResultSet rs = plugin.getDatabaseHelper().selectAllMessages();
+        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
+            ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
@@ -581,7 +583,7 @@ public class MsgUtil {
         if ((sender instanceof Player)
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")
                 && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
-                && (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !((Player) sender).isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-control") : plugin.getConfig().getBoolean("shop.interact.sneak-to-control") && !((Player) sender).isSneaking())) {
+                && !InteractUtil.check(InteractUtil.Action.CONTROL, ((Player) sender).isSneaking())) {
 
             return;
         }
@@ -1495,6 +1497,7 @@ public class MsgUtil {
             setAndUpdate("controlpanel.commands", null);
             setAndUpdate("menu.commands", null);
             setAndUpdate("language-version", 41);
+            selectedVersion = 41;
         }
 
         if (selectedVersion == 41) {
@@ -1502,8 +1505,14 @@ public class MsgUtil {
             setAndUpdate("command.description.removeworld", "&eRemove ALL shops in a specified world");
             setAndUpdate("command.no-world-given", "&cPlease specify a world name");
             setAndUpdate("world-not-exists", "&cThe world &e{0}&c not exists");
-
             setAndUpdate("language-version", 42);
+            selectedVersion = 42;
+        }
+        if (selectedVersion == 42) {
+            setAndUpdate("player-bought-from-your-store-tax", "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).");
+            setAndUpdate("player-bought-from-your-store", "&c{0} purchased {1} {2} from your shop, and you earned {3}.");
+            setAndUpdate("language-version", 43);
+            selectedVersion = 43;
         }
 
         messagei18n.save();

@@ -41,6 +41,7 @@ import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.shop.Info;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopAction;
+import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -117,7 +118,7 @@ public class PlayerListener extends QSListener {
         }
         // Purchase handling
         if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
-            if (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !p.isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-trade") : plugin.getConfig().getBoolean("shop.interact.sneak-to-trade") && !p.isSneaking()) {
+            if (!InteractUtil.check(InteractUtil.Action.TRADE, p.isSneaking())) {
                 return;
             }
             shop.onClick();
@@ -181,7 +182,7 @@ public class PlayerListener extends QSListener {
                 && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell")
                 && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Result.DENY
-                    || (plugin.getConfig().getBoolean("shop.interact.switch-mode") ? !p.isSneaking() && plugin.getConfig().getBoolean("shop.interact.sneak-to-create") : plugin.getConfig().getBoolean("shop.interact.sneak-to-create") && !p.isSneaking())
+                    || !InteractUtil.check(InteractUtil.Action.CREATE, p.isSneaking())
                     || plugin.getConfig().getBoolean("shop.disable-quick-create")
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the

@@ -20,16 +20,22 @@
 package org.maxgamer.quickshop;
 
 import lombok.Getter;
+import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
-public class RuntimeCatcher {
+public class EnvironmentChecker {
     @Getter
     private final GameVersion gameVersion;
+    private boolean hasCustomItemSavingBug = false;
 
-    public RuntimeCatcher(@NotNull QuickShop plugin) {
+    public EnvironmentChecker(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
         gameVersion = GameVersion.get(nmsVersion);
         if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
@@ -43,12 +49,24 @@ public class RuntimeCatcher {
         if (gameVersion == GameVersion.UNKNOWN) {
             plugin.getLogger().warning("Alert: QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
         }
-
-        if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
-            plugin.getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-            plugin.getConfig().set("matcher.work-type", 0);
-            plugin.saveConfig();
+        plugin.getLogger().info("Testing Custom item saving bug...");
+        ItemStack itemStack = new ItemStack(Material.STICK);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        try {
+            itemMeta.getLore().add("§00§11§22§33§44");
+            itemStack.setItemMeta(itemMeta);
+            YamlConfiguration configuration = new YamlConfiguration();
+            if (!Util.deserialize(Util.serialize(itemStack)).isSimilar(itemStack)) {
+                hasCustomItemSavingBug = true;
+                plugin.getLogger().info("Detected Custom item saving bug!");
+            } else {
+                plugin.getLogger().info("Custom item saving bug is not detected! :D");
+            }
+        } catch (InvalidConfigurationException | NullPointerException e) {
+            plugin.getLogger().severe("Failed to detect item saving bug");
+            e.printStackTrace();
         }
+
         if (!isSpigotBasedServer(plugin)) {
             plugin.getLogger().severe("FATAL: QSRR can only be run on Spigot servers and forks of Spigot!");
             throw new RuntimeException("Server must be Spigot based, Don't use CraftBukkit!");
@@ -56,11 +74,11 @@ public class RuntimeCatcher {
         if (isForgeBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
             plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
-            try {
-                Thread.sleep(300000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //try {
+            //    //Thread.sleep(300000);
+            //} catch (InterruptedException e) {
+            //    e.printStackTrace();
+            //}
         }
         if (isFabricBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
@@ -77,6 +95,10 @@ public class RuntimeCatcher {
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
             }
         }
+    }
+
+    public boolean hasCustomItemSavingBug() {
+        return hasCustomItemSavingBug;
     }
 
     private boolean isSpigotBasedServer(@NotNull QuickShop plugin) {

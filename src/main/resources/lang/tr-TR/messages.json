@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cFiyat &e${0}&c'dan büyük olmalıdır.",
   "no-price-change": "&cBu fiyat değişikliğine sebep olmaz!",
   "you-cant-afford-a-new-shop": "&cYeni bir market oluşturma maliyeti: ${0}",
-  "player-bought-from-your-store-tax": "&c{0} marketinden {1} tane {2} satın aldı ve vergi için {3} ödedin.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cMarketinizin fiyatını değiştirmek ${0} tutarındadır.",
   "success-created-shop": "&cMarket oluşturuldu.",
   "success-removed-shop": "&aMarket kaldırıldı.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cNegatif miktarlarda işlem yapamazsın",
   "not-a-number": "&cGirdi sadece sayı olabilir, senin girdin {0} idi.",
   "not-a-integer": "&cBir sayı girmelisin, senin girdin {0} idi.",
-  "player-bought-from-your-store": "&c{0} marketinden {1} tane {2} satın aldı.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5{0}, {1}, {2} koordinatlarındaki marketinde {3} tükendi!",
   "shop-has-no-space": "&cMarkette sadece {1} için daha fazla {0} yer var.",
   "you-dont-have-that-many-items": "&cSende sadece {0} tane {1} var.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&aSatın alma başarısız oldu: İç Hata. Lütfen Sunucu Yöneticisine başvurunuz.",
   "no-pending-action": "&cBekleyen aksiyonunuz yok",
   "permission-denied-3rd-party": "&cİzin reddedildi: 3. Parti Eklenti [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aBaşarıyla satın alındı:",
     "successfully-sold": "&aBaşarıyla satıldı:",
@@ -122,6 +124,7 @@
     "reloading": "&aYeniden Yükleniyor...",
     "cleaned": "&e{0}&a market kaldırıldı.",
     "no-type-given": "&cKullanım: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cKullanım: /qs size <miktar>",
     "bulk-size-now": "&aŞimdi &e{0} tane {1}&a ticaret ediliyor",
     "invalid-bulk-amount": "&cVerilen değer {0} maks yığın miktarından fazla veya birinden az",
@@ -159,7 +162,8 @@
       "supercreate": "&eBütün koruma kontrollerini atlayarak bir market oluştur",
       "language": "&eGeçerli dili değiştir",
       "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır",
-      "transfer": "&eBirinin TÜM marketlerini bir başkasına devret"
+      "transfer": "&eBirinin TÜM marketlerini bir başkasına devret",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {

@@ -3,7 +3,7 @@
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言：&b&l繁體中文 Chinese Traditional（zh_TW）",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&c無法找到儲物箱商店。您需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的許可權。",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&c價格必須大於 &e${0}",
   "no-price-change": "&c這不會導致價格變動！",
   "you-cant-afford-a-new-shop": "&c需要花費 {0} 元才能創建商店。",
-  "player-bought-from-your-store-tax": "&c{0} 從您的商店購買了 {1} 個 {2}，同時您被收取 {3} 元的稅金。",
+  "player-bought-from-your-store-tax": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}（{4} 稅）。",
   "you-cant-afford-to-change-price": "&c您需要花費 {0} 元來修改商品價格。",
   "success-created-shop": "&c已經創建商店。",
   "success-removed-shop": "&a已經刪除商店。",
@@ -32,7 +32,7 @@
   "negative-amount": "&c我的天啊，沒想到居然有人想要交易負數的數量。",
   "not-a-number": "&c輸入內容只能是數字，但您輸入了 {0}。",
   "not-a-integer": "&c輸入一定是數字，但您輸入了 {0}。",
-  "player-bought-from-your-store": "&c{0} 從您的商店買了 {1} 個 {2}。",
+  "player-bought-from-your-store": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。",
   "shop-out-of-stock": "&5您在 {0}，{1}，{2} 出售 {3} 的商店已經售罄一空。",
   "shop-has-no-space": "&c這個商店只能再收購 {0} 個 {1} 而已。",
   "you-dont-have-that-many-items": "&c您的身上只有 {0} 個 {1}。",
@@ -75,6 +75,8 @@
   "purchase-failed": "&c交易失敗：發生錯誤，請聯繫伺服器管理員。",
   "no-pending-action": "&c您沒有待處理的操作",
   "permission-denied-3rd-party": "&c存取被拒：第三方插件 [{0}]。",
+  "shops-removed-in-world": "&e世界 &b{1} &e總共有 &b{0} &e個商店被刪除",
+  "world-not-exists": "&c世界 &e{0} &c不存在",
   "menu": {
     "successful-purchase": "&a成功購買：",
     "successfully-sold": "&a成功出售：",
@@ -113,7 +115,7 @@
     },
     "transfer-success": "&a將&e {0} &a商店轉移到&e {1}",
     "transfer-success-other": "&a將&e {0} {1}&a的商店轉移到&e {2}",
-    "some-shops-removed": "&e{0} &a的商店已經移除",
+    "some-shops-removed": "&e{0} &a的商店已經刪除",
     "no-owner-given": "&c未指定新的商店店主",
     "new-owner": "&a新商店主人：&e{0}",
     "now-buying": "&a商店正在 &d收購 &e{0}",
@@ -122,6 +124,7 @@
     "reloading": "&a重新載入中...",
     "cleaned": "&a已經刪除 &e{0} &a個商店。",
     "no-type-given": "&c用法：/qs find <物品>",
+    "no-world-given": "&c請指定世界名稱",
     "bulk-size-not-set": "&c用法：/qs size <數量>",
     "bulk-size-now": "&a正在交易 &e{0} 個 {1}",
     "invalid-bulk-amount": "&c指定的值 {0} 大於最大堆疊或小於 1",
@@ -159,7 +162,8 @@
       "supercreate": "&e創建一個略過所有保護檢查的商店",
       "language": "&e修改正在使用的語言",
       "removeall": "&e刪除該玩家的所有商店",
-      "transfer": "&e我們將某人的所有商店轉移給其他人"
+      "transfer": "&e我們將某人的所有商店轉移給其他人",
+      "removeworld": "&e指定世界的商店已經全部刪除"
     }
   },
   "signs": {

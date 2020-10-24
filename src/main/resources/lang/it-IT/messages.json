@@ -3,7 +3,7 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&cImpossibile trovare un QuickShop. Devi guardarlo.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cIl prezzo deve essere superiore a &e ${0}",
   "no-price-change": "&cQuesto non comporterebbe una variazione di prezzo!",
   "you-cant-afford-a-new-shop": "&cIl prezzo per un nuovo negzio è di {0}",
-  "player-bought-from-your-store-tax": "&c{0} ha acquistato {1} {2} dal tuo negozio e hai pagato {3} in tasse.",
+  "player-bought-from-your-store-tax": "&c{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3} ({4} in tasse).",
   "you-cant-afford-to-change-price": "&c{0} comprato {1} {2} dal tuo negozio, e tu hai pagato {3} in tasse.",
   "success-created-shop": "&cNegozio creato.",
   "success-removed-shop": "&cNegozio rimosso",
@@ -32,7 +32,7 @@
   "negative-amount": "&cNon puoi scambiare importi negativi",
   "not-a-number": "&cPuoi inserire solo un numero, il tuo input era {0}.",
   "not-a-integer": "&cDevi inserire un numero, il tuo input era {0}.",
-  "player-bought-from-your-store": "&c{0} ha acquistato {1} {2} dal tuo negozio.",
+  "player-bought-from-your-store": "&c{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3}.",
   "shop-out-of-stock": "&5Il tuo negozio in {0}, {1}, {2} è esaurito {3}!",
   "shop-has-no-space": "&cIl negozio ha spazio solo per {0} in più {1}.",
   "you-dont-have-that-many-items": "&cHai solo {0}{1}.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cAcquisto fallito: Errore interno. Si prega di contattare l'amministratore del server.",
   "no-pending-action": "&cNon hai alcuna azione in sospeso",
   "permission-denied-3rd-party": "&cPermesso negato: Plugin di terze parti [{0}].",
+  "shops-removed-in-world": "&b{0}&e negozi sono stati eliminati nel mondo &b{1}&e.",
+  "world-not-exists": "&cIl mondo &e{0}&c non esiste",
   "menu": {
     "successful-purchase": "&aAcquistato con successo:",
     "successfully-sold": "&aVenduto con successo:",
@@ -111,9 +113,9 @@
       "unlimited": "&aIl negozio è ora illimitato",
       "limited": "&aIl negozio è ora limitato"
     },
-    "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
-    "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
-    "some-shops-removed": "&e{0} &ashop(s) removed",
+    "transfer-success": "&aTrasferiti &e{0} &ashop(s) a &e{1}",
+    "transfer-success-other": "&aTrasferiti &e{0} {1}&a's negozi a &e{2}",
+    "some-shops-removed": "&e{0} &ashop rimosso/i",
     "no-owner-given": "&cNessun proprietario fornito",
     "new-owner": "&aNuovo proprietario: &e{0}",
     "now-buying": "&aOra &dACQUISTANDO &e{0}",
@@ -122,6 +124,7 @@
     "reloading": "&aReloading...",
     "cleaned": "&aRimosso &e{0}&a negozi.",
     "no-type-given": "&cUtilizzo: /qs find <item>",
+    "no-world-given": "&cSei pregato di specificare il nome del mondo",
     "bulk-size-not-set": "&cUtilizzo: /qs size <amount>",
     "bulk-size-now": "&aScambio &e{0}x {1}",
     "invalid-bulk-amount": "&cIl valore specificato {0} è maggiore della dimensione massima dello stack o inferiore a uno",
@@ -159,7 +162,8 @@
       "supercreate": "&eCrea un negozio aggirando tutti i controlli di protezione",
       "language": "&eCambia la lingua attualmente in uso",
       "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTrasferisci tutti i negozi di qualcuno ad un altro player",
+      "removeworld": "&eRimuovi tutti i negozi in uno specifico mondo"
     }
   },
   "signs": {

@@ -3,7 +3,7 @@
   "translation-version": "Versiò suportada: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "No s'ha trobat cap QuickShop. Has de mirar a una.",
   "no-anythings-in-your-hand": "Ni hi ha res a la teva mà.",
   "no-permission": "No tens permisos per a fer això.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cEl preu ha de ser major que &e${0}",
   "no-price-change": "&cAixò no canviaria el preu!",
   "you-cant-afford-a-new-shop": "&cCosta {0} crear una botiga nova.",
-  "player-bought-from-your-store-tax": "&c{0} ha comprat {1} {2} a la teva botiga, i has pagat {3} en impostos.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cCosta {0} canviar el preu a la teva botiga.",
   "success-created-shop": "&cBotiga creada.",
   "success-removed-shop": "&aBotiga eliminada.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cNo s'admeten valors negatius.",
   "not-a-number": "&cNomés pots introduir un número, has introduït {0}.",
   "not-a-integer": "&cHas d'introduir un número, has introduït {0}.",
-  "player-bought-from-your-store": "&c{0} ha comprat {1} {2} de la teva botiga.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5La teva botiga a {0}, {1}, {2} s'ha quedat sense {3}!",
   "shop-has-no-space": "&cLa botiga només té capacitat per {0} més {1}.",
   "you-dont-have-that-many-items": "&cNomés tens {0} {1}.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cPurchase failed: Internal Error. Please contact the Server Administrator.",
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
@@ -122,6 +124,7 @@
     "reloading": "&aRecarregant...",
     "cleaned": "&aEl·liminades &e{0}&a botigues.",
     "no-type-given": "&cÚs: /qs find <objecte>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cÚs: /qs size <quantitat>",
     "bulk-size-now": "&aAra intercanviant &e{0}x {1}",
     "invalid-bulk-amount": "&cEl valor donat {0} és més gran que el tamany màxim de stack o menor que 1.",
@@ -159,7 +162,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
