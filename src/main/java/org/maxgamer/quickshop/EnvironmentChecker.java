@@ -75,7 +75,7 @@ public class EnvironmentChecker {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
             plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
             try {
-                Thread.sleep(300000);
+                //Thread.sleep(300000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
