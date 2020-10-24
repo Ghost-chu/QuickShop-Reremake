@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.4.13</version>
+    <version>4.0.4.14</version>
 
     <licenses>
         <license>
@@ -81,7 +81,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.2.4</version>
                 <configuration>
                     <finalName>${artifactId}</finalName>
                     <minimizeJar>true</minimizeJar>
@@ -254,7 +254,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
+            <version>4.5.1</version>
             <scope>provided</scope>
         </dependency>
         <!--        <dependency>-->
@@ -299,7 +299,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>Reserve</artifactId>
-            <version>0.1.0.12</version>
+            <version>0.1.4.8</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -313,12 +313,12 @@
             <artifactId>OpenInv</artifactId>
             <version>3.3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/OpenInv.jar</systemPath>
+            <systemPath>${project.basedir}/lib/OpenInv.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -331,7 +331,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>19.0.0</version>
+            <version>20.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -345,7 +345,7 @@
             <artifactId>clearlag</artifactId>
             <version>3.0.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Clearlag.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Clearlag.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
@@ -357,13 +357,13 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.4</version>
+            <version>2.10.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>4.7.3</version>
+            <version>4.10.15</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -401,19 +401,19 @@
             <artifactId>SpartanAPI</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+            <systemPath>${project.basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.themoep.idconverter</groupId>
             <artifactId>Towny</artifactId>
             <version>0.95.2.8</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Towny-0.95.2.8.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Towny-0.95.2.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.2</version>
+            <version>7.0.4</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -554,7 +554,7 @@
             <artifactId>Residence</artifactId>
             <version>4.4.8.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Residence4.8.8.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
@@ -606,7 +606,7 @@
             <artifactId>BlockHub</artifactId>
             <version>3.1.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
+            <systemPath>${project.basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.offbytwo.jenkins</groupId>

@@ -108,11 +108,6 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private CommandManager commandManager;
     /**
-     * The database for storing all our data for persistence
-     */
-    @Getter
-    private Database database;
-    /**
      * Contains all SQL tasks
      */
     @Getter
@@ -256,7 +251,7 @@ public class QuickShop extends JavaPlugin {
     private boolean allowStack;
 
     @Getter
-    private RuntimeCatcher runtimeCatcher;
+    private EnvironmentChecker environmentChecker;
 
     @Getter
     @Nullable
@@ -564,16 +559,6 @@ public class QuickShop extends JavaPlugin {
             // ignore, we didn't care that
         }
 
-        Util.debugLog("Unregistering tasks...");
-        // if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
-        if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
-        }
-        /* Unload UpdateWatcher */
-        if (this.updateWatcher != null) {
-            this.updateWatcher.uninit();
-        }
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
@@ -584,15 +569,23 @@ public class QuickShop extends JavaPlugin {
         if (this.getDatabaseManager() != null) {
             this.getDatabaseManager().unInit();
         }
-        /* Close Database */
-        if (database != null) {
-            this.database.close();
-        }
+
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
         this.compatibilityTool.clear();
         new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+
+        Util.debugLog("Unregistering tasks...");
+        // if (itemWatcherTask != null)
+        //    itemWatcherTask.cancel();
+        if (logWatcher != null) {
+            logWatcher.close(); // Closes the file
+        }
+        /* Unload UpdateWatcher */
+        if (this.updateWatcher != null) {
+            this.updateWatcher.uninit();
+        }
 
         Util.debugLog("Cleanup tasks...");
         try {
@@ -626,7 +619,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         try {
-            runtimeCatcher = new RuntimeCatcher(this);
+            environmentChecker = new EnvironmentChecker(this);
         } catch (RuntimeException e) {
             bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions
@@ -859,7 +852,7 @@ public class QuickShop extends JavaPlugin {
     private boolean setupDatabase() {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-            DatabaseCore dbCore;
+            AbstractDatabaseCore dbCore;
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
@@ -877,11 +870,10 @@ public class QuickShop extends JavaPlugin {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
-            this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
-            this.databaseManager = new DatabaseManager(this, this.database);
+            this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new DatabaseHelper(this, this.database, this.databaseManager);
-        } catch (Database.ConnectionException e) {
+            this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
+        } catch (DatabaseManager.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
@@ -945,7 +937,7 @@ public class QuickShop extends JavaPlugin {
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-            String databaseType = this.getDatabase().getCore().getName();
+            String databaseType = this.getDatabaseManager().getDatabase().getName();
             String displayType = DisplayItem.getNowUsing().name();
             String itemMatcherType = this.getItemMatcher().getName();
             String useStackItem = String.valueOf(this.isAllowStack());
@@ -975,9 +967,8 @@ public class QuickShop extends JavaPlugin {
         }
     }
 
-    @SuppressWarnings("UnusedAssignment")
+
     private void updateConfig(int selectedVersion) {
-        //fixConfiguration();
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1674,7 +1665,17 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 114);
             selectedVersion = 114;
         }
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
+        if (selectedVersion == 114) {
+            getConfig().set("shop.interact.interact-mode", getConfig().getBoolean("shop.interact.switch-mode") ? 0 : 1);
+            getConfig().set("shop.interact.switch-mode", null);
+            getConfig().set("config-version", 115);
+            selectedVersion = 115;
+        }
+        if (getEnvironmentChecker().hasCustomItemSavingBug()) {
+            getLogger().warning("Force using QS Matcher due to having custom item saving bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
+            getConfig().set("matcher.work-type", 0);
+        }
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))))).fix();
         saveConfig();
         reloadConfig();
         File file = new File(getDataFolder(), "example.config.yml");

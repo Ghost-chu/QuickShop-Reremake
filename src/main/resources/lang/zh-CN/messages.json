@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&c价格必须大于&e${0}",
   "no-price-change": "&c这不会导致价格变动！",
   "you-cant-afford-a-new-shop": "&c你需要 {0} 才能创建一个商店。",
-  "player-bought-from-your-store-tax": "&c{0} 从你的商店购买了 {1} {2}，缴纳了 {3} 的税。",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&c你需要 {0} 才能修改商店的价格。",
   "success-created-shop": "&c商店已创建",
   "success-removed-shop": "&a商店已删除！",
@@ -32,7 +32,7 @@
   "negative-amount": "&c你输入的数字是负数。",
   "not-a-number": "&c您只能输入一个数字，但您的输入是 {0}。",
   "not-a-integer": "&c您只能输入一个数字，您的输入是 {0}。",
-  "player-bought-from-your-store": "&c{0} 在你的商店购买了 {1} 个 {2} 。",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。",
   "shop-has-no-space": "&c这个商店只能装下 {0} 个 {1} 了。",
   "you-dont-have-that-many-items": "&c你只有 {0} 个 {1}。",
@@ -75,6 +75,8 @@
   "purchase-failed": "&c支付失败：内部错误，请联系服务器管理员",
   "no-pending-action": "&c你没有任何进行中的操作",
   "permission-denied-3rd-party": "&c没有权限：第三方插件 [{0}]。",
+  "shops-removed-in-world": "&e共计 &b{0}&e 个商店已在世界 &b{1}&e 中删除.",
+  "world-not-exists": "&c世界 &e{0}&c 不存在",
   "menu": {
     "successful-purchase": "&a支付成功：",
     "successfully-sold": "&a出售成功：",
@@ -122,6 +124,7 @@
     "reloading": "&a重载中...",
     "cleaned": "&a清理了 &e{0} &a个商店.",
     "no-type-given": "&c用法: /qs find <物品名称>",
+    "no-world-given": "&c请指定一个世界名称",
     "bulk-size-not-set": "&c用法: /qs size <数量>",
     "bulk-size-now": "&a现在开始交易 &e{0} 个 {1}",
     "invalid-bulk-amount": "&c给定的值 {0} 大于最大堆叠大小或小于1",
@@ -159,7 +162,8 @@
       "supercreate": "&e越过所有区域保护检查创建商店",
       "language": "&e切换正在使用的语言",
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
-      "transfer": "&e将某人的所有商店转移给其他人"
+      "transfer": "&e将某人的所有商店转移给其他人",
+      "removeworld": "&e删除指定世界中的所有商店"
     }
   },
   "signs": {

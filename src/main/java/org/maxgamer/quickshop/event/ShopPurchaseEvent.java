@@ -21,6 +21,7 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +39,9 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
     private final int amount;
+    @Getter
+    @Setter
+    private double total;
 
     private boolean cancelled;
 
@@ -48,11 +52,13 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
      * @param shop   The shop bought from
      * @param player The player buying
      * @param amount The amount they're buying
+     * @param total  The total balance in this purchase
      */
-    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount) {
+    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount, double total) {
         this.shop = shop;
         this.player = player;
         this.amount = amount * shop.getItem().getAmount();
+        this.total = total;
     }
 
     @Override

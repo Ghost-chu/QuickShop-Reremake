@@ -175,7 +175,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         // Set item protect in the armorstand's hand
         this.guardedIstack = DisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         Objects.requireNonNull(armorStand.getEquipment()).setHelmet(guardedIstack);
-        if (plugin.getRuntimeCatcher().getGameVersion().isPersistentStorageApiSupports()) {
+        if (plugin.getEnvironmentChecker().getGameVersion().isPersistentStorageApiSupports()) {
             armorStand
                     .getPersistentDataContainer()
                     .set(

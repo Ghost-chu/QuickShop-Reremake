@@ -596,15 +596,17 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
             return;
         }
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        if (Util.fireCancellableEvent(e)) {
-            return; // Cancelled
-        }
+
         // Money handling
         // BUYING MODE  Shop Owner -> Player
         double taxModifier = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount, total);
+        if (Util.fireCancellableEvent(e)) {
+            return; // Cancelled
+        }else{
+            total = e.getTotal(); //Allow addon to set it
+        }
         EconomyTransaction transaction;
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
             transaction = EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
@@ -764,11 +766,13 @@ public class ShopManager {
 
         // Create the sample shop
         ContainerShop shop = new ContainerShop(plugin, info.getLocation(), price, info.getItem(), new ShopModerator(p.getUniqueId()), false, ShopType.SELLING, new ConcurrentHashMap<>());
-        Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
-        if (!result.isSuccess()) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
-            Util.debugLog("Cancelled by integrations: " + result);
-            return;
+        if (!bypassProtectionChecks) {
+            Result result = plugin.getIntegrationHelper().callIntegrationsCanCreate(p, info.getLocation());
+            if (!result.isSuccess()) {
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("integrations-check-failed-create", p, result.getMessage()));
+                Util.debugLog("Cancelled by integrations: " + result);
+                return;
+            }
         }
 
         //Calling ShopCreateEvent
@@ -840,12 +844,16 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(pSpace)));
             return;
         }
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount);
-        if (Util.fireCancellableEvent(e)) {
-            return; // Cancelled
-        }
+
         double taxModifier = getTax(shop, p);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
+
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount,total);
+        if (Util.fireCancellableEvent(e)) {
+            return; // Cancelled
+        }else{
+            total = e.getTotal(); //Allow addon to set it
+        }
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
@@ -868,9 +876,9 @@ public class ShopManager {
         String msg;
         // Notify the shop owner //TODO: move to a standalone method
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Util.format(CalculateUtil.multiply(taxModifier, total)));
+            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total), Util.format(CalculateUtil.multiply(taxModifier, total)));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########");
+            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total));
         }
         // Transfers the item from A to B
         if (stock == amount) {

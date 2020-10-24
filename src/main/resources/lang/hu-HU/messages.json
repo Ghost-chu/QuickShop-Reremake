@@ -3,7 +3,7 @@
   "translation-version": "Támogatott Verzió: Reremake",
   "translation-contributors": "Közreműködők: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Nyelv Zóna: Magyar (hu_HU)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&cEz nem egy bolt amire nézel.",
   "no-anythings-in-your-hand": "&cNincs semmi a kezedben.",
   "no-permission": "&cNincs jogod ehhez!",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cAz árnak minimum &e${0} &c-nak/nek kell lennie!",
   "no-price-change": "&cNem változott az ár!",
   "you-cant-afford-a-new-shop": "&cNem tudsz új boltot csinálni, mert túl kevés pénzed van! Ára: &e${0}",
-  "player-bought-from-your-store-tax": "&c{0} vett {1} {2} a boltodból, és te fizettél {3} adóként.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&c{0} -ba kerül az áralakítás.",
   "success-created-shop": "&aSikeresen elkészítettél egy boltot!",
   "success-removed-shop": "&aKitörölted a boltodat!",
@@ -32,7 +32,7 @@
   "negative-amount": "&cNem tudsz negatív mennyiséget megadni.",
   "not-a-number": "&cEnnek egy számnak kell lennie! &7&o({0})",
   "not-a-integer": "&cEz csak egy szám lehet! &7&o({0})",
-  "player-bought-from-your-store": "&2{0} vett &f{1} {2} &2-ot a boltodból.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5&l!!! &dA boldot itt: &f{0}&d, &f{1}&d, &f{2}&d, kifogyott ebből: &f{3}",
   "shop-has-no-space": "&cThe shop only has room for {0} more {1}.",
   "you-dont-have-that-many-items": "&cNincs elég tárgyad: &7{0} {1}.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cSikertelen vásárlás: Belső Hiba! Kérlek beszélj a tulajdonossal.",
   "no-pending-action": "&cYou do not have any pending action",
   "permission-denied-3rd-party": "&cHozzáférés megtagadva: 3rd party plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSikeres vásárlás",
     "successfully-sold": "&aSikeres eladás:",
@@ -122,6 +124,7 @@
     "reloading": "&aÚjratöltés...",
     "cleaned": "&a&e{0}&a bolt törlése.",
     "no-type-given": "&cHasználat: /qs find <tárgy>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUsage: /qs size <amount>",
     "bulk-size-now": "&aNow trading &e{0}x {1}",
     "invalid-bulk-amount": "&cThe given value {0} larger than max stack size or lower than one",
@@ -159,7 +162,8 @@
       "supercreate": "&eLétrehoz egy boltot az összes ellenőrzés kihagyásával",
       "language": "&eSwitch the language that quickshop using",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
