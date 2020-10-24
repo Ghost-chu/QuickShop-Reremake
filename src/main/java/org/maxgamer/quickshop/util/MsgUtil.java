@@ -425,6 +425,7 @@ public class MsgUtil {
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
+            //noinspection ConstantConditions
             if(potion == null){continue;}
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
             if (potionI18n != null && !potionI18n.isEmpty()) {
