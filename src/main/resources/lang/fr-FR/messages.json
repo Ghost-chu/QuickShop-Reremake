@@ -3,7 +3,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cLe prix doit être supérieur à &e${0}",
   "no-price-change": "&cLe prix ne changera pas!",
   "you-cant-afford-a-new-shop": "&cLa création d'une boutique coûte {0}.",
-  "player-bought-from-your-store-tax": "&c{0} a acheté {1} {2} dans ta boutique, et tu as payé {3} de taxes.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cCela coûte {0} de changer le prix de ta boutique.",
   "success-created-shop": "&cBoutique créée.",
   "success-removed-shop": "&aBoutique supprimée avec succès.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cVous ne pouvez pas échanger une quantité négative",
   "not-a-number": "&cVous ne pouvez saisir qu'un nombre, votre entrée était {0}.",
   "not-a-integer": "&cVous ne pouvez saisir qu'un nombre, votre entrée était {0}.",
-  "player-bought-from-your-store": "&c{0} a acheté {1} {2} dans votre boutique.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Votre boutique aux coordonnées {0}, {1}, {2}, est à court de {3}!",
   "shop-has-no-space": "&cCette boutique n'a de la place que pour {0} de plus {1}.",
   "you-dont-have-that-many-items": "&cVous ne possédez que {0} {1} dans votre inventaire.",
@@ -75,6 +75,8 @@
   "purchase-failed": "&cEchec de l'achat : Erreur interne, veuillez contacter un administrateur du serveur.",
   "no-pending-action": "&cTu n'as aucune action en attente",
   "permission-denied-3rd-party": "&cPermission refusée: plugin tiers [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aAchat réussi :",
     "successfully-sold": "&aVente réussie :",
@@ -122,6 +124,7 @@
     "reloading": "&aRechargement...",
     "cleaned": "&aLes boutiques de &e{0}&a ont été supprimés.",
     "no-type-given": "&cUtilisation: /qs find <objet>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUtilisation: /qs size <quantité>",
     "bulk-size-now": "&aNégocier &e{0}x {1}",
     "invalid-bulk-amount": "&cLa valeur donnée {0} est plus grande que la taille maximale de la pile ou inférieure à 1",
@@ -159,7 +162,8 @@
       "supercreate": "&eCréer une boutique en contournant tous les contrôles de protection",
       "language": "Modifier la langue actuelle",
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
-      "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre"
+      "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {

@@ -3,7 +3,7 @@
   "translation-version": "&c&lサポートバージョン: &b&lReremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "&c&l言語圏: &b&l日本語 (ja_JP)",
-  "language-version": "41",
+  "language-version": "43",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。確認する必要があります。",
   "no-anythings-in-your-hand": "&cあなたの手には何もありません。",
   "no-permission": "&c権限を持っていないため実行できません。",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&c価格は&e${0}&c以上である必要があります。",
   "no-price-change": "&c価格変更できません！",
   "you-cant-afford-a-new-shop": "&c新しいショップを作成するには{0}かかります。",
-  "player-bought-from-your-store-tax": "&c{0} は {1} {2} をショップから購入し {3} を税で支払いました。",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cショップで価格を変更するには {0} かかります。",
   "success-created-shop": "&cショップが作成されました。",
   "success-removed-shop": "&aショップを削除しました。",
@@ -32,7 +32,7 @@
   "negative-amount": "&cマイナス量を取引できません",
   "not-a-number": "&c入力できるのは，あなたの入力は {0} でした．",
   "not-a-integer": "&c入力できるのは，あなたの入力は {0} でした．",
-  "player-bought-from-your-store": "&c{0} はショップから {1} {2} を購入しました。",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5{0}、{1}、{2} のショップで {3} がなくなりました!",
   "shop-has-no-space": "&cショップには {0} 個以上 {1} 個分のスペースしかありません",
   "you-dont-have-that-many-items": "&c{0} {1} しかありません",
@@ -75,6 +75,8 @@
   "purchase-failed": "&c購入に失敗しました：内部エラー。サーバー管理者に連絡してください。",
   "no-pending-action": "&c保留中のアクションはありません",
   "permission-denied-3rd-party": "&cアクセス拒否: サードパーティのプラグイン [{0}]",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&a購入に成功しました:",
     "successfully-sold": "&a売却に成功しました:",
@@ -122,6 +124,7 @@
     "reloading": "&aリロード中...",
     "cleaned": "&e{0}&a ショップを削除しました。",
     "no-type-given": "&c使用法: /qs find <アイテム名>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&c使用法: /qs サイズ <amount>",
     "bulk-size-now": "&a取引中 &e{0}x {1}",
     "invalid-bulk-amount": "&c与えられた値 {0} は最大スタックサイズ以下です。",
@@ -159,7 +162,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {
