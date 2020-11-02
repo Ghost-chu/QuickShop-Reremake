@@ -20,8 +20,12 @@
 
 package org.maxgamer.quickshop.integration.worldguard;
 
+import org.maxgamer.quickshop.QuickShop;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum WorldGuardFlags {
     FLAG,
@@ -32,7 +36,14 @@ public enum WorldGuardFlags {
 
     public static List<WorldGuardFlags> deserialize(List<String> list) {
         List<WorldGuardFlags> result = new ArrayList<>();
-        list.forEach(v -> result.add(WorldGuardFlags.valueOf(v.toUpperCase())));
+        List<String> flags = Arrays.stream(WorldGuardFlags.values()).map(Enum::name).collect(Collectors.toList());
+        for (String v : list) {
+            if (!flags.contains(v)) {
+                QuickShop.getInstance().getLogger().warning("Ignoring invalid flag " + v);
+                continue;
+            }
+            result.add(WorldGuardFlags.valueOf(v.toUpperCase()));
+        }
         return result;
     }
 
