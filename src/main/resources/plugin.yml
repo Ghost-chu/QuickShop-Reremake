@@ -26,6 +26,7 @@ softdepend:
   - LWC
   - BlockHub
   - Lands
+  - GriefPrevention
 
 api-version: 1.13
 
