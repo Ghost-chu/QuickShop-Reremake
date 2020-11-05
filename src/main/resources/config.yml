@@ -1,7 +1,7 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
 #Do not touch if you not clear know about this
-config-version: 115
+config-version: 116
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -530,11 +530,34 @@ integration:
     #Should we delete the shop in the land when the shop owner lose the permission
     #in this land?
     delete-on-lose-permission: false
+  griefprevention:
+    enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
+    whitelist-mode: false
+    #If a player want to create a shop, player must pass which checks?
+    #You can use multi checks in the same time.
+    #Priority: UP to DOWN
+    #
+    #Avaliable field:
+    #BUILD = Player must have ability to build at the target claim.
+    #CONTAINER_ACCESS = Player must can access container.
+    #ACCESS = Player must have ability to access the target claim.
+    create:
+      - CONTAINER_ACCESS
+    #If a player want to trade with a shop, player must pass which checks?
+    #You can use multi checks in same time.
+    #Priority: UP to DOWN
+    #
+    #Avaliable field:
+    #BUILD = Player must have ability to build at the target claim.
+    #CONTAINER_ACCESS = Player must can access container.
+    #ACCESS = Player must have ability to access the target claim.
+    trade: [ ]
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
-      #If a player want to create a shop, player must pass which checks?
+    #If a player want to create a shop, player must pass which checks?
     #You can use multi checks in the same time.
     #Priority: UP to DOWN
     #

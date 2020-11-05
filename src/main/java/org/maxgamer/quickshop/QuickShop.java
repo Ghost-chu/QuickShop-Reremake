@@ -45,6 +45,7 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
+import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
 import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationHolder;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
@@ -840,6 +841,12 @@ public class QuickShop extends JavaPlugin {
             Plugin lands = Bukkit.getPluginManager().getPlugin("Lands");
             if (lands != null && lands.isEnabled()) {
                 this.integrationHelper.register(new LandsIntegration(this));
+            }
+        }
+        if (getConfig().getBoolean("integration.griefprevention.enable")) {
+            Plugin griefPrevention = Bukkit.getPluginManager().getPlugin("GriefPrevention");
+            if (griefPrevention != null && griefPrevention.isEnabled()) {
+                this.integrationHelper.register(new GriefPreventionIntegration(this));
             }
         }
     }
@@ -1670,6 +1677,14 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.interact.switch-mode", null);
             getConfig().set("config-version", 115);
             selectedVersion = 115;
+        }
+        if (selectedVersion == 115) {
+            getConfig().set("integration.griefprevention.enable", false);
+            getConfig().set("integration.griefprevention.whitelist-mode", false);
+            getConfig().set("integration.griefprevention.create", new ArrayList<>(0));
+            getConfig().set("integration.griefprevention.trade", new ArrayList<>(0));
+            getConfig().set("config-version", 116);
+            selectedVersion = 116;
         }
         if (getEnvironmentChecker().hasCustomItemSavingBug()) {
             getLogger().warning("Force using QS Matcher due to having custom item saving bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
