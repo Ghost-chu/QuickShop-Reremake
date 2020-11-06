@@ -536,14 +536,8 @@ public class ContainerShop implements Shop {
         }
     }
 
-    /**
-     * Updates signs attached to the shop
-     */
     @Override
-    public void setSignText() {
-        if (!Util.isLoaded(this.location)) {
-            return;
-        }
+    public String[] getSignText() {
         String[] lines = new String[4];
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
@@ -601,7 +595,18 @@ public class ContainerShop implements Shop {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
 
         }
-        this.setSignText(lines);
+        return lines;
+    }
+
+    /**
+     * Updates signs attached to the shop
+     */
+    @Override
+    public void setSignText() {
+        if (!Util.isLoaded(this.location)) {
+            return;
+        }
+        this.setSignText(getSignText());
     }
 
     /**

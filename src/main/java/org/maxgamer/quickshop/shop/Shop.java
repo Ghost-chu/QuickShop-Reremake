@@ -165,6 +165,18 @@ public interface Shop {
     void setSignText();
 
     /**
+     * Get sign texts on shop's sign.
+     * Line 0: Header
+     * Line 1: Shop Type
+     * Line 2: Shop Item Name
+     * Line 3: Price
+     */
+    default String[] getSignText() {
+        //backward support
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Update shop data to database
      */
     void update();
