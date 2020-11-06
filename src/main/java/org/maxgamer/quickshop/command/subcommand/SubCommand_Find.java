@@ -64,7 +64,7 @@ public class SubCommand_Find implements CommandProcesser {
 
         final String lookFor = sb.toString().toLowerCase();
         final Player p = (Player) sender;
-        final Location loc = p.getEyeLocation().clone();
+        final Location loc = p.getLocation().clone();
         final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
         double minDistanceSquared = minDistance * minDistance;
         final int chunkRadius = (int) minDistance / 16 + 1;
@@ -95,18 +95,14 @@ public class SubCommand_Find implements CommandProcesser {
 
                 for (Shop shop : inChunk.values()) {
                     if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
-                        continue;
-                    }
-
-                    if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
-                        continue;
+                        if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
+                            continue;
+                        }
                     }
 
                     if (shop.getLocation().distanceSquared(loc) >= minDistanceSquared) {
                         continue;
                     }
-
-                    minDistanceSquared = shop.getLocation().distanceSquared(loc);
                     nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, minDistanceSquared));
                     if (nearByShopList.size() == limit) {
                         break findingProcess;
@@ -121,12 +117,12 @@ public class SubCommand_Find implements CommandProcesser {
         } else {
             nearByShopList.sort(Map.Entry.comparingByValue());
             //"nearby-shop-header": "&aNearby Shop matching &b{0}&a:"
-            StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor));
+            StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
             for (Map.Entry<Shop, Double> shopDoubleEntry : nearByShopList) {
                 Shop shop = shopDoubleEntry.getKey();
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue()));
+                stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), Math.floor(shopDoubleEntry.getValue()))).append("\n");
             }
             MsgUtil.sendMessage(sender, stringBuilder.toString());
         }
