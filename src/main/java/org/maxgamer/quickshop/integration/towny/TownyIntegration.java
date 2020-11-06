@@ -21,38 +21,95 @@
 package org.maxgamer.quickshop.integration.towny;
 
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration implements IntegratedPlugin {
+public class TownyIntegration implements IntegratedPlugin, Listener {
     private final List<TownyFlags> createFlags;
 
     private final List<TownyFlags> tradeFlags;
 
     private final boolean ignoreDisabledWorlds;
+    private final QuickShop plugin;
+    private final boolean deleteShopOnLeave;
 
     public TownyIntegration(QuickShop plugin) {
+        this.plugin = plugin;
         createFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
+        deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
     }
 
     @Override
     public @NotNull String getName() {
         return "Towny";
+    }
+
+    @EventHandler
+    public void onPlayerLeave(TownRemoveResidentEvent event) {
+        if (!deleteShopOnLeave) {
+            return;
+        }
+        UUID owner = TownyAPI.getInstance().getPlayerUUID(event.getResident());
+        if (owner == null) {
+            return;
+        }
+        String worldName = event.getTown().getWorld().getName();
+        Town town = event.getTown();
+        //Getting all shop with world-chunk-shop mapping
+        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
+            //Matching world
+            if (worldName.equals(entry.getKey())) {
+                World world = Bukkit.getWorld(entry.getKey());
+                if (world != null) {
+                    //Matching Location
+                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
+                        Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
+                        for (Shop shop : shopMap.values()) {
+                            //Matching Owner
+                            if (shop.getOwner().equals(owner)) {
+                                try {
+                                    //It should be equal in address
+                                    if (WorldCoord.parseWorldCoord(shop.getLocation()).getTownBlock().getTown() == town) {
+                                        //delete it
+                                        shop.delete();
+                                    }
+                                } catch (NotRegisteredException ignored) {
+                                    //Is not in town, continue
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -115,10 +172,12 @@ public class TownyIntegration implements IntegratedPlugin {
 
     @Override
     public void load() {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
     public void unload() {
+        HandlerList.unregisterAll(this);
     }
 
 }

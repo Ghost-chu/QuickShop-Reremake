@@ -1686,6 +1686,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 116);
             selectedVersion = 116;
         }
+        if (selectedVersion == 116) {
+            getConfig().set("shop.sending-stock-message-to-staffs", false);
+            getConfig().set("integration.towny.delete-shop-on-resident-leave", false);
+            getConfig().set("config-version", 117);
+            selectedVersion = 117;
+        }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
