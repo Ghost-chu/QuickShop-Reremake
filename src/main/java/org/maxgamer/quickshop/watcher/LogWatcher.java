@@ -44,6 +44,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
+    private static final DateTimeFormatter logFileFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
     private FileWriter logFileWriter = null;
 
     private PrintWriter pw;
@@ -55,8 +56,15 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                 log.createNewFile();
             } else {
                 if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
-                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs").resolve(ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ".tar.gz");
+                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs");
                     Files.createDirectories(targetPath);
+                    //Find a available name
+                    int i = 1;
+                    do {
+                        targetPath = targetPath.resolve(ZonedDateTime.now().format(logFileFormatter) + "-" + i + ".log.gz");
+                        i++;
+                    } while (Files.exists(targetPath));
+                    Files.createFile(targetPath);
                     try (TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())))) {
                         TarArchiveEntry archiveEntry = new TarArchiveEntry(log);
                         archiveEntry.setName(log.getName());
