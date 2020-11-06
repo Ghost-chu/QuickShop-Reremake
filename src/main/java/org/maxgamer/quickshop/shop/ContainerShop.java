@@ -77,7 +77,7 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-    private final String shopPattern = "§d§o§o§r";
+    private final String shopPattern = "§d§o §r";
     private int version;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -595,6 +595,9 @@ public class ContainerShop implements Shop {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
 
         }
+        //new pattern
+        lines[1] = shopPattern + lines[1] + " ";
+
         return lines;
     }
 
@@ -850,12 +853,6 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setSignText(@NotNull String[] lines) {
-        //Update the recognize method
-        boolean updated = false;
-        if (getShopVersion() == 0) {
-            lines[1] = shopPattern + lines[1];
-            updated = true;
-        }
         for (Sign sign : this.getSigns()) {
             if (Arrays.equals(sign.getLines(), lines)) {
                 Util.debugLog("Skipped new sign text setup: Same content");
@@ -866,7 +863,8 @@ public class ContainerShop implements Shop {
             }
             sign.update(true);
         }
-        if (updated) {
+        //Update the recognize method after converted
+        if (getShopVersion() == 0) {
             setShopVersion(1);
         }
     }
