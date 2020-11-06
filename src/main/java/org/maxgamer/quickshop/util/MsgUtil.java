@@ -720,6 +720,14 @@ public class MsgUtil {
     }
 
 
+    public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull Object... args) {
+        String[] strings = new String[args.length];
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = Objects.toString(args[i]);
+        }
+        return getMessage(loc, player, strings);
+    }
+
     /**
      * getMessage in messages.yml
      *
@@ -1076,7 +1084,9 @@ public class MsgUtil {
         }
 
         builtInLang = new JSONFile(plugin, "lang/" + languageName + "/messages.json");
-
+        if (selectedVersion == 0) {
+            selectedVersion = 1;
+        }
         if (selectedVersion == 1) {
             setAndUpdate("shop-not-exist", "&cThere had no shop.");
             setAndUpdate("controlpanel.infomation", "&aShop Control Panel:");
@@ -1514,6 +1524,12 @@ public class MsgUtil {
             setAndUpdate("player-bought-from-your-store", "&c{0} purchased {1} {2} from your shop, and you earned {3}.");
             setAndUpdate("language-version", 43);
             selectedVersion = 43;
+        }
+        if (selectedVersion == 43) {
+            setAndUpdate("nearby-shop-this-way", null);
+            setAndUpdate("nearby-shop-header", "&aNearby Shop matching &b{0}&a:");
+            setAndUpdate("nearby-shop-entry", "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)");
+            setAndUpdate("language-version", ++selectedVersion);
         }
 
         messagei18n.save();

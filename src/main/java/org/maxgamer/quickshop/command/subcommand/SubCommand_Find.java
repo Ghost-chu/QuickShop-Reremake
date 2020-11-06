@@ -25,7 +25,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -33,6 +32,9 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -49,7 +51,7 @@ public class SubCommand_Find implements CommandProcesser {
             return;
         }
 
-        if (cmdArg.length < 1) {
+        if (cmdArg.length == 0) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-type-given", sender));
             return;
         }
@@ -57,16 +59,16 @@ public class SubCommand_Find implements CommandProcesser {
         final StringBuilder sb = new StringBuilder(cmdArg[0]);
 
         for (int i = 1; i < cmdArg.length; i++) {
-            sb.append(" ").append(cmdArg[i]);
+            sb.append("_").append(cmdArg[i]);
         }
 
         final String lookFor = sb.toString().toLowerCase();
         final Player p = (Player) sender;
         final Location loc = p.getEyeLocation().clone();
-        final double minDistance = plugin.getConfig().getInt("shop.find-distance");
+        final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
         double minDistanceSquared = minDistance * minDistance;
         final int chunkRadius = (int) minDistance / 16 + 1;
-        Shop closest = null;
+        List<Map.Entry<Shop, Double>> nearByShopList = new LinkedList<>();
         CompletableFuture<Chunk> future = new CompletableFuture<>();
         plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(), loc, future);
         final Chunk c;
@@ -79,6 +81,9 @@ public class SubCommand_Find implements CommandProcesser {
             asyncErr.printStackTrace();
             return;
         }
+        final int limit = plugin.getConfig().getInt("shop.finding.limit");
+
+        findingProcess:
         for (int x = -chunkRadius + c.getX(); x < chunkRadius + c.getX(); x++) {
             for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
                 final Chunk d = c.getWorld().getChunkAt(x, z);
@@ -93,32 +98,39 @@ public class SubCommand_Find implements CommandProcesser {
                         continue;
                     }
 
+                    if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
+                        continue;
+                    }
+
                     if (shop.getLocation().distanceSquared(loc) >= minDistanceSquared) {
                         continue;
                     }
 
-                    closest = shop;
                     minDistanceSquared = shop.getLocation().distanceSquared(loc);
+                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, minDistanceSquared));
+                    if (nearByShopList.size() == limit) {
+                        break findingProcess;
+                    }
                 }
             }
         }
 
-        if (closest == null) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, cmdArg[0]));
-            return;
+
+        if (nearByShopList.isEmpty()) {
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
+        } else {
+            nearByShopList.sort(Map.Entry.comparingByValue());
+            //"nearby-shop-header": "&aNearby Shop matching &b{0}&a:"
+            StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor));
+            for (Map.Entry<Shop, Double> shopDoubleEntry : nearByShopList) {
+                Shop shop = shopDoubleEntry.getKey();
+                Location location = shop.getLocation();
+                //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
+                stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue()));
+            }
+            MsgUtil.sendMessage(sender, stringBuilder.toString());
         }
 
-        final Location lookat = closest.getLocation().clone().add(0.5, 0.5, 0.5);
-        // Hack fix to make /qs find not used by /back
-        plugin
-                .getBukkitAPIWrapper()
-                .teleportEntity(
-                        p,
-                        Util.lookAt(loc, lookat).add(0, -1.62, 0),
-                        PlayerTeleportEvent.TeleportCause.PLUGIN);
-        MsgUtil.sendMessage(p,
-                MsgUtil.getMessage(
-                        "nearby-shop-this-way", sender, Integer.toString((int) Math.floor(Math.sqrt(minDistanceSquared)))));
     }
 
 }
