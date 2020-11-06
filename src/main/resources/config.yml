@@ -69,8 +69,7 @@ logging:
   #Should we log balance before and after in shop trade to Plugins\QuickShop\qs.log?
   log-balance: true
   #The target size to split large files (MB) to Plugins\QuickShop\logs folder
-  #WIP
-  file-size: 10
+  file-size: 10.0
 #Some eco plugin will caching player balance, sometime will cause insufficient balance
 #This workaround using getBalance to refresh it, but is time
 trying-fix-banlance-insuffient: false
