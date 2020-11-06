@@ -717,7 +717,8 @@ public class ContainerShop implements Shop {
         this.extra = extra;
         initDisplayItem();
         this.lastChangedAt = System.currentTimeMillis();
-        version = Integer.parseInt(extra.get(plugin.getName()).getOrDefault("version", "0"));
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     /**
