@@ -120,6 +120,10 @@
                             <pattern>com.offbytwo.jenkins</pattern>
                             <shadedPattern>org.maxgamer.quickshop.jenkins</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.compress</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.compress</shadedPattern>
+                        </relocation>
 
                     </relocations>
                     <transformers>
@@ -251,6 +255,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.20</version>
+        </dependency>
         <dependency>
             <groupId>com.griefcraft.lwc</groupId>
             <artifactId>LWCX</artifactId>

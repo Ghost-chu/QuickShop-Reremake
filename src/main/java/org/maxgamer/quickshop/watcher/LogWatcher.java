@@ -22,8 +22,8 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -56,21 +56,20 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                 log.createNewFile();
             } else {
                 if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
-                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs");
-                    Files.createDirectories(targetPath);
+                    Path logPath = plugin.getDataFolder().toPath().resolve("logs");
+                    Files.createDirectories(logPath);
                     //Find a available name
+                    Path targetPath;
                     int i = 1;
                     do {
-                        targetPath = targetPath.resolve(ZonedDateTime.now().format(logFileFormatter) + "-" + i + ".log.gz");
+                        targetPath = logPath.resolve(ZonedDateTime.now().format(logFileFormatter) + "-" + i + ".log.gz");
                         i++;
                     } while (Files.exists(targetPath));
                     Files.createFile(targetPath);
-                    try (TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())))) {
-                        TarArchiveEntry archiveEntry = new TarArchiveEntry(log);
-                        archiveEntry.setName(log.getName());
-                        archiveOutputStream.putArchiveEntry(archiveEntry);
+                    GzipParameters gzipParameters = new GzipParameters();
+                    gzipParameters.setFilename(log.getName());
+                    try (GzipCompressorOutputStream archiveOutputStream = new GzipCompressorOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())), gzipParameters)) {
                         Files.copy(log.toPath(), archiveOutputStream);
-                        archiveOutputStream.closeArchiveEntry();
                         archiveOutputStream.finish();
                         //noinspection ResultOfMethodCallIgnored
                         log.delete();
