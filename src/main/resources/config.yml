@@ -410,7 +410,7 @@ matcher:
   #0= QuickShop iftem matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= More strict matcher by Bukkit equals method
-  work-type: 1
+  work-type: 0
   #For Item
   item:
     #Plugin should check the item damage?
