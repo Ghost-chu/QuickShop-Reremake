@@ -22,15 +22,19 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -45,10 +49,26 @@ public class LogWatcher extends BukkitRunnable {
 
     public LogWatcher(QuickShop plugin, File log) {
         try {
-            //TODO:split large log files
             if (!log.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
+            } else {
+                if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
+                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs").resolve(ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "tar.gz");
+                    Files.createDirectories(targetPath);
+                    try (TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())))) {
+                        TarArchiveEntry archiveEntry = new TarArchiveEntry(log);
+                        archiveEntry.setName(log.getName());
+                        archiveOutputStream.putArchiveEntry(archiveEntry);
+                        Files.copy(log.toPath(), archiveOutputStream);
+                        archiveOutputStream.closeArchiveEntry();
+                        archiveOutputStream.finish();
+                        //noinspection ResultOfMethodCallIgnored
+                        log.delete();
+                        //noinspection ResultOfMethodCallIgnored
+                        log.createNewFile();
+                    }
+                }
             }
             logFileWriter = new FileWriter(log, true);
             pw = new PrintWriter(logFileWriter);
