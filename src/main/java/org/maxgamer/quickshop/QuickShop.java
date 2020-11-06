@@ -1686,9 +1686,8 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 116);
             selectedVersion = 116;
         }
-        if (getEnvironmentChecker().hasCustomItemSavingBug()) {
-            getLogger().warning("Force using QS Matcher due to having custom item saving bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-            getConfig().set("matcher.work-type", 0);
+        if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
+            getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
         new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))))).fix();
         saveConfig();

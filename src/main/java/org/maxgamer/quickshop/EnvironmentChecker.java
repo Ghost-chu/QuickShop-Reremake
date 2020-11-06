@@ -20,11 +20,6 @@
 package org.maxgamer.quickshop;
 
 import lombok.Getter;
-import org.bukkit.Material;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
@@ -33,7 +28,6 @@ import org.maxgamer.quickshop.util.Util;
 public class EnvironmentChecker {
     @Getter
     private final GameVersion gameVersion;
-    private boolean hasCustomItemSavingBug = false;
 
     public EnvironmentChecker(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
@@ -48,23 +42,6 @@ public class EnvironmentChecker {
         }
         if (gameVersion == GameVersion.UNKNOWN) {
             plugin.getLogger().warning("Alert: QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
-        }
-        plugin.getLogger().info("Testing Custom item saving bug...");
-        ItemStack itemStack = new ItemStack(Material.STICK);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        try {
-            itemMeta.getLore().add("§00§11§22§33§44");
-            itemStack.setItemMeta(itemMeta);
-            YamlConfiguration configuration = new YamlConfiguration();
-            if (!Util.deserialize(Util.serialize(itemStack)).isSimilar(itemStack)) {
-                hasCustomItemSavingBug = true;
-                plugin.getLogger().info("Detected Custom item saving bug!");
-            } else {
-                plugin.getLogger().info("Custom item saving bug is not detected! :D");
-            }
-        } catch (InvalidConfigurationException | NullPointerException e) {
-            plugin.getLogger().severe("Failed to detect item saving bug");
-            e.printStackTrace();
         }
 
         if (!isSpigotBasedServer(plugin)) {
@@ -96,11 +73,6 @@ public class EnvironmentChecker {
             }
         }
     }
-
-    public boolean hasCustomItemSavingBug() {
-        return hasCustomItemSavingBug;
-    }
-
     private boolean isSpigotBasedServer(@NotNull QuickShop plugin) {
         //Class checking
         if (!Util.isClassAvailable("org.spigotmc.SpigotConfig")) {
