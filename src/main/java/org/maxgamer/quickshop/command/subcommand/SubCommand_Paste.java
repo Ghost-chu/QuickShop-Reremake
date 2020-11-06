@@ -47,7 +47,7 @@ public class SubCommand_Paste implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                MsgUtil.sendMessage(sender, "Please wait, we're uploading the data to the pastebin...");
+                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();
                 String pasteResult = paste.paste(pasteText);

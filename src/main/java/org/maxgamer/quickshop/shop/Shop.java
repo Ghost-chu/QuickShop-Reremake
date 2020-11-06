@@ -166,6 +166,9 @@ public interface Shop {
 
     /**
      * Get sign texts on shop's sign.
+     *
+     * @return String arrays represents sign texts:
+     * Index | Content
      * Line 0: Header
      * Line 1: Shop Type
      * Line 2: Shop Item Name
