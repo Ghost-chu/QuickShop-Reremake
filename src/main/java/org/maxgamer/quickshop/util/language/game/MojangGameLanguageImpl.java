@@ -216,8 +216,7 @@ class GameLanguageLoadThread extends Thread {
             if ("default".equals(languageCode)) {
                 Locale locale = Locale.getDefault();
                 languageCode = locale.getLanguage() + "_" + locale.getCountry();
-            }
-            if (!languageCode.equals(cachingLanguageName)) {
+            } else if (!languageCode.equals(cachingLanguageName)) {
                 cachingLanguageName = languageCode;
                 needUpdateCache = true;
             }
@@ -227,8 +226,20 @@ class GameLanguageLoadThread extends Thread {
                 cachingServerVersion = serverVersion;
                 needUpdateCache = true;
             }
+
             if (cachingLanguageHash == null || cachingLanguageHash.isEmpty()) {
                 needUpdateCache = true;
+            } else {
+                MojangAPI mojangAPI = new MojangAPI(plugin);
+                String assetJson = mojangAPI.getAssetIndexJson(cachingServerVersion);
+                if (assetJson != null) {
+                    AssetJson versionJson = new AssetJson(assetJson);
+                    String hash = versionJson.getLanguageHash(languageCode1);
+                    if (hash != null && !hash.equals(cachingLanguageHash)) {
+                        needUpdateCache = true;
+                    }
+                }
+
             }
             if (needUpdateCache) {
                 MojangAPI mojangAPI = new MojangAPI(plugin);
@@ -274,10 +285,13 @@ class GameLanguageLoadThread extends Thread {
                     failed = true;
                 }
             }
-            yamlConfiguration.set("ver", cachingServerVersion);
-            yamlConfiguration.set("hash", cachingLanguageHash);
-            yamlConfiguration.set("lang", cachingLanguageName);
-            yamlConfiguration.save(cacheFile);
+            //Only save when success downloaded
+            if (!failed) {
+                yamlConfiguration.set("ver", cachingServerVersion);
+                yamlConfiguration.set("hash", cachingLanguageHash);
+                yamlConfiguration.set("lang", cachingLanguageName);
+                yamlConfiguration.save(cacheFile);
+            }
             String json = null;
             if (cachingLanguageHash != null) {
                 json = Util.readToString(new File(Util.getCacheFolder(), cachingLanguageHash));
