@@ -711,8 +711,8 @@ public class QuickShop extends JavaPlugin {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        if (getConfig().getInt("shop.find-distance") > 100) {
-            getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+        if (getConfig().getInt("shop.finding.distance") > 100) {
+            getLogger().severe("Shop find distance is too high! It may cause lag! Pick a number under 100!");
         }
 
         if (getConfig().getBoolean("use-caching")) {
@@ -934,7 +934,7 @@ public class QuickShop extends JavaPlugin {
             } else {
                 sneak_action = "Disabled";
             }
-            String shop_find_distance = getConfig().getString("shop.find-distance");
+            String shop_find_distance = getConfig().getString("shop.finding.distance");
             String economyType = Economy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
@@ -1691,6 +1691,12 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("integration.towny.delete-shop-on-resident-leave", false);
             getConfig().set("config-version", 117);
             selectedVersion = 117;
+        }
+        if (selectedVersion == 117) {
+            getConfig().set("shop.finding.distance", getConfig().getInt("shop.find-distance"));
+            getConfig().set("shop.finding.limit", 10);
+            getConfig().set("shop.find-distance", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
