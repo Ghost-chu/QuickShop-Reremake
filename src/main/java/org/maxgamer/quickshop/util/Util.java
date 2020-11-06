@@ -1289,11 +1289,8 @@ public class Util {
     @NotNull
     public static String readToString(@NotNull File file) {
         byte[] filecontent = new byte[(int) file.length()];
-        try {
-
-            FileInputStream in = new FileInputStream(file);
+        try (FileInputStream in = new FileInputStream(file)) {
             in.read(filecontent);
-            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
