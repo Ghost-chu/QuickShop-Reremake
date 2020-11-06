@@ -38,8 +38,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 
-public class LogWatcher extends BukkitRunnable {
+public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     private final Queue<String> logs = new ConcurrentLinkedQueue<>();
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
@@ -54,7 +55,7 @@ public class LogWatcher extends BukkitRunnable {
                 log.createNewFile();
             } else {
                 if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
-                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs").resolve(ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + "tar.gz");
+                    Path targetPath = plugin.getDataFolder().toPath().resolve("logs").resolve(ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ".tar.gz");
                     Files.createDirectories(targetPath);
                     try (TarArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(targetPath.toFile())))) {
                         TarArchiveEntry archiveEntry = new TarArchiveEntry(log);
@@ -73,11 +74,9 @@ public class LogWatcher extends BukkitRunnable {
             logFileWriter = new FileWriter(log, true);
             pw = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            plugin.getLogger().severe("Log file was not found!");
+            plugin.getLogger().log(Level.SEVERE, "Log file was not found!", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().severe("Could not create the log file!");
+            plugin.getLogger().log(Level.SEVERE, "Could not create the log file!", e);
         }
     }
 
