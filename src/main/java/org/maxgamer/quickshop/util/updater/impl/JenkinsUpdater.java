@@ -20,12 +20,15 @@
 
 package org.maxgamer.quickshop.util.updater.impl;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.BuildInfo;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.updater.QuickUpdater;
 import org.maxgamer.quickshop.util.updater.VersionType;
@@ -78,7 +81,7 @@ public class JenkinsUpdater implements QuickUpdater {
                     .expectResponseCode(200)
                     .getInputStream();
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
             return true;
         }
         BuildInfo buildInfo = new BuildInfo(inputStream);
