@@ -47,7 +47,7 @@
   "shop-has-changed": "&cSklep, z którego próbowałeś skorzystać, zmienił się od momentu kliknięcia!",
   "shop-not-exist": "&cSklep nie istnieje.",
   "nearby-shop-header": "&aNearby Shop matching &b{0}&a:",
-  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)",
+  "nearby-shop-entry": "&a- Info:{0} &aCena:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adystans: &b{5} &ablok(ów)",
   "no-nearby-shop": "&cBrak pobliskiego sklepu pasującego do {0}.",
   "buying-more-than-selling": "&cOSTRZEŻENIE: Kupujesz przedmioty za więcej niż je sprzedajesz!",
   "not-enough-space": "&cMasz tylko miejsce na {0} więcej!",
