@@ -3,7 +3,7 @@
   "translation-version": "Versão: Reremake",
   "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "41",
+  "language-version": "44",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cO preço precisa ser maior do que &e${0}",
   "no-price-change": "&cIsso não resultaria em uma alteração de preço!",
   "you-cant-afford-a-new-shop": "&cCusta {0} para criar uma nova loja.",
-  "player-bought-from-your-store-tax": "&c{0} comprou {1} {2} de sua loja, e você pagou {3} em taxas.",
+  "player-bought-from-your-store-tax": "&c{0} comprou {1} {2} da sua loja e você pagou {3} em impostos).",
   "you-cant-afford-to-change-price": "&cCusta {0} para alterar o preço na sua loja.",
   "success-created-shop": "&cShop criado.",
   "success-removed-shop": "&aLoja removida.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cVocê não pode trocar com valores negativos",
   "not-a-number": "&cVocê só pode inserir um número, sua entrada foi {0}.",
   "not-a-integer": "&cVocê deve inserir um número, sua entrada foi {0}.",
-  "player-bought-from-your-store": "&c{0} comprou {1} {2} de sua loja.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Sua loja em {0}, {1}, {2} ficou sem {3}!",
   "shop-has-no-space": "&cA loja só tem espaço para mais {0} de {1}.",
   "you-dont-have-that-many-items": "&cVocê só tem {0} de {1}.",
@@ -46,7 +46,8 @@
   "average-price-nearby": "&aPreço médio: &e{0}",
   "shop-has-changed": "&cA loja que você tentou usar mudou desde que você clicou nela!",
   "shop-not-exist": "&cNão há uma loja.",
-  "nearby-shop-this-way": "&aA loja está a {0} blocos de você.",
+  "nearby-shop-header": "&aNearby Shop matching &b{0}&a:",
+  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)",
   "no-nearby-shop": "&cNenhuma loja próxima com {0}.",
   "buying-more-than-selling": "&cCUIDADO: Você está comprando itens por mais do que os está vendendo!",
   "not-enough-space": "&cVocê só tem espaço para mais {0}!",
@@ -75,6 +76,8 @@
   "purchase-failed": "&cA compra falhou: Erro interno, entre em contato com o administrador do servidor.",
   "no-pending-action": "&cVocê não tem nenhuma ação pendente",
   "permission-denied-3rd-party": "&cPermissão negada: Plugin de terceiros [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aComprado com sucesso:",
     "successfully-sold": "&aVendido com sucesso:",
@@ -122,6 +125,7 @@
     "reloading": "&aRecarregando...",
     "cleaned": "&aRemovido &e{0}&a lojas.",
     "no-type-given": "&cUse: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUse: /qs find <amount>",
     "bulk-size-now": "&aAgora negociando &e{0}x {1}",
     "invalid-bulk-amount": "&cO valor {0} é maior que o tamanho máximo da pilha ou menor que um",
@@ -159,7 +163,8 @@
       "supercreate": "&eCria uma loja ignorando todas as verificações de proteção",
       "language": "&eAlterar o idioma atualmente utilizado",
       "removeall": "&eRemover TODAS as lojas de um jogador",
-      "transfer": "&eTransfira TODAS as lojas de alguém para outra"
+      "transfer": "&eTransfira TODAS as lojas de alguém para outra",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {

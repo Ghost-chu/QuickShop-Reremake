@@ -25,6 +25,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Objects;
 
 @AllArgsConstructor
 public class ConfigurationFixer {
@@ -47,13 +48,14 @@ public class ConfigurationFixer {
         }
         plugin.getLogger().warning("Fix - Fixing the configuration, this may take a while...");
 
-        builtInConfig.getKeys(true).forEach(key -> {
-            if (plugin.getConfig().get(key) == null || !plugin.getConfig().get(key).getClass().getTypeName().equals(builtInConfig.get(key
-            ))) {
+        for (String key : builtInConfig.getKeys(true)) {
+            Object value = plugin.getConfig().get(key);
+            Object buildInValue = builtInConfig.get(key);
+            if (value == null || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
                 plugin.getLogger().warning("Fixing configuration use default value: " + key);
-                plugin.getConfig().set(key, builtInConfig.get(key));
+                plugin.getConfig().set(key, buildInValue);
             }
-        });
+        }
         plugin.getLogger().info("QuickShop fixed the damaged parts in configuration that we can found. We recommend you restart the server and make fix apply.");
         plugin.getConfig().set("config-damaged", false);
         plugin.saveConfig();

@@ -63,9 +63,9 @@ public class SubCommand_Export implements CommandProcesser {
                         .getShopLoader()
                         .getOriginShopsInDatabase()
                         .forEach((shop -> finalReport.append(shop).append("\n")));
-                BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
-                outputStream.write(finalReport.toString());
-                outputStream.close();
+                try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+                    outputStream.write(finalReport.toString());
+                }
                 MsgUtil.sendMessage(sender, "Done.");
             }
         }.runTaskAsynchronously(plugin);

@@ -3,7 +3,7 @@
   "translation-version": "Versiune suport: Reproducere",
   "translation-contributors": "Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601",
   "translation-country": "Zona de Limbă: Engleză (ro_US)",
-  "language-version": "41",
+  "language-version": "44",
   "not-looking-at-shop": "&cNu am putut gasi un magazin. Trebuie sa te uiti la unul.",
   "no-anythings-in-your-hand": "&cNu este nimic in mana.",
   "no-permission": "&cNu ai permisiunea să faci asta.\".",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cPretul trebuie sa fie mai mare decat${0}",
   "no-price-change": "&cAceasta nu ar duce la o schimbare de pret!",
   "you-cant-afford-a-new-shop": "&cCrearea unui magazin nou costa {0}.",
-  "player-bought-from-your-store-tax": "&c{0} a cumparat {1} {2} de la magazinul tau si ai plătit {3} din impozite.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cSchimbarea pretului magazinului tau costa {0}.",
   "success-created-shop": "&cMagazin creat.",
   "success-removed-shop": "&aMagazin eliminat.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cNu poti tranzacționa sume negative",
   "not-a-number": "&cPoti sa introduci doar un numar, intrarea ta a fost {0}.",
   "not-a-integer": "&cTrebuie sa introduci un numar, intrarea ta a fost de {0}.",
-  "player-bought-from-your-store": "&c{0} a cumparat {1} {2} din magazinul tau.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Magazinul tau la {0}, {1}, {2} a expirat din {3}!",
   "shop-has-no-space": "&cMagazinul are loc doar pentru {0} inca {1}.",
   "you-dont-have-that-many-items": "&cAi doar {0} {1}.",
@@ -46,7 +46,8 @@
   "average-price-nearby": "&aPret mediu apropiat: &e{0}",
   "shop-has-changed": "&cMagazinul pe care ai incercat sa il folosesti s-a schimbat de cand ai apasat pe el!",
   "shop-not-exist": "&cNu exista magazin.",
-  "nearby-shop-this-way": "&aMagazinul este la {0} blocuri distanţă de tine.",
+  "nearby-shop-header": "&aNearby Shop matching &b{0}&a:",
+  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)",
   "no-nearby-shop": "&cNiciun magazin din apropiere nu se potriveste cu {0}.",
   "buying-more-than-selling": "&cATENTIE: Cumpari articole pentru mai mult decat le vindeti!",
   "not-enough-space": "&cMagazinul are loc doar pentru {0} inca!",
@@ -75,6 +76,8 @@
   "purchase-failed": "&cPurchase failed: Internal Error. Please contact the Server Administrator.",
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
@@ -122,6 +125,7 @@
     "reloading": "&aReloading...",
     "cleaned": "&aA eliminat &{0} magazine.",
     "no-type-given": "&fFoloseste /qs gaseste <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&fFoloseste marimea /qs size <amount>",
     "bulk-size-now": "&aAcum tranzacționarea &e{0}x {1}",
     "invalid-bulk-amount": "&cValoarea data {0} este mai mare decat dimensiunea maxima a stivei sau mai mica decat una",
@@ -159,7 +163,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {

@@ -23,7 +23,6 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -68,35 +67,6 @@ public class SubCommand_SuperCreate implements CommandProcesser {
 
             if (!Util.canBeShop(b)) {
                 continue;
-            }
-
-            BlockFace blockFace;
-
-            try {
-                blockFace = p.getFacing();
-            } catch (Exception throwable) {//FIXME: Update this when drop 1.13 supports
-                blockFace = Util.getYawFace(p.getLocation().getYaw());
-            }
-
-            if (!plugin.getShopManager().canBuildShop(p, b, blockFace)) {
-                // As of the new checking system, most plugins will tell the
-                // player why they can't create a shop there.
-                // So telling them a message would cause spam etc.
-                Util.debugLog("Util report you can't build shop there.");
-                return;
-            }
-
-            if (Util.getSecondHalf(b) != null
-                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("no-double-chests", sender));
-                return;
-            }
-
-            if (Util.isBlacklisted(item)
-                    && !QuickShop.getPermissionManager()
-                    .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("blacklisted-item", sender));
-                return;
             }
 
             if (cmdArg.length >= 1) {
