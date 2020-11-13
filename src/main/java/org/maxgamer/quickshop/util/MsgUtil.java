@@ -1062,7 +1062,6 @@ public class MsgUtil {
     }
 
     @SneakyThrows
-    @SuppressWarnings("UnusedAssignment")
     private static void updateMessages(int selectedVersion) {
         String languageName = plugin.getConfig().getString("language", "en");
         if (!messagei18n.getString("language-name").isPresent()) {

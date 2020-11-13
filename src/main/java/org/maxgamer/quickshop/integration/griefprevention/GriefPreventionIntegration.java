@@ -20,7 +20,7 @@ public class GriefPreventionIntegration implements IntegratedPlugin {
     private final List<Flag> createLimits = new ArrayList<>(3);
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;
-    GriefPrevention griefPrevention = GriefPrevention.instance;
+    final GriefPrevention griefPrevention = GriefPrevention.instance;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         ConfigurationSection configurationSection = plugin.getConfig();
