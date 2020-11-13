@@ -45,6 +45,7 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
+import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
 import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationHolder;
 import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
@@ -65,10 +66,13 @@ import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.watcher.*;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -96,6 +100,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
+    boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
     /**
@@ -107,11 +112,6 @@ public class QuickShop extends JavaPlugin {
     private BootError bootError;
     @Getter
     private CommandManager commandManager;
-    /**
-     * The database for storing all our data for persistence
-     */
-    @Getter
-    private Database database;
     /**
      * Contains all SQL tasks
      */
@@ -157,118 +157,92 @@ public class QuickShop extends JavaPlugin {
     @Nullable
     @Getter
     private LogWatcher logWatcher;
-
     /**
      * bStats, good helper for metrics.
      */
     private Metrics metrics;
-
     /**
      * The plugin OpenInv (null if not present)
      */
     @Getter
     private Plugin openInvPlugin;
-
     /**
      * The plugin PlaceHolderAPI(null if not present)
      */
     @Getter
     private Plugin placeHolderAPI;
-
     /**
      * A util to call to check some actions permission
      */
     @Getter
     private PermissionChecker permissionChecker;
-
     /**
      * Whether we players are charged a fee to change the price on their shop (To help deter endless
      * undercutting
      */
     @Getter
     private boolean priceChangeRequiresFee = false;
-
     /**
      * The error reporter to help devs report errors to Sentry.io
      */
     @Getter
     private SentryErrorReporter sentryErrorReporter;
-
     /**
      * The server UniqueID, use to the ErrorReporter
      */
     @Getter
     private UUID serverUniqueID;
-
     private boolean setupDBonEnableding = false;
-
     /**
      * Rewrited shoploader, more faster.
      */
     @Getter
     private ShopLoader shopLoader;
-
     /**
      * The Shop Manager used to store shops
      */
     @Getter
     private ShopManager shopManager;
-
     @Getter
     private SyncTaskWatcher syncTaskWatcher;
-
     // private ShopVaildWatcher shopVaildWatcher;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
-
     @Getter
     private OngoingFeeWatcher ongoingFeeWatcher;
-
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
-
     @Getter
     private ShopContainerWatcher shopContainerWatcher;
-
     @Getter
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
-
     @Getter
     private BukkitAPIWrapper bukkitAPIWrapper;
-
     @Getter
     private boolean enabledAsyncDisplayDespawn;
-
     @Getter
     private String previewProtectionLore;
-
     @Getter
     private Plugin blockHubPlugin;
-
     @Getter
     private Plugin lwcPlugin;
-
     @Getter
     private Cache shopCache;
-
     @Getter
     private boolean allowStack;
-
     @Getter
-    private RuntimeCatcher runtimeCatcher;
-
+    private EnvironmentChecker environmentChecker;
     @Getter
     @Nullable
     private UpdateWatcher updateWatcher;
+    @Getter
+    private BuildInfo buildInfo;
 
     @NotNull
     public static QuickShop getInstance() {
         return instance;
     }
-
-    @Getter
-    private BuildInfo buildInfo;
 
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
@@ -505,7 +479,7 @@ public class QuickShop extends JavaPlugin {
             logWatcher = null;
         }
     }
-    boolean onLoadCalled = false;
+
     /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
@@ -564,16 +538,6 @@ public class QuickShop extends JavaPlugin {
             // ignore, we didn't care that
         }
 
-        Util.debugLog("Unregistering tasks...");
-        // if (itemWatcherTask != null)
-        //    itemWatcherTask.cancel();
-        if (logWatcher != null) {
-            logWatcher.close(); // Closes the file
-        }
-        /* Unload UpdateWatcher */
-        if (this.updateWatcher != null) {
-            this.updateWatcher.uninit();
-        }
         Util.debugLog("Cleaning up resources and unloading all shops...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
@@ -584,15 +548,23 @@ public class QuickShop extends JavaPlugin {
         if (this.getDatabaseManager() != null) {
             this.getDatabaseManager().unInit();
         }
-        /* Close Database */
-        if (database != null) {
-            this.database.close();
-        }
+
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
         this.compatibilityTool.clear();
         new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+
+        Util.debugLog("Unregistering tasks...");
+        // if (itemWatcherTask != null)
+        //    itemWatcherTask.cancel();
+        if (logWatcher != null) {
+            logWatcher.close(); // Closes the file
+        }
+        /* Unload UpdateWatcher */
+        if (this.updateWatcher != null) {
+            this.updateWatcher.uninit();
+        }
 
         Util.debugLog("Cleanup tasks...");
         try {
@@ -626,7 +598,7 @@ public class QuickShop extends JavaPlugin {
 
         /* Check the running envs is support or not. */
         try {
-            runtimeCatcher = new RuntimeCatcher(this);
+            environmentChecker = new EnvironmentChecker(this);
         } catch (RuntimeException e) {
             bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions
@@ -639,10 +611,26 @@ public class QuickShop extends JavaPlugin {
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
+        /*
+        Form https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        The copyDefaults option changes the behavior of Configuration's save method.
+        By default, the defaults of the configuration will not be written to the target save file.
+        If set to true, it will write out the default values, to the target file.
+        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
+        ==========================================================================================================================
         getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
-        // getConfig().options().copyDefaults(true);
+        */
+        getConfig().options().copyHeader(false).header(
+                "=================================\n" +
+                        "=    QuickShop  Configuration   =\n" +
+                        "=================================\n" +
+                        "\nNotes:" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n"
+        );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
@@ -717,8 +705,8 @@ public class QuickShop extends JavaPlugin {
                 limits.put(key, limitCfg.getInt(key));
             }
         }
-        if (getConfig().getInt("shop.find-distance") > 100) {
-            getLogger().severe("Shop.find-distance is too high! It may cause lag! Pick a number under 100!");
+        if (getConfig().getInt("shop.finding.distance") > 100) {
+            getLogger().severe("Shop find distance is too high! It may cause lag! Pick a number under 100!");
         }
 
         if (getConfig().getBoolean("use-caching")) {
@@ -849,6 +837,12 @@ public class QuickShop extends JavaPlugin {
                 this.integrationHelper.register(new LandsIntegration(this));
             }
         }
+        if (getConfig().getBoolean("integration.griefprevention.enable")) {
+            Plugin griefPrevention = Bukkit.getPluginManager().getPlugin("GriefPrevention");
+            if (griefPrevention != null && griefPrevention.isEnabled()) {
+                this.integrationHelper.register(new GriefPreventionIntegration(this));
+            }
+        }
     }
 
     /**
@@ -859,7 +853,7 @@ public class QuickShop extends JavaPlugin {
     private boolean setupDatabase() {
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-            DatabaseCore dbCore;
+            AbstractDatabaseCore dbCore;
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
@@ -877,11 +871,10 @@ public class QuickShop extends JavaPlugin {
                 // SQLite database - Doing this handles file creation
                 dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
             }
-            this.database = new Database(ServiceInjector.getDatabaseCore(dbCore));
-            this.databaseManager = new DatabaseManager(this, this.database);
+            this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new DatabaseHelper(this, this.database, this.databaseManager);
-        } catch (Database.ConnectionException e) {
+            this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
+        } catch (DatabaseManager.ConnectionException e) {
             e.printStackTrace();
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
@@ -935,7 +928,7 @@ public class QuickShop extends JavaPlugin {
             } else {
                 sneak_action = "Disabled";
             }
-            String shop_find_distance = getConfig().getString("shop.find-distance");
+            String shop_find_distance = getConfig().getString("shop.finding.distance");
             String economyType = Economy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
@@ -945,7 +938,7 @@ public class QuickShop extends JavaPlugin {
             String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
             String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
             String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-            String databaseType = this.getDatabase().getCore().getName();
+            String databaseType = this.getDatabaseManager().getDatabase().getName();
             String displayType = DisplayItem.getNowUsing().name();
             String itemMatcherType = this.getItemMatcher().getName();
             String useStackItem = String.valueOf(this.isAllowStack());
@@ -977,12 +970,6 @@ public class QuickShop extends JavaPlugin {
 
 
     private void updateConfig(int selectedVersion) {
-        //fixConfiguration();
-        GameVersion gameVersion = getRuntimeCatcher().getGameVersion();
-        if (gameVersion == GameVersion.v1_16_R1 || gameVersion == GameVersion.v1_16_R2 || gameVersion == GameVersion.UNKNOWN) {
-            getLogger().warning("Force using QS Matcher due to a spigot bug: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-            getConfig().set("matcher.work-type", 0);
-        }
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
@@ -1679,16 +1666,47 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("config-version", 114);
             selectedVersion = 114;
         }
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("config.yml")))).fix();
+        if (selectedVersion == 114) {
+            getConfig().set("shop.interact.interact-mode", getConfig().getBoolean("shop.interact.switch-mode") ? 0 : 1);
+            getConfig().set("shop.interact.switch-mode", null);
+            getConfig().set("config-version", 115);
+            selectedVersion = 115;
+        }
+        if (selectedVersion == 115) {
+            getConfig().set("integration.griefprevention.enable", false);
+            getConfig().set("integration.griefprevention.whitelist-mode", false);
+            getConfig().set("integration.griefprevention.create", new ArrayList<>(0));
+            getConfig().set("integration.griefprevention.trade", new ArrayList<>(0));
+            getConfig().set("config-version", 116);
+            selectedVersion = 116;
+        }
+        if (selectedVersion == 116) {
+            getConfig().set("shop.sending-stock-message-to-staffs", false);
+            getConfig().set("integration.towny.delete-shop-on-resident-leave", false);
+            getConfig().set("config-version", 117);
+            selectedVersion = 117;
+        }
+        if (selectedVersion == 117) {
+            getConfig().set("shop.finding.distance", getConfig().getInt("shop.find-distance"));
+            getConfig().set("shop.finding.limit", 10);
+            getConfig().set("shop.find-distance", null);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
+            getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
+        }
+
+        InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))));
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+
         saveConfig();
         reloadConfig();
-        File file = new File(getDataFolder(), "example.config.yml");
-        //noinspection ResultOfMethodCallIgnored
-        file.delete();
+
+        Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
         try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), file.toPath());
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
-            getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
+            getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
     }
 

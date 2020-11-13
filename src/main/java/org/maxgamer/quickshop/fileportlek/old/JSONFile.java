@@ -20,13 +20,16 @@
 
 package org.maxgamer.quickshop.fileportlek.old;
 
+import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.nonquickshopstuff.com.dumbtruckman.JsonConfiguration.JSONConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 
 public class JSONFile extends FileEnvelope {
 
@@ -48,9 +51,15 @@ public class JSONFile extends FileEnvelope {
 
     @Override
     public void reload() {
-        fileConfiguration = JSONConfiguration.loadConfiguration(file);
+        fileConfiguration = JsonConfiguration.loadConfiguration(file);
         if (loadDefault) {
-            fileConfiguration.setDefaults(JSONConfiguration.loadConfiguration(new InputStreamReader(getInputStream(), StandardCharsets.UTF_8)));
+            try {
+                JsonConfiguration defaultConfig = new JsonConfiguration();
+                defaultConfig.load(new InputStreamReader(getInputStream(), StandardCharsets.UTF_8));
+                fileConfiguration.setDefaults(defaultConfig);
+            } catch (IOException | InvalidConfigurationException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not load json file " + resourcePath, e);
+            }
         }
     }
 

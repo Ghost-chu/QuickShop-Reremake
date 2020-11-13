@@ -1,5 +1,6 @@
 /*
  * This file is a part of project QuickShop, the name is MySQLCore.java
+ *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -24,18 +25,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class MySQLCore implements DatabaseCore {
+public class MySQLCore extends AbstractDatabaseCore {
 
     private static final int MAX_CONNECTIONS = 8;
-    private final List<Connection> POOL = new ArrayList<>();
+    private final List<DatabaseConnection> POOL = new ArrayList<>();
     /**
      * The connection properties... user, pass, autoReconnect..
      */
@@ -71,47 +70,22 @@ public class MySQLCore implements DatabaseCore {
     }
 
     @Override
-    public void close() {
-        try {
-            for (Connection connection : POOL) {
-                if (connection == null || connection.isClosed()) {
-                    continue;
-                }
-                if (!connection.getAutoCommit()) {
-                    connection.commit();
-                }
-                connection.close();
+    void close() {
+        for (DatabaseConnection databaseConnection : POOL) {
+            if (databaseConnection == null || !databaseConnection.isValid()) {
+                continue;
             }
-        } catch (SQLException ignored) {
-        }
-        // Nothing, because queries are executed immediately for MySQL
-    }
-
-    @Override
-    public void flush() {
-        // Nothing, because queries are executed immediately for MySQL
-    }
-
-    @Override
-    public void queue(@NotNull BufferStatement bs) {
-        try {
-
-            Connection con = this.getConnection();
-            while (con == null) {
+            if (!databaseConnection.isUsing()) {
+                databaseConnection.close();
+            } else {
+                //Wait until the connection is finished
                 try {
-                    Thread.sleep(15);
-                } catch (InterruptedException e) {
-                    // ignore
+                    Thread.sleep(2000);
+                } catch (InterruptedException ignored) {
+                } finally {
+                    close();
                 }
-                // Try again
-                con = this.getConnection();
             }
-
-            PreparedStatement ps = bs.prepareStatement(con);
-            ps.execute();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -122,24 +96,36 @@ public class MySQLCore implements DatabaseCore {
      */
     @Nullable
     @Override
-    public Connection getConnection() {
+    DatabaseConnection getConnection() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
-            Connection connection = POOL.get(i);
-            try {
-                // If we have a current connection, fetch it
-                if (connection != null && !connection.isClosed() && connection.isValid(10)) {
+            DatabaseConnection connection = POOL.get(i);
+            // If we have a current connection, fetch it
+            if (connection == null) {
+                return genConnection(i);
+            } else if (!connection.isUsing()) {
+                if (connection.isValid()) {
                     return connection;
-                    // Else, it is invalid, so we return another connection.
+                } else {
+                    // Else, it is invalid, return another connection.
+                    connection.close();
+                    return genConnection(i);
                 }
-                connection = DriverManager.getConnection(this.url, info);
-
-                POOL.set(i, connection);
-                return connection;
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+
         }
-        return null;
+        //If all connection is unusable, wait a moment
+        waitForConnection();
+        return getConnection();
+    }
+
+    private DatabaseConnection genConnection(int index) {
+        try {
+            DatabaseConnection connection = new DatabaseConnection(DriverManager.getConnection(this.url, info));
+            POOL.set(index, connection);
+            return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to create a new connection", e);
+        }
     }
 
     @Override

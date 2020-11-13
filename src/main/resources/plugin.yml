@@ -1,5 +1,5 @@
-name: ${name}
-main: ${package}.${name}
+name: ${project.name}
+main: ${package}.${project.name}
 version: ${project.version}
 authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
 
@@ -26,6 +26,7 @@ softdepend:
   - LWC
   - BlockHub
   - Lands
+  - GriefPrevention
 
 api-version: 1.13
 
@@ -146,4 +147,7 @@ permissions:
     default: op
   quickshop.removeall:
     description: Permission to use /qs removeall
+    default: op
+  quickshop.removeworld:
+    description: Permission to us /qs removeworld
     default: op

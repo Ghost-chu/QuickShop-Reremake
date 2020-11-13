@@ -57,6 +57,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
 
     private final QuickShop plugin;
     private boolean whiteList;
+    private boolean load = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
         this.plugin = plugin;
@@ -64,6 +65,9 @@ public class WorldGuardIntegration implements IntegratedPlugin {
 
     @Override
     public void load() {
+        if (load) {
+            return;
+        }
         this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
         this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
         createFlags =
@@ -82,10 +86,19 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         } catch (FlagConflictException | IllegalStateException e) {
             e.printStackTrace();
         }
+        load = true;
     }
 
     @Override
     public void unload() {
+        load = false;
+    }
+
+    private void checkIfLoaded() {
+        if (!load) {
+            load();
+            Util.debugLog(getName() + " Integration not loaded, loading...");
+        }
     }
 
     @Override
@@ -95,6 +108,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        checkIfLoaded();
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
         boolean canBypass =
@@ -152,6 +166,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        checkIfLoaded();
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
         com.sk89q.worldedit.util.Location wgLoc = BukkitAdapter.adapt(location);
         boolean canBypass =

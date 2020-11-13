@@ -47,7 +47,7 @@ public class SubCommand_Paste implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
-                MsgUtil.sendMessage(sender, "Please wait, we're uploading the data to the pastebin...");
+                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();
                 String pasteResult = paste.paste(pasteText);
@@ -64,10 +64,10 @@ public class SubCommand_Paste implements CommandProcesser {
                         boolean createResult = file.createNewFile();
                         Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
 
-                        FileWriter fwriter = new FileWriter(file);
-                        fwriter.write(pasteText);
-                        fwriter.flush();
-                        fwriter.close();
+                        try (FileWriter fwriter = new FileWriter(file)) {
+                            fwriter.write(pasteText);
+                            fwriter.flush();
+                        }
                         MsgUtil.sendMessage(sender, "Paste was saved to your server at: " + file.getAbsolutePath());
                     } catch (IOException e) {
                         plugin.getSentryErrorReporter().ignoreThrow();

@@ -50,6 +50,8 @@ public enum GameVersion {
     v1_15_R2(true, true, true),
     v1_16_R1(true, true, true),
     v1_16_R2(true, true, true),
+    v1_16_R3(true, true, true),
+    v1_16_R4(true, true, true),
     UNKNOWN(true, true, true);
     private final boolean coreSupports;
     private final boolean virtualDisplaySupports;

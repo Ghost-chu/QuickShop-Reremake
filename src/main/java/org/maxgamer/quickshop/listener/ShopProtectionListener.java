@@ -43,7 +43,6 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
 
-@SuppressWarnings("DuplicatedCode")
 public class ShopProtectionListener extends ProtectionListenerBase {
 
     private final boolean useEnhanceProtection;
