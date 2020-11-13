@@ -37,6 +37,7 @@ public abstract class AbstractDatabaseCore {
             lock.unlock();
         } catch (InterruptedException e) {
             getPlugin().getLogger().log(Level.SEVERE, "Exception when waiting new database connection", e);
+            Thread.currentThread().interrupt();
         }
     }
 
