@@ -33,7 +33,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.AbstractMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -68,7 +68,7 @@ public class SubCommand_Find implements CommandProcesser {
         final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
         double minDistanceSquared = minDistance * minDistance;
         final int chunkRadius = (int) minDistance / 16 + 1;
-        List<Map.Entry<Shop, Double>> nearByShopList = new LinkedList<>();
+        List<Map.Entry<Shop, Double>> nearByShopList = new ArrayList<>();
         CompletableFuture<Chunk> future = new CompletableFuture<>();
         plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(), loc, future);
         final Chunk c;
