@@ -13,7 +13,6 @@ import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
@@ -31,7 +30,7 @@ public class GriefPreventionIntegration implements IntegratedPlugin {
     }
 
     private List<Flag> toFlags(List<String> flags) {
-        List<Flag> result = new LinkedList<>();
+        List<Flag> result = new ArrayList<>(3);
         for (String flagStr : flags) {
             Flag flag = Flag.getFlag(flagStr);
             if (flag != null) {
