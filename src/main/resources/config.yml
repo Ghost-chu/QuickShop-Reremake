@@ -90,6 +90,7 @@ disabled-metrics: false
 updater: true
 
 #Should QS be allowed to auto report errors to the author?
+#It will also create a paste for data-recovery or debug when server boot up
 auto-report-errors: true
 
 #Should QS use OfflinePlayer list for TabComplete?
