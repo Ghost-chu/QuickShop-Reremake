@@ -71,6 +71,8 @@ public class SentryErrorReporter {
 
     private String lastPaste = "Failed to paste.";
 
+    private volatile static String bootPaste = null;
+
     public SentryErrorReporter(@NotNull QuickShop plugin) {
         try {
             this.plugin = plugin;
@@ -117,16 +119,21 @@ public class SentryErrorReporter {
                 unit();
                 return;
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Paste paste = new Paste(plugin);
-                    lastPaste = paste.paste(paste.genNewPaste(), 1);
-                    if (lastPaste != null) {
-                        plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+            if (bootPaste == null) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Paste paste = new Paste(plugin);
+                        lastPaste = paste.paste(paste.genNewPaste(), 1);
+                        if (lastPaste != null) {
+                            bootPaste = lastPaste;
+                            plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+                        }
                     }
-                }
-            }.runTaskAsynchronously(plugin);
+                }.runTaskAsynchronously(plugin);
+            } else {
+                plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
+            }
         } catch (Exception th) {
             plugin.getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             plugin.getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
