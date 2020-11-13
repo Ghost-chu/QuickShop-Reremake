@@ -97,7 +97,7 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     private void checkIfLoaded() {
         if (!load) {
             load();
-            plugin.getLogger().info(ChatColor.GREEN + getName() + " Integration not loaded, loading...");
+            Util.debugLog(getName() + " Integration not loaded, loading...");
         }
     }
 
