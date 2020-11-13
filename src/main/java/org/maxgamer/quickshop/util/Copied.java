@@ -39,17 +39,14 @@ public class Copied implements Consumer<InputStream> {
 
     @Override
     public void accept(@NotNull InputStream inputStream) {
-        try {
-            OutputStream out = new FileOutputStream(file);
+        try (OutputStream out = new FileOutputStream(file);
+             InputStream autoClosedInputStream = inputStream) {
             final byte[] buf = new byte[1024];
             int len;
 
-            while ((len = inputStream.read(buf)) > 0) {
+            while ((len = autoClosedInputStream.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
-
-            out.close();
-            inputStream.close();
         } catch (Exception exception) {
             throw new IllegalStateException(exception);
         }

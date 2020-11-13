@@ -144,9 +144,9 @@ public class JenkinsUpdater implements QuickUpdater {
             throw new IOException("Failed to get QuickShop Jar File.");
         }
 
-        OutputStream outputStream = new FileOutputStream(quickshop, false);
-        outputStream.write(bytes);
-        outputStream.flush();
-        outputStream.close();
+        try (OutputStream outputStream = new FileOutputStream(quickshop, false)) {
+            outputStream.write(bytes);
+            outputStream.flush();
+        }
     }
 }

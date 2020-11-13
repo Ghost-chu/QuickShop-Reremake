@@ -746,12 +746,8 @@ public class Util {
      */
     @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
-        try {
-
-            InputStream in = new FileInputStream(filePath);
-            byte[] data = toByteArray(in);
-            in.close();
-            return data;
+        try (InputStream in = new FileInputStream(filePath)) {
+            return toByteArray(in);
         } catch (IOException e) {
             return null;
         }
