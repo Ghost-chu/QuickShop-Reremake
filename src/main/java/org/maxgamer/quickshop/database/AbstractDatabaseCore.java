@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 
 public abstract class AbstractDatabaseCore {
     private final ReentrantLock lock = new ReentrantLock(true);
@@ -34,7 +35,8 @@ public abstract class AbstractDatabaseCore {
             lock.lock();
             conditionLock.await();
             lock.unlock();
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException e) {
+            getPlugin().getLogger().log(Level.SEVERE, "Exception when waiting new database connection", e);
         }
     }
 
