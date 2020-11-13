@@ -310,15 +310,12 @@ public class HttpRequest implements Closeable {
      * @throws InterruptedException on interruption
      */
     public HttpRequest saveContent(File file) throws IOException, InterruptedException {
-        Closer closer = Closer.create();
 
-        try {
+        try (Closer closer = Closer.create()) {
             FileOutputStream fos = closer.register(new FileOutputStream(file));
             BufferedOutputStream bos = closer.register(new BufferedOutputStream(fos));
 
             saveContent(bos);
-        } finally {
-            closer.close();
         }
 
         return this;
@@ -446,7 +443,7 @@ public class HttpRequest implements Closeable {
     /**
      * Used to buffer the response in memory.
      */
-    public class BufferedResponse {
+    public static class BufferedResponse {
         private final byte[] data;
 
         private BufferedResponse(byte[] data) {
@@ -482,16 +479,13 @@ public class HttpRequest implements Closeable {
          * @throws InterruptedException on interruption
          */
         public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
-            Closer closer = Closer.create();
-            file.getParentFile().mkdirs();
 
-            try {
+            try (Closer closer = Closer.create()) {
+                file.getParentFile().mkdirs();
                 FileOutputStream fos = closer.register(new FileOutputStream(file));
                 BufferedOutputStream bos = closer.register(new BufferedOutputStream(fos));
 
                 saveContent(bos);
-            } finally {
-                closer.close();
             }
 
             return this;
