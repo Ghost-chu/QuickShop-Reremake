@@ -66,10 +66,13 @@ import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.watcher.*;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -97,6 +100,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
+    boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
     /**
@@ -153,118 +157,92 @@ public class QuickShop extends JavaPlugin {
     @Nullable
     @Getter
     private LogWatcher logWatcher;
-
     /**
      * bStats, good helper for metrics.
      */
     private Metrics metrics;
-
     /**
      * The plugin OpenInv (null if not present)
      */
     @Getter
     private Plugin openInvPlugin;
-
     /**
      * The plugin PlaceHolderAPI(null if not present)
      */
     @Getter
     private Plugin placeHolderAPI;
-
     /**
      * A util to call to check some actions permission
      */
     @Getter
     private PermissionChecker permissionChecker;
-
     /**
      * Whether we players are charged a fee to change the price on their shop (To help deter endless
      * undercutting
      */
     @Getter
     private boolean priceChangeRequiresFee = false;
-
     /**
      * The error reporter to help devs report errors to Sentry.io
      */
     @Getter
     private SentryErrorReporter sentryErrorReporter;
-
     /**
      * The server UniqueID, use to the ErrorReporter
      */
     @Getter
     private UUID serverUniqueID;
-
     private boolean setupDBonEnableding = false;
-
     /**
      * Rewrited shoploader, more faster.
      */
     @Getter
     private ShopLoader shopLoader;
-
     /**
      * The Shop Manager used to store shops
      */
     @Getter
     private ShopManager shopManager;
-
     @Getter
     private SyncTaskWatcher syncTaskWatcher;
-
     // private ShopVaildWatcher shopVaildWatcher;
     @Getter
     private DisplayAutoDespawnWatcher displayAutoDespawnWatcher;
-
     @Getter
     private OngoingFeeWatcher ongoingFeeWatcher;
-
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
-
     @Getter
     private ShopContainerWatcher shopContainerWatcher;
-
     @Getter
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
-
     @Getter
     private BukkitAPIWrapper bukkitAPIWrapper;
-
     @Getter
     private boolean enabledAsyncDisplayDespawn;
-
     @Getter
     private String previewProtectionLore;
-
     @Getter
     private Plugin blockHubPlugin;
-
     @Getter
     private Plugin lwcPlugin;
-
     @Getter
     private Cache shopCache;
-
     @Getter
     private boolean allowStack;
-
     @Getter
     private EnvironmentChecker environmentChecker;
-
     @Getter
     @Nullable
     private UpdateWatcher updateWatcher;
+    @Getter
+    private BuildInfo buildInfo;
 
     @NotNull
     public static QuickShop getInstance() {
         return instance;
     }
-
-    @Getter
-    private BuildInfo buildInfo;
 
     /**
      * Returns QS version, this method only exist on QSRR forks If running other QSRR forks,, result
@@ -501,7 +479,7 @@ public class QuickShop extends JavaPlugin {
             logWatcher = null;
         }
     }
-    boolean onLoadCalled = false;
+
     /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
@@ -633,10 +611,26 @@ public class QuickShop extends JavaPlugin {
         /* Process the config */
         saveDefaultConfig();
         reloadConfig();
+        /*
+        Form https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        The copyDefaults option changes the behavior of Configuration's save method.
+        By default, the defaults of the configuration will not be written to the target save file.
+        If set to true, it will write out the default values, to the target file.
+        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
+        ==========================================================================================================================
         getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
         saveDefaultConfig();
         reloadConfig();
-        // getConfig().options().copyDefaults(true);
+        */
+        getConfig().options().copyHeader(false).header(
+                "=================================\n" +
+                        "=    QuickShop  Configuration   =\n" +
+                        "=================================\n" +
+                        "\nNotes:" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n"
+        );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
@@ -1701,16 +1695,18 @@ public class QuickShop extends JavaPlugin {
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
-        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getResource("config.yml"))))).fix();
+
+        InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))));
+        new ConfigurationFixer(this, YamlConfiguration.loadConfiguration(buildInConfigReader)).fix();
+
         saveConfig();
         reloadConfig();
-        File file = new File(getDataFolder(), "example.config.yml");
-        //noinspection ResultOfMethodCallIgnored
-        file.delete();
+
+        Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
         try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), file.toPath());
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
-            getLogger().warning("Error on spawning the example config file: " + ioe.getMessage());
+            getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
     }
 
