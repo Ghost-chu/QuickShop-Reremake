@@ -25,11 +25,11 @@ import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
-public class RuntimeCatcher {
+public class EnvironmentChecker {
     @Getter
     private final GameVersion gameVersion;
 
-    public RuntimeCatcher(@NotNull QuickShop plugin) {
+    public EnvironmentChecker(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
         gameVersion = GameVersion.get(nmsVersion);
         if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
@@ -51,11 +51,11 @@ public class RuntimeCatcher {
         if (isForgeBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
             plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
-            try {
-                Thread.sleep(300000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //try {
+            //    //Thread.sleep(300000);
+            //} catch (InterruptedException e) {
+            //    e.printStackTrace();
+            //}
         }
         if (isFabricBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
@@ -73,7 +73,6 @@ public class RuntimeCatcher {
             }
         }
     }
-
     private boolean isSpigotBasedServer(@NotNull QuickShop plugin) {
         //Class checking
         if (!Util.isClassAvailable("org.spigotmc.SpigotConfig")) {

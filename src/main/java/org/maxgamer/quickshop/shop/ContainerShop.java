@@ -77,58 +77,24 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
+    private final String shopPattern = "§d§o §r";
+    private int version;
 
     private ContainerShop(@NotNull ContainerShop s) {
-        this.displayItem = s.displayItem;
         this.shopType = s.shopType;
-        this.item = s.item;
-        this.location = s.location;
+        this.item = s.item.clone();
+        this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
-        this.moderator = s.moderator;
+        this.moderator = s.moderator.clone();
         this.price = s.price;
         this.isLoaded = s.isLoaded;
-        this.lastChangedAt = System.currentTimeMillis();
         this.isDeleted = s.isDeleted;
         this.createBackup = s.createBackup;
         this.extra = s.extra;
-    }
-
-    /**
-     * Adds a new shop.
-     *
-     * @param location  The location of the chest block
-     * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
-     * @param moderator The modertators
-     * @param type      The shop type
-     * @param unlimited The unlimited
-     * @param plugin    The plugin instance
-     * @param extra     The extra data saved by addon
-     */
-    public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
-        this.location = location;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = plugin;
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
-        }
-        this.shopType = type;
-        this.unlimited = unlimited;
-        this.extra = extra;
-        initDisplayItem();
+        this.version = s.version;
         this.lastChangedAt = System.currentTimeMillis();
+        initDisplayItem();
     }
 
     private void initDisplayItem() {
@@ -147,7 +113,7 @@ public class ContainerShop implements Shop {
                     break;
                 case VIRTUALITEM:
                     try {
-                        if (!plugin.getRuntimeCatcher().getGameVersion().isVirtualDisplaySupports()) {
+                        if (!plugin.getEnvironmentChecker().getGameVersion().isVirtualDisplaySupports()) {
                             throw new IllegalStateException("Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);
@@ -570,14 +536,8 @@ public class ContainerShop implements Shop {
         }
     }
 
-    /**
-     * Updates signs attached to the shop
-     */
     @Override
-    public void setSignText() {
-        if (!Util.isLoaded(this.location)) {
-            return;
-        }
+    public String[] getSignText() {
         String[] lines = new String[4];
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
@@ -635,7 +595,21 @@ public class ContainerShop implements Shop {
             lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
 
         }
-        this.setSignText(lines);
+        //new pattern
+        lines[1] = shopPattern + lines[1] + " ";
+
+        return lines;
+    }
+
+    /**
+     * Updates signs attached to the shop
+     */
+    @Override
+    public void setSignText() {
+        if (!Util.isLoaded(this.location)) {
+            return;
+        }
+        this.setSignText(getSignText());
     }
 
     /**
@@ -712,22 +686,42 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Changes all lines of text on a sign near the shop
+     * Adds a new shop.
      *
-     * @param lines The array of lines to change. Index is line number.
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
+     * @param moderator The modertators
+     * @param type      The shop type
+     * @param unlimited The unlimited
+     * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
      */
-    @Override
-    public void setSignText(@NotNull String[] lines) {
-        for (Sign sign : this.getSigns()) {
-            if (Arrays.equals(sign.getLines(), lines)) {
-                Util.debugLog("Skipped new sign text setup: Same content");
-                continue;
-            }
-            for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i]);
-            }
-            sign.update(true);
+    public ContainerShop(
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull Map<String, Map<String, String>> extra) {
+        this.location = location;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = plugin;
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
         }
+        this.shopType = type;
+        this.unlimited = unlimited;
+        this.extra = extra;
+        initDisplayItem();
+        this.lastChangedAt = System.currentTimeMillis();
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     /**
@@ -853,6 +847,46 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Changes all lines of text on a sign near the shop
+     *
+     * @param lines The array of lines to change. Index is line number.
+     */
+    @Override
+    public void setSignText(@NotNull String[] lines) {
+        for (Sign sign : this.getSigns()) {
+            if (Arrays.equals(sign.getLines(), lines)) {
+                Util.debugLog("Skipped new sign text setup: Same content");
+                continue;
+            }
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+            sign.update(true);
+        }
+        //Update the recognize method after converted
+        if (getShopVersion() == 0) {
+            setShopVersion(1);
+        }
+    }
+
+    /**
+     * Return the shop version
+     * Mostly is internal use
+     *
+     * @return shop version
+     */
+    public int getShopVersion() {
+        return version;
+    }
+
+    public void setShopVersion(int ver) {
+        version = ver;
+        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        extraMap.put("version", Integer.toString(ver));
+        extra.put(plugin.getName(), extraMap);
+    }
+
+    /**
      * Returns a list of signs that are attached to this shop (QuickShop and blank signs only)
      *
      * @return a list of signs that are attached to this shop (QuickShop and blank signs only)
@@ -868,14 +902,8 @@ public class ContainerShop implements Shop {
         blocks[1] = location.getBlock().getRelative(BlockFace.NORTH);
         blocks[2] = location.getBlock().getRelative(BlockFace.SOUTH);
         blocks[3] = location.getBlock().getRelative(BlockFace.WEST);
-        String adminShopHeader =
-                MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
-        String signHeaderUsername =
-                MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
         for (Block b : blocks) {
             if (b == null) {
-                Util.debugLog("Null signs in the queue, skipping");
                 continue;
             }
 
@@ -887,15 +915,26 @@ public class ContainerShop implements Shop {
             }
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
-            String header = lines[0];
             if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
                 continue;
             }
-            if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
-                signs.add(sign);
-                //TEXT SIGN
-                //continue
+            String header = lines[0];
+            if (getShopVersion() == 0) {
+                String adminShopHeader =
+                        MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+                String signHeaderUsername =
+                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+                    signs.add(sign);
+                    //TEXT SIGN
+                    //continue
+                }
+            } else {
+                if (lines[1].startsWith(shopPattern)) {
+                    signs.add(sign);
+                }
             }
             //Empty or matching the header
         }

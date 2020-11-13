@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.util;
 
-import com.google.common.io.Files;
 import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -55,6 +54,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -68,6 +68,7 @@ public class Util {
             new EnumMap<>(Material.class);
 
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
+    private static int bypassedCustomStackSize = -1;
 
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
@@ -109,7 +110,7 @@ public class Util {
      * @return The result for backup
      */
     public static boolean backupDatabase() {
-        if (plugin.getDatabase().getCore() instanceof MySQLCore) {
+        if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
             return true; // Backup and logs by MySQL
         }
         File dataFolder = plugin.getDataFolder();
@@ -121,7 +122,7 @@ public class Util {
         String uuid = UUID.randomUUID().toString().replaceAll("_", "");
         File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
         try {
-            Files.copy(sqlfile, bksqlfile);
+            Files.copy(sqlfile.toPath(), bksqlfile.toPath());
         } catch (Exception e1) {
             e1.printStackTrace();
             plugin.getLogger().warning("Failed to backup the database.");
@@ -228,7 +229,7 @@ public class Util {
      * @return Game StackSize or Custom
      */
     public static int getItemMaxStackSize(@NotNull Material material) {
-        return customStackSize.getOrDefault(material, material.getMaxStackSize());
+        return customStackSize.getOrDefault(material, bypassedCustomStackSize == -1 ? material.getMaxStackSize() : bypassedCustomStackSize);
     }
 
     /**
@@ -716,6 +717,9 @@ public class Util {
                 continue;
             }
 
+            if (data[0].equalsIgnoreCase("*")) {
+                bypassedCustomStackSize = Integer.parseInt(data[1]);
+            }
             Material mat = Material.matchMaterial(data[0]);
             if (mat == null || mat == Material.AIR) {
                 plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
@@ -731,6 +735,7 @@ public class Util {
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
+        InteractUtil.init();
     }
 
     /**
@@ -741,12 +746,8 @@ public class Util {
      */
     @Nullable
     public static byte[] inputStream2ByteArray(@NotNull String filePath) {
-        try {
-
-            InputStream in = new FileInputStream(filePath);
-            byte[] data = toByteArray(in);
-            in.close();
-            return data;
+        try (InputStream in = new FileInputStream(filePath)) {
+            return toByteArray(in);
         } catch (IOException e) {
             return null;
         }
@@ -1284,11 +1285,8 @@ public class Util {
     @NotNull
     public static String readToString(@NotNull File file) {
         byte[] filecontent = new byte[(int) file.length()];
-        try {
-
-            FileInputStream in = new FileInputStream(file);
+        try (FileInputStream in = new FileInputStream(file)) {
             in.read(filecontent);
-            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

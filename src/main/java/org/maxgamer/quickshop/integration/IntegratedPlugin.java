@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 @IntegrationStage
 public interface IntegratedPlugin {
+
     /**
      * Return the integrated plugin name.
      * For example, Residence

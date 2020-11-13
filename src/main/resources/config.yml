@@ -1,7 +1,10 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+#This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
+
 
 #Do not touch if you not clear know about this
-config-version: 114
+config-version: 118
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -69,8 +72,7 @@ logging:
   #Should we log balance before and after in shop trade to Plugins\QuickShop\qs.log?
   log-balance: true
   #The target size to split large files (MB) to Plugins\QuickShop\logs folder
-  #WIP
-  file-size: 10
+  file-size: 10.0
 #Some eco plugin will caching player balance, sometime will cause insufficient balance
 #This workaround using getBalance to refresh it, but is time
 trying-fix-banlance-insuffient: false
@@ -88,6 +90,7 @@ disabled-metrics: false
 updater: true
 
 #Should QS be allowed to auto report errors to the author?
+#It will also create a paste for data-recovery or debug when server boot up
 auto-report-errors: true
 
 #Should QS use OfflinePlayer list for TabComplete?
@@ -178,7 +181,8 @@ shop:
   cost: 10
   #Should we refund the player when their shops are deleted/removed/broken?
   refund: false
-
+  #Should we send stock message to staffs?
+  sending-stock-message-to-staffs: false
   #Should we disable trading for creative mode?
   disable-creative-mode-trading: false
   #Should we disable super tool?(It's a tool which allow you break shop in creative mode by gold axe)
@@ -199,11 +203,11 @@ shop:
 
   #Interact options
   interact:
-    #If you enable this and not enable below options
-    #You MUST not to sneak to use the shop function
-    #But if you disable this and not enable below options
-    #whether you are sneaking or not, you can always use the shop function
-    switch-mode: false
+    #Interact mode
+    #0=Only mode, Only can interact with sneak or normal interact
+    #1=Both mode, interact with sneak (if enabled) and normal interact will do
+    #2=Reversed mode, disable interact with sneak if you enable blow option
+    interact-mode: 0
     sneak-to-create: false
     sneak-to-trade: false
     sneak-to-control: false
@@ -243,10 +247,14 @@ shop:
   #Use enhance shop protect
   enchance-shop-protect: false
 
-  #When someone uses /qs find <item>, how far should we search in blocks?
+  #/qs find <itemName> command options
   #This command lets users shop quickly without wasting time searching
-  #Settings > 100 WILL cause lag. Don't do it, or don't cry when your server lags.
-  find-distance: 45
+  finding:
+    #How far should we search in blocks?
+    #Over 100 will cause LAG. Don't do it, or don't cry when your server lagging.
+    distance: 45
+    #How many nearby shop should be displayed?
+    limit: 10
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'
@@ -410,7 +418,7 @@ matcher:
   #0= QuickShop iftem matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= More strict matcher by Bukkit equals method
-  work-type: 1
+  work-type: 0
   #For Item
   item:
     #Plugin should check the item damage?
@@ -480,6 +488,7 @@ integration:
     #MODIFY = Player must have ability to build at the target plot.
     #SHOPTYPE = Player must create the shop on SHOP type plot.
     trade: []
+    delete-shop-on-resident-leave: false
   #WorldGuard Integration Component
   #CHANGE NEEDS RESTART THE SERVER
   #CHANGE NEEDS RESTART THE SERVER
@@ -530,11 +539,34 @@ integration:
     #Should we delete the shop in the land when the shop owner lose the permission
     #in this land?
     delete-on-lose-permission: false
+  griefprevention:
+    enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
+    whitelist-mode: false
+    #If a player want to create a shop, player must pass which checks?
+    #You can use multi checks in the same time.
+    #Priority: UP to DOWN
+    #
+    #Avaliable field:
+    #BUILD = Player must have ability to build at the target claim.
+    #CONTAINER_ACCESS = Player must can access container.
+    #ACCESS = Player must have ability to access the target claim.
+    create:
+      - CONTAINER_ACCESS
+    #If a player want to trade with a shop, player must pass which checks?
+    #You can use multi checks in same time.
+    #Priority: UP to DOWN
+    #
+    #Avaliable field:
+    #BUILD = Player must have ability to build at the target claim.
+    #CONTAINER_ACCESS = Player must can access container.
+    #ACCESS = Player must have ability to access the target claim.
+    trade: [ ]
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: true
-      #If a player want to create a shop, player must pass which checks?
+    #If a player want to create a shop, player must pass which checks?
     #You can use multi checks in the same time.
     #Priority: UP to DOWN
     #
@@ -586,15 +618,21 @@ integration:
         own: false
         warzone: false
         #Player must have flags in the faction:
-      flags: []
+      flags: [ ]
 #the protection that shop should check
 protect:
   explode: true
   hopper: true
   entity: true
 #This option allow you custom item max stacksize.
+# (* means all item, if not match all stacksize options then will use it)
+# Example:
+#
+#custom-item-stacksize:
+# - "*:128"
 # - STONE:128
-custom-item-stacksize: []
+#
+custom-item-stacksize: [ ]
 
 debug:
   #Should we disable debug logger?

@@ -3,7 +3,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "41",
+  "language-version": "44",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cCena musí být větší než &e${0}",
   "no-price-change": "&cThis wouldn't result in a price change!",
   "you-cant-afford-a-new-shop": "&cCena založení nového obchodu je {0}.",
-  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you paid {3} in taxes.",
+  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cCena za změnu ceny ve tvém obchodě je {0}.",
   "success-created-shop": "&cObchod vytvořen.",
   "success-removed-shop": "&aObchod odstraněn.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cDerp, nemůžeš obchodovat se zápornými částkami",
   "not-a-number": "&cMůžete zadat pouze číslo, váš vstup byl {0}.",
   "not-a-integer": "&cMůžete zadat pouze číslo, váš vstup byl {0}.",
-  "player-bought-from-your-store": "&c{0} koupeno {1} {2} z vašeho obchodu.",
+  "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Your shop at {0}, {1}, {2} has run out of {3}!",
   "shop-has-no-space": "&cObchod má pouze místo pro {0} více {1}.",
   "you-dont-have-that-many-items": "&cMáš pouze {0} {1}.",
@@ -46,7 +46,8 @@
   "average-price-nearby": "&aNearby average price: &e{0}",
   "shop-has-changed": "&cThe shop you tried to use has changed since you clicked it!",
   "shop-not-exist": "&cThere is no shop.",
-  "nearby-shop-this-way": "&aShop is {0} blocks away from you.",
+  "nearby-shop-header": "&aNearby Shop matching &b{0}&a:",
+  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)",
   "no-nearby-shop": "&cNo nearby shop matching {0}.",
   "buying-more-than-selling": "&cWARNING: You are buying items for more than you are selling them!",
   "not-enough-space": "&cYou only have room for {0} more!",
@@ -75,6 +76,8 @@
   "purchase-failed": "&cPurchase failed: Internal Error. Please contact the Server Administrator.",
   "no-pending-action": "&cYou do not have any pending actions",
   "permission-denied-3rd-party": "&cPermission denied: 3rd Party Plugin [{0}].",
+  "shops-removed-in-world": "&eTotal &b{0}&e shops has been deleted in world &b{1}&e.",
+  "world-not-exists": "&cThe world &e{0}&c not exists",
   "menu": {
     "successful-purchase": "&aSuccessfully purchased:",
     "successfully-sold": "&aSuccessfully sold:",
@@ -122,6 +125,7 @@
     "reloading": "&aReloadování...",
     "cleaned": "&aRemoved &e{0}&a shops.",
     "no-type-given": "&cUsage: /qs find <item>",
+    "no-world-given": "&cPlease specify a world name",
     "bulk-size-not-set": "&cUsage: /qs size <amount>",
     "bulk-size-now": "&aNow trading &e{0}x {1}",
     "invalid-bulk-amount": "&cThe given value {0} is larger than max stack size or lower than one",
@@ -159,7 +163,8 @@
       "supercreate": "&eCreate a shop while bypassing all protection checks",
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
-      "transfer": "&eTransfer someone's ALL shops to other"
+      "transfer": "&eTransfer someone's ALL shops to other",
+      "removeworld": "&eRemove ALL shops in a specified world"
     }
   },
   "signs": {

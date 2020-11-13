@@ -3,7 +3,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "41",
+  "language-version": "44",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta mot en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -20,7 +20,7 @@
   "price-too-cheap": "&cPriset måste vara högre än &e${0}",
   "no-price-change": "&cDetta skulle inte resultera i en prisändring!",
   "you-cant-afford-a-new-shop": "&cDet kostar {0} att skapa en ny butik.",
-  "player-bought-from-your-store-tax": "&c{0} köpte {1} {2} från din butik och du betalade {3} i skatt.",
+  "player-bought-from-your-store-tax": "&c{0} köpte {1} {2} från din butik, du tjänade {3} ({4} i skatt).",
   "you-cant-afford-to-change-price": "&cDet kostar {0} att ändra priset i din butik.",
   "success-created-shop": "&cButik skapad.",
   "success-removed-shop": "&aButik borttagen.",
@@ -32,7 +32,7 @@
   "negative-amount": "&cYou kan inte handla med negativa belopp",
   "not-a-number": "&cDu kan bara ange ett nummer, din inmatning var {0}.",
   "not-a-integer": "&cDu kan ange ett nummer, din inmatning var {0}.",
-  "player-bought-from-your-store": "&c{0} köpte {1} {2} från din butik.",
+  "player-bought-from-your-store": "&c{0} köpte {1} {2} från din butik, och du tjänade {3}.",
   "shop-out-of-stock": "&5Din butik vid {0}, {1}, {2} har fått slut på {3}!",
   "shop-has-no-space": "&cButiken har endast plats för {0} fler {1}.",
   "you-dont-have-that-many-items": "&cDu har endast {0} {1}.",
@@ -46,7 +46,8 @@
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
   "shop-not-exist": "&cDet finns ingen butik.",
-  "nearby-shop-this-way": "&aButiken är {0} block från dig.",
+  "nearby-shop-header": "&aNärliggande butik som matchar &b{0}&a:",
+  "nearby-shop-entry": "&a- Info:{0} &aPris:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistans: &b{5} &ablock",
   "no-nearby-shop": "&cIngen butik som matchar {0} i närheten.",
   "buying-more-than-selling": "&cVARNING: Du köper föremål för mer än du säljer dem!",
   "not-enough-space": "&cDu har bara plats för {0} mer!",
@@ -75,6 +76,8 @@
   "purchase-failed": "&cKöpet misslyckades: Internt fel. Kontakta serveradministratören.",
   "no-pending-action": "&cDu har inga väntande transaktioner",
   "permission-denied-3rd-party": "&cTillstånd nekat: tredje parts plugin [{0}].",
+  "shops-removed-in-world": "&eTotalt &b{0}&e butiker har tagits bort i världen &b{1}&e.",
+  "world-not-exists": "&cVärlden &e{0}&c finns inte",
   "menu": {
     "successful-purchase": "&aFramgångsrikt köpt:",
     "successfully-sold": "&aFramgångsrikt sålt:",
@@ -122,6 +125,7 @@
     "reloading": "&aLaddar om...",
     "cleaned": "&aTog bort &{0}&a butiker.",
     "no-type-given": "&cKommando: /qs find <föremål>",
+    "no-world-given": "&cVar god ange ett världsnamn",
     "bulk-size-not-set": "&cKommando: /qs size <antal>",
     "bulk-size-now": "&aByter nu &e{0}x {1}",
     "invalid-bulk-amount": "&cDet angivna värdet {0} är större än max eller lägre än ett",
@@ -159,7 +163,8 @@
       "supercreate": "&eSkapa en butik genom att kringgå alla skyddskontroller",
       "language": "&eÄndra det språk som används för nuvarande",
       "removeall": "&eTa bort alla butiker från en angiven spelare",
-      "transfer": "&eÖverför alla butiker från en spelare till en annan"
+      "transfer": "&eÖverför alla butiker från en spelare till en annan",
+      "removeworld": "&eTa bort ALLA butiker i angiven värld"
     }
   },
   "signs": {
