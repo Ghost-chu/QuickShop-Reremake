@@ -64,10 +64,10 @@ public class SubCommand_Paste implements CommandProcesser {
                         boolean createResult = file.createNewFile();
                         Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
 
-                        FileWriter fwriter = new FileWriter(file);
-                        fwriter.write(pasteText);
-                        fwriter.flush();
-                        fwriter.close();
+                        try (FileWriter fwriter = new FileWriter(file)) {
+                            fwriter.write(pasteText);
+                            fwriter.flush();
+                        }
                         MsgUtil.sendMessage(sender, "Paste was saved to your server at: " + file.getAbsolutePath());
                     } catch (IOException e) {
                         plugin.getSentryErrorReporter().ignoreThrow();
