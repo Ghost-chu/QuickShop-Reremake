@@ -49,12 +49,8 @@ public class SQLiteCore extends AbstractDatabaseCore {
             }
         } else {
             //Wait until the connection is finished
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ignored) {
-            } finally {
-                close();
-            }
+            waitForConnection();
+            close();
         }
     }
 
