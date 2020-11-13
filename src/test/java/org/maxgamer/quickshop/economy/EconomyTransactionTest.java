@@ -36,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EconomyTransactionTest {
 
 
-    static EconomyCore economy = new TestEconomy();
-    static UUID taxAccount = UUID.randomUUID();
+    static final EconomyCore economy = new TestEconomy();
+    static final UUID taxAccount = UUID.randomUUID();
 
     static {
         economy.getBalance(taxAccount);
@@ -106,7 +106,7 @@ public class EconomyTransactionTest {
 
     static class TestEconomy implements EconomyCore {
 
-        Map<UUID, Double> playerBalanceMap = new HashMap<>(10);
+        final Map<UUID, Double> playerBalanceMap = new HashMap<>(10);
 
         private Double getOrCreateAccount(UUID uuid) {
             if (!playerBalanceMap.containsKey(uuid)) {
