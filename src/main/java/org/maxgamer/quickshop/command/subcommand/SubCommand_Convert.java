@@ -19,12 +19,12 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -36,10 +36,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
-@AllArgsConstructor
+
 public class SubCommand_Convert implements CommandProcesser {
     private final QuickShop plugin;
+    private volatile boolean running;
+
+    public SubCommand_Convert(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Accept the onCommand, it will call when have Command Event cmdArg not contains
@@ -63,6 +69,10 @@ public class SubCommand_Convert implements CommandProcesser {
             sender.sendMessage(ChatColor.RED + "Please select you want convert to: mysql or sqlite");
             return;
         }
+        if (running) {
+            sender.sendMessage(ChatColor.RED + "Convert command is running,Please wait until it finished!");
+            return;
+        }
         if (cmdArg[0].equalsIgnoreCase("mysql")) {
             if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
                 sender.sendMessage(ChatColor.RED + "Please switch to SQLite before converting to MySQL.");
@@ -75,24 +85,49 @@ public class SubCommand_Convert implements CommandProcesser {
             String port = dbCfg.getString("port");
             String databaseStr = dbCfg.getString("database");
             boolean useSSL = dbCfg.getBoolean("usessl");
-            AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
-            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
-            sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
-            databaseManager.unInit();
-            sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
-
+            running = true;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        AbstractDatabaseCore dbCore = new MySQLCore(plugin, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(databaseStr, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                        DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), dbCore);
+                        sender.sendMessage(ChatColor.GREEN + "Converting...");
+                        transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+                        databaseManager.unInit();
+                        sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to mysql to apply changes.");
+                    } catch (Exception e) {
+                        sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
+                        plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                    } finally {
+                        running = false;
+                    }
+                }
+            }.runTaskAsynchronously(plugin);
         } else if (cmdArg[0].equalsIgnoreCase("sqlite")) {
             if (plugin.getDatabaseManager().getDatabase() instanceof SQLiteCore) {
                 sender.sendMessage(ChatColor.GREEN + "Please switch to MySQL before converting to SQLite.");
                 return;
             }
-            AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
-            DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
-            sender.sendMessage(ChatColor.GREEN + "Converting...");
-            this.transferShops(new DatabaseHelper(plugin, databaseManager), sender);
-            databaseManager.unInit();
-            sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
+            running = true;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        AbstractDatabaseCore core = new SQLiteCore(plugin, new File(plugin.getDataFolder(), "shops.db"));
+                        DatabaseManager databaseManager = new DatabaseManager(QuickShop.getInstance(), core);
+                        sender.sendMessage(ChatColor.GREEN + "Converting...");
+                        transferShops(new DatabaseHelper(plugin, databaseManager), sender);
+                        databaseManager.unInit();
+                        sender.sendMessage(ChatColor.GREEN + "All done, please edit config.yml to sqlite to apply changes.");
+                    } catch (Exception e) {
+                        sender.sendMessage(ChatColor.RED + "Error when converting database, Please check your console.");
+                        plugin.getServer().getLogger().log(Level.SEVERE, "Error when converting database", e);
+                    } finally {
+                        running = false;
+                    }
+                }
+            }.runTaskAsynchronously(plugin);
 
         } else {
             sender.sendMessage(ChatColor.RED + "Wrong type! Only can be mysql or sqlite");

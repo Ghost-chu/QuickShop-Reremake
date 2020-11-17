@@ -111,6 +111,7 @@ public class BlockListener extends ProtectionListenerBase {
             }
 
             //shop.onUnload();
+
             plugin.log("Deleting shop " + shop + " request by block break.");
             shop.delete();
             MsgUtil.sendMessage(p, MsgUtil.getMessage("success-removed-shop", p));
