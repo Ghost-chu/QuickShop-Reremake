@@ -4,7 +4,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 public class QSReloadEvent extends QSEvent {
 
-    QuickShop instance;
+    private final QuickShop instance;
 
     /**
      * Called when Quickshop plugin reloaded
