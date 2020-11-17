@@ -77,7 +77,8 @@ public class ContainerShop implements Shop {
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-    private final String shopPattern = "§d§o §r";
+    private static final String shopSignPrefix = "§d§o §r";
+    private static final String shopSignPattern = "§d§o ";
     private int version;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -596,7 +597,7 @@ public class ContainerShop implements Shop {
 
         }
         //new pattern
-        lines[1] = shopPattern + lines[1] + " ";
+        lines[1] = shopSignPrefix + lines[1] + " ";
 
         return lines;
     }
@@ -932,9 +933,10 @@ public class ContainerShop implements Shop {
                     //continue
                 }
             } else {
-                if (lines[1].startsWith(shopPattern)) {
+                if (lines[1].startsWith(shopSignPattern)) {
                     signs.add(sign);
                 }
+
             }
             //Empty or matching the header
         }
