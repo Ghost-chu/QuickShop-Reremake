@@ -100,10 +100,11 @@ public class SubCommand_Find implements CommandProcesser {
                         }
                     }
 
-                    if (shop.getLocation().distanceSquared(loc) >= minDistanceSquared) {
+                    double distance = shop.getLocation().distanceSquared(loc);
+                    if (distance >= minDistanceSquared) {
                         continue;
                     }
-                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, minDistanceSquared));
+                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, distance));
                     if (nearByShopList.size() == limit) {
                         break findingProcess;
                     }

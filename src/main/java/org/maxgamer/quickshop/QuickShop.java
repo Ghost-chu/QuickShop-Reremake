@@ -43,6 +43,7 @@ import org.maxgamer.quickshop.builtinlistener.InternalListener;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
+import org.maxgamer.quickshop.event.QSReloadEvent;
 import org.maxgamer.quickshop.integration.IntegrateStage;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
@@ -238,6 +239,8 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
+
+    private static boolean loaded = false;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -804,6 +807,11 @@ public class QuickShop extends JavaPlugin {
                 submitMeritcs();
             }
         }.runTask(this);
+        if (loaded) {
+            getServer().getPluginManager().callEvent(new QSReloadEvent(this));
+        } else {
+            loaded = true;
+        }
     }
 
     private void registerIntegrations() {
