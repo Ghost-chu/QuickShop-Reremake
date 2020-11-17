@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -39,10 +38,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
-@AllArgsConstructor
+
 public class SubCommand_Convert implements CommandProcesser {
     private final QuickShop plugin;
     private volatile boolean running;
+
+    public SubCommand_Convert(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Accept the onCommand, it will call when have Command Event cmdArg not contains
