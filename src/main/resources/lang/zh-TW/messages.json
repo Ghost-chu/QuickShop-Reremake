@@ -14,7 +14,7 @@
   "trading-in-creative-mode-is-disabled": "&c您不能在創造模式下使用商店交易。",
   "supertool-is-disabled": "&c超級工具已經被關閉，現在已經不能使用超級工具破壞任何商店。",
   "no-double-chests": "&c您沒有權限創建大型儲物箱商店。",
-  "not-managed-shop": "&c您不是該商店的店主或員工。",
+  "not-managed-shop": "你沒有權限管理此商店",
   "shop-already-owned": "&c這已經是一個商店了。",
   "chest-was-removed": "&c儲物箱已經被移除。",
   "price-too-cheap": "&c價格必須大於 &e${0}",
