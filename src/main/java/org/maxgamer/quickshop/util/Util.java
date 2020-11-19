@@ -735,7 +735,7 @@ public class Util {
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
-        InteractUtil.init();
+        InteractUtil.init(plugin.getConfig());
     }
 
     /**
