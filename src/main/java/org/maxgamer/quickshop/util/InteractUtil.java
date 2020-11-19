@@ -18,7 +18,7 @@
  */
 package org.maxgamer.quickshop.util;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.util.EnumMap;
@@ -34,8 +34,7 @@ public class InteractUtil {
     private static Mode mode;
     private static boolean init;
 
-    public static void init() {
-        FileConfiguration configuration = QuickShop.getInstance().getConfig();
+    public static void init(ConfigurationSection configuration) {
         mode = Mode.getMode(configuration.getInt("shop.interact.interact-mode", 0));
         sneakingActionMap.put(Action.CREATE, configuration.getBoolean("shop.interact.sneak-to-create"));
         sneakingActionMap.put(Action.TRADE, configuration.getBoolean("shop.interact.sneak-to-trade"));
@@ -52,15 +51,15 @@ public class InteractUtil {
      */
     public static boolean check(Action action, boolean isSneaking) {
         if (!init) {
-            init();
+            init(QuickShop.getInstance().getConfig());
         }
         //Hopefully some coders can read this
         boolean sneakAllowed = sneakingActionMap.get(action);
         switch (mode) {
             case ONLY:
-                return sneakAllowed && isSneaking;
+                return sneakAllowed == isSneaking;
             case BOTH:
-                return !isSneaking || sneakAllowed;
+                return sneakAllowed || !isSneaking;
             case REVERSED:
                 return !isSneaking || !sneakAllowed;
             default:

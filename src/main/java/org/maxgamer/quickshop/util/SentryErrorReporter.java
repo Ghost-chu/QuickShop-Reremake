@@ -59,10 +59,10 @@ public class SentryErrorReporter {
             , InvalidPluginException.class
             , UnsupportedClassVersionError.class
             , LinkageError.class);
-    private Context context;
-    private QuickShop plugin;
+    private final Context context;
+    private final QuickShop plugin;
     /* Pre-init it if it called before the we create it... */
-    private SentryClient sentryClient;
+    private final SentryClient sentryClient;
     private boolean disable;
     @Getter
     private boolean enabled;
@@ -74,7 +74,6 @@ public class SentryErrorReporter {
     private volatile static String bootPaste = null;
 
     public SentryErrorReporter(@NotNull QuickShop plugin) {
-        try {
             this.plugin = plugin;
             // sentryClient = Sentry.init(dsn);
             Util.debugLog("Loading SentryErrorReporter");
@@ -113,12 +112,6 @@ public class SentryErrorReporter {
             Logger.getGlobal().setFilter(new GlobalExceptionFilter());
 
             Util.debugLog("Sentry error reporter success loaded.");
-            enabled = true;
-            if (!plugin.getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Sentry error report was disabled, unloading...");
-                unit();
-                return;
-            }
             if (bootPaste == null) {
                 new BukkitRunnable() {
                     @Override
@@ -134,11 +127,7 @@ public class SentryErrorReporter {
             } else {
                 plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
             }
-        } catch (Exception th) {
-            plugin.getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
-            plugin.getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
-            this.disable = true;
-        }
+        enabled = true;
     }
 
     private String getPluginInfo() {
