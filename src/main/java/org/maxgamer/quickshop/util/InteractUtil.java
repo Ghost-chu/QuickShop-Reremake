@@ -58,7 +58,7 @@ public class InteractUtil {
         boolean sneakAllowed = sneakingActionMap.get(action);
         switch (mode) {
             case ONLY:
-                return sneakAllowed && isSneaking;
+                return sneakAllowed == isSneaking;
             case BOTH:
                 return !isSneaking || sneakAllowed;
             case REVERSED:
