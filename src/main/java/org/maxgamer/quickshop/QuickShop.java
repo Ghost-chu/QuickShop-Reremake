@@ -648,7 +648,16 @@ public class QuickShop extends JavaPlugin {
         metrics = new Metrics(this, 3320);
         //noinspection ConstantConditions
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
-        sentryErrorReporter = new SentryErrorReporter(this);
+        try {
+            if (!getConfig().getBoolean("auto-report-errors")) {
+                Util.debugLog("Sentry error report was disabled!");
+            } else {
+                sentryErrorReporter = new SentryErrorReporter(this);
+            }
+        } catch (Throwable th) {
+            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+            getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
+        }
         bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
