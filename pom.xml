@@ -111,6 +111,10 @@
                         <relocation>
                             <pattern>io.sentry</pattern>
                             <shadedPattern>org.maxgamer.quickshop.sentry</shadedPattern>
+                            <includes>
+                                <include>io.sentry.*</include>
+                                <include>org.maxgamer.quickshop.util.SentryErrorReporter</include>
+                            </includes>
                         </relocation>
                         <relocation>
                             <pattern>com.dumptruckman.bukkit.configuration</pattern>
