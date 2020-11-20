@@ -27,6 +27,7 @@ public class DatabaseConnection implements AutoCloseable {
 
     public synchronized void close() {
         try {
+            markUsing();
             Connection connection = get();
             if (!connection.isClosed()) {
                 if (!connection.getAutoCommit()) {
@@ -61,6 +62,8 @@ public class DatabaseConnection implements AutoCloseable {
         if (using) {
             using = false;
             databaseCore.signalForNewConnection();
+        } else {
+            throw new ConnectionIsNotUsingException();
         }
     }
 
