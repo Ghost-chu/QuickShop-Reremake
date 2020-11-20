@@ -55,14 +55,8 @@ public class SQLiteCore extends AbstractDatabaseCore {
     }
 
 
-    /**
-     * Gets the database connection for executing queries on.
-     *
-     * @return The database connection
-     */
-    @Nullable
     @Override
-    synchronized DatabaseConnection getConnection() {
+    synchronized protected DatabaseConnection getConnection0() {
         if (this.connection == null) {
             return connection = genConnection();
         }

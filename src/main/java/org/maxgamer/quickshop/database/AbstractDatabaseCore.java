@@ -49,7 +49,19 @@ public abstract class AbstractDatabaseCore {
 
     abstract void close();
 
-    abstract DatabaseConnection getConnection();
+    /**
+     * Gets the database connection for executing queries on.
+     *
+     * @return The database connection
+     */
+    @NotNull
+    synchronized DatabaseConnection getConnection() {
+        DatabaseConnection databaseConnection = getConnection0();
+        databaseConnection.markUsing();
+        return databaseConnection;
+    }
+
+    abstract protected DatabaseConnection getConnection0();
 
     abstract public @NotNull String getName();
 

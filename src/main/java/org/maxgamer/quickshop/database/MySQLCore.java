@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.database;
 
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.sql.DriverManager;
@@ -89,14 +88,7 @@ public class MySQLCore extends AbstractDatabaseCore {
         }
     }
 
-    /**
-     * Gets the database connection for executing queries on.
-     *
-     * @return The database connection
-     */
-    @Nullable
-    @Override
-    synchronized DatabaseConnection getConnection() {
+    synchronized protected DatabaseConnection getConnection0() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             DatabaseConnection connection = POOL.get(i);
             // If we have a current connection, fetch it

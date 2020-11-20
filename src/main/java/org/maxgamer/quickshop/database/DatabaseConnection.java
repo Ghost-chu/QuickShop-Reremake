@@ -41,12 +41,19 @@ public class DatabaseConnection implements AutoCloseable {
     }
 
 
-    public synchronized Connection get() {
+    synchronized void markUsing() {
         if (!using) {
             using = true;
-            return connection;
         } else {
             throw new ConnectionIsUsingException();
+        }
+    }
+
+    public synchronized Connection get() {
+        if (using) {
+            return connection;
+        } else {
+            throw new ConnectionIsNotUsingException();
         }
     }
 
@@ -62,5 +69,8 @@ public class DatabaseConnection implements AutoCloseable {
     }
 
     public static class ConnectionIsUsingException extends IllegalStateException {
+    }
+
+    public static class ConnectionIsNotUsingException extends IllegalStateException {
     }
 }
