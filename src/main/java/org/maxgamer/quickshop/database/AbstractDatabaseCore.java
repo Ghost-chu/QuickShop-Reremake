@@ -52,7 +52,7 @@ public abstract class AbstractDatabaseCore {
     /**
      * Gets the database connection for executing queries on.
      *
-     * @return The database connection
+     * @return The database connection, PLEASE MAKE SURE USING DatabaseConnection#release to CLOSE THE CONNECTION
      */
     @NotNull
     synchronized DatabaseConnection getConnection() {
