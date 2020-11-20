@@ -154,7 +154,7 @@ public class DatabaseManager {
     /**
      * Internal method, runTasks in queue.
      */
-    private void runTask() { // synchronized for QUICKSHOP-WX
+    private synchronized void runTask() { // synchronized for QUICKSHOP-WX
         synchronized (sqlQueue) {
             if (sqlQueue.isEmpty()) {
                 return;

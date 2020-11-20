@@ -107,7 +107,7 @@ public class MySQLCore extends AbstractDatabaseCore {
         }
         //If all connection is unusable, wait a moment
         waitForConnection();
-        return getConnection();
+        return getConnection0();
     }
 
     synchronized private DatabaseConnection genConnection(int index) {
