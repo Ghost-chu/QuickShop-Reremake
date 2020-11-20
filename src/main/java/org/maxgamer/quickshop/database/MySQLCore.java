@@ -70,7 +70,7 @@ public class MySQLCore extends AbstractDatabaseCore {
     }
 
     @Override
-    void close() {
+    synchronized void close() {
         for (DatabaseConnection databaseConnection : POOL) {
             if (databaseConnection == null || !databaseConnection.isValid()) {
                 continue;
@@ -96,7 +96,7 @@ public class MySQLCore extends AbstractDatabaseCore {
      */
     @Nullable
     @Override
-    DatabaseConnection getConnection() {
+    synchronized DatabaseConnection getConnection() {
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             DatabaseConnection connection = POOL.get(i);
             // If we have a current connection, fetch it
@@ -118,9 +118,9 @@ public class MySQLCore extends AbstractDatabaseCore {
         return getConnection();
     }
 
-    private DatabaseConnection genConnection(int index) {
+    synchronized private DatabaseConnection genConnection(int index) {
         try {
-            DatabaseConnection connection = new DatabaseConnection(DriverManager.getConnection(this.url, info));
+            DatabaseConnection connection = new DatabaseConnection(this, DriverManager.getConnection(this.url, info));
             POOL.set(index, connection);
             return connection;
         } catch (SQLException e) {
