@@ -42,7 +42,7 @@ public class SQLiteCore extends AbstractDatabaseCore {
     }
 
     @Override
-    void close() {
+    synchronized void close() {
         if (!connection.isUsing()) {
             if (connection != null && !connection.isValid()) {
                 connection.close();
@@ -55,14 +55,8 @@ public class SQLiteCore extends AbstractDatabaseCore {
     }
 
 
-    /**
-     * Gets the database connection for executing queries on.
-     *
-     * @return The database connection
-     */
-    @Nullable
     @Override
-    DatabaseConnection getConnection() {
+    synchronized protected DatabaseConnection getConnection0() {
         if (this.connection == null) {
             return connection = genConnection();
         }
@@ -77,15 +71,15 @@ public class SQLiteCore extends AbstractDatabaseCore {
         }
         //If all connection is unusable, wait a moment
         waitForConnection();
-        return getConnection();
+        return getConnection0();
     }
 
     @Nullable
-    private DatabaseConnection genConnection() {
+    synchronized private DatabaseConnection genConnection() {
         if (this.dbFile.exists()) {
             try {
                 Class.forName("org.sqlite.JDBC");
-                this.connection = new DatabaseConnection(DriverManager.getConnection("jdbc:sqlite:" + this.dbFile));
+                this.connection = new DatabaseConnection(this, DriverManager.getConnection("jdbc:sqlite:" + this.dbFile));
                 return this.connection;
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException("Sqlite driver is not found", e);

@@ -65,9 +65,15 @@ public class DatabaseManager {
     public DatabaseManager(@NotNull QuickShop plugin, @NotNull AbstractDatabaseCore dbCore) throws ConnectionException {
         this.plugin = plugin;
         this.warningSender = new WarningSender(plugin, 600000);
-        if (!dbCore.getConnection().isValid()) {
-            throw new DatabaseManager.ConnectionException("The database does not appear to be valid!");
+        DatabaseConnection connection = dbCore.getConnection();
+        try {
+            if (!connection.isValid()) {
+                throw new DatabaseManager.ConnectionException("The database does not appear to be valid!");
+            }
+        } finally {
+            connection.release();
         }
+
         this.database = dbCore;
         this.useQueue = plugin.getConfig().getBoolean("database.queue");
 
@@ -148,7 +154,7 @@ public class DatabaseManager {
     /**
      * Internal method, runTasks in queue.
      */
-    private void runTask() { // synchronized for QUICKSHOP-WX
+    private synchronized void runTask() { // synchronized for QUICKSHOP-WX
         synchronized (sqlQueue) {
             if (sqlQueue.isEmpty()) {
                 return;
@@ -162,9 +168,6 @@ public class DatabaseManager {
                 while (true) {
                     if (!dbconnection.isValid()) {
                         warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                        //connection isn't stable, let autocommit on
-                        dbconnection.release();
-                        dbconnection.close();
                         return; // Waiting next crycle and hope it success reconnected.
                     }
 
