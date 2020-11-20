@@ -1,7 +1,5 @@
 package org.maxgamer.quickshop.database;
 
-import org.maxgamer.quickshop.QuickShop;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -9,12 +7,14 @@ public class DatabaseConnection implements AutoCloseable {
 
     private final Connection connection;
     private volatile boolean using;
+    private final AbstractDatabaseCore databaseCore;
 
-    public DatabaseConnection(Connection connection) {
+    public DatabaseConnection(AbstractDatabaseCore databaseCore, Connection connection) {
+        this.databaseCore = databaseCore;
         this.connection = connection;
     }
 
-    public boolean isValid() {
+    public synchronized boolean isValid() {
         try {
             return !connection.isClosed() && connection.isValid(8000);
         } catch (SQLException ignored) {
@@ -25,7 +25,7 @@ public class DatabaseConnection implements AutoCloseable {
         }
     }
 
-    public void close() {
+    public synchronized void close() {
         try {
             Connection connection = get();
             if (!connection.isClosed()) {
@@ -40,7 +40,8 @@ public class DatabaseConnection implements AutoCloseable {
         }
     }
 
-    public Connection get() {
+
+    public synchronized Connection get() {
         if (!using) {
             using = true;
             return connection;
@@ -49,14 +50,14 @@ public class DatabaseConnection implements AutoCloseable {
         }
     }
 
-    public void release() {
+    public synchronized void release() {
         if (using) {
             using = false;
-            QuickShop.getInstance().getDatabaseManager().getDatabase().signalForNewConnection();
+            databaseCore.signalForNewConnection();
         }
     }
 
-    public boolean isUsing() {
+    public synchronized boolean isUsing() {
         return using;
     }
 
