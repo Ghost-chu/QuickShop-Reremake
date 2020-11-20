@@ -71,7 +71,7 @@ public class SQLiteCore extends AbstractDatabaseCore {
         }
         //If all connection is unusable, wait a moment
         waitForConnection();
-        return getConnection();
+        return getConnection0();
     }
 
     @Nullable
