@@ -168,9 +168,6 @@ public class DatabaseManager {
                 while (true) {
                     if (!dbconnection.isValid()) {
                         warningSender.sendWarn("Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).");
-                        //connection isn't stable, let autocommit on
-                        dbconnection.release();
-                        dbconnection.close();
                         return; // Waiting next crycle and hope it success reconnected.
                     }
 
@@ -207,6 +204,7 @@ public class DatabaseManager {
                 this.plugin
                         .getLogger()
                         .log(Level.WARNING, "Database connection may lost, we are trying reconnecting, if this message appear too many times, you should check your database file(sqlite) and internet connection(mysql).", sqle);
+            } finally {
                 dbconnection.release();
             }
         }
