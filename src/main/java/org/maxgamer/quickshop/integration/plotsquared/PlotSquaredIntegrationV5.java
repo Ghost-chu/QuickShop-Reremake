@@ -39,14 +39,13 @@ import java.util.Arrays;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV5 implements IntegratedPlugin {
-    private final QuickShop plugin;
+public class PlotSquaredIntegrationV5 extends IntegratedPlugin {
     private final boolean whiteList;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
     public PlotSquaredIntegrationV5(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
     }
 

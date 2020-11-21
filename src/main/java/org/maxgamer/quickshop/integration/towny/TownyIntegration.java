@@ -48,17 +48,16 @@ import java.util.UUID;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration implements IntegratedPlugin, Listener {
+public class TownyIntegration extends IntegratedPlugin implements Listener {
     private final List<TownyFlags> createFlags;
 
     private final List<TownyFlags> tradeFlags;
 
     private final boolean ignoreDisabledWorlds;
-    private final QuickShop plugin;
     private final boolean deleteShopOnLeave;
 
     public TownyIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         createFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags =

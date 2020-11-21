@@ -41,16 +41,15 @@ import java.util.Map;
 import java.util.UUID;
 
 @IntegrationStage
-public class LandsIntegration implements IntegratedPlugin, Listener {
+public class LandsIntegration extends IntegratedPlugin implements Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;
     private final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
     private final boolean deleteWhenLosePermission;
-    private final QuickShop plugin;
 
     public LandsIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.lands.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.lands.whitelist-mode");
