@@ -25,10 +25,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
-public class PlotSquaredIntegrationProxy extends IntegratedPlugin {
-    private static IntegratedPlugin plotSquared;
+public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
+    private static QSIntegratedPlugin plotSquared;
 
     public PlotSquaredIntegrationProxy(QuickShop instance) {
         super(instance);

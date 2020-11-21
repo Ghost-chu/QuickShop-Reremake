@@ -32,8 +32,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 
@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @IntegrationStage
-public class LandsIntegration extends IntegratedPlugin implements Listener {
+public class LandsIntegration extends QSIntegratedPlugin implements Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;

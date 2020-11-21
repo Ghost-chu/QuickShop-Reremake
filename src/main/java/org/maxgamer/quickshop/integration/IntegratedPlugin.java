@@ -1,47 +1,17 @@
-/*
- * This file is a part of project QuickShop, the name is IntegratedPlugin.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
- *  Copyright (C) PotatoCraft Studio and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package org.maxgamer.quickshop.integration;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-
-@IntegrationStage
-public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
-
-    public IntegratedPlugin(QuickShop plugin) {
-        super(plugin);
-    }
-
+public interface IntegratedPlugin {
     /**
      * Return the integrated plugin name.
      * For example, Residence
      *
      * @return integrated plugin
      */
-    @NotNull
-    public abstract String getName();
+    @NotNull String getName();
 
     /**
      * Check if a player can create shop here
@@ -50,7 +20,7 @@ public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
      * @param location shop location
      * @return If you can create shop here
      */
-    public abstract boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
+    boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
      * Check if a player can trade with shop here
@@ -59,7 +29,7 @@ public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
      * @param location shop location
      * @return If you can trade with shop here
      */
-    public abstract boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
+    boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
      * Check if a player can delete a shop here
@@ -68,7 +38,7 @@ public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
      * @param location shop location
      * @return If you can delete the shop here
      */
-    public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
+    default boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
         return false;
     }
 
@@ -76,11 +46,11 @@ public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
      * Loading logic
      * Execute Stage defined by IntegrationStage
      */
-    public abstract void load();
+    void load();
 
     /**
      * Unloding logic
      * Will execute when Quickshop unloading
      */
-    public abstract void unload();
+    void unload();
 }
