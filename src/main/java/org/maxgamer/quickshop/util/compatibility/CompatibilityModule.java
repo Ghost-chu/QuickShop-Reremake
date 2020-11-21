@@ -23,21 +23,27 @@ package org.maxgamer.quickshop.util.compatibility;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-public interface CompatibilityModule {
+public abstract class CompatibilityModule extends QuickShopInstanceHolder {
+    public CompatibilityModule(QuickShop plugin) {
+        super(plugin);
+    }
+
     /**
      * Gets the CompatibilityModule provider name
      *
      * @return Provider name
      */
-    @NotNull String getName();
+    public abstract @NotNull String getName();
 
     /**
      * Gets the CompatibilityModule provider plugin instance
      *
      * @return Provider Plugin instance
      */
-    @NotNull Plugin getPlugin();
+    public abstract @NotNull Plugin getPlugin();
 
     /**
      * Calls CompatibilityModule to toggle the detection status for playerb between on and off
@@ -45,5 +51,5 @@ public interface CompatibilityModule {
      * @param player   The player
      * @param checking On or Off
      */
-    void toggle(@NotNull Player player, boolean checking);
+    public abstract void toggle(@NotNull Player player, boolean checking);
 }
