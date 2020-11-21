@@ -23,10 +23,16 @@ package org.maxgamer.quickshop.integration;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
 
 @IntegrationStage
-public interface IntegratedPlugin {
+public abstract class IntegratedPlugin extends QuickShopInstanceHolder {
+
+    public IntegratedPlugin(QuickShop plugin) {
+        super(plugin);
+    }
 
     /**
      * Return the integrated plugin name.
@@ -35,7 +41,7 @@ public interface IntegratedPlugin {
      * @return integrated plugin
      */
     @NotNull
-    String getName();
+    public abstract String getName();
 
     /**
      * Check if a player can create shop here
@@ -44,7 +50,7 @@ public interface IntegratedPlugin {
      * @param location shop location
      * @return If you can create shop here
      */
-    boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
+    public abstract boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
      * Check if a player can trade with shop here
@@ -53,7 +59,7 @@ public interface IntegratedPlugin {
      * @param location shop location
      * @return If you can trade with shop here
      */
-    boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
+    public abstract boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
      * Check if a player can delete a shop here
@@ -62,7 +68,7 @@ public interface IntegratedPlugin {
      * @param location shop location
      * @return If you can delete the shop here
      */
-    default boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
+    public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
         return false;
     }
 
@@ -70,11 +76,11 @@ public interface IntegratedPlugin {
      * Loading logic
      * Execute Stage defined by IntegrationStage
      */
-    void load();
+    public abstract void load();
 
     /**
      * Unloding logic
      * Will execute when Quickshop unloading
      */
-    void unload();
+    public abstract void unload();
 }

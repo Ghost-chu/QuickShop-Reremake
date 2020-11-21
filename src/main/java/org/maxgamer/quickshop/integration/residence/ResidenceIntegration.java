@@ -37,7 +37,7 @@ import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class ResidenceIntegration implements IntegratedPlugin {
+public class ResidenceIntegration extends IntegratedPlugin {
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";
     private final List<String> createLimits;
@@ -45,6 +45,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
     private final boolean whiteList;
 
     public ResidenceIntegration(QuickShop plugin) {
+        super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.residence.whitelist-mode");
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
         this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");

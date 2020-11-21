@@ -36,7 +36,7 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FactionsUUIDIntegration implements IntegratedPlugin {
+public class FactionsUUIDIntegration extends IntegratedPlugin {
     private final List<String> createFlags;
 
     private final List<String> tradeFlags;
@@ -76,6 +76,7 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     private final boolean whiteList;
 
     public FactionsUUIDIntegration(QuickShop plugin) {
+        super(plugin);
         this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 

@@ -35,16 +35,14 @@ import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV4 implements IntegratedPlugin {
-    private final QuickShop plugin;
+public class PlotSquaredIntegrationV4 extends IntegratedPlugin {
     private final boolean whiteList;
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
 
     public PlotSquaredIntegrationV4(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
-        // PlotAPI plotAPI = new PlotAPI();
     }
 
     @Override

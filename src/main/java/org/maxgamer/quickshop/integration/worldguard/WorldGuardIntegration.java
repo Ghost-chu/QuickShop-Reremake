@@ -44,7 +44,7 @@ import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration implements IntegratedPlugin {
+public class WorldGuardIntegration extends IntegratedPlugin {
     private List<WorldGuardFlags> createFlags;
 
     private List<WorldGuardFlags> tradeFlags;
@@ -54,13 +54,11 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
     private boolean anyOwner;
-
-    private final QuickShop plugin;
     private boolean whiteList;
     private boolean load = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
