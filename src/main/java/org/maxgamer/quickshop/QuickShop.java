@@ -55,8 +55,6 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
-import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
-import org.maxgamer.quickshop.util.compatibility.SpartanCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -90,7 +88,7 @@ public class QuickShop extends JavaPlugin {
      * WIP
      */
     @Getter
-    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
+    private final CompatibilityManager compatibilityTool = new CompatibilityManager(this);
     /**
      * The shop limites.
      */
@@ -316,12 +314,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded LWC support!");
             }
         }
-        if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
-            compatibilityTool.register(new NCPCompatibilityModule(this));
-        }
-        if (Bukkit.getPluginManager().getPlugin("Spartan") != null) {
-            compatibilityTool.register(new SpartanCompatibilityModule(this));
-        }
+        compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -550,7 +543,7 @@ public class QuickShop extends JavaPlugin {
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
         this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-        this.compatibilityTool.clear();
+        this.compatibilityTool.unregisterAll();
         integrationHelper.unregisterAll();
 
         Util.debugLog("Unregistering tasks...");

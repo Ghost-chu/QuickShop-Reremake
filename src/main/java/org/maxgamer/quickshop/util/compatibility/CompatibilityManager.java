@@ -21,16 +21,37 @@
 package org.maxgamer.quickshop.util.compatibility;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CompatibilityManager {
-    private final Set<CompatibilityModule> registeredModules = new HashSet<>(5);
+public class CompatibilityManager extends QuickShopInstanceHolder {
+    private static final Map<String, Class<? extends CompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
 
-    public CompatibilityManager() {
+    static {
+        compatibilityModuleNameMap.put("NoCheatPlus", NCPCompatibilityModule.class);
+        compatibilityModuleNameMap.put("Spartan", SpartanCompatibilityModule.class);
+    }
+
+    private final Map<String, CompatibilityModule> registeredModules = new HashMap<>(5);
+
+    public CompatibilityManager(QuickShop plugin) {
+        super(plugin);
+    }
+
+    public void searchAndRegisterPlugins() {
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        for (String pluginName : compatibilityModuleNameMap.keySet()) {
+            if (pluginManager.isPluginEnabled(pluginName)) {
+                register(pluginName);
+            }
+        }
     }
 
     /**
@@ -41,25 +62,39 @@ public class CompatibilityManager {
      * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
-        for (CompatibilityModule module : this.registeredModules) {
+        for (CompatibilityModule module : this.registeredModules.values()) {
             try {
                 module.toggle(player, status);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 unregister(module);
                 Util.debugLog("Unregistered module " + module.getName() + " for an error: " + e.getMessage());
             }
         }
     }
 
-    public void clear() {
+    public void unregisterAll() {
         registeredModules.clear();
     }
 
     public void register(@NotNull CompatibilityModule module) {
-        registeredModules.add(module);
+        registeredModules.put(module.getName(), module);
+    }
+
+    public void register(@NotNull String moduleName) {
+        CompatibilityModule compatibilityModule;
+        try {
+            compatibilityModule = compatibilityModuleNameMap.get(moduleName).getConstructor(plugin.getClass()).newInstance(plugin);
+        } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException("Invaild compatibility module name: " + moduleName);
+        }
+        register(compatibilityModule);
+    }
+
+    public void unregister(@NotNull String moduleName) {
+        registeredModules.remove(moduleName);
     }
 
     public void unregister(@NotNull CompatibilityModule module) {
-        registeredModules.remove(module);
+        registeredModules.remove(module.getName());
     }
 }
