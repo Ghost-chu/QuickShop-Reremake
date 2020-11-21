@@ -21,13 +21,17 @@
 package org.maxgamer.quickshop.integration.plotsquared;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegratedPlugin;
 
-public class PlotSquaredIntegrationHolder {
+public class PlotSquaredIntegrationProxy extends IntegratedPlugin {
     private static IntegratedPlugin plotSquared;
 
-    public static IntegratedPlugin getPlotSquaredIntegration(QuickShop instance) {
+    public PlotSquaredIntegrationProxy(QuickShop instance) {
+        super(instance);
         if (plotSquared == null) {
             if (Bukkit.getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
                 plotSquared = new PlotSquaredIntegrationV4(instance);
@@ -35,6 +39,35 @@ public class PlotSquaredIntegrationHolder {
                 plotSquared = new PlotSquaredIntegrationV5(instance);
             }
         }
-        return plotSquared;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return plotSquared.getName();
+    }
+
+    @Override
+    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        return plotSquared.canCreateShopHere(player, location);
+    }
+
+    @Override
+    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
+        return plotSquared.canCreateShopHere(player, location);
+    }
+
+    @Override
+    public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
+        return plotSquared.canDeleteShopHere(player, location);
+    }
+
+    @Override
+    public void load() {
+        plotSquared.load();
+    }
+
+    @Override
+    public void unload() {
+        plotSquared.unload();
     }
 }

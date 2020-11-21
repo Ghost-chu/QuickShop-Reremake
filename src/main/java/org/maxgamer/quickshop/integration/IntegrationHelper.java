@@ -18,31 +18,78 @@
  *
  */
 
-package org.maxgamer.quickshop.util;
+package org.maxgamer.quickshop.integration;
 
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
-import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
+import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
+import org.maxgamer.quickshop.integration.lands.LandsIntegration;
+import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationProxy;
+import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
+import org.maxgamer.quickshop.integration.towny.TownyIntegration;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
+import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 import org.maxgamer.quickshop.util.holder.Result;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
-@Getter
-public class IntegrationHelper {
-    private final Set<IntegratedPlugin> integrations = new HashSet<>(5);
 
-    public void register(@NotNull IntegratedPlugin clazz) {
-        if (!isIntegrationClass(clazz.getClass())) {
-            throw new InvaildIntegratedPluginClass("Invaild Integration module: " + clazz.getName());
+public class IntegrationHelper extends QuickShopInstanceHolder {
+    private static final Map<String, Class<? extends IntegratedPlugin>> integratedPluginNameMap = new HashMap<>(7);
+
+    static {
+        integratedPluginNameMap.put("Factions", FactionsUUIDIntegration.class);
+        integratedPluginNameMap.put("GriefPrevention", GriefPreventionIntegration.class);
+        integratedPluginNameMap.put("Lands", LandsIntegration.class);
+        integratedPluginNameMap.put("PlotSquared", PlotSquaredIntegrationProxy.class);
+        integratedPluginNameMap.put("Residence", ResidenceIntegration.class);
+        integratedPluginNameMap.put("Towny", TownyIntegration.class);
+        integratedPluginNameMap.put("WorldGuard", WorldGuardIntegration.class);
+    }
+
+    private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
+
+    public IntegrationHelper(QuickShop plugin) {
+        super(plugin);
+    }
+
+    public List<IntegratedPlugin> getIntegrations() {
+        return Collections.unmodifiableList(new ArrayList<>(integrations.values()));
+    }
+
+    public void searchAndRegisterPlugins() {
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        for (String pluginName : integratedPluginNameMap.keySet()) {
+            if (plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+                if (pluginManager.isPluginEnabled(pluginName)) {
+                    register(pluginName);
+                }
+            }
         }
-        Util.debugLog("Registering " + clazz.getName());
-        integrations.add(clazz);
+    }
+
+    public void register(@NotNull IntegratedPlugin integratedPlugin) {
+        if (!isIntegrationClass(integratedPlugin.getClass())) {
+            throw new InvaildIntegratedPluginClass("Invaild Integration module: " + integratedPlugin.getName());
+        }
+        Util.debugLog("Registering " + integratedPlugin.getName());
+        integrations.put(integratedPlugin.getName(), integratedPlugin);
+    }
+
+    public void register(@NotNull String integratedPluginName) {
+        IntegratedPlugin integratedPlugin;
+        try {
+            integratedPlugin = integratedPluginNameMap.get(integratedPluginName).getConstructor(plugin.getClass()).newInstance(plugin);
+        } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new InvaildIntegratedPluginClass("Invaild Integration module name: " + integratedPluginName);
+        }
+        register(integratedPlugin);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -50,22 +97,35 @@ public class IntegrationHelper {
         return clazz.getDeclaredAnnotation(IntegrationStage.class) != null;
     }
 
-    public void unregister(@NotNull IntegratedPlugin clazz) {
-        if (!isIntegrationClass(clazz.getClass())) {
+    public void unregister(@NotNull String integratedPluginName) {
+        IntegratedPlugin integratedPlugin = integrations.get(integratedPluginName);
+        if (integratedPlugin != null) {
+            unregister(integratedPlugin);
+        }
+    }
+
+    public void unregisterAll() {
+        for (IntegratedPlugin integratedPlugin : integrations.values()) {
+            unregister(integratedPlugin);
+        }
+    }
+
+    public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
+        if (!isIntegrationClass(integratedPlugin.getClass())) {
             throw new InvaildIntegratedPluginClass();
         }
         //Prevent it being removed
         //WorldGuardIntegration will load in onload()V
         //so it won't be registered again when reload
-        if (clazz instanceof WorldGuardIntegration) {
+        if (integratedPlugin instanceof WorldGuardIntegration) {
             return;
         }
-        Util.debugLog("Unregistering " + clazz.getName());
-        integrations.remove(clazz);
+        Util.debugLog("Unregistering " + integratedPlugin.getName());
+        integrations.remove(integratedPlugin.getName());
     }
 
     public void callIntegrationsLoad(@NotNull IntegrateStage stage) {
-        integrations.forEach(
+        integrations.values().forEach(
                 integratedPlugin -> {
                     if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).loadStage()
                             == stage) {
@@ -85,7 +145,7 @@ public class IntegrationHelper {
     }
 
     public void callIntegrationsUnload(@NotNull IntegrateStage stage) {
-        integrations.forEach(
+        integrations.values().forEach(
                 integratedPlugin -> {
                     if (integratedPlugin.getClass().getDeclaredAnnotation(IntegrationStage.class).unloadStage()
                             == stage) {
@@ -105,7 +165,7 @@ public class IntegrationHelper {
     }
 
     public Result callIntegrationsCanCreate(@NotNull Player player, @NotNull Location location) {
-        for (IntegratedPlugin plugin : integrations) {
+        for (IntegratedPlugin plugin : integrations.values()) {
             if (!plugin.canCreateShopHere(player, location)) {
                 Util.debugLog("Cancelled by " + plugin.getName());
                 return new Result(plugin.getName());
@@ -115,7 +175,7 @@ public class IntegrationHelper {
     }
 
     public Result callIntegrationsCanTrade(@NotNull Player player, @NotNull Location location) {
-        for (IntegratedPlugin plugin : integrations) {
+        for (IntegratedPlugin plugin : integrations.values()) {
             if (!plugin.canTradeShopHere(player, location)) {
                 Util.debugLog("Cancelled by " + plugin.getName());
                 return new Result(plugin.getName());
