@@ -32,14 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CompatibilityManager extends QuickShopInstanceHolder {
-    private static final Map<String, Class<? extends CompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
+    private static final Map<String, Class<? extends QSCompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
 
     static {
         compatibilityModuleNameMap.put("NoCheatPlus", NCPCompatibilityModule.class);
         compatibilityModuleNameMap.put("Spartan", SpartanCompatibilityModule.class);
     }
 
-    private final Map<String, CompatibilityModule> registeredModules = new HashMap<>(5);
+    private final Map<String, QSCompatibilityModule> registeredModules = new HashMap<>(5);
 
     public CompatibilityManager(QuickShop plugin) {
         super(plugin);
@@ -62,7 +62,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
      * @param player The player to check the listeners
      */
     public void toggleProtectionListeners(boolean status, @NotNull Player player) {
-        for (CompatibilityModule module : this.registeredModules.values()) {
+        for (QSCompatibilityModule module : this.registeredModules.values()) {
             try {
                 module.toggle(player, status);
             } catch (Throwable e) {
@@ -76,12 +76,12 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
         registeredModules.clear();
     }
 
-    public void register(@NotNull CompatibilityModule module) {
+    public void register(@NotNull QSCompatibilityModule module) {
         registeredModules.put(module.getName(), module);
     }
 
     public void register(@NotNull String moduleName) {
-        CompatibilityModule compatibilityModule;
+        QSCompatibilityModule compatibilityModule;
         try {
             compatibilityModule = compatibilityModuleNameMap.get(moduleName).getConstructor(plugin.getClass()).newInstance(plugin);
         } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -94,7 +94,7 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
         registeredModules.remove(moduleName);
     }
 
-    public void unregister(@NotNull CompatibilityModule module) {
+    public void unregister(@NotNull QSCompatibilityModule module) {
         registeredModules.remove(module.getName());
     }
 }

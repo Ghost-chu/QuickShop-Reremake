@@ -9,14 +9,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class GriefPreventionIntegration extends IntegratedPlugin {
+public class GriefPreventionIntegration extends QSIntegratedPlugin {
     private final List<Flag> createLimits = new ArrayList<>(3);
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;

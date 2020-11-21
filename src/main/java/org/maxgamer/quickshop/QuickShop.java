@@ -542,8 +542,8 @@ public class QuickShop extends JavaPlugin {
 
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
-        this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-        this.compatibilityTool.unregisterAll();
+        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        compatibilityTool.unregisterAll();
         integrationHelper.unregisterAll();
 
         Util.debugLog("Unregistering tasks...");
