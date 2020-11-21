@@ -36,15 +36,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration extends IntegratedPlugin {
+public class WorldGuardIntegration extends QSIntegratedPlugin {
     private List<WorldGuardFlags> createFlags;
 
     private List<WorldGuardFlags> tradeFlags;

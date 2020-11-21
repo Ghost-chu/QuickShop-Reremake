@@ -4,12 +4,11 @@ package org.maxgamer.quickshop.util.compatibility;
 import me.vagdedes.spartan.api.API;
 import me.vagdedes.spartan.system.Enums;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
-public class SpartanCompatibilityModule extends CompatibilityModule {
+public class SpartanCompatibilityModule extends QSCompatibilityModule {
 
     public SpartanCompatibilityModule(QuickShop plugin) {
         super(plugin);
@@ -18,11 +17,6 @@ public class SpartanCompatibilityModule extends CompatibilityModule {
     @Override
     public @NotNull String getName() {
         return "Spartan";
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
     }
 
     @Override

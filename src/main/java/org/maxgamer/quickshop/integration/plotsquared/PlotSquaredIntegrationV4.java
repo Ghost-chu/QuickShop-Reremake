@@ -29,13 +29,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV4 extends IntegratedPlugin {
+public class PlotSquaredIntegrationV4 extends QSIntegratedPlugin {
     private final boolean whiteList;
     private BooleanFlag createFlag;
     private BooleanFlag tradeFlag;
