@@ -494,12 +494,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- PlotSquared Core API -->
+        <dependency>
+            <groupId>com.plotsquared</groupId>
+            <artifactId>PlotSquared-Core</artifactId>
+            <version>5.13.3</version>
+        </dependency>
         <!--PlotSquared 5-->
         <dependency>
             <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>5.1</version>
-            <scope>provided</scope>
+            <artifactId>PlotSquared-Bukkit</artifactId>
+            <version>5.13.3</version>
+            <!--            <scope>provided</scope>-->
             <exclusions>
                 <exclusion>
                     <artifactId>worldedit-core</artifactId>

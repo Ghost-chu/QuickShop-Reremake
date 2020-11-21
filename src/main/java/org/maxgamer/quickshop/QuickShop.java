@@ -60,6 +60,7 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.compatibility.CompatibilityModule;
 import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
 import org.maxgamer.quickshop.util.compatibility.SpartanCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
@@ -240,6 +241,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private BuildInfo buildInfo;
 
+    @Getter
+    private final CompatibilityModule spartanCompatibilityModule = new SpartanCompatibilityModule(this);;
+
     private static boolean loaded = false;
 
     @NotNull
@@ -324,8 +328,8 @@ public class QuickShop extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
             compatibilityTool.register(new NCPCompatibilityModule(this));
         }
-        if (Bukkit.getPluginManager().getPlugin("Spartan") != null) {
-            compatibilityTool.register(new SpartanCompatibilityModule(this));
+        if (Bukkit.getPluginManager().getPlugin("Spartan") != null && Bukkit.getPluginManager().isPluginEnabled("Spartan")) {
+            compatibilityTool.register(spartanCompatibilityModule);
         }
         if (this.display) {
             //VirtualItem support
@@ -743,6 +747,7 @@ public class QuickShop extends JavaPlugin {
         new BlockListener(this, this.shopCache).register();
         new PlayerListener(this).register();
         new WorldListener(this).register();
+        new PluginListener(this).register();
         // Listeners - We decide which one to use at runtime
         new ChatListener(this).register();
         new ChunkListener(this).register();
