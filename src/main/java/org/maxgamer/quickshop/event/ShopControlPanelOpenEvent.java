@@ -33,6 +33,12 @@ public class ShopControlPanelOpenEvent extends QSEvent implements Cancellable {
     private final CommandSender sender;
     private boolean cancelled = false;
 
+    /**
+     * Called before shop control panel message.
+     *
+     * @param shop   The shop bought from
+     * @param sender The player which receiving shop control panel message
+     */
     public ShopControlPanelOpenEvent(@NotNull Shop shop, @NotNull CommandSender sender) {
         this.shop = shop;
         this.sender = sender;

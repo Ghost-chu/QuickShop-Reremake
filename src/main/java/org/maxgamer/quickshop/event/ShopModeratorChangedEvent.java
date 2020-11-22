@@ -39,7 +39,8 @@ public class ShopModeratorChangedEvent extends QSEvent {
     private final Shop shop;
 
     /**
-     * Will call when shop price was changed.
+     * Will call when shop moderator was changed.
+     * Shop moderator included owner itself.
      *
      * @param shop          Target shop
      * @param shopModerator The shop moderator
