@@ -736,6 +736,7 @@ public class QuickShop extends JavaPlugin {
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
+        new PluginListener(this).register();
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
