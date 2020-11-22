@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
 /**
- * Calling when shop price was changed, Can't cancel
+ * Calling when shop price was changed
  */
 public class ShopPriceChangeEvent extends QSEvent implements Cancellable {
 
