@@ -34,6 +34,10 @@ import java.util.Map;
 public class CompatibilityManager extends QuickShopInstanceHolder {
     private static final Map<String, Class<? extends CompatibilityModule>> compatibilityModuleNameMap = new HashMap<>(2);
 
+    public static Map<String, Class<? extends CompatibilityModule>> getCompatibilityModuleNameMap() {
+        return compatibilityModuleNameMap;
+    }
+
     static {
         compatibilityModuleNameMap.put("NoCheatPlus", NCPCompatibilityModule.class);
         compatibilityModuleNameMap.put("Spartan", SpartanCompatibilityModule.class);
@@ -77,7 +81,9 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
     }
 
     public void register(@NotNull CompatibilityModule module) {
-        registeredModules.put(module.getName(), module);
+        if (!registeredModules.containsKey(module.getName())) {
+            registeredModules.put(module.getName(), module);
+        }
     }
 
     public void register(@NotNull String moduleName) {
