@@ -39,7 +39,7 @@ public class ShopInventoryPreviewEvent extends QSEvent implements Cancellable {
     private boolean cancelled;
 
     /**
-     * Build a event when player using GUI preview
+     * Called when player using GUI preview
      *
      * @param player    Target plugin
      * @param itemStack The preview item, with preview flag.
