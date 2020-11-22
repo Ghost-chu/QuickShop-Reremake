@@ -20,6 +20,7 @@
 
 package org.maxgamer.quickshop.integration;
 
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -41,6 +42,7 @@ import java.util.*;
 
 
 public class IntegrationHelper extends QuickShopInstanceHolder {
+    @Getter
     private static final Map<String, Class<? extends IntegratedPlugin>> integratedPluginNameMap = new HashMap<>(7);
 
     static {
@@ -57,6 +59,10 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public IntegrationHelper(QuickShop plugin) {
         super(plugin);
+    }
+
+    public Map<String, IntegratedPlugin> getIntegrationMap() {
+        return Collections.unmodifiableMap(integrations);
     }
 
     public List<IntegratedPlugin> getIntegrations() {
@@ -76,10 +82,12 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public void register(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
-            throw new InvaildIntegratedPluginClass("Invaild Integration module: " + integratedPlugin.getName());
+            throw new InvalidIntegratedPluginClass("Invaild Integration module: " + integratedPlugin.getName());
         }
-        Util.debugLog("Registering " + integratedPlugin.getName());
-        integrations.put(integratedPlugin.getName(), integratedPlugin);
+        if (!integrations.containsKey(integratedPlugin.getName())) {
+            Util.debugLog("Registering " + integratedPlugin.getName());
+            integrations.put(integratedPlugin.getName(), integratedPlugin);
+        }
     }
 
     public void register(@NotNull String integratedPluginName) {
@@ -87,7 +95,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         try {
             integratedPlugin = integratedPluginNameMap.get(integratedPluginName).getConstructor(plugin.getClass()).newInstance(plugin);
         } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new InvaildIntegratedPluginClass("Invaild Integration module name: " + integratedPluginName);
+            throw new InvalidIntegratedPluginClass("Invaild Integration module name: " + integratedPluginName);
         }
         register(integratedPlugin);
     }
@@ -112,7 +120,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
-            throw new InvaildIntegratedPluginClass();
+            throw new InvalidIntegratedPluginClass();
         }
         //Prevent it being removed
         //WorldGuardIntegration will load in onload()V
@@ -120,6 +128,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         if (integratedPlugin instanceof WorldGuardIntegration) {
             return;
         }
+
         Util.debugLog("Unregistering " + integratedPlugin.getName());
         integrations.remove(integratedPlugin.getName());
     }
@@ -186,12 +195,12 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
 }
 
-class InvaildIntegratedPluginClass extends IllegalArgumentException {
-    public InvaildIntegratedPluginClass() {
+class InvalidIntegratedPluginClass extends IllegalArgumentException {
+    public InvalidIntegratedPluginClass() {
         super();
     }
 
-    public InvaildIntegratedPluginClass(String s) {
+    public InvalidIntegratedPluginClass(String s) {
         super(s);
     }
 
