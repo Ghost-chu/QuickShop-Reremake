@@ -864,11 +864,11 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
-            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
             for (int i = 0; i < lines.length; i++) {
                 sign.setLine(i, lines[i]);
             }
             sign.update(true);
+            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
         }
         //Update the recognize method after converted
         if (getShopVersion() == 0) {
