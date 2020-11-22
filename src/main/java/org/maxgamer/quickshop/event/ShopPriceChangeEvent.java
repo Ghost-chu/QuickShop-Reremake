@@ -21,6 +21,7 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
@@ -31,10 +32,12 @@ import org.maxgamer.quickshop.shop.Shop;
 public class ShopPriceChangeEvent extends QSEvent implements Cancellable {
 
     @Getter
-    private final double newPrice;
+    @Setter
+    private double newPrice;
 
     @Getter
-    private final double oldPrice;
+    @Setter
+    private double oldPrice;
 
     @Getter
     @NotNull
