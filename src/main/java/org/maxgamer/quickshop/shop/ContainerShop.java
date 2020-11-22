@@ -671,6 +671,11 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setItem(@NotNull ItemStack item) {
+        ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
+        if (Util.fireCancellableEvent(event)) {
+            Util.debugLog("A plugin cancelled the item change event.");
+            return;
+        }
         this.item = item;
         update();
         refresh();
