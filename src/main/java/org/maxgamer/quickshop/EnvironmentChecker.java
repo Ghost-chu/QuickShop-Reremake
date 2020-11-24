@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is RuntimeCatcher.java
+ * This file is a part of project QuickShop, the name is EnvironmentChecker.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -50,7 +50,7 @@ public class EnvironmentChecker {
         }
         if (isForgeBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Forge platform, you're running QuickShop modded server and use at your own risk.");
-            plugin.getLogger().warning("WARN: You won't get any support under Forge platform. Server will continue loading after 30s.");
+            plugin.getLogger().warning("WARN: You won't get any support under Forge platform.");
             //try {
             //    //Thread.sleep(300000);
             //} catch (InterruptedException e) {
@@ -59,7 +59,7 @@ public class EnvironmentChecker {
         }
         if (isFabricBasedServer()) {
             plugin.getLogger().warning("WARN: QSRR not designed and tested on Fabric platform, you're running QuickShop modded server and use at your own risk.");
-            plugin.getLogger().warning("WARN: You won't get any support under Fabric platform. Server will continue loading after 30s.");
+            plugin.getLogger().warning("WARN: You won't get any support under Fabric platform.");
         }
 
         if (Util.isDevEdition()) {
@@ -73,7 +73,8 @@ public class EnvironmentChecker {
             }
         }
     }
-    private boolean isSpigotBasedServer(@NotNull QuickShop plugin) {
+
+    public boolean isSpigotBasedServer(@NotNull QuickShop plugin) {
         //Class checking
         if (!Util.isClassAvailable("org.spigotmc.SpigotConfig")) {
             return false;
@@ -87,7 +88,7 @@ public class EnvironmentChecker {
         return true;
     }
 
-    private boolean isForgeBasedServer() {
+    public boolean isForgeBasedServer() {
         //Forge server detect - Arclight
         if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
             return true;
@@ -95,7 +96,7 @@ public class EnvironmentChecker {
         return Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo");
     }
 
-    private boolean isFabricBasedServer() {
+    public boolean isFabricBasedServer() {
         //Nobody really make it right!?
         return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
