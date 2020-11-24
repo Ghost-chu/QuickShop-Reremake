@@ -164,7 +164,7 @@
       "language": "Modifier la langue actuelle",
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
       "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié"
     }
   },
   "signs": {
