@@ -416,17 +416,24 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.seeseemelk</groupId>-->
+        <!--            <artifactId>MockBukkit-v1.14</artifactId>-->
+        <!--            <version>0.2.2</version>-->
+        <!--            <scope>test</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>bukkit</artifactId>-->
+        <!--                    <groupId>org.bukkit</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+        <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.14</artifactId>
-            <version>0.2.2</version>
+            <artifactId>MockBukkit-v1.16</artifactId>
+            <version>0.5.0</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
