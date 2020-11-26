@@ -46,7 +46,7 @@
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
   "shop-not-exist": "&cDet finns ingen butik.",
-  "nearby-shop-this-way": "&aShop is {0} blocks away from you.",
+  "nearby-shop-this-way": "&aButiken är {0} block från dig.",
   "nearby-shop-header": "&aNärliggande butik som matchar &b{0}&a:",
   "nearby-shop-entry": "&a- Info:{0} &aPris:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistans: &b{5} &ablock",
   "no-nearby-shop": "&cIngen butik som matchar {0} i närheten.",
