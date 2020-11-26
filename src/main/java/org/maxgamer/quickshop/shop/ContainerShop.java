@@ -842,12 +842,19 @@ public class ContainerShop implements Shop {
     /**
      * Changes a shop type to Buying or Selling. Also updates the signs nearby.
      *
-     * @param shopType The new type (ShopType.BUYING or ShopType.SELLING)
+     * @param newShopType The new type (ShopType.BUYING or ShopType.SELLING)
      */
     @Override
-    public void setShopType(@NotNull ShopType shopType) {
+    public void setShopType(@NotNull ShopType newShopType) {
+        if (this.shopType == newShopType) {
+            return; //Ignore if there actually no changes
+        }
         this.lastChangedAt = System.currentTimeMillis();
-        this.shopType = shopType;
+        if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
+            Util.debugLog("Some addon cancelled shop type changes, target shop: " + this.toString());
+            return;
+        }
+        this.shopType = newShopType;
         this.setSignText();
         update();
     }
