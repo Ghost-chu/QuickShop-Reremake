@@ -1530,6 +1530,10 @@ public class MsgUtil {
             setAndUpdate("nearby-shop-entry", "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 44) {
+            setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
 
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
