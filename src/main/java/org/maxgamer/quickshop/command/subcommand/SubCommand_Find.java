@@ -131,7 +131,7 @@ public class SubCommand_Find implements CommandProcesser {
                         .getBukkitAPIWrapper()
                         .teleportEntity(
                                 p,
-                                Util.lookAt(loc, lookat).add(0, -1.62, 0),
+                                Util.lookAt(p.getEyeLocation(), lookat).add(0, -1.62, 0),
                                 PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("nearby-shop-this-way", sender, closestShopEntry.getValue().toString()));
             } else {
