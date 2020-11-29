@@ -41,6 +41,7 @@ import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
+import java.util.logging.Level;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
@@ -56,6 +57,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
     private boolean anyOwner;
     private boolean whiteList;
     private boolean load = false;
+    private static boolean register = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
         super(plugin);
@@ -74,15 +76,18 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-        try {
-            // create a flag with the name "my-custom-flag", defaulting to true
-            registry.register(this.createFlag);
-            registry.register(this.tradeFlag);
-            plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-            Util.debugLog("Success register " + getName() + " flags.");
-        } catch (FlagConflictException | IllegalStateException e) {
-            e.printStackTrace();
+        if (!register) {
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+            try {
+                // create a flag with the name "my-custom-flag", defaulting to true
+                registry.register(this.createFlag);
+                registry.register(this.tradeFlag);
+                plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+                Util.debugLog("Success register " + getName() + " flags.");
+            } catch (FlagConflictException | IllegalStateException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
+            }
+            register = true;
         }
         load = true;
     }
