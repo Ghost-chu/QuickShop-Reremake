@@ -921,11 +921,7 @@ public class MsgUtil {
 
     private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-            Integer level = entries.getValue();
-            if (level == null) {
-                level = 1;
-            }
-            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level));
+            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
         }
     }
 
