@@ -105,28 +105,32 @@
                         <!--                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>-->
                         <!--                        </relocation>-->
                         <relocation>
-                            <pattern>com.fasterxml.jackson.core</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.jackson.core</shadedPattern>
+                            <pattern>org.slf4j.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.slf4j.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>io.sentry</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.sentry</shadedPattern>
-                            <includes>
-                                <include>io.sentry.*</include>
-                                <include>org.maxgamer.quickshop.util.SentryErrorReporter</include>
-                            </includes>
+                            <pattern>net.minidev.json.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.minidev.json.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.dumptruckman.bukkit.configuration</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json</shadedPattern>
+                            <pattern>com.fasterxml.jackson.core.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jackson.core.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.offbytwo.jenkins</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.jenkins</shadedPattern>
+                            <pattern>io.sentry.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.sentry.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache.commons.compress</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.compress</shadedPattern>
+                            <pattern>com.dumptruckman.bukkit.configuration.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.offbytwo.jenkins.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jenkins.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.compress.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.compress.</shadedPattern>
                         </relocation>
 
                     </relocations>
