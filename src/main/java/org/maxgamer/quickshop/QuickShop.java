@@ -516,6 +516,8 @@ public class QuickShop extends JavaPlugin {
 //        }
         Util.debugLog("Closing all GUIs...");
         for (Player player : Bukkit.getOnlinePlayers()) {
+			if (player.isOp() && player.getOpenInventory().getType() == InventoryType.CRAFTING)
+				continue;
             player.closeInventory();
         }
         Util.debugLog("Unloading all shops...");
