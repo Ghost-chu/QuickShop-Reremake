@@ -73,10 +73,8 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : integratedPluginNameMap.entrySet()) {
             String pluginName = entry.getKey();
-            if (plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
-                if (pluginManager.isPluginEnabled(pluginName)) {
-                    register(entry.getValue());
-                }
+            if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+                register(entry.getValue());
             }
         }
     }
