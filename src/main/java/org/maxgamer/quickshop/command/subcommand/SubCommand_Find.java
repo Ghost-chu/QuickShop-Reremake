@@ -25,6 +25,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
@@ -47,7 +48,7 @@ public class SubCommand_Find implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (!(sender instanceof Player)) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("Only player can run this command", sender));
+            MsgUtil.sendMessage(sender, "Only player can run this command");
             return;
         }
 
@@ -56,19 +57,10 @@ public class SubCommand_Find implements CommandProcesser {
             return;
         }
 
-        final StringBuilder sb = new StringBuilder(cmdArg[0]);
-
-        for (int i = 1; i < cmdArg.length; i++) {
-            sb.append("_").append(cmdArg[i]);
-        }
-
-        final String lookFor = sb.toString().toLowerCase();
         final Player p = (Player) sender;
         final Location loc = p.getLocation().clone();
-        final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
-        double minDistanceSquared = minDistance * minDistance;
-        final int chunkRadius = (int) minDistance / 16 + 1;
-        List<Map.Entry<Shop, Double>> nearByShopList = new ArrayList<>();
+
+        //Testing for getting chunk
         CompletableFuture<Chunk> future = new CompletableFuture<>();
         plugin.getBukkitAPIWrapper().getChunkAt(loc.getWorld(), loc, future);
         final Chunk c;
@@ -81,8 +73,23 @@ public class SubCommand_Find implements CommandProcesser {
             asyncErr.printStackTrace();
             return;
         }
-        final int limit = plugin.getConfig().getInt("shop.finding.limit");
+        //End
 
+        //Combing command args
+        final StringBuilder sb = new StringBuilder(cmdArg[0]);
+        for (int i = 1; i < cmdArg.length; i++) {
+            sb.append("_").append(cmdArg[i]);
+        }
+
+
+        final String lookFor = sb.toString().toLowerCase();
+        final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
+        double minDistanceSquared = minDistance * minDistance;
+        final int chunkRadius = (int) (minDistance / 16) + 1;
+        final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
+        final int limit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
+
+        List<Map.Entry<Shop, Double>> nearByShopList = new ArrayList<>();
         findingProcess:
         for (int x = -chunkRadius + c.getX(); x < chunkRadius + c.getX(); x++) {
             for (int z = -chunkRadius + c.getZ(); z < chunkRadius + c.getZ(); z++) {
@@ -104,7 +111,7 @@ public class SubCommand_Find implements CommandProcesser {
                     if (distance >= minDistanceSquared) {
                         continue;
                     }
-                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, distance));
+                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, Math.floor(distance)));
                     if (nearByShopList.size() == limit) {
                         break findingProcess;
                     }
@@ -116,18 +123,30 @@ public class SubCommand_Find implements CommandProcesser {
         if (nearByShopList.isEmpty()) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
         } else {
-            nearByShopList.sort(Map.Entry.comparingByValue());
-            //"nearby-shop-header": "&aNearby Shop matching &b{0}&a:"
-            StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
-            for (Map.Entry<Shop, Double> shopDoubleEntry : nearByShopList) {
-                Shop shop = shopDoubleEntry.getKey();
-                Location location = shop.getLocation();
-                //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), Math.floor(shopDoubleEntry.getValue()))).append("\n");
+            if (usingOldLogic) {
+                final Map.Entry<Shop, Double> closestShopEntry = nearByShopList.get(0);
+                final Location lookat = closestShopEntry.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
+                // Hack fix to make /qs find not used by /back
+                plugin
+                        .getBukkitAPIWrapper()
+                        .teleportEntity(
+                                p,
+                                Util.lookAt(p.getEyeLocation(), lookat).add(0, -1.62, 0),
+                                PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                MsgUtil.sendMessage(p, MsgUtil.getMessage("nearby-shop-this-way", sender, closestShopEntry.getValue().toString()));
+            } else {
+                nearByShopList.sort(Map.Entry.comparingByValue());
+                //"nearby-shop-header": "&aNearby Shop matching &b{0}&a:"
+                StringBuilder stringBuilder = new StringBuilder(MsgUtil.getMessage("nearby-shop-header", sender, lookFor)).append("\n");
+                for (Map.Entry<Shop, Double> shopDoubleEntry : nearByShopList) {
+                    Shop shop = shopDoubleEntry.getKey();
+                    Location location = shop.getLocation();
+                    //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
+                    stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue())).append("\n");
+                }
+                MsgUtil.sendMessage(sender, stringBuilder.toString());
             }
-            MsgUtil.sendMessage(sender, stringBuilder.toString());
         }
-
     }
 
 }

@@ -29,15 +29,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class ResidenceIntegration implements IntegratedPlugin {
+public class ResidenceIntegration extends QSIntegratedPlugin {
     private static final String createFlag = "quickshop-create";
     private static final String tradeFlag = "quickshop-trade";
     private final List<String> createLimits;
@@ -45,6 +45,7 @@ public class ResidenceIntegration implements IntegratedPlugin {
     private final boolean whiteList;
 
     public ResidenceIntegration(QuickShop plugin) {
+        super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.residence.whitelist-mode");
         this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
         this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");

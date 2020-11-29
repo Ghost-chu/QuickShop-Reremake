@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is PlotSquaredIntegrationHolder.java
+ * This file is a part of project QuickShop, the name is QSIntegratedPlugin.java
  *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
@@ -18,23 +18,18 @@
  *
  */
 
-package org.maxgamer.quickshop.integration.plotsquared;
+package org.maxgamer.quickshop.integration;
 
-import org.bukkit.Bukkit;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-public class PlotSquaredIntegrationHolder {
-    private static IntegratedPlugin plotSquared;
 
-    public static IntegratedPlugin getPlotSquaredIntegration(QuickShop instance) {
-        if (plotSquared == null) {
-            if (Bukkit.getPluginManager().getPlugin("PlotSquared").getClass().getPackage().getName().contains("intellectualsite")) {
-                plotSquared = new PlotSquaredIntegrationV4(instance);
-            } else {
-                plotSquared = new PlotSquaredIntegrationV5(instance);
-            }
-        }
-        return plotSquared;
+@IntegrationStage
+public abstract class QSIntegratedPlugin extends QuickShopInstanceHolder implements IntegratedPlugin {
+
+    public QSIntegratedPlugin(QuickShop plugin) {
+        super(plugin);
     }
+
+
 }

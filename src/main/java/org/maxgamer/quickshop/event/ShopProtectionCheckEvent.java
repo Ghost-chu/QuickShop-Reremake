@@ -44,7 +44,9 @@ public class ShopProtectionCheckEvent extends QSEvent {
     private final ProtectionCheckStatus status;
 
     /**
-     * Will call when shop price was changed.
+     * Will call when checking protection by other plugin,
+     * This event was used to compatible with QuickShop protection checking
+     * Which will fire a FAKE BlockBreakEvent
      *
      * @param location Target location will execute protect check.
      * @param status   The checking status

@@ -114,6 +114,14 @@ public class Paste {
         finalReport.append("\tNMSV: ").append(Util.getNMSVersion()).append("\n");
         //noinspection deprecation
         finalReport.append("\tData Version: ").append(Bukkit.getUnsafe().getDataVersion()).append("\n");
+        if (plugin.getEnvironmentChecker().isFabricBasedServer() || plugin.getEnvironmentChecker().isForgeBasedServer()) {
+            if (plugin.getEnvironmentChecker().isForgeBasedServer()) {
+                finalReport.append("Modded Server: Forge (No support offer on this platform)\n");
+            }
+            if (plugin.getEnvironmentChecker().isFabricBasedServer()) {
+                finalReport.append("Modded Server: Fabric (No support offer on this platform)\n");
+            }
+        }
         finalReport.append("\tJava: ").append(System.getProperty("java.version")).append("\n");
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
         List<String> arguments = runtimeMxBean.getInputArguments();

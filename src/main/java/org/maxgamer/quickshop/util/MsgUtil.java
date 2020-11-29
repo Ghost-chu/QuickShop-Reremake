@@ -315,7 +315,6 @@ public class MsgUtil {
         }
         updateMessages(messagei18n.getInt("language-version"));
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
-
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
             plugin.getLogger().info(getMessage("translation-author", null));
@@ -921,11 +920,7 @@ public class MsgUtil {
 
     private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-            Integer level = entries.getValue();
-            if (level == null) {
-                level = 1;
-            }
-            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level));
+            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(entries.getValue()));
         }
     }
 
@@ -1530,7 +1525,11 @@ public class MsgUtil {
             setAndUpdate("nearby-shop-entry", "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)");
             setAndUpdate("language-version", ++selectedVersion);
         }
-
+        if (selectedVersion == 44) {
+            setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
+        setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
