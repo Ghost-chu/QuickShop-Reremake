@@ -315,7 +315,6 @@ public class MsgUtil {
         }
         updateMessages(messagei18n.getInt("language-version"));
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
-
         /* Print to console this language file's author, contributors, and region*/
         if (!inited) {
             plugin.getLogger().info(getMessage("translation-author", null));
@@ -1530,7 +1529,7 @@ public class MsgUtil {
             setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
             setAndUpdate("language-version", ++selectedVersion);
         }
-
+        setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }

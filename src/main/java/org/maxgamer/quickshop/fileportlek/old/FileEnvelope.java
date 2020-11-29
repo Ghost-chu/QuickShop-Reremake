@@ -108,7 +108,6 @@ public abstract class FileEnvelope implements IFile {
             if (fileConfiguration instanceof MckFileConfiguration) {
                 reload();
             }
-
             fileConfiguration.save(file);
         } catch (Exception exception) {
             throw new IllegalStateException(exception);
