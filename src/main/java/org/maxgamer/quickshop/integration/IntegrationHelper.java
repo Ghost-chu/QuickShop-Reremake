@@ -71,10 +71,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
-        for (String pluginName : integratedPluginNameMap.keySet()) {
+        for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : integratedPluginNameMap.entrySet()) {
+            String pluginName = entry.getKey();
             if (plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
                 if (pluginManager.isPluginEnabled(pluginName)) {
-                    register(pluginName);
+                    register(entry.getValue());
                 }
             }
         }
@@ -82,7 +83,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public void register(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
-            throw new InvalidIntegratedPluginClass("Invaild Integration module: " + integratedPlugin.getName());
+            throw new InvalidIntegratedPluginClassException("Invaild Integration module: " + integratedPlugin.getName());
         }
         if (!integrations.containsKey(integratedPlugin.getName())) {
             plugin.getLogger().info("Registering " + integratedPlugin.getName() + " integration");
@@ -91,14 +92,23 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
     }
 
-    public void register(@NotNull String integratedPluginName) {
+    public void register(@NotNull Class<? extends IntegratedPlugin> integratedPluginClass) {
         IntegratedPlugin integratedPlugin;
         try {
-            integratedPlugin = integratedPluginNameMap.get(integratedPluginName).getConstructor(plugin.getClass()).newInstance(plugin);
+            integratedPlugin = integratedPluginClass.getConstructor(plugin.getClass()).newInstance(plugin);
         } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new InvalidIntegratedPluginClass("Invaild Integration module name: " + integratedPluginName);
+            throw new InvalidIntegratedPluginClassException("Invalid Integration module class: " + integratedPluginClass, e);
         }
         register(integratedPlugin);
+    }
+
+    public void register(@NotNull String integratedPluginName) {
+        Class<? extends IntegratedPlugin> integratedPluginClass = integratedPluginNameMap.get(integratedPluginName);
+        if (integratedPluginClass != null) {
+            register(integratedPluginClass);
+        } else {
+            throw new InvalidIntegratedPluginClassException("Invalid Integration module name: " + integratedPluginName);
+        }
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -121,13 +131,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
     public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
-            throw new InvalidIntegratedPluginClass();
-        }
-        //Prevent it being removed
-        //WorldGuardIntegration will load in onload()V
-        //so it won't be registered again when reload
-        if (integratedPlugin instanceof WorldGuardIntegration) {
-            return;
+            throw new InvalidIntegratedPluginClassException();
         }
 
         plugin.getLogger().info("Unregistering " + integratedPlugin.getName() + " integration");
@@ -197,13 +201,18 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
 
 }
 
-class InvalidIntegratedPluginClass extends IllegalArgumentException {
-    public InvalidIntegratedPluginClass() {
+class InvalidIntegratedPluginClassException extends IllegalArgumentException {
+    public InvalidIntegratedPluginClassException() {
         super();
     }
 
-    public InvalidIntegratedPluginClass(String s) {
+    public InvalidIntegratedPluginClassException(String s) {
         super(s);
     }
+
+    public InvalidIntegratedPluginClassException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 
 }
