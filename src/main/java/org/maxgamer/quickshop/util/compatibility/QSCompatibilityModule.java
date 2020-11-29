@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopModeratorChangedEvent.java
+ * This file is a part of project QuickShop, the name is QSCompatibilityModule.java
  *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
@@ -18,36 +18,20 @@
  *
  */
 
-package org.maxgamer.quickshop.event;
+package org.maxgamer.quickshop.util.compatibility;
 
-import lombok.Getter;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.shop.ShopModerator;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-/**
- * Calling when moderator was changed, Can't cancel
- */
-public class ShopModeratorChangedEvent extends QSEvent {
-
-    @Getter
-    @NotNull
-    private final ShopModerator moderator;
-
-    @Getter
-    @NotNull
-    private final Shop shop;
-
-    /**
-     * Will call when shop moderator was changed.
-     * Shop moderator included owner itself.
-     *
-     * @param shop          Target shop
-     * @param shopModerator The shop moderator
-     */
-    public ShopModeratorChangedEvent(@NotNull Shop shop, @NotNull ShopModerator shopModerator) {
-        this.shop = shop;
-        this.moderator = shopModerator;
+public abstract class QSCompatibilityModule extends QuickShopInstanceHolder implements CompatibilityModule {
+    public QSCompatibilityModule(QuickShop plugin) {
+        super(plugin);
     }
 
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
 }

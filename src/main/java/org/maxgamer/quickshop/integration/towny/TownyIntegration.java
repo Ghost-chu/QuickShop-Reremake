@@ -36,8 +36,8 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 import org.maxgamer.quickshop.util.Util;
@@ -48,17 +48,16 @@ import java.util.UUID;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class TownyIntegration implements IntegratedPlugin, Listener {
+public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private final List<TownyFlags> createFlags;
 
     private final List<TownyFlags> tradeFlags;
 
     private final boolean ignoreDisabledWorlds;
-    private final QuickShop plugin;
     private final boolean deleteShopOnLeave;
 
     public TownyIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         createFlags =
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
         tradeFlags =

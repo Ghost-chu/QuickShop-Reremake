@@ -32,8 +32,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopChunk;
 
@@ -41,16 +41,15 @@ import java.util.Map;
 import java.util.UUID;
 
 @IntegrationStage
-public class LandsIntegration implements IntegratedPlugin, Listener {
+public class LandsIntegration extends QSIntegratedPlugin implements Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;
     private final me.angeschossen.lands.api.integration.LandsIntegration landsIntegration;
     private final boolean deleteWhenLosePermission;
-    private final QuickShop plugin;
 
     public LandsIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.lands.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.lands.whitelist-mode");

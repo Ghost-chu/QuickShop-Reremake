@@ -46,8 +46,9 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
     private boolean cancelled;
 
     /**
-     * Builds a new shop purchase event This time, purchase not start, please listen the
-     * ShopSuccessPurchaseEvent.
+     * Builds a new shop purchase event
+     * Will called when purchase starting
+     * For recording purchase, please listen to ShopSuccessPurchaseEvent.
      *
      * @param shop   The shop bought from
      * @param player The player buying

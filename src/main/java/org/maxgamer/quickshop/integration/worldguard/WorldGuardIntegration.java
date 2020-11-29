@@ -36,15 +36,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
+import java.util.logging.Level;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
-public class WorldGuardIntegration implements IntegratedPlugin {
+public class WorldGuardIntegration extends QSIntegratedPlugin {
     private List<WorldGuardFlags> createFlags;
 
     private List<WorldGuardFlags> tradeFlags;
@@ -54,13 +55,12 @@ public class WorldGuardIntegration implements IntegratedPlugin {
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
 
     private boolean anyOwner;
-
-    private final QuickShop plugin;
     private boolean whiteList;
     private boolean load = false;
+    private static boolean register = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
@@ -76,15 +76,18 @@ public class WorldGuardIntegration implements IntegratedPlugin {
         tradeFlags =
                 WorldGuardFlags.deserialize(
                         plugin.getConfig().getStringList("integration.worldguard.trade"));
-        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-        try {
-            // create a flag with the name "my-custom-flag", defaulting to true
-            registry.register(this.createFlag);
-            registry.register(this.tradeFlag);
-            plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-            Util.debugLog("Success register " + getName() + " flags.");
-        } catch (FlagConflictException | IllegalStateException e) {
-            e.printStackTrace();
+        if (!register) {
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+            try {
+                // create a flag with the name "my-custom-flag", defaulting to true
+                registry.register(this.createFlag);
+                registry.register(this.tradeFlag);
+                plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+                Util.debugLog("Success register " + getName() + " flags.");
+            } catch (FlagConflictException | IllegalStateException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
+            }
+            register = true;
         }
         load = true;
     }

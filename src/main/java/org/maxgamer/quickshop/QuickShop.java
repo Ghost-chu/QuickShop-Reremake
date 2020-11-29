@@ -45,12 +45,7 @@ import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
 import org.maxgamer.quickshop.event.QSReloadEvent;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
-import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
-import org.maxgamer.quickshop.integration.lands.LandsIntegration;
-import org.maxgamer.quickshop.integration.plotsquared.PlotSquaredIntegrationHolder;
-import org.maxgamer.quickshop.integration.residence.ResidenceIntegration;
-import org.maxgamer.quickshop.integration.towny.TownyIntegration;
+import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.permission.PermissionManager;
@@ -60,8 +55,6 @@ import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
-import org.maxgamer.quickshop.util.compatibility.NCPCompatibilityModule;
-import org.maxgamer.quickshop.util.compatibility.SpartanCompatibilityModule;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -95,7 +88,7 @@ public class QuickShop extends JavaPlugin {
      * WIP
      */
     @Getter
-    private final CompatibilityManager compatibilityTool = new CompatibilityManager();
+    private final CompatibilityManager compatibilityTool = new CompatibilityManager(this);
     /**
      * The shop limites.
      */
@@ -321,12 +314,7 @@ public class QuickShop extends JavaPlugin {
                 getLogger().info("Successfully loaded LWC support!");
             }
         }
-        if (Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null) {
-            compatibilityTool.register(new NCPCompatibilityModule(this));
-        }
-        if (Bukkit.getPluginManager().getPlugin("Spartan") != null) {
-            compatibilityTool.register(new SpartanCompatibilityModule(this));
-        }
+        compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
             if (DisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -500,7 +488,7 @@ public class QuickShop extends JavaPlugin {
 
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
-        this.integrationHelper = new IntegrationHelper();
+        this.integrationHelper = new IntegrationHelper(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
         if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
@@ -554,9 +542,9 @@ public class QuickShop extends JavaPlugin {
 
         // this.reloadConfig();
         Util.debugLog("Calling integrations...");
-        this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-        this.compatibilityTool.clear();
-        new HashSet<>(this.integrationHelper.getIntegrations()).forEach(integratedPlugin -> this.integrationHelper.unregister(integratedPlugin));
+        integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
+        compatibilityTool.unregisterAll();
+        integrationHelper.unregisterAll();
 
         Util.debugLog("Unregistering tasks...");
         // if (itemWatcherTask != null)
@@ -748,6 +736,7 @@ public class QuickShop extends JavaPlugin {
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
+        new PluginListener(this).register();
 
         syncTaskWatcher = new SyncTaskWatcher(this);
         // shopVaildWatcher = new ShopVaildWatcher(this);
@@ -807,7 +796,7 @@ public class QuickShop extends JavaPlugin {
             getLogger().info("Ongoing fee feature is enabled.");
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
         }
-        registerIntegrations();
+        integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
         new BukkitRunnable() {
             @Override
@@ -820,45 +809,6 @@ public class QuickShop extends JavaPlugin {
             getServer().getPluginManager().callEvent(new QSReloadEvent(this));
         } else {
             loaded = true;
-        }
-    }
-
-    private void registerIntegrations() {
-        if (getConfig().getBoolean("integration.towny.enable")) {
-            Plugin towny = Bukkit.getPluginManager().getPlugin("Towny");
-            if (towny != null && towny.isEnabled()) {
-                this.integrationHelper.register(new TownyIntegration(this));
-            }
-        }
-        if (getConfig().getBoolean("integration.plotsquared.enable")) {
-            Plugin plotSquared = Bukkit.getPluginManager().getPlugin("PlotSquared");
-            if (plotSquared != null && plotSquared.isEnabled()) {
-                this.integrationHelper.register(PlotSquaredIntegrationHolder.getPlotSquaredIntegration(this));
-            }
-        }
-        if (getConfig().getBoolean("integration.residence.enable")) {
-            Plugin residence = Bukkit.getPluginManager().getPlugin("Residence");
-            if (residence != null && residence.isEnabled()) {
-                this.integrationHelper.register(new ResidenceIntegration(this));
-            }
-        }
-        if (getConfig().getBoolean("integration.factions.enable")) {
-            Plugin factions = Bukkit.getPluginManager().getPlugin("Factions");
-            if (factions != null && factions.isEnabled()) {
-                this.integrationHelper.register(new FactionsUUIDIntegration(this));
-            }
-        }
-        if (getConfig().getBoolean("integration.lands.enable")) {
-            Plugin lands = Bukkit.getPluginManager().getPlugin("Lands");
-            if (lands != null && lands.isEnabled()) {
-                this.integrationHelper.register(new LandsIntegration(this));
-            }
-        }
-        if (getConfig().getBoolean("integration.griefprevention.enable")) {
-            Plugin griefPrevention = Bukkit.getPluginManager().getPlugin("GriefPrevention");
-            if (griefPrevention != null && griefPrevention.isEnabled()) {
-                this.integrationHelper.register(new GriefPreventionIntegration(this));
-            }
         }
     }
 
@@ -1707,6 +1657,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.finding.distance", getConfig().getInt("shop.find-distance"));
             getConfig().set("shop.finding.limit", 10);
             getConfig().set("shop.find-distance", null);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 118) {
+            getConfig().set("shop.finding.oldLogic", false);
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {

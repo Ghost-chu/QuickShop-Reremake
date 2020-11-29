@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.5.3</version>
+    <version>4.0.5.4</version>
 
     <licenses>
         <license>
@@ -105,28 +105,32 @@
                         <!--                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>-->
                         <!--                        </relocation>-->
                         <relocation>
-                            <pattern>com.fasterxml.jackson.core</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.jackson.core</shadedPattern>
+                            <pattern>org.slf4j.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.slf4j.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>io.sentry</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.sentry</shadedPattern>
-                            <includes>
-                                <include>io.sentry.*</include>
-                                <include>org.maxgamer.quickshop.util.SentryErrorReporter</include>
-                            </includes>
+                            <pattern>net.minidev.json.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.minidev.json.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.dumptruckman.bukkit.configuration</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json</shadedPattern>
+                            <pattern>com.fasterxml.jackson.core.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jackson.core.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.offbytwo.jenkins</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.jenkins</shadedPattern>
+                            <pattern>io.sentry.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.sentry.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache.commons.compress</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.compress</shadedPattern>
+                            <pattern>com.dumptruckman.bukkit.configuration.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.offbytwo.jenkins.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.jenkins.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.compress.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.compress.</shadedPattern>
                         </relocation>
 
                     </relocations>
@@ -416,17 +420,24 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.seeseemelk</groupId>-->
+        <!--            <artifactId>MockBukkit-v1.14</artifactId>-->
+        <!--            <version>0.2.2</version>-->
+        <!--            <scope>test</scope>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>bukkit</artifactId>-->
+        <!--                    <groupId>org.bukkit</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+        <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.14</artifactId>
-            <version>0.2.2</version>
+            <artifactId>MockBukkit-v1.16</artifactId>
+            <version>0.16.0</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -494,11 +505,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--PlotSquared 5-->
+        <!--PlotSquared 5 Core-->
         <dependency>
             <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared</artifactId>
-            <version>5.1</version>
+            <artifactId>PlotSquared-Core</artifactId>
+            <version>5.13.3</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -651,12 +662,6 @@
             <version>3.1.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.offbytwo.jenkins</groupId>
-            <artifactId>jenkins-client</artifactId>
-            <version>0.3.8</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

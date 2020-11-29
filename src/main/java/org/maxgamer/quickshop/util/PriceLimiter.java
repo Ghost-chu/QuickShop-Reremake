@@ -24,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
 
 import java.util.Map;
 
@@ -49,7 +50,12 @@ public class PriceLimiter {
                 return Status.REACHED_PRICE_MAX_LIMIT;
             }
         }
-        double perItemPrice = CalculateUtil.subtract(price, stack.getAmount());
+        double perItemPrice;
+        if (QuickShop.getInstance().isAllowStack()) {
+            perItemPrice = CalculateUtil.divide(price, stack.getAmount());
+        } else {
+            perItemPrice = price;
+        }
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
             if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
