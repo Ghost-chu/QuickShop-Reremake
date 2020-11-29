@@ -111,7 +111,7 @@ public class SubCommand_Find implements CommandProcesser {
                     if (distance >= minDistanceSquared) {
                         continue;
                     }
-                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, distance));
+                    nearByShopList.add(new AbstractMap.SimpleEntry<>(shop, Math.floor(distance)));
                     if (nearByShopList.size() == limit) {
                         break findingProcess;
                     }
@@ -142,7 +142,7 @@ public class SubCommand_Find implements CommandProcesser {
                     Shop shop = shopDoubleEntry.getKey();
                     Location location = shop.getLocation();
                     //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                    stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), Math.floor(shopDoubleEntry.getValue()))).append("\n");
+                    stringBuilder.append(MsgUtil.getMessage("nearby-shop-entry", sender, shop.getSignText()[1], shop.getSignText()[3], location.getBlockX(), location.getBlockY(), location.getBlockZ(), shopDoubleEntry.getValue())).append("\n");
                 }
                 MsgUtil.sendMessage(sender, stringBuilder.toString());
             }
