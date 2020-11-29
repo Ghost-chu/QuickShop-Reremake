@@ -113,7 +113,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
     }
 
     public void unregisterAll() {
-        for (IntegratedPlugin integratedPlugin : integrations.values()) {
+        for (IntegratedPlugin integratedPlugin : new ArrayList<>(integrations.values())) {
             unregister(integratedPlugin);
         }
     }
