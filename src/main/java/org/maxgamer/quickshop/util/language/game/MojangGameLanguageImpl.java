@@ -291,6 +291,13 @@ class GameLanguageLoadThread extends Thread {
                 yamlConfiguration.set("hash", cachingLanguageHash);
                 yamlConfiguration.set("lang", cachingLanguageName);
                 yamlConfiguration.save(cacheFile);
+                //delete caching i18n file to let them regenerate
+                File item = new File(plugin.getDataFolder(), "itemi18n.yml");
+                File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
+                File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
+                item.delete();
+                ench.delete();
+                potion.delete();
             }
             String json = null;
             if (cachingLanguageHash != null) {

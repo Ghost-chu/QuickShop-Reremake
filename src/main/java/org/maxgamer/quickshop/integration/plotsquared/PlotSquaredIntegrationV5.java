@@ -31,22 +31,21 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Arrays;
 
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class PlotSquaredIntegrationV5 implements IntegratedPlugin {
-    private final QuickShop plugin;
+public class PlotSquaredIntegrationV5 extends QSIntegratedPlugin {
     private final boolean whiteList;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
     public PlotSquaredIntegrationV5(QuickShop plugin) {
-        this.plugin = plugin;
+        super(plugin);
         this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
     }
 

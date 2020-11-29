@@ -25,12 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandManager;
-import org.maxgamer.quickshop.util.IntegrationHelper;
+import org.maxgamer.quickshop.integration.IntegrationHelper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 
 public class QuickShopAPI {
     private static QuickShop plugin;
+    private static ShopAPI shopAPI;
+    private static DisplayItemAPI displayItemAPI;
 
     /**
      * DO NOT CALL ME, IT JUST A INTERNAL METHOD, BUT BECAUSE CROSS-PACKAGE ACCESS, IT IS PUBLIC, SO DO NOT EXECUTE IT.
@@ -43,6 +45,8 @@ public class QuickShopAPI {
             throw new IllegalArgumentException("You can't setup API, it should only access by QuickShop internal calling.");
         }
         plugin = (QuickShop) qs;
+        shopAPI = new ShopAPI(plugin);
+        displayItemAPI = new DisplayItemAPI(plugin);
     }
 
     /**
@@ -51,7 +55,7 @@ public class QuickShopAPI {
      * @return The Shop API
      */
     public static @NotNull ShopAPI getShopAPI() {
-        return new ShopAPI(plugin);
+        return shopAPI;
     }
 
     /**
@@ -60,7 +64,7 @@ public class QuickShopAPI {
      * @return The DisplayItem API
      */
     public static @NotNull DisplayItemAPI getDisplayItemAPI() {
-        return new DisplayItemAPI(plugin);
+        return displayItemAPI;
     }
 
     /**

@@ -30,13 +30,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
-import org.maxgamer.quickshop.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.integration.IntegrationStage;
+import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
 import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FactionsUUIDIntegration implements IntegratedPlugin {
+public class FactionsUUIDIntegration extends QSIntegratedPlugin {
     private final List<String> createFlags;
 
     private final List<String> tradeFlags;
@@ -76,6 +76,7 @@ public class FactionsUUIDIntegration implements IntegratedPlugin {
     private final boolean whiteList;
 
     public FactionsUUIDIntegration(QuickShop plugin) {
+        super(plugin);
         this.createFlags = plugin.getConfig().getStringList("integration.factions.create.flags");
         this.tradeFlags = plugin.getConfig().getStringList("integration.factions.trade.flags");
 

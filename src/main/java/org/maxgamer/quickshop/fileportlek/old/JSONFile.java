@@ -63,4 +63,9 @@ public class JSONFile extends FileEnvelope {
         }
     }
 
+    @Override
+    public void save() {
+        fileConfiguration.set("_comment", "Please edit this file after format with json formatter");
+        super.save();
+    }
 }

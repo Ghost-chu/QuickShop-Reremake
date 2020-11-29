@@ -1,6 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopControlPanelOpenEvent.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
+ * This file is a part of project QuickShop, the name is ShopTypeChangeEvent.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,36 +20,48 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.shop.ShopType;
 
-public class ShopControlPanelOpenEvent extends QSEvent implements Cancellable {
+/**
+ * Calling when shop item was changed
+ */
+public class ShopTypeChangeEvent extends QSEvent implements Cancellable {
     @Getter
+    private final ShopType oldType;
+
+    @Getter
+    private final ShopType newType;
+
+    @Getter
+    @NotNull
     private final Shop shop;
-    @Getter
-    private final CommandSender sender;
-    private boolean cancelled = false;
+
+    private boolean cancelled;
 
     /**
-     * Called before shop control panel message.
+     * Will call when shop type was changed.
      *
-     * @param shop   The shop bought from
-     * @param sender The player which receiving shop control panel message
+     * @param shop    Target shop
+     * @param oldType The old shop type
+     * @param newType The new shop type
      */
-    public ShopControlPanelOpenEvent(@NotNull Shop shop, @NotNull CommandSender sender) {
+    public ShopTypeChangeEvent(@NotNull Shop shop, ShopType oldType, ShopType newType) {
         this.shop = shop;
-        this.sender = sender;
+        this.oldType = oldType;
+        this.newType = newType;
     }
 
     @Override
     public boolean isCancelled() {
-        return cancelled;
+        return this.cancelled;
     }
 
     @Override
-    public void setCancelled(boolean b) {
-        this.cancelled = b;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
+
 }

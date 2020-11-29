@@ -1,27 +1,22 @@
 package org.maxgamer.quickshop.util.compatibility;
 
 
-import lombok.AllArgsConstructor;
 import me.vagdedes.spartan.api.API;
 import me.vagdedes.spartan.system.Enums;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
-@AllArgsConstructor
-public class SpartanCompatibilityModule implements CompatibilityModule {
-    private final QuickShop plugin;
+public class SpartanCompatibilityModule extends QSCompatibilityModule {
+
+    public SpartanCompatibilityModule(QuickShop plugin) {
+        super(plugin);
+    }
 
     @Override
     public @NotNull String getName() {
         return "Spartan";
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
     }
 
     @Override
