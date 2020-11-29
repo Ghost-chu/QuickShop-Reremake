@@ -44,6 +44,10 @@ public class RomanNumber {
         map.put(1, "I");
     }
 
+    public static String toRoman(Integer number) {
+        return toRoman(number == null ? 1 : number);
+    }
+
     public static String toRoman(int number) {
         int l = map.floorKey(number);
         if (number == l) {
