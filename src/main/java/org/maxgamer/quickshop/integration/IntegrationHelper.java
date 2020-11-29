@@ -85,7 +85,8 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
             throw new InvalidIntegratedPluginClass("Invaild Integration module: " + integratedPlugin.getName());
         }
         if (!integrations.containsKey(integratedPlugin.getName())) {
-            Util.debugLog("Registering " + integratedPlugin.getName());
+            plugin.getLogger().info("Registering " + integratedPlugin.getName() + " integration");
+            Util.debugLog("Registering " + integratedPlugin.getName() + " integration");
             integrations.put(integratedPlugin.getName(), integratedPlugin);
         }
     }
@@ -129,7 +130,8 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
             return;
         }
 
-        Util.debugLog("Unregistering " + integratedPlugin.getName());
+        plugin.getLogger().info("Unregistering " + integratedPlugin.getName() + " integration");
+        Util.debugLog("Unregistering " + integratedPlugin.getName() + " integration");
         integrations.remove(integratedPlugin.getName());
     }
 
