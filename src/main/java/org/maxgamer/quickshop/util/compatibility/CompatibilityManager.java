@@ -51,9 +51,10 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
 
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
-        for (String pluginName : compatibilityModuleNameMap.keySet()) {
+        for (Map.Entry<String, Class<? extends CompatibilityModule>> entry : compatibilityModuleNameMap.entrySet()) {
+            String pluginName = entry.getKey();
             if (pluginManager.isPluginEnabled(pluginName)) {
-                register(pluginName);
+                register(entry.getValue());
             }
         }
     }
@@ -88,11 +89,20 @@ public class CompatibilityManager extends QuickShopInstanceHolder {
     }
 
     public void register(@NotNull String moduleName) {
+        Class<? extends CompatibilityModule> compatibilityModuleClass = compatibilityModuleNameMap.get(moduleName);
+        if (compatibilityModuleClass != null) {
+            register(compatibilityModuleClass);
+        } else {
+            throw new IllegalStateException("Invalid compatibility module name: " + moduleName);
+        }
+    }
+
+    public void register(@NotNull Class<? extends CompatibilityModule> compatibilityModuleClass) {
         CompatibilityModule compatibilityModule;
         try {
-            compatibilityModule = compatibilityModuleNameMap.get(moduleName).getConstructor(plugin.getClass()).newInstance(plugin);
+            compatibilityModule = compatibilityModuleClass.getConstructor(plugin.getClass()).newInstance(plugin);
         } catch (NullPointerException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new IllegalStateException("Invaild compatibility module name: " + moduleName);
+            throw new IllegalStateException("Invalid compatibility module class: " + compatibilityModuleClass);
         }
         register(compatibilityModule);
     }
