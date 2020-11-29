@@ -290,7 +290,7 @@ public class MsgUtil {
             plugin.getLogger().info("Successfully converted, Continue loading...");
         } else {
             Util.debugLog("Loading language file from exist file...");
-            if (!new File(plugin.getDataFolder(), "messages.json").exists() || !nJson.getOrSet("language-name", languageCode).equals(languageCode)) {
+            if (!new File(plugin.getDataFolder(), "messages.json").exists()) {
                 plugin.getLanguage().saveFile(languageCode, "messages", "messages.json");
                 nJson.loadFromString(Util.readToString(new File(plugin.getDataFolder(), "messages.json").getAbsolutePath()));
                 nJson.set("language-name", languageCode);
