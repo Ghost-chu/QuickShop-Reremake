@@ -49,7 +49,7 @@ public class PriceLimiter {
                 return Status.REACHED_PRICE_MAX_LIMIT;
             }
         }
-        double perItemPrice = CalculateUtil.subtract(price, stack.getAmount());
+        double perItemPrice = CalculateUtil.divide(price, stack.getAmount());
         Map.Entry<Double, Double> materialLimit = Util.getPriceRestriction(stack.getType());
         if (materialLimit != null) {
             if (perItemPrice < materialLimit.getKey() || perItemPrice > materialLimit.getValue()) {
