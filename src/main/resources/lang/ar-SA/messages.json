@@ -5,7 +5,7 @@
   "translation-country": "منطقة اللغة: العربية (ar_AR)",
   "language-version": "45",
   "not-looking-at-shop": "&cلا يمكن العثور على QuickShop. تحتاج إلى النظر إلى واحد.",
-  "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
+  "no-anythings-in-your-hand": "&cلا يوجد شيء في يديك.",
   "no-permission": "&cYou do not have permission to do that.",
   "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
   "integrations-check-failed-trade": "&cIntegration {0} denied the Shop trading",
