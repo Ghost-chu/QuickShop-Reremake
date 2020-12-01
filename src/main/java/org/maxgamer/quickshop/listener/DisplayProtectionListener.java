@@ -122,7 +122,7 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
             return;
         }
         final Block block = event.getBlock().getRelative(event.getDirection()).getRelative(BlockFace.DOWN);
-        Shop shop = getShopNature(block.getLocation(), true);
+        Shop shop = getShopRedstone(block.getLocation(), true);
         if (shop != null) {
             event.setCancelled(true);
             sendAlert(
