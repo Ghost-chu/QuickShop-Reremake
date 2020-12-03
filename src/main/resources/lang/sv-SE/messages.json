@@ -31,7 +31,7 @@
   "you-cant-afford-to-buy": "&cDet kostar {0} men du har bara {1}",
   "negative-amount": "&cYou kan inte handla med negativa belopp",
   "not-a-number": "&cDu kan bara ange ett nummer, din inmatning var {0}.",
-  "exceeded-maximum": "&cThe value has exceeded the maximum java value.",
+  "exceeded-maximum": "&cVärdet har överskridit maximalt java-värde.",
   "not-a-integer": "&cDu kan ange ett nummer, din inmatning var {0}.",
   "player-bought-from-your-store": "&c{0} köpte {1} {2} från din butik, och du tjänade {3}.",
   "shop-out-of-stock": "&5Din butik vid {0}, {1}, {2} har fått slut på {3}!",
