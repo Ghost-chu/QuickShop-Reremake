@@ -1529,6 +1529,10 @@ public class MsgUtil {
             setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 45) {
+            setAndUpdate("exceeded-maximum", "&cThe value has exceeded the maximum java value.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));

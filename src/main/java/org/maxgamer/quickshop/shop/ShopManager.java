@@ -733,6 +733,10 @@ public class ShopManager {
         } else {
             try {
                 price = Double.parseDouble(message);
+                if (Double.isInfinite(price)) {
+                    MsgUtil.sendMessage(p, MsgUtil.getMessage("exceeded-maximum", p, message));
+                    return;
+                }
                 String strFormat = new DecimalFormat("#.#########").format(Math.abs(price)).replace(",", ".");
                 String[] processedDouble = strFormat.split("\\.");
                 if (processedDouble.length > 1) {
