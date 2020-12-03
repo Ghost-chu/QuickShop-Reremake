@@ -29,7 +29,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -182,12 +181,12 @@ public class ContainerShop implements Shop {
      * @param amount The amount to buy
      */
     @Override
-    public void buy(@NotNull Player p, int amount) {
+    public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int amount) {
         amount = amount * item.getAmount();
         if (amount < 0) {
-            this.sell(p, -amount);
+            this.sell(buyer, buyerInventory, loc2Drop, -amount);
         }
-        ItemStack[] contents = p.getInventory().getContents();
+        ItemStack[] contents = buyerInventory.getContents();
         if (this.isUnlimited()) {
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
@@ -201,7 +200,7 @@ public class ContainerShop implements Shop {
                 }
             }
             // Send the players new inventory to them
-            p.getInventory().setContents(contents);
+            buyerInventory.setContents(contents);
             this.setSignText();
             // This should not happen.
             if (amount > 0) {
@@ -210,7 +209,7 @@ public class ContainerShop implements Shop {
                         .log(
                                 Level.WARNING,
                                 "Could not take all items from a players inventory on purchase! "
-                                        + p.getName()
+                                        + buyer
                                         + ", missing: "
                                         + amount
                                         + ", item: "
@@ -239,7 +238,7 @@ public class ContainerShop implements Shop {
                 }
             }
             // Now update the players inventory.
-            p.getInventory().setContents(contents);
+            buyerInventory.setContents(contents);
             this.setSignText();
         }
     }
@@ -485,25 +484,25 @@ public class ContainerShop implements Shop {
     /**
      * Sells amount of item to Player p. Does NOT check our inventory, or balances
      *
-     * @param p      The player to sell to
-     * @param amount The amount to sell
+     * @param p        The player to sell to
+     * @param loc2Drop Location to drop items if inventory are full
+     * @param amount   The amount to sell
      */
     @Override
-    public void sell(@NotNull Player p, int amount) {
+    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @Nullable Location loc2Drop, int amount) {
         amount = item.getAmount() * amount;
         if (amount < 0) {
-            this.buy(p, -amount);
+            this.buy(seller, sellerInventory, loc2Drop, -amount);
         }
         // Items to drop on floor
         ArrayList<ItemStack> floor = new ArrayList<>(5);
-        Inventory pInv = p.getInventory();
         int itemMaxStackSize = Util.getItemMaxStackSize(this.item.getType());
         if (this.isUnlimited()) {
             ItemStack item = this.item.clone();
             while (amount > 0) {
                 int stackSize = Math.min(amount, itemMaxStackSize);
                 item.setAmount(stackSize);
-                pInv.addItem(item);
+                sellerInventory.addItem(item);
                 amount -= stackSize;
             }
         } else {
@@ -524,7 +523,7 @@ public class ContainerShop implements Shop {
                     // We can modify this, it is a copy.
                     item.setAmount(stackSize);
                     // Add the items to the players inventory
-                    floor.addAll(pInv.addItem(item).values());
+                    floor.addAll(sellerInventory.addItem(item).values());
                     amount -= stackSize;
                 }
             }
@@ -532,8 +531,10 @@ public class ContainerShop implements Shop {
             this.getInventory().setContents(chestContents);
             this.setSignText();
         }
-        for (ItemStack stack : floor) {
-            p.getWorld().dropItem(p.getLocation(), stack);
+        if (loc2Drop != null) {
+            for (ItemStack stack : floor) {
+                loc2Drop.getWorld().dropItem(loc2Drop, stack);
+            }
         }
     }
 
