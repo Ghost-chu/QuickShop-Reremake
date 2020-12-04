@@ -25,6 +25,7 @@ import lombok.Setter;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,6 +99,11 @@ public class Economy_Reserve implements EconomyCore {
         }
     }
 
+    @Override
+    public boolean deposit(OfflinePlayer trader, double amount) {
+        return deposit(trader.getUniqueId(), amount);
+    }
+
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
      *
@@ -142,6 +148,11 @@ public class Economy_Reserve implements EconomyCore {
         }
     }
 
+    @Override
+    public double getBalance(OfflinePlayer player) {
+        return getBalance(player.getUniqueId());
+    }
+
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
@@ -184,6 +195,11 @@ public class Economy_Reserve implements EconomyCore {
             plugin.getLogger().warning(errorMsg);
             return false;
         }
+    }
+
+    @Override
+    public boolean withdraw(OfflinePlayer trader, double amount) {
+        return withdraw(trader.getUniqueId(), amount);
     }
 
     /**

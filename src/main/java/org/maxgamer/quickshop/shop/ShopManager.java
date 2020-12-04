@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.ShopCreateEvent;
 import org.maxgamer.quickshop.event.ShopPreCreateEvent;
 import org.maxgamer.quickshop.event.ShopPurchaseEvent;
@@ -65,7 +66,7 @@ public class ShopManager {
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
-    private final UUID cacheTaxAccount;
+    private final Trader cacheTaxAccount;
     @Getter
     private final PriceLimiter priceLimiter;
     private final boolean useFastShopSearchAlgorithm;
@@ -85,8 +86,7 @@ public class ShopManager {
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!(taxAccount == null || taxAccount.isEmpty())) {
-            OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(taxAccount);
-            this.cacheTaxAccount = taxPlayer.getUniqueId();
+            this.cacheTaxAccount = new Trader(taxAccount, Bukkit.getOfflinePlayer(taxAccount));
         } else {
             //disable tax account
             cacheTaxAccount = null;
