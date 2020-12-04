@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -56,6 +57,11 @@ public class Economy implements EconomyCore {
         return core.deposit(name, amount);
     }
 
+    @Override
+    public boolean deposit(OfflinePlayer trader, double amount) {
+        return core.deposit(trader, amount);
+    }
+
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
      *
@@ -74,6 +80,11 @@ public class Economy implements EconomyCore {
     }
 
     @Override
+    public double getBalance(OfflinePlayer player) {
+        return core.getBalance(player);
+    }
+
+    @Override
     public boolean transfer(@NotNull UUID from, UUID to, double amount) {
         return core.transfer(from, to, amount);
     }
@@ -81,6 +92,11 @@ public class Economy implements EconomyCore {
     @Override
     public boolean withdraw(@NotNull UUID name, double amount) {
         return core.withdraw(name, amount);
+    }
+
+    @Override
+    public boolean withdraw(OfflinePlayer trader, double amount) {
+        return core.withdraw(trader, amount);
     }
 
     /**
