@@ -21,6 +21,7 @@
 package org.maxgamer.quickshop.economy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -53,6 +54,20 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
+        if (getBalance(trader) < amount) {
+            return false;
+        }
+        Bukkit.dispatchCommand(
+                Bukkit.getConsoleSender(),
+                MsgUtil.fillArgs(
+                        plugin.getConfig().getString("mixedeconomy.deposit"),
+                        trader.getName(),
+                        String.valueOf(amount)));
+        return true;
+    }
+
+    @Override
     public String format(double balance) {
         return Util.format(balance);
     }
@@ -60,6 +75,11 @@ public class Economy_Mixed implements EconomyCore {
     @Override
     public double getBalance(@NotNull UUID name) {
         return core.getBalance(name);
+    }
+
+    @Override
+    public double getBalance(@NotNull OfflinePlayer player) {
+        return core.getBalance(player);
     }
 
     @Override
@@ -86,6 +106,20 @@ public class Economy_Mixed implements EconomyCore {
                 MsgUtil.fillArgs(
                         plugin.getConfig().getString("mixedeconomy.withdraw"),
                         Bukkit.getOfflinePlayer(name).getName(),
+                        String.valueOf(amount)));
+        return true;
+    }
+
+    @Override
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
+        if (getBalance(trader) > amount) {
+            return false;
+        }
+        Bukkit.dispatchCommand(
+                Bukkit.getConsoleSender(),
+                MsgUtil.fillArgs(
+                        plugin.getConfig().getString("mixedeconomy.withdraw"),
+                        trader.getName(),
                         String.valueOf(amount)));
         return true;
     }

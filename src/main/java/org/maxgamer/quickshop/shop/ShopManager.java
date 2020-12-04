@@ -33,11 +33,13 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
+import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.event.ShopCreateEvent;
 import org.maxgamer.quickshop.event.ShopPreCreateEvent;
 import org.maxgamer.quickshop.event.ShopPurchaseEvent;
@@ -65,7 +67,7 @@ public class ShopManager {
     private final Map<UUID, Info> actions = Maps.newConcurrentMap();
 
     private final QuickShop plugin;
-    private final UUID cacheTaxAccount;
+    private final Trader cacheTaxAccount;
     @Getter
     private final PriceLimiter priceLimiter;
     private final boolean useFastShopSearchAlgorithm;
@@ -85,8 +87,7 @@ public class ShopManager {
         Util.debugLog("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!(taxAccount == null || taxAccount.isEmpty())) {
-            OfflinePlayer taxPlayer = Bukkit.getOfflinePlayer(taxAccount);
-            this.cacheTaxAccount = taxPlayer.getUniqueId();
+            this.cacheTaxAccount = new Trader(taxAccount, Bukkit.getOfflinePlayer(taxAccount));
         } else {
             //disable tax account
             cacheTaxAccount = null;
@@ -573,8 +574,8 @@ public class ShopManager {
         return worldShops;
     }
 
-    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
-        if (shopIsNotValid(p, info, shop)) {
+    private void _actionBuy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+        if (shopIsNotValid(buyer, info, shop)) {
             return;
         }
         int space = shop.getRemainingSpace();
@@ -582,26 +583,26 @@ public class ShopManager {
             space = 10000;
         }
         if (space < amount) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-no-space", p, Integer.toString(space), Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "shop-has-no-space", Integer.toString(space), Util.getItemStackName(shop.getItem())));
             return;
         }
-        int count = Util.countItems(p.getInventory(), shop.getItem());
+        int count = Util.countItems(buyerInventory, shop.getItem());
         // Not enough items
         if (amount > count) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("you-dont-have-that-many-items", p, Integer.toString(count), Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "you-dont-have-that-many-items", Integer.toString(count), Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
+            MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "negative-amount"));
             return;
         }
 
         // Money handling
         // BUYING MODE  Shop Owner -> Player
-        double taxModifier = getTax(shop, p);
+        double taxModifier = getTax(shop, buyer);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount, total);
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyer, buyerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
         }else{
@@ -609,15 +610,15 @@ public class ShopManager {
         }
         EconomyTransaction transaction;
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
-            transaction = EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+            transaction = EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(buyer).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         } else {
-            transaction = EconomyTransaction.builder().core(eco).amount(total).from(null).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+            transaction = EconomyTransaction.builder().core(eco).amount(total).from(null).to(buyer).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
+                MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "the-owner-cant-afford-to-buy-from-you", Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
             } else {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
+                MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "purchase-failed"));
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -625,10 +626,12 @@ public class ShopManager {
         }
 
         // Notify the owner of the purchase. //TODO: move to a standalone method
-        String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
+        Player player = Bukkit.getPlayer(buyer);
+
+        String msg = MsgUtil.getMessage(buyer, "player-sold-to-your-store", player != null ? player.getName() : buyer.toString(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
 
         if (space == amount) {
-            msg += "\n" + MsgUtil.getMessage("shop-out-of-space", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()));
+            msg += "\n" + MsgUtil.getMessage(buyer, "shop-out-of-space", Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()));
         }
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
@@ -636,18 +639,90 @@ public class ShopManager {
             }
         }
         MsgUtil.send(shop, shop.getOwner(), msg);
-        shop.buy(p, amount);
-        MsgUtil.sendSellSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
+        shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        MsgUtil.sendSellSuccess(buyer, shop, amount);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
         Bukkit.getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
 
-    private double getTax(Shop shop, Player p) {
+    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+        _actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+//        if (shopIsNotValid(p, info, shop)) {
+//            return;
+//        }
+//        int space = shop.getRemainingSpace();
+//        if (space == -1) {
+//            space = 10000;
+//        }
+//        if (space < amount) {
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-has-no-space", p, Integer.toString(space), Util.getItemStackName(shop.getItem())));
+//            return;
+//        }
+//        int count = Util.countItems(p.getInventory(), shop.getItem());
+//        // Not enough items
+//        if (amount > count) {
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("you-dont-have-that-many-items", p, Integer.toString(count), Util.getItemStackName(shop.getItem())));
+//            return;
+//        }
+//        if (amount < 1) {
+//            // & Dumber
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
+//            return;
+//        }
+//
+//        // Money handling
+//        // BUYING MODE  Shop Owner -> Player
+//        double taxModifier = getTax(shop, p.getUniqueId());
+//        double total = CalculateUtil.multiply(amount, shop.getPrice());
+//        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p.getUniqueId(),p.getInventory(), amount, total);
+//        if (Util.fireCancellableEvent(e)) {
+//            return; // Cancelled
+//        }else{
+//            total = e.getTotal(); //Allow addon to set it
+//        }
+//        EconomyTransaction transaction;
+//        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
+//            transaction = EconomyTransaction.builder().core(eco).amount(total).from(shop.getOwner()).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+//        } else {
+//            transaction = EconomyTransaction.builder().core(eco).amount(total).from(null).to(p.getUniqueId()).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+//        }
+//        if (!transaction.failSafeCommit()) {
+//            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
+//                MsgUtil.sendMessage(p, MsgUtil.getMessage("the-owner-cant-afford-to-buy-from-you", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
+//            } else {
+//                MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
+//                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+//                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
+//            }
+//            return;
+//        }
+//
+//        // Notify the owner of the purchase. //TODO: move to a standalone method
+//        String msg = MsgUtil.getMessage("player-sold-to-your-store", p, p.getName(), String.valueOf(amount), "##########" + Util.serialize(shop.getItem()) + "##########");
+//
+//        if (space == amount) {
+//            msg += "\n" + MsgUtil.getMessage("shop-out-of-space", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()));
+//        }
+//        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
+//            for (UUID staff : shop.getModerator().getStaffs()) {
+//                MsgUtil.send(shop, staff, msg);
+//            }
+//        }
+//        MsgUtil.send(shop, shop.getOwner(), msg);
+//        shop.buy(p.getUniqueId(),p.getInventory(),p.getLocation(), amount);
+//        MsgUtil.sendSellSuccess(p.getUniqueId(), shop, amount);
+//        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p.getUniqueId(),p.getInventory(), amount, total, taxModifier);
+//        Bukkit.getPluginManager().callEvent(se);
+//        shop.setSignText(); // Update the signs count
+    }
+
+    private double getTax(@NotNull Shop shop, @NotNull UUID p) {
         double tax = plugin.getConfig().getDouble("tax");
-        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.tax")) {
+        Player player = Bukkit.getPlayer(p);
+        if (player != null && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
             tax = 0;
-            Util.debugLog("Disable the Tax for player " + p.getName() + " cause they have permission quickshop.tax");
+            Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
         }
         if (tax >= 1.0) {
             plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
@@ -656,7 +731,7 @@ public class ShopManager {
         if (tax < 0) {
             tax = 0; // Tax was disabled.
         }
-        if (shop.getModerator().isModerator(p.getUniqueId())) {
+        if (shop.getModerator().isModerator(p)) {
             tax = 0; // Is staff or owner, so we won't will take them tax
         }
         return tax;
@@ -785,7 +860,7 @@ public class ShopManager {
         }
 
         //Calling ShopCreateEvent
-        ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p);
+        ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
         if (Util.fireCancellableEvent(shopCreateEvent)) {
             Util.debugLog("Cancelled by plugin");
             return;
@@ -832,7 +907,85 @@ public class ShopManager {
 
     private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
             shop, int amount) {
-        if (shopIsNotValid(p, info, shop)) {
+        _actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+//        if (shopIsNotValid(p, info, shop)) {
+//            return;
+//        }
+//        int stock = shop.getRemainingStock();
+//        if (stock == -1) {
+//            stock = 10000;
+//        }
+//        if (stock < amount) {
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p, Integer.toString(stock), Util.getItemStackName(shop.getItem())));
+//            return;
+//        }
+//        if (amount < 1) {
+//            // & Dumber
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
+//            return;
+//        }
+//        int pSpace = Util.countSpace(p.getInventory(), shop.getItem());
+//        if (amount > pSpace) {
+//            MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(pSpace)));
+//            return;
+//        }
+//
+//        double taxModifier = getTax(shop, p.getUniqueId());
+//        double total = CalculateUtil.multiply(amount, shop.getPrice());
+//
+//        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p.getUniqueId(),p.getInventory(), amount,total);
+//        if (Util.fireCancellableEvent(e)) {
+//            return; // Cancelled
+//        }else{
+//            total = e.getTotal(); //Allow addon to set it
+//        }
+//        // Money handling
+//        // SELLING Player -> Shop Owner
+//        EconomyTransaction transaction;
+//        if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
+//            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+//        } else {
+//            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+//        }
+//        if (!transaction.failSafeCommit()) {
+//            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
+//                MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
+//            } else {
+//                MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
+//                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+//                QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
+//            }
+//            return;
+//        }
+//
+//        String msg;
+//        // Notify the shop owner //TODO: move to a standalone method
+//        if (plugin.getConfig().getBoolean("show-tax")) {
+//            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total), Util.format(CalculateUtil.multiply(taxModifier, total)));
+//        } else {
+//            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total));
+//        }
+//        // Transfers the item from A to B
+//        if (stock == amount) {
+//            msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()), Util.getItemStackName(shop.getItem()));
+//        }
+//
+//        MsgUtil.send(shop, shop.getOwner(), msg);
+//        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
+//            for (UUID staff : shop.getModerator().getStaffs()) {
+//                MsgUtil.send(shop, staff, msg);
+//            }
+//        }
+//        shop.sell(p.getUniqueId(),p.getInventory(),p.getLocation(), amount);
+//        MsgUtil.sendPurchaseSuccess(p.getUniqueId(), shop, amount);
+//        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p.getUniqueId(),p.getInventory(), amount, total, taxModifier);
+//        Bukkit.getPluginManager().callEvent(se);
+
+    }
+
+    private void _actionSell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
+            shop, int amount) {
+        if (shopIsNotValid(seller, info, shop)) {
             return;
         }
         int stock = shop.getRemainingStock();
@@ -840,42 +993,42 @@ public class ShopManager {
             stock = 10000;
         }
         if (stock < amount) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p, Integer.toString(stock), Util.getItemStackName(shop.getItem())));
+            MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "shop-stock-too-low", Integer.toString(stock), Util.getItemStackName(shop.getItem())));
             return;
         }
         if (amount < 1) {
             // & Dumber
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("negative-amount", p));
+            MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "negative-amount"));
             return;
         }
-        int pSpace = Util.countSpace(p.getInventory(), shop.getItem());
+        int pSpace = Util.countSpace(sellerInventory, shop.getItem());
         if (amount > pSpace) {
-            MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(pSpace)));
+            MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "not-enough-space", String.valueOf(pSpace)));
             return;
         }
 
-        double taxModifier = getTax(shop, p);
+        double taxModifier = getTax(shop, seller);
         double total = CalculateUtil.multiply(amount, shop.getPrice());
 
-        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, p, amount,total);
+        ShopPurchaseEvent e = new ShopPurchaseEvent(shop, seller, sellerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
             return; // Cancelled
-        }else{
+        } else {
             total = e.getTotal(); //Allow addon to set it
         }
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
         if (!shop.isUnlimited() || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners") && shop.isUnlimited())) {
-            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(seller).to(shop.getOwner()).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         } else {
-            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(p.getUniqueId()).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
+            transaction = EconomyTransaction.builder().allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false)).core(eco).from(seller).to(null).amount(total).taxModifier(taxModifier).taxAccount(cacheTaxAccount).build();
         }
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("you-cant-afford-to-buy", p, Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(p.getUniqueId())))));
+                MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "you-cant-afford-to-buy", Objects.requireNonNull(format(total)), Objects.requireNonNull(format(eco.getBalance(seller)))));
             } else {
-                MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
+                MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "purchase-failed"));
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
                 QuickShop.getInstance().log("EconomyTransaction Failed, last error:" + transaction.getLastError());
             }
@@ -884,14 +1037,15 @@ public class ShopManager {
 
         String msg;
         // Notify the shop owner //TODO: move to a standalone method
+        Player player = Bukkit.getPlayer(seller);
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = MsgUtil.getMessage("player-bought-from-your-store-tax", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total), Util.format(CalculateUtil.multiply(taxModifier, total)));
+            msg = MsgUtil.getMessage(seller, "player-bought-from-your-store-tax", player != null ? player.getName() : seller.toString(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total), Util.format(CalculateUtil.multiply(taxModifier, total)));
         } else {
-            msg = MsgUtil.getMessage("player-bought-from-your-store", p, p.getName(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total));
+            msg = MsgUtil.getMessage(seller, "player-bought-from-your-store", player != null ? player.getName() : seller.toString(), Integer.toString(amount * shop.getItem().getAmount()), "##########" + Util.serialize(shop.getItem()) + "##########", Double.toString(total));
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg += "\n" + MsgUtil.getMessage("shop-out-of-stock", p, Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()), Util.getItemStackName(shop.getItem()));
+            msg += "\n" + MsgUtil.getMessage(seller, "shop-out-of-stock", Integer.toString(shop.getLocation().getBlockX()), Integer.toString(shop.getLocation().getBlockY()), Integer.toString(shop.getLocation().getBlockZ()), Util.getItemStackName(shop.getItem()));
         }
 
         MsgUtil.send(shop, shop.getOwner(), msg);
@@ -900,14 +1054,21 @@ public class ShopManager {
                 MsgUtil.send(shop, staff, msg);
             }
         }
-        shop.sell(p, amount);
-        MsgUtil.sendPurchaseSuccess(p, shop, amount);
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, p, amount, total, taxModifier);
+        shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        MsgUtil.sendPurchaseSuccess(seller, shop, amount);
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
         Bukkit.getPluginManager().callEvent(se);
 
     }
 
-    private boolean shopIsNotValid(@NotNull Player p, @NotNull Info info, @NotNull Shop shop) {
+    private boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
+        Player player = Bukkit.getPlayer(uuid);
+        return shopIsNotValid(player, info, shop);
+
+    }
+
+    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
+
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return true;
