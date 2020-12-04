@@ -71,7 +71,7 @@ public class EnvironmentChecker {
                     "* Java 11 or any version after 11 is okay. \n" +
                     "*\n" +
                     "* Most plugins can running on Java 11+ without problems un-\n" +
-                    "* less the code is relly bad and you should uninstalling it.\n" +
+                    "* less the code is really bad and you should uninstalling it.\n" +
                     "*\n" +
                     "* You can get Java at here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
