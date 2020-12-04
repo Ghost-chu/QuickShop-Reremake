@@ -43,7 +43,7 @@ public class EconomyTransaction {
     private final EconomyCore core;
     private final double actualAmount; //
     private final double tax;
-    private final UUID taxAccount;
+    private final Trader taxer;
     private final boolean allowLoan;
     private final boolean tryingFixBanlanceInsuffient;
     @Getter
@@ -66,13 +66,13 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable Trader taxAccount, EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
-        this.taxAccount = taxAccount;
+        this.taxer = taxAccount;
         this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
             this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
@@ -166,7 +166,7 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.TAX;
-        if (tax > 0 && taxAccount != null && !core.deposit(taxAccount, tax)) {
+        if (tax > 0 && taxer != null && !core.deposit(taxer, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
             callback.onTaxFailed(this);
             //Tax never should failed.
