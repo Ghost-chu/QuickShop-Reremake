@@ -21,12 +21,10 @@ package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
-
-import java.util.UUID;
 
 public class ShopPurchaseEvent extends QSEvent implements Cancellable {
 
@@ -36,11 +34,7 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
-    private final UUID purchaser;
-
-    @Getter
-    @NotNull
-    private final Inventory purchaserInventory;
+    private final Player player;
 
     @Getter
     private final int amount;
@@ -55,16 +49,14 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
      * Will called when purchase starting
      * For recording purchase, please listen to ShopSuccessPurchaseEvent.
      *
-     * @param shop               The shop bought from
-     * @param purchaser          The player buying, may offline if purchase by plugin
-     * @param purchaserInventory The purchaseing target inventory, *MAY NOT A PLAYER INVENTORY IF PLUGIN PURCHASE THIS*
-     * @param amount             The amount they're buying
-     * @param total              The total balance in this purchase
+     * @param shop   The shop bought from
+     * @param player The player buying
+     * @param amount The amount they're buying
+     * @param total  The total balance in this purchase
      */
-    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull UUID purchaser, @NotNull Inventory purchaserInventory, int amount, double total) {
+    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull Player player, int amount, double total) {
         this.shop = shop;
-        this.purchaser = purchaser;
-        this.purchaserInventory = purchaserInventory;
+        this.player = player;
         this.amount = amount * shop.getItem().getAmount();
         this.total = total;
     }
