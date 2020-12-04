@@ -20,6 +20,7 @@
 
 package org.maxgamer.quickshop.economy;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,6 +40,15 @@ public interface EconomyCore {
     boolean deposit(UUID name, double amount);
 
     /**
+     * Deposits a given amount of money from thin air to the given username.
+     *
+     * @param trader The player to give money to
+     * @param amount The amount to give them
+     * @return True if success (Should be almost always)
+     */
+    boolean deposit(OfflinePlayer trader, double amount);
+
+    /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
      *
      * @param balance The given number
@@ -53,6 +63,14 @@ public interface EconomyCore {
      * @return Their current balance.
      */
     double getBalance(UUID name);
+
+    /**
+     * Fetches the balance of the given player
+     *
+     * @param player The name of the account
+     * @return Their current balance.
+     */
+    double getBalance(OfflinePlayer player);
 
     /**
      * Transfers the given amount of money from Player1 to Player2
@@ -72,6 +90,15 @@ public interface EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     boolean withdraw(UUID name, double amount);
+
+    /**
+     * Withdraws a given amount of money from the given username and turns it to thin air.
+     *
+     * @param trader The player to take money from
+     * @param amount The amount to take from them
+     * @return True if success, false if they didn't have enough cash
+     */
+    boolean withdraw(OfflinePlayer trader, double amount);
 
     /**
      * Checks that this economy is valid. Returns false if it is not valid.
