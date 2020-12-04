@@ -574,7 +574,7 @@ public class ShopManager {
         return worldShops;
     }
 
-    private void _actionBuy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+    public void actionBuy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
         if (shopIsNotValid(buyer, info, shop)) {
             return;
         }
@@ -646,8 +646,8 @@ public class ShopManager {
         shop.setSignText(); // Update the signs count
     }
 
-    private void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
-        _actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+    public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+        actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
 //        if (shopIsNotValid(p, info, shop)) {
 //            return;
 //        }
@@ -717,11 +717,11 @@ public class ShopManager {
 //        shop.setSignText(); // Update the signs count
     }
 
-    private double getTax(@NotNull Shop shop, @NotNull Player p) {
+    public double getTax(@NotNull Shop shop, @NotNull Player p) {
         return getTax(shop, p.getUniqueId());
     }
 
-    private double getTax(@NotNull Shop shop, @NotNull UUID p) {
+    public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         double tax = plugin.getConfig().getDouble("tax");
         Player player = Bukkit.getPlayer(p);
         if (player != null && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
@@ -741,7 +741,7 @@ public class ShopManager {
         return tax;
     }
 
-    private void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String
+    public void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String
             message, boolean bypassProtectionChecks) {
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
@@ -909,9 +909,9 @@ public class ShopManager {
         }
     }
 
-    private void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
+    public void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
             shop, int amount) {
-        _actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+        actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
 //        if (shopIsNotValid(p, info, shop)) {
 //            return;
 //        }
@@ -987,7 +987,7 @@ public class ShopManager {
 
     }
 
-    private void _actionSell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
+    public void actionSell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
             shop, int amount) {
         if (shopIsNotValid(seller, info, shop)) {
             return;
