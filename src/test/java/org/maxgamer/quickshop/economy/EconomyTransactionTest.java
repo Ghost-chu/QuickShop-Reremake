@@ -286,13 +286,13 @@ public class EconomyTransactionTest {
         }
 
         @Override
-        public boolean deposit(UUID name, double amount) {
+        public boolean deposit(@NotNull UUID name, double amount) {
             playerBalanceMap.put(name, amount + getBalance(name));
             return true;
         }
 
         @Override
-        public boolean deposit(OfflinePlayer trader, double amount) {
+        public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
             return deposit(trader.getUniqueId(), amount);
         }
 
@@ -302,17 +302,17 @@ public class EconomyTransactionTest {
         }
 
         @Override
-        public double getBalance(UUID name) {
+        public double getBalance(@NotNull UUID name) {
             return getOrCreateAccount(name);
         }
 
         @Override
-        public double getBalance(OfflinePlayer player) {
+        public double getBalance(@NotNull OfflinePlayer player) {
             return getBalance(player.getUniqueId());
         }
 
         @Override
-        public boolean transfer(UUID from, UUID to, double amount) {
+        public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
             double formBalance = getBalance(from);
             playerBalanceMap.put(from, 0.0);
             playerBalanceMap.put(to, getBalance(from) + formBalance);
@@ -320,13 +320,13 @@ public class EconomyTransactionTest {
         }
 
         @Override
-        public boolean withdraw(UUID name, double amount) {
+        public boolean withdraw(@NotNull UUID name, double amount) {
             playerBalanceMap.put(name, getBalance(name) - amount);
             return true;
         }
 
         @Override
-        public boolean withdraw(OfflinePlayer trader, double amount) {
+        public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
             return withdraw(trader.getUniqueId(), amount);
         }
 

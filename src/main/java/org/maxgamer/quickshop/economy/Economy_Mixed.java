@@ -54,7 +54,7 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(OfflinePlayer trader, double amount) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
         if (getBalance(trader) < amount) {
             return false;
         }
@@ -78,7 +78,7 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public double getBalance(OfflinePlayer player) {
+    public double getBalance(@NotNull OfflinePlayer player) {
         return core.getBalance(player);
     }
 
@@ -111,7 +111,7 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean withdraw(OfflinePlayer trader, double amount) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
         if (getBalance(trader) > amount) {
             return false;
         }
