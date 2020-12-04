@@ -20,8 +20,15 @@
 
 package org.maxgamer.quickshop.economy;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -37,7 +44,169 @@ public class EconomyTransactionTest {
 
 
     static final EconomyCore economy = new TestEconomy();
-    static final UUID taxAccount = UUID.randomUUID();
+    static final Trader taxAccount = Trader.adapt(new OfflinePlayer() {
+        private final UUID uuid = UUID.randomUUID();
+
+        @Override
+        public boolean isOnline() {
+            return false;
+        }
+
+        @Override
+        public @Nullable String getName() {
+            return null;
+        }
+
+        @Override
+        public @NotNull UUID getUniqueId() {
+            return uuid;
+        }
+
+        @Override
+        public boolean isBanned() {
+            return false;
+        }
+
+        @Override
+        public boolean isWhitelisted() {
+            return false;
+        }
+
+        @Override
+        public void setWhitelisted(boolean value) {
+
+        }
+
+        @Override
+        public @Nullable Player getPlayer() {
+            return null;
+        }
+
+        @Override
+        public long getFirstPlayed() {
+            return 0;
+        }
+
+        @Override
+        public long getLastPlayed() {
+            return 0;
+        }
+
+        @Override
+        public boolean hasPlayedBefore() {
+            return false;
+        }
+
+        @Override
+        public @Nullable Location getBedSpawnLocation() {
+            return null;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, int newValue) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic, @NotNull Material material) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull Material material, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull Material material, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, @NotNull Material material, int newValue) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public int getStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType) throws IllegalArgumentException {
+            return 0;
+        }
+
+        @Override
+        public void incrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int amount) throws IllegalArgumentException {
+
+        }
+
+        @Override
+        public void decrementStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int amount) {
+
+        }
+
+        @Override
+        public void setStatistic(@NotNull Statistic statistic, @NotNull EntityType entityType, int newValue) {
+
+        }
+
+        @Override
+        public @NotNull Map<String, Object> serialize() {
+            return null;
+        }
+
+        @Override
+        public boolean isOp() {
+            return false;
+        }
+
+        @Override
+        public void setOp(boolean value) {
+
+        }
+    });
 
     static {
         economy.getBalance(taxAccount);
@@ -123,6 +292,11 @@ public class EconomyTransactionTest {
         }
 
         @Override
+        public boolean deposit(OfflinePlayer trader, double amount) {
+            return deposit(trader.getUniqueId(), amount);
+        }
+
+        @Override
         public String format(double balance) {
             return Double.toString(balance);
         }
@@ -130,6 +304,11 @@ public class EconomyTransactionTest {
         @Override
         public double getBalance(UUID name) {
             return getOrCreateAccount(name);
+        }
+
+        @Override
+        public double getBalance(OfflinePlayer player) {
+            return getBalance(player.getUniqueId());
         }
 
         @Override
@@ -144,6 +323,11 @@ public class EconomyTransactionTest {
         public boolean withdraw(UUID name, double amount) {
             playerBalanceMap.put(name, getBalance(name) - amount);
             return true;
+        }
+
+        @Override
+        public boolean withdraw(OfflinePlayer trader, double amount) {
+            return withdraw(trader.getUniqueId(), amount);
         }
 
         @Override
