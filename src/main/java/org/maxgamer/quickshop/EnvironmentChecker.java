@@ -48,7 +48,7 @@ public class EnvironmentChecker {
                     "*\n" +
                     "* You should schedule a upgrade for Java on your server,\n" +
                     "* because we will drop support with any version Java that\n" +
-                    "* lower Java 11.\n" +
+                    "* lower than Java 11.\n" +
                     "*\n" +
                     "* That's mean:\n" +
                     "* 1) QuickShop will stop working on your server.\n" +
