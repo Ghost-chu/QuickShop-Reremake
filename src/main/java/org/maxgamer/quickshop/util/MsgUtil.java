@@ -727,6 +727,11 @@ public class MsgUtil {
         return getMessage(loc, player, strings);
     }
 
+    public static String getMessage(@NotNull UUID uuid,
+                                    @NotNull String loc, @NotNull String... args) {
+        return getMessage(loc, Bukkit.getPlayer(uuid), args);
+    }
+
     /**
      * getMessage in messages.yml
      *
@@ -824,22 +829,26 @@ public class MsgUtil {
     /**
      * Send a purchaseSuccess message for a player.
      *
-     * @param p      Target player
-     * @param shop   Target shop
-     * @param amount Trading item amounts.
+     * @param purchaser Target player
+     * @param shop      Target shop
+     * @param amount    Trading item amounts.
      */
-    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+    public static void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount) {
+        Player sender = Bukkit.getPlayer(purchaser);
+        if (sender == null) {
+            return;
+        }
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
         chatSheetPrinter.printLine(
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
-                        p,
+                        sender,
                         Integer.toString(amount * shop.getItem().getAmount()),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
-        printEnchantment(p, shop, chatSheetPrinter);
+        printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -864,18 +873,22 @@ public class MsgUtil {
     /**
      * Send a sellSuccess message for a player.
      *
-     * @param p      Target player
+     * @param seller Target player
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+    public static void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount) {
+        Player sender = Bukkit.getPlayer(seller);
+        if (sender == null) {
+            return;
+        }
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", sender));
         chatSheetPrinter.printLine(
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
-                        p,
+                        sender,
                         Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
@@ -883,15 +896,15 @@ public class MsgUtil {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
-                if (!p.getUniqueId().equals(shop.getOwner())) {
+                if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            MsgUtil.getMessage("menu.sell-tax", p, Util.format((tax * total))));
+                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format((tax * total))));
                 } else {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", p));
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", sender));
                 }
             }
         }
-        printEnchantment(p, shop, chatSheetPrinter);
+        printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -1577,8 +1590,15 @@ public class MsgUtil {
 
     }
 
-    public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages) {
+    public static void sendMessage(@NotNull UUID sender, @Nullable String... messages) {
+        sendMessage(Bukkit.getPlayer(sender), messages);
+    }
+
+    public static void sendMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
+            return;
+        }
+        if (sender == null) {
             return;
         }
         for (String msg : messages) {

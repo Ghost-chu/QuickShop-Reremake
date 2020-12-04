@@ -36,6 +36,56 @@ public class EnvironmentChecker {
             plugin.getLogger().severe("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
+
+        if (isOutdatedJvm()) {
+            String jvmWarning = "\n" +
+                    "============================================================\n" +
+                    "    Warning! You're running an outdated version of Java\n" +
+                    "============================================================\n" +
+                    "* QuickShop will stop being compatible with this Java build\n" +
+                    "* since we released 1.17 updates.\n" +
+                    "*\n" +
+                    "* You should schedule an upgrade for Java on your server,\n" +
+                    "* because we will drop support with any version Java that\n" +
+                    "* lower Java 11.\n" +
+                    "*\n" +
+                    "* That means:\n" +
+                    "* 1) The new version of QuickShop for 1.17 updates will stop working on your server.\n" +
+                    "* 2) No more supporting for QuickShop that running\n" +
+                    "* on an outdated Java builds.\n" +
+                    "* 3) You will get performance improvements in the\n" +
+                    "* new version of Java builds.\n" +
+                    "* \n" +
+                    "* Why:\n" +
+                    "* 1) We didn't want to keep compatibility with legacy software\n" +
+                    "* and systems. As Paper did it, we will follow the step.\n" +
+                    "* 2) Newer Java builds support legacy plugin that built for 8 \n" +
+                    "* or legacy, so the most plugins will still working.\n" +
+                    "* 3) New Java API allows access resources and processing it\n" +
+                    "*  faster than before, and that means performance improvement.\n" +
+                    "* \n" +
+                    "* What should I do?\n" +
+                    "* You should update your server Java builds as soon as you can.\n" +
+                    "* Java 11 or any version after 11 is okay. \n" +
+                    "*\n" +
+                    "* Most plugins can run on Java 11+ without problems un-\n" +
+                    "* less the code is really bad/hacky and you should uninstall it.\n" +
+                    "*\n" +
+                    "* You can get Java at here:\n" +
+                    "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
+                    "* And we recommended Java SE 11 (LTS) build for Minecraft Server.\n" +
+                    "*\n" +
+                    "*\n" +
+                    String.format("* Current Java version: %s", System.getProperty("java.version"));
+            plugin.getLogger().warning(jvmWarning);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         plugin.getLogger().info("Running QuickShop-" + QuickShop.getFork() + " on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
         if (!gameVersion.isCoreSupports()) {
             throw new RuntimeException("Your Minecraft version is no-longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
@@ -99,5 +149,23 @@ public class EnvironmentChecker {
     public boolean isFabricBasedServer() {
         //Nobody really make it right!?
         return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
+    }
+
+    public boolean isOutdatedJvm() {
+        //String jvmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
+        String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
+        String[] splitVersion = jvmVersion.split("\\.");
+        if (splitVersion.length < 1) {
+            Util.debugLog("Failed to parse jvm version to check: " + jvmVersion);
+            return false;
+        }
+        int major = 0;
+        try {
+            int majorVersion = Integer.parseInt(splitVersion[0]);
+            return majorVersion < 11; //Target JDK/JRE version
+        } catch (NumberFormatException ignored) {
+            Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
+            return false;
+        }
     }
 }
