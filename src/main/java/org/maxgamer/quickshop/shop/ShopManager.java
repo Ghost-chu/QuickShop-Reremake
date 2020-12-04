@@ -717,6 +717,10 @@ public class ShopManager {
 //        shop.setSignText(); // Update the signs count
     }
 
+    private double getTax(@NotNull Shop shop, @NotNull Player p) {
+        return getTax(shop, p.getUniqueId());
+    }
+
     private double getTax(@NotNull Shop shop, @NotNull UUID p) {
         double tax = plugin.getConfig().getDouble("tax");
         Player player = Bukkit.getPlayer(p);
