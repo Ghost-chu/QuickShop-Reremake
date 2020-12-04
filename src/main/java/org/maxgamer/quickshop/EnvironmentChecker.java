@@ -22,7 +22,6 @@ package org.maxgamer.quickshop;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.GameVersion;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
@@ -43,43 +42,41 @@ public class EnvironmentChecker {
                     "============================================================\n" +
                     "    Warning! You're running an outdated version of Java\n" +
                     "============================================================\n" +
-                    "* QuickShop will stop being compatible with this java build\n" +
-                    "* since we released 1.17 update.\n" +
+                    "* QuickShop will stop being compatible with this Java build\n" +
+                    "* since we released 1.17 updates.\n" +
                     "*\n" +
-                    "* You should schedule a upgrade for Java on your server,\n" +
+                    "* You should schedule an upgrade for Java on your server,\n" +
                     "* because we will drop support with any version Java that\n" +
-                    "* lower than Java 11.\n" +
+                    "* lower Java 11.\n" +
                     "*\n" +
-                    "* That's mean:\n" +
-                    "* 1) QuickShop will stop working on your server.\n" +
+                    "* That means:\n" +
+                    "* 1) The new version of QuickShop for 1.17 updates will stop working on your server.\n" +
                     "* 2) No more supporting for QuickShop that running\n" +
                     "* on an outdated Java builds.\n" +
-                    "* 3) You will get performance improvements on new\n" +
-                    "* version of Java builds.\n" +
+                    "* 3) You will get performance improvements in the\n" +
+                    "* new version of Java builds.\n" +
                     "* \n" +
                     "* Why:\n" +
-                    "* 1) We didn't want keep compatibility with legacy software\n" +
-                    "* and systems. And Paper did it, so we're follow.\n" +
+                    "* 1) We didn't want to keep compatibility with legacy software\n" +
+                    "* and systems. As Paper did it, we will follow the step.\n" +
                     "* 2) Newer Java builds support legacy plugin that built for 8 \n" +
-                    "* or legacy, so you needn't worry about some plugins stop\n" +
-                    "* working on your server. (but not all, some bad plugin will).\n" +
+                    "* or legacy, so the most plugins will still working.\n" +
                     "* 3) New Java API allows access resources and processing it\n" +
-                    "* faster than before, and that mean performance improves.\n" +
+                    "*  faster than before, and that means performance improvement.\n" +
                     "* \n" +
-                    "* What should I do:\n" +
+                    "* What should I do?\n" +
                     "* You should update your server Java builds as soon as you can.\n" +
                     "* Java 11 or any version after 11 is okay. \n" +
                     "*\n" +
-                    "* Most plugins can running on Java 11+ without problems un-\n" +
-                    "* less the code is really bad and you should uninstalling it.\n" +
+                    "* Most plugins can run on Java 11+ without problems un-\n" +
+                    "* less the code is really bad/hacky and you should uninstall it.\n" +
                     "*\n" +
                     "* You can get Java at here:\n" +
                     "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
                     "* And we recommended Java SE 11 (LTS) build for Minecraft Server.\n" +
                     "*\n" +
                     "*\n" +
-                    "* Current Java version: {0}";
-            jvmWarning = MsgUtil.fillArgs(jvmWarning, System.getProperty("java.version"));
+                    String.format("* Current Java version: %s", System.getProperty("java.version"));
             plugin.getLogger().warning(jvmWarning);
             try {
                 Thread.sleep(5000);
