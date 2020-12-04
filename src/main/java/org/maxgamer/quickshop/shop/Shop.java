@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.shop;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -52,11 +52,10 @@ public interface Shop {
     /**
      * Execute buy action for player with x items.
      *
-     * @param buyer          The player buying
-     * @param buyerInventory The buyer inventory ( may not a player inventory )
-     * @param paramInt       How many buyed?
+     * @param paramPlayer Target player
+     * @param paramInt    How many buyed?
      */
-    void buy(UUID buyer, Inventory buyerInventory, Location loc2Drop, int paramInt);
+    void buy(Player paramPlayer, int paramInt);
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -155,11 +154,10 @@ public interface Shop {
     /**
      * Execute sell action for player with x items.
      *
-     * @param seller          Seller
-     * @param sellerInventory Seller's inventory ( may not a player inventory )
-     * @param paramInt        How many sold?
+     * @param paramPlayer Target player
+     * @param paramInt    How many sold?
      */
-    void sell(UUID seller, Inventory sellerInventory, Location loc2Drop, int paramInt);
+    void sell(Player paramPlayer, int paramInt);
 
     /**
      * Generate new sign texts on shop's sign.

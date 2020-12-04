@@ -20,12 +20,10 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
-
-import java.util.UUID;
 
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
@@ -38,11 +36,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
-    private final UUID purchaser;
-
-    @Getter
-    @NotNull
-    private final Inventory purchaserInventory;
+    private final Player player;
 
     @Getter
     private final double tax;
@@ -56,18 +50,16 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
      * Builds a new shop purchase event
      * Will called when purchase ended
      *
-     * @param shop               The shop bought from
-     * @param purchaser          The player buying, may offline if purchase by plugin
-     * @param purchaserInventory The purchaseing target inventory, *MAY NOT A PLAYER INVENTORY IF PLUGIN PURCHASE THIS*
-     * @param amount             The amount they're buying
-     * @param tax                The tax in this purchase
-     * @param total              The money in this purchase
+     * @param shop   The shop bought from
+     * @param player The player buying
+     * @param amount The amount they're buying
+     * @param tax    The tax in this purchase
+     * @param total  The money in this purchase
      */
     public ShopSuccessPurchaseEvent(
-            @NotNull Shop shop, @NotNull UUID purchaser, @NotNull Inventory purchaserInventory, int amount, double total, double tax) {
+            @NotNull Shop shop, @NotNull Player player, int amount, double total, double tax) {
         this.shop = shop;
-        this.purchaser = purchaser;
-        this.purchaserInventory = purchaserInventory;
+        this.player = player;
         this.amount = amount * shop.getItem().getAmount();
         this.tax = tax;
         this.total = total;
