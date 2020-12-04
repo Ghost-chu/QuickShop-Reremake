@@ -20,16 +20,17 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
+
+import java.util.UUID;
 
 public class ShopCreateEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
-    private final Player player;
+    private final UUID creator;
 
     @Getter
     @NotNull
@@ -40,12 +41,12 @@ public class ShopCreateEvent extends QSEvent implements Cancellable {
     /**
      * Call when have a new shop was creating.
      *
-     * @param shop   Target shop
-     * @param player The player creaing the shop
+     * @param shop    Target shop
+     * @param creator The player creating the shop, the player might offline/not exist if creating by a plugin.
      */
-    public ShopCreateEvent(@NotNull Shop shop, @NotNull Player player) {
+    public ShopCreateEvent(@NotNull Shop shop, @NotNull UUID creator) {
         this.shop = shop;
-        this.player = player;
+        this.creator = creator;
     }
 
     @Override
