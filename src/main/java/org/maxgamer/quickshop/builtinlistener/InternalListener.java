@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.builtinlistener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -42,9 +44,10 @@ public class InternalListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (loggingAction) {
+            Player creator = Bukkit.getPlayer(event.getCreator());
             plugin.log(
                     "Player "
-                            + event.getPlayer().getName()
+                            + (creator != null ? creator.getName() : event.getCreator())
                             + " created a shop at location "
                             + event.getShop().getLocation());
         }
@@ -84,18 +87,20 @@ public class InternalListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPrePurchase(ShopPurchaseEvent event) {
         if (loggingBalance) {
-            plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " before trading.");
+            Player creator = Bukkit.getPlayer(event.getPurchaser());
+            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser()) + " before trading.");
             plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " before trading.");
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPurchase(ShopSuccessPurchaseEvent event) {
+        Player creator = Bukkit.getPlayer(event.getPurchaser());
         if (loggingAction) {
             if (event.getShop().getShopType() == ShopType.BUYING) {
                 plugin.log(
                         "Player "
-                                + event.getPlayer().getName()
+                                + (creator != null ? creator.getName() : event.getPurchaser())
                                 + " sold "
                                 + event.getShop().ownerName()
                                 + " shop "
@@ -113,7 +118,7 @@ public class InternalListener implements Listener {
             if (event.getShop().getShopType() == ShopType.SELLING) {
                 plugin.log(
                         "Player "
-                                + event.getPlayer().getName()
+                                + (creator != null ? creator.getName() : event.getPurchaser())
                                 + " bought "
                                 + event.getShop().ownerName()
                                 + " shop "
@@ -131,7 +136,7 @@ public class InternalListener implements Listener {
             }
         }
         if (loggingBalance) {
-            plugin.log("Player " + event.getPlayer().getName() + " had " + plugin.getEconomy().getBalance(event.getPlayer().getUniqueId()) + " after trading.");
+            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser()) + " after trading.");
             plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner()) + " after trading.");
         }
     }
