@@ -20,9 +20,12 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
@@ -39,6 +42,11 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
     @Getter
     @NotNull
     private final UUID purchaser;
+
+    @Getter
+    @Nullable
+    @Deprecated
+    private final Player player;
 
     @Getter
     @NotNull
@@ -71,6 +79,7 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
         this.amount = amount * shop.getItem().getAmount();
         this.tax = tax;
         this.total = total;
+        this.player = Bukkit.getPlayer(purchaser);
     }
 
     /**
