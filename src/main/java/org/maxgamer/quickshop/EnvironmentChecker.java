@@ -39,7 +39,7 @@ public class EnvironmentChecker {
         }
 
         if (isOutdatedJvm()) {
-            String jvmWarning = "=======================================\n" +
+            String jvmWarning = "\n=======================================\n" +
                     "    Warning! You're running an outdated version of Java\n" +
                     "=======================================\n" +
                     "* QuickShop will stop being compatible with this java build\n" +
