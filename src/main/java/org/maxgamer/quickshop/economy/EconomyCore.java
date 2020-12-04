@@ -37,7 +37,7 @@ public interface EconomyCore {
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
      */
-    boolean deposit(UUID name, double amount);
+    boolean deposit(@NotNull UUID name, double amount);
 
     /**
      * Deposits a given amount of money from thin air to the given username.
@@ -46,7 +46,7 @@ public interface EconomyCore {
      * @param amount The amount to give them
      * @return True if success (Should be almost always)
      */
-    boolean deposit(OfflinePlayer trader, double amount);
+    boolean deposit(@NotNull OfflinePlayer trader, double amount);
 
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
@@ -62,7 +62,7 @@ public interface EconomyCore {
      * @param name The name of the account
      * @return Their current balance.
      */
-    double getBalance(UUID name);
+    double getBalance(@NotNull UUID name);
 
     /**
      * Fetches the balance of the given player
@@ -70,7 +70,7 @@ public interface EconomyCore {
      * @param player The name of the account
      * @return Their current balance.
      */
-    double getBalance(OfflinePlayer player);
+    double getBalance(@NotNull OfflinePlayer player);
 
     /**
      * Transfers the given amount of money from Player1 to Player2
@@ -80,7 +80,7 @@ public interface EconomyCore {
      * @param amount The amount to transfer
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
-    boolean transfer(UUID from, UUID to, double amount);
+    boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
@@ -89,7 +89,7 @@ public interface EconomyCore {
      * @param amount The amount to take from them
      * @return True if success, false if they didn't have enough cash
      */
-    boolean withdraw(UUID name, double amount);
+    boolean withdraw(@NotNull UUID name, double amount);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
@@ -98,7 +98,7 @@ public interface EconomyCore {
      * @param amount The amount to take from them
      * @return True if success, false if they didn't have enough cash
      */
-    boolean withdraw(OfflinePlayer trader, double amount);
+    boolean withdraw(@NotNull OfflinePlayer trader, double amount);
 
     /**
      * Checks that this economy is valid. Returns false if it is not valid.
