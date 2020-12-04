@@ -58,7 +58,7 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(OfflinePlayer trader, double amount) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
         return core.deposit(trader, amount);
     }
 
@@ -80,12 +80,12 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public double getBalance(OfflinePlayer player) {
+    public double getBalance(@NotNull OfflinePlayer player) {
         return core.getBalance(player);
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
         return core.transfer(from, to, amount);
     }
 
@@ -95,7 +95,7 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public boolean withdraw(OfflinePlayer trader, double amount) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
         return core.withdraw(trader, amount);
     }
 

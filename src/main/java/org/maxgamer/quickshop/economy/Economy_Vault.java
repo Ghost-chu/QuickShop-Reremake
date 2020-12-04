@@ -116,7 +116,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean deposit(OfflinePlayer trader, double amount) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
         if (!checkValid()) {
             return false;
         }
@@ -175,7 +175,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public double getBalance(OfflinePlayer player) {
+    public double getBalance(@NotNull OfflinePlayer player) {
         if (!checkValid()) {
             return 0.0;
         }
@@ -224,7 +224,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean withdraw(OfflinePlayer trader, double amount) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
         if (!checkValid()) {
             return false;
         }
