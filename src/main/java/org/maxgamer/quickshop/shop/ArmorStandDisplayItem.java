@@ -40,12 +40,16 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.Objects;
 
 @ToString
+@Deprecated
+
 public class ArmorStandDisplayItem extends DisplayItem {
 
     @Nullable
     private volatile ArmorStand armorStand;
 
-
+    /**
+     * @deprecated This display type pending for removal in future
+     */
     ArmorStandDisplayItem(@NotNull Shop shop) {
         super(shop);
     }
