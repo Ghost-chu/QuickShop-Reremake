@@ -177,8 +177,10 @@ public class ContainerShop implements Shop {
     /**
      * Buys amount of item from Player p. Does NOT check our inventory, or balances
      *
-     * @param p      The player to buy from
-     * @param amount The amount to buy
+     * @param buyer          The player to buy from
+     * @param buyerInventory The buyer's inventory
+     * @param loc2Drop       The location to drop items if inventory are full
+     * @param amount         The amount to buy
      */
     @Override
     public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int amount) {
@@ -484,7 +486,8 @@ public class ContainerShop implements Shop {
     /**
      * Sells amount of item to Player p. Does NOT check our inventory, or balances
      *
-     * @param p        The player to sell to
+     * @param seller   The seller
+     * @param sellerInventory The seller's inventory
      * @param loc2Drop Location to drop items if inventory are full
      * @param amount   The amount to sell
      */
