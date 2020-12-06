@@ -58,7 +58,7 @@ public class BuildInfo {
         gitBranch = buildInfo.getString("git-branch", "Unknown");
         pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
-        jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/")
+        jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
         try {
             inputStream.close();
         } catch (IOException ignored) {
