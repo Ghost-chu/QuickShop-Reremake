@@ -214,7 +214,7 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (StringUtils.isNotEmpty(raw)) {
+        if (StringUtils.isEmpty(raw)) {
             return "";
         }
         if (args != null) {
@@ -1036,6 +1036,12 @@ public class MsgUtil {
 
     public static IFile getI18nFile() {
         return messagei18n;
+    }
+
+    public static void debugStackTrace(StackTraceElement[] traces) {
+        for (StackTraceElement trace : traces) {
+            Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
     }
 
     @SneakyThrows

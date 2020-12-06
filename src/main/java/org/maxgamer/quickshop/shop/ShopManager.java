@@ -447,8 +447,8 @@ public class ShopManager {
     }
 
     /**
-     * Loads the given shop into storage. This method is used for loading data from the database. Do
-     * not use this method to create a shop.
+     * Load shop method for loading shop into mapping, so getShops method will can find it.
+     * It also effects a lots of feature, make sure load it after create it.
      *
      * @param world The world the shop is in
      * @param shop  The shop to load
@@ -1217,10 +1217,6 @@ public class ShopManager {
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
     }
-
-    //private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach) {
-    //    return getShopIncludeAttached_Fast(loc, fromAttach, QuickShop.getInstance().getShopCache() != null);
-    //}
 
     private @Nullable Shop getShopIncludeAttached_Fast(@NotNull Location loc, boolean fromAttach, boolean useCache) {
         Shop shop = getShop(loc);
