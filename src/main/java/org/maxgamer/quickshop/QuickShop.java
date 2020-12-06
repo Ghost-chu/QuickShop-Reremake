@@ -52,8 +52,10 @@ import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
+import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PermissionChecker;
 import org.maxgamer.quickshop.util.Timer;
-import org.maxgamer.quickshop.util.*;
+import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
@@ -61,6 +63,7 @@ import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.BufferedInputStream;
@@ -183,7 +186,7 @@ public class QuickShop extends JavaPlugin {
      * The error reporter to help devs report errors to Sentry.io
      */
     @Getter
-    private SentryErrorReporter sentryErrorReporter;
+    private RollbarErrorReporter sentryErrorReporter;
     /**
      * The server UniqueID, use to the ErrorReporter
      */
@@ -644,7 +647,7 @@ public class QuickShop extends JavaPlugin {
             if (!getConfig().getBoolean("auto-report-errors")) {
                 Util.debugLog("Sentry error report was disabled!");
             } else {
-                sentryErrorReporter = new SentryErrorReporter(this);
+                sentryErrorReporter = new RollbarErrorReporter(this);
             }
         } catch (Throwable th) {
             getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
@@ -814,6 +817,8 @@ public class QuickShop extends JavaPlugin {
         } else {
             loaded = true;
         }
+
+        // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
 
     /**
