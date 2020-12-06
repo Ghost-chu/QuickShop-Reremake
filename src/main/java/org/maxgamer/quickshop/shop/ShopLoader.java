@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ShopLoader.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -83,7 +82,7 @@ public class ShopLoader {
      * @param worldName The world name
      */
     public void loadShops(@Nullable String worldName) {
-        boolean backupedDatabaseInDeleteProcess = false;
+        //boolean backupedDatabaseInDeleteProcess = false;
         Timer totalLoadTimer = new Timer(true);
         this.plugin.getLogger().info("Loading shops from the database...");
         Timer fetchTimer = new Timer(true);
@@ -124,13 +123,11 @@ public class ShopLoader {
                 if (Util.isLoaded(shop.getLocation())) {
                     // Load to World
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                        Util.debugLog("Target block can't be a shop, removing it from the database...");
+                        Util.debugLog("Target block can't be a shop, removing it from the memory...");
                         // shop.delete();
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
-
                         //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
                         //TODO: Old shop will be deleted when in same location creating new shop.
-
 //                        if (!backupedDatabaseInDeleteProcess) { // Only backup db one time.
 //                            backupedDatabaseInDeleteProcess = Util.backupDatabase();
 //                            if (backupedDatabaseInDeleteProcess) {
@@ -163,13 +160,10 @@ public class ShopLoader {
                                     + "ms, Avg "
                                     + avgPerShop
                                     + "ms per shop)");
-            this.plugin
-                    .getLogger()
-                    .info(
-                            this.loadAfterChunkLoaded
-                                    + " shops will load after chunk have loaded, "
-                                    + this.loadAfterWorldLoaded
-                                    + " shops will load after the world has loaded.");
+            this.plugin.getLogger().info(this.loadAfterChunkLoaded
+                    + " shops will load after chunk have loaded, "
+                    + this.loadAfterWorldLoaded
+                    + " shops will load after the world has loaded.");
         } catch (Exception e) {
             exceptionHandler(e, null);
         }
