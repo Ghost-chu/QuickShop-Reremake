@@ -1071,9 +1071,7 @@ public class ShopManager {
 
     }
 
-    @Deprecated
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
-
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return true;
