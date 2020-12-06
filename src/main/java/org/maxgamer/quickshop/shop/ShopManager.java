@@ -1169,7 +1169,7 @@ public class ShopManager {
                     return;
                 }
             }
-            actionBuy(p, eco, info, shop, amount);
+            actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
         } else if (shop.isSelling()) {
             try {
                 amount = Integer.parseInt(message);
@@ -1211,7 +1211,7 @@ public class ShopManager {
                     return;
                 }
             }
-            actionSell(p, eco, info, shop, amount);
+            actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
         } else {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-purchase-cancelled", p));
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
