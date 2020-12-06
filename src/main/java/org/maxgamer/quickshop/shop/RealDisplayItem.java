@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
@@ -193,11 +194,7 @@ public class RealDisplayItem extends DisplayItem {
         if (item != null && item.isValid()) {
             Util.debugLog(
                     "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
-            StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-            for (StackTraceElement trace : traces) {
-                Util.debugLog(
-                        trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
-            }
+            MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
         }
         if (!Util.isDisplayAllowBlock(
                 Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
