@@ -120,7 +120,7 @@ public class ContainerShop implements Shop {
 
                     } catch (Exception e) {
                         Util.debugLog(e.getMessage());
-                        Arrays.stream(e.getStackTrace()).forEach(ex -> Util.debugLog(ex.getClassName() + "#" + ex.getMethodName() + "#" + ex.getLineNumber()));
+                        MsgUtil.debugStackTrace(e.getStackTrace());
                         plugin.getConfig().set("shop.display-type", 0);
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
