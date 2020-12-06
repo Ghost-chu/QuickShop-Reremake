@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is MySQLCore.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -62,6 +61,9 @@ public class MySQLCore extends AbstractDatabaseCore {
         info.setProperty("useUnicode", "true");
         info.setProperty("characterEncoding", "utf8");
         info.setProperty("useSSL", String.valueOf(useSSL));
+        if (false) { //TODO Option for addBatch to improve performance
+            info.setProperty("rewriteBatchedStatements", "true");
+        }
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + database;
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
             POOL.add(null);
