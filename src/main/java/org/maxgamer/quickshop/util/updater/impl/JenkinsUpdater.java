@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is JenkinsUpdater.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -35,13 +34,16 @@ import org.maxgamer.quickshop.util.updater.VersionType;
 
 import java.io.*;
 import java.net.URL;
+
 public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
 
     private BuildInfo lastRemoteBuildInfo;
+    private final String jobUrl;
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;
+        this.jobUrl = pluginBuildInfo.getJobUrl();
     }
 
     @Override
@@ -75,7 +77,7 @@ public class JenkinsUpdater implements QuickUpdater {
     public boolean isLatest(@NotNull VersionType versionType) {
         InputStream inputStream;
         try {
-            inputStream = HttpRequest.get(new URL("https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/lastSuccessfulBuild/artifact/target/BUILDINFO"))
+            inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
                     .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                     .execute()
                     .expectResponseCode(200)
@@ -137,7 +139,7 @@ public class JenkinsUpdater implements QuickUpdater {
                 Util.debugLog("Selected: " + plugin.getPath());
                 quickshop = plugin;
                 break;
-            } catch (InvalidDescriptionException e) { // Ignore }
+            } catch (InvalidDescriptionException ignored) {
             }
         }
         if (quickshop == null) {
