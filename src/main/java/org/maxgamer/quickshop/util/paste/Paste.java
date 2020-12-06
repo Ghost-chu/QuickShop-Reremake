@@ -225,16 +225,16 @@ public class Paste {
                                         Objects.requireNonNull(configurationSection).getString("user")),
                                 "[PROTECTED]");
                 config =
-                        config.replaceAll(
+                        config.replace(
                                 Objects.requireNonNull(configurationSection.getString("password")), "[PROTECTED]");
                 config =
-                        config.replaceAll(
+                        config.replace(
                                 Objects.requireNonNull(configurationSection.getString("host")), "[PROTECTED]");
                 config =
-                        config.replaceAll(
+                        config.replace(
                                 Objects.requireNonNull(configurationSection.getString("port")), "[PROTECTED]");
                 config =
-                        config.replaceAll(
+                        config.replace(
                                 Objects.requireNonNull(configurationSection.getString("database")), "[PROTECTED]");
             } catch (Exception tg) {
                 // Ignore
