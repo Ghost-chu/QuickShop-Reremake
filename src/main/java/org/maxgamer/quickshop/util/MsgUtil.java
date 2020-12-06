@@ -23,13 +23,14 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -151,21 +152,7 @@ public class MsgUtil {
             @NotNull String left,
             @NotNull ItemStack itemStack,
             @NotNull String right) {
-        String json = ItemNMS.saveJsonfromNMS(itemStack);
-        if (json == null) {
-            return;
-        }
-
-//        Util.debugLog(left);
-//        Util.debugLog(json);
-//        Util.debugLog(right);
-        Audience audience = audiences.player(player);
-        Component.text(left + Util.getItemStackName(itemStack) + right)
-        Component.text(json).hoverEvent(HoverEvent.showItem(Key.of(itemStack.getData().getItemType().getKey())))
-        TextComponent centerItem = Component.se;
-        ComponentBuilder cBuilder = new ComponentBuilder(json);
-        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-        player.spigot().sendMessage(centerItem);
+        audiences.player(player).sendMessage(getItemTextComponent(itemStack, player, left + Util.getItemStackName(itemStack) + right));
     }
 
     /**
@@ -1018,10 +1005,33 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        getItemholochat(shop, itemStack, player, normalText).
-                player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
+        audiences.player(player).sendMessage(getItemholochat(shop, itemStack, player, normalText));
+
+
     }
 
+
+    private static TextComponent getItemTextComponent(@NotNull ItemStack itemStack,
+                                                      @NotNull Player player,
+                                                      @NotNull String normalText) {
+        if (errorComponent == null) {
+            errorComponent = Component.text(getMessage("menu.item-holochat-error", player));
+        }
+        String json;
+        try {
+            json = ItemNMS.saveJsonfromNMS(itemStack);
+        } catch (Throwable throwable) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
+            return errorComponent;
+        }
+        if (json == null) {
+            return errorComponent;
+        }
+
+
+        return Component.text(normalText + " " + MsgUtil.getMessage("menu.preview", player)).hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString()), itemStack.getAmount(), BinaryTagHolder.of(json)));
+
+    }
 
     @NotNull
     public static TextComponent getItemholochat(
@@ -1029,32 +1039,13 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        try {
-            if (errorComponent == null) {
-                Component.text(getMessage("menu.item-holochat-error", player)).
-                        errorComponent = new TextComponent();
-            }
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
-            if (json == null) {
-                return errorComponent;
-            }
-            TextComponent normalmessage =
-                    new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-                normalmessage.setClickEvent(
-                        new ClickEvent(
-                                ClickEvent.Action.RUN_COMMAND,
-                                MsgUtil.fillArgs(
-                                        "/qs silentpreview {0}",
-                                        shop.getRuntimeRandomUniqueId().toString())));
-            }
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-            return normalmessage;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return errorComponent;
+        TextComponent component = getItemTextComponent(itemStack, player, normalText);
+        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
+            component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs(
+                    "/qs silentpreview {0}",
+                    shop.getRuntimeRandomUniqueId().toString())));
         }
+        return component;
     }
 
     /**
@@ -1591,7 +1582,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
+                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(chatColor + msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
@@ -1616,7 +1607,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
+                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
