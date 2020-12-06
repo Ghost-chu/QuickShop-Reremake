@@ -216,7 +216,8 @@ class GameLanguageLoadThread extends Thread {
             if ("default".equals(languageCode)) {
                 Locale locale = Locale.getDefault();
                 languageCode = locale.getLanguage() + "_" + locale.getCountry();
-            } else if (!languageCode.equals(cachingLanguageName)) {
+            }
+            if (!languageCode.toLowerCase().equals(cachingLanguageName)) {
                 cachingLanguageName = languageCode;
                 needUpdateCache = true;
             }
@@ -284,21 +285,21 @@ class GameLanguageLoadThread extends Thread {
                                     "Cannot download require files, some items/blocks/potions/enchs language will use default English name.");
                     failed = true;
                 }
+                if (!failed) {
+                    yamlConfiguration.set("ver", cachingServerVersion);
+                    yamlConfiguration.set("hash", cachingLanguageHash);
+                    yamlConfiguration.set("lang", cachingLanguageName);
+                    yamlConfiguration.save(cacheFile);
+                    //delete caching i18n file to let them regenerate
+                    File item = new File(plugin.getDataFolder(), "itemi18n.yml");
+                    File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
+                    File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
+                    item.delete();
+                    ench.delete();
+                    potion.delete();
+                }
             }
             //Only save when success downloaded
-            if (!failed) {
-                yamlConfiguration.set("ver", cachingServerVersion);
-                yamlConfiguration.set("hash", cachingLanguageHash);
-                yamlConfiguration.set("lang", cachingLanguageName);
-                yamlConfiguration.save(cacheFile);
-                //delete caching i18n file to let them regenerate
-                File item = new File(plugin.getDataFolder(), "itemi18n.yml");
-                File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
-                File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
-                item.delete();
-                ench.delete();
-                potion.delete();
-            }
             String json = null;
             if (cachingLanguageHash != null) {
                 json = Util.readToString(new File(Util.getCacheFolder(), cachingLanguageHash));
