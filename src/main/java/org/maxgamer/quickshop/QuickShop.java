@@ -339,17 +339,13 @@ public class QuickShop extends JavaPlugin {
                         if (!clearLagListener.getPlugin().equals(clearlag)) {
                             continue;
                         }
-                        int spamTimes = 20;
                         if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
                             ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
-                            for (int i = 0; i < spamTimes; i++) {
-                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                                getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
-                                getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
-                                getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
-                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                                getLogger().info("This message will spam more " + (spamTimes - i) + " times!");
-                            }
+                            getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
+                            getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
+                            getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
+                            getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
+                            getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
                         }
                     }
                 } catch (Exception ignored) {

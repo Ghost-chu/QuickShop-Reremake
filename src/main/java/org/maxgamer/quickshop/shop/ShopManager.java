@@ -434,7 +434,6 @@ public class ShopManager {
             if (info == null) {
                 return; // multithreaded means this can happen
             }
-
             if (info.getLocation().getWorld() != p.getLocation().getWorld() || info.getLocation().distanceSquared(p.getLocation()) > 25) {
                 MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
                 return;
