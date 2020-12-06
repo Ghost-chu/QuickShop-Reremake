@@ -23,10 +23,13 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,6 +92,7 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
+    private static final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -152,10 +156,13 @@ public class MsgUtil {
             return;
         }
 
-        Util.debugLog(left);
-        Util.debugLog(json);
-        Util.debugLog(right);
-        TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
+//        Util.debugLog(left);
+//        Util.debugLog(json);
+//        Util.debugLog(right);
+        Audience audience = audiences.player(player);
+        Component.text(left + Util.getItemStackName(itemStack) + right)
+        Component.text(json).hoverEvent(HoverEvent.showItem(Key.of(itemStack.getData().getItemType().getKey())))
+        TextComponent centerItem = Component.se;
         ComponentBuilder cBuilder = new ComponentBuilder(json);
         centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
         player.spigot().sendMessage(centerItem);
@@ -1011,8 +1018,10 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
+        getItemholochat(shop, itemStack, player, normalText).
+                player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
     }
+
 
     @NotNull
     public static TextComponent getItemholochat(
@@ -1022,7 +1031,8 @@ public class MsgUtil {
             @NotNull String normalText) {
         try {
             if (errorComponent == null) {
-                errorComponent = new TextComponent(getMessage("menu.item-holochat-error", player));
+                Component.text(getMessage("menu.item-holochat-error", player)).
+                        errorComponent = new TextComponent();
             }
             String json = ItemNMS.saveJsonfromNMS(itemStack);
             if (json == null) {

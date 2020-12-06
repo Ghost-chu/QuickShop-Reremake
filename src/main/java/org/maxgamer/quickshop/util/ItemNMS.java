@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ItemNMS.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -76,6 +75,28 @@ public abstract class ItemNMS {
      */
     @Nullable
     public static String saveJsonfromNMS(@NotNull ItemStack bStack) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+        if (bStack.getType() == Material.AIR) {
+            return null;
+        }
+        Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
+        Object nbtTagCompound = nbtTagCompoundClass.getDeclaredConstructor().newInstance();
+
+        itemStack_saveMethod.invoke(mcStack, nbtTagCompound);
+        return nbtTagCompound.toString();
+    }
+
+    /**
+     * Save ItemStack to Json through the NMS.
+     *
+     * @param bStack ItemStack
+     * @return The json for ItemStack.
+     * @throws InvocationTargetException throws
+     * @throws IllegalAccessException    throws
+     * @throws NoSuchMethodException     throws
+     * @throws InstantiationException    throws
+     */
+    @Nullable
+    public static Object saveItemStackToMojang(@NotNull ItemStack bStack) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
         if (bStack.getType() == Material.AIR) {
             return null;
         }
