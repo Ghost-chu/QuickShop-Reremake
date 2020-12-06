@@ -24,12 +24,8 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -160,12 +156,6 @@ public class MsgUtil {
 //        Util.debugLog(json);
 //        Util.debugLog(right);
         Audience audience = audiences.player(player);
-        Component.text(left + Util.getItemStackName(itemStack) + right)
-        Component.text(json).hoverEvent(HoverEvent.showItem(Key.of(itemStack.getData().getItemType().getKey())))
-        TextComponent centerItem = Component.se;
-        ComponentBuilder cBuilder = new ComponentBuilder(json);
-        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-        player.spigot().sendMessage(centerItem);
     }
 
     /**
@@ -1018,8 +1008,7 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        getItemholochat(shop, itemStack, player, normalText).
-                player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
+
     }
 
 
@@ -1031,26 +1020,13 @@ public class MsgUtil {
             @NotNull String normalText) {
         try {
             if (errorComponent == null) {
-                Component.text(getMessage("menu.item-holochat-error", player)).
-                        errorComponent = new TextComponent();
             }
             String json = ItemNMS.saveJsonfromNMS(itemStack);
             if (json == null) {
                 return errorComponent;
             }
-            TextComponent normalmessage =
-                    new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-                normalmessage.setClickEvent(
-                        new ClickEvent(
-                                ClickEvent.Action.RUN_COMMAND,
-                                MsgUtil.fillArgs(
-                                        "/qs silentpreview {0}",
-                                        shop.getRuntimeRandomUniqueId().toString())));
-            }
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-            return normalmessage;
+
+            return null;
         } catch (Throwable t) {
             t.printStackTrace();
             return errorComponent;
@@ -1081,6 +1057,7 @@ public class MsgUtil {
 
     @SneakyThrows
     private static void updateMessages(int selectedVersion) {
+
         String languageName = plugin.getConfig().getString("language", "en");
         if (!messagei18n.getString("language-name").isPresent()) {
             setAndUpdate("language-name", languageName);
@@ -1591,7 +1568,6 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
@@ -1616,7 +1592,6 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
