@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is RealDisplayItem.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -101,14 +100,8 @@ public class RealDisplayItem extends DisplayItem {
             }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
-                Util.debugLog(
-                        "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
-                plugin
-                        .getBukkitAPIWrapper()
-                        .teleportEntity(
-                                eItem,
-                                Objects.requireNonNull(getDisplayLocation()),
-                                PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                plugin.getBukkitAPIWrapper().teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -150,8 +143,7 @@ public class RealDisplayItem extends DisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog(
-                            "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
