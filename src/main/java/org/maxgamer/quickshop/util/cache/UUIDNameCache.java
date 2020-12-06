@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is UuidNameCache.java
+ * This file is a part of project QuickShop, the name is UUIDNameCache.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -53,6 +53,7 @@ public class UUIDNameCache {
      */
     public void cachePlayerFromServer(@NotNull UUID uuid) {
         //TODO:refresh when player name changed, or just refresh when player join?
+        //TODO:check the player name when they joined and refresh it directly.
         this.uuid2NameCache.refresh(uuid); //Call loader to load from bukkit server caching
     }
 
