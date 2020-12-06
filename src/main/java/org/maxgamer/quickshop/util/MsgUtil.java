@@ -1041,7 +1041,7 @@ public class MsgUtil {
             @NotNull String normalText) {
         TextComponent component = getItemTextComponent(itemStack, player, normalText);
         if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-            component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs(
+            component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs(
                     "/qs silentpreview {0}",
                     shop.getRuntimeRandomUniqueId().toString())));
         }
