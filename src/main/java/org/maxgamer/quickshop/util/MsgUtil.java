@@ -419,7 +419,9 @@ public class MsgUtil {
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
             //noinspection ConstantConditions
-            if(potion == null){continue;}
+            if (potion == null) {
+                continue;
+            }
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
             if (potionI18n != null && !potionI18n.isEmpty()) {
                 continue;
@@ -475,8 +477,8 @@ public class MsgUtil {
      * @param message     The message to send them Sends the given player a message if they're online.
      *                    Else, if they're not online, queues it for them in the database.
      * @param isUnlimited The shop is or unlimited
-     *
-     *  Deprecated for always use for bukkit deserialize method (costing ~145ms)
+     *                    <p>
+     *                    Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
     @Deprecated
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
@@ -543,7 +545,7 @@ public class MsgUtil {
                 }
             }
         }
-        }
+    }
 
     public static @NotNull String getSubString(
             @NotNull String text, @NotNull String left, @NotNull String right) {
@@ -1017,19 +1019,19 @@ public class MsgUtil {
         if (errorComponent == null) {
             errorComponent = Component.text(getMessage("menu.item-holochat-error", player));
         }
-        String json;
         try {
-            json = ItemNMS.saveJsonfromNMS(itemStack);
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json != null) {
+                return Component
+                        .text(normalText + " " + MsgUtil.getMessage("menu.preview", player))
+                        .hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString())
+                                , itemStack.getAmount(), BinaryTagHolder.of(json)));
+            }
         } catch (Throwable throwable) {
             plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
-            return errorComponent;
         }
-        if (json == null) {
-            return errorComponent;
-        }
+        return errorComponent;
 
-
-        return Component.text(normalText + " " + MsgUtil.getMessage("menu.preview", player)).hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString()), itemStack.getAmount(), BinaryTagHolder.of(json)));
 
     }
 
