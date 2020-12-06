@@ -47,7 +47,7 @@ public class DatabaseTask {
 
 
     public void run(@NonNull Connection connection) {
-        try (PreparedStatement ps = connection.prepareStatement(statement)) {
+        try (PreparedStatement ps = connection.prepareStatement(statement)) { //TODO Use addBatch to improve performance
             task.edit(ps);
             ps.execute();
             task.onSuccess();
