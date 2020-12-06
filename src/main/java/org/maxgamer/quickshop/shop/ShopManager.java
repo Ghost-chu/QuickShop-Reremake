@@ -80,7 +80,6 @@ public class ShopManager {
             .initialCapacity(5)
             .build();
 
-
     public ShopManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm = plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
