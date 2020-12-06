@@ -120,6 +120,11 @@
                             <pattern>io.sentry.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.sentry.</shadedPattern>
                         </relocation>
+
+                        <relocation>
+                            <pattern>com.rollbar.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.com.rollbar.</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>com.dumptruckman.bukkit.configuration.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.fileportlek.newest.json.</shadedPattern>
@@ -372,12 +377,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.sentry</groupId>
-            <artifactId>sentry</artifactId>
-            <version>1.7.27</version>
-            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
         <dependency>
@@ -685,6 +684,11 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rollbar</groupId>
+            <version>[1.0,)</version>
+            <artifactId>rollbar-java</artifactId>
         </dependency>
     </dependencies>
 </project>
