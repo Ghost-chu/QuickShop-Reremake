@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ChatSheetPrinter.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -23,13 +22,17 @@ package org.maxgamer.quickshop.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.QuickShop;
+
 
 @AllArgsConstructor
 @Getter
@@ -38,13 +41,13 @@ import org.jetbrains.annotations.NotNull;
  A utils for print sheet on chat.
 */
 public class ChatSheetPrinter {
-    private final ChatColor chatColor = ChatColor.DARK_PURPLE;
-    private CommandSender p;
+    private final CommandSender p;
+    private final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
 
     public void printCenterLine(@NotNull String text) {
         if (!text.isEmpty()) {
             MsgUtil.sendMessage(p,
-                    chatColor
+                    NamedTextColor.DARK_PURPLE
                             + MsgUtil.getMessage("tableformat.left_half_line", p)
                             + text
                             + MsgUtil.getMessage("tableformat.right_half_line", p));
@@ -54,42 +57,42 @@ public class ChatSheetPrinter {
     public void printExecuteableCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
         TextComponent message =
-                new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd));
-        message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
-        p.spigot().sendMessage(message);
+                Component.text(MsgUtil.getMessage("tableformat.left_begin", p) + text)
+                        .color(NamedTextColor.DARK_PURPLE)
+                        .clickEvent(ClickEvent.runCommand(executeCmd))
+                        .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
+        audiences.sender(p).sendMessage(message);
     }
 
     public void printFooter() {
-        MsgUtil.sendColoredMessage(p, chatColor, MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendColoredMessage(p, ChatColor.DARK_PURPLE, MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printHeader() {
-        MsgUtil.sendColoredMessage(p, chatColor, MsgUtil.getMessage("tableformat.full_line", p));
+        MsgUtil.sendColoredMessage(p, ChatColor.DARK_PURPLE, MsgUtil.getMessage("tableformat.full_line", p));
     }
 
     public void printLine(@NotNull String text) {
         String[] texts = text.split("\n");
         for (String str : texts) {
             if (!str.isEmpty()) {
-                MsgUtil.sendMessage(p, chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + str);
+                MsgUtil.sendMessage(p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + str);
             }
         }
     }
 
     public void printSuggestableCmdLine(
-            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd, TextComponent... additionText) {
-        TextComponent message =
-                new TextComponent(chatColor + MsgUtil.getMessage("tableformat.left_begin", p) + text);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd));
-        message.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
+            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd, Component... additionText) {
+        TextComponent message = Component.text(MsgUtil.getMessage("tableformat.left_begin", p) + text)
+                .color(NamedTextColor.DARK_PURPLE)
+                .clickEvent(ClickEvent.suggestCommand(suggestCmd))
+                .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
         if (additionText.length >= 1) {
-            p.spigot().sendMessage(new ComponentBuilder().append(message).append(additionText).create());
-        } else {
-            p.spigot().sendMessage(message);
+            for (Component component : additionText) {
+                message = message.append(component);
+            }
         }
+        audiences.sender(p).sendMessage(message);
     }
 
 }
