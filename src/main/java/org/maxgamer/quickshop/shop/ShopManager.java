@@ -645,7 +645,7 @@ public class ShopManager {
         Bukkit.getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
-
+    @Deprecated
     public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
 //        if (shopIsNotValid(p, info, shop)) {
@@ -717,6 +717,7 @@ public class ShopManager {
 //        shop.setSignText(); // Update the signs count
     }
 
+    @Deprecated
     public double getTax(@NotNull Shop shop, @NotNull Player p) {
         return getTax(shop, p.getUniqueId());
     }
@@ -909,6 +910,7 @@ public class ShopManager {
         }
     }
 
+    @Deprecated
     public void actionSell(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop
             shop, int amount) {
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
@@ -1071,6 +1073,7 @@ public class ShopManager {
 
     }
 
+    @Deprecated
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
 
         if (plugin.getEconomy() == null) {
