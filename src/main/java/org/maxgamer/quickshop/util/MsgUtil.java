@@ -214,17 +214,13 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (raw == null) {
-            return "Invalid message: null";
-        }
-        if (raw.isEmpty()) {
+        if (StringUtils.isNotEmpty(raw)) {
             return "";
         }
-        if (args == null) {
-            return raw;
-        }
-        for (int i = 0; i < args.length; i++) {
-            raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+            }
         }
         return raw;
     }
@@ -434,11 +430,7 @@ public class MsgUtil {
             potioni18n.save(potioni18nFile);
         } catch (IOException e) {
             e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
+            plugin.getLogger().warning("Could not load/save transaction potionname from potioni18n.yml. Skipping.");
         }
         plugin.getLogger().info("Complete to load potions effect translation.");
     }
@@ -460,15 +452,12 @@ public class MsgUtil {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
-                LinkedList<String> msgs =
-                        outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                LinkedList<String> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(Level.WARNING, "Could not load transaction messages from database. Skipping.");
+            plugin.getLogger().warning("Could not load transaction messages from database. Skipping.");
         }
     }
 
@@ -667,16 +656,6 @@ public class MsgUtil {
 
             }
         }
-//        //Set item
-//        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
-//            String text = MsgUtil.getMessage(
-//                    "controlpanel.item",
-//                    sender);
-//            String hoverText = MsgUtil.getMessage("controlpanel.item-hover", sender);
-//            String clickCommand = MsgUtil.getMessage("controlpanel.commands.item", sender);
-//            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
-//        }
-
         if (!shop.isUnlimited()) {
             // Refill
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
@@ -701,19 +680,13 @@ public class MsgUtil {
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text =
-                    MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
+            String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
-            String clickCommand =
-                    MsgUtil.fillArgs(
-                            "/qs silentremove {0}",
-                            shop.getRuntimeRandomUniqueId().toString());
+            String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
-
         chatSheetPrinter.printFooter();
     }
-
 
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull Object... args) {
         String[] strings = new String[args.length];
@@ -723,8 +696,7 @@ public class MsgUtil {
         return getMessage(loc, player, strings);
     }
 
-    public static String getMessage(@NotNull UUID uuid,
-                                    @NotNull String loc, @NotNull String... args) {
+    public static String getMessage(@NotNull UUID uuid, @NotNull String loc, @NotNull String... args) {
         return getMessage(loc, Bukkit.getPlayer(uuid), args);
     }
 
@@ -837,13 +809,7 @@ public class MsgUtil {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
-        chatSheetPrinter.printLine(
-                MsgUtil.getMessage(
-                        "menu.item-name-and-price",
-                        sender,
-                        Integer.toString(amount * shop.getItem().getAmount()),
-                        Util.getItemStackName(shop.getItem()),
-                        Util.format((amount * shop.getPrice()))));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format((amount * shop.getPrice()))));
         printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
