@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ArmorStandDisplayItem.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -35,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
@@ -201,11 +201,7 @@ public class ArmorStandDisplayItem extends DisplayItem {
         if (armorStand != null && armorStand.isValid() && !armorStand.isDead()) {
             Util.debugLog(
                     "Warning: Spawning the armorStand for DisplayItem when there is already an existing armorStand may cause a duplicated armorStand!");
-            StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-            for (StackTraceElement trace : traces) {
-                Util.debugLog(
-                        trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
-            }
+            MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
 
             ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent =
                     new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.ARMORSTAND);

@@ -1038,6 +1038,12 @@ public class MsgUtil {
         return messagei18n;
     }
 
+    public static void debugStackTrace(StackTraceElement[] traces) {
+        for (StackTraceElement trace : traces) {
+            Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
+    }
+
     @SneakyThrows
     private static void updateMessages(int selectedVersion) {
         String languageName = plugin.getConfig().getString("language", "en");
