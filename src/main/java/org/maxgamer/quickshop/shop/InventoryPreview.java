@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is InventoryPreview.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -85,26 +84,13 @@ public class InventoryPreview implements Listener {
      * Open the preview GUI for player.
      */
     public void show() {
-        if (inventory != null) // Not inited
-        {
-            close();
-        }
-        if (itemStack == null) // Null pointer exception
+        if (itemStack == null || player == null || player.isSleeping()) // Null pointer exception
         {
             return;
         }
-        if (player == null) // Null pointer exception
-        {
-            return;
-        }
-        if (player.isSleeping()) // Bed bug
-        {
-            return;
-        }
-        ShopInventoryPreviewEvent shopInventoryPreview =
-                new ShopInventoryPreviewEvent(player, itemStack);
-        Bukkit.getPluginManager().callEvent(shopInventoryPreview);
-        if (shopInventoryPreview.isCancelled()) {
+        this.close(); //Close anyway
+        ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
+        if (Util.fireCancellableEvent(shopInventoryPreview)) {
             Util.debugLog("Inventory preview was canceled by a plugin.");
             return;
         }

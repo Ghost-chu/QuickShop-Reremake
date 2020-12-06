@@ -120,7 +120,7 @@ public class ContainerShop implements Shop {
 
                     } catch (Exception e) {
                         Util.debugLog(e.getMessage());
-                        Arrays.stream(e.getStackTrace()).forEach(ex -> Util.debugLog(ex.getClassName() + "#" + ex.getMethodName() + "#" + ex.getLineNumber()));
+                        MsgUtil.debugStackTrace(e.getStackTrace());
                         plugin.getConfig().set("shop.display-type", 0);
                         plugin.saveConfig();
                         this.displayItem = new RealDisplayItem(this);
@@ -134,9 +134,10 @@ public class ContainerShop implements Shop {
                     this.displayItem = new RealDisplayItem(this);
                     break;
             }
-        } else {
-            Util.debugLog("The display was disabled.");
         }
+//        } else {
+//            Util.debugLog("The display was disabled.");
+//        }
     }
 
     /**
@@ -252,7 +253,7 @@ public class ContainerShop implements Shop {
         }
 
         if (this.displayItem == null) {
-            Util.debugLog("Warning: DisplayItem is null, this shouldn't happend...");
+            Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
             Util.debugLog(
                     "Call from: "
@@ -266,7 +267,7 @@ public class ContainerShop implements Shop {
 
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
-            Util.debugLog("Target item not spawned, spawning for shop " + this.getLocation());
+            //Util.debugLog("Target item not spawned, spawning for shop " + this.getLocation());
             this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
@@ -872,7 +873,7 @@ public class ContainerShop implements Shop {
     public void setSignText(@NotNull String[] lines) {
         for (Sign sign : this.getSigns()) {
             if (Arrays.equals(sign.getLines(), lines)) {
-                Util.debugLog("Skipped new sign text setup: Same content");
+                //Util.debugLog("Skipped new sign text setup: Same content");
                 continue;
             }
             for (int i = 0; i < lines.length; i++) {

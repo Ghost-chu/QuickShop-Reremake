@@ -43,7 +43,6 @@ public class Bootstrap {
             createAndShowGUI(false);
         }
     }
-
     private static void createAndShowGUI(boolean supportBrowse) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -61,10 +60,5 @@ public class Bootstrap {
                     "<p>Please open the link https://www.spigotmc.org/wiki/spigot-installation/ in your browser to view.</p>" +
                     "</body></html>", "QuickShop Alert", JOptionPane.ERROR_MESSAGE);
         }
-
-//        JFrame frame = new JFrame("QuickShop Alert");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // 添加 "Hello World" 标签
     }
 }

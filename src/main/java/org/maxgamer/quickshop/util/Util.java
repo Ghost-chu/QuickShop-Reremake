@@ -1302,21 +1302,7 @@ public class Util {
                 .getLogger()
                 .warning(
                         "Some plugin is calling a Deprecated method, Please contact the author to tell them to use the new api!");
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTraceElements) {
-            QuickShop.instance
-                    .getLogger()
-                    .warning(
-                            "at "
-                                    + stackTraceElement.getClassName()
-                                    + "#"
-                                    + stackTraceElement.getMethodName()
-                                    + " ("
-                                    + stackTraceElement.getFileName()
-                                    + ":"
-                                    + stackTraceElement.getLineNumber()
-                                    + ")");
-        }
+        MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
     }
 
     /**

@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is DisplayAutoDespawnWatcher.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -22,8 +21,10 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
@@ -31,17 +32,22 @@ import org.maxgamer.quickshop.util.Util;
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable {
     private final QuickShop plugin;
+    private final int range;
+
+    public DisplayAutoDespawnWatcher(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
+        this.range = plugin.getConfig().getInt("shop.display-despawn-range");
+    }
 
     @Override
     public void run() {
-        int range = plugin.getConfig().getInt("shop.display-despawn-range");
-
         for (Shop shop : plugin.getShopManager().getLoadedShops()) {
+            World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
             if (shop.getDisplay() != null) {
                 // Check the range has player?
                 boolean anyPlayerInRegion = false;
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if ((player.getWorld() == shop.getLocation().getWorld()) && (player.getLocation().distance(shop.getLocation()) < range)) {
+                    if ((player.getWorld() == world) && (player.getLocation().distance(shop.getLocation()) < range)) {
                         anyPlayerInRegion = true;
                         break;
                     }
@@ -51,8 +57,8 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
                         Util.debugLog(
                                 "Respawning the shop "
                                         + shop
-                                        + " the display, cause it was despawned and a player close it");
-                        Bukkit.getScheduler().runTask(plugin, shop::checkDisplay);
+                                        + " the display, cause it was despawned and a player close to it");
+                        Bukkit.getScheduler().runTask(plugin, () -> shop.getDisplay().spawn());
                     }
                 } else if (shop.getDisplay().isSpawned()) {
                     removeDisplayItemDelayed(shop);
