@@ -214,7 +214,7 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (StringUtils.isNotEmpty(raw)) {
+        if (StringUtils.isEmpty(raw)) {
             return "";
         }
         if (args != null) {

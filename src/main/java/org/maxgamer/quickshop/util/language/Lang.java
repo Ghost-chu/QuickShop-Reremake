@@ -75,7 +75,7 @@ public class Lang {
      * @return Formatted text
      */
     public String format(@Nullable String raw, @Nullable CommandSender sender, @Nullable String... args) {
-        if (StringUtils.isNotEmpty(raw)) {
+        if (StringUtils.isEmpty(raw)) {
             for (Formatter formatter : formatters) {
                 raw = formatter.format(raw, sender, args);
             }
