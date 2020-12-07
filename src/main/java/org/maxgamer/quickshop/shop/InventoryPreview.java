@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Bukkit;
@@ -60,7 +59,8 @@ public class InventoryPreview implements Listener {
         this.itemStack = itemStack.clone();
         this.player = player;
         ItemMeta itemMeta = this.itemStack.getItemMeta();
-        itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
+        itemMeta.getLore().add(plugin.getPreviewProtectionLore());
+        //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
         this.itemStack.setItemMeta(itemMeta);
     }
 
