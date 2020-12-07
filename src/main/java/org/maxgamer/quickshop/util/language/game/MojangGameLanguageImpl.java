@@ -217,7 +217,7 @@ class GameLanguageLoadThread extends Thread {
                 Locale locale = Locale.getDefault();
                 languageCode = locale.getLanguage() + "_" + locale.getCountry();
             }
-            if (!languageCode.toLowerCase().equals(cachingLanguageName)) {
+            if (!languageCode.equals(cachingLanguageName)) {
                 cachingLanguageName = languageCode;
                 needUpdateCache = true;
             }
