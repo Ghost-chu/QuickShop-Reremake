@@ -645,7 +645,7 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Sentry error report was disabled!");
+                Util.debugLog("Error reporter was disabled!");
             } else {
                 sentryErrorReporter = new RollbarErrorReporter(this);
             }
@@ -878,25 +878,9 @@ public class QuickShop extends JavaPlugin {
                 vaultVer = "Vault not found";
             }
             // Use internal Metric class not Maven for solve plugin name issues
-            String display_Items;
-            if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
-                // number items need disabled?
-                display_Items = "Enabled";
-            } else {
-                display_Items = "Disabled";
-            }
-            String locks;
-            if (getConfig().getBoolean("shop.lock")) {
-                locks = "Enabled";
-            } else {
-                locks = "Disabled";
-            }
-            String sneak_action;
-            if (getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control")) {
-                sneak_action = "Enabled";
-            } else {
-                sneak_action = "Disabled";
-            }
+            String display_Items = Util.boolean2Status(getConfig().getBoolean("shop.display-items"));
+            String locks = Util.boolean2Status(getConfig().getBoolean("shop.lock"));
+            String sneak_action = Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"));
             String shop_find_distance = getConfig().getString("shop.finding.distance");
             String economyType = Economy.getNowUsing().name();
             if (getEconomy() != null) {
