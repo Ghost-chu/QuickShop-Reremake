@@ -25,6 +25,7 @@ import lombok.Setter;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +88,7 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Deprecated
     @Override
-    public boolean deposit(UUID name, double amount) {
+    public boolean deposit(@NotNull UUID name, double amount) {
         try {
             return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
@@ -96,6 +97,11 @@ public class Economy_Reserve implements EconomyCore {
             plugin.getLogger().warning(errorMsg);
             return false;
         }
+    }
+
+    @Override
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
+        return deposit(trader.getUniqueId(), amount);
     }
 
     /**
@@ -142,6 +148,11 @@ public class Economy_Reserve implements EconomyCore {
         }
     }
 
+    @Override
+    public double getBalance(@NotNull OfflinePlayer player) {
+        return getBalance(player.getUniqueId());
+    }
+
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
@@ -184,6 +195,11 @@ public class Economy_Reserve implements EconomyCore {
             plugin.getLogger().warning(errorMsg);
             return false;
         }
+    }
+
+    @Override
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
+        return withdraw(trader.getUniqueId(), amount);
     }
 
     /**

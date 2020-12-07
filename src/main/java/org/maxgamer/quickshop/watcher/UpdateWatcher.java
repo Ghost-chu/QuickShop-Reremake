@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is UpdateWatcher.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -20,8 +19,11 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -44,6 +46,7 @@ public class UpdateWatcher implements Listener {
 
     private final QuickUpdater updater = new JenkinsUpdater(QuickShop.getInstance().getBuildInfo());
     private BukkitTask cronTask = null;
+    private final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
 
     public QuickUpdater getUpdater() {
         return updater;
@@ -87,28 +90,22 @@ public class UpdateWatcher implements Listener {
                                     }
                                     notify =
                                             MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
-                                    TextComponent updatenow =
-                                            new TextComponent(
-                                                    ChatColor.AQUA
-                                                            + MsgUtil.getMessage("updatenotify.buttontitle", player));
-                                    TextComponent onekeyupdate =
-                                            new TextComponent(
-                                                    ChatColor.YELLOW
-                                                            + MsgUtil.getMessage(
-                                                            "updatenotify.onekeybuttontitle", player));
-                                    updatenow.setClickEvent(
-                                            new ClickEvent(
-                                                    ClickEvent.Action.OPEN_URL,
-                                                    "https://www.spigotmc.org/resources/62575/"));
-                                    onekeyupdate.setClickEvent(
-                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+
+                                    TextComponent updatenow = Component
+                                            .text(MsgUtil.getMessage("updatenotify.buttontitle", player))
+                                            .color(NamedTextColor.AQUA)
+                                            .clickEvent(ClickEvent.openUrl("https://www.spigotmc.org/resources/62575/"));
+                                    TextComponent onekeyupdate = Component.text(MsgUtil.getMessage(
+                                            "updatenotify.onekeybuttontitle", player))
+                                            .color(NamedTextColor.YELLOW)
+                                            .clickEvent(ClickEvent.runCommand("/qs update"));
                                     TextComponent finallyText =
-                                            new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
+                                            updatenow.append(Component.text(" ")).append(onekeyupdate);
                                     player.sendMessage(
                                             ChatColor.GREEN
                                                     + "---------------------------------------------------");
                                     player.sendMessage(ChatColor.GREEN + notify);
-                                    player.spigot().sendMessage(finallyText);
+                                    audiences.player(player).sendMessage(finallyText);
                                     player.sendMessage(
                                             ChatColor.GREEN
                                                     + "---------------------------------------------------");
@@ -141,23 +138,20 @@ public class UpdateWatcher implements Listener {
                 String notify = notifys.get(notifyNum);
                 notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
 
-                TextComponent updatenow =
-                        new TextComponent(
-                                ChatColor.AQUA + MsgUtil.getMessage("updatenotify.buttontitle", e.getPlayer()));
-                TextComponent onekeyupdate =
-                            new TextComponent(
-                                    ChatColor.YELLOW
-                                            + MsgUtil.getMessage("updatenotify.onekeybuttontitle", e.getPlayer()));
-                    updatenow.setClickEvent(
-                            new ClickEvent(
-                                    ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/62575/"));
-                onekeyupdate.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/qs update"));
+                TextComponent updatenow = Component
+                        .text(MsgUtil.getMessage("updatenotify.buttontitle", e.getPlayer()))
+                        .color(NamedTextColor.AQUA)
+                        .clickEvent(ClickEvent.openUrl("https://www.spigotmc.org/resources/62575/"));
+                TextComponent onekeyupdate = Component.text(MsgUtil.getMessage(
+                        "updatenotify.onekeybuttontitle", e.getPlayer()))
+                        .color(NamedTextColor.YELLOW)
+                        .clickEvent(ClickEvent.runCommand("/qs update"));
                 TextComponent finallyText =
-                        new TextComponent(updatenow, new TextComponent(" "), onekeyupdate);
+                        updatenow.append(Component.text(" ")).append(onekeyupdate);
                 e.getPlayer()
                         .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                 e.getPlayer().sendMessage(ChatColor.GREEN + notify);
-                e.getPlayer().spigot().sendMessage(finallyText);
+                audiences.player(e.getPlayer()).sendMessage(finallyText);
                 e.getPlayer()
                         .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
             }

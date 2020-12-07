@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is RealDisplayItem.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -32,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.event.ShopDisplayItemDespawnEvent;
 import org.maxgamer.quickshop.event.ShopDisplayItemSpawnEvent;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
@@ -101,14 +101,8 @@ public class RealDisplayItem extends DisplayItem {
             }
             Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
-                Util.debugLog(
-                        "Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
-                plugin
-                        .getBukkitAPIWrapper()
-                        .teleportEntity(
-                                eItem,
-                                Objects.requireNonNull(getDisplayLocation()),
-                                PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                plugin.getBukkitAPIWrapper().teleportEntity(eItem, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
         }
@@ -150,8 +144,7 @@ public class RealDisplayItem extends DisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (DisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog(
-                            "Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -201,11 +194,7 @@ public class RealDisplayItem extends DisplayItem {
         if (item != null && item.isValid()) {
             Util.debugLog(
                     "Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
-            StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-            for (StackTraceElement trace : traces) {
-                Util.debugLog(
-                        trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
-            }
+            MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
         }
         if (!Util.isDisplayAllowBlock(
                 Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
