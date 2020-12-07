@@ -32,13 +32,11 @@ import org.maxgamer.quickshop.util.language.formatter.PAPIFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 public class Lang {
     private final File file;
     private final FileConfiguration map;
     private final ImmutableList<Formatter> formatters;
-    private final Logger logger = Logger.getLogger("QuickShopConfiguration");
 
     /**
      * Creating Language utils from a file
@@ -57,6 +55,7 @@ public class Lang {
         this.file = file;
         if (!this.file.exists()) {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 this.file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
