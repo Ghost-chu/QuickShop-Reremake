@@ -117,8 +117,8 @@
                             <shadedPattern>org.maxgamer.quickshop.jackson.core.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>io.sentry.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.sentry.</shadedPattern>
+                            <pattern>net.kyori.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.adventure.</shadedPattern>
                         </relocation>
 
                         <relocation>
