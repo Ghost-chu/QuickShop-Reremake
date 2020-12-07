@@ -93,7 +93,7 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public byte[] update(@NotNull VersionType versionType) throws IOException {
-        InputStream is = HttpRequest.get(new URL("https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/lastSuccessfulBuild/artifact/target/QuickShop.jar"))
+        InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar"))
                 .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                 .execute()
                 .getInputStream();
