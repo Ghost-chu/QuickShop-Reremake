@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is EconomyTransaction.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -43,7 +42,7 @@ public class EconomyTransaction {
     private final EconomyCore core;
     private final double actualAmount; //
     private final double tax;
-    private final UUID taxAccount;
+    private final Trader taxer;
     private final boolean allowLoan;
     private final boolean tryingFixBanlanceInsuffient;
     @Getter
@@ -66,13 +65,13 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable Trader taxAccount, EconomyCore core, boolean allowLoan) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
         this.steps = TransactionSteps.WAIT;
-        this.taxAccount = taxAccount;
+        this.taxer = taxAccount;
         this.allowLoan = allowLoan;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
             this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
@@ -85,7 +84,7 @@ public class EconomyTransaction {
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
         //For passing Test
-        //no inspection
+        //noinspection ConstantConditions
         if (QuickShop.getInstance() != null) {
             this.tryingFixBanlanceInsuffient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         } else {
@@ -166,7 +165,7 @@ public class EconomyTransaction {
             return false;
         }
         steps = TransactionSteps.TAX;
-        if (tax > 0 && taxAccount != null && !core.deposit(taxAccount, tax)) {
+        if (tax > 0 && taxer != null && !core.deposit(taxer, tax)) {
             this.lastError = "Failed to deposit tax account: " + tax;
             callback.onTaxFailed(this);
             //Tax never should failed.

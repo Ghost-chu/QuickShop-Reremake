@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is ShopCreateEvent.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,15 +20,24 @@
 package org.maxgamer.quickshop.event;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
+
+import java.util.UUID;
 
 public class ShopCreateEvent extends QSEvent implements Cancellable {
 
     @Getter
     @NotNull
+    private final UUID creator;
+
+    @Getter
+    @Nullable
+    @Deprecated
     private final Player player;
 
     @Getter
@@ -41,12 +49,13 @@ public class ShopCreateEvent extends QSEvent implements Cancellable {
     /**
      * Call when have a new shop was creating.
      *
-     * @param shop   Target shop
-     * @param player The player creaing the shop
+     * @param shop    Target shop
+     * @param creator The player creating the shop, the player might offline/not exist if creating by a plugin.
      */
-    public ShopCreateEvent(@NotNull Shop shop, @NotNull Player player) {
+    public ShopCreateEvent(@NotNull Shop shop, @NotNull UUID creator) {
         this.shop = shop;
-        this.player = player;
+        this.creator = creator;
+        this.player = Bukkit.getPlayer(creator);
     }
 
     @Override

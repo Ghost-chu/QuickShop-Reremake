@@ -51,21 +51,15 @@ public class JSONFile extends FileEnvelope {
 
     @Override
     public void reload() {
-        fileConfiguration = JsonConfiguration.loadConfiguration(file);
+        fileConfiguration = HumanReadableJsonConfiguration.loadConfiguration(file);
         if (loadDefault) {
             try {
-                JsonConfiguration defaultConfig = new JsonConfiguration();
+                JsonConfiguration defaultConfig = new HumanReadableJsonConfiguration();
                 defaultConfig.load(new InputStreamReader(getInputStream(), StandardCharsets.UTF_8));
                 fileConfiguration.setDefaults(defaultConfig);
             } catch (IOException | InvalidConfigurationException e) {
                 plugin.getLogger().log(Level.SEVERE, "Could not load json file " + resourcePath, e);
             }
         }
-    }
-
-    @Override
-    public void save() {
-        fileConfiguration.set("_comment", "Please edit this file after format with json formatter");
-        super.save();
     }
 }
