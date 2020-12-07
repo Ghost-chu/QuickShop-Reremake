@@ -105,6 +105,21 @@ public class Util {
     }
 
     /**
+     * Convert boolean to string status
+     *
+     * @param bool Boolean
+     * @return Enabled or Disabled
+     */
+    @NotNull
+    public static String boolean2Status(boolean bool) {
+        if (bool) {
+            return "Enabled";
+        } else {
+            return "Disabled";
+        }
+    }
+
+    /**
      * Backup shops.db
      *
      * @return The result for backup
