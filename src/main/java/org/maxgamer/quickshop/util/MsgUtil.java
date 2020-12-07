@@ -1039,9 +1039,11 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
+        StringBuilder stringBuilder = new StringBuilder();
         for (StackTraceElement trace : traces) {
-            Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+            stringBuilder.append(trace.getClassName()).append("#").append(trace.getMethodName()).append("#").append(trace.getLineNumber());
         }
+        Util.debugLog(stringBuilder.toString());
     }
 
     @SneakyThrows
