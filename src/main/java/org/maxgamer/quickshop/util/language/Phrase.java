@@ -41,7 +41,20 @@ public class Phrase {
      */
     public Phrase(@NotNull Lang lang, @NotNull String path) {
         this.lang = lang;
-        this.original = lang.getString(path);
+        this.original = lang.getMap().getString(path);
+        this.last = original;
+    }
+
+    /**
+     * Create a phrase
+     *
+     * @param lang     Lang class object
+     * @param path     Phrase location
+     * @param defaults Default value
+     */
+    public Phrase(@NotNull Lang lang, @NotNull String path, @Nullable String defaults) {
+        this.lang = lang;
+        this.original = lang.getMap().getString(path, defaults);
         this.last = original;
     }
 
