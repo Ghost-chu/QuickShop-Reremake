@@ -30,6 +30,8 @@ public class Phrase {
     private final Lang lang;
     private final String original;
     private String last;
+    private boolean baked = false;
+    private boolean ready = false;
 
     /**
      * Create a phrase
@@ -43,30 +45,82 @@ public class Phrase {
         this.last = original;
     }
 
+    /**
+     * Apply args to original string
+     *
+     * @param args The args used for formatter
+     */
     public void bake(@Nullable String... args) {
         this.bake(null, args);
     }
 
+    /**
+     * Apply args to original string
+     *
+     * @param args   The args used for formatter
+     * @param sender The sender used for formatter
+     */
     public void bake(@Nullable CommandSender sender, @Nullable String... args) {
         if (args != null) {
             this.last = this.lang.format(this.original, sender, args);
         } else {
             this.last = original;
         }
+        this.baked = true;
+        this.ready = true;
     }
 
+    /**
+     * Getting the baked string
+     *
+     * @param args The args used for formatter
+     * @return Baked string
+     */
     public String get(@Nullable String... args) {
         this.bake(args);
+        this.ready = false;
         return this.last();
     }
 
+    /**
+     * Getting the baked string
+     *
+     * @param args   The args used for formatter
+     * @param sender The sender used for formatter
+     * @return Baked string
+     */
     public String get(@NotNull CommandSender sender, @Nullable String... args) {
         this.bake(sender, args);
+        this.ready = false;
         return this.last();
     }
 
+    /**
+     * Returns last processed string
+     * It may or may not baked.
+     *
+     * @return Last processed string
+     */
     public String last() {
         return this.last;
     }
 
+    /**
+     * Returns this phrase has been baked
+     *
+     * @return Does phrase baked
+     */
+    public boolean isBaked() {
+        return this.baked;
+    }
+
+    /**
+     * Returns Phrase ready for getting
+     * Phrase will get ready after baking, but will set to no-ready after get once.
+     *
+     * @return Ready
+     */
+    public boolean isReady() {
+        return this.ready;
+    }
 }
