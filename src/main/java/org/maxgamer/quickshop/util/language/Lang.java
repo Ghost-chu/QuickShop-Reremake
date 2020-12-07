@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util.language;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -35,6 +36,7 @@ import java.util.function.Consumer;
 
 public class Lang {
     private final File file;
+    @Getter
     private final FileConfiguration map;
     private final ImmutableList<Formatter> formatters;
 
