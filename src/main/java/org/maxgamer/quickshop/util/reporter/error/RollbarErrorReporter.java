@@ -65,12 +65,10 @@ public class RollbarErrorReporter {
                 .environment(Util.isDevEdition() ? "development" : "production")
                 .platform(Bukkit.getVersion())
                 .codeVersion(QuickShop.getVersion())
+                .handleUncaughtErrors(false)
                 .build();
         this.rollbar = Rollbar.init(config);
-        plugin
-                .getLogger()
-                .setFilter(
-                        new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
+        plugin.getLogger().setFilter(new QuickShopExceptionFilter()); // Redirect log request passthrough our error catcher.
         Bukkit.getLogger().setFilter(new GlobalExceptionFilter());
         Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
         Logger.getGlobal().setFilter(new GlobalExceptionFilter());
