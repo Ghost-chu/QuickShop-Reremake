@@ -610,7 +610,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         /*
-        Form https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
         The copyDefaults option changes the behavior of Configuration's save method.
         By default, the defaults of the configuration will not be written to the target save file.
         If set to true, it will write out the default values, to the target file.
@@ -645,7 +645,7 @@ public class QuickShop extends JavaPlugin {
         serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Sentry error report was disabled!");
+                Util.debugLog("Error reporter was disabled!");
             } else {
                 sentryErrorReporter = new RollbarErrorReporter(this);
             }
@@ -750,7 +750,6 @@ public class QuickShop extends JavaPlugin {
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
-
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             new DisplayBugFixListener(this).register();
@@ -759,19 +758,12 @@ public class QuickShop extends JavaPlugin {
                 new ClearLaggListener(this).register();
             }
         }
-
-//        if(getConfig().getBoolean("shop.deny-non-shop-items-to-shop-container")){
-//            Bukkit.getPluginManager().registerEvents(new ShopChestListener(), this);
-//        }
-
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
-
-
         if (this.getConfig().getBoolean("updater", true)) {
             getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
@@ -808,7 +800,7 @@ public class QuickShop extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                getLogger().info("Registering BStats Mertics...");
+                getLogger().info("Registering bStats metrics...");
                 submitMeritcs();
             }
         }.runTask(this);
@@ -818,6 +810,7 @@ public class QuickShop extends JavaPlugin {
             loaded = true;
         }
 
+        Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
 
@@ -875,8 +868,6 @@ public class QuickShop extends JavaPlugin {
 
     private void submitMeritcs() {
         if (!getConfig().getBoolean("disabled-metrics")) {
-            String serverVer = Bukkit.getVersion();
-            String bukkitVer = Bukkit.getBukkitVersion();
             String vaultVer;
             Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
             if (vault != null) {
@@ -885,58 +876,29 @@ public class QuickShop extends JavaPlugin {
                 vaultVer = "Vault not found";
             }
             // Use internal Metric class not Maven for solve plugin name issues
-            String display_Items;
-            if (getConfig().getBoolean("shop.display-items")) { // Maybe mod server use this plugin more? Or have big
-                // number items need disabled?
-                display_Items = "Enabled";
-            } else {
-                display_Items = "Disabled";
-            }
-            String locks;
-            if (getConfig().getBoolean("shop.lock")) {
-                locks = "Enabled";
-            } else {
-                locks = "Disabled";
-            }
-            String sneak_action;
-            if (getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control")) {
-                sneak_action = "Enabled";
-            } else {
-                sneak_action = "Disabled";
-            }
-            String shop_find_distance = getConfig().getString("shop.finding.distance");
             String economyType = Economy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
-            String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
-            String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
-            String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
-            String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
-            String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-            String databaseType = this.getDatabaseManager().getDatabase().getName();
-            String displayType = DisplayItem.getNowUsing().name();
-            String itemMatcherType = this.getItemMatcher().getName();
-            String useStackItem = String.valueOf(this.isAllowStack());
             // Version
-            metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
-            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+            metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
+            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
             metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
-            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
-            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
-            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"))));
+            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> getConfig().getString("shop.finding.distance")));
             String finalEconomyType = economyType;
             metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> useDisplayAutoDespawn));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
-            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLogger));
-            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> databaseType));
-            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> displayType));
-            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> itemMatcherType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> useStackItem));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> String.valueOf(getConfig().getBoolean("disable-debuglogger"))));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
+            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
@@ -978,7 +940,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 5;
         }
         if (selectedVersion == 5) {
-            getConfig().set("shop.display-item-use-name", true);
             getConfig().set("config-version", 6);
             selectedVersion = 6;
         }
@@ -995,7 +956,6 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 8) {
             getConfig().set("limits.old-algorithm", false);
             getConfig().set("plugin.ProtocolLib", false);
-            getConfig().set("plugin.Multiverse-Core", true);
             getConfig().set("shop.ignore-unlimited", false);
             getConfig().set("config-version", 9);
             selectedVersion = 9;
@@ -1024,7 +984,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("plugin.BKCommonLib", null); // Removed
             getConfig().set("database.use-varchar", null); // Removed
             getConfig().set("database.reconnect", null); // Removed
-            getConfig().set("anonymous-metrics", false);
             getConfig().set("display-items-check-ticks", 1200);
             getConfig().set("shop.bypass-owner-check", null); // Removed
             getConfig().set("config-version", 13);
@@ -1042,7 +1001,6 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 15) {
             getConfig().set("ongoingfee", null);
-            getConfig().set("shop.display-item-use-name", null);
             getConfig().set("shop.display-item-show-name", false);
             getConfig().set("shop.auto-fetch-shop-messages", true);
             getConfig().set("config-version", 16);
@@ -1095,7 +1053,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 24;
         }
         if (selectedVersion == 24) {
-            getConfig().set("shop.strict-matches-check", false);
             getConfig().set("config-version", 25);
             selectedVersion = 25;
         }
@@ -1159,7 +1116,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 34;
         }
         if (selectedVersion == 34) {
-            getConfig().set("queue.enable", false); // Close it for everyone
             if (getConfig().getInt("shop.display-items-check-ticks") == 1200) {
                 getConfig().set("shop.display-items-check-ticks", 6000);
             }
@@ -1206,12 +1162,10 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 42;
         }
         if (selectedVersion == 42) {
-            getConfig().set("langutils-language", "en_us");
             getConfig().set("config-version", 43);
             selectedVersion = 43;
         }
         if (selectedVersion == 43) {
-            getConfig().set("permission-type", 0);
             getConfig().set("config-version", 44);
             selectedVersion = 44;
         }
@@ -1222,7 +1176,6 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 45) {
             getConfig().set("shop.display-item-use-name", true);
-            getConfig().set("shop.protection-checking-filter", new ArrayList<>());
             getConfig().set("config-version", 46);
             selectedVersion = 46;
         }
@@ -1250,14 +1203,11 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 51;
         }
         if (selectedVersion < 60) { // Ahhh fuck versions
-            getConfig().set("matcher.use-bukkit-matcher", false);
             getConfig().set("config-version", 60);
             selectedVersion = 60;
         }
         if (selectedVersion == 60) { // Ahhh fuck versions
-            getConfig().set("matcher.use-bukkit-matcher", null);
             getConfig().set("shop.strict-matches-check", null);
-            getConfig().set("matcher.work-type", 0);
             getConfig().set("shop.display-auto-despawn", true);
             getConfig().set("shop.display-despawn-range", 10);
             getConfig().set("shop.display-check-time", 10);
@@ -1352,7 +1302,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 74;
         }
         if (selectedVersion == 74) {
-            String langUtilsLanguage = getConfig().getString("langutils-language");
+            String langUtilsLanguage = getConfig().getString("langutils-language", "en_us");
             getConfig().set("langutils-language", null);
             if ("en_us".equals(langUtilsLanguage)) {
                 langUtilsLanguage = "default";
@@ -1544,7 +1494,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 98;
         }
         if (selectedVersion == 98) {
-            getConfig().set("matcher.work-type", 1);
             getConfig().set("config-version", 99);
             selectedVersion = 99;
         }
@@ -1590,7 +1539,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.sneak-to-trade", null);
             getConfig().set("shop.interact.sneak-to-control", getConfig().getBoolean("shop.sneak-to-control"));
             getConfig().set("shop.sneak-to-control", null);
-            getConfig().set("shop.interact.switch-mode", false);
             getConfig().set("config-version", 106);
             selectedVersion = 106;
         }
@@ -1689,22 +1637,4 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
     }
-
-//    private void replaceLogger() {
-//        try {
-//            Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
-//
-//            if (logger != null) {
-//                try {
-//                    logger.set(this, new QuickShopLogger(this));
-//                } catch (Exception th) {
-//                    logger.setAccessible(true);
-//                    logger.set(this, new QuickShopLogger(this));
-//                }
-//            }
-//        } catch (Exception ignored) {
-//        }
-//    }
-
-
 }
