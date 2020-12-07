@@ -28,6 +28,7 @@ import org.maxgamer.quickshop.util.Util;
 public class EnvironmentChecker {
     @Getter
     private final GameVersion gameVersion;
+    private static boolean showed = false;
 
     public EnvironmentChecker(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
@@ -37,7 +38,8 @@ public class EnvironmentChecker {
             throw new RuntimeException("FATAL: Old QuickShop is installed, You must remove old quickshop jar from plugins folder!");
         }
 
-        if (isOutdatedJvm()) {
+        if (!showed && isOutdatedJvm()) {
+            showed = true;
             String jvmWarning = "\n" +
                     "============================================================\n" +
                     "    Warning! You're running an outdated version of Java\n" +
