@@ -23,10 +23,14 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,6 +93,7 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
+    private static final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -147,18 +152,7 @@ public class MsgUtil {
             @NotNull String left,
             @NotNull ItemStack itemStack,
             @NotNull String right) {
-        String json = ItemNMS.saveJsonfromNMS(itemStack);
-        if (json == null) {
-            return;
-        }
-
-        Util.debugLog(left);
-        Util.debugLog(json);
-        Util.debugLog(right);
-        TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
-        ComponentBuilder cBuilder = new ComponentBuilder(json);
-        centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-        player.spigot().sendMessage(centerItem);
+        audiences.player(player).sendMessage(getItemTextComponent(itemStack, player, left + Util.getItemStackName(itemStack) + right));
     }
 
     /**
@@ -220,17 +214,13 @@ public class MsgUtil {
      * @return filled text
      */
     public static String fillArgs(@Nullable String raw, @Nullable String... args) {
-        if (raw == null) {
-            return "Invalid message: null";
-        }
-        if (raw.isEmpty()) {
+        if (StringUtils.isEmpty(raw)) {
             return "";
         }
-        if (args == null) {
-            return raw;
-        }
-        for (int i = 0; i < args.length; i++) {
-            raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                raw = StringUtils.replace(raw, "{" + i + "}", args[i] == null ? "" : args[i]);
+            }
         }
         return raw;
     }
@@ -425,7 +415,9 @@ public class MsgUtil {
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
             //noinspection ConstantConditions
-            if(potion == null){continue;}
+            if (potion == null) {
+                continue;
+            }
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
             if (potionI18n != null && !potionI18n.isEmpty()) {
                 continue;
@@ -438,11 +430,7 @@ public class MsgUtil {
             potioni18n.save(potioni18nFile);
         } catch (IOException e) {
             e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not load/save transaction potionname from potioni18n.yml. Skipping.");
+            plugin.getLogger().warning("Could not load/save transaction potionname from potioni18n.yml. Skipping.");
         }
         plugin.getLogger().info("Complete to load potions effect translation.");
     }
@@ -464,15 +452,12 @@ public class MsgUtil {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
-                LinkedList<String> msgs =
-                        outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                LinkedList<String> msgs = outGoingPlayerMessages.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(Level.WARNING, "Could not load transaction messages from database. Skipping.");
+            plugin.getLogger().warning("Could not load transaction messages from database. Skipping.");
         }
     }
 
@@ -481,8 +466,8 @@ public class MsgUtil {
      * @param message     The message to send them Sends the given player a message if they're online.
      *                    Else, if they're not online, queues it for them in the database.
      * @param isUnlimited The shop is or unlimited
-     *
-     *  Deprecated for always use for bukkit deserialize method (costing ~145ms)
+     *                    <p>
+     *                    Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
     @Deprecated
     public static void send(@NotNull UUID player, @NotNull String message, boolean isUnlimited) {
@@ -549,7 +534,7 @@ public class MsgUtil {
                 }
             }
         }
-        }
+    }
 
     public static @NotNull String getSubString(
             @NotNull String text, @NotNull String left, @NotNull String right) {
@@ -671,16 +656,6 @@ public class MsgUtil {
 
             }
         }
-//        //Set item
-//        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item") || (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeitem"))) {
-//            String text = MsgUtil.getMessage(
-//                    "controlpanel.item",
-//                    sender);
-//            String hoverText = MsgUtil.getMessage("controlpanel.item-hover", sender);
-//            String clickCommand = MsgUtil.getMessage("controlpanel.commands.item", sender);
-//            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand, getItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("menu.item", sender, Util.getItemStackName(shop.getItem()))));
-//        }
-
         if (!shop.isUnlimited()) {
             // Refill
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
@@ -705,19 +680,13 @@ public class MsgUtil {
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text =
-                    MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
+            String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
-            String clickCommand =
-                    MsgUtil.fillArgs(
-                            "/qs silentremove {0}",
-                            shop.getRuntimeRandomUniqueId().toString());
+            String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
         }
-
         chatSheetPrinter.printFooter();
     }
-
 
     public static String getMessage(@NotNull String loc, @Nullable CommandSender player, @NotNull Object... args) {
         String[] strings = new String[args.length];
@@ -725,6 +694,10 @@ public class MsgUtil {
             strings[i] = Objects.toString(args[i]);
         }
         return getMessage(loc, player, strings);
+    }
+
+    public static String getMessage(@NotNull UUID uuid, @NotNull String loc, @NotNull String... args) {
+        return getMessage(loc, Bukkit.getPlayer(uuid), args);
     }
 
     /**
@@ -824,22 +797,20 @@ public class MsgUtil {
     /**
      * Send a purchaseSuccess message for a player.
      *
-     * @param p      Target player
-     * @param shop   Target shop
-     * @param amount Trading item amounts.
+     * @param purchaser Target player
+     * @param shop      Target shop
+     * @param amount    Trading item amounts.
      */
-    public static void sendPurchaseSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+    public static void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount) {
+        Player sender = Bukkit.getPlayer(purchaser);
+        if (sender == null) {
+            return;
+        }
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", p));
-        chatSheetPrinter.printLine(
-                MsgUtil.getMessage(
-                        "menu.item-name-and-price",
-                        p,
-                        Integer.toString(amount * shop.getItem().getAmount()),
-                        Util.getItemStackName(shop.getItem()),
-                        Util.format((amount * shop.getPrice()))));
-        printEnchantment(p, shop, chatSheetPrinter);
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format((amount * shop.getPrice()))));
+        printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -864,18 +835,22 @@ public class MsgUtil {
     /**
      * Send a sellSuccess message for a player.
      *
-     * @param p      Target player
+     * @param seller Target player
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    public static void sendSellSuccess(@NotNull Player p, @NotNull Shop shop, int amount) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
+    public static void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount) {
+        Player sender = Bukkit.getPlayer(seller);
+        if (sender == null) {
+            return;
+        }
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", p));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successfully-sold", sender));
         chatSheetPrinter.printLine(
                 MsgUtil.getMessage(
                         "menu.item-name-and-price",
-                        p,
+                        sender,
                         Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
                         Util.format((amount * shop.getPrice()))));
@@ -883,15 +858,15 @@ public class MsgUtil {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
-                if (!p.getUniqueId().equals(shop.getOwner())) {
+                if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            MsgUtil.getMessage("menu.sell-tax", p, Util.format((tax * total))));
+                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format((tax * total))));
                 } else {
-                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", p));
+                    chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", sender));
                 }
             }
         }
-        printEnchantment(p, shop, chatSheetPrinter);
+        printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
 
@@ -998,7 +973,32 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        player.spigot().sendMessage(getItemholochat(shop, itemStack, player, normalText));
+        audiences.player(player).sendMessage(getItemholochat(shop, itemStack, player, normalText));
+
+
+    }
+
+
+    private static TextComponent getItemTextComponent(@NotNull ItemStack itemStack,
+                                                      @NotNull Player player,
+                                                      @NotNull String normalText) {
+        if (errorComponent == null) {
+            errorComponent = Component.text(getMessage("menu.item-holochat-error", player));
+        }
+        try {
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json != null) {
+                return Component
+                        .text(normalText + " " + MsgUtil.getMessage("menu.preview", player))
+                        .hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString())
+                                , itemStack.getAmount(), BinaryTagHolder.of(json)));
+            }
+        } catch (Throwable throwable) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
+        }
+        return errorComponent;
+
+
     }
 
     @NotNull
@@ -1007,31 +1007,13 @@ public class MsgUtil {
             @NotNull ItemStack itemStack,
             @NotNull Player player,
             @NotNull String normalText) {
-        try {
-            if (errorComponent == null) {
-                errorComponent = new TextComponent(getMessage("menu.item-holochat-error", player));
-            }
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
-            if (json == null) {
-                return errorComponent;
-            }
-            TextComponent normalmessage =
-                    new TextComponent(normalText + " " + MsgUtil.getMessage("menu.preview", player));
-            ComponentBuilder cBuilder = new ComponentBuilder(json);
-            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-                normalmessage.setClickEvent(
-                        new ClickEvent(
-                                ClickEvent.Action.RUN_COMMAND,
-                                MsgUtil.fillArgs(
-                                        "/qs silentpreview {0}",
-                                        shop.getRuntimeRandomUniqueId().toString())));
-            }
-            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-            return normalmessage;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return errorComponent;
+        TextComponent component = getItemTextComponent(itemStack, player, normalText);
+        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
+            component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs(
+                    "/qs silentpreview {0}",
+                    shop.getRuntimeRandomUniqueId().toString())));
         }
+        return component;
     }
 
     /**
@@ -1054,6 +1036,12 @@ public class MsgUtil {
 
     public static IFile getI18nFile() {
         return messagei18n;
+    }
+
+    public static void debugStackTrace(StackTraceElement[] traces) {
+        for (StackTraceElement trace : traces) {
+            Util.debugLog(trace.getClassName() + "#" + trace.getMethodName() + "#" + trace.getLineNumber());
+        }
     }
 
     @SneakyThrows
@@ -1529,6 +1517,10 @@ public class MsgUtil {
             setAndUpdate("nearby-shop-this-way", "&aShop is {0} blocks away from you.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 45) {
+            setAndUpdate("exceeded-maximum", "&cThe value has exceeded the maximum java value.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
@@ -1564,7 +1556,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(chatColor + msg));
+                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(chatColor + msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
@@ -1573,8 +1565,15 @@ public class MsgUtil {
 
     }
 
-    public static void sendMessage(@NotNull CommandSender sender, @Nullable String... messages) {
+    public static void sendMessage(@NotNull UUID sender, @Nullable String... messages) {
+        sendMessage(Bukkit.getPlayer(sender), messages);
+    }
+
+    public static void sendMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
+            return;
+        }
+        if (sender == null) {
             return;
         }
         for (String msg : messages) {
@@ -1582,7 +1581,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                sender.spigot().sendMessage(TextComponent.fromLegacyText(msg));
+                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(msg));
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);

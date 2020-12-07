@@ -41,7 +41,6 @@ import java.util.UUID;
 public class Economy_Vault implements EconomyCore, Listener {
 
     private final QuickShop plugin;
-    private final UUID taxAccountUUID;
     private final boolean allowLoan;
     @Getter
     @Setter
@@ -51,10 +50,6 @@ public class Economy_Vault implements EconomyCore, Listener {
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
-        Util.debugLog("Loading caching tax account...");
-        String taxAccount = plugin.getConfig().getString("tax-account");
-        //noinspection deprecation
-        this.taxAccountUUID = taxAccount == null || taxAccount.isEmpty() ? null : Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
         setupEconomy();
     }
 
@@ -116,17 +111,21 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return false;
         }
-        OfflinePlayer p = Bukkit.getOfflinePlayer(name);
+        return deposit(Bukkit.getOfflinePlayer(name), amount);
+
+    }
+
+    @Override
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
+        if (!checkValid()) {
+            return false;
+        }
         try {
-            return Objects.requireNonNull(this.vault).depositPlayer(p, amount).transactionSuccess();
+            return Objects.requireNonNull(this.vault).depositPlayer(trader, amount).transactionSuccess();
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            if (p.getName() == null) {
-                if (this.taxAccountUUID.equals(name)) {
-                    plugin.getLogger().warning("Deposit failed and player name is NULL, you should check if your tax account in config.yml are existed on the server. Provider (" + getProviderName() + ")");
-                } else {
-                    plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + name + ". Provider (" + getProviderName() + ")");
-                }
+            if (trader.getName() == null) {
+                plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
             t.printStackTrace();
@@ -171,14 +170,20 @@ public class Economy_Vault implements EconomyCore, Listener {
             return 0.0;
         }
 
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
+        return getBalance(Bukkit.getOfflinePlayer(name));
 
-        if (offlinePlayer.getName() == null) {
+    }
+
+    @Override
+    public double getBalance(@NotNull OfflinePlayer player) {
+        if (!checkValid()) {
             return 0.0;
         }
-
+        if (player.getName() == null) {
+            return 0.0;
+        }
         try {
-            return Objects.requireNonNull(this.vault).getBalance(offlinePlayer);
+            return Objects.requireNonNull(this.vault).getBalance(player);
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             t.printStackTrace();
@@ -215,20 +220,23 @@ public class Economy_Vault implements EconomyCore, Listener {
         if (!checkValid()) {
             return false;
         }
-        OfflinePlayer p = Bukkit.getOfflinePlayer(name);
+        return withdraw(Bukkit.getOfflinePlayer(name), amount);
+    }
+
+    @Override
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
+        if (!checkValid()) {
+            return false;
+        }
         try {
-            if ((!allowLoan) && (getBalance(name) < amount)) {
+            if ((!allowLoan) && (getBalance(trader) < amount)) {
                 return false;
             }
-            return Objects.requireNonNull(this.vault).withdrawPlayer(p, amount).transactionSuccess();
+            return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            if (p.getName() == null) {
-                if (this.taxAccountUUID.equals(name)) {
-                    plugin.getLogger().warning("Withdraw failed and player name is NULL, you should check if your tax account in config.yml are existed on the server. Provider: " + getProviderName());
-                } else {
-                    plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + name + ", Provider: " + getProviderName());
-                }
+            if (trader.getName() == null) {
+                plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
             t.printStackTrace();

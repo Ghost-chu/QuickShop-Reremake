@@ -1,6 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is JsonUtil.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
+ * This file is a part of project QuickShop, the name is Formatter.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -18,26 +17,12 @@
  *
  */
 
-package org.maxgamer.quickshop.util;
+package org.maxgamer.quickshop.util.language;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public final class JsonUtil {
-
-    private static final Gson gson = new Gson();
-    private static final Gson humanReadableGson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().disableHtmlEscaping().create();
-
-    private JsonUtil() {
-    }
-
-    public static Gson getGson() {
-        return gson;
-    }
-
-    public static Gson getHumanReadableGson() {
-        return humanReadableGson;
-    }
-
-
+public interface Formatter {
+    @NotNull String format(@NotNull String raw, @Nullable CommandSender sender, @Nullable String... args);
 }
