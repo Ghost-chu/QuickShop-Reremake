@@ -610,7 +610,7 @@ public class QuickShop extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         /*
-        Form https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
         The copyDefaults option changes the behavior of Configuration's save method.
         By default, the defaults of the configuration will not be written to the target save file.
         If set to true, it will write out the default values, to the target file.
@@ -1666,22 +1666,4 @@ public class QuickShop extends JavaPlugin {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
     }
-
-//    private void replaceLogger() {
-//        try {
-//            Field logger = ReflectionUtil.getField(JavaPlugin.class, "logger");
-//
-//            if (logger != null) {
-//                try {
-//                    logger.set(this, new QuickShopLogger(this));
-//                } catch (Exception th) {
-//                    logger.setAccessible(true);
-//                    logger.set(this, new QuickShopLogger(this));
-//                }
-//            }
-//        } catch (Exception ignored) {
-//        }
-//    }
-
-
 }
