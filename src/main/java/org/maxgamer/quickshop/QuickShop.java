@@ -750,7 +750,6 @@ public class QuickShop extends JavaPlugin {
         ongoingFeeWatcher = new OngoingFeeWatcher(this);
         InternalListener internalListener = new InternalListener(this);
         Bukkit.getPluginManager().registerEvents(internalListener, this);
-
         if (isDisplay() && DisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             displayWatcher = new DisplayWatcher(this);
             new DisplayBugFixListener(this).register();
@@ -759,19 +758,12 @@ public class QuickShop extends JavaPlugin {
                 new ClearLaggListener(this).register();
             }
         }
-
-//        if(getConfig().getBoolean("shop.deny-non-shop-items-to-shop-container")){
-//            Bukkit.getPluginManager().registerEvents(new ShopChestListener(), this);
-//        }
-
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
-
-
         if (this.getConfig().getBoolean("updater", true)) {
             getLogger().info("Registering UpdateWatcher...");
             updateWatcher = new UpdateWatcher();
@@ -808,7 +800,7 @@ public class QuickShop extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                getLogger().info("Registering BStats Mertics...");
+                getLogger().info("Registering bStats metrics...");
                 submitMeritcs();
             }
         }.runTask(this);
@@ -818,6 +810,7 @@ public class QuickShop extends JavaPlugin {
             loaded = true;
         }
 
+        Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
     }
 
