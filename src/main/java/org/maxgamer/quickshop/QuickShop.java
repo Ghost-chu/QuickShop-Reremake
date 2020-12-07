@@ -940,7 +940,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 5;
         }
         if (selectedVersion == 5) {
-            getConfig().set("shop.display-item-use-name", true);
             getConfig().set("config-version", 6);
             selectedVersion = 6;
         }
@@ -957,7 +956,6 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 8) {
             getConfig().set("limits.old-algorithm", false);
             getConfig().set("plugin.ProtocolLib", false);
-            getConfig().set("plugin.Multiverse-Core", true);
             getConfig().set("shop.ignore-unlimited", false);
             getConfig().set("config-version", 9);
             selectedVersion = 9;
@@ -986,7 +984,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("plugin.BKCommonLib", null); // Removed
             getConfig().set("database.use-varchar", null); // Removed
             getConfig().set("database.reconnect", null); // Removed
-            getConfig().set("anonymous-metrics", false);
             getConfig().set("display-items-check-ticks", 1200);
             getConfig().set("shop.bypass-owner-check", null); // Removed
             getConfig().set("config-version", 13);
@@ -1004,7 +1001,6 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 15) {
             getConfig().set("ongoingfee", null);
-            getConfig().set("shop.display-item-use-name", null);
             getConfig().set("shop.display-item-show-name", false);
             getConfig().set("shop.auto-fetch-shop-messages", true);
             getConfig().set("config-version", 16);
@@ -1057,7 +1053,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 24;
         }
         if (selectedVersion == 24) {
-            getConfig().set("shop.strict-matches-check", false);
             getConfig().set("config-version", 25);
             selectedVersion = 25;
         }
@@ -1121,7 +1116,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 34;
         }
         if (selectedVersion == 34) {
-            getConfig().set("queue.enable", false); // Close it for everyone
             if (getConfig().getInt("shop.display-items-check-ticks") == 1200) {
                 getConfig().set("shop.display-items-check-ticks", 6000);
             }
@@ -1168,12 +1162,10 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 42;
         }
         if (selectedVersion == 42) {
-            getConfig().set("langutils-language", "en_us");
             getConfig().set("config-version", 43);
             selectedVersion = 43;
         }
         if (selectedVersion == 43) {
-            getConfig().set("permission-type", 0);
             getConfig().set("config-version", 44);
             selectedVersion = 44;
         }
@@ -1184,7 +1176,6 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 45) {
             getConfig().set("shop.display-item-use-name", true);
-            getConfig().set("shop.protection-checking-filter", new ArrayList<>());
             getConfig().set("config-version", 46);
             selectedVersion = 46;
         }
@@ -1212,14 +1203,11 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 51;
         }
         if (selectedVersion < 60) { // Ahhh fuck versions
-            getConfig().set("matcher.use-bukkit-matcher", false);
             getConfig().set("config-version", 60);
             selectedVersion = 60;
         }
         if (selectedVersion == 60) { // Ahhh fuck versions
-            getConfig().set("matcher.use-bukkit-matcher", null);
             getConfig().set("shop.strict-matches-check", null);
-            getConfig().set("matcher.work-type", 0);
             getConfig().set("shop.display-auto-despawn", true);
             getConfig().set("shop.display-despawn-range", 10);
             getConfig().set("shop.display-check-time", 10);
@@ -1314,7 +1302,7 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 74;
         }
         if (selectedVersion == 74) {
-            String langUtilsLanguage = getConfig().getString("langutils-language");
+            String langUtilsLanguage = getConfig().getString("langutils-language", "en_us");
             getConfig().set("langutils-language", null);
             if ("en_us".equals(langUtilsLanguage)) {
                 langUtilsLanguage = "default";
@@ -1506,7 +1494,6 @@ public class QuickShop extends JavaPlugin {
             selectedVersion = 98;
         }
         if (selectedVersion == 98) {
-            getConfig().set("matcher.work-type", 1);
             getConfig().set("config-version", 99);
             selectedVersion = 99;
         }
@@ -1552,7 +1539,6 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.sneak-to-trade", null);
             getConfig().set("shop.interact.sneak-to-control", getConfig().getBoolean("shop.sneak-to-control"));
             getConfig().set("shop.sneak-to-control", null);
-            getConfig().set("shop.interact.switch-mode", false);
             getConfig().set("config-version", 106);
             selectedVersion = 106;
         }
