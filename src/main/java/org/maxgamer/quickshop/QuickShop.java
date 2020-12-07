@@ -868,8 +868,6 @@ public class QuickShop extends JavaPlugin {
 
     private void submitMeritcs() {
         if (!getConfig().getBoolean("disabled-metrics")) {
-            String serverVer = Bukkit.getVersion();
-            String bukkitVer = Bukkit.getBukkitVersion();
             String vaultVer;
             Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
             if (vault != null) {
@@ -878,42 +876,29 @@ public class QuickShop extends JavaPlugin {
                 vaultVer = "Vault not found";
             }
             // Use internal Metric class not Maven for solve plugin name issues
-            String display_Items = Util.boolean2Status(getConfig().getBoolean("shop.display-items"));
-            String locks = Util.boolean2Status(getConfig().getBoolean("shop.lock"));
-            String sneak_action = Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"));
-            String shop_find_distance = getConfig().getString("shop.finding.distance");
             String economyType = Economy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
-            String useDisplayAutoDespawn = String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"));
-            String useEnhanceDisplayProtect = String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"));
-            String useEnhanceShopProtect = String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"));
-            String useOngoingFee = String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"));
-            String disableDebugLogger = String.valueOf(getConfig().getBoolean("disable-debuglogger"));
-            String databaseType = this.getDatabaseManager().getDatabase().getName();
-            String displayType = DisplayItem.getNowUsing().name();
-            String itemMatcherType = this.getItemMatcher().getName();
-            String useStackItem = String.valueOf(this.isAllowStack());
             // Version
-            metrics.addCustomChart(new Metrics.SimplePie("server_version", () -> serverVer));
-            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", () -> bukkitVer));
+            metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
+            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
             metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> display_Items));
-            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> locks));
-            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> sneak_action));
-            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> shop_find_distance));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"))));
+            metrics.addCustomChart(new Metrics.SimplePie("shop_find_distance", () -> getConfig().getString("shop.finding.distance")));
             String finalEconomyType = economyType;
             metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> useDisplayAutoDespawn));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> useEnhanceDisplayProtect));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> useEnhanceShopProtect));
-            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> useOngoingFee));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> disableDebugLogger));
-            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> databaseType));
-            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> displayType));
-            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> itemMatcherType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> useStackItem));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
+            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> String.valueOf(getConfig().getBoolean("disable-debuglogger"))));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
+            metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
+            metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
