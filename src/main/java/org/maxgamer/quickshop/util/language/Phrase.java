@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * An object allow fast&advanced control for phrase
+ * An object allow fast and advanced control for phrase
  */
 public class Phrase {
     private final Lang lang;
