@@ -231,7 +231,7 @@ public class DatabaseHelper {
         Statement st = databaseConnection.get().createStatement();
         String selectAllShops = "SELECT * FROM " + plugin.getDbPrefix() + table;
         ResultSet resultSet = st.executeQuery(selectAllShops);
-        return new WarpedResultSet(resultSet, databaseConnection);
+        return new WarpedResultSet(st, resultSet, databaseConnection);
     }
 
     public WarpedResultSet selectAllShops() throws SQLException {

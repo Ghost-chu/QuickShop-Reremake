@@ -142,6 +142,7 @@ public class DatabaseManager {
                 }
             }
             rs.close();
+            ps.close();
 
         } catch (SQLException e) {
             return match;
