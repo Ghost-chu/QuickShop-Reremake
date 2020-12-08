@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("DuplicatedCode")
+
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class TownyIntegration extends QSIntegratedPlugin implements Listener {
     private final List<TownyFlags> createFlags;
@@ -55,6 +55,8 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean deleteShopOnLeave;
+    private boolean isNewVersion;
+
 
     public TownyIntegration(QuickShop plugin) {
         super(plugin);
@@ -64,6 +66,13 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
                 TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
         deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
+        //Testing if there have new method
+        try {
+            Town.class.getDeclaredMethod("getHomeblockWorld");
+            isNewVersion = true;
+        } catch (NoSuchMethodException exception) {
+            isNewVersion = false;
+        }
     }
 
     @Override
@@ -80,8 +89,13 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         if (owner == null) {
             return;
         }
-        String worldName = event.getTown().getWorld().getName();
         Town town = event.getTown();
+        String worldName;
+        if (isNewVersion) {
+            worldName = town.getHomeblockWorld().getName();
+        } else {
+            worldName = town.getWorld().getName();
+        }
         //Getting all shop with world-chunk-shop mapping
         for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
             //Matching world
@@ -113,11 +127,15 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
+        return checkFlags(player, location, createFlags);
+    }
+
+    private boolean checkFlags(@NotNull Player player, @NotNull Location location, List<TownyFlags> flags) {
         if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
             Util.debugLog("This world disabled Towny.");
             return true;
         }
-        for (TownyFlags flag : createFlags) {
+        for (TownyFlags flag : flags) {
             switch (flag) {
                 case OWN:
                     if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
@@ -142,31 +160,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
 
     @Override
     public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
-            Util.debugLog("This world disabled Towny.");
-            return true;
-        }
-        for (TownyFlags flag : tradeFlags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    // Ignore
-            }
-        }
-        return true;
+        return checkFlags(player, location, tradeFlags);
     }
 
     @Override
