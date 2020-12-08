@@ -25,8 +25,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.integration.IntegrateStage;
+import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
+@IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class PlotSquaredIntegrationProxy extends QSIntegratedPlugin {
     private static QSIntegratedPlugin plotSquared;
 
