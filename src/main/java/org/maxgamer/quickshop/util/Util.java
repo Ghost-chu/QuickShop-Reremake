@@ -1256,7 +1256,9 @@ public class Util {
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < nameParts.length; i++) {
-            sb.append(firstUppercase(nameParts[i]));
+            if (!nameParts[i].isEmpty()) {
+                sb.append(Character.toUpperCase(nameParts[i].charAt(0))).append(nameParts[i].substring(1).toLowerCase());
+            }
             if (i + 1 != nameParts.length) {
                 sb.append(" ");
             }
