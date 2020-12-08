@@ -153,7 +153,7 @@ public class RollbarErrorReporter {
                 // Ignore
                 pasteURL = this.lastPaste;
             }
-            this.rollbar.error(throwable, this.makeMapping(), pasteURL);
+            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
             plugin
                     .getLogger()
                     .warning(
