@@ -36,6 +36,8 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 
+import java.util.Collections;
+
 /**
  * A class to create a GUI item preview quickly
  */
@@ -58,10 +60,22 @@ public class InventoryPreview implements Listener {
     public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
         this.itemStack = itemStack.clone();
         this.player = player;
-        ItemMeta itemMeta = this.itemStack.getItemMeta();
-        itemMeta.getLore().add(plugin.getPreviewProtectionLore());
-        //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
-        this.itemStack.setItemMeta(itemMeta);
+
+        ItemMeta itemMeta;
+        if (itemStack.hasItemMeta()) {
+            itemMeta = this.itemStack.getItemMeta();
+        } else {
+            itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        }
+        if (itemMeta != null) {
+            if (itemMeta.hasLore()) {
+                itemMeta.getLore().add(plugin.getPreviewProtectionLore());
+            } else {
+                //itemMeta.setLore(Lists.newArrayList(plugin.getPreviewProtectionLore()));
+                itemMeta.setLore(Collections.singletonList(plugin.getPreviewProtectionLore()));
+            }
+            this.itemStack.setItemMeta(itemMeta);
+        }
     }
 
     @Deprecated
