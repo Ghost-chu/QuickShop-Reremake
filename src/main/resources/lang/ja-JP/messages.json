@@ -1,14 +1,14 @@
 {
   "translation-author": "翻訳者: Ghost_chu, Andre_601",
   "translation-version": "&c&lサポートバージョン: &b&lReremake",
-  "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
+  "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",
   "translation-country": "&c&l言語圏: &b&l日本語 (ja_JP)",
   "language-version": "46",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。確認する必要があります。",
-  "no-anythings-in-your-hand": "&cあなたの手には何もありません。",
+  "no-anythings-in-your-hand": "&cあなたは手に何も持っていません。",
   "no-permission": "&c権限を持っていないため実行できません。",
-  "integrations-check-failed-create": "&c統合 {0} がショップの作成を拒否しました",
-  "integrations-check-failed-trade": "&c統合 {0} がショップの作成を拒否しました",
+  "integrations-check-failed-create": "&c{0} 統合がショップの作成を拒否しました",
+  "integrations-check-failed-trade": "&c{0} 統合がショップの取引を拒否しました",
   "3rd-plugin-build-check-failed": "一部のサードパーティプラグインが権限チェックを拒否しました。権限が組み込まれていますか？",
   "no-creative-break": "&cクリエイティブモードで他のショップを壊すことはできません。サバイバルモードに切り替えるか、代わりにスーパーツール {0} を使用してください。",
   "trading-in-creative-mode-is-disabled": "&cクリエイティブモードではこのショップと取引することはできません。",
@@ -50,7 +50,7 @@
   "nearby-shop-this-way": "&aショップは {0} ブロック先にあります。",
   "nearby-shop-header": "&b{0}&a に一致する近くのショップ:",
   "nearby-shop-entry": "&a- 情報:{0} &a価格:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &a距離: &b{5} &aブロック(s)",
-  "no-nearby-shop": "&c {0} に一致する近くのショップはありません。",
+  "no-nearby-shop": "&c {0} に一致するショップは近所にありません。",
   "buying-more-than-selling": "&c警告: 売っているアイテムよりも多くを買っています",
   "not-enough-space": "&cショップには {0} 個以上 個分のスペースしかありません",
   "refill-success": "&aRefill 成功",
@@ -161,12 +161,12 @@
       "about": "&eQuickShopのヘルプを表示",
       "help": "&eQuickShopのヘルプを表示",
       "item": "&eショップのショップアイテムを変更する",
-      "size": "&eショップの1商品あたりの数量を変更する",
-      "supercreate": "&e全ての保護チェックをバイパスしてショップを作る",
-      "language": "&e現在使用されている言語を変更する",
+      "size": "&eショップの1商品あたりの内容量を変更します",
+      "supercreate": "&e全ての保護チェックをバイパスしてショップを作成します",
+      "language": "&e現在使用されている言語を変更します",
       "removeall": "&e指定したプレイヤーのすべてのショップを削除する",
-      "transfer": "&e自分のすべてのショップを指定したプレイヤーに譲渡する",
-      "removeworld": "&e指定したワールド内のすべてのショップを削除する"
+      "transfer": "&e自分のすべてのショップを指定したプレイヤーに譲渡します",
+      "removeworld": "&e指定したワールド内のすべてのショップを削除します"
     }
   },
   "signs": {
@@ -198,8 +198,8 @@
     "empty-hover": "&eクリックでアイテム削除します",
     "remove": "&c&l[ショップ削除]",
     "remove-hover": "&eクリックでショップを削除します",
-    "stack": "&a1商品あたりの数量: &b{0} &e[&d&l変更&e]",
-    "stack-hover": "&eクリックして1商品あたりのアイテムの数量を設定します。通常の動作の場合は1に設定します。",
+    "stack": "&a1商品あたりの内容量: &b{0} &e[&d&l変更&e]",
+    "stack-hover": "&eクリックして1商品あたりのアイテムの内容量を設定します。通常動作の場合は1に設定します。",
     "item": "&aショップアイテム: {0} &e[&d&l変更&e]",
     "item-hover": "&eショップアイテムを変更するにはクリックしてください"
   },
@@ -223,8 +223,8 @@
     "onekeybuttontitle": "[ワンキーアップデート]",
     "list": [
       "{0} がリリースされました。まだ {1} を使用しています！",
-      "どかーん！新しいアップデート {0} が入ってきました。更新しよう！",
-      "サプライズです！ {0} がでてきました！あなたは {1} です",
+      "どかーん！新しいアップデート {0} がやってきました。更新しよう！",
+      "サプライズです！ {0} がやってきました！あなたは {1} です",
       "アップデートが必要です。{0} がリリースされました！",
       "おっと！ {0} がリリースされました。今は {1} です！",
       "マジでQSが {0} にアップデートされてるんだって！なんでまだ更新してないんだ？",
@@ -237,9 +237,9 @@
       "司令官、アップデートがあります。{0} が出ました！",
       "私のスタイルを見てください---{0} が更新されました。まだ {1} を使用しています",
       "ああ！ 新しい更新 {0}！ 更新を！",
-      "どう思いますか？{0} がリリースされました！更新しましょう！",
-      "ドクター！QuickShopに新しいアップデート {0} が来ました！アップデートした方がいいですよ～",
-      "こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があります～"
+      "どう思う？{0} がリリースされました！更新しよう！",
+      "ドクター！QuickShopに新しいアップデート {0} がやってきました！アップデートした方がいいですよ～",
+      "こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～"
     ],
     "remote-disable-warning": "&cこのバージョンのQuickShopは、リモートサーバーによって無効化されています。つまり、このバージョンは深刻な問題を抱えている可能性があります。SpigotMCページから詳細を取得します: {0}。この警告が表示され、無効化されていないバージョンに切り替えるまで、コンソールにスパムが続きます。これはサーバーの実行には影響しません。",
     "label": {
@@ -253,7 +253,7 @@
       "master": "[Master]"
     }
   },
-  "shop-removed-cause-ongoing-fee": "&c{0} のショップは十分な資金がなかったため削除されました！",
+  "shop-removed-cause-ongoing-fee": "&cあなたの {0} のショップは十分な資金がなかったため削除されました！",
   "digits-reach-the-limit": "価格が小数点以下の制限に達しました。",
   "complete": "&a完了!",
   "quickshop-gui-preview": "QuickShop GUI アイテムプレビュー",
@@ -276,7 +276,7 @@
   "shop-freezed-at-location": "&e {0} のショップ {1} が凍結されました！",
   "denied-put-in-item": "&cショップにこのアイテムを入れることはできません！",
   "how-many-buy-stack": "&eチャットで&b購入&aしたい商品の数を入力して下さい。1つの商品に &e{0} 個&a のアイテムが含まれており、あなたは&e{1} 個&a の商品を購入することができます。すべて購入するにはチャットで &ball&a と入力して下さい。",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &ball&a in chat to sell all.",
+  "how-many-sell-stack": "&eチャットで&b売却&aしたい商品の数を入力して下さい。1つの商品に &e{0} 個&a のアイテムが含まれており、あなたは&e{1} 個&a の商品を売却することができます。すべて売却するにはチャットで &ball&a と入力して下さい。",
   "language": {
     "name": "&e名前: &6{0}",
     "code": "&eコード: &6{0}",
