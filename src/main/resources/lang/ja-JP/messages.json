@@ -165,8 +165,8 @@
       "supercreate": "&e全ての保護チェックをバイパスしてショップを作る",
       "language": "&e現在使用されている言語を変更する",
       "removeall": "&e指定したプレイヤーのすべてのショップを削除する",
-      "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "transfer": "&e自分のすべてのショップを指定したプレイヤーに譲渡する",
+      "removeworld": "指定したワールド内のすべてのショップを削除する"
     }
   },
   "signs": {
