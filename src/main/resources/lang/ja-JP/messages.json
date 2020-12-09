@@ -161,12 +161,12 @@
       "about": "&eQuickShopのヘルプを表示",
       "help": "&eQuickShopのヘルプを表示",
       "item": "&eショップのショップアイテムを変更する",
-      "size": "&eショップの1バルクあたりの数量を変更する",
+      "size": "&eショップの1バルクの数量を変更する",
       "supercreate": "&e全ての保護チェックをバイパスしてショップを作る",
       "language": "&e現在使用されている言語を変更する",
       "removeall": "&e指定したプレイヤーのすべてのショップを削除する",
       "transfer": "&e自分のすべてのショップを指定したプレイヤーに譲渡する",
-      "removeworld": "指定したワールド内のすべてのショップを削除する"
+      "removeworld": "&e指定したワールド内のすべてのショップを削除する"
     }
   },
   "signs": {
@@ -177,7 +177,7 @@
     "stack-buying": "買取 {0}",
     "item": "{0}",
     "price": "1つあたり {0}",
-    "stack-price": "{0} per {1}x {2}",
+    "stack-price": "{1} 個 {0} {2}",
     "unlimited": "無制限"
   },
   "controlpanel": {
@@ -191,14 +191,14 @@
     "mode-buying": "&aショップモード: &b買取 &e[&d&l変更&e]",
     "mode-buying-hover": "&eクリックしてショップを販売モードに変更します。",
     "price": "&a価格: &b{0} &e[&d&l変更&e]",
-    "price-hover": "&eClick to set a new price for the item.",
+    "price-hover": "&eクリックしてアイテムの新しい価格を設定します。",
     "refill": "&aRefill: アイテムを補充[&d&lOK&e]",
     "refill-hover": "&eクリックでアイテム追加",
     "empty": "&aEmpty: 全てのアイテムを削除 &e[&d&lOK&e]",
     "empty-hover": "&eクリックでアイテム削除します",
     "remove": "&c&l[ショップ削除]",
     "remove-hover": "&eクリックでショップを削除します",
-    "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
+    "stack": "&a1バルクの数量: &b{0} &e[&d&l変更&e]",
     "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
     "item": "&aショップアイテム: {0} &e[&d&l変更&e]",
     "item-hover": "&eショップアイテムを変更するにはクリックしてください"
