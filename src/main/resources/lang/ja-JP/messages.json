@@ -163,8 +163,8 @@
       "item": "&eショップのショップアイテムを変更する",
       "size": "&eショップの1バルクあたりの数量を変更する",
       "supercreate": "&e全ての保護チェックをバイパスしてショップを作る",
-      "language": "&eChange the currently used language",
-      "removeall": "&eRemove ALL shops of a specified player",
+      "language": "&e現在使用されている言語を変更する",
+      "removeall": "&e指定したプレイヤーのすべてのショップを削除する",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eRemove ALL shops in a specified world"
     }
