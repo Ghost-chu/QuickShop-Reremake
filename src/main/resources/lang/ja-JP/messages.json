@@ -18,7 +18,7 @@
   "shop-already-owned": "&cこれはすでにショップです。",
   "chest-was-removed": "&cチェストが削除されました。",
   "price-too-cheap": "&c価格は&e${0}&c以上である必要があります。",
-  "no-price-change": "&cこれでは価格変更にはなりません！",
+  "no-price-change": "&cこれでは価格変更になりません！",
   "you-cant-afford-a-new-shop": "&c新しいショップを作成するには {0} かかります。",
   "player-bought-from-your-store-tax": "&c{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。(うち消費税 {4})",
   "you-cant-afford-to-change-price": "&cショップの価格を変更するには {0} かかります。",
