@@ -31,7 +31,7 @@
   "you-cant-afford-to-buy": "&c費用は {0} ですが、{1} しかありません。",
   "negative-amount": "&cマイナス量を取引できません",
   "not-a-number": "&c入力できるのは，あなたの入力は {0} でした．",
-  "exceeded-maximum": "&cThe value has exceeded the maximum java value.",
+  "exceeded-maximum": "&c値はjavaの最大値を超えています。",
   "not-a-integer": "&c入力できるのは，あなたの入力は {0} でした．",
   "player-bought-from-your-store": "&c{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5{0}、{1}、{2} のショップで {3} がなくなりました!",
