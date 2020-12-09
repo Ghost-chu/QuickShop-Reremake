@@ -58,7 +58,7 @@
   "admin-shop": "アドミンショップ",
   "unknown-owner": "不明",
   "owner-bypass-check": "&e全てのチェックをバイパスしました。取引成功！ (あなたがショップのオーナーになりました！)",
-  "reached-maximum-can-create": "&cすでに最大 {0} / {1} のショップを作成しました",
+  "reached-maximum-can-create": "&cあなたはすでに最大値を超えて {0} / {1} のショップを作成しています！",
   "restricted-prices": "&c{0} の制限価格 : 最小 {1} , 最大 {2}",
   "no-enough-money-to-keep-shops": "&cショップを維持するのに十分な資金がありませんので全てのショップが削除されました",
   "nothing-to-flush": "&a新しいショップメッセージはありませんでした",
