@@ -262,7 +262,7 @@
   "saved-to-path": "バックアップファイルは {0} に保存されました。",
   "backup-failed": "データベースをバックアップできません。詳細についてはコンソールを確認してください。",
   "translate-not-completed-yet-click": "{1} では言語 {0} の翻訳が完了していません。翻訳の改善に協力しませんか？ここをクリックしてください！",
-  "translate-not-completed-yet-url": "The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}",
+  "translate-not-completed-yet-url": "{1} では言語 {0} の翻訳が完了していません。翻訳の改善に協力しませんか？参照: {2}",
   "language-info-panel": {
     "name": "言語: ",
     "code": "コード: ",
@@ -275,7 +275,7 @@
   "shop-cannot-trade-when-freezing": "&c凍結されているため、このショップと取引できません。",
   "shop-freezed-at-location": "&e {0} のショップ {1} が凍結されました！",
   "denied-put-in-item": "&cショップにこのアイテムを入れることはできません！",
-  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &ball&a in chat to buy all.",
+  "how-many-buy-stack": "&eチャットで&b購入&aしたい商品の数を入力して下さい。1つの商品に &e{0} 個&a のアイテムが含まれており、あなたは&e{1} 個&a の商品を購入することができます。すべて購入するにはチャットで &ball&a と入力して下さい。",
   "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &ball&a in chat to sell all.",
   "language": {
     "name": "&e名前: &6{0}",
