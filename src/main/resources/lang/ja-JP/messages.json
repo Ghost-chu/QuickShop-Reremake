@@ -51,7 +51,7 @@
   "nearby-shop-header": "&b{0}&a に一致する近くのショップ:",
   "nearby-shop-entry": "&a- 情報:{0} &a価格:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &a距離: &b{5} &aブロック(s)",
   "no-nearby-shop": "&c {0} に一致するショップは近所にありません。",
-  "buying-more-than-selling": "&c警告: 売っているアイテムよりも多くを買っています",
+  "buying-more-than-selling": "&c警告: あなたは販売価格以上の値段で買取価格を設定しています！",
   "not-enough-space": "&cショップには {0} 個以上 個分のスペースしかありません",
   "refill-success": "&aRefill 成功",
   "empty-success": "&aショップを空にしました",
