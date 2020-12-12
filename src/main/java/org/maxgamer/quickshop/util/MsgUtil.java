@@ -77,7 +77,7 @@ public class MsgUtil {
 
     private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
 
-    private static final QuickShop plugin = QuickShop.getInstance();
+    private static QuickShop plugin = QuickShop.getInstance();
 
     private static TextComponent errorComponent;
 
@@ -93,7 +93,7 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
-    private static final BukkitAudiences audiences = plugin.getBukkitAudiences();
+    private static BukkitAudiences audiences = plugin.getBukkitAudiences();
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -230,6 +230,9 @@ public class MsgUtil {
     }
 
     public static void loadCfgMessages() throws InvalidConfigurationException {
+        //Update instance
+        plugin = QuickShop.getInstance();
+        audiences = QuickShop.getInstance().getBukkitAudiences();
         plugin.getLogger().info("Loading plugin translations files...");
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
