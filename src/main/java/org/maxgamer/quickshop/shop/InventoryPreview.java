@@ -123,7 +123,7 @@ public class InventoryPreview implements Listener {
         for (HumanEntity player : inventory.getViewers()) {
             player.closeInventory();
         }
-        inventory = null; // Destory
+        inventory = null; // Destroy
     }
 
 }

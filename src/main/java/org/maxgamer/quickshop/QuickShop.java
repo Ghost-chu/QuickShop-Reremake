@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -238,6 +239,8 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
+    @Getter
+    private BukkitAudiences bukkitAudiences;
 
     private static boolean loaded = false;
 
@@ -482,6 +485,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
+        bukkitAudiences = BukkitAudiences.create(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored

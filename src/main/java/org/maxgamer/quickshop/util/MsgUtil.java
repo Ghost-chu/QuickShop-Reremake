@@ -93,7 +93,7 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
-    private static final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
+    private static final BukkitAudiences audiences = plugin.getBukkitAudiences();
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.

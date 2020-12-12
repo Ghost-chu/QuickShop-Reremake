@@ -46,7 +46,7 @@ public class UpdateWatcher implements Listener {
 
     private final QuickUpdater updater = new JenkinsUpdater(QuickShop.getInstance().getBuildInfo());
     private BukkitTask cronTask = null;
-    private final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
+    private final BukkitAudiences audiences = QuickShop.getInstance().getBukkitAudiences();
 
     public QuickUpdater getUpdater() {
         return updater;
