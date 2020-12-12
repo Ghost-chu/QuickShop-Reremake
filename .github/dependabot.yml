@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.github.TownyAdvanced:Towny
+    versions:
+    - "> 0.96.2.0"
+  - dependency-name: io.sentry:sentry
+    versions:
+    - "> 3.1.1"
+  - dependency-name: org.junit.jupiter:junit-jupiter
+    versions:
+    - "> RELEASE"
