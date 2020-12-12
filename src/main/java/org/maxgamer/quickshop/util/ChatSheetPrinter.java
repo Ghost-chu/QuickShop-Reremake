@@ -42,7 +42,7 @@ import org.maxgamer.quickshop.QuickShop;
 */
 public class ChatSheetPrinter {
     private final CommandSender p;
-    private final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
+    private final BukkitAudiences audiences = QuickShop.getInstance().getBukkitAudiences();
 
     public void printCenterLine(@NotNull String text) {
         if (!text.isEmpty()) {
