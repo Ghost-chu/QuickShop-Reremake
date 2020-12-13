@@ -47,7 +47,7 @@ public class ChatSheetPrinter {
     public void printCenterLine(@NotNull String text) {
         if (!text.isEmpty()) {
             MsgUtil.sendMessage(p,
-                    NamedTextColor.DARK_PURPLE
+                    ChatColor.DARK_PURPLE
                             + MsgUtil.getMessage("tableformat.left_half_line", p)
                             + text
                             + MsgUtil.getMessage("tableformat.right_half_line", p));
