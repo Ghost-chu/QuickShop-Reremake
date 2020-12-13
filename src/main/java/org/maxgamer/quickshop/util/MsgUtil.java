@@ -77,12 +77,11 @@ public class MsgUtil {
 
     private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
 
-    private static final QuickShop plugin = QuickShop.getInstance();
+    private static QuickShop plugin = QuickShop.getInstance();
 
     private static TextComponent errorComponent;
 
-    private static final DecimalFormat decimalFormat =
-            new DecimalFormat(Objects.requireNonNull(plugin.getConfig().getString("decimal-format")));
+    private static final DecimalFormat decimalFormat = processFormat();
     public static GameLanguage gameLanguage;
     @Getter
     private static YamlConfiguration enchi18n;
@@ -93,7 +92,16 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
-    private static final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
+    private static BukkitAudiences audiences = plugin.getBukkitAudiences();
+
+    private static DecimalFormat processFormat() {
+        try {
+            return new DecimalFormat(Objects.requireNonNull(QuickShop.getInstance().getConfig().getString("decimal-format")));
+        } catch (Exception e) {
+            QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
+            return new DecimalFormat();
+        }
+    }
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -230,6 +238,9 @@ public class MsgUtil {
     }
 
     public static void loadCfgMessages() throws InvalidConfigurationException {
+        //Update instance
+        plugin = QuickShop.getInstance();
+        audiences = QuickShop.getInstance().getBukkitAudiences();
         plugin.getLogger().info("Loading plugin translations files...");
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
