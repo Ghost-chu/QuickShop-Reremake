@@ -485,7 +485,6 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("QuickShop Reremake - Early boot step - Booting up...");
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
-        bukkitAudiences = BukkitAudiences.create(this);
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
@@ -588,6 +587,7 @@ public class QuickShop extends JavaPlugin {
             }
         }
         Timer enableTimer = new Timer(true);
+        bukkitAudiences = BukkitAudiences.create(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);
