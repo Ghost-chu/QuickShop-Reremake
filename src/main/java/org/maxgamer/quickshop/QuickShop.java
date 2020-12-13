@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -238,6 +239,8 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
+    @Getter
+    private BukkitAudiences bukkitAudiences;
 
     private static boolean loaded = false;
 
@@ -584,6 +587,7 @@ public class QuickShop extends JavaPlugin {
             }
         }
         Timer enableTimer = new Timer(true);
+        bukkitAudiences = BukkitAudiences.create(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);
@@ -698,7 +702,8 @@ public class QuickShop extends JavaPlugin {
         if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
             this.enabledAsyncDisplayDespawn = true;
             this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-            this.displayAutoDespawnWatcher.runTaskTimerAsynchronously(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+            //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
+            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
         }
         this.shopManager = new ShopManager(this);
 

@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.5.8</version>
+    <version>4.0.5.9</version>
 
     <licenses>
         <license>
@@ -415,7 +415,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>4.11.8</version>
+            <version>4.12.8</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -440,7 +440,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.16.0</version>
+            <version>0.17.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
