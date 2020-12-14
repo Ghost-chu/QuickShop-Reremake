@@ -73,9 +73,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 public class QuickShop extends JavaPlugin {
@@ -459,9 +461,17 @@ public class QuickShop extends JavaPlugin {
     public void reloadConfig() {
         try {
             super.reloadConfig();
-        } catch (Exception t) {
-            t.printStackTrace();
-            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
+        } catch (Throwable t) {
+            getLogger().log(Level.SEVERE, "Cannot reading the configuration, doing backup configuration and use default", t);
+            try {
+                Files.copy(getDataFolder().toPath().resolve("config.yml"), getDataFolder().toPath().resolve("config-broken-" + UUID.randomUUID() + ".yml"), REPLACE_EXISTING);
+            } catch (IOException e) {
+                getLogger().log(Level.SEVERE, "Failed to backup plugin config! Disabling plugin....", e);
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+            saveResource("config.yml", true);
+            reloadConfig();
         }
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
@@ -1475,7 +1485,7 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("shop.price-restriction", getConfig().getStringList("price-restriction"));
                 getConfig().set("price-restriction", null);
             } else {
-                getConfig().set("shop.price-restriction", Collections.emptyList());
+                getConfig().set("shop.price-restriction", new ArrayList<>(0));
             }
             getConfig().set("enable-log4j", null);
             getConfig().set("config-version", 95);
@@ -1484,7 +1494,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", Collections.emptyList());
+            getConfig().set("custom-item-stacksize", new ArrayList<>(0));
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1637,7 +1647,7 @@ public class QuickShop extends JavaPlugin {
 
         Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
         try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
