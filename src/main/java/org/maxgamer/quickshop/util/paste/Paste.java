@@ -188,15 +188,25 @@ public class Paste {
                 finalReport.append(" # [Addon/Compatible Module]");
             }
             finalReport.append(" # ");
+            String className;
+            String packageName;
             Class<?> pluginClass = bplugin.getClass();
-            if (pluginClass == null) {
-                continue;
-            }
             Package pluginPackage = pluginClass.getPackage();
-            if (pluginPackage == null) {
-                continue;
+            if (pluginClass == null) {
+                className = "[Null Class]";
+            } else {
+                className = pluginClass.getName();
             }
-            finalReport.append(pluginPackage.getName()).append(".").append(pluginClass.getName());
+            if (pluginPackage == null) {
+                packageName = "[Default Package]";
+            } else {
+                packageName = pluginPackage.getName();
+            }
+            if (className.startsWith(packageName)) {
+                finalReport.append(className);
+            } else {
+                finalReport.append(packageName).append(".").append(className);
+            }
             finalReport.append("\n");
         }
         finalReport.append("================================================\n");
