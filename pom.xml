@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.5.8</version>
+    <version>4.0.5.9</version>
 
     <licenses>
         <license>
@@ -287,7 +287,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.16.0</version>
+            <version>16.17.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -440,7 +440,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.17.0</version>
+            <version>0.18.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
