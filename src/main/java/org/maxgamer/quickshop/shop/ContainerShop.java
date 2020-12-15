@@ -377,39 +377,43 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Load ContainerShop.
+     * Adds a new shop.
+     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
+     *
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
+     * @param moderator The modertators
+     * @param type      The shop type
+     * @param unlimited The unlimited
+     * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
      */
-    @Override
-    public void onLoad() {
-        if (this.isLoaded) {
-            Util.debugLog("Dupe load request, canceled.");
-            return;
+    public ContainerShop(
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull Map<String, Map<String, String>> extra) {
+        this.location = location;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = plugin;
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
         }
-        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
-        if (Util.fireCancellableEvent(shopLoadEvent)) {
-            return;
-        }
-        this.isLoaded = true;
-        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
-        plugin.getShopContainerWatcher().scheduleCheck(this);
-        // check price restriction
-
-
-        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
-            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
-            if (priceRestriction != null) {
-                if (price < priceRestriction.getKey()) {
-                    this.lastChangedAt = System.currentTimeMillis();
-                    price = priceRestriction.getKey();
-                    this.update();
-                } else if (price > priceRestriction.getValue()) {
-                    this.lastChangedAt = System.currentTimeMillis();
-                    price = priceRestriction.getValue();
-                    this.update();
-                }
-            }
-        }
-        this.checkDisplay();
+        this.shopType = type;
+        this.unlimited = unlimited;
+        this.extra = extra;
+        initDisplayItem();
+        this.lastChangedAt = System.currentTimeMillis();
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     /**
@@ -697,42 +701,40 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Adds a new shop.
-     *
-     * @param location  The location of the chest block
-     * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
-     * @param moderator The modertators
-     * @param type      The shop type
-     * @param unlimited The unlimited
-     * @param plugin    The plugin instance
-     * @param extra     The extra data saved by addon
+     * Load ContainerShop.
      */
-    public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
-        this.location = location;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = plugin;
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
+    @Override
+    public void onLoad() {
+        if (this.isLoaded) {
+            Util.debugLog("Dupe load request, canceled.");
+            return;
         }
-        this.shopType = type;
-        this.unlimited = unlimited;
-        this.extra = extra;
-        initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
+        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
+        if (Util.fireCancellableEvent(shopLoadEvent)) {
+            return;
+        }
+        this.isLoaded = true;
+        plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
+        plugin.getShopContainerWatcher().scheduleCheck(this);
+        // check price restriction
+
+
+        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
+            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
+            if (priceRestriction != null) {
+                if (price < priceRestriction.getKey()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getKey();
+                    this.update();
+                } else if (price > priceRestriction.getValue()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getValue();
+                    this.update();
+                }
+            }
+        }
+        this.checkDisplay();
     }
 
     /**
