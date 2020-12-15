@@ -586,6 +586,38 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    private void initConfiguration() {
+        /* Process the config */
+        saveDefaultConfig();
+        reloadConfig();
+        /*
+        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        The copyDefaults option changes the behavior of Configuration's save method.
+        By default, the defaults of the configuration will not be written to the target save file.
+        If set to true, it will write out the default values, to the target file.
+        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
+        ==========================================================================================================================
+        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
+        saveDefaultConfig();
+        reloadConfig();
+        */
+        getConfig().options().copyHeader(false).header(
+                "=================================\n" +
+                        "=    QuickShop  Configuration   =\n" +
+                        "=================================\n" +
+                        "\nNotes:" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n"
+        );
+        if (getConfig().getInt("config-version", 0) == 0) {
+            getConfig().set("config-version", 1);
+        }
+        /* It will generate a new UUID above updateConfig */
+        this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
+        updateConfig(getConfig().getInt("config-version"));
+    }
+
     @Override
     public void onEnable() {
         if (!this.onLoadCalled) {
@@ -619,43 +651,15 @@ public class QuickShop extends JavaPlugin {
         QuickShopAPI.setupApi(this);
 
         getLogger().info("Reading the configuration...");
-        /* Process the config */
-        saveDefaultConfig();
-        reloadConfig();
-        /*
-        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
-        The copyDefaults option changes the behavior of Configuration's save method.
-        By default, the defaults of the configuration will not be written to the target save file.
-        If set to true, it will write out the default values, to the target file.
-        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
-        ==========================================================================================================================
-        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
-        saveDefaultConfig();
-        reloadConfig();
-        */
-        getConfig().options().copyHeader(false).header(
-                "=================================\n" +
-                        "=    QuickShop  Configuration   =\n" +
-                        "=================================\n" +
-                        "\nNotes:" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n"
-        );
-        if (getConfig().getInt("config-version", 0) == 0) {
-            getConfig().set("config-version", 1);
-        }
-        updateConfig(getConfig().getInt("config-version"));
-
+        this.initConfiguration();
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
 
-        /* It will generate a new UUID above updateConfig */
+
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
-        //noinspection ConstantConditions
-        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
+
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
                 Util.debugLog("Error reporter was disabled!");
@@ -669,17 +673,7 @@ public class QuickShop extends JavaPlugin {
         bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
-        ItemMatcher defItemMatcher;
-        switch (getConfig().getInt("matcher.work-type")) {
-            case 1:
-                defItemMatcher = new BukkitItemMatcherImpl(this);
-                break;
-            case 0:
-            default:
-                defItemMatcher = new QuickShopItemMatcherImpl(this);
-                break;
-        }
-        itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
+        this.loadItemMatcher();
         Util.initialize();
         try {
             MsgUtil.loadCfgMessages();
@@ -826,6 +820,20 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+    }
+
+    private void loadItemMatcher() {
+        ItemMatcher defItemMatcher;
+        switch (getConfig().getInt("matcher.work-type")) {
+            case 1:
+                defItemMatcher = new BukkitItemMatcherImpl(this);
+                break;
+            case 0:
+            default:
+                defItemMatcher = new QuickShopItemMatcherImpl(this);
+                break;
+        }
+        this.itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
     }
 
     /**
