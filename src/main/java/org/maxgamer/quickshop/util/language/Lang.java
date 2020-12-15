@@ -28,7 +28,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.language.formatter.FilledFormatter;
-import org.maxgamer.quickshop.util.language.formatter.PAPIFormatter;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class Lang {
         if (formatters != null) {
             this.formatters = ImmutableList.copyOf(formatters);
         } else {
-            this.formatters = ImmutableList.of(new FilledFormatter(), new PAPIFormatter());
+            this.formatters = ImmutableList.of(new FilledFormatter());
         }
         if (!this.file.exists()) {
             try {
@@ -79,8 +78,6 @@ public class Lang {
 
     /**
      * Save the changes of the language file
-     *
-     * @throws IOException Exception while saving
      */
     public void save() {
         try {
