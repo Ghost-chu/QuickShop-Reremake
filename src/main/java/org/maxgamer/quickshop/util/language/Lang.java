@@ -52,6 +52,7 @@ public class Lang {
     public Lang(@NotNull File file, @NotNull Consumer<FileConfiguration> upgrading, @Nullable Formatter... formatters) {
         this.file = file;
         this.upgrading = upgrading;
+        this.formatters = ImmutableList.copyOf(formatters);
         this.reload();
     }
 
@@ -81,8 +82,12 @@ public class Lang {
      *
      * @throws IOException Exception while saving
      */
-    public void save() throws IOException {
-        this.map.save(this.file);
+    public void save() {
+        try {
+            this.map.save(this.file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
