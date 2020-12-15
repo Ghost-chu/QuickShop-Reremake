@@ -36,9 +36,10 @@ import java.util.function.Consumer;
 
 public class Lang {
     private final File file;
+    private final Consumer<FileConfiguration> upgrading;
     @Getter
-    private final FileConfiguration map;
-    private final ImmutableList<Formatter> formatters;
+    private FileConfiguration map;
+    private ImmutableList<Formatter> formatters;
 
     /**
      * Creating Language utils from a file
@@ -49,12 +50,20 @@ public class Lang {
      * @param formatters The formatters used to formatting texts passthroughs this utils..
      */
     public Lang(@NotNull File file, @NotNull Consumer<FileConfiguration> upgrading, @Nullable Formatter... formatters) {
+        this.file = file;
+        this.upgrading = upgrading;
+        this.reload();
+    }
+
+    /**
+     * Clean up and reload the data from drive
+     */
+    public void reload() {
         if (formatters != null) {
             this.formatters = ImmutableList.copyOf(formatters);
         } else {
             this.formatters = ImmutableList.of(new FilledFormatter(), new PAPIFormatter());
         }
-        this.file = file;
         if (!this.file.exists()) {
             try {
                 //noinspection ResultOfMethodCallIgnored
@@ -64,7 +73,26 @@ public class Lang {
             }
         }
         this.map = YamlConfiguration.loadConfiguration(this.file);
-        upgrading.accept(map);
+        this.upgrading.accept(map);
+    }
+
+    /**
+     * Save the changes of the language file
+     *
+     * @throws IOException Exception while saving
+     */
+    public void save() throws IOException {
+        this.map.save(this.file);
+    }
+
+    /**
+     * Set the data
+     *
+     * @param path The data path
+     * @param data The data
+     */
+    public void set(@NotNull String path, @Nullable Object data) {
+        this.map.set(path, data);
     }
 
     /**
