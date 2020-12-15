@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -60,6 +61,7 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -73,9 +75,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Map.Entry;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 public class QuickShop extends JavaPlugin {
@@ -241,6 +244,7 @@ public class QuickShop extends JavaPlugin {
     private BuildInfo buildInfo;
     @Getter
     private BukkitAudiences bukkitAudiences;
+    private final ConfigProvider configProvider = new ConfigProvider(this);
 
     private static boolean loaded = false;
 
@@ -452,17 +456,22 @@ public class QuickShop extends JavaPlugin {
         this.getLogWatcher().log(s);
     }
 
+    @Override
+    public @NotNull FileConfiguration getConfig() {
+        return configProvider.get();
+    }
+
+    @Override
+    public void saveConfig() {
+        configProvider.save();
+    }
+
     /**
      * Reloads QuickShops config
      */
     @Override
     public void reloadConfig() {
-        try {
-            super.reloadConfig();
-        } catch (Exception t) {
-            t.printStackTrace();
-            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
-        }
+        configProvider.reload();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
@@ -1475,7 +1484,7 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("shop.price-restriction", getConfig().getStringList("price-restriction"));
                 getConfig().set("price-restriction", null);
             } else {
-                getConfig().set("shop.price-restriction", Collections.emptyList());
+                getConfig().set("shop.price-restriction", new ArrayList<>(0));
             }
             getConfig().set("enable-log4j", null);
             getConfig().set("config-version", 95);
@@ -1484,7 +1493,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", Collections.emptyList());
+            getConfig().set("custom-item-stacksize", new ArrayList<>(0));
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1637,7 +1646,7 @@ public class QuickShop extends JavaPlugin {
 
         Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
         try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }
