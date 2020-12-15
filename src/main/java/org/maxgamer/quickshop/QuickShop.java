@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -60,6 +61,7 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -75,7 +77,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -243,6 +244,7 @@ public class QuickShop extends JavaPlugin {
     private BuildInfo buildInfo;
     @Getter
     private BukkitAudiences bukkitAudiences;
+    private final ConfigProvider configProvider = new ConfigProvider(this);
 
     private static boolean loaded = false;
 
@@ -454,25 +456,22 @@ public class QuickShop extends JavaPlugin {
         this.getLogWatcher().log(s);
     }
 
+    @Override
+    public @NotNull FileConfiguration getConfig() {
+        return configProvider.get();
+    }
+
+    @Override
+    public void saveConfig() {
+        configProvider.save();
+    }
+
     /**
      * Reloads QuickShops config
      */
     @Override
     public void reloadConfig() {
-        try {
-            super.reloadConfig();
-        } catch (Throwable t) {
-            getLogger().log(Level.SEVERE, "Cannot reading the configuration, doing backup configuration and use default", t);
-            try {
-                Files.copy(getDataFolder().toPath().resolve("config.yml"), getDataFolder().toPath().resolve("config-broken-" + UUID.randomUUID() + ".yml"), REPLACE_EXISTING);
-            } catch (IOException e) {
-                getLogger().log(Level.SEVERE, "Failed to backup plugin config! Disabling plugin....", e);
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
-            }
-            saveResource("config.yml", true);
-            reloadConfig();
-        }
+        configProvider.reload();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
