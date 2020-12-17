@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is TownyIntegration.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -80,8 +79,7 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
         return "Towny";
     }
 
-    @EventHandler
-    public void onPlayerLeave(TownRemoveResidentEvent event) {
+    private void processEvent(TownRemoveResidentEvent event) {
         if (!deleteShopOnLeave) {
             return;
         }
@@ -122,6 +120,15 @@ public class TownyIntegration extends QSIntegratedPlugin implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerLeave(TownRemoveResidentEvent event) {
+        if (Bukkit.isPrimaryThread()) {
+            processEvent(event);
+        } else {
+            Bukkit.getScheduler().runTask(plugin, () -> processEvent(event));
         }
     }
 
