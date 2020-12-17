@@ -1,6 +1,5 @@
 /*
  * This file is a part of project QuickShop, the name is WorldGuardIntegration.java
- *  Copyright (C) Ghost_chu <https://github.com/Ghost-chu>
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -85,7 +84,9 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                 plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
                 Util.debugLog("Success register " + getName() + " flags.");
             } catch (FlagConflictException | IllegalStateException e) {
+                plugin.getSentryErrorReporter().ignoreThrow();
                 plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
+                plugin.getSentryErrorReporter().resetIgnores();
             }
             register = true;
         }
