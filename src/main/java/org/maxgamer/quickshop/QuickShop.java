@@ -588,7 +588,11 @@ public class QuickShop extends JavaPlugin {
 
     private void initConfiguration() {
         /* Process the config */
-        saveDefaultConfig();
+        try {
+            saveDefaultConfig();
+        } catch (IllegalArgumentException resourceNotFoundException) {
+            getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may damaged. Please re-download from our website.");
+        }
         reloadConfig();
         /*
         From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
