@@ -491,13 +491,13 @@ public class ContainerShop implements Shop {
     /**
      * Sells amount of item to Player p. Does NOT check our inventory, or balances
      *
-     * @param seller   The seller
+     * @param seller          The seller
      * @param sellerInventory The seller's inventory
-     * @param loc2Drop Location to drop items if inventory are full
-     * @param amount   The amount to sell
+     * @param loc2Drop        Location to drop items if inventory are full
+     * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @Nullable Location loc2Drop, int amount) {
+    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int amount) {
         amount = item.getAmount() * amount;
         if (amount < 0) {
             this.buy(seller, sellerInventory, loc2Drop, -amount);
