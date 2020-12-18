@@ -184,6 +184,7 @@
         </plugins>
         <resources>
             <resource>
+                <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <excludes>
@@ -193,14 +194,17 @@
                 </excludes>
             </resource>
             <resource>
+                <targetPath>bin</targetPath>
                 <filtering>false</filtering>
                 <directory>src/main/resources/bin</directory>
             </resource>
             <resource>
+                <targetPath>lang</targetPath>
                 <filtering>false</filtering>
                 <directory>src/main/resources/lang</directory>
             </resource>
             <resource>
+                <targetPath>lang-original</targetPath>
                 <filtering>false</filtering>
                 <directory>src/main/resources/lang-original</directory>
             </resource>
