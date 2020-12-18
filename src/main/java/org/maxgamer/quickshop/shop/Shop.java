@@ -39,7 +39,7 @@ public interface Shop {
      * @param paramItemStack The ItemStack you want add
      * @param paramInt       How many you want add
      */
-    void add(ItemStack paramItemStack, int paramInt);
+    void add(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Add new staff to the moderators
@@ -47,7 +47,7 @@ public interface Shop {
      * @param player New staff
      * @return Success
      */
-    boolean addStaff(UUID player);
+    boolean addStaff(@NotNull UUID player);
 
     /**
      * Execute buy action for player with x items.
@@ -56,7 +56,7 @@ public interface Shop {
      * @param buyerInventory The buyer inventory ( may not a player inventory )
      * @param paramInt       How many buyed?
      */
-    void buy(UUID buyer, Inventory buyerInventory, Location loc2Drop, int paramInt);
+    void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int paramInt);
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -82,7 +82,7 @@ public interface Shop {
      * @param player Staff
      * @return Success
      */
-    boolean delStaff(UUID player);
+    boolean delStaff(@NotNull UUID player);
 
     /**
      * Delete shop from ram, and database.
@@ -102,7 +102,7 @@ public interface Shop {
      * @param paramBlock Target block
      * @return isAttached
      */
-    boolean isAttached(Block paramBlock);
+    boolean isAttached(@NotNull Block paramBlock);
 
     /**
      * Check the target ItemStack is matches with this shop's item.
@@ -110,7 +110,7 @@ public interface Shop {
      * @param paramItemStack Target ItemStack.
      * @return Matches
      */
-    boolean matches(ItemStack paramItemStack);
+    boolean matches(@NotNull ItemStack paramItemStack);
 
     /**
      * Execute codes when player click the shop will did things
@@ -150,7 +150,7 @@ public interface Shop {
      * @param paramItemStack Want removed ItemStack
      * @param paramInt       Want remove how many
      */
-    void remove(ItemStack paramItemStack, int paramInt);
+    void remove(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Execute sell action for player with x items.
@@ -159,7 +159,7 @@ public interface Shop {
      * @param sellerInventory Seller's inventory ( may not a player inventory )
      * @param paramInt        How many sold?
      */
-    void sell(UUID seller, Inventory sellerInventory, Location loc2Drop, int paramInt);
+    void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int paramInt);
 
     /**
      * Generate new sign texts on shop's sign.
@@ -176,6 +176,7 @@ public interface Shop {
      * Line 2: Shop Item Name
      * Line 3: Price
      */
+    @NotNull
     default String[] getSignText() {
         //backward support
         throw new UnsupportedOperationException();
@@ -218,7 +219,7 @@ public interface Shop {
      *
      * @param paramArrayOfString The texts you want set
      */
-    void setSignText(String[] paramArrayOfString);
+    void setSignText(@NotNull String[] paramArrayOfString);
 
     /**
      * Get shop's location
@@ -241,7 +242,7 @@ public interface Shop {
      *
      * @param shopModerator New moderators team you want set
      */
-    void setModerator(ShopModerator shopModerator);
+    void setModerator(@NotNull ShopModerator shopModerator);
 
     /**
      * Get shop's owner UUID
@@ -256,7 +257,7 @@ public interface Shop {
      *
      * @param paramString New owner UUID
      */
-    void setOwner(UUID paramString);
+    void setOwner(@NotNull UUID paramString);
 
     /**
      * Get shop's price
@@ -299,7 +300,7 @@ public interface Shop {
      *
      * @param paramShopType New shop type
      */
-    void setShopType(ShopType paramShopType);
+    void setShopType(@NotNull ShopType paramShopType);
 
     /**
      * Get shop signs, may have multi signs
@@ -406,7 +407,7 @@ public interface Shop {
      * @param plugin Plugin instace
      * @param data   The data table
      */
-    void setExtra(@NotNull Plugin plugin, Map<String, String> data);
+    void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data);
 
     /**
      * Gets shop status is stacking shop
