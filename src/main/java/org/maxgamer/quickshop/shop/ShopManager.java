@@ -40,10 +40,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.event.ShopCreateEvent;
-import org.maxgamer.quickshop.event.ShopPreCreateEvent;
-import org.maxgamer.quickshop.event.ShopPurchaseEvent;
-import org.maxgamer.quickshop.event.ShopSuccessPurchaseEvent;
+import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
@@ -737,7 +734,9 @@ public class ShopManager {
         if (shop.getModerator().isModerator(p)) {
             tax = 0; // Is staff or owner, so we won't will take them tax
         }
-        return tax;
+        ShopTaxEvent taxEvent = new ShopTaxEvent(shop, tax, p);
+        taxEvent.callEvent();
+        return taxEvent.getTax();
     }
 
     public void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String
