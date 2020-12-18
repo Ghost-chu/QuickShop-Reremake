@@ -192,6 +192,18 @@
                     <exclude>src/main/resources/lang-original</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources/bin</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources/lang</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources/lang-original</directory>
+            </resource>
         </resources>
     </build>
 
