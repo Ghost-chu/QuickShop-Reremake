@@ -3,16 +3,16 @@
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License as published by the
+ *  under the terms of the GNU General Public License as published by the
  *  Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT
  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  *  for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
+ *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -377,39 +377,43 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Load ContainerShop.
+     * Adds a new shop.
+     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
+     *
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
+     * @param moderator The modertators
+     * @param type      The shop type
+     * @param unlimited The unlimited
+     * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
      */
-    @Override
-    public void onLoad() {
-        if (this.isLoaded) {
-            Util.debugLog("Dupe load request, canceled.");
-            return;
+    public ContainerShop(
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull Map<String, Map<String, String>> extra) {
+        this.location = location;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = plugin;
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
         }
-        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
-        if (Util.fireCancellableEvent(shopLoadEvent)) {
-            return;
-        }
-        this.isLoaded = true;
-        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
-        plugin.getShopContainerWatcher().scheduleCheck(this);
-        // check price restriction
-
-
-        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
-            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
-            if (priceRestriction != null) {
-                if (price < priceRestriction.getKey()) {
-                    this.lastChangedAt = System.currentTimeMillis();
-                    price = priceRestriction.getKey();
-                    this.update();
-                } else if (price > priceRestriction.getValue()) {
-                    this.lastChangedAt = System.currentTimeMillis();
-                    price = priceRestriction.getValue();
-                    this.update();
-                }
-            }
-        }
-        this.checkDisplay();
+        this.shopType = type;
+        this.unlimited = unlimited;
+        this.extra = extra;
+        initDisplayItem();
+        this.lastChangedAt = System.currentTimeMillis();
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     /**
@@ -487,13 +491,13 @@ public class ContainerShop implements Shop {
     /**
      * Sells amount of item to Player p. Does NOT check our inventory, or balances
      *
-     * @param seller   The seller
+     * @param seller          The seller
      * @param sellerInventory The seller's inventory
-     * @param loc2Drop Location to drop items if inventory are full
-     * @param amount   The amount to sell
+     * @param loc2Drop        Location to drop items if inventory are full
+     * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @Nullable Location loc2Drop, int amount) {
+    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int amount) {
         amount = item.getAmount() * amount;
         if (amount < 0) {
             this.buy(seller, sellerInventory, loc2Drop, -amount);
@@ -697,42 +701,40 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Adds a new shop.
-     *
-     * @param location  The location of the chest block
-     * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
-     * @param moderator The modertators
-     * @param type      The shop type
-     * @param unlimited The unlimited
-     * @param plugin    The plugin instance
-     * @param extra     The extra data saved by addon
+     * Load ContainerShop.
      */
-    public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
-        this.location = location;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = plugin;
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
+    @Override
+    public void onLoad() {
+        if (this.isLoaded) {
+            Util.debugLog("Dupe load request, canceled.");
+            return;
         }
-        this.shopType = type;
-        this.unlimited = unlimited;
-        this.extra = extra;
-        initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
+        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
+        if (Util.fireCancellableEvent(shopLoadEvent)) {
+            return;
+        }
+        this.isLoaded = true;
+        plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
+        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
+        plugin.getShopContainerWatcher().scheduleCheck(this);
+        // check price restriction
+
+
+        if (plugin.getShopManager().getPriceLimiter().check(item, price) != PriceLimiter.Status.PASS) {
+            Entry<Double, Double> priceRestriction = Util.getPriceRestriction(this.getMaterial()); //TODO Adapt priceLimiter, also improve priceLimiter return a container
+            if (priceRestriction != null) {
+                if (price < priceRestriction.getKey()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getKey();
+                    this.update();
+                } else if (price > priceRestriction.getValue()) {
+                    this.lastChangedAt = System.currentTimeMillis();
+                    price = priceRestriction.getValue();
+                    this.update();
+                }
+            }
+        }
+        this.checkDisplay();
     }
 
     /**

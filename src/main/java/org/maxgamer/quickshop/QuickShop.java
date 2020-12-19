@@ -3,16 +3,16 @@
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License as published by the
+ *  under the terms of the GNU General Public License as published by the
  *  Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT
  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  *  for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
+ *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -60,6 +61,7 @@ import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
+import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -73,9 +75,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Map.Entry;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 public class QuickShop extends JavaPlugin {
@@ -241,6 +244,7 @@ public class QuickShop extends JavaPlugin {
     private BuildInfo buildInfo;
     @Getter
     private BukkitAudiences bukkitAudiences;
+    private final ConfigProvider configProvider = new ConfigProvider(this);
 
     private static boolean loaded = false;
 
@@ -452,17 +456,22 @@ public class QuickShop extends JavaPlugin {
         this.getLogWatcher().log(s);
     }
 
+    @Override
+    public @NotNull FileConfiguration getConfig() {
+        return configProvider.get();
+    }
+
+    @Override
+    public void saveConfig() {
+        configProvider.save();
+    }
+
     /**
      * Reloads QuickShops config
      */
     @Override
     public void reloadConfig() {
-        try {
-            super.reloadConfig();
-        } catch (Exception t) {
-            t.printStackTrace();
-            getLogger().severe("Cannot reading the configuration, plugin may won't works!");
-        }
+        configProvider.reload();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
@@ -577,6 +586,42 @@ public class QuickShop extends JavaPlugin {
 
     }
 
+    private void initConfiguration() {
+        /* Process the config */
+        try {
+            saveDefaultConfig();
+        } catch (IllegalArgumentException resourceNotFoundException) {
+            getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may damaged. Please re-download from our website.");
+        }
+        reloadConfig();
+        /*
+        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
+        The copyDefaults option changes the behavior of Configuration's save method.
+        By default, the defaults of the configuration will not be written to the target save file.
+        If set to true, it will write out the default values, to the target file.
+        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
+        ==========================================================================================================================
+        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
+        saveDefaultConfig();
+        reloadConfig();
+        */
+        getConfig().options().copyHeader(false).header(
+                "=================================\n" +
+                        "=    QuickShop  Configuration   =\n" +
+                        "=================================\n" +
+                        "\nNotes:" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n"
+        );
+        if (getConfig().getInt("config-version", 0) == 0) {
+            getConfig().set("config-version", 1);
+        }
+        /* It will generate a new UUID above updateConfig */
+        this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
+        updateConfig(getConfig().getInt("config-version"));
+    }
+
     @Override
     public void onEnable() {
         if (!this.onLoadCalled) {
@@ -610,43 +655,15 @@ public class QuickShop extends JavaPlugin {
         QuickShopAPI.setupApi(this);
 
         getLogger().info("Reading the configuration...");
-        /* Process the config */
-        saveDefaultConfig();
-        reloadConfig();
-        /*
-        From https://bukkit.gamepedia.com/Configuration_API_Reference#CopyDefaults:
-        The copyDefaults option changes the behavior of Configuration's save method.
-        By default, the defaults of the configuration will not be written to the target save file.
-        If set to true, it will write out the default values, to the target file.
-        However, once written, you will not be able to tell the difference between a default and a value from the configuration.
-        ==========================================================================================================================
-        getConfig().options().copyDefaults(true).header("Read the example.config.yml file to get commented example config file."); // Load defaults.
-        saveDefaultConfig();
-        reloadConfig();
-        */
-        getConfig().options().copyHeader(false).header(
-                "=================================\n" +
-                        "=    QuickShop  Configuration   =\n" +
-                        "=================================\n" +
-                        "\nNotes:" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n"
-        );
-        if (getConfig().getInt("config-version", 0) == 0) {
-            getConfig().set("config-version", 1);
-        }
-        updateConfig(getConfig().getInt("config-version"));
-
+        this.initConfiguration();
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
 
-        /* It will generate a new UUID above updateConfig */
+
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
-        //noinspection ConstantConditions
-        serverUniqueID = UUID.fromString(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID())));
+
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
                 Util.debugLog("Error reporter was disabled!");
@@ -660,17 +677,7 @@ public class QuickShop extends JavaPlugin {
         bukkitAPIWrapper = new SpigotWrapper();
 
         /* Initalize the Utils */
-        ItemMatcher defItemMatcher;
-        switch (getConfig().getInt("matcher.work-type")) {
-            case 1:
-                defItemMatcher = new BukkitItemMatcherImpl(this);
-                break;
-            case 0:
-            default:
-                defItemMatcher = new QuickShopItemMatcherImpl(this);
-                break;
-        }
-        itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
+        this.loadItemMatcher();
         Util.initialize();
         try {
             MsgUtil.loadCfgMessages();
@@ -817,6 +824,20 @@ public class QuickShop extends JavaPlugin {
 
         Util.debugLog("Now using display-type: " + DisplayItem.getNowUsing().name());
         // sentryErrorReporter.sendError(new IllegalAccessError("no fucking way"));
+    }
+
+    private void loadItemMatcher() {
+        ItemMatcher defItemMatcher;
+        switch (getConfig().getInt("matcher.work-type")) {
+            case 1:
+                defItemMatcher = new BukkitItemMatcherImpl(this);
+                break;
+            case 0:
+            default:
+                defItemMatcher = new QuickShopItemMatcherImpl(this);
+                break;
+        }
+        this.itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
     }
 
     /**
@@ -1475,7 +1496,7 @@ public class QuickShop extends JavaPlugin {
                 getConfig().set("shop.price-restriction", getConfig().getStringList("price-restriction"));
                 getConfig().set("price-restriction", null);
             } else {
-                getConfig().set("shop.price-restriction", Collections.emptyList());
+                getConfig().set("shop.price-restriction", new ArrayList<>(0));
             }
             getConfig().set("enable-log4j", null);
             getConfig().set("config-version", 95);
@@ -1484,7 +1505,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 95) {
             getConfig().set("shop.allow-stacks", false);
             getConfig().set("shop.display-allow-stacks", false);
-            getConfig().set("custom-item-stacksize", Collections.emptyList());
+            getConfig().set("custom-item-stacksize", new ArrayList<>(0));
             getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
@@ -1637,7 +1658,7 @@ public class QuickShop extends JavaPlugin {
 
         Path exampleConfigFile = new File(getDataFolder(), "example.config.yml").toPath();
         try {
-            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
         } catch (IOException ioe) {
             getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
         }

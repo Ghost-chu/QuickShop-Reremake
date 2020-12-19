@@ -3,16 +3,16 @@
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License as published by the
+ *  under the terms of the GNU General Public License as published by the
  *  Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT
  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  *  for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
+ *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -40,10 +40,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.economy.Economy;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.event.ShopCreateEvent;
-import org.maxgamer.quickshop.event.ShopPreCreateEvent;
-import org.maxgamer.quickshop.event.ShopPurchaseEvent;
-import org.maxgamer.quickshop.event.ShopSuccessPurchaseEvent;
+import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PriceLimiter;
@@ -737,7 +734,9 @@ public class ShopManager {
         if (shop.getModerator().isModerator(p)) {
             tax = 0; // Is staff or owner, so we won't will take them tax
         }
-        return tax;
+        ShopTaxEvent taxEvent = new ShopTaxEvent(shop, tax, p);
+        taxEvent.callEvent();
+        return taxEvent.getTax();
     }
 
     public void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String

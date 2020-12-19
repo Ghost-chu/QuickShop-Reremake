@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is QSEvent.java
+ * This file is a part of project QuickShop, the name is ShopTaxEvent.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -19,27 +19,34 @@
 
 package org.maxgamer.quickshop.event;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.maxgamer.quickshop.shop.Shop;
 
-public abstract class QSEvent extends Event {
+import java.util.UUID;
 
-    private static final HandlerList handlers = new HandlerList();
+public class ShopTaxEvent extends QSEvent {
+    @Getter
+    private final UUID user;
+    @Getter
+    private final Shop shop;
+    @Getter
+    @Setter
+    private double tax;
 
-    public static HandlerList getHandlerList() {
-        return handlers;
+    /**
+     * Call when shop calc shop tax that will pay to system account and remove from shop owner/player received money
+     *
+     * @param shop The shop
+     * @param tax  The tax
+     * @param user The user (buyer/seller)
+     */
+    public ShopTaxEvent(@NotNull Shop shop, double tax, @NotNull UUID user) {
+        this.shop = shop;
+        this.tax = tax;
+        this.user = user;
     }
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public void callEvent() {
-        Bukkit.getPluginManager().callEvent(this);
-    }
 
 }
