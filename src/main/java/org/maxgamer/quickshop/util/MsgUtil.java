@@ -207,7 +207,7 @@ public class MsgUtil {
                 }
             }
             return filled;
-        } catch (Throwable th) {
+        } catch (Exception th) {
             plugin.getSentryErrorReporter().ignoreThrow();
             th.printStackTrace();
             return "Cannot load language key: " + loc + " because something not right, check the console for details.";
