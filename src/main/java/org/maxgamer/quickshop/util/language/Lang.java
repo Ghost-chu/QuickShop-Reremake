@@ -3,16 +3,16 @@
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU Lesser General Public License as published by the
+ *  under the terms of the GNU General Public License as published by the
  *  Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT
  *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  *  for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public License
+ *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,7 +28,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.language.formatter.FilledFormatter;
-import org.maxgamer.quickshop.util.language.formatter.PAPIFormatter;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,8 +35,9 @@ import java.util.function.Consumer;
 
 public class Lang {
     private final File file;
+    private final Consumer<FileConfiguration> upgrading;
     @Getter
-    private final FileConfiguration map;
+    private FileConfiguration map;
     private final ImmutableList<Formatter> formatters;
 
     /**
@@ -49,12 +49,20 @@ public class Lang {
      * @param formatters The formatters used to formatting texts passthroughs this utils..
      */
     public Lang(@NotNull File file, @NotNull Consumer<FileConfiguration> upgrading, @Nullable Formatter... formatters) {
+        this.file = file;
+        this.upgrading = upgrading;
         if (formatters != null) {
             this.formatters = ImmutableList.copyOf(formatters);
         } else {
-            this.formatters = ImmutableList.of(new FilledFormatter(), new PAPIFormatter());
+            this.formatters = ImmutableList.of(new FilledFormatter());
         }
-        this.file = file;
+        this.reload();
+    }
+
+    /**
+     * Clean up and reload the data from drive
+     */
+    public void reload() {
         if (!this.file.exists()) {
             try {
                 //noinspection ResultOfMethodCallIgnored
@@ -64,7 +72,28 @@ public class Lang {
             }
         }
         this.map = YamlConfiguration.loadConfiguration(this.file);
-        upgrading.accept(map);
+        this.upgrading.accept(map);
+    }
+
+    /**
+     * Save the changes of the language file
+     */
+    public void save() {
+        try {
+            this.map.save(this.file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set the data
+     *
+     * @param path The data path
+     * @param data The data
+     */
+    public void set(@NotNull String path, @Nullable Object data) {
+        this.map.set(path, data);
     }
 
     /**

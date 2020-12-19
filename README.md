@@ -3,7 +3,7 @@ QuickShop is a shop plugin, that allows players to sell items from a chest with 
 
 QuickShop-Reremake is a fork for QuickShop NotLikeMe, QuickShop-Reremake has more features and bug fixes.  
 
-QuickShop-Reremake makes by Minecraft Server SunnySide Community from https://github.com/KaiKikuchi/QuickShop upstream repo.  
+QuickShop-Reremake makes by PotatoCraft Studio from https://github.com/KaiKikuchi/QuickShop upstream repo.  
 
 ## Support
 Open a new issue here: https://github.com/Ghost-chu/QuickShop-Reremake/issues
