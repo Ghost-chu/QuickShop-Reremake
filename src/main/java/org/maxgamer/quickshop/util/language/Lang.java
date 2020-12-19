@@ -38,7 +38,7 @@ public class Lang {
     private final Consumer<FileConfiguration> upgrading;
     @Getter
     private FileConfiguration map;
-    private ImmutableList<Formatter> formatters;
+    private final ImmutableList<Formatter> formatters;
 
     /**
      * Creating Language utils from a file
@@ -51,7 +51,11 @@ public class Lang {
     public Lang(@NotNull File file, @NotNull Consumer<FileConfiguration> upgrading, @Nullable Formatter... formatters) {
         this.file = file;
         this.upgrading = upgrading;
-        this.formatters = ImmutableList.copyOf(formatters);
+        if (formatters != null) {
+            this.formatters = ImmutableList.copyOf(formatters);
+        } else {
+            this.formatters = ImmutableList.of(new FilledFormatter());
+        }
         this.reload();
     }
 
@@ -59,11 +63,6 @@ public class Lang {
      * Clean up and reload the data from drive
      */
     public void reload() {
-        if (formatters != null) {
-            this.formatters = ImmutableList.copyOf(formatters);
-        } else {
-            this.formatters = ImmutableList.of(new FilledFormatter());
-        }
         if (!this.file.exists()) {
             try {
                 //noinspection ResultOfMethodCallIgnored
