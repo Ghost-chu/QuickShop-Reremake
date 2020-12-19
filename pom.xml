@@ -119,7 +119,7 @@
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.adventure.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>
                         </relocation>
 
                         <relocation>
