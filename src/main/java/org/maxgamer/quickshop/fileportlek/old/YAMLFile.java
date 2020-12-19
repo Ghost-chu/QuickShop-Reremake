@@ -37,7 +37,7 @@ public class YAMLFile extends FileEnvelope {
     }
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final String resourcePath, @NotNull final String fileName) {
-        this(plugin, new File(plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath), fileName.endsWith(".yml") ? fileName : fileName + ".yml"), resourcePath.isEmpty() ? fileName : resourcePath.endsWith("/") ? resourcePath + fileName : resourcePath + "/" + fileName);
+        this(plugin, new File(plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith(File.separator) ? resourcePath : File.separator + resourcePath), fileName.endsWith(".yml") ? fileName : fileName + ".yml"), resourcePath.isEmpty() ? fileName : resourcePath.endsWith(File.separator) ? resourcePath + fileName : resourcePath + File.separator + fileName);
     }
 
     public YAMLFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath) {

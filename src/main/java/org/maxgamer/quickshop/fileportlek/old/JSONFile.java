@@ -41,7 +41,7 @@ public class JSONFile extends FileEnvelope {
     }
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final String resourcePath, @NotNull final String fileName) {
-        this(plugin, new File(plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath), fileName.endsWith(".json") ? fileName : fileName + ".json"), resourcePath.isEmpty() ? fileName : resourcePath.endsWith("/") ? resourcePath + fileName : resourcePath + "/" + fileName);
+        this(plugin, new File(plugin.getDataFolder().getAbsolutePath() + (resourcePath.startsWith(File.separator) ? resourcePath : File.separator + resourcePath), fileName.endsWith(".json") ? fileName : fileName + ".json"), resourcePath.isEmpty() ? fileName : resourcePath.endsWith(File.separator) ? resourcePath + fileName : resourcePath + File.separator + fileName);
     }
 
     public JSONFile(@NotNull final Plugin plugin, @NotNull final File file, @NotNull final String resourcePath) {
