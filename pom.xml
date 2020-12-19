@@ -100,10 +100,6 @@
                         </filter>
                     </filters>
                     <relocations>
-                        <!--                        <relocation>-->
-                        <!--                            <pattern>io.github.portlek.configs</pattern>-->
-                        <!--                            <shadedPattern>org.maxgamer.quickshop.fileportlek.newest</shadedPattern>-->
-                        <!--                        </relocation>-->
                         <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
@@ -212,19 +208,10 @@
     </build>
 
     <repositories>
-        <!--        <repository>-->
-        <!--            <id>ustc</id>-->
-        <!--            <url>http://mirrors.ustc.edu.cn/</url>-->
-        <!--        </repository>-->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!--        <repository>-->
-        <!--            <id>central-repo</id>-->
-        <!--            <url>https://repo1.maven.org/maven2/</url>-->
-        <!--        </repository>-->
-
         <repository>
             <id>vault-repo</id>
             <url>https://jitpack.io</url>
@@ -333,21 +320,6 @@
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.fasterxml.jackson.dataformat</groupId>-->
-        <!--            <artifactId>jackson-dataformat-yaml</artifactId>-->
-        <!--            <version>2.9.9</version>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>snakeyaml</artifactId>-->
-        <!--                    <groupId>org.yaml</groupId>-->
-        <!--                </exclusion>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>jackson-core</artifactId>-->
-        <!--                    <groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
@@ -661,27 +633,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-api</artifactId>-->
-        <!--            <version>1.7.25</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-nop</artifactId>-->
-        <!--            <version>1.7.25</version>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>slf4j-api</artifactId>-->
-        <!--                    <groupId>org.slf4j</groupId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.fusesource.jansi</groupId>-->
-        <!--            <artifactId>jansi</artifactId>-->
-        <!--            <version>1.17</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.primesoft.blockshub</groupId>
             <artifactId>BlockHub</artifactId>
