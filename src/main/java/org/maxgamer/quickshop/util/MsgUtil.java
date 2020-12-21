@@ -1584,9 +1584,11 @@ public class MsgUtil {
 
     public static void sendMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
+            Util.debugLog("INFO: null messages trying to be sent.");
             return;
         }
         if (sender == null) {
+            Util.debugLog("INFO: Sending message to null sender.");
             return;
         }
         for (String msg : messages) {
