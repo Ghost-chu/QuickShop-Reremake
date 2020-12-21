@@ -81,6 +81,7 @@ public class DatabaseHelper {
         manager.runInstantTask(new DatabaseTask(createTable));
     }
 
+
     /**
      * Verifies that all required columns exist.
      */

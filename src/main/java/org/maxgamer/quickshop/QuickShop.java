@@ -371,6 +371,7 @@ public class QuickShop extends JavaPlugin {
      * @return true if successful, false if the core is invalid or is not found, and vault cannot be
      * used.
      */
+
     private boolean loadEcon() {
         try {
             // EconomyCore core = new Economy_Vault();
@@ -499,7 +500,10 @@ public class QuickShop extends JavaPlugin {
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
 //        replaceLogger();
-
+        if (getConfig().getBoolean("debug.adventure", false)) {
+            System.setProperty("net.kyori.adventure.debug", "true");
+            getLogger().warning("Adventure debug flag was set! You can disable this anytime in config by set `debug.adventure` to false.");
+        }
         this.bootError = null;
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new IntegrationHelper(this);
@@ -1644,6 +1648,10 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 118) {
             getConfig().set("shop.finding.oldLogic", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 119) {
+            getConfig().set("debug.adventure", false);
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {

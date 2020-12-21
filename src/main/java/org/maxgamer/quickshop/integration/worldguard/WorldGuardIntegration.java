@@ -84,9 +84,7 @@ public class WorldGuardIntegration extends QSIntegratedPlugin {
                 plugin.getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
                 Util.debugLog("Success register " + getName() + " flags.");
             } catch (FlagConflictException | IllegalStateException e) {
-                plugin.getSentryErrorReporter().ignoreThrow();
                 plugin.getLogger().log(Level.SEVERE, "Failed to register " + getName() + " flags.", e);
-                plugin.getSentryErrorReporter().resetIgnores();
             }
             register = true;
         }
