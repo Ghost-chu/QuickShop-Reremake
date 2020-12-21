@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,19 @@ public class SubCommand_Paste implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+                    if (cmdArg.length < 1) {
+                        sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                        return;
+                    } else {
+                        if (!cmdArg[0].equals("--force")) {
+                            sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                            return;
+                        }
+                    }
+
+                }
+
                 MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();

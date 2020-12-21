@@ -63,6 +63,9 @@ public class Paste {
         finalReport.append("QuickShop-").append(QuickShop.getFork()).append(" Paste Result\n");
         finalReport.append("###############################\n");
         finalReport.append("\n");
+        if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+            finalReport.append("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!").append("\n");
+        }
         finalReport.append("\n");
         finalReport.append("================================================\n");
         finalReport.append("QuickShop:\n");
