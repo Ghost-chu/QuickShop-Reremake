@@ -127,7 +127,7 @@ public class SubCommand_Find implements CommandProcesser {
 
         //Okay now all shops is our wanted shop in Map
 
-        List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Comparator.comparingDouble(Map.Entry::getValue))
+        List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed())
                 .collect(Collectors.toList());
 
         //Function
