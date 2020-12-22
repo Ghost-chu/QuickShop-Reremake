@@ -88,6 +88,11 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <createSourcesJar>false</createSourcesJar>
                     <createTestSourcesJar>false</createTestSourcesJar>
+                    <artifactSet>
+                        <includes>
+                            <include>net.kyori:*</include>
+                        </includes>
+                    </artifactSet>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -644,6 +649,20 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>4.2.0</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
