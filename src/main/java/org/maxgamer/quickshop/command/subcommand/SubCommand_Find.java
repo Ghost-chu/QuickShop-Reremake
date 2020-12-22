@@ -106,22 +106,17 @@ public class SubCommand_Find implements CommandProcesser {
                 continue;
             }
             Vector shopVector = shop.getLocation().toVector();
+            //Check distance
             if (shopVector.distance(playerVector) < limit) {
+                //Collect valid shop that trading items we want
+                if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
+                    if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
+                        continue;
+                    }
+                }
                 aroundShops.put(shop, new Vector(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).distance(playerVector));
             }
         }
-        //Collect valid shop that trading items we want
-        List<Shop> missedShops = new ArrayList<>();
-        for (Shop shop : aroundShops.keySet()) {
-            if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
-                if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
-                    missedShops.add(shop);
-                }
-            }
-        }
-
-        missedShops.forEach(aroundShops::remove);
-
         //Check if no shops finded
         if (aroundShops.isEmpty()) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
