@@ -82,7 +82,7 @@ public class SubCommand_Find implements CommandProcesser {
 
 
         final String lookFor = sb.toString().toLowerCase();
-        final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
+        final double maxDistance = plugin.getConfig().getInt("shop.finding.distance");
         final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
         final int shopLimit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
         final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
@@ -109,7 +109,7 @@ public class SubCommand_Find implements CommandProcesser {
             Vector shopVector = shop.getLocation().toVector();
             double distance = shopVector.distance(playerVector);
             //Check distance
-            if (distance <= minDistance) {
+            if (distance <= maxDistance) {
                 //Collect valid shop that trading items we want
                 if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
                     if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
