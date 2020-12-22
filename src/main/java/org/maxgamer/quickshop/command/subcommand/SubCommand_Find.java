@@ -93,12 +93,14 @@ public class SubCommand_Find implements CommandProcesser {
 
         Map<Shop, Double> aroundShops = new HashMap<>();
 
+        //Choose finding source
         Collection<Shop> scanPool;
         if (allShops) {
             scanPool = plugin.getShopManager().getAllShops();
         } else {
             scanPool = plugin.getShopManager().getLoadedShops();
         }
+        //Calc distance between player and shop
         for (Shop shop : scanPool) {
             if (!Objects.equals(shop.getLocation().getWorld(), loc.getWorld())) {
                 continue;
@@ -108,12 +110,7 @@ public class SubCommand_Find implements CommandProcesser {
                 aroundShops.put(shop, new Vector(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).distance(playerVector));
             }
         }
-
-        if (aroundShops.isEmpty()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
-            return;
-        }
-
+        //Collect valid shop that trading items we want
         List<Shop> missedShops = new ArrayList<>();
         for (Shop shop : aroundShops.keySet()) {
             if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
@@ -122,13 +119,21 @@ public class SubCommand_Find implements CommandProcesser {
                 }
             }
         }
+
         missedShops.forEach(aroundShops::remove);
+
+        //Check if no shops finded
+        if (aroundShops.isEmpty()) {
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
+            return;
+        }
 
         //Okay now all shops is our wanted shop in Map
 
         List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Comparator.comparingDouble(Map.Entry::getValue))
                 .collect(Collectors.toList());
 
+        //Function
         if (usingOldLogic) {
             Map.Entry<Shop, Double> closest = sortedShops.get(0);
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
