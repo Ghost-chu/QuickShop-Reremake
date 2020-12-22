@@ -57,9 +57,7 @@ public class SubCommand_Paste implements CommandProcesser {
                             return;
                         }
                     }
-
                 }
-
                 MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();
