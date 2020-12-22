@@ -83,10 +83,8 @@ public class SubCommand_Find implements CommandProcesser {
 
         final String lookFor = sb.toString().toLowerCase();
         final double minDistance = plugin.getConfig().getInt("shop.finding.distance");
-        double minDistanceSquared = minDistance * minDistance;
-        final int chunkRadius = (int) (minDistance / 16) + 1;
         final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
-        final int limit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
+        final int shopLimit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
         final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
 
         //Rewrite by Ghost_chu - Use vector to replace old chunks finding.
@@ -105,19 +103,23 @@ public class SubCommand_Find implements CommandProcesser {
             if (!Objects.equals(shop.getLocation().getWorld(), loc.getWorld())) {
                 continue;
             }
+            if (aroundShops.size() == shopLimit) {
+                break;
+            }
             Vector shopVector = shop.getLocation().toVector();
+            double distance = shopVector.distance(playerVector);
             //Check distance
-            if (shopVector.distance(playerVector) < limit) {
+            if (distance <= minDistance) {
                 //Collect valid shop that trading items we want
                 if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
                     if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
                         continue;
                     }
                 }
-                aroundShops.put(shop, new Vector(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()).distance(playerVector));
+                aroundShops.put(shop, distance);
             }
         }
-        //Check if no shops finded
+        //Check if no shops found
         if (aroundShops.isEmpty()) {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-nearby-shop", sender, lookFor));
             return;
