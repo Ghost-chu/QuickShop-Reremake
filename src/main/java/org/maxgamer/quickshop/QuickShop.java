@@ -669,6 +669,7 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
 
+        getLogger().info("Chat processor selected: " + this.quickChatType.name());
 
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 3320);
