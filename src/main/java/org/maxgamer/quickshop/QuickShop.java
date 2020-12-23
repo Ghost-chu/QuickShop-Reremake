@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -44,7 +43,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.builtinlistener.InternalListener;
+import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickChatType;
+import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -243,11 +244,11 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
-    @Getter
-    private BukkitAudiences bukkitAudiences;
     private final ConfigProvider configProvider = new ConfigProvider(this);
     @Getter
     private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
+    @Getter
+    private QuickChat quickChat = new BungeeQuickChat();
 
     private static boolean loaded = false;
 
@@ -482,6 +483,7 @@ public class QuickShop extends JavaPlugin {
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
+        this.quickChat = QuickChatType.createByType(this.quickChatType);
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -640,7 +642,6 @@ public class QuickShop extends JavaPlugin {
             }
         }
         Timer enableTimer = new Timer(true);
-        bukkitAudiences = BukkitAudiences.create(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         /* PreInit for BootError feature */
         commandManager = new CommandManager(this);

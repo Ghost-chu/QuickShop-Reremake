@@ -20,17 +20,27 @@
 package org.maxgamer.quickshop.chat.platform.minedown;
 
 import de.themoep.minedown.MineDown;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickComponent;
+import org.maxgamer.quickshop.chat.QuickComponentImpl;
+import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.ItemNMS;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
-public class BungeeQuickChat implements QuickChat {
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 
+public class BungeeQuickChat implements QuickChat {
+    private final QuickShop plugin = QuickShop.getInstance();
     @Override
     public void send(@NotNull CommandSender receiver, @Nullable String message) {
         if (StringUtils.isEmpty(message)) {
@@ -51,5 +61,67 @@ public class BungeeQuickChat implements QuickChat {
             receiver.spigot().sendMessage((BaseComponent) component.get());
         }
         Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, rejected.");
+    }
+
+    @Override
+    public void sendItemHologramChat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
+        try {
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
+            ComponentBuilder cBuilder = new ComponentBuilder(json);
+            centerItem.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
+            player.spigot().sendMessage(centerItem);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
+            e.printStackTrace();
+            player.spigot().sendMessage(errorComponent);
+        }
+    }
+
+    @Override
+    public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
+        try {
+
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json == null) {
+                return new QuickComponentImpl(errorComponent);
+            }
+            TextComponent normalmessage =
+                    new TextComponent(message + " " + MsgUtil.getMessage("menu.preview", player));
+            ComponentBuilder cBuilder = new ComponentBuilder(json);
+            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
+                normalmessage.setClickEvent(new ClickEvent(
+                        ClickEvent.Action.RUN_COMMAND,
+                        MsgUtil.fillArgs(
+                                "/qs silentpreview {0}",
+                                shop.getRuntimeRandomUniqueId().toString())));
+            }
+            normalmessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
+            return new QuickComponentImpl(normalmessage);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            return new QuickComponentImpl(errorComponent);
+        }
+    }
+
+    @Override
+    public @NotNull QuickComponent getItemTextComponent(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+        TextComponent errorComponent = new TextComponent(MsgUtil.getMessage("menu.item-holochat-error", player));
+
+        String json;
+        try {
+            json = ItemNMS.saveJsonfromNMS(itemStack);
+        } catch (Throwable throwable) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
+            return new QuickComponentImpl(errorComponent);
+        }
+        if (json == null) {
+            return new QuickComponentImpl(errorComponent);
+        }
+
+        BaseComponent[] component = TextComponent.fromLegacyText(normalText + " " + MsgUtil.getMessage("menu.preview", player));
+        return new QuickComponentImpl(component);
+
     }
 }
