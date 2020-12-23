@@ -253,10 +253,11 @@ shop:
     #Should we use the old logic? (looking for closet shop and let player look at it)
     oldLogic: false
     #How far should we search in blocks?
-    #Over 100 will cause LAG. Don't do it, or don't cry when your server lagging.
     distance: 45
     #How many nearby shop should be displayed?
     limit: 10
+    #Including non-loaded shops?
+    all: true
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'

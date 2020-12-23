@@ -1652,6 +1652,7 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 119) {
             getConfig().set("debug.adventure", false);
+            getConfig().set("shop.finding.all", false);
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
