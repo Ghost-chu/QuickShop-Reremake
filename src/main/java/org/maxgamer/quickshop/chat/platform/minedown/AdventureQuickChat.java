@@ -28,6 +28,7 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -106,4 +107,24 @@ public class AdventureQuickChat implements QuickChat {
         return new QuickComponentImpl(errorComponent);
 
     }
+
+    @Override
+    public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component = Component.text(MsgUtil.getMessage("tableformat.left_begin", receiver) + message)
+                .color(NamedTextColor.DARK_PURPLE)
+                .clickEvent(ClickEvent.runCommand(command))
+                .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
+
+        audiences.sender(receiver).sendMessage(component);
+    }
+
+    @Override
+    public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component = Component.text(MsgUtil.getMessage("tableformat.left_begin", receiver) + message)
+                .color(NamedTextColor.DARK_PURPLE)
+                .clickEvent(ClickEvent.suggestCommand(command))
+                .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
+        audiences.sender(receiver).sendMessage(component);
+    }
+
 }

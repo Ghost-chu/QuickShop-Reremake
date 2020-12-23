@@ -599,7 +599,7 @@ public class MsgUtil {
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", sender, shop.ownerName()));
         } else {
-            chatSheetPrinter.printSuggestableCmdLine(
+            chatSheetPrinter.printSuggestedCmdLine(
                     MsgUtil.getMessage(
                             "controlpanel.setowner",
                             sender,
@@ -622,7 +622,7 @@ public class MsgUtil {
                     MsgUtil.fillArgs(
                             "/qs silentunlimited {0}",
                             shop.getRuntimeRandomUniqueId().toString());
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+            chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
@@ -634,7 +634,7 @@ public class MsgUtil {
                         MsgUtil.fillArgs(
                                 "/qs silentbuy {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
-                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+                chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
                 String text = MsgUtil.getMessage("controlpanel.mode-buying", sender);
                 String hoverText = MsgUtil.getMessage("controlpanel.mode-buying-hover", sender);
@@ -642,7 +642,7 @@ public class MsgUtil {
                         MsgUtil.fillArgs(
                                 "/qs silentsell {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
-                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+                chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
         }
         // Set Price
@@ -656,7 +656,7 @@ public class MsgUtil {
                                     : Double.toString(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.price-hover", sender);
             String clickCommand = "/qs price ";
-            chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+            chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
@@ -667,7 +667,7 @@ public class MsgUtil {
                         Integer.toString(shop.getItem().getAmount()));
                 String hoverText = MsgUtil.getMessage("controlpanel.stack-hover", sender);
                 String clickCommand = "/qs size ";
-                chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+                chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
 
             }
         }
@@ -678,7 +678,7 @@ public class MsgUtil {
                         MsgUtil.getMessage("controlpanel.refill", sender, String.valueOf(shop.getPrice()));
                 String hoverText = MsgUtil.getMessage("controlpanel.refill-hover", sender);
                 String clickCommand = "/qs refill ";
-                chatSheetPrinter.printSuggestableCmdLine(text, hoverText, clickCommand);
+                chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
             }
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
@@ -689,7 +689,7 @@ public class MsgUtil {
                         MsgUtil.fillArgs(
                                 "/qs silentempty {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
-                chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+                chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
         }
         // Remove
@@ -698,7 +698,7 @@ public class MsgUtil {
             String text = MsgUtil.getMessage("controlpanel.remove", sender, String.valueOf(shop.getPrice()));
             String hoverText = MsgUtil.getMessage("controlpanel.remove-hover", sender);
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
-            chatSheetPrinter.printExecuteableCmdLine(text, hoverText, clickCommand);
+            chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
         chatSheetPrinter.printFooter();
     }

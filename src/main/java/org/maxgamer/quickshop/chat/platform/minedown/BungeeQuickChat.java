@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.chat.platform.minedown;
 import de.themoep.minedown.MineDown;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -123,5 +124,25 @@ public class BungeeQuickChat implements QuickChat {
         BaseComponent[] component = TextComponent.fromLegacyText(normalText + " " + MsgUtil.getMessage("menu.preview", player));
         return new QuickComponentImpl(component);
 
+    }
+
+    @Override
+    public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component =
+                new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message);
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        component.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
+        receiver.spigot().sendMessage(component);
+    }
+
+    @Override
+    public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component =
+                new TextComponent(ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", receiver) + message);
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+        component.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
+        receiver.spigot().sendMessage(component);
     }
 }
