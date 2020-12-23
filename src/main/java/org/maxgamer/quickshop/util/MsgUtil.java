@@ -23,9 +23,6 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -106,27 +103,27 @@ public class MsgUtil {
         plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
     }
 
-    @SneakyThrows
-    public static void sendItemholochat(
-            @NotNull Player player,
-            @NotNull String left,
-            @NotNull ItemStack itemStack,
-            @NotNull String right) {
-        String json = ItemNMS.saveJsonfromNMS(itemStack);
-        if (json == null) {
-            return;
-        }
-
-//        Util.debugLog(left);
-//        Util.debugLog(json);
-//        Util.debugLog(right);
-
-
-        net.md_5.bungee.api.chat.TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
-        net.md_5.bungee.api.chat.ComponentBuilder cBuilder = new ComponentBuilder(json);
-        centerItem.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-        player.spigot().sendMessage(centerItem);
-    }
+//    @SneakyThrows
+//    public static void sendItemholochat(
+//            @NotNull Player player,
+//            @NotNull String left,
+//            @NotNull ItemStack itemStack,
+//            @NotNull String right) {
+//        String json = ItemNMS.saveJsonfromNMS(itemStack);
+//        if (json == null) {
+//            return;
+//        }
+//
+////        Util.debugLog(left);
+////        Util.debugLog(json);
+////        Util.debugLog(right);
+//
+//
+//        net.md_5.bungee.api.chat.TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
+//        net.md_5.bungee.api.chat.ComponentBuilder cBuilder = new ComponentBuilder(json);
+//        centerItem.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
+//        player.spigot().sendMessage(centerItem);
+//    }
 
     /**
      * Empties the queue of messages a player has and sends them to the player.
@@ -150,7 +147,7 @@ public class MsgUtil {
                                 if (data == null) {
                                     MsgUtil.sendMessage(p.getPlayer(), msg);
                                 } else {
-                                    sendItemholochat(player, msgData[0], data, msgData[2]);
+                                    plugin.getQuickChat().sendItemHologramChat(player, msgData[0], data, msgData[2]);
                                 }
                             } catch (InvalidConfigurationException e) {
                                 MsgUtil.sendMessage(p.getPlayer(), msg);
@@ -501,7 +498,7 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (msgData.length == 3) {
                     try {
-                        sendItemholochat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), msgData[0], Objects.requireNonNull(Util.deserialize(msgData[1])), msgData[2]);
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg
@@ -537,7 +534,7 @@ public class MsgUtil {
             if (p.getPlayer() != null) {
                 if (msgData.length == 3) {
                     try {
-                        sendItemholochat(p.getPlayer(), msgData[0], shop.getItem(), msgData[2]);
+                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), msgData[0], shop.getItem(), msgData[2]);
                     } catch (Exception any) {
                         Util.debugLog("Unknown error, send by plain text.");
                         // Normal msg

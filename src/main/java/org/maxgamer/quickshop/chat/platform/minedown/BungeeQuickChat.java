@@ -88,8 +88,7 @@ public class BungeeQuickChat implements QuickChat {
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            TextComponent normalmessage =
-                    new TextComponent(message + " " + MsgUtil.getMessage("menu.preview", player));
+            TextComponent normalmessage = new TextComponent(message + " " + MsgUtil.getMessage("menu.preview", player));
             ComponentBuilder cBuilder = new ComponentBuilder(json);
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 normalmessage.setClickEvent(new ClickEvent(
