@@ -64,11 +64,9 @@ public class AdventureQuickChat implements QuickChat {
         if (component == null) {
             return;
         }
-        if ((component.get() instanceof Component)) {
-            audiences.sender(receiver).sendMessage(Identity.nil(), (Component) component.get());
-        }
         if ((component.get() instanceof ComponentLike)) {
             audiences.sender(receiver).sendMessage(Identity.nil(), (ComponentLike) component.get());
+            return;
         }
         Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, rejected.");
 
@@ -81,7 +79,7 @@ public class AdventureQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
-        TextComponent component = (TextComponent) getItemTextComponent(itemStack, player, message).get();
+        Component component = (Component) getItemTextComponent(itemStack, player, message).get();
         if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
             component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs(
                     "/qs silentpreview {0}",
