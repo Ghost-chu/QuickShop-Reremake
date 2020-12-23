@@ -22,12 +22,6 @@ package org.maxgamer.quickshop.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +36,6 @@ import org.maxgamer.quickshop.QuickShop;
 */
 public class ChatSheetPrinter {
     private final CommandSender p;
-    private final BukkitAudiences audiences = QuickShop.getInstance().getBukkitAudiences();
 
     public void printCenterLine(@NotNull String text) {
         if (!text.isEmpty()) {
@@ -54,14 +47,9 @@ public class ChatSheetPrinter {
         }
     }
 
-    public void printExecuteableCmdLine(
+    public void printExecutableCmdLine(
             @NotNull String text, @NotNull String hoverText, @NotNull String executeCmd) {
-        TextComponent message =
-                Component.text(MsgUtil.getMessage("tableformat.left_begin", p) + text)
-                        .color(NamedTextColor.DARK_PURPLE)
-                        .clickEvent(ClickEvent.runCommand(executeCmd))
-                        .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
-        audiences.sender(p).sendMessage(message);
+        QuickShop.getInstance().getQuickChat().sendExecutableChat(p, text, hoverText, executeCmd);
     }
 
     public void printFooter() {
@@ -81,18 +69,10 @@ public class ChatSheetPrinter {
         }
     }
 
-    public void printSuggestableCmdLine(
-            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd, Component... additionText) {
-        TextComponent message = Component.text(MsgUtil.getMessage("tableformat.left_begin", p) + text)
-                .color(NamedTextColor.DARK_PURPLE)
-                .clickEvent(ClickEvent.suggestCommand(suggestCmd))
-                .hoverEvent(HoverEvent.showText(Component.text(hoverText)));
-        if (additionText.length >= 1) {
-            for (Component component : additionText) {
-                message = message.append(component);
-            }
-        }
-        audiences.sender(p).sendMessage(message);
+    public void printSuggestedCmdLine(
+            @NotNull String text, @NotNull String hoverText, @NotNull String suggestCmd) {
+        QuickShop.getInstance().getQuickChat().sendSuggestedChat(p, text, hoverText, suggestCmd);
+
     }
 
 }
