@@ -19,11 +19,6 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -46,7 +41,6 @@ public class UpdateWatcher implements Listener {
 
     private final QuickUpdater updater = new JenkinsUpdater(QuickShop.getInstance().getBuildInfo());
     private BukkitTask cronTask = null;
-    private final BukkitAudiences audiences = QuickShop.getInstance().getBukkitAudiences();
 
     public QuickUpdater getUpdater() {
         return updater;
@@ -88,28 +82,13 @@ public class UpdateWatcher implements Listener {
                                     } else {
                                         notify = "New update {0} now avaliable! Please update!";
                                     }
-                                    notify =
-                                            MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
-
-                                    TextComponent updatenow = Component
-                                            .text(MsgUtil.getMessage("updatenotify.buttontitle", player))
-                                            .color(NamedTextColor.AQUA)
-                                            .clickEvent(ClickEvent.openUrl("https://www.spigotmc.org/resources/62575/"));
-                                    TextComponent onekeyupdate = Component.text(MsgUtil.getMessage(
-                                            "updatenotify.onekeybuttontitle", player))
-                                            .color(NamedTextColor.YELLOW)
-                                            .clickEvent(ClickEvent.runCommand("/qs update"));
-                                    TextComponent finallyText =
-                                            updatenow.append(Component.text(" ")).append(onekeyupdate);
-                                    player.sendMessage(
-                                            ChatColor.GREEN
-                                                    + "---------------------------------------------------");
+                                    notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                                     player.sendMessage(ChatColor.GREEN + notify);
-                                    audiences.player(player).sendMessage(finallyText);
-                                    player.sendMessage(
-                                            ChatColor.GREEN
-                                                    + "---------------------------------------------------");
-                            }
+                                    player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                                    player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+                                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                                }
                         }
                     }
                 }.runTaskTimerAsynchronously(QuickShop.getInstance(), 1, 20 * 60 * 60);
@@ -138,22 +117,11 @@ public class UpdateWatcher implements Listener {
                 String notify = notifys.get(notifyNum);
                 notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
 
-                TextComponent updatenow = Component
-                        .text(MsgUtil.getMessage("updatenotify.buttontitle", e.getPlayer()))
-                        .color(NamedTextColor.AQUA)
-                        .clickEvent(ClickEvent.openUrl("https://www.spigotmc.org/resources/62575/"));
-                TextComponent onekeyupdate = Component.text(MsgUtil.getMessage(
-                        "updatenotify.onekeybuttontitle", e.getPlayer()))
-                        .color(NamedTextColor.YELLOW)
-                        .clickEvent(ClickEvent.runCommand("/qs update"));
-                TextComponent finallyText =
-                        updatenow.append(Component.text(" ")).append(onekeyupdate);
-                e.getPlayer()
-                        .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                 e.getPlayer().sendMessage(ChatColor.GREEN + notify);
-                audiences.player(e.getPlayer()).sendMessage(finallyText);
-                e.getPlayer()
-                        .sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                e.getPlayer().sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                e.getPlayer().sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+                e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
             }
         }.runTaskLaterAsynchronously(QuickShop.getInstance(), 80);
     }
