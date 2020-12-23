@@ -88,11 +88,6 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <createSourcesJar>false</createSourcesJar>
                     <createTestSourcesJar>false</createTestSourcesJar>
-                    <artifactSet>
-                        <includes>
-                            <include>net.kyori:*</include>
-                        </includes>
-                    </artifactSet>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
