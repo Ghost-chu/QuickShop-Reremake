@@ -128,6 +128,11 @@ server-platform: 0
 #Use caching for shop finding to optimize performance if possible
 use-caching: true
 
+#Control which one chat system QuickShop should to use.
+#0=BungeeChat (Spigot Defaults)
+#1=Adventure
+chat-type: 0
+
 #MySQL database settings.
 database:
   # false = use local SQLite database, true = use local/remote MySQL database.
