@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.builtinlistener.InternalListener;
+import org.maxgamer.quickshop.chat.QuickChatType;
 import org.maxgamer.quickshop.command.CommandManager;
 import org.maxgamer.quickshop.database.*;
 import org.maxgamer.quickshop.economy.*;
@@ -245,6 +246,8 @@ public class QuickShop extends JavaPlugin {
     @Getter
     private BukkitAudiences bukkitAudiences;
     private final ConfigProvider configProvider = new ConfigProvider(this);
+    @Getter
+    private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
 
     private static boolean loaded = false;
 
@@ -478,6 +481,7 @@ public class QuickShop extends JavaPlugin {
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
         this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
+        this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -1653,6 +1657,7 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 119) {
             getConfig().set("debug.adventure", false);
             getConfig().set("shop.finding.all", false);
+            getConfig().set("chat-type", 0);
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
