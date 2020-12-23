@@ -20,27 +20,42 @@
 package org.maxgamer.quickshop.chat.platform.minedown;
 
 import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.chat.QuickChat;
 import org.maxgamer.quickshop.chat.QuickComponent;
+import org.maxgamer.quickshop.chat.QuickComponentImpl;
+import org.maxgamer.quickshop.shop.Shop;
+import org.maxgamer.quickshop.util.ItemNMS;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.logging.Level;
 
 public class AdventureQuickChat implements QuickChat {
     private final QuickShop plugin = QuickShop.getInstance();
+    private final BukkitAudiences audiences = BukkitAudiences.create(QuickShop.getInstance());
 
     @Override
     public void send(@NotNull CommandSender receiver, @Nullable String message) {
         if (StringUtils.isEmpty(message)) {
             return;
         }
-        plugin.getBukkitAudiences().sender(receiver).sendMessage(LegacyComponentSerializer.legacySection().deserialize(message));
+        audiences.sender(receiver).sendMessage(LegacyComponentSerializer.legacySection().deserialize(message));
     }
 
     @Override
@@ -49,12 +64,46 @@ public class AdventureQuickChat implements QuickChat {
             return;
         }
         if ((component.get() instanceof Component)) {
-            plugin.getBukkitAudiences().sender(receiver).sendMessage(Identity.nil(), (Component) component.get());
+            audiences.sender(receiver).sendMessage(Identity.nil(), (Component) component.get());
         }
         if ((component.get() instanceof ComponentLike)) {
-            plugin.getBukkitAudiences().sender(receiver).sendMessage(Identity.nil(), (ComponentLike) component.get());
+            audiences.sender(receiver).sendMessage(Identity.nil(), (ComponentLike) component.get());
         }
         Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, rejected.");
+
+    }
+
+    @Override
+    public void sendItemHologramChat(@NotNull Player player, @NotNull String left, @NotNull ItemStack itemStack, @NotNull String right) {
+        audiences.player(player).sendMessage((Component) getItemTextComponent(itemStack, player, left + Util.getItemStackName(itemStack) + right).get());
+    }
+
+    @Override
+    public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
+        TextComponent component = (TextComponent) getItemTextComponent(itemStack, player, message).get();
+        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
+            component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs(
+                    "/qs silentpreview {0}",
+                    shop.getRuntimeRandomUniqueId().toString())));
+        }
+        return new QuickComponentImpl(component);
+    }
+
+    @Override
+    public @NotNull QuickComponent getItemTextComponent(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText) {
+        TextComponent errorComponent = Component.text(MsgUtil.getMessage("menu.item-holochat-error", player));
+        try {
+            String json = ItemNMS.saveJsonfromNMS(itemStack);
+            if (json != null) {
+                return new QuickComponentImpl(Component
+                        .text(normalText + " " + MsgUtil.getMessage("menu.preview", player))
+                        .hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString())
+                                , itemStack.getAmount(), BinaryTagHolder.of(json))));
+            }
+        } catch (Throwable throwable) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
+        }
+        return new QuickComponentImpl(errorComponent);
 
     }
 }

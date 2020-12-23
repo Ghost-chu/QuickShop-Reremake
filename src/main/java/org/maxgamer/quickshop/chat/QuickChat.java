@@ -20,8 +20,11 @@
 package org.maxgamer.quickshop.chat;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.shop.Shop;
 
 /**
  * QuickChat is a system to allow us to processing plain text and also MineDown
@@ -31,5 +34,16 @@ public interface QuickChat {
 
     void send(@NotNull CommandSender receiver, @Nullable QuickComponent component);
 
+    void sendItemHologramChat(
+            @NotNull Player player,
+            @NotNull String left,
+            @NotNull ItemStack itemStack,
+            @NotNull String right);
+
+    @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String
+            message);
+
+
+    @NotNull QuickComponent getItemTextComponent(@NotNull ItemStack itemStack, @NotNull Player player, @NotNull String normalText);
 
 }

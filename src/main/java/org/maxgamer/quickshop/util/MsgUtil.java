@@ -23,14 +23,9 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -79,8 +74,6 @@ public class MsgUtil {
 
     private static QuickShop plugin = QuickShop.getInstance();
 
-    private static TextComponent errorComponent;
-
     private static final DecimalFormat decimalFormat = processFormat();
     public static GameLanguage gameLanguage;
     @Getter
@@ -92,7 +85,6 @@ public class MsgUtil {
     @Getter
     private static YamlConfiguration potioni18n;
     private static IFile builtInLang;
-    private static BukkitAudiences audiences = plugin.getBukkitAudiences();
 
     private static DecimalFormat processFormat() {
         try {
@@ -112,6 +104,28 @@ public class MsgUtil {
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
+    }
+
+    @SneakyThrows
+    public static void sendItemholochat(
+            @NotNull Player player,
+            @NotNull String left,
+            @NotNull ItemStack itemStack,
+            @NotNull String right) {
+        String json = ItemNMS.saveJsonfromNMS(itemStack);
+        if (json == null) {
+            return;
+        }
+
+//        Util.debugLog(left);
+//        Util.debugLog(json);
+//        Util.debugLog(right);
+
+
+        net.md_5.bungee.api.chat.TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
+        net.md_5.bungee.api.chat.ComponentBuilder cBuilder = new ComponentBuilder(json);
+        centerItem.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
+        player.spigot().sendMessage(centerItem);
     }
 
     /**
@@ -152,15 +166,6 @@ public class MsgUtil {
             }
         }
         return false;
-    }
-
-    @SneakyThrows
-    public static void sendItemholochat(
-            @NotNull Player player,
-            @NotNull String left,
-            @NotNull ItemStack itemStack,
-            @NotNull String right) {
-        audiences.player(player).sendMessage(getItemTextComponent(itemStack, player, left + Util.getItemStackName(itemStack) + right));
     }
 
     /**
@@ -240,7 +245,6 @@ public class MsgUtil {
     public static void loadCfgMessages() throws InvalidConfigurationException {
         //Update instance
         plugin = QuickShop.getInstance();
-        audiences = QuickShop.getInstance().getBukkitAudiences();
         plugin.getLogger().info("Loading plugin translations files...");
         /* Check & Load & Create default messages.yml */
         // Use try block to hook any possible exception, make sure not effect our cfgMessnages code.
@@ -924,7 +928,7 @@ public class MsgUtil {
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.shop-information", p));
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.owner", p, shop.ownerName()));
         // Enabled
-        sendItemholochat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  ");
+        plugin.getQuickChat().send(p, plugin.getQuickChat().getItemHologramChat(shop, items, p, ChatColor.DARK_PURPLE + MsgUtil.getMessage("tableformat.left_begin", p) + MsgUtil.getMessage("menu.item", p, Util.getItemStackName(items)) + "  "));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     MsgUtil.getMessage("menu.damage-percent-remaining", p, Util.getToolPercentage(items)));
@@ -971,61 +975,6 @@ public class MsgUtil {
         chatSheetPrinter.printFooter();
     }
 
-    /**
-     * Send the ItemPreview chat msg by NMS.
-     *
-     * @param shop       Target shop
-     * @param itemStack  Target ItemStack
-     * @param player     Target player
-     * @param normalText The text you will see
-     */
-    public static void sendItemholochat(
-            @NotNull Shop shop,
-            @NotNull ItemStack itemStack,
-            @NotNull Player player,
-            @NotNull String normalText) {
-        audiences.player(player).sendMessage(getItemholochat(shop, itemStack, player, normalText));
-
-
-    }
-
-
-    private static TextComponent getItemTextComponent(@NotNull ItemStack itemStack,
-                                                      @NotNull Player player,
-                                                      @NotNull String normalText) {
-        if (errorComponent == null) {
-            errorComponent = Component.text(getMessage("menu.item-holochat-error", player));
-        }
-        try {
-            String json = ItemNMS.saveJsonfromNMS(itemStack);
-            if (json != null) {
-                return Component
-                        .text(normalText + " " + MsgUtil.getMessage("menu.preview", player))
-                        .hoverEvent(HoverEvent.showItem(Key.key(itemStack.getType().getKey().toString())
-                                , itemStack.getAmount(), BinaryTagHolder.of(json)));
-            }
-        } catch (Throwable throwable) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
-        }
-        return errorComponent;
-
-
-    }
-
-    @NotNull
-    public static TextComponent getItemholochat(
-            @NotNull Shop shop,
-            @NotNull ItemStack itemStack,
-            @NotNull Player player,
-            @NotNull String normalText) {
-        TextComponent component = getItemTextComponent(itemStack, player, normalText);
-        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
-            component = component.clickEvent(ClickEvent.runCommand(MsgUtil.fillArgs(
-                    "/qs silentpreview {0}",
-                    shop.getRuntimeRandomUniqueId().toString())));
-        }
-        return component;
-    }
 
     /**
      * Get potion effect's i18n name.
@@ -1569,7 +1518,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(chatColor + msg));
+                plugin.getQuickChat().send(sender, chatColor + msg);
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
@@ -1596,7 +1545,7 @@ public class MsgUtil {
                 if (msg == null || msg.isEmpty()) {
                     continue;
                 }
-                audiences.sender(sender).sendMessage(LegacyComponentSerializer.legacySection().deserialize(msg));
+                plugin.getQuickChat().send(sender, msg);
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
                 sender.sendMessage(msg);
