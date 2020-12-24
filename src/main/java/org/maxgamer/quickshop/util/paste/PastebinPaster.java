@@ -37,9 +37,9 @@ public class PastebinPaster implements PasteInterface {
                         .add("api_paste_name", "quickshop.paste")
                         .add("api_paste_expire_date", "10M")
                         .add("api_user_key", "")
+                        .add("api_paste_code", text)
                 )
                 .execute()
-                .expectResponseCode(200, 302)
                 .returnContent()
                 .asString("UTF-8");
     }
