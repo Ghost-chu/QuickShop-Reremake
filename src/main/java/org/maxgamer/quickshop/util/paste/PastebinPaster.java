@@ -35,7 +35,7 @@ public class PastebinPaster implements PasteInterface {
                         .add("api_dev_key", developerKey)
                         .add("api_paste_private", "1")
                         .add("api_paste_name", "quickshop.paste")
-                        .add("api_paste_expire_date", "10M")
+                        .add("api_paste_expire_date", "1M")
                         .add("api_user_key", "")
                         .add("api_paste_code", text)
                 )
