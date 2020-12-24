@@ -1540,8 +1540,6 @@ public class MsgUtil {
         for (String msg : messages) {
             try {
                 if (StringUtils.isEmpty(msg)) {
-                    Util.debugLog("Msg is null, debugging.");
-                    debugStackTrace(new Exception().getStackTrace());
                     continue;
                 }
                 plugin.getQuickChat().send(sender, msg);
