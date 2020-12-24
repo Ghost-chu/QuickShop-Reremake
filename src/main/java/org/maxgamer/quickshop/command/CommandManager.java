@@ -298,7 +298,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("removeall")
-                .permission("quickshop.removeall")
+                .permission(null)
                 .executor(new SubCommand_RemoveAll(plugin))
                 .build());
         registerCmd(CommandContainer.builder()

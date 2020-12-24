@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 119
+config-version: 120
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -127,6 +127,11 @@ server-platform: 0
 
 #Use caching for shop finding to optimize performance if possible
 use-caching: true
+
+#Control which one chat system QuickShop should to use.
+#0=BungeeChat (Spigot Defaults)
+#1=Adventure
+chat-type: 0
 
 #MySQL database settings.
 database:
@@ -253,10 +258,11 @@ shop:
     #Should we use the old logic? (looking for closet shop and let player look at it)
     oldLogic: false
     #How far should we search in blocks?
-    #Over 100 will cause LAG. Don't do it, or don't cry when your server lagging.
     distance: 45
     #How many nearby shop should be displayed?
     limit: 10
+    #Including non-loaded shops?
+    all: true
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'
@@ -642,6 +648,8 @@ debug:
   disable-debuglogger: false
   #logging stacktrace when deleting shop
   shop-deletion: false
+  #Enable adventure debug flag
+  adventure: false
 
 
 

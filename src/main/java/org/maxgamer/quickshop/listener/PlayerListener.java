@@ -236,23 +236,27 @@ public class PlayerListener extends QSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
-        Location location;
-        //for strange NPE from spigot API fix
-        //noinspection ConstantConditions
-        if (e.getInventory() == null) {
-            return;
-        }
-        if (e.getInventory().getLocation() == null) {
-            return;
-        }
-        location = e.getInventory().getLocation();
 
-        if (location == null) {
-            return; /// ignored as workaround, GH-303
-        }
-        final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
-        if (shop != null) {
-            shop.setSignText();
+        try {
+            Location location;
+            //for strange NPE from spigot API fix
+            //noinspection ConstantConditions
+            if (e.getInventory() == null) {
+                return;
+            }
+            if (e.getInventory().getLocation() == null) {
+                return;
+            }
+            location = e.getInventory().getLocation();
+
+            if (location == null) {
+                return; /// ignored as workaround, GH-303
+            }
+            final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
+            if (shop != null) {
+                shop.setSignText();
+            }
+        } catch (NullPointerException ignored) {
         }
     }
 

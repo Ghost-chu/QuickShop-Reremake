@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -56,15 +57,37 @@ public class SubCommand_RemoveAll implements CommandProcesser {
                 MsgUtil.sendMessage(sender, MsgUtil.getMessage("unknown-player", null));
                 return;
             }
+
             int i = 0;
-            for (Shop shop : tempList) {
-                if (shop.getOwner().equals(shopOwner.getUniqueId())) {
-                    plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
-                    shop.delete();
-                    i++;
+            if (!shopOwner.equals(sender)) { //Non-self shop
+                if (!sender.hasPermission("quickshop.removeall.other")) {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    return;
+                }
+                for (Shop shop : tempList) {
+                    if (shop.getOwner().equals(shopOwner.getUniqueId())) {
+                        plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
+                        shop.delete();
+                        i++;
+                    }
+                }
+            } else { //Self shop
+                if (!sender.hasPermission("quickshop.removeall.self")) {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-permission", sender));
+                    return;
+                }
+                if (!(sender instanceof OfflinePlayer)) {
+                    sender.sendMessage(ChatColor.RED + "This command only can execute by player");
+                    return;
+                }
+                for (Shop shop : tempList) {
+                    if (shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
+                        plugin.log("Deleting shop " + shop + " request by /qs removeall command.");
+                        shop.delete();
+                        i++;
+                    }
                 }
             }
-
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.some-shops-removed", sender, Integer.toString(i)));
         } else {
             MsgUtil.sendMessage(sender, MsgUtil.getMessage("command.no-owner-given", sender));

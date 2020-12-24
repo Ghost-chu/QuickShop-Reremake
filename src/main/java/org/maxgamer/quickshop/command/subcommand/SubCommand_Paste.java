@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -46,12 +47,25 @@ public class SubCommand_Paste implements CommandProcesser {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+                    if (cmdArg.length < 1) {
+                        sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                        return;
+                    } else {
+                        if (!cmdArg[0].equals("--force")) {
+                            sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                            return;
+                        }
+                    }
+                }
                 MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                 final Paste paste = new Paste(plugin);
                 final String pasteText = paste.genNewPaste();
                 String pasteResult = paste.paste(pasteText);
                 if (pasteResult != null) {
-                    MsgUtil.sendMessage(sender, pasteResult);
+                    //MsgUtil.sendMessage(sender, pasteResult);
+                    // So we send direct message to sender to make sure our paste system still can working if MsgUtil down.
+                    sender.sendMessage(pasteResult);
                     plugin.log(pasteResult);
                 } else {
                     MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
