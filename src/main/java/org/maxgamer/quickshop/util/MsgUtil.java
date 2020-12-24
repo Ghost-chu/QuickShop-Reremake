@@ -1539,13 +1539,17 @@ public class MsgUtil {
         }
         for (String msg : messages) {
             try {
-                if (msg == null || msg.isEmpty()) {
+                if (StringUtils.isEmpty(msg)) {
+                    Util.debugLog("Msg is null, debugging.");
+                    debugStackTrace(new Exception().getStackTrace());
                     continue;
                 }
                 plugin.getQuickChat().send(sender, msg);
             } catch (Throwable throwable) {
                 Util.debugLog("Failed to send formatted text.");
-                sender.sendMessage(msg);
+                if (!StringUtils.isEmpty(msg)) {
+                    sender.sendMessage(msg);
+                }
             }
         }
     }
