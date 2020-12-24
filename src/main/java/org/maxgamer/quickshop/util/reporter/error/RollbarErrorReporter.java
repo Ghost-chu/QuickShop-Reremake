@@ -78,7 +78,7 @@ public class RollbarErrorReporter {
                 @Override
                 public void run() {
                     Paste paste = new Paste(plugin);
-                    lastPaste = paste.paste(paste.genNewPaste(), 1);
+                    lastPaste = paste.paste(paste.genNewPaste());
                     if (lastPaste != null) {
                         bootPaste = lastPaste;
                         plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);

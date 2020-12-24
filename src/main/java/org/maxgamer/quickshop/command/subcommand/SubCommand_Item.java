@@ -71,7 +71,7 @@ public class SubCommand_Item implements CommandProcesser {
                     itemStack.setAmount(1);
                 }
                 shop.setItem(itemStack);
-                MsgUtil.sendItemholochat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem())));
+                plugin.getQuickChat().send(sender, plugin.getQuickChat().getItemHologramChat(shop, shop.getItem(), (Player) sender, MsgUtil.getMessage("command.trade-item-now", sender, Integer.toString(shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()))));
                 return;
             }
             // shop.setSignText();
