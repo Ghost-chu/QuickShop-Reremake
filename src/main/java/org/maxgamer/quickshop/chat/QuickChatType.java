@@ -25,11 +25,9 @@ import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 
 public enum QuickChatType {
     /*
-     * UNKNOWN = FALLBACK TO REALITEM
-     * REALITEM = USE REAL DROPPED ITEM
-     * ARMORSTAND = USE ARMORSTAND DISPLAY
-     * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
-     * */
+     * BUNGEECHAT = Use the chat lib that Spigot offered.
+     * ADVENTURE  = Use the chat lib Adventure, it can resolve player disconnected issue but have no message output bug.
+     */
     BUNGEECHAT(0),
     ADVENTURE(1);
 
