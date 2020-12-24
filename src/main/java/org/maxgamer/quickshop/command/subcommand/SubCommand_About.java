@@ -44,7 +44,7 @@ public class SubCommand_About implements CommandProcesser {
                         + ">> "
                         + ChatColor.GREEN
                         + QuickShop.getVersion());
-        if (QuickShop.getVersion().toUpperCase().contains("LTS")) {
+        if (QuickShop.getInstance().getBuildInfo().getGitBranch().toUpperCase().contains("LTS")) {
             MsgUtil.sendMessage(sender,
                     ChatColor.AQUA
                             + "Release "
@@ -52,7 +52,7 @@ public class SubCommand_About implements CommandProcesser {
                             + ">> "
                             + ChatColor.GREEN
                             + MsgUtil.getMessage("updatenotify.label.lts", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("STABLE")) {
+        } else if (QuickShop.getInstance().getBuildInfo().getGitBranch().toUpperCase().contains("RELEASE")) {
             MsgUtil.sendMessage(sender,
                     ChatColor.AQUA
                             + "Release "
@@ -60,49 +60,14 @@ public class SubCommand_About implements CommandProcesser {
                             + ">> "
                             + ChatColor.GREEN
                             + MsgUtil.getMessage("updatenotify.label.stable", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("QV")) {
-            MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.qualityverifyed", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("BETA")) {
-            MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("ALPHA")) {
-            MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("EARLY ACCESS")) {
-            MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
-        } else if (QuickShop.getVersion().toUpperCase().contains("SNAPSHOT")) {
-            MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA
-                            + "Release "
-                            + ChatColor.YELLOW
-                            + ">> "
-                            + ChatColor.GREEN
-                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         } else {
             MsgUtil.sendMessage(sender,
-                    ChatColor.AQUA + "Release " + ChatColor.YELLOW + ">> " + ChatColor.GREEN + "[Main Line]");
+                    ChatColor.AQUA
+                            + "Release "
+                            + ChatColor.YELLOW
+                            + ">> "
+                            + ChatColor.GREEN
+                            + MsgUtil.getMessage("updatenotify.label.unstable", sender));
         }
         MsgUtil.sendMessage(sender,
                 ChatColor.AQUA
@@ -111,7 +76,7 @@ public class SubCommand_About implements CommandProcesser {
                         + ">> "
                         + ChatColor.GREEN
                         + Util.list2String(plugin.getDescription().getAuthors()));
-        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by Bukkit Common Studio");
+        MsgUtil.sendMessage(sender, ChatColor.GOLD + "Powered by Potato Craft Studio");
         MsgUtil.sendMessage(sender, ChatColor.RED + "Made with ❤");
     }
 
