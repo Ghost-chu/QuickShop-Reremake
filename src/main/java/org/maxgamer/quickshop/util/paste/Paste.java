@@ -76,6 +76,7 @@ public class Paste {
         finalReport.append("\tBuild Commit: ").append(plugin.getBuildInfo().getGitCommit()).append("\n");
         finalReport.append("\tBuild URL: ").append(plugin.getBuildInfo().getBuildUrl()).append("\n");
         finalReport.append("\tBuild Tag: ").append(plugin.getBuildInfo().getBuildTag()).append("\n");
+        finalReport.append("\tChat System: ").append(plugin.getQuickChatType().name()).append("\n");
         finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID()).append("\n");
         finalReport
                 .append("\tOpenInv Hook: ")
@@ -441,7 +442,7 @@ public class Paste {
         PasteInterface paster;
         try {
             // EngineHub Pastebin
-            paster = new EngineHubPaster();
+            paster = new PastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ignore) {
         }
@@ -461,7 +462,7 @@ public class Paste {
         if (type == 0) {
             try {
                 // EngineHub Pastebin
-                paster = new EngineHubPaster();
+                paster = new PastebinPaster();
                 return paster.pasteTheText(content);
             } catch (Exception ignore) {
             }

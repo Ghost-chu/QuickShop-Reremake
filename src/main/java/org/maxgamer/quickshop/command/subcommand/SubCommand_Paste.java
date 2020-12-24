@@ -63,7 +63,9 @@ public class SubCommand_Paste implements CommandProcesser {
                 final String pasteText = paste.genNewPaste();
                 String pasteResult = paste.paste(pasteText);
                 if (pasteResult != null) {
-                    MsgUtil.sendMessage(sender, pasteResult);
+                    //MsgUtil.sendMessage(sender, pasteResult);
+                    // So we send direct message to sender to make sure our paste system still can working if MsgUtil down.
+                    sender.sendMessage(pasteResult);
                     plugin.log(pasteResult);
                 } else {
                     MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
