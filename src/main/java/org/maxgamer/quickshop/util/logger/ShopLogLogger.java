@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.util.logger;
 
-import jdk.tools.jlink.plugin.Plugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.economy.EconomyTransaction;
 import org.maxgamer.quickshop.shop.Shop;
