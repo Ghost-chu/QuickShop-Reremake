@@ -40,6 +40,7 @@ public class PastebinPaster implements PasteInterface {
                         .add("api_paste_code", text)
                 )
                 .execute()
+                .expectResponseCode(200)
                 .returnContent()
                 .asString("UTF-8");
     }
