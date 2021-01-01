@@ -916,7 +916,7 @@ public class ContainerShop implements Shop {
     public @NotNull List<Sign> getSigns() {
         List<Sign> signs = new ArrayList<>(4);
         if (this.getLocation().getWorld() == null) {
-            return signs;
+            return Collections.emptyList();
         }
         Block[] blocks = new Block[4];
         blocks[0] = location.getBlock().getRelative(BlockFace.EAST);
