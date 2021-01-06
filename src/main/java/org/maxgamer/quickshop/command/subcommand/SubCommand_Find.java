@@ -86,6 +86,7 @@ public class SubCommand_Find implements CommandProcesser {
         final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
         final int shopLimit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
         final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
+        final boolean excludeOutOfStock = plugin.getConfig().getBoolean("shop.finding.exclude-out-of-stock");
 
         //Rewrite by Ghost_chu - Use vector to replace old chunks finding.
 
@@ -114,6 +115,17 @@ public class SubCommand_Find implements CommandProcesser {
                 if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
                     if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
                         continue;
+                    }
+                }
+                if (excludeOutOfStock) {
+                    if (shop.isSelling()) {
+                        if (shop.getRemainingStock() == 0) {
+                            continue;
+                        }
+                    } else if (shop.isBuying()) {
+                        if (shop.getRemainingSpace() == 0) {
+                            continue;
+                        }
                     }
                 }
                 aroundShops.put(shop, distance);
