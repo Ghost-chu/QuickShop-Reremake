@@ -409,7 +409,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>4.12.16</version>
+            <version>4.12.17</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -434,7 +434,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.18.0</version>
+            <version>0.20.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
