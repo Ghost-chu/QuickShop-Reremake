@@ -734,7 +734,10 @@ public class ContainerShop implements Shop {
                 }
             }
         }
-        this.checkDisplay();
+        try {
+            this.checkDisplay();
+        } catch (Exception ignored) {
+        }
     }
 
     /**
