@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 120
+config-version: 121
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -263,6 +263,8 @@ shop:
     limit: 10
     #Including non-loaded shops?
     all: true
+    #Check out-of-stock/space shop, may hurt the performance
+    exclude-out-of-stock: false
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'
