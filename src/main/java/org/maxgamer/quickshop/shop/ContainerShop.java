@@ -86,14 +86,6 @@ public class ContainerShop implements Shop {
     private ContainerShop(@NotNull ContainerShop s) {
         this.shopType = s.shopType;
         this.item = s.item.clone();
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-            if (meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*\\}")) {
-                meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
-                item.setItemMeta(meta);
-            }
-        }
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
@@ -417,6 +409,16 @@ public class ContainerShop implements Shop {
         this.plugin = plugin;
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
+        }
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
+            if (meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*\\}")) {
+                meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                //Correct both items
+                item.setItemMeta(meta);
+                this.item.setItemMeta(meta);
+            }
         }
         this.shopType = type;
         this.unlimited = unlimited;
