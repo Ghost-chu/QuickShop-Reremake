@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +35,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -83,6 +86,14 @@ public class ContainerShop implements Shop {
     private ContainerShop(@NotNull ContainerShop s) {
         this.shopType = s.shopType;
         this.item = s.item.clone();
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
+            if (meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*\\}")) {
+                meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                item.setItemMeta(meta);
+            }
+        }
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
