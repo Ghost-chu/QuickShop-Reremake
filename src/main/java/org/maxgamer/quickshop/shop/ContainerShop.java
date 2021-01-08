@@ -413,7 +413,7 @@ public class ContainerShop implements Shop {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             if (meta.hasDisplayName()) {
-                Util.debugLog(meta.getDisplayName());
+                Util.debugLog("Shop item display is: " + meta.getDisplayName());
                 //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
                 if (meta.getDisplayName().matches("\\{.*\\}")) {
                     meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
