@@ -412,12 +412,15 @@ public class ContainerShop implements Shop {
         }
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-            if (meta.hasDisplayName() && meta.getDisplayName().matches("\\{.*\\}")) {
-                meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
-                //Correct both items
-                item.setItemMeta(meta);
-                this.item.setItemMeta(meta);
+            if (meta.hasDisplayName()) {
+                Util.debugLog(meta.getDisplayName());
+                //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
+                if (meta.getDisplayName().matches("\\{.*\\}")) {
+                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                    //Correct both items
+                    item.setItemMeta(meta);
+                    this.item.setItemMeta(meta);
+                }
             }
         }
         this.shopType = type;
