@@ -45,31 +45,30 @@ public class SubCommand_Paste implements CommandProcesser {
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
-        if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
-            if (cmdArg.length < 1) {
-                sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
-                return;
-            } else {
-                if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--ignore-csf"))) {
-                    sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
-                    return;
-                }
-            }
-            Util.debugLog("Paste command args: " + cmdArg.length);
-            Arrays.stream(cmdArg).forEach(Util::debugLog);
-        }
         new BukkitRunnable() {
             @Override
             public void run() {
+                if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+                    if (cmdArg.length < 1) {
+                        sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                        return;
+                    } else {
+                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--ignore-csf"))) {
+                            sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
+                            return;
+                        }
+                    }
 
-                if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("--file"))) {
-                    pasteToLocalFile(sender);
-                    return;
-                }
+                    if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("--file"))) {
+                        pasteToLocalFile(sender);
+                        return;
+                    }
 
-                if (!pasteToPastebin(sender)) {
+                    if (!pasteToPastebin(sender)) {
                         pasteToLocalFile(sender);
                     }
+
+                }
                 MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
             }
         }.runTaskAsynchronously(plugin);
