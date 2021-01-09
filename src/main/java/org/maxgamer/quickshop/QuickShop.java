@@ -1667,7 +1667,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("chat-type", 0);
             getConfig().set("config-version", ++selectedVersion);
         }
-
+        if (selectedVersion == 121) {
+            getConfig().set("shop.protection-checking-handler", 0);
+            getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
+            getConfig().set("config-version", ++selectedVersion);
+        }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
