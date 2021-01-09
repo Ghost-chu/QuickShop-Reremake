@@ -114,7 +114,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                 continue;
             }
             Class<?> regClass = registration.getListener().getClass();
-            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass))) {
+            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass, registration.getPlugin()))) {
                 continue;
             }
 
@@ -157,9 +157,12 @@ class ListenerContainer {
     @NotNull
     private final String clazzName;
 
-    public boolean matches(Class<?> matching) {
+    public boolean matches(@NotNull Class<?> matching, @NotNull Plugin plugin) {
         if (clazz != null) {
             return matching.equals(clazz);
+        }
+        if (clazzName.startsWith("@")) {
+            return clazzName.equalsIgnoreCase("@" + plugin.getName());
         }
         String name = matching.getName();
         if (name.equalsIgnoreCase(clazzName)) {
