@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
@@ -29,13 +28,10 @@ import org.maxgamer.quickshop.shop.ShopType;
  * Calling when shop item was changed
  */
 public class ShopTypeChangeEvent extends QSEvent implements Cancellable {
-    @Getter
     private final ShopType oldType;
 
-    @Getter
     private final ShopType newType;
 
-    @Getter
     @NotNull
     private final Shop shop;
 
@@ -64,4 +60,30 @@ public class ShopTypeChangeEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * The shop old ShopType
+     *
+     * @return old type
+     */
+    public ShopType getOldType() {
+        return this.oldType;
+    }
+
+    /**
+     * The shop new ShopType
+     *
+     * @return new type
+     */
+    public ShopType getNewType() {
+        return this.newType;
+    }
+
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }

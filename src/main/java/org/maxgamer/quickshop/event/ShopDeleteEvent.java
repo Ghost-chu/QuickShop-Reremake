@@ -19,17 +19,17 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
+/**
+ * Calling when shop deleting
+ */
 public class ShopDeleteEvent extends QSEvent implements Cancellable {
 
-    @Getter
     private final boolean fromMemory;
 
-    @Getter
     @NotNull
     private final Shop shop;
 
@@ -56,4 +56,21 @@ public class ShopDeleteEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the delete is from memory or also database
+     *
+     * @return only from memory
+     */
+    public boolean isFromMemory() {
+        return this.fromMemory;
+    }
+
+    /**
+     * Gets the shop that deleted
+     *
+     * @return The shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }

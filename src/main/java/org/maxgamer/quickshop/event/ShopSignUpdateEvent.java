@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
@@ -29,11 +28,9 @@ import org.maxgamer.quickshop.shop.Shop;
  */
 public class ShopSignUpdateEvent extends QSEvent {
 
-    @Getter
     @NotNull
     private final Shop shop;
 
-    @Getter
     @NotNull
     private final Sign sign;
 
@@ -48,4 +45,21 @@ public class ShopSignUpdateEvent extends QSEvent {
         this.sign = sign;
     }
 
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
+
+    /**
+     * Gets the sign
+     *
+     * @return the sign
+     */
+    public @NotNull Sign getSign() {
+        return this.sign;
+    }
 }

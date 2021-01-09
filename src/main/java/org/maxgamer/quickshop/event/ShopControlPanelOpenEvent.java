@@ -19,16 +19,16 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
+/**
+ * Calling when control panel opened for
+ */
 public class ShopControlPanelOpenEvent extends QSEvent implements Cancellable {
-    @Getter
     private final Shop shop;
-    @Getter
     private final CommandSender sender;
     private boolean cancelled = false;
 
@@ -51,5 +51,23 @@ public class ShopControlPanelOpenEvent extends QSEvent implements Cancellable {
     @Override
     public void setCancelled(boolean b) {
         this.cancelled = b;
+    }
+
+    /**
+     * Gets the shop of control panel opened
+     *
+     * @return The shop
+     */
+    public Shop getShop() {
+        return this.shop;
+    }
+
+    /**
+     * Get the sender that opened control panel
+     *
+     * @return The sender
+     */
+    public CommandSender getSender() {
+        return this.sender;
     }
 }
