@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.eventmanager;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
@@ -28,6 +31,8 @@ import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
@@ -37,7 +42,7 @@ import java.util.logging.Level;
 
 public class QSEventManager implements QuickEventManager, Listener {
     private final QuickShop plugin;
-    private final List<Class<?>> ignoredListener = new ArrayList<>();
+    private final List<ListenerContainer> ignoredListener = new ArrayList<>();
 
     public QSEventManager(QuickShop plugin) {
         this.plugin = plugin;
@@ -61,31 +66,40 @@ public class QSEventManager implements QuickEventManager, Listener {
 
     private void rescan() {
         this.ignoredListener.clear();
-        plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(input -> {
-            if (StringUtils.isEmpty(input)) {
-                return;
-            }
-            try {
-                Class<?> clazz = Class.forName(input);
-                this.ignoredListener.add(clazz);
-                Util.debugLog("Successfully added blacklist: " + clazz.getName());
-            } catch (ClassNotFoundException ignored) {
-                Util.debugLog("Failed to add blacklist (not found): " + input);
-            }
-        });
+        plugin
+                .getConfig()
+                .getStringList("shop.protection-checking-listener-blacklist")
+                .forEach(
+                        input -> {
+                            if (StringUtils.isEmpty(input)) {
+                                return;
+                            }
+                            try {
+                                Class<?> clazz = Class.forName(input);
+                                this.ignoredListener.add(new ListenerContainer(clazz, input));
+                                Util.debugLog("Successfully added blacklist: " + clazz.getName());
+                            } catch (ClassNotFoundException ignored) {
+                                Util.debugLog("Failed to add blacklist (not found): " + input);
+                            }
+                        });
     }
 
     public void callEvent(Event event) {
         if (event.isAsynchronous()) {
             if (Thread.holdsLock(Bukkit.getPluginManager())) {
-                throw new IllegalStateException(event.getEventName() + " cannot be triggered asynchronously from inside synchronized code.");
+                throw new IllegalStateException(
+                        event.getEventName()
+                                + " cannot be triggered asynchronously from inside synchronized code.");
             }
             if (Bukkit.getServer().isPrimaryThread()) {
-                throw new IllegalStateException(event.getEventName() + " cannot be triggered asynchronously from primary server thread.");
+                throw new IllegalStateException(
+                        event.getEventName()
+                                + " cannot be triggered asynchronously from primary server thread.");
             }
         } else {
             if (!Bukkit.getServer().isPrimaryThread()) {
-                throw new IllegalStateException(event.getEventName() + " cannot be triggered asynchronously from another thread.");
+                throw new IllegalStateException(
+                        event.getEventName() + " cannot be triggered asynchronously from another thread.");
             }
         }
 
@@ -101,9 +115,16 @@ public class QSEventManager implements QuickEventManager, Listener {
                 continue;
             }
 
-            if (this.ignoredListener.contains(registration.getListener().getClass())) {
-                Util.debugLog("Skipped " + registration.getPlugin().getName() + " : " + registration.getListener().getClass().toString() + " listener.");
-                continue;
+            for (ListenerContainer container : this.ignoredListener) {
+                if (container.matches(registration.getClass())) {
+                    Util.debugLog(
+                            "Skipped "
+                                    + registration.getPlugin().getName()
+                                    + " : "
+                                    + registration.getListener().getClass().toString()
+                                    + " listener.");
+                    continue;
+                }
             }
 
             try {
@@ -114,16 +135,52 @@ public class QSEventManager implements QuickEventManager, Listener {
                 if (plugin.isNaggable()) {
                     plugin.setNaggable(false);
 
-                    Bukkit.getServer().getLogger().log(Level.SEVERE, String.format(
-                            "Nag author(s): '%s' of '%s' about the following: %s",
-                            plugin.getDescription().getAuthors(),
-                            plugin.getDescription().getFullName(),
-                            ex.getMessage()
-                    ));
+                    Bukkit.getServer()
+                            .getLogger()
+                            .log(
+                                    Level.SEVERE,
+                                    String.format(
+                                            "Nag author(s): '%s' of '%s' about the following: %s",
+                                            plugin.getDescription().getAuthors(),
+                                            plugin.getDescription().getFullName(),
+                                            ex.getMessage()));
                 }
             } catch (Throwable ex) {
-                Bukkit.getServer().getLogger().log(Level.SEVERE, "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName(), ex);
+                Bukkit.getServer()
+                        .getLogger()
+                        .log(
+                                Level.SEVERE,
+                                "Could not pass event "
+                                        + event.getEventName()
+                                        + " to "
+                                        + registration.getPlugin().getDescription().getFullName(),
+                                ex);
             }
         }
+    }
+}
+
+@Data
+@AllArgsConstructor
+@Builder
+class ListenerContainer {
+    @Nullable
+    private Class<?> clazz;
+    @NotNull
+    private String clazzName;
+
+    public boolean matches(Class<?> matching) {
+        if (clazz != null) {
+            if (matching.equals(clazz)) {
+                return true;
+            }
+        }
+        if (matching.getName().equalsIgnoreCase(clazzName)) {
+            return true;
+        }
+        if (matching.getName().startsWith(clazzName)) {
+            return true;
+        }
+        return matching.getName().matches(clazzName);
     }
 }
