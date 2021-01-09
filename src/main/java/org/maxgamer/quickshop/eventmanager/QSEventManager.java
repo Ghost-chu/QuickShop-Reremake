@@ -20,8 +20,6 @@
 package org.maxgamer.quickshop.eventmanager;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
@@ -77,9 +75,10 @@ public class QSEventManager implements QuickEventManager, Listener {
                             try {
                                 Class<?> clazz = Class.forName(input);
                                 this.ignoredListener.add(new ListenerContainer(clazz, input));
-                                Util.debugLog("Successfully added blacklist: " + clazz.getName());
+                                Util.debugLog("Successfully added blacklist: [CLAZZ] " + clazz.getName());
                             } catch (ClassNotFoundException ignored) {
-                                Util.debugLog("Failed to add blacklist (not found): " + input);
+                                this.ignoredListener.add(new ListenerContainer(null, input));
+                                Util.debugLog("Successfully added blacklist: [DYNAMIC] " + input);
                             }
                         });
     }
@@ -114,17 +113,9 @@ public class QSEventManager implements QuickEventManager, Listener {
             if (!registration.getPlugin().isEnabled()) {
                 continue;
             }
-
-            for (ListenerContainer container : this.ignoredListener) {
-                if (container.matches(registration.getClass())) {
-                    Util.debugLog(
-                            "Skipped "
-                                    + registration.getPlugin().getName()
-                                    + " : "
-                                    + registration.getListener().getClass().toString()
-                                    + " listener.");
-                    continue;
-                }
+            Class<?> regClass = registration.getListener().getClass();
+            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass))) {
+                continue;
             }
 
             try {
@@ -159,15 +150,12 @@ public class QSEventManager implements QuickEventManager, Listener {
         }
     }
 }
-
-@Data
 @AllArgsConstructor
-@Builder
 class ListenerContainer {
     @Nullable
-    private Class<?> clazz;
+    private final Class<?> clazz;
     @NotNull
-    private String clazzName;
+    private final String clazzName;
 
     public boolean matches(Class<?> matching) {
         if (clazz != null) {
@@ -175,12 +163,13 @@ class ListenerContainer {
                 return true;
             }
         }
-        if (matching.getName().equalsIgnoreCase(clazzName)) {
+        String name = matching.getName();
+        if (name.equalsIgnoreCase(clazzName)) {
             return true;
         }
-        if (matching.getName().startsWith(clazzName)) {
+        if (name.startsWith(clazzName)) {
             return true;
         }
-        return matching.getName().matches(clazzName);
+        return name.matches(clazzName);
     }
 }

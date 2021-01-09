@@ -1000,7 +1000,8 @@ public class MsgUtil {
             final String className = stackTraceElement.getClassName();
             final String methodName = stackTraceElement.getMethodName();
             final int codeLine = stackTraceElement.getLineNumber();
-            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + codeLine + ") ");
+            final String fileName = stackTraceElement.getFileName();
+            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
         }
     }
 
