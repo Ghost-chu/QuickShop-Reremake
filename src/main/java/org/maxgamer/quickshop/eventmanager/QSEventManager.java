@@ -159,9 +159,7 @@ class ListenerContainer {
 
     public boolean matches(Class<?> matching) {
         if (clazz != null) {
-            if (matching.equals(clazz)) {
-                return true;
-            }
+            return matching.equals(clazz);
         }
         String name = matching.getName();
         if (name.equalsIgnoreCase(clazzName)) {
