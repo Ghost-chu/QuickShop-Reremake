@@ -133,6 +133,9 @@ permissions:
   quickshop.tax:
     description: Permission to bypass Tax
     default: op
+  quickshop.tax.bypassunlimited:
+    description: Permission to bypass Tax but only for unlimited shop
+    default: op
   quickshop.cleanghost:
     description: Permission to use /qs cleanghost
     default: op
