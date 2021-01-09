@@ -996,11 +996,12 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (StackTraceElement trace : traces) {
-            stringBuilder.append(trace.getClassName()).append("#").append(trace.getMethodName()).append("#").append(trace.getLineNumber());
+        for (StackTraceElement stackTraceElement : traces) {
+            final String className = stackTraceElement.getClassName();
+            final String methodName = stackTraceElement.getMethodName();
+            final int codeLine = stackTraceElement.getLineNumber();
+            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + codeLine + ") ");
         }
-        Util.debugLog(stringBuilder.toString());
     }
 
     @SneakyThrows
