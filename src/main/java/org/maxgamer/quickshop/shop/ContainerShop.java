@@ -121,7 +121,8 @@ public class ContainerShop implements Shop {
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 
-                    } catch (Exception e) {
+                        //Catch everything
+                    } catch (Throwable e) {
                         Util.debugLog(e.getMessage());
                         MsgUtil.debugStackTrace(e.getStackTrace());
                         plugin.getConfig().set("shop.display-type", 0);
@@ -750,10 +751,7 @@ public class ContainerShop implements Shop {
                 }
             }
         }
-        try {
-            this.checkDisplay();
-        } catch (Exception ignored) {
-        }
+        this.checkDisplay();
     }
 
     /**
