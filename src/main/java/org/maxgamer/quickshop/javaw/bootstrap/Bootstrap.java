@@ -43,6 +43,7 @@ public class Bootstrap {
             createAndShowGUI(false);
         }
     }
+
     private static void createAndShowGUI(boolean supportBrowse) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

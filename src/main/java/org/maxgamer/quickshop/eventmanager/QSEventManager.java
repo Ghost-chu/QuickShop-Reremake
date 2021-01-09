@@ -150,6 +150,7 @@ public class QSEventManager implements QuickEventManager, Listener {
         }
     }
 }
+
 @AllArgsConstructor
 class ListenerContainer {
     @Nullable

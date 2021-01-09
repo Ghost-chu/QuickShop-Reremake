@@ -33,7 +33,7 @@ public class PastebinPaster implements PasteInterface {
                 .bodyUrlEncodedForm(HttpRequest.Form.create()
                         .add("api_option", "paste")
                         .add("api_dev_key", developerKey)
-                       //.add("api_paste_private", "1")
+                        //.add("api_paste_private", "1")
                         .add("api_paste_name", "quickshop.paste")
                         .add("api_paste_expire_date", "1Y")
                         //.add("api_user_key", "")

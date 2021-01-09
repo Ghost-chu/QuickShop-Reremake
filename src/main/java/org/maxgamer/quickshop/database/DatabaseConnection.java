@@ -25,8 +25,8 @@ import java.sql.SQLException;
 public class DatabaseConnection implements AutoCloseable {
 
     private final Connection connection;
-    private volatile boolean using;
     private final AbstractDatabaseCore databaseCore;
+    private volatile boolean using;
 
     public DatabaseConnection(AbstractDatabaseCore databaseCore, Connection connection) {
         this.databaseCore = databaseCore;

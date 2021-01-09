@@ -56,11 +56,15 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
+    private static final String shopSignPrefix = "§d§o §r";
+    private static final String shopSignPattern = "§d§o ";
     @NotNull
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
     private final Map<String, Map<String, String>> extra;
+    @EqualsAndHashCode.Exclude
+    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
     private ItemStack item;
     @Nullable
@@ -71,16 +75,12 @@ public class ContainerShop implements Shop {
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
-    @EqualsAndHashCode.Exclude
-    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-    private static final String shopSignPrefix = "§d§o §r";
-    private static final String shopSignPattern = "§d§o ";
     private int version;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -98,6 +98,59 @@ public class ContainerShop implements Shop {
         this.version = s.version;
         this.lastChangedAt = System.currentTimeMillis();
         initDisplayItem();
+    }
+
+    /**
+     * Adds a new shop.
+     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
+     *
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
+     * @param moderator The modertators
+     * @param type      The shop type
+     * @param unlimited The unlimited
+     * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
+     */
+    public ContainerShop(
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull Map<String, Map<String, String>> extra) {
+        this.location = location;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = plugin;
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
+        }
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta.hasDisplayName()) {
+                Util.debugLog("Shop item display is: " + meta.getDisplayName());
+                //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
+                if (meta.getDisplayName().matches("\\{.*\\}")) {
+                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                    //Correct both items
+                    item.setItemMeta(meta);
+                    this.item.setItemMeta(meta);
+                }
+            }
+        }
+        this.shopType = type;
+        this.unlimited = unlimited;
+        this.extra = extra;
+        initDisplayItem();
+        this.lastChangedAt = System.currentTimeMillis();
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     private void initDisplayItem() {
@@ -381,59 +434,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Adds a new shop.
-     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
-     *
-     * @param location  The location of the chest block
-     * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
-     * @param moderator The modertators
-     * @param type      The shop type
-     * @param unlimited The unlimited
-     * @param plugin    The plugin instance
-     * @param extra     The extra data saved by addon
-     */
-    public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
-        this.location = location;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = plugin;
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
-        }
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta.hasDisplayName()) {
-                Util.debugLog("Shop item display is: " + meta.getDisplayName());
-                //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
-                if (meta.getDisplayName().matches("\\{.*\\}")) {
-                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
-                    //Correct both items
-                    item.setItemMeta(meta);
-                    this.item.setItemMeta(meta);
-                }
-            }
-        }
-        this.shopType = type;
-        this.unlimited = unlimited;
-        this.extra = extra;
-        initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
-    }
-
-    /**
      * @return The ItemStack type of this shop
      */
     public @NotNull Material getMaterial() {
@@ -626,6 +626,30 @@ public class ContainerShop implements Shop {
         lines[1] = shopSignPrefix + lines[1] + " ";
 
         return lines;
+    }
+
+    /**
+     * Changes all lines of text on a sign near the shop
+     *
+     * @param lines The array of lines to change. Index is line number.
+     */
+    @Override
+    public void setSignText(@NotNull String[] lines) {
+        for (Sign sign : this.getSigns()) {
+            if (Arrays.equals(sign.getLines(), lines)) {
+                //Util.debugLog("Skipped new sign text setup: Same content");
+                continue;
+            }
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+            sign.update(true);
+            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
+        }
+        //Update the recognize method after converted
+        if (getShopVersion() == 0) {
+            setShopVersion(1);
+        }
     }
 
     /**
@@ -881,30 +905,6 @@ public class ContainerShop implements Shop {
         this.shopType = newShopType;
         this.setSignText();
         update();
-    }
-
-    /**
-     * Changes all lines of text on a sign near the shop
-     *
-     * @param lines The array of lines to change. Index is line number.
-     */
-    @Override
-    public void setSignText(@NotNull String[] lines) {
-        for (Sign sign : this.getSigns()) {
-            if (Arrays.equals(sign.getLines(), lines)) {
-                //Util.debugLog("Skipped new sign text setup: Same content");
-                continue;
-            }
-            for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i]);
-            }
-            sign.update(true);
-            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
-        }
-        //Update the recognize method after converted
-        if (getShopVersion() == 0) {
-            setShopVersion(1);
-        }
     }
 
     /**

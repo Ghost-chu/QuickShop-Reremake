@@ -68,11 +68,9 @@ public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
     private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
-
-    private static QuickShop plugin = QuickShop.getInstance();
-
     private static final DecimalFormat decimalFormat = processFormat();
     public static GameLanguage gameLanguage;
+    private static QuickShop plugin = QuickShop.getInstance();
     @Getter
     private static YamlConfiguration enchi18n;
     private static boolean inited;
