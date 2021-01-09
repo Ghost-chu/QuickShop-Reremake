@@ -60,7 +60,6 @@ public class QSEventManager implements QuickEventManager, Listener {
     }
 
     private void rescan() {
-        plugin.getLogger().info("QuickShop Event Manager is scanning the classes...");
         this.ignoredListener.clear();
         plugin.getConfig().getStringList("shop.protection-checking-listener-blacklist").forEach(input -> {
             if (StringUtils.isEmpty(input)) {
@@ -69,10 +68,11 @@ public class QSEventManager implements QuickEventManager, Listener {
             try {
                 Class<?> clazz = Class.forName(input);
                 this.ignoredListener.add(clazz);
+                Util.debugLog("Successfully added blacklist: " + clazz.getName());
             } catch (ClassNotFoundException ignored) {
+                Util.debugLog("Failed to add blacklist (not found): " + input);
             }
         });
-        plugin.getLogger().info("Completed.");
     }
 
     public void callEvent(Event event) {
