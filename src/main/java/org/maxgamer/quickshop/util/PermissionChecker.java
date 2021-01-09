@@ -125,7 +125,7 @@ public class PermissionChecker {
                 if (cancel && !isCancelled()) {
                     Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                        Util.debugLog(element.getClassName() + element.getMethodName() + element.getLineNumber());
+                        Util.debugLog(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
                     }
                     isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:

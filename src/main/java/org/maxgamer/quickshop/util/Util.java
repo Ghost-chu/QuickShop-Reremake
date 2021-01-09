@@ -348,6 +348,7 @@ public class Util {
         lock.writeLock().unlock();
     }
 
+
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
      *
