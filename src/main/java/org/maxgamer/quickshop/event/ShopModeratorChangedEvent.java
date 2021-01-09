@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.shop.ShopModerator;
@@ -29,11 +28,9 @@ import org.maxgamer.quickshop.shop.ShopModerator;
  */
 public class ShopModeratorChangedEvent extends QSEvent {
 
-    @Getter
     @NotNull
     private final ShopModerator moderator;
 
-    @Getter
     @NotNull
     private final Shop shop;
 
@@ -49,4 +46,21 @@ public class ShopModeratorChangedEvent extends QSEvent {
         this.moderator = shopModerator;
     }
 
+    /**
+     * Gets the shop moderators
+     *
+     * @return the shop
+     */
+    public @NotNull ShopModerator getModerator() {
+        return this.moderator;
+    }
+
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }

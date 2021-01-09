@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -32,15 +31,12 @@ import org.maxgamer.quickshop.shop.Shop;
  */
 public class ShopDisplayItemSpawnEvent extends QSEvent implements Cancellable {
 
-    @Getter
     @NotNull
     private final DisplayType displayType;
 
-    @Getter
     @NotNull
     private final ItemStack itemStack;
 
-    @Getter
     @NotNull
     private final Shop shop;
 
@@ -81,4 +77,30 @@ public class ShopDisplayItemSpawnEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the current display type
+     *
+     * @return DisplayType
+     */
+    public @NotNull DisplayType getDisplayType() {
+        return this.displayType;
+    }
+
+    /**
+     * Gets the ItemStack used for display
+     *
+     * @return The display ItemStack
+     */
+    public @NotNull ItemStack getItemStack() {
+        return this.itemStack;
+    }
+
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }

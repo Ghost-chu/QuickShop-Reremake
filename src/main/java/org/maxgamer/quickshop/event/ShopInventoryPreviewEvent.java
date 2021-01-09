@@ -19,19 +19,19 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Calling when previewing Shop
+ */
 public class ShopInventoryPreviewEvent extends QSEvent implements Cancellable {
 
-    @Getter
     @NotNull
     private final ItemStack itemStack;
 
-    @Getter
     @NotNull
     private final Player player;
 
@@ -58,4 +58,21 @@ public class ShopInventoryPreviewEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the ItemStack that previewing
+     *
+     * @return The ItemStack
+     */
+    public @NotNull ItemStack getItemStack() {
+        return this.itemStack;
+    }
+
+    /**
+     * Gets the Player that open gui for
+     *
+     * @return The player
+     */
+    public @NotNull Player getPlayer() {
+        return this.player;
+    }
 }

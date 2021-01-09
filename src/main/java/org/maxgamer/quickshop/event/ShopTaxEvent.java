@@ -19,20 +19,17 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
 
+/**
+ * Calling when shop tax calcing
+ */
 public class ShopTaxEvent extends QSEvent {
-    @Getter
     private final UUID user;
-    @Getter
     private final Shop shop;
-    @Getter
-    @Setter
     private double tax;
 
     /**
@@ -48,5 +45,39 @@ public class ShopTaxEvent extends QSEvent {
         this.user = user;
     }
 
+    /**
+     * Gets the user (buyer or seller)
+     *
+     * @return User
+     */
+    public UUID getUser() {
+        return this.user;
+    }
 
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public Shop getShop() {
+        return this.shop;
+    }
+
+    /**
+     * Gets the tax in purchase
+     *
+     * @return tax
+     */
+    public double getTax() {
+        return this.tax;
+    }
+
+    /**
+     * Sets the new tax in purchase
+     *
+     * @return new tax
+     */
+    public void setTax(double tax) {
+        this.tax = tax;
+    }
 }

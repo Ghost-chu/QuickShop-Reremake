@@ -19,8 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -31,29 +29,25 @@ import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
 
+/**
+ * Calling when purchaser purchased a shop
+ */
 public class ShopPurchaseEvent extends QSEvent implements Cancellable {
 
-    @Getter
     @NotNull
     private final Shop shop;
 
-    @Getter
     @NotNull
     private final UUID purchaser;
 
-    @Getter
     @Nullable
     @Deprecated
     private final Player player;
 
-    @Getter
     @NotNull
     private final Inventory purchaserInventory;
 
-    @Getter
     private final int amount;
-    @Getter
-    @Setter
     private double total;
 
     private boolean cancelled;
@@ -88,4 +82,68 @@ public class ShopPurchaseEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
+
+    /**
+     * Gets the purchaser, that maybe is a online/offline/virtual player.
+     *
+     * @return The purchaser uuid
+     */
+    public @NotNull UUID getPurchaser() {
+        return this.purchaser;
+    }
+
+    /**
+     * Gets the purchaser
+     *
+     * @return Player or null if purchaser is offline/virtual player.
+     * @deprecated Purchaser may is a online/offline/virtual player.
+     */
+    @Deprecated
+    public @Nullable Player getPlayer() {
+        return this.player;
+    }
+
+    /**
+     * Gets the inventory of purchaser (the item will put to)
+     *
+     * @return The inventory
+     */
+    public @NotNull Inventory getPurchaserInventory() {
+        return this.purchaserInventory;
+    }
+
+    /**
+     * Gets the item stack amounts
+     *
+     * @return Item stack amounts
+     */
+    public int getAmount() {
+        return this.amount;
+    }
+
+    /**
+     * Gets the total money trans for
+     *
+     * @return Total money
+     */
+    public double getTotal() {
+        return this.total;
+    }
+
+    /**
+     * Sets new total money trans for
+     *
+     * @param total Total money
+     */
+    public void setTotal(double total) {
+        this.total = total;
+    }
 }

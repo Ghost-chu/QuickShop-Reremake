@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -31,11 +30,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopPreCreateEvent extends QSEvent implements Cancellable {
 
-    @Getter
     @NotNull
     private final Location location;
 
-    @Getter
     @NotNull
     private final Player player;
 
@@ -63,4 +60,21 @@ public class ShopPreCreateEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the location that shop will created on
+     *
+     * @return The shop location
+     */
+    public @NotNull Location getLocation() {
+        return this.location;
+    }
+
+    /**
+     * Gets the creator
+     *
+     * @return creator
+     */
+    public @NotNull Player getPlayer() {
+        return this.player;
+    }
 }
