@@ -1,4 +1,7 @@
 # QuickShop-Reremake
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f72f3d1577064834b0495073fd53b4bd)](https://app.codacy.com/gh/Ghost-chu/QuickShop-Reremake?utm_source=github.com&utm_medium=referral&utm_content=Ghost-chu/QuickShop-Reremake&utm_campaign=Badge_Grade_Settings)
+
 QuickShop is a shop plugin, that allows players to sell items from a chest with no commands.  It allows players to purchase any number of items easily.  In fact, this plugin doesn't even have any commands that a player would ever need!  
 
 QuickShop-Reremake is a fork for QuickShop NotLikeMe, QuickShop-Reremake has more features and bug fixes.  
