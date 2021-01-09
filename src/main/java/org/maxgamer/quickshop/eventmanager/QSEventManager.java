@@ -118,6 +118,7 @@ public class QSEventManager implements QuickEventManager, Listener {
                 continue;
             }
 
+
             try {
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {

@@ -960,7 +960,7 @@ public class Util {
         }
         Shop shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation());
         if (shop == null) {
-            shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().add(0, 1, 0));
+            shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().clone().add(0, 1, 0));
         }
         return shop != null && !shop.getModerator().isModerator(p.getUniqueId());
     }
