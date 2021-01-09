@@ -114,9 +114,23 @@ public class QSEventManager implements QuickEventManager, Listener {
                 continue;
             }
             Class<?> regClass = registration.getListener().getClass();
-            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass, registration.getPlugin()))) {
+
+
+            boolean skip = false;
+            for (ListenerContainer container : this.ignoredListener) {
+                if (container.matches(regClass, registration.getPlugin())) {
+                    skip = true;
+                    break;
+                }
+            }
+
+            if (skip) {
                 continue;
             }
+
+//            if (this.ignoredListener.stream().anyMatch(listenerContainer -> listenerContainer.matches(regClass, registration.getPlugin()))) {
+//                continue;
+//            }
 
 
             try {
