@@ -483,6 +483,7 @@ public class QuickShop extends JavaPlugin {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
         this.quickChat = QuickChatType.createByType(this.quickChatType);
+
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -915,6 +916,12 @@ public class QuickShop extends JavaPlugin {
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
+            String eventAdapter;
+            if (getConfig().getInt("shop.protection-checking-handler") == 1) {
+                eventAdapter = "QUICKSHOP";
+            } else {
+                eventAdapter = "BUKKIT";
+            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
@@ -929,11 +936,13 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> String.valueOf(getConfig().getBoolean("disable-debuglogger"))));
             metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
+            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> this.getQuickChatType().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
+            metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
