@@ -959,29 +959,10 @@ public class Util {
             return false;
         }
         Shop shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation());
-        return shop != null && shop.getModerator().isModerator(p.getUniqueId());
-//        // Check 5 relative positions that can be affected by a hopper: behind, in front of, to the
-//        // right,
-//        // to the left and underneath.
-//        Block[] blocks = new Block[5];
-//        blocks[0] = b.getRelative(0, 0, -1);
-//        blocks[1] = b.getRelative(0, 0, 1);
-//        blocks[2] = b.getRelative(1, 0, 0);
-//        blocks[3] = b.getRelative(-1, 0, 0);
-//        blocks[4] = b.getRelative(0, 1, 0);
-//        for (Block c : blocks) {
-//            Shop firstShop = plugin.getShopManager().getShop(c.getLocation());
-//            // If firstShop is null but is container, it can be used to drain contents from a shop created
-//            // on secondHalf.
-//            Block secondHalf = getSecondHalf(c);
-//            Shop secondShop =
-//                    secondHalf == null ? null : plugin.getShopManager().getShop(secondHalf.getLocation());
-//            if (firstShop != null && !p.getUniqueId().equals(firstShop.getOwner())
-//                    || secondShop != null && !p.getUniqueId().equals(secondShop.getOwner())) {
-//                return true;
-//            }
-//        }
-//        return false;
+        if (shop == null) {
+            shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().add(0, 1, 0));
+        }
+        return shop != null && !shop.getModerator().isModerator(p.getUniqueId());
     }
 
     /**
@@ -1172,10 +1153,6 @@ public class Util {
         }
     }
 
-    // Code from HexChat ^ ^
-    // QuickShop also supports Bukkit way and HexChat way, just use that what is you want.
-    //private static final Pattern hexPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
-
     /**
      * Parse colors for the Text.
      *
@@ -1185,15 +1162,6 @@ public class Util {
     @NotNull
     public static String parseColours(@NotNull String text) {
         text = ChatColor.translateAlternateColorCodes('&', text);
-//        Matcher matcher = hexPattern.matcher(text);
-//        if (matcher.find()) {
-//            final StringBuffer buffer = new StringBuffer();
-//            do {
-//                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group(1)).toString());
-//            } while (matcher.find());
-//            matcher.appendTail(buffer);
-//            return buffer.toString();
-//        }
         return text;
     }
 
@@ -1446,14 +1414,6 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
-    //
-    // public static void shoppablesCheck(@NotNull Shop shop) {
-    //     if (!Util.canBeShop(shop.getLocation().getBlock())) {
-    //         Util.debugLog("This shopblock can't be a shop, deleting...");
-    //         shop.onUnload();
-    //         shop.delete();
-    //     }
-    // }
 
     /**
      * Check QuickShop is running on dev edition or not.
@@ -1489,35 +1449,6 @@ public class Util {
     public static boolean isDyes(@NotNull Material material) {
         return material.name().toUpperCase().endsWith("_DYE");
     }
-
-//    /**
-//     * Calc the string md5
-//     *
-//     * @param s string
-//     * @return md5
-//     */
-//    @NotNull
-//    public static String md5(final String s) {
-//        try {
-//            final MessageDigest instance = MessageDigest.getInstance("MD5");
-//            instance.update(s.getBytes(StandardCharsets.UTF_8));
-//            final byte[] digest = instance.digest();
-//            final StringBuilder sb = new StringBuilder();
-//            for (int b : digest) {
-//                int n = b;
-//                if (n < 0) {
-//                    n += 256;
-//                }
-//                if (n < 16) {
-//                    sb.append("0");
-//                }
-//                sb.append(Integer.toHexString(n));
-//            }
-//            return sb.toString().toLowerCase();
-//        } catch (Exception ex) {
-//            return "";
-//        }
-//    }
 
     /**
      * Call a event and check it is cancelled.
