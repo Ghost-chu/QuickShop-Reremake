@@ -63,20 +63,18 @@ public class SubCommand_Paste implements CommandProcesser {
                         pasteToLocalFile(sender);
                         return;
                     }
-
+                    MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
                     if (!pasteToPastebin(sender)) {
                         MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
                         pasteToLocalFile(sender);
                     }
 
                 }
-                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
             }
         }.runTaskAsynchronously(plugin);
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
         final Paste paste = new Paste(plugin);
         final String pasteText = paste.genNewPaste();
         String pasteResult = paste.paste(pasteText);
