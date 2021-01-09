@@ -42,6 +42,7 @@ import java.util.logging.Level;
 
 public class BungeeQuickChat implements QuickChat {
     private final QuickShop plugin = QuickShop.getInstance();
+
     @Override
     public void send(@NotNull CommandSender receiver, @Nullable String message) {
         if (StringUtils.isEmpty(message)) {

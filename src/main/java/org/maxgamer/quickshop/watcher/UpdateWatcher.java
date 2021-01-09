@@ -66,29 +66,29 @@ public class UpdateWatcher implements Listener {
                                 .getLogger()
                                 .info("Update here: https://www.spigotmc.org/resources/62575/");
 
-                            for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (QuickShop.getPermissionManager()
-                                        .hasPermission(player, "quickshop.alerts")) {
-                                    List<String> notifys =
-                                            MsgUtil.getI18nFile().getStringList("updatenotify.list");
-                                    Random random = new Random();
-                                    int notifyNum = -1;
-                                    if (notifys.size() > 1) {
-                                        notifyNum = random.nextInt(notifys.size());
-                                    }
-                                    String notify;
-                                    if (notifyNum > 0) { // Translate bug.
-                                        notify = notifys.get(notifyNum);
-                                    } else {
-                                        notify = "New update {0} now avaliable! Please update!";
-                                    }
-                                    notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
-                                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                                    player.sendMessage(ChatColor.GREEN + notify);
-                                    player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-                                    player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
-                                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (QuickShop.getPermissionManager()
+                                    .hasPermission(player, "quickshop.alerts")) {
+                                List<String> notifys =
+                                        MsgUtil.getI18nFile().getStringList("updatenotify.list");
+                                Random random = new Random();
+                                int notifyNum = -1;
+                                if (notifys.size() > 1) {
+                                    notifyNum = random.nextInt(notifys.size());
                                 }
+                                String notify;
+                                if (notifyNum > 0) { // Translate bug.
+                                    notify = notifys.get(notifyNum);
+                                } else {
+                                    notify = "New update {0} now avaliable! Please update!";
+                                }
+                                notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                                player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                                player.sendMessage(ChatColor.GREEN + notify);
+                                player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                                player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+                                player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                            }
                         }
                     }
                 }.runTaskTimerAsynchronously(QuickShop.getInstance(), 1, 20 * 60 * 60);

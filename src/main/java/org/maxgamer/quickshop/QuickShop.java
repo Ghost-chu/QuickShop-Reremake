@@ -96,6 +96,7 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
+    private static boolean loaded = false;
     /**
      * WIP
      */
@@ -106,6 +107,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
+    private final ConfigProvider configProvider = new ConfigProvider(this);
     boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
@@ -244,13 +246,10 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
-    private final ConfigProvider configProvider = new ConfigProvider(this);
     @Getter
     private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
     @Getter
     private QuickChat quickChat = new BungeeQuickChat();
-
-    private static boolean loaded = false;
 
     @NotNull
     public static QuickShop getInstance() {

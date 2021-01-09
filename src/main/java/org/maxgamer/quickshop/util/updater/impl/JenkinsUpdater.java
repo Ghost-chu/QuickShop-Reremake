@@ -38,9 +38,8 @@ import java.util.UUID;
 
 public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
-
-    private BuildInfo lastRemoteBuildInfo;
     private final String jobUrl;
+    private BuildInfo lastRemoteBuildInfo;
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;

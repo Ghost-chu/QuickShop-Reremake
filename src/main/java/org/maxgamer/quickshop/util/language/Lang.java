@@ -36,9 +36,9 @@ import java.util.function.Consumer;
 public class Lang {
     private final File file;
     private final Consumer<FileConfiguration> upgrading;
+    private final ImmutableList<Formatter> formatters;
     @Getter
     private FileConfiguration map;
-    private final ImmutableList<Formatter> formatters;
 
     /**
      * Creating Language utils from a file
