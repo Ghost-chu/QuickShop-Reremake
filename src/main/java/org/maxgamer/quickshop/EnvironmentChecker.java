@@ -82,7 +82,8 @@ public class EnvironmentChecker {
             plugin.getLogger().warning(jvmWarning);
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                Thread.interrupted();
             }
         }
 

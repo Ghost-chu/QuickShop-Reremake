@@ -50,6 +50,8 @@ public class UpdateWatcher implements Listener {
         return cronTask;
     }
 
+    private final Random random = new Random();
+
     public void init() {
         cronTask =
                 new BukkitRunnable() {
@@ -71,7 +73,6 @@ public class UpdateWatcher implements Listener {
                                     .hasPermission(player, "quickshop.alerts")) {
                                 List<String> notifys =
                                         MsgUtil.getI18nFile().getStringList("updatenotify.list");
-                                Random random = new Random();
                                 int notifyNum = -1;
                                 if (notifys.size() > 1) {
                                     notifyNum = random.nextInt(notifys.size());
@@ -112,7 +113,6 @@ public class UpdateWatcher implements Listener {
                     return;
                 }
                 List<String> notifys = MsgUtil.getI18nFile().getStringList("updatenotify.list");
-                Random random = new Random();
                 int notifyNum = random.nextInt(notifys.size());
                 String notify = notifys.get(notifyNum);
                 notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
