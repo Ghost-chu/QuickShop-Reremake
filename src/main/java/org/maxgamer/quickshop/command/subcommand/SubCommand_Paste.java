@@ -65,6 +65,7 @@ public class SubCommand_Paste implements CommandProcesser {
                     }
 
                     if (!pasteToPastebin(sender)) {
+                        MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
                         pasteToLocalFile(sender);
                     }
 
@@ -88,7 +89,6 @@ public class SubCommand_Paste implements CommandProcesser {
     }
 
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
-        MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
         file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
