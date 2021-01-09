@@ -866,7 +866,6 @@ public class ShopManager {
             Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
             info.getItem().setAmount(1);
         }
-        Util.debugLog("actionCreate");
 
         // Checking the shop can be created
         Util.debugLog("Calling for protection check...");
@@ -893,8 +892,7 @@ public class ShopManager {
             MsgUtil.sendMessage(p, MsgUtil.getMessage("chest-was-removed", p));
             return;
         }
-        if (info.getLocation().getBlock().getType()
-                == Material.ENDER_CHEST) { // FIXME: Need a better impl
+        if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) { // FIXME: Need a better impl
             if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
                 return;
             }
@@ -1322,15 +1320,14 @@ public class ShopManager {
         Bukkit.getPluginManager().callEvent(se);
     }
 
-    private boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
+    public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
         Player player = Bukkit.getPlayer(uuid);
         return shopIsNotValid(player, info, shop);
     }
 
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendMessage(
-                    p, "Error: Economy system not loaded, type /qs main command to get details.");
+            MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {

@@ -62,7 +62,7 @@ public class QSEventManager implements QuickEventManager, Listener {
         this.rescan();
     }
 
-    private void rescan() {
+    private synchronized void rescan() {
         this.ignoredListener.clear();
         plugin
                 .getConfig()
