@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 121
+config-version: 122
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -346,6 +346,16 @@ shop:
   #Disallow executing protection checking in worlds.
   protection-checking-blacklist:
     - disabled_world
+
+  #Choose which one handler should we use for protection checking
+  #0=Bukkit defaults
+  #1=QuickShop (May have compatibility issue) but allow you use protection-checking-listener-blacklist
+  protection-checking-handler: 0
+
+  #The listener list to skipped when do protection-checking
+  #Required protection-checking-handler set to 1
+  protection-checking-listener-blacklist:
+    - ignored_listener
 
   #How many shops can be checked in once? (Container exists check)
   max-shops-checks-in-once: 100
