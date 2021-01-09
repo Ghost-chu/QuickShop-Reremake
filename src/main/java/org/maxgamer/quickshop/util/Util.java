@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -80,6 +81,7 @@ public class Util {
     private static Object serverInstance;
     private static Field tpsField;
     private static List<String> worldBlacklist = new ArrayList<>(5);
+    @Getter
     private static boolean disableDebugLogger = false;
     private static boolean currencySymbolOnRight;
     private static String alternateCurrencySymbol;

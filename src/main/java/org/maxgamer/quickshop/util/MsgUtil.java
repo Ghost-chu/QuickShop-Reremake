@@ -996,6 +996,9 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
+        if (Util.isDisableDebugLogger()) {
+            return;
+        }
         for (StackTraceElement stackTraceElement : traces) {
             final String className = stackTraceElement.getClassName();
             final String methodName = stackTraceElement.getMethodName();
