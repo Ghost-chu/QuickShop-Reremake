@@ -117,7 +117,10 @@
                             <pattern>net.kyori.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>
                         </relocation>
-
+                        <relocation>
+                            <pattern>me.lucko.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>com.rollbar.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.rollbar.</shadedPattern>
@@ -278,6 +281,10 @@
         <repository>
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
+        </repository>
+        <repository>
+            <id>minecraft-repo</id>
+            <url>https://libraries.minecraft.net/</url>
         </repository>
     </repositories>
 
@@ -673,6 +680,13 @@
             <groupId>de.themoep</groupId>
             <artifactId>minedown-adventure</artifactId>
             <version>1.7.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
