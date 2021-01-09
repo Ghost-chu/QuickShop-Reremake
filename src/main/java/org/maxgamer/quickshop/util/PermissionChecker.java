@@ -35,6 +35,9 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.ProtectionCheckStatus;
 import org.maxgamer.quickshop.event.ShopProtectionCheckEvent;
+import org.maxgamer.quickshop.eventmanager.BukkitEventManager;
+import org.maxgamer.quickshop.eventmanager.QSEventManager;
+import org.maxgamer.quickshop.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
@@ -43,9 +46,17 @@ public class PermissionChecker {
 
     private final boolean usePermissionChecker;
 
+    private final QuickEventManager eventManager;
+
     public PermissionChecker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
+        if (plugin.getConfig().getInt("shop.protection-checking-handler") == 1) {
+            this.eventManager = new QSEventManager(plugin);
+        } else {
+            this.eventManager = new BukkitEventManager();
+        }
+        plugin.getLogger().info("Manager now selected: " + this.eventManager.getClass().getSimpleName());
     }
 
     /**
@@ -114,7 +125,7 @@ public class PermissionChecker {
                 if (cancel && !isCancelled()) {
                     Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                        Util.debugLog(element.getClassName() + element.getMethodName() + element.getLineNumber());
+                        Util.debugLog(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
                     }
                     isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:
@@ -133,10 +144,7 @@ public class PermissionChecker {
             }
         };
         // Call for event for protection check start
-        Bukkit.getPluginManager()
-                .callEvent(
-                        new ShopProtectionCheckEvent(
-                                block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
+        this.eventManager.callEvent(new ShopProtectionCheckEvent(block.getLocation(), player, ProtectionCheckStatus.BEGIN, beMainHand));
         beMainHand.setDropItems(false);
         beMainHand.setExpToDrop(0);
 
@@ -146,7 +154,7 @@ public class PermissionChecker {
             public void onTestEvent(BlockBreakEvent event) {
                 if (event.equals(beMainHand)) {
                     // Call for event for protection check end
-                    Bukkit.getPluginManager().callEvent(
+                    eventManager.callEvent(
                             new ShopProtectionCheckEvent(
                                     block.getLocation(), player, ProtectionCheckStatus.END, beMainHand));
                     if (!event.isCancelled()) {
@@ -159,7 +167,7 @@ public class PermissionChecker {
             }
         }, plugin);
         plugin.getCompatibilityTool().toggleProtectionListeners(false, player);
-        Bukkit.getPluginManager().callEvent(beMainHand);
+        this.eventManager.callEvent(beMainHand);
         plugin.getCompatibilityTool().toggleProtectionListeners(true, player);
 
         return isCanBuild;

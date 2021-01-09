@@ -96,6 +96,7 @@ public class QuickShop extends JavaPlugin {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
+    private static boolean loaded = false;
     /**
      * WIP
      */
@@ -106,6 +107,7 @@ public class QuickShop extends JavaPlugin {
      */
     @Getter
     private final Map<String, Integer> limits = new HashMap<>(15);
+    private final ConfigProvider configProvider = new ConfigProvider(this);
     boolean onLoadCalled = false;
     @Getter
     private IntegrationHelper integrationHelper;
@@ -244,13 +246,10 @@ public class QuickShop extends JavaPlugin {
     private UpdateWatcher updateWatcher;
     @Getter
     private BuildInfo buildInfo;
-    private final ConfigProvider configProvider = new ConfigProvider(this);
     @Getter
     private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
     @Getter
     private QuickChat quickChat = new BungeeQuickChat();
-
-    private static boolean loaded = false;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -484,6 +483,7 @@ public class QuickShop extends JavaPlugin {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
         this.quickChat = QuickChatType.createByType(this.quickChatType);
+
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -916,6 +916,12 @@ public class QuickShop extends JavaPlugin {
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
+            String eventAdapter;
+            if (getConfig().getInt("shop.protection-checking-handler") == 1) {
+                eventAdapter = "QUICKSHOP";
+            } else {
+                eventAdapter = "BUKKIT";
+            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
@@ -930,11 +936,13 @@ public class QuickShop extends JavaPlugin {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
-            metrics.addCustomChart(new Metrics.SimplePie("disable_background_debug_logger", () -> String.valueOf(getConfig().getBoolean("disable-debuglogger"))));
             metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> DisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
+            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> this.getQuickChatType().name()));
+            metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
+            metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
             // Exp for stats, maybe i need improve this, so i add this.// Submit now!
             getLogger().info("Metrics submitted.");
         } else {
@@ -1660,6 +1668,16 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("debug.adventure", false);
             getConfig().set("shop.finding.all", false);
             getConfig().set("chat-type", 0);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 120) {
+            getConfig().set("shop.finding.exclude-out-of-stock", false);
+            getConfig().set("chat-type", 0);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 121) {
+            getConfig().set("shop.protection-checking-handler", 0);
+            getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {

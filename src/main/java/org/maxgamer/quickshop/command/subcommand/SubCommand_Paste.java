@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.util.paste.Paste;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -52,45 +53,61 @@ public class SubCommand_Paste implements CommandProcesser {
                         sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
                         return;
                     } else {
-                        if (!cmdArg[0].equals("--force")) {
+                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--ignore-csf"))) {
                             sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
                             return;
                         }
                     }
-                }
-                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
-                final Paste paste = new Paste(plugin);
-                final String pasteText = paste.genNewPaste();
-                String pasteResult = paste.paste(pasteText);
-                if (pasteResult != null) {
-                    //MsgUtil.sendMessage(sender, pasteResult);
-                    // So we send direct message to sender to make sure our paste system still can working if MsgUtil down.
-                    sender.sendMessage(pasteResult);
-                    plugin.log(pasteResult);
-                } else {
-                    MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
-                    File file = new File(plugin.getDataFolder(), "paste");
-                    file.mkdirs();
-                    file =
-                            new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
-                    try {
-                        boolean createResult = file.createNewFile();
-                        Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
 
-                        try (FileWriter fwriter = new FileWriter(file)) {
-                            fwriter.write(pasteText);
-                            fwriter.flush();
-                        }
-                        MsgUtil.sendMessage(sender, "Paste was saved to your server at: " + file.getAbsolutePath());
-                    } catch (IOException e) {
-                        plugin.getSentryErrorReporter().ignoreThrow();
-                        e.printStackTrace();
-                        MsgUtil.sendMessage(sender, "Saving failed, output to console...");
-                        plugin.getLogger().info(pasteText);
+                    if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("--file"))) {
+                        pasteToLocalFile(sender);
+                        return;
                     }
+                    MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
+                    if (!pasteToPastebin(sender)) {
+                        MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
+                        pasteToLocalFile(sender);
+                    }
+
                 }
             }
         }.runTaskAsynchronously(plugin);
+    }
+
+    private boolean pasteToPastebin(@NotNull CommandSender sender) {
+        final Paste paste = new Paste(plugin);
+        final String pasteText = paste.genNewPaste();
+        String pasteResult = paste.paste(pasteText);
+        if (pasteResult != null) {
+            sender.sendMessage(pasteResult);
+            plugin.log(pasteResult);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean pasteToLocalFile(@NotNull CommandSender sender) {
+        File file = new File(plugin.getDataFolder(), "paste");
+        file.mkdirs();
+        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
+        final Paste paste = new Paste(plugin);
+        final String pasteText = paste.genNewPaste();
+        try {
+            boolean createResult = file.createNewFile();
+            Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
+            try (FileWriter fwriter = new FileWriter(file)) {
+                fwriter.write(pasteText);
+                fwriter.flush();
+            }
+            MsgUtil.sendMessage(sender, "Paste was saved to your server at: " + file.getAbsolutePath());
+            return true;
+        } catch (IOException e) {
+            plugin.getSentryErrorReporter().ignoreThrow();
+            e.printStackTrace();
+            MsgUtil.sendMessage(sender, "Saving failed, output to console...");
+            plugin.getLogger().info(pasteText);
+            return false;
+        }
     }
 
 

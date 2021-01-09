@@ -68,11 +68,9 @@ public class MsgUtil {
     private static final String invaildMsg = "Invaild message";
 
     private static final Map<UUID, LinkedList<String>> outGoingPlayerMessages = Maps.newConcurrentMap();
-
-    private static QuickShop plugin = QuickShop.getInstance();
-
     private static final DecimalFormat decimalFormat = processFormat();
     public static GameLanguage gameLanguage;
+    private static QuickShop plugin = QuickShop.getInstance();
     @Getter
     private static YamlConfiguration enchi18n;
     private static boolean inited;
@@ -996,11 +994,16 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(StackTraceElement[] traces) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (StackTraceElement trace : traces) {
-            stringBuilder.append(trace.getClassName()).append("#").append(trace.getMethodName()).append("#").append(trace.getLineNumber());
+        if (Util.isDisableDebugLogger()) {
+            return;
         }
-        Util.debugLog(stringBuilder.toString());
+        for (StackTraceElement stackTraceElement : traces) {
+            final String className = stackTraceElement.getClassName();
+            final String methodName = stackTraceElement.getMethodName();
+            final int codeLine = stackTraceElement.getLineNumber();
+            final String fileName = stackTraceElement.getFileName();
+            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
+        }
     }
 
     @SneakyThrows

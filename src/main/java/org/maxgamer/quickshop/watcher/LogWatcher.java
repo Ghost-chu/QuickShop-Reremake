@@ -40,10 +40,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
 public class LogWatcher extends BukkitRunnable implements AutoCloseable {
-    private final Queue<String> logs = new ConcurrentLinkedQueue<>();
-
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
     private static final DateTimeFormatter logFileFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
+    private final Queue<String> logs = new ConcurrentLinkedQueue<>();
     private FileWriter logFileWriter = null;
 
     private PrintWriter pw;

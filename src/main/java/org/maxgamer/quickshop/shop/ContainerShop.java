@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import lombok.EqualsAndHashCode;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +35,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,11 +56,15 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
+    private static final String shopSignPrefix = "§d§o §r";
+    private static final String shopSignPattern = "§d§o ";
     @NotNull
     private final Location location;
     @EqualsAndHashCode.Exclude
     private final QuickShop plugin;
     private final Map<String, Map<String, String>> extra;
+    @EqualsAndHashCode.Exclude
+    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     @NotNull
     private ItemStack item;
     @Nullable
@@ -68,16 +75,12 @@ public class ContainerShop implements Shop {
     private volatile boolean isDeleted = false;
     @EqualsAndHashCode.Exclude
     private volatile boolean createBackup = false;
-    @EqualsAndHashCode.Exclude
-    private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
     @EqualsAndHashCode.Exclude
     private long lastChangedAt;
-    private static final String shopSignPrefix = "§d§o §r";
-    private static final String shopSignPattern = "§d§o ";
     private int version;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -95,6 +98,59 @@ public class ContainerShop implements Shop {
         this.version = s.version;
         this.lastChangedAt = System.currentTimeMillis();
         initDisplayItem();
+    }
+
+    /**
+     * Adds a new shop.
+     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
+     *
+     * @param location  The location of the chest block
+     * @param price     The cost per item
+     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
+     *                  references
+     * @param moderator The modertators
+     * @param type      The shop type
+     * @param unlimited The unlimited
+     * @param plugin    The plugin instance
+     * @param extra     The extra data saved by addon
+     */
+    public ContainerShop(
+            @NotNull QuickShop plugin,
+            @NotNull Location location,
+            double price,
+            @NotNull ItemStack item,
+            @NotNull ShopModerator moderator,
+            boolean unlimited,
+            @NotNull ShopType type,
+            @NotNull Map<String, Map<String, String>> extra) {
+        this.location = location;
+        this.price = price;
+        this.moderator = moderator;
+        this.item = item.clone();
+        this.plugin = plugin;
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
+        }
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta.hasDisplayName()) {
+                Util.debugLog("Shop item display is: " + meta.getDisplayName());
+                //https://hub.spigotmc.org/jira/browse/SPIGOT-5964
+                if (meta.getDisplayName().matches("\\{.*\\}")) {
+                    meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(GsonComponentSerializer.gson().deserialize(meta.getDisplayName())));
+                    //Correct both items
+                    item.setItemMeta(meta);
+                    this.item.setItemMeta(meta);
+                }
+            }
+        }
+        this.shopType = type;
+        this.unlimited = unlimited;
+        this.extra = extra;
+        initDisplayItem();
+        this.lastChangedAt = System.currentTimeMillis();
+        Map<String, String> dataMap = extra.get(plugin.getName());
+        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
     }
 
     private void initDisplayItem() {
@@ -118,7 +174,8 @@ public class ContainerShop implements Shop {
                         }
                         this.displayItem = new VirtualDisplayItem(this);
 
-                    } catch (Exception e) {
+                        //Catch everything
+                    } catch (Throwable e) {
                         Util.debugLog(e.getMessage());
                         MsgUtil.debugStackTrace(e.getStackTrace());
                         plugin.getConfig().set("shop.display-type", 0);
@@ -377,46 +434,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Adds a new shop.
-     * You need call ShopManager#loadShop if you create from outside of ShopLoader.
-     *
-     * @param location  The location of the chest block
-     * @param price     The cost per item
-     * @param item      The itemstack with the properties we want. This is .cloned, no need to worry about
-     *                  references
-     * @param moderator The modertators
-     * @param type      The shop type
-     * @param unlimited The unlimited
-     * @param plugin    The plugin instance
-     * @param extra     The extra data saved by addon
-     */
-    public ContainerShop(
-            @NotNull QuickShop plugin,
-            @NotNull Location location,
-            double price,
-            @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
-            boolean unlimited,
-            @NotNull ShopType type,
-            @NotNull Map<String, Map<String, String>> extra) {
-        this.location = location;
-        this.price = price;
-        this.moderator = moderator;
-        this.item = item.clone();
-        this.plugin = plugin;
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
-        }
-        this.shopType = type;
-        this.unlimited = unlimited;
-        this.extra = extra;
-        initDisplayItem();
-        this.lastChangedAt = System.currentTimeMillis();
-        Map<String, String> dataMap = extra.get(plugin.getName());
-        version = Integer.parseInt(dataMap != null ? dataMap.getOrDefault("version", "0") : "0");
-    }
-
-    /**
      * @return The ItemStack type of this shop
      */
     public @NotNull Material getMaterial() {
@@ -612,6 +629,30 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Changes all lines of text on a sign near the shop
+     *
+     * @param lines The array of lines to change. Index is line number.
+     */
+    @Override
+    public void setSignText(@NotNull String[] lines) {
+        for (Sign sign : this.getSigns()) {
+            if (Arrays.equals(sign.getLines(), lines)) {
+                //Util.debugLog("Skipped new sign text setup: Same content");
+                continue;
+            }
+            for (int i = 0; i < lines.length; i++) {
+                sign.setLine(i, lines[i]);
+            }
+            sign.update(true);
+            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
+        }
+        //Update the recognize method after converted
+        if (getShopVersion() == 0) {
+            setShopVersion(1);
+        }
+    }
+
+    /**
      * Updates signs attached to the shop
      */
     @Override
@@ -715,7 +756,7 @@ public class ContainerShop implements Shop {
         }
         this.isLoaded = true;
         plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
-        Objects.requireNonNull(plugin.getShopManager().getLoadedShops()).add(this);
+        plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
         // check price restriction
 
@@ -867,30 +908,6 @@ public class ContainerShop implements Shop {
     }
 
     /**
-     * Changes all lines of text on a sign near the shop
-     *
-     * @param lines The array of lines to change. Index is line number.
-     */
-    @Override
-    public void setSignText(@NotNull String[] lines) {
-        for (Sign sign : this.getSigns()) {
-            if (Arrays.equals(sign.getLines(), lines)) {
-                //Util.debugLog("Skipped new sign text setup: Same content");
-                continue;
-            }
-            for (int i = 0; i < lines.length; i++) {
-                sign.setLine(i, lines[i]);
-            }
-            sign.update(true);
-            Bukkit.getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
-        }
-        //Update the recognize method after converted
-        if (getShopVersion() == 0) {
-            setShopVersion(1);
-        }
-    }
-
-    /**
      * Return the shop version
      * Mostly is internal use
      *
@@ -916,7 +933,7 @@ public class ContainerShop implements Shop {
     public @NotNull List<Sign> getSigns() {
         List<Sign> signs = new ArrayList<>(4);
         if (this.getLocation().getWorld() == null) {
-            return signs;
+            return Collections.emptyList();
         }
         Block[] blocks = new Block[4];
         blocks[0] = location.getBlock().getRelative(BlockFace.EAST);

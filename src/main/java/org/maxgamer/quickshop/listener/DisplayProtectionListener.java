@@ -146,7 +146,6 @@ public class DisplayProtectionListener extends ProtectionListenerBase {
     }
 
 
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
         if (DisplayItem.getNowUsing() != DisplayType.REALITEM) {

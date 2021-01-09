@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 120
+config-version: 122
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -263,6 +263,8 @@ shop:
     limit: 10
     #Including non-loaded shops?
     all: true
+    #Check out-of-stock/space shop, may hurt the performance
+    exclude-out-of-stock: false
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'
@@ -344,6 +346,21 @@ shop:
   #Disallow executing protection checking in worlds.
   protection-checking-blacklist:
     - disabled_world
+
+  #Choose which one handler should we use for protection checking
+  #0=Bukkit defaults
+  #1=QuickShop (May have compatibility issue) but allow you use protection-checking-listener-blacklist
+  protection-checking-handler: 0
+
+  #The listener list to skipped when do protection-checking
+  #Required protection-checking-handler set to 1
+  # Examples:
+  # xx.xxx.xxx.xxxxx.BlockBreakListenerClass <- This will skip calling to xx.xxx.xxx.xxxxx.BlockBreakListenerClass (have better performance cause this way not string based but others is)
+  # xx.xx.xxx.xxxxx <- This will skip calling all class start with xx.xx.xxx.xxxxx
+  # @PluginName <- This will skip calling all listener registered by this plugin
+  # REGEX <- It also supports regex.
+  protection-checking-listener-blacklist:
+    - ignored_listener
 
   #How many shops can be checked in once? (Container exists check)
   max-shops-checks-in-once: 100

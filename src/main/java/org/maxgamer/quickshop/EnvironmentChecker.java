@@ -26,9 +26,9 @@ import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
 public class EnvironmentChecker {
+    private static boolean showed = false;
     @Getter
     private final GameVersion gameVersion;
-    private static boolean showed = false;
 
     public EnvironmentChecker(@NotNull QuickShop plugin) {
         String nmsVersion = Util.getNMSVersion();
@@ -82,7 +82,8 @@ public class EnvironmentChecker {
             plugin.getLogger().warning(jvmWarning);
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                Thread.interrupted();
             }
         }
 

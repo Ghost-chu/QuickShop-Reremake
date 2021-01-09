@@ -34,12 +34,12 @@ import org.maxgamer.quickshop.util.updater.VersionType;
 
 import java.io.*;
 import java.net.URL;
+import java.util.UUID;
 
 public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
-
-    private BuildInfo lastRemoteBuildInfo;
     private final String jobUrl;
+    private BuildInfo lastRemoteBuildInfo;
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;
@@ -129,24 +129,21 @@ public class JenkinsUpdater implements QuickUpdater {
         if (plugins == null) {
             throw new IOException("Can't get the files in plugins folder");
         }
-        File quickshop = null;
+        File newJar = new File(pluginFolder, "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
+
         for (File plugin : plugins) {
-            try {
+            try { //Delete all old jar files
                 PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(plugin);
                 if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
                     continue;
                 }
-                Util.debugLog("Selected: " + plugin.getPath());
-                quickshop = plugin;
-                break;
+                Util.debugLog("Deleting: " + plugin.getPath());
+                plugin.delete();
             } catch (InvalidDescriptionException ignored) {
             }
         }
-        if (quickshop == null) {
-            throw new IOException("Failed to get QuickShop Jar File.");
-        }
 
-        try (OutputStream outputStream = new FileOutputStream(quickshop, false)) {
+        try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
             outputStream.write(bytes);
             outputStream.flush();
         }

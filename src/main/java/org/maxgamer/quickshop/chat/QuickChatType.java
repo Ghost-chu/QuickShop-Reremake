@@ -50,10 +50,6 @@ public enum QuickChatType {
         return type.id;
     }
 
-    public int toID() {
-        return id;
-    }
-
     public static QuickChat createById(int id) {
         QuickChatType type = fromID(id);
         if (type == QuickChatType.ADVENTURE) {
@@ -67,5 +63,9 @@ public enum QuickChatType {
             return new AdventureQuickChat();
         }
         return new BungeeQuickChat();
+    }
+
+    public int toID() {
+        return id;
     }
 }
