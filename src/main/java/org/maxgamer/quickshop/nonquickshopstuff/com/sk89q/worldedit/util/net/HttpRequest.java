@@ -1,20 +1,20 @@
 /*
- * WorldEdit, a Minecraft world manipulation toolkit
- * Copyright (C) sk89q <http://www.sk89q.com>
- * Copyright (C) WorldEdit team and contributors
+ * This file is a part of project QuickShop, the name is HttpRequest.java
+ *  Copyright (C) PotatoCraft Studio and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ *  for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package org.maxgamer.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net;
@@ -59,16 +59,6 @@ public class HttpRequest implements Closeable {
     private HttpRequest(String method, URL url) {
         this.method = method;
         this.url = url;
-    }
-
-    /**
-     * Submit data.
-     *
-     * @return this object
-     */
-    public HttpRequest body(String data) {
-        body = data.getBytes();
-        return this;
     }
 
     /**
@@ -135,6 +125,16 @@ public class HttpRequest implements Closeable {
         } catch (MalformedURLException | URISyntaxException e) {
             return existing;
         }
+    }
+
+    /**
+     * Submit data.
+     *
+     * @return this object
+     */
+    public HttpRequest body(String data) {
+        body = data.getBytes();
+        return this;
     }
 
     /**

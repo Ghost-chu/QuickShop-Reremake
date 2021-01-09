@@ -183,6 +183,13 @@ public interface Shop {
     }
 
     /**
+     * Set texts on shop's sign
+     *
+     * @param paramArrayOfString The texts you want set
+     */
+    void setSignText(@NotNull String[] paramArrayOfString);
+
+    /**
      * Update shop data to database
      */
     void update();
@@ -213,13 +220,6 @@ public interface Shop {
      * Refresh shop sign and display item
      */
     void refresh();
-
-    /**
-     * Set texts on shop's sign
-     *
-     * @param paramArrayOfString The texts you want set
-     */
-    void setSignText(@NotNull String[] paramArrayOfString);
 
     /**
      * Get shop's location

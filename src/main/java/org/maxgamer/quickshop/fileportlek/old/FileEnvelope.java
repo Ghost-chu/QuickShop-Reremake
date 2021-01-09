@@ -51,13 +51,10 @@ public abstract class FileEnvelope implements IFile {
 
     @NotNull
     protected final Plugin plugin;
-
-    @NotNull
-    private final Copied copied;
-
     @NotNull
     protected final String resourcePath;
-
+    @NotNull
+    private final Copied copied;
     @NotNull
     protected FileConfiguration fileConfiguration = new MckFileConfiguration();
 

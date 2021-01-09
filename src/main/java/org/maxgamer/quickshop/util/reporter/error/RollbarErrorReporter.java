@@ -27,7 +27,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -43,7 +42,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class RollbarErrorReporter {
-    private volatile static String bootPaste = null;
+    //private volatile static String bootPaste = null;
     private final Rollbar rollbar;
     private final List<String> reported = new ArrayList<>(5);
     private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
@@ -57,7 +56,7 @@ public class RollbarErrorReporter {
     private final boolean enabled;
     private boolean disable;
     private boolean tempDisable;
-    private String lastPaste = "Failed to paste.";
+    private String lastPaste = null;
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -73,21 +72,21 @@ public class RollbarErrorReporter {
         Bukkit.getServer().getLogger().setFilter(new GlobalExceptionFilter());
         Logger.getGlobal().setFilter(new GlobalExceptionFilter());
         Util.debugLog("Rollbar error reporter success loaded.");
-        if (bootPaste == null) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Paste paste = new Paste(plugin);
-                    lastPaste = paste.paste(paste.genNewPaste());
-                    if (lastPaste != null) {
-                        bootPaste = lastPaste;
-                        plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
-                    }
-                }
-            }.runTaskAsynchronously(plugin);
-        } else {
-            plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
-        }
+//        if (bootPaste == null) {
+//            new BukkitRunnable() {
+//                @Override
+//                public void run() {
+//                    Paste paste = new Paste(plugin);
+//                    lastPaste = paste.paste(paste.genNewPaste());
+//                    if (lastPaste != null) {
+//                        bootPaste = lastPaste;
+//                        plugin.log("Plugin booted up, the server paste was created for debugging, reporting errors and data-recovery: " + lastPaste);
+//                    }
+//                }
+//            }.runTaskAsynchronously(plugin);
+//        } else {
+//            plugin.log("Reload detected, the server paste will not created again, previous paste link: " + bootPaste);
+//        }
         enabled = true;
     }
 
@@ -142,16 +141,18 @@ public class RollbarErrorReporter {
             if (ignoredException.contains(throwable.getClass())) {
                 return null;
             }
-            String pasteURL;
-            try {
-                Paste paste = new Paste(plugin);
-                pasteURL = paste.paste(paste.genNewPaste());
-                if (pasteURL != null && !pasteURL.isEmpty()) {
-                    lastPaste = pasteURL;
+            if (lastPaste == null) {
+                String pasteURL;
+                try {
+                    Paste paste = new Paste(plugin);
+                    pasteURL = paste.paste(paste.genNewPaste());
+                    if (pasteURL != null && !pasteURL.isEmpty()) {
+                        lastPaste = pasteURL;
+                    }
+                } catch (Exception ex) {
+                    // Ignore
+                    pasteURL = this.lastPaste;
                 }
-            } catch (Exception ex) {
-                // Ignore
-                pasteURL = this.lastPaste;
             }
             this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
             plugin

@@ -36,10 +36,10 @@ import java.util.List;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class GriefPreventionIntegration extends QSIntegratedPlugin {
+    final GriefPrevention griefPrevention = GriefPrevention.instance;
     private final List<Flag> createLimits = new ArrayList<>(3);
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private final boolean whiteList;
-    final GriefPrevention griefPrevention = GriefPrevention.instance;
 
     public GriefPreventionIntegration(QuickShop plugin) {
         super(plugin);

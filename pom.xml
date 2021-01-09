@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.maxgamer</groupId>
     <artifactId>QuickShop</artifactId>
-    <version>4.0.6.1</version>
+    <version>4.0.6.2</version>
 
     <licenses>
         <license>
@@ -117,7 +117,10 @@
                             <pattern>net.kyori.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.</shadedPattern>
                         </relocation>
-
+                        <relocation>
+                            <pattern>me.lucko.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.</shadedPattern>
+                        </relocation>
                         <relocation>
                             <pattern>com.rollbar.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.rollbar.</shadedPattern>
@@ -279,6 +282,10 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
+        <repository>
+            <id>minecraft-repo</id>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -409,7 +416,7 @@
         <dependency>
             <groupId>com.github.angeschossen</groupId>
             <artifactId>LandsAPI</artifactId>
-            <version>4.12.16</version>
+            <version>4.12.20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -434,7 +441,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.18.0</version>
+            <version>0.20.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -673,6 +680,13 @@
             <groupId>de.themoep</groupId>
             <artifactId>minedown-adventure</artifactId>
             <version>1.7.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

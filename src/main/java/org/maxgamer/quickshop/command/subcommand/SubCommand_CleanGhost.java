@@ -128,7 +128,8 @@ public class SubCommand_CleanGhost implements CommandProcesser {
                                     }); // Post to server main thread to check.
                     try {
                         Thread.sleep(50); // Have a rest, don't blow up the main server thread.
-                    } catch (InterruptedException ignored) {
+                    } catch (InterruptedException e) {
+                        Thread.interrupted();
                     }
                 }
                 MsgUtil.sendMessage(sender, ChatColor.GREEN + "All shops completed checks.");

@@ -45,18 +45,14 @@ import java.util.logging.Level;
 @SuppressWarnings("DuplicatedCode")
 @IntegrationStage(loadStage = IntegrateStage.onLoadAfter)
 public class WorldGuardIntegration extends QSIntegratedPlugin {
-    private List<WorldGuardFlags> createFlags;
-
-    private List<WorldGuardFlags> tradeFlags;
-
+    private static boolean register = false;
     private final StateFlag createFlag = new StateFlag("quickshop-create", false);
-
     private final StateFlag tradeFlag = new StateFlag("quickshop-trade", true);
-
+    private List<WorldGuardFlags> createFlags;
+    private List<WorldGuardFlags> tradeFlags;
     private boolean anyOwner;
     private boolean whiteList;
     private boolean load = false;
-    private static boolean register = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
         super(plugin);
