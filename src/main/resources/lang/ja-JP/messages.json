@@ -176,7 +176,7 @@
     "buying": "買取 {0}",
     "stack-buying": "買取 {0}",
     "item": "{0}",
-    "price": "1つあたり {0}",
+    "price": "1個入り {0}",
     "stack-price": "{1} 個入り {0} {2}",
     "unlimited": "無制限"
   },
