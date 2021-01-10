@@ -108,8 +108,8 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                         } else {
                             worldSection = worldsSection.getConfigurationSection(world.getName());
                         }
-                        Objects.requireNonNull(worldSection).set("hopper.disableHopperMoveEvents", false);
-                        Objects.requireNonNull(worldSection).set("hopper.disableHopperMoveEvents_quickshop", "QuickShop automatic disabled this due it will allow other players steal items from shop. This notice only shown when have shops in current world and hopper protection is on and also disableHopperMoveEvents turned on.");
+                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event", false);
+                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event-quickshop-tips", "QuickShop automatic disabled this due it will allow other players steal items from shop. This notice only shown when have shops in current world and hopper protection is on and also disableHopperMoveEvents turned on.");
                         yamlConfiguration.save(paperConfigYaml);
                     }
                 }
