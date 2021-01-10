@@ -19,15 +19,16 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
+/**
+ * Calling when shop clicked
+ */
 public class ShopClickEvent extends QSEvent implements Cancellable {
 
     @NotNull
-    @Getter
     private final Shop shop;
 
     private boolean cancelled;
@@ -51,4 +52,12 @@ public class ShopClickEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Getting the shops that clicked
+     *
+     * @return Clicked shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }

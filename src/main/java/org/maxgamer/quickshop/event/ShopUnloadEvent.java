@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.shop.Shop;
 
@@ -29,7 +28,6 @@ import org.maxgamer.quickshop.shop.Shop;
 public class ShopUnloadEvent extends QSEvent {
 
     @NotNull
-    @Getter
     private final Shop shop;
 
     /**
@@ -41,4 +39,12 @@ public class ShopUnloadEvent extends QSEvent {
         this.shop = shop;
     }
 
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
 }
