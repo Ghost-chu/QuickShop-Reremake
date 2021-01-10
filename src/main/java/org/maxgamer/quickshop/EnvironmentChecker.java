@@ -92,7 +92,7 @@ public class EnvironmentChecker {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                Thread.interrupted();
+                Thread.currentThread().interrupt();
             }
         }
 
@@ -176,7 +176,7 @@ public class EnvironmentChecker {
                 try {
                     Thread.sleep(25 * 1000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
             }
         }
