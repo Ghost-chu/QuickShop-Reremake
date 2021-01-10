@@ -20,6 +20,12 @@
 package org.maxgamer.quickshop;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.util.GameVersion;
 import org.maxgamer.quickshop.util.ReflectFactory;
@@ -30,7 +36,10 @@ public class EnvironmentChecker {
     @Getter
     private final GameVersion gameVersion;
 
+    private final QuickShop plugin;
+
     public EnvironmentChecker(@NotNull QuickShop plugin) {
+        this.plugin = plugin;
         String nmsVersion = Util.getNMSVersion();
         gameVersion = GameVersion.get(nmsVersion);
         if (Util.isClassAvailable("org.maxgamer.quickshop.Util.NMS")) {
@@ -83,7 +92,7 @@ public class EnvironmentChecker {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                Thread.interrupted();
+                Thread.currentThread().interrupt();
             }
         }
 
@@ -122,6 +131,53 @@ public class EnvironmentChecker {
             if (!plugin.getConfig().getBoolean("dev-mode")) {
                 plugin.getLogger().severe("WARNING: Set dev-mode: true in config.yml to allow qs load in dev mode(You may need add this line to the config yourself).");
                 throw new RuntimeException("Snapshot cannot run when dev-mode is false in the config");
+            }
+        }
+        this.checkJulySafe();
+    }
+
+
+    public void checkJulySafe() {
+        Plugin julySafe = Bukkit.getPluginManager().getPlugin("JulySafe");
+        boolean triggered = false;
+        if (julySafe != null) {
+            for (RegisteredListener registeredListener : BlockPlaceEvent.getHandlerList().getRegisteredListeners()) {
+                if (registeredListener.getPlugin().equals(julySafe)) {
+                    Class<?> clazz = null;
+                    try {
+                        clazz = Class.forName("com.github.julyss2019.bukkit.plugins.julysafe.listeners.QuickShopBugFixListener");
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                    if (registeredListener.getListener().getClass().equals(clazz)
+                            || registeredListener.getListener().getClass().getName().contains("julysafe.listeners.QuickShopBugFixListener")) {
+                        HandlerList.unregisterAll(registeredListener.getListener()); //Unregister JulySafe's QuickShopBugFixListener
+                        triggered = true;
+                    }
+                }
+            }
+            if (julySafe.getConfig().getBoolean("quickshop_bug_fix.enabled")) {
+                julySafe.getConfig().set("quickshop_bug_fix.enabled", false); // Disables JulySafe's QuickShopBugFix module in configuration.
+                plugin.getLogger().warning("========================================");// Send chinese alert to users cause this plugin is Chinese plugins.
+                plugin.getLogger().warning("警告：检测到您已安装 JulySafe 插件，且已开启 QuickShop 偷东西bug修复模块");
+                plugin.getLogger().warning("警告：我们已确认不存在此 BUG 且此模块对正常 Gameplay 造成了严重影响且");
+                plugin.getLogger().warning("警告：实际上并不会真正做到修复的效果。并且存在潜在破坏 QuickShop 本身保护机制的行为。");
+                plugin.getLogger().warning("警告：我们强烈您使用 虚拟悬浮物 (Virtual DisplayItem) 解决潜在的安全隐患。");
+                plugin.getLogger().warning("警告：同时我(Ghost_chu)也对国内部分开发者将其他插件 BUG 在不与插件本身开发者交流报告的情况下直接作为插件卖点宣传的行为强烈抨击。");
+                plugin.getLogger().warning("警告：我长期活跃并维护相关插件，这些所谓的修复插件开发者完全应该可以联系插件开发者报告错误，但是这些插件的插件开发者并没有这么做。");
+                plugin.getLogger().warning("警告：如果你说你的修复模块有点用，那么我也可以接受；" +
+                        "而 JulySafe 插件采用了完全修复不了问题的解决方案去修复了一个 " + ChatColor.RED + ChatColor.BOLD + "根本不存在的BUG");
+                plugin.getLogger().warning("警告：并将锅甩给 QuickShop 的行为是我所不能接受的，在此公开对此行为进行批评。");
+                plugin.getLogger().warning("========================================");
+                plugin.getLogger().warning("警告：QuickShop 已自动采取措施在配置文件中禁用此模块并注销 JulySafe 的 QuickShopBugFixListener 监听器使此模块强制失效。");
+                plugin.getLogger().warning("警告：您的服务器将会在25秒后继续加载，以确保您已阅读相关声明，感谢您的理解。");
+                triggered = true;
+            }
+            if (triggered) {
+                try {
+                    Thread.sleep(25 * 1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }

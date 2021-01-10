@@ -19,10 +19,13 @@
 
 package org.maxgamer.quickshop.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +34,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +44,11 @@ import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 public class ShopProtectionListener extends ProtectionListenerBase {
 
@@ -52,6 +60,66 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         super(plugin, cache);
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
+        if (plugin.getConfig().getBoolean("protect.hopper")) {
+            scanAndFixPaperListener();
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onWorldLoad(WorldLoadEvent event) {
+        scanAndFixPaperListener();
+    }
+
+    public void scanAndFixPaperListener() {
+        if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
+            return;
+        }
+
+        Util.debugLog("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
+        Bukkit.getWorlds().forEach(world -> {
+
+            if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
+                return;
+            }
+            try {
+                Field worldServerF = world.getClass().getDeclaredField("world");
+                worldServerF.setAccessible(true);
+                Object worldServer = worldServerF.get(world);
+                Object paperWorldConfig = worldServer.getClass().getSuperclass().getDeclaredField("paperConfig").get(worldServer);
+                boolean disableHopperMoveEvents = paperWorldConfig.getClass().getDeclaredField("disableHopperMoveEvents").getBoolean(paperWorldConfig);
+                if (disableHopperMoveEvents) {
+                    plugin.getLogger()
+                            .warning("World " + world.getName()
+                                    + " have shops and Hopper protection is enabled. But we detected" +
+                                    " \"disableHopperMoveEvents\" options in \"paper.yml\" is activated, so QuickShop already automatic disabled it.");
+                    plugin.getLogger()
+                            .warning("If you still want keep enable disableHopperMoveEvents enables " +
+                                    "in this world, please disable Hopper protection or make sure no shops in this world.");
+                    paperWorldConfig.getClass().getDeclaredField("disableHopperMoveEvents").setBoolean(paperWorldConfig, false);
+                    File serverRoot = plugin.getDataFolder().getParentFile().getParentFile();
+                    File paperConfigYaml = new File(serverRoot, "paper.yml");
+                    if (paperConfigYaml.exists()) {
+                        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(paperConfigYaml);
+                        ConfigurationSection worldsSection =
+                                Objects.requireNonNull(yamlConfiguration.getConfigurationSection("world-settings"));
+                        ConfigurationSection worldSection;
+                        if (Objects.requireNonNull(worldsSection).getConfigurationSection(world.getName()) == null) {
+                            worldSection = worldsSection.getConfigurationSection("default");
+                        } else {
+                            worldSection = worldsSection.getConfigurationSection(world.getName());
+                        }
+                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event", false);
+                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event-quickshop-tips", "QuickShop automatic disabled this due it will allow other players steal items from shop. This notice only shown when have shops in current world and hopper protection is on and also disable-move-event turned on.");
+                        yamlConfiguration.save(paperConfigYaml);
+                    }
+                }
+            } catch (NoSuchFieldException | IllegalAccessException | NullPointerException | IOException e) {
+                e.printStackTrace();
+                plugin.getLogger().warning("Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.");
+            }
+        });
+
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

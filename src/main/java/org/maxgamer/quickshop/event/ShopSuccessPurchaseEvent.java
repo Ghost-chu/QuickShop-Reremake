@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.event;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -30,29 +29,26 @@ import org.maxgamer.quickshop.shop.Shop;
 
 import java.util.UUID;
 
+/**
+ * Calling when success purchase in shop
+ */
 public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
 
-    @Getter
     @NotNull
     private final Shop shop;
 
-    @Getter
     private final int amount;
 
-    @Getter
     @NotNull
     private final UUID purchaser;
 
-    @Getter
     @Nullable
     @Deprecated
     private final Player player;
 
-    @Getter
     @NotNull
     private final Inventory purchaserInventory;
 
-    @Getter
     private final double tax;
 
     private final double
@@ -112,4 +108,59 @@ public class ShopSuccessPurchaseEvent extends QSEvent implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
+
+    /**
+     * Gets the item stack amounts
+     *
+     * @return Item stack amounts
+     */
+    public int getAmount() {
+        return this.amount;
+    }
+
+    /**
+     * Gets the purchaser, that maybe is a online/offline/virtual player.
+     *
+     * @return The purchaser uuid
+     */
+    public @NotNull UUID getPurchaser() {
+        return this.purchaser;
+    }
+
+    /**
+     * Gets the purchaser
+     *
+     * @return Player or null if purchaser is offline/virtual player.
+     * @deprecated Purchaser may is a online/offline/virtual player.
+     */
+    @Deprecated
+    public @Nullable Player getPlayer() {
+        return this.player;
+    }
+
+    /**
+     * Gets the inventory of purchaser (the item will put to)
+     *
+     * @return The inventory
+     */
+    public @NotNull Inventory getPurchaserInventory() {
+        return this.purchaserInventory;
+    }
+
+    /**
+     * Gets the tax in this purchase
+     *
+     * @return The tax
+     */
+    public double getTax() {
+        return this.tax;
+    }
 }

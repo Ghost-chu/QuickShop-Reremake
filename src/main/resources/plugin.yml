@@ -27,6 +27,7 @@ softdepend:
   - BlockHub
   - Lands
   - GriefPrevention
+  - JulySafe
 
 api-version: 1.13
 

@@ -922,6 +922,7 @@ public class ContainerShop implements Shop {
         Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
         extraMap.put("version", Integer.toString(ver));
         extra.put(plugin.getName(), extraMap);
+        this.update();
     }
 
     /**
@@ -958,10 +959,12 @@ public class ContainerShop implements Shop {
                 continue;
             }
             String header = lines[0];
-            if (getShopVersion() == 0) {
-                String adminShopHeader =
-                        MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+
+            if (lines[1].startsWith(shopSignPattern)) {
+                signs.add(sign);
+            } else {
+                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
                         MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
@@ -969,12 +972,52 @@ public class ContainerShop implements Shop {
                     //TEXT SIGN
                     //continue
                 }
-            } else {
-                if (lines[1].startsWith(shopSignPattern)) {
-                    signs.add(sign);
-                }
-
             }
+
+
+//            if (getShopVersion() == 0) {
+//                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+//                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+//                String signHeaderUsername =
+//                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+//                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+//                    signs.add(sign);
+//                    Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
+//                    //TEXT SIGN
+//                    //continue
+//                } else {
+//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
+//                    for (String line : sign.getLines()) {
+//                        Util.debugLog("[" + line + "]");
+//                    }
+//                }
+//            } else {
+//                if (lines[1].startsWith(shopSignPattern)) {
+//                    signs.add(sign);
+//                    Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
+//                } else {
+//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
+//                    for (String line : sign.getLines()) {
+//                        Util.debugLog("[" + line + "]");
+//                    }
+//                    String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+//                            "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+//                    String signHeaderUsername =
+//                            MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+//                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+//                        signs.add(sign);
+//                        Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
+//                        //TEXT SIGN
+//                        //continue
+//                    } else {
+//                        Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
+//                        for (String line : sign.getLines()) {
+//                            Util.debugLog("[" + line + "]");
+//                        }
+//                    }
+//                }
+//
+//            }
             //Empty or matching the header
         }
 
