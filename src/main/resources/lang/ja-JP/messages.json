@@ -6,7 +6,7 @@
   "language-version": "46",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。確認する必要があります。",
   "no-anythings-in-your-hand": "&cあなたは手に何も持っていません。",
-  "no-permission": "&c権限を持っていないため実行できません。",
+  "no-permission": "&cあなたは権限を持っていないため実行できません。",
   "integrations-check-failed-create": "&c{0} 統合がショップの作成を拒否しました",
   "integrations-check-failed-trade": "&c{0} 統合がショップの取引を拒否しました",
   "3rd-plugin-build-check-failed": "&cサードパーティプラグイン &l{0}&r&c が権限チェックを拒否しました。そこに権限を設定していませんか？",
