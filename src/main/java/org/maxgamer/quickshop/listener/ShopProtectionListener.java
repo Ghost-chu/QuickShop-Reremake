@@ -101,8 +101,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
                     if (paperConfigYaml.exists()) {
                         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(paperConfigYaml);
                         ConfigurationSection worldsSection =
-                                Objects.requireNonNull(yamlConfiguration.getConfigurationSection("world-settings"))
-                                        .getConfigurationSection(world.getName());
+                                Objects.requireNonNull(yamlConfiguration.getConfigurationSection("world-settings"));
                         ConfigurationSection worldSection;
                         if (Objects.requireNonNull(worldsSection).getConfigurationSection(world.getName()) == null) {
                             worldSection = worldsSection.getConfigurationSection("default");
