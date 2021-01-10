@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.command.subcommand;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
@@ -44,7 +43,7 @@ import java.util.*;
 public class SubCommand_Debug implements CommandProcesser {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm"));
+    private final List<String> tabCompleteList = Collections.unmodifiableList(Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs"));
 
     @Override
     public void onCommand(
@@ -89,27 +88,18 @@ public class SubCommand_Debug implements CommandProcesser {
                 break;
             case "signs":
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-
                 if (!bIt.hasNext()) {
                     MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
                     return;
                 }
-
                 while (bIt.hasNext()) {
                     final Block b = bIt.next();
                     final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
                     if (shop != null) {
-                        List<Sign> signs = shop.getSigns();
-                        if (signs.isEmpty()) {
-                            MsgUtil.sendMessage(sender, ChatColor.RED + "No signs founded around this shop.");
-                            break;
-                        }
                         shop.getSigns().forEach(sign -> MsgUtil.sendMessage(sender, ChatColor.GREEN + "Sign founded at: " + sign.getLocation()));
                         break;
                     }
                 }
-
                 break;
             default:
                 MsgUtil.sendMessage(sender, "Error, no correct args given.");

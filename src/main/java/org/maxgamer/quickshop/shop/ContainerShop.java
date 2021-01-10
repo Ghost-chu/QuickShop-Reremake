@@ -922,6 +922,7 @@ public class ContainerShop implements Shop {
         Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
         extraMap.put("version", Integer.toString(ver));
         extra.put(plugin.getName(), extraMap);
+        this.update();
     }
 
     /**
@@ -957,14 +958,19 @@ public class ContainerShop implements Shop {
             String[] lines = sign.getLines();
             if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
-                Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (regular).");
+                Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (empty).");
                 continue;
             }
             String header = lines[0];
-            if (getShopVersion() == 0) {
-                String adminShopHeader =
-                        MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
-                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+
+            if (lines[1].startsWith(shopSignPattern)) {
+                signs.add(sign);
+                Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
+            } else {
+                Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
+                Util.debugLog("Trying use legacy to read sign..");
+                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+                        "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
                         MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
@@ -978,18 +984,52 @@ public class ContainerShop implements Shop {
                         Util.debugLog("[" + line + "]");
                     }
                 }
-            } else {
-                if (lines[1].startsWith(shopSignPattern)) {
-                    signs.add(sign);
-                    Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
-                } else {
-                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
-                    for (String line : sign.getLines()) {
-                        Util.debugLog("[" + line + "]");
-                    }
-                }
-
             }
+
+
+//            if (getShopVersion() == 0) {
+//                String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+//                                "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+//                String signHeaderUsername =
+//                        MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+//                if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+//                    signs.add(sign);
+//                    Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
+//                    //TEXT SIGN
+//                    //continue
+//                } else {
+//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
+//                    for (String line : sign.getLines()) {
+//                        Util.debugLog("[" + line + "]");
+//                    }
+//                }
+//            } else {
+//                if (lines[1].startsWith(shopSignPattern)) {
+//                    signs.add(sign);
+//                    Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
+//                } else {
+//                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
+//                    for (String line : sign.getLines()) {
+//                        Util.debugLog("[" + line + "]");
+//                    }
+//                    String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
+//                            "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
+//                    String signHeaderUsername =
+//                            MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
+//                    if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
+//                        signs.add(sign);
+//                        Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
+//                        //TEXT SIGN
+//                        //continue
+//                    } else {
+//                        Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
+//                        for (String line : sign.getLines()) {
+//                            Util.debugLog("[" + line + "]");
+//                        }
+//                    }
+//                }
+//
+//            }
             //Empty or matching the header
         }
 
