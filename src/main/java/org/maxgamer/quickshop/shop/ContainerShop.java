@@ -947,42 +947,30 @@ public class ContainerShop implements Shop {
             }
 
             if (!(b.getState() instanceof Sign)) {
-                Util.debugLog("The block at " + b.getLocation() + " not a sign.");
                 continue;
             }
             if (!isAttached(b)) {
-                Util.debugLog("The Sign at " + b.getLocation() + " not attached on a Shop container.");
                 continue;
             }
             Sign sign = (Sign) b.getState();
             String[] lines = sign.getLines();
             if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
                 signs.add(sign); //NEW SIGN
-                Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (empty).");
                 continue;
             }
             String header = lines[0];
 
             if (lines[1].startsWith(shopSignPattern)) {
                 signs.add(sign);
-                Util.debugLog("The Sign at " + b.getLocation() + " has been detected (modern).");
             } else {
-                Util.debugLog("The Sign at " + b.getLocation() + " missed matching (modern).");
-                Util.debugLog("Trying use legacy to read sign..");
                 String adminShopHeader = MsgUtil.getMessageOfflinePlayer("signs.header", null, MsgUtil.getMessageOfflinePlayer(
                         "admin-shop", Bukkit.getOfflinePlayer(this.getOwner())));
                 String signHeaderUsername =
                         MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(true));
                 if (header.contains(adminShopHeader) || header.contains(signHeaderUsername)) {
                     signs.add(sign);
-                    Util.debugLog("The ShopInfoSign at " + b.getLocation() + " has been detected (legacy).");
                     //TEXT SIGN
                     //continue
-                } else {
-                    Util.debugLog("The Sign at " + b.getLocation() + " missed matching (legacy).");
-                    for (String line : sign.getLines()) {
-                        Util.debugLog("[" + line + "]");
-                    }
                 }
             }
 
