@@ -194,6 +194,27 @@ public class Economy_GemsEconomy implements EconomyCore {
     }
 
     /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull String currency) {
+        return getCurrency(currency) != null;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return true;
+    }
+
+    /**
      * Checks that this economy is valid. Returns false if it is not valid.
      *
      * @return True if this economy will work, false if it will not.

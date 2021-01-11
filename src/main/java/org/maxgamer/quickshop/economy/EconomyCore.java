@@ -109,6 +109,22 @@ public interface EconomyCore {
     boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency);
 
     /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    boolean hasCurrency(@NotNull String currency);
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    boolean supportCurrency();
+
+
+    /**
      * Checks that this economy is valid. Returns false if it is not valid.
      *
      * @return True if this economy will work, false if it will not.

@@ -158,3 +158,9 @@ permissions:
   quickshop.removeworld:
     description: Permission to us /qs removeworld
     default: op
+  quickshop.currency:
+    description: Permission to us /qs currency
+    default: op
+  quickshop.other.currency:
+    description: Permission to us /qs currency but use for others shop
+    default: op
