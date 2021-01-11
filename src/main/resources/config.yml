@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 122
+config-version: 123
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -63,6 +63,11 @@ show-tax: false
 
 #Whether to respect item flag (e.g. hide the enchantment info when item have HIDE_ENCHANTS flag)
 respect-item-flag: true
+
+#The currency used for creating shop
+#Leave blank to use default currency
+#Only require to setup of using multi-currency plugin
+currency: ""
 
 logging:
   #Enable logging?
@@ -667,6 +672,7 @@ debug:
   shop-deletion: false
   #Enable adventure debug flag
   adventure: false
+
 
 
 

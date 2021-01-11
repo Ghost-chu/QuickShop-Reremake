@@ -51,6 +51,9 @@ public class EconomyTransaction {
     @Getter
     private String lastError = null;
 
+    @Getter
+    private final String currency;
+
 
     /**
      * Create a transaction
@@ -65,7 +68,7 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable Trader taxAccount, EconomyCore core, boolean allowLoan) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable Trader taxAccount, EconomyCore core, boolean allowLoan, @Nullable String currency) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
@@ -73,6 +76,7 @@ public class EconomyTransaction {
         this.steps = TransactionSteps.WAIT;
         this.taxer = taxAccount;
         this.allowLoan = allowLoan;
+        this.currency = currency;
         if (taxModifier != 0.0d) { //Calc total money and apply tax
             this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
@@ -93,10 +97,10 @@ public class EconomyTransaction {
         if (tryingFixBanlanceInsuffient) {
             //Fetch some stupid plugin caching
             if (from != null) {
-                this.core.getBalance(from);
+                this.core.getBalance(from, currency);
             }
             if (to != null) {
-                this.core.getBalance(to);
+                this.core.getBalance(to, currency);
             }
         }
     }
@@ -128,10 +132,10 @@ public class EconomyTransaction {
                 if (tryingFixBanlanceInsuffient) {
                     //Fetch some stupid plugin caching
                     if (from != null) {
-                        core.getBalance(from);
+                        core.getBalance(from, currency);
                     }
                     if (to != null) {
-                        core.getBalance(to);
+                        core.getBalance(to, currency);
                     }
                 }
             }
@@ -147,25 +151,25 @@ public class EconomyTransaction {
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
         steps = TransactionSteps.CHECK;
-        if (from != null && core.getBalance(from) < amount && !allowLoan) {
+        if (from != null && core.getBalance(from, currency) < amount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.WITHDRAW;
-        if (from != null && !core.withdraw(from, amount)) {
+        if (from != null && !core.withdraw(from, amount, currency)) {
             this.lastError = "Failed to withdraw " + amount + " from player " + from.toString() + " account";
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
-        if (to != null && !core.deposit(to, actualAmount)) {
+        if (to != null && !core.deposit(to, actualAmount, currency)) {
             this.lastError = "Failed to deposit " + actualAmount + " to player " + to.toString() + " account";
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.TAX;
-        if (tax > 0 && taxer != null && !core.deposit(taxer, tax)) {
+        if (tax > 0 && taxer != null && !core.deposit(taxer, tax, currency)) {
             this.lastError = "Failed to deposit tax account: " + tax;
             callback.onTaxFailed(this);
             //Tax never should failed.
@@ -192,7 +196,7 @@ public class EconomyTransaction {
             return rollbackSteps; //We did nothing, because the trade failed so no anybody money changes.
         }
         if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
-            if (from != null && !core.deposit(from, amount)) { //Rollback withdraw
+            if (from != null && !core.deposit(from, amount, currency)) { //Rollback withdraw
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
                     return rollbackSteps;
@@ -200,7 +204,7 @@ public class EconomyTransaction {
             }
         }
         if (steps == TransactionSteps.TAX) {
-            if (to != null && !core.withdraw(to, actualAmount)) { //Rollback deposit
+            if (to != null && !core.withdraw(to, actualAmount, currency)) { //Rollback deposit
                 if (!continueWhenFailed) {
                     rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
                     return rollbackSteps;

@@ -107,17 +107,17 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount) {
-        if (!checkValid()) {
+    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
-        return deposit(Bukkit.getOfflinePlayer(name), amount);
+        return deposit(Bukkit.getOfflinePlayer(name), amount, currency);
 
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
-        if (!checkValid()) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
         try {
@@ -140,8 +140,8 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public String format(double balance) {
-        if (!checkValid()) {
+    public String format(double balance, @Nullable String currency) {
+        if (!isValid()) {
             return "Error";
         }
         try {
@@ -157,7 +157,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     private String formatInternal(double balance) {
-        if (!checkValid()) {
+        if (!isValid()) {
             return "Error";
         }
 
@@ -165,18 +165,18 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public double getBalance(@NotNull UUID name) {
-        if (!checkValid()) {
+    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+        if (!isValid()) {
             return 0.0;
         }
 
-        return getBalance(Bukkit.getOfflinePlayer(name));
+        return getBalance(Bukkit.getOfflinePlayer(name), currency);
 
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player) {
-        if (!checkValid()) {
+    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+        if (!isValid()) {
             return 0.0;
         }
         if (player.getName() == null) {
@@ -198,14 +198,14 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
-        if (!checkValid()) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
-        if (this.getBalance(from) >= amount) {
-            if (this.withdraw(from, amount)) {
-                if (this.deposit(to, amount)) {
-                    this.deposit(from, amount);
+        if (this.getBalance(from, currency) >= amount) {
+            if (this.withdraw(from, amount, currency)) {
+                if (this.deposit(to, amount, currency)) {
+                    this.deposit(from, amount, currency);
                     return false;
                 }
                 return true;
@@ -216,20 +216,20 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount) {
-        if (!checkValid()) {
+    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
-        return withdraw(Bukkit.getOfflinePlayer(name), amount);
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
-        if (!checkValid()) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
         try {
-            if ((!allowLoan) && (getBalance(trader) < amount)) {
+            if ((!allowLoan) && (getBalance(trader, currency) < amount)) {
                 return false;
             }
             return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
@@ -263,16 +263,6 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
-    }
-
-    public boolean checkValid() {
-        if (this.vault == null) {
-            Bukkit.getPluginManager().disablePlugin(plugin);
-            plugin.getLogger().severe("FATAL: Economy system not ready.");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public String getProviderName() {

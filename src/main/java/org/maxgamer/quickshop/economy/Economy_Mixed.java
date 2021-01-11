@@ -23,6 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -39,8 +40,8 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount) {
-        if (getBalance(name) < amount) {
+    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+        if (getBalance(name, currency) < amount) {
             return false;
         }
         Bukkit.dispatchCommand(
@@ -53,8 +54,8 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
-        if (getBalance(trader) < amount) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        if (getBalance(trader, currency) < amount) {
             return false;
         }
         Bukkit.dispatchCommand(
@@ -67,37 +68,37 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public String format(double balance) {
+    public String format(double balance, @Nullable String currency) {
         return Util.format(balance);
     }
 
     @Override
-    public double getBalance(@NotNull UUID name) {
-        return core.getBalance(name);
+    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+        return core.getBalance(name, currency);
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player) {
-        return core.getBalance(player);
+    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+        return core.getBalance(player, currency);
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
         boolean result;
-        result = withdraw(from, amount);
+        result = withdraw(from, amount, currency);
         if (!result) {
-            deposit(from, amount);
+            deposit(from, amount, currency);
         }
-        result = deposit(to, amount);
+        result = deposit(to, amount, currency);
         if (!result) {
-            withdraw(to, amount);
+            withdraw(to, amount, currency);
         }
         return true;
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount) {
-        if (getBalance(name) > amount) {
+    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+        if (getBalance(name, currency) > amount) {
             return false;
         }
         Bukkit.dispatchCommand(
@@ -110,8 +111,8 @@ public class Economy_Mixed implements EconomyCore {
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
-        if (getBalance(trader) > amount) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        if (getBalance(trader, currency) > amount) {
             return false;
         }
         Bukkit.dispatchCommand(

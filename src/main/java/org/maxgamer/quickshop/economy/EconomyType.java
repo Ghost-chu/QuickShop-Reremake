@@ -30,7 +30,8 @@ public enum EconomyType {
     UNKNOWN(-1),
     VAULT(0),
     RESERVE(1),
-    MIXED(2);
+    MIXED(2),
+    GEMS_ECONOMY(3);
 
     private final int id;
 

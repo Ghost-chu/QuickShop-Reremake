@@ -424,5 +424,19 @@ public interface Shop {
      */
     @NotNull UUID getRuntimeRandomUniqueId();
 
+    /**
+     * Gets the currency that shop use
+     *
+     * @return The currency name
+     */
+    @Nullable
+    String getCurrency();
+
+    /**
+     * Sets the currency that shop use
+     *
+     * @param currency The currency name; null to use default currency
+     */
+    void setCurrency(@Nullable String currency);
 
 }

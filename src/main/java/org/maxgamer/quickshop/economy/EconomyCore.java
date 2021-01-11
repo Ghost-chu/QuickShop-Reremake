@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -32,72 +33,80 @@ public interface EconomyCore {
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
-     * @param name   The exact (case insensitive) username to give money to
-     * @param amount The amount to give them
+     * @param name     The exact (case insensitive) username to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
      * @return True if success (Should be almost always)
      */
-    boolean deposit(@NotNull UUID name, double amount);
+    boolean deposit(@NotNull UUID name, double amount, @Nullable String currency);
 
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
-     * @param trader The player to give money to
-     * @param amount The amount to give them
+     * @param trader   The player to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
      * @return True if success (Should be almost always)
      */
-    boolean deposit(@NotNull OfflinePlayer trader, double amount);
+    boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency);
 
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
      *
-     * @param balance The given number
+     * @param balance  The given number
+     * @param currency The currency name
      * @return The balance in human readable text.
      */
-    String format(double balance);
+    String format(double balance, @Nullable String currency);
 
     /**
      * Fetches the balance of the given account name
      *
-     * @param name The name of the account
+     * @param name     The name of the account
+     * @param currency The currency name
      * @return Their current balance.
      */
-    double getBalance(@NotNull UUID name);
+    double getBalance(@NotNull UUID name, @Nullable String currency);
 
     /**
      * Fetches the balance of the given player
      *
-     * @param player The name of the account
+     * @param player   The name of the account
+     * @param currency The currency name
      * @return Their current balance.
      */
-    double getBalance(@NotNull OfflinePlayer player);
+    double getBalance(@NotNull OfflinePlayer player, @Nullable String currency);
 
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
-     * @param from   The player who is paying money
-     * @param to     The player who is receiving money
-     * @param amount The amount to transfer
+     * @param from     The player who is paying money
+     * @param to       The player who is receiving money
+     * @param amount   The amount to transfer
+     * @param currency The currency name
      * @return true if success (Payer had enough cash, receiver was able to receive the funds)
      */
-    boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount);
+    boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
-     * @param name   The exact (case insensitive) username to take money from
-     * @param amount The amount to take from them
+     * @param name     The exact (case insensitive) username to take money from
+     * @param amount   The amount to take from them
+     * @param currency The currency name
      * @return True if success, false if they didn't have enough cash
      */
-    boolean withdraw(@NotNull UUID name, double amount);
+    boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency);
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
-     * @param trader The player to take money from
-     * @param amount The amount to take from them
+     * @param trader   The player to take money from
+     * @param amount   The amount to take from them
+     * @param currency The currency name
      * @return True if success, false if they didn't have enough cash
      */
-    boolean withdraw(@NotNull OfflinePlayer trader, double amount);
+    boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency);
 
     /**
      * Checks that this economy is valid. Returns false if it is not valid.

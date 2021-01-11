@@ -667,6 +667,7 @@ public class ShopManager {
                             .to(buyer)
                             .taxModifier(taxModifier)
                             .taxAccount(cacheTaxAccount)
+                            .currency(shop.getCurrency())
                             .build();
         } else {
             transaction =
@@ -677,6 +678,7 @@ public class ShopManager {
                             .to(buyer)
                             .taxModifier(taxModifier)
                             .taxAccount(cacheTaxAccount)
+                            .currency(shop.getCurrency())
                             .build();
         }
         if (!transaction.failSafeCommit()) {
@@ -1040,6 +1042,7 @@ public class ShopManager {
                             .from(p.getUniqueId())
                             .to(null)
                             .amount(createCost)
+                            .currency(plugin.getCurrency())
                             .build();
             if (!economyTransaction.failSafeCommit()) {
                 if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
@@ -1234,6 +1237,7 @@ public class ShopManager {
                             .amount(total)
                             .taxModifier(taxModifier)
                             .taxAccount(cacheTaxAccount)
+                            .currency(shop.getCurrency())
                             .build();
         } else {
             transaction =
@@ -1245,6 +1249,7 @@ public class ShopManager {
                             .amount(total)
                             .taxModifier(taxModifier)
                             .taxAccount(cacheTaxAccount)
+                            .currency(shop.getCurrency())
                             .build();
         }
         if (!transaction.failSafeCommit()) {
