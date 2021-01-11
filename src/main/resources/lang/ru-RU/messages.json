@@ -3,7 +3,7 @@
   "translation-version": "Поддерживаемая версия: Reremake",
   "translation-contributors": "Участники: Тимбашня, пеноматериалы Нидерландов, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cНе удалось найти QuickShop. Вам нужно посмотреть.",
   "no-anythings-in-your-hand": "&cУ вас нет предметов в руке.",
   "no-permission": "&cУ вас нет прав на это.",
@@ -166,7 +166,8 @@
       "language": "&eИзменить используемый язык",
       "removeall": "&eУдалить все магазины указанного игрока",
       "transfer": "&eПередайте кого-нибудь ВСЕ магазины в другие",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eRemove ALL shops in a specified world",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aСуммарная сумма: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eЩелкните, чтобы установить количество элементов на единицу. Установите значение 1 для нормального поведения.",
     "item": "&aЭлемент магазина: {0} &e[&d&lChange&e]",
-    "item-hover": "&eНажмите, чтобы изменить элемент магазина"
+    "item-hover": "&eНажмите, чтобы изменить элемент магазина",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eПрогресс утверждения: &b{0}%",
     "qa-issues": "&eПроблемы с гарантией качества: &b{0}%",
     "help-us": "&a[Помогите нам улучшить качество перевода]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
