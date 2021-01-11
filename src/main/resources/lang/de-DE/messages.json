@@ -288,7 +288,7 @@
     "qa-issues": "&eQualitätssicherungs-Probleme: &b{0}%",
     "help-us": "&a[Hilf uns, die Übersetzungsqualität zu verbessern]"
   },
-  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
-  "currency-set": "&aSuccessfully set shop currency to {0}.",
-  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
+  "currency-not-exists": "&cKann die Währung nicht finden, welche du setzten willst. Möglicherweise ist die Schreibweise falsch oder die Währung ist nicht in dieser Welt verfügbar.",
+  "currency-set": "&aShopwährung erfolgreich geändert zu {0}.",
+  "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt."
 }
