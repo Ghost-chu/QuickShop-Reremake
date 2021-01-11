@@ -3,7 +3,7 @@
   "translation-version": "Verze: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: Czech (cs_CZ)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cNelze najít QuickShop. Musíš se na něj podívat.",
   "no-anythings-in-your-hand": "&cNemáš v ruce žádný předmět.",
   "no-permission": "&cNa tuto akci nemáš práva.",
@@ -166,7 +166,8 @@
       "language": "&eChange the currently used language",
       "removeall": "&eRemove ALL shops of a specified player",
       "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eRemove ALL shops in a specified world",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aPer bulk amount: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eClick to set the amount of item per bulk. Set to 1 for normal behaviour.",
     "item": "&aShop Item: {0} &e[&d&lChange&e]",
-    "item-hover": "&eClick to change shop Item"
+    "item-hover": "&eClick to change shop Item",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eApproval Progress: &b{0}%",
     "qa-issues": "&eQuality assurance issues: &b{0}%",
     "help-us": "&a[Help us improve the translation quality]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
