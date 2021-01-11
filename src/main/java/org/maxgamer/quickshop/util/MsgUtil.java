@@ -1483,6 +1483,15 @@ public class MsgUtil {
             setAndUpdate("exceeded-maximum", "&cThe value has exceeded the maximum java value.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 46) {
+            setAndUpdate("currency-not-exists", "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.");
+            setAndUpdate("currency-set", "&aSuccessfully set shop currency to {0}.");
+            setAndUpdate("currency-unset", "&aSuccessfully remove shop currency setup, will use default now.");
+            setAndUpdate("command.description.currency", "&eSet or remove the currency setting on shop");
+            setAndUpdate("controlpanel.currency", "&aCurrency: &b{0} &e[&d&lSet&e]");
+            setAndUpdate("controlpanel.currency-hover", "&eClick to set or remove the currency that shop using");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));

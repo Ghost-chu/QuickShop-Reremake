@@ -67,6 +67,7 @@ respect-item-flag: true
 #The currency used for creating shop
 #Leave blank to use default currency
 #Only require to setup of using multi-currency plugin
+#B E T A
 currency: ""
 
 logging:
@@ -107,8 +108,8 @@ include-offlineplayer-list: false
 #0=Vault
 #1=Reserve
 #2=Vault+Command mixed
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
-#DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
+#3=GemsEconomy with Multi-Currency on
+#4=TNE with Multi-Currency on [UNSTABLE]
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
