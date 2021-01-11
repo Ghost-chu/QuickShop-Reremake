@@ -3,7 +3,7 @@
   "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cNie można znaleźć QuickShop. Musisz na niego patrzeć.",
   "no-anythings-in-your-hand": "&cW twojej ręce nic nie ma.",
   "no-permission": "&cNie masz uprawnień, aby to zrobić.",
@@ -166,7 +166,8 @@
       "language": "&eZmień aktualnie używany język",
       "removeall": "&eUsuń WSZYSTKIE sklepy określonego gracza",
       "transfer": "&ePrzenieś czyjeś WSZYSTKIE sklepy do innych",
-      "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie"
+      "removeworld": "&eUsuń WSZYSTKIE sklepy w określonym świecie",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aIlość za stack: &b{0} &e[&d&lZmień&e]",
     "stack-hover": "&eKliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.",
     "item": "&aPrzedmiot sklepu: {0} &e[&d&lZmień&e]",
-    "item-hover": "&eKliknij, aby zmienić przedmiot sklepu"
+    "item-hover": "&eKliknij, aby zmienić przedmiot sklepu",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&ePostęp zatwierdzania: &b{0}%",
     "qa-issues": "&eProblemy z zapewnieniem jakości: &b{0}",
     "help-us": "&a[Pomóż nam poprawić jakość tłumaczenia]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
