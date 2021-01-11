@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -250,6 +251,9 @@ public class QuickShop extends JavaPlugin {
     private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
     @Getter
     private QuickChat quickChat = new BungeeQuickChat();
+    @Getter
+    @Nullable
+    private String currency = null;
 
     @NotNull
     public static QuickShop getInstance() {
@@ -483,7 +487,10 @@ public class QuickShop extends JavaPlugin {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
         this.quickChat = QuickChatType.createByType(this.quickChatType);
-
+        this.currency = this.getConfig().getString("currency");
+        if (StringUtils.isEmpty(this.currency)) {
+            this.currency = null;
+        }
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -1680,6 +1687,11 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 121) {
+            getConfig().set("currency", "");
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }

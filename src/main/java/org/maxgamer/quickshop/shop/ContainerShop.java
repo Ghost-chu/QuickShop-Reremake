@@ -83,6 +83,7 @@ public class ContainerShop implements Shop {
     private long lastChangedAt;
     private int version;
 
+
     private ContainerShop(@NotNull ContainerShop s) {
         this.shopType = s.shopType;
         this.item = s.item.clone();
@@ -1325,6 +1326,36 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull UUID getRuntimeRandomUniqueId() {
         return this.runtimeRandomUniqueId;
+    }
+
+    /**
+     * Gets the currency that shop use
+     *
+     * @return The currency name
+     */
+    @Override
+    public @Nullable String getCurrency() {
+        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        return extraMap.get("currency");
+    }
+
+    /**
+     * Sets the currency that shop use
+     *
+     * @param currency The currency name; null to use default currency
+     */
+    @Override
+    public void setCurrency(@Nullable String currency) {
+        Map<String, String> extraMap = extra.getOrDefault(plugin.getName(), new ConcurrentHashMap<>());
+        if (currency == null) {
+            extraMap.remove("currency");
+        } else {
+            extraMap.put("currency", currency);
+        }
+        extra.put(plugin.getName(), extraMap);
+
+        this.lastChangedAt = System.currentTimeMillis();
+        this.update();
     }
 
 
