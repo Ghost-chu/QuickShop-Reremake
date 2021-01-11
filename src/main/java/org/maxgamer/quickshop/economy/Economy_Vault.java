@@ -250,6 +250,27 @@ public class Economy_Vault implements EconomyCore, Listener {
         }
     }
 
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull String currency) {
+        return false;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return false;
+    }
+
     @Override
     public boolean isValid() {
         return this.vault != null;

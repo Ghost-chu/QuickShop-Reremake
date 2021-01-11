@@ -1490,6 +1490,7 @@ public class MsgUtil {
             setAndUpdate("command.description.currency", "&eSet or remove the currency setting on shop");
             setAndUpdate("controlpanel.currency", "&aCurrency: &b{0} &e[&d&lSet&e]");
             setAndUpdate("controlpanel.currency-hover", "&eClick to set or remove the currency that shop using");
+            setAndUpdate("currency-not-support", "&cThe economy plugin doesn't support multi-currency feature.");
             setAndUpdate("language-version", ++selectedVersion);
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");

@@ -124,6 +124,27 @@ public class Economy_Mixed implements EconomyCore {
         return true;
     }
 
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull String currency) {
+        return false;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return false;
+    }
+
     @Override
     public boolean isValid() {
         return core.isValid();
