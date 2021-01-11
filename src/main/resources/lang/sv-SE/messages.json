@@ -3,7 +3,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -166,7 +166,8 @@
       "language": "&eÄndra det språk som används för nuvarande",
       "removeall": "&eTa bort alla butiker från en angiven spelare",
       "transfer": "&eÖverför alla butiker från en spelare till en annan",
-      "removeworld": "&eTa bort ALLA butiker i angiven värld"
+      "removeworld": "&eTa bort ALLA butiker i angiven värld",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aPer paket-belopp: &b{0} &e[&d&lÄndra&e]",
     "stack-hover": "&eKlicka för att ställa in mängden föremål per paket. Ange 1 för normalt beteende.",
     "item": "&aButikens produkt: {0} &e[&d&lÄndra&e]",
-    "item-hover": "&eKlicka för att ändra butiksprodukten"
+    "item-hover": "&eKlicka för att ändra butiksprodukten",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eGodkända Framsteg: &b{0}%",
     "qa-issues": "&eKvalitetsförsäkringsfrågor: &b{0}%",
     "help-us": "&a[Hjälp oss att förbättra översättningens kvalitet]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
