@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is Economy_GemEconomy.java
+ * This file is a part of project QuickShop, the name is Economy_TNE.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -21,46 +21,56 @@ package org.maxgamer.quickshop.economy;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.xanium.gemseconomy.api.GemsEconomyAPI;
-import me.xanium.gemseconomy.currency.Currency;
+import net.tnemc.core.TNE;
+import net.tnemc.core.common.api.TNEAPI;
+import net.tnemc.core.common.currency.TNECurrency;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Economy_GemEconomy implements EconomyCore {
+/**
+ * @deprecated Unstable
+ */
+public class Economy_TNE implements EconomyCore {
 
     private final QuickShop plugin;
     private final boolean allowLoan;
+
     @Getter
     @Setter
     @Nullable
-    private net.milkbowl.vault.economy.Economy vault;
+    private TNEAPI api;
 
-    private GemsEconomyAPI api;
-
-    public Economy_GemEconomy(@NotNull QuickShop plugin) {
+    public Economy_TNE(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         setupEconomy();
     }
 
     private void setupEconomy() {
-        this.api = new GemsEconomyAPI();
+        this.api = TNE.instance().api();
     }
 
     @Nullable
-    private Currency getCurrency(@Nullable String currency) {
+    private TNECurrency getCurrency(@Nullable String currency) {
         if (!isValid()) {
             return null;
         }
         if (currency == null) {
             return null;
         }
-        return this.api.getCurrency(currency);
+        for (TNECurrency apiCurrency : this.api.getCurrencies()) {
+            if (apiCurrency.getIdentifier().equals(currency)) {
+                return apiCurrency;
+            }
+        }
+        return this.api.getCurrencies().iterator().next();
     }
 
     /**
@@ -73,11 +83,8 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        this.api.deposit(name, amount, getCurrency(currency));
-        return true;
+        deposit(Bukkit.getOfflinePlayer(name), amount, currency);
+        return false;
     }
 
     /**
@@ -93,8 +100,11 @@ public class Economy_GemEconomy implements EconomyCore {
         if (!isValid()) {
             return false;
         }
-        deposit(trader.getUniqueId(), amount, currency);
-        return true;
+        BigDecimal decimal = BigDecimal.valueOf(amount);
+        if (!this.api.canAddHoldings(trader.getName(), decimal)) {
+            return false;
+        }
+        return this.api.addHoldings(trader.getName(), decimal, getCurrency(currency));
     }
 
     /**
@@ -106,7 +116,11 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public String format(double balance, @Nullable String currency) {
-        return null; //NO IMPL
+        if (!isValid()) {
+            return null;
+        }
+        BigDecimal decimal = BigDecimal.valueOf(balance);
+        return this.api.format(decimal, getCurrency(currency), TNE.instance().defaultWorld);
     }
 
     /**
@@ -118,10 +132,7 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public double getBalance(@NotNull UUID name, @Nullable String currency) {
-        if (!isValid()) {
-            return 0.0;
-        }
-        return this.api.getBalance(name, getCurrency(currency));
+        return getBalance(Bukkit.getOfflinePlayer(name), currency);
     }
 
     /**
@@ -136,7 +147,11 @@ public class Economy_GemEconomy implements EconomyCore {
         if (!isValid()) {
             return 0.0;
         }
-        return getBalance(player.getUniqueId(), currency);
+        if (getCurrency(currency) != null) {
+            return this.api.getHoldings(player.getName(), getCurrency(currency)).doubleValue();
+        } else {
+            return this.api.getHoldings(player.getName(), TNE.instance().defaultWorld).doubleValue();
+        }
     }
 
     /**
@@ -150,19 +165,6 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        if (this.getBalance(from, currency) >= amount) {
-            if (this.withdraw(from, amount, currency)) {
-                if (this.deposit(to, amount, currency)) {
-                    this.deposit(from, amount, currency);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
         return false;
     }
 
@@ -176,11 +178,7 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        this.api.withdraw(name, amount, getCurrency(currency));
-        return true;
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, currency);
     }
 
     /**
@@ -196,8 +194,11 @@ public class Economy_GemEconomy implements EconomyCore {
         if (!isValid()) {
             return false;
         }
-        withdraw(trader.getUniqueId(), amount, currency);
-        return false;
+        BigDecimal decimal = BigDecimal.valueOf(amount);
+        if (!this.api.canRemoveHoldings(trader.getName(), decimal, getCurrency(currency))) {
+            return false;
+        }
+        return this.api.removeHoldings(trader.getName(), decimal);
     }
 
     /**
@@ -207,12 +208,12 @@ public class Economy_GemEconomy implements EconomyCore {
      */
     @Override
     public boolean isValid() {
-        return this.api != null;
+        return this.api != null && TNE.instance() != null;
     }
 
     @Override
     public @NotNull String getName() {
-        return "BuiltIn-GemsEconomy";
+        return "BuiltIn-TNE-Unstable";
     }
 
     @Override
