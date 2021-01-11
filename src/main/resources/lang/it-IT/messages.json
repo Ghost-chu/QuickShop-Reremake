@@ -3,7 +3,7 @@
   "translation-version": "1.15.1Pro",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (it_US)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cImpossibile trovare un QuickShop. Devi guardarlo.",
   "no-anythings-in-your-hand": "&cNon hai nulla in mano.",
   "no-permission": "&c Non hai i permessi per questo.",
@@ -166,7 +166,8 @@
       "language": "&eCambia la lingua attualmente in uso",
       "removeall": "&eRimuovi TUTTI i negozi di un giocatore specificato",
       "transfer": "&eTrasferisci tutti i negozi di qualcuno ad un altro player",
-      "removeworld": "&eRimuovi tutti i negozi in uno specifico mondo"
+      "removeworld": "&eRimuovi tutti i negozi in uno specifico mondo",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aPer quantità di massa: &b{0} &e[&d&lCambia&e]",
     "stack-hover": "&eClicca per impostare la quantità di elemento per bulk. Imposta a 1 per comportamento normale.",
     "item": "&aElemento negozio: {0} &e[&d&lCambia&e]",
-    "item-hover": "&eClick per cambiare l'elemento del negozio"
+    "item-hover": "&eClick per cambiare l'elemento del negozio",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eProgresso di approvazione: &b{0}%",
     "qa-issues": "&eProblemi di garanzia della qualità: &b{0}%",
     "help-us": "&a[Aiutaci a migliorare la qualità della traduzione]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
