@@ -3,7 +3,7 @@
   "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -110,7 +110,7 @@
   "how-many-sell": "&aEntrez le nombre d'objets que vous souhaitez &bVENDRE&a dans le chat. Vous en avez &e{0}&a dans votre inventaire. Entrez &ball&a pour tous les vendre.",
   "not-allowed-to-create": "&cVous ne pouvez pas créer un shop ici.",
   "blacklisted-item": "&cVous ne pouvez pas vendre cet objet car il se trouve sur la liste noire",
-  "how-much-to-trade-for": "&aEntrez dans le chat, pour combien d'argent vous souhaitez échanger &e{1}x {0}&a.",
+  "how-much-to-trade-for": "&aEntrez dans le chat, combien vous souhaitez échanger &e{1}x {0}&a.",
   "command": {
     "toggle-unlimited": {
       "unlimited": "&aCe shop est désormais illimité",
@@ -166,7 +166,8 @@
       "language": "Modifier la langue actuelle",
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
       "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
-      "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié"
+      "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aPar quantité en vrac : &b{0} &e[&d&lChanger&e]",
     "stack-hover": "&eCliquez pour définir la quantité d'objets par vrac. Réglez sur 1 pour un comportement normal.",
     "item": "&aIllimité: {0} &e[&d&lChanger&e]",
-    "item-hover": "&eCliquez pour changer l'objet de la boutique"
+    "item-hover": "&eCliquez pour changer l'objet de la boutique",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eProgression de l'Approbation : &b{0}%",
     "qa-issues": "&eProblèmes d'assurance qualité : &b{0}%",
     "help-us": "&a[Aidez-nous à améliorer la qualité de la traduction]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
