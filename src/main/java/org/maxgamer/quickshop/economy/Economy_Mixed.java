@@ -69,7 +69,7 @@ public class Economy_Mixed implements EconomyCore {
 
     @Override
     public String format(double balance, @Nullable String currency) {
-        return Util.format(balance);
+        return Util.format(balance, null);
     }
 
     @Override

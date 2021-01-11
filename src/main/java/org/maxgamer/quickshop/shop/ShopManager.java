@@ -292,8 +292,8 @@ public class ShopManager {
      * @param d price
      * @return formated price
      */
-    public @Nullable String format(double d) {
-        return plugin.getEconomy().format(d);
+    public @Nullable String format(double d, @Nullable String currency) {
+        return plugin.getEconomy().format(d, currency);
     }
 
     /**
@@ -688,8 +688,10 @@ public class ShopManager {
                         MsgUtil.getMessage(
                                 buyer,
                                 "the-owner-cant-afford-to-buy-from-you",
-                                Objects.requireNonNull(format(total)),
-                                Objects.requireNonNull(format(eco.getBalance(shop.getOwner())))));
+                                Objects.requireNonNull(format(total, shop.getCurrency())),
+                                Objects.requireNonNull(
+                                        format(eco.getBalance(shop.getOwner(), shop.getCurrency()), shop.getCurrency())
+                                )));
             } else {
                 MsgUtil.sendMessage(buyer, MsgUtil.getMessage(buyer, "purchase-failed"));
                 plugin
@@ -736,6 +738,7 @@ public class ShopManager {
         Bukkit.getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
     }
+
 
     @Deprecated
     public void actionBuy(
@@ -1049,7 +1052,7 @@ public class ShopManager {
                     MsgUtil.sendMessage(
                             p,
                             MsgUtil.getMessage(
-                                    "you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost))));
+                                    "you-cant-afford-a-new-shop", p, Objects.requireNonNull(format(createCost, shop.getCurrency()))));
                 } else {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("purchase-failed", p));
                     plugin
@@ -1259,8 +1262,8 @@ public class ShopManager {
                         MsgUtil.getMessage(
                                 seller,
                                 "you-cant-afford-to-buy",
-                                Objects.requireNonNull(format(total)),
-                                Objects.requireNonNull(format(eco.getBalance(seller)))));
+                                Objects.requireNonNull(format(total, shop.getCurrency())),
+                                Objects.requireNonNull(format(eco.getBalance(seller, shop.getCurrency()), shop.getCurrency()))));
             } else {
                 MsgUtil.sendMessage(seller, MsgUtil.getMessage(seller, "purchase-failed"));
                 plugin
@@ -1284,7 +1287,7 @@ public class ShopManager {
                             Integer.toString(amount * shop.getItem().getAmount()),
                             "##########" + Util.serialize(shop.getItem()) + "##########",
                             Double.toString(total),
-                            Util.format(CalculateUtil.multiply(taxModifier, total)));
+                            Util.format(CalculateUtil.multiply(taxModifier, total), shop));
         } else {
             msg =
                     MsgUtil.getMessage(
@@ -1388,7 +1391,7 @@ public class ShopManager {
                             Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
                     int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
                     // Check if shop owner has enough money
-                    double ownerBalance = eco.getBalance(shop.getOwner());
+                    double ownerBalance = eco.getBalance(shop.getOwner(), shop.getCurrency());
                     int ownerCanAfford;
 
                     if (shop.getPrice() != 0) {
@@ -1431,8 +1434,8 @@ public class ShopManager {
                                     MsgUtil.getMessage(
                                             "the-owner-cant-afford-to-buy-from-you",
                                             p,
-                                            Objects.requireNonNull(format(shop.getPrice())),
-                                            Objects.requireNonNull(format(ownerBalance))));
+                                            Objects.requireNonNull(format(shop.getPrice(), shop.getCurrency())),
+                                            Objects.requireNonNull(format(ownerBalance, shop.getCurrency()))));
                             return;
                         }
                         // when typed 'all' but player doesn't have any items to sell
@@ -1472,7 +1475,7 @@ public class ShopManager {
                     }
                     // typed 'all', check if player has enough money than price * amount
                     double price = shop.getPrice();
-                    double balance = eco.getBalance(p.getUniqueId());
+                    double balance = eco.getBalance(p.getUniqueId(), shop.getCurrency());
                     amount = Math.min(amount, (int) Math.floor(balance / price));
                     if (amount < 1) { // typed 'all' but the auto set amount is 0
                         // when typed 'all' but player can't buy any items
@@ -1497,8 +1500,8 @@ public class ShopManager {
                                     MsgUtil.getMessage(
                                             "you-cant-afford-to-buy",
                                             p,
-                                            Objects.requireNonNull(format(price)),
-                                            Objects.requireNonNull(format(balance))));
+                                            Objects.requireNonNull(format(price, shop.getCurrency())),
+                                            Objects.requireNonNull(format(balance, shop.getCurrency()))));
                         }
                         return;
                     }

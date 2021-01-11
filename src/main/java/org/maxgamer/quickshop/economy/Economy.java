@@ -24,6 +24,7 @@ import lombok.Setter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
@@ -52,13 +53,13 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount) {
-        return core.deposit(name, amount);
+    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+        return core.deposit(name, amount, currency);
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
-        return core.deposit(trader, amount);
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        return core.deposit(trader, amount, currency);
     }
 
     /**
@@ -68,34 +69,55 @@ public class Economy implements EconomyCore {
      * @return The balance in human readable text.
      */
     @Override
-    public String format(double balance) {
-        return Util.parseColours(core.format(balance));
+    public String format(double balance, @Nullable String currency) {
+        return Util.parseColours(core.format(balance, currency));
         // Fix color issue from some stupid economy plugin....
     }
 
     @Override
-    public double getBalance(@NotNull UUID name) {
-        return core.getBalance(name);
+    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+        return core.getBalance(name, currency);
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player) {
-        return core.getBalance(player);
+    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+        return core.getBalance(player, currency);
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
-        return core.transfer(from, to, amount);
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
+        return core.transfer(from, to, amount, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount) {
-        return core.withdraw(name, amount);
+    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+        return core.withdraw(name, amount, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
-        return core.withdraw(trader, amount);
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+        return core.withdraw(trader, amount, currency);
+    }
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull String currency) {
+        return this.core.hasCurrency(currency);
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return this.core.supportCurrency();
     }
 
     /**

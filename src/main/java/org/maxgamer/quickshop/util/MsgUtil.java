@@ -819,7 +819,7 @@ public class MsgUtil {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(MsgUtil.getMessage("menu.successful-purchase", sender));
-        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format((amount * shop.getPrice()))));
+        chatSheetPrinter.printLine(MsgUtil.getMessage("menu.item-name-and-price", sender, Integer.toString(amount * shop.getItem().getAmount()), Util.getItemStackName(shop.getItem()), Util.format(amount * shop.getPrice(), shop)));
         printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -863,14 +863,14 @@ public class MsgUtil {
                         sender,
                         Integer.toString(amount),
                         Util.getItemStackName(shop.getItem()),
-                        Util.format((amount * shop.getPrice()))));
+                        Util.format(amount * shop.getPrice(), shop)));
         if (plugin.getConfig().getBoolean("show-tax")) {
             double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format((tax * total))));
+                            MsgUtil.getMessage("menu.sell-tax", sender, Util.format(tax * total, shop)));
                 } else {
                     chatSheetPrinter.printLine(MsgUtil.getMessage("menu.sell-tax-self", sender));
                 }
@@ -946,9 +946,9 @@ public class MsgUtil {
             }
         }
         if (shop.getItem().getAmount() == 1) {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop)));
         } else {
-            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice()), Integer.toString(shop.getItem().getAmount())));
+            chatSheetPrinter.printLine(MsgUtil.getMessage("menu.price-per-stack", p, Util.getItemStackName(shop.getItem()), Util.format(shop.getPrice(), shop), Integer.toString(shop.getItem().getAmount())));
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(MsgUtil.getMessage("menu.this-shop-is-buying", p));
