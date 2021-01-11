@@ -402,6 +402,15 @@ public interface Shop {
     Map<String, String> getExtra(@NotNull Plugin plugin);
 
     /**
+     * Gets ExtraManager to quick access extra data
+     *
+     * @param plugin Plugin instance
+     * @return The Extra data manager
+     */
+    @NotNull
+    ShopExtraManager getExtraManager(@NotNull Plugin plugin);
+
+    /**
      * Save the extra data to the shop.
      *
      * @param plugin Plugin instace
