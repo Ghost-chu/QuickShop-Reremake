@@ -128,7 +128,7 @@ public class PlayerListener extends QSListener {
 
             final Economy eco = plugin.getEconomy();
             final double price = shop.getPrice();
-            final double money = plugin.getEconomy().getBalance(p.getUniqueId());
+            final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getCurrency());
 
             if (shop.isSelling()) {
                 int itemAmount = Math.min(Util.countSpace(p.getInventory(), shop.getItem()), (int) Math.floor(money / price));
@@ -144,7 +144,7 @@ public class PlayerListener extends QSListener {
                     MsgUtil.sendMessage(p, MsgUtil.getMessage("how-many-buy", p, Integer.toString(itemAmount)));
                 }
             } else {
-                final double ownerBalance = eco.getBalance(shop.getOwner());
+                final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getCurrency());
                 int items = Util.countItems(p.getInventory(), shop.getItem());
                 final int ownerCanAfford = (int) (ownerBalance / shop.getPrice());
 

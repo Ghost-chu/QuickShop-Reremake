@@ -400,7 +400,7 @@ public class ContainerShop implements Shop {
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"));
+                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
@@ -618,9 +618,9 @@ public class ContainerShop implements Shop {
                 MsgUtil.getMessageOfflinePlayer(
                         "signs.item", player, Util.getItemStackName(this.getItem()));
         if (this.isStackingShop()) {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice()), Integer.toString(item.getAmount()), Util.getItemStackName(item));
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.stack-price", player, Util.format(this.getPrice(), this), Integer.toString(item.getAmount()), Util.getItemStackName(item));
         } else {
-            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice()));
+            lines[3] = MsgUtil.getMessageOfflinePlayer("signs.price", player, Util.format(this.getPrice(), this));
 
         }
         //new pattern

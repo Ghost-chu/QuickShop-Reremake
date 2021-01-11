@@ -357,12 +357,12 @@ public class Util {
      * @return The formatted string.
      */
     @NotNull
-    public static String format(double n) {
-        return format(n, disableVaultFormat);
+    public static String format(double n, @Nullable Shop shop) {
+        return format(n, disableVaultFormat, shop);
     }
 
     @NotNull
-    public static String format(double n, boolean internalFormat) {
+    public static String format(double n, boolean internalFormat, @Nullable Shop shop) {
         if (internalFormat) {
             return getInternalFormat(n);
         }
@@ -376,7 +376,7 @@ public class Util {
             return getInternalFormat(n);
         }
         try {
-            String formatted = plugin.getEconomy().format(n);
+            String formatted = plugin.getEconomy().format(n, shop == null ? null : shop.getCurrency());
             if (formatted == null || formatted.isEmpty()) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");

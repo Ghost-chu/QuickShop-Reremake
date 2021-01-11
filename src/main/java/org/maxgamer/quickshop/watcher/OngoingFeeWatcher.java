@@ -55,16 +55,16 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             if (!shop.isUnlimited() || !ignoreUnlimited) {
                 UUID shopOwner = shop.getOwner();
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner) < cost)) {// Disallow loan
+                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner, shop.getCurrency()) < cost)) {// Disallow loan
                         this.removeShop(shop);
                     }
-                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost);
+                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost, shop.getCurrency());
                     if (!success) {
                         this.removeShop(shop);
                     } else {
                         try {
                             //noinspection ConstantConditions,deprecation
-                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
+                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost, shop.getCurrency());
                         } catch (Exception ignored) {
                         }
                     }
