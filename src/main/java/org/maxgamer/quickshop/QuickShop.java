@@ -422,6 +422,17 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
+                case GEMS_ECONOMY:
+                    core = new Economy_GemsEconomy(this);
+                    Util.debugLog("Now using the GemsEconomy economy system.");
+                    break;
+                case TNE:
+                    core = new Economy_TNE(this); //TODO: Unstable
+                    Util.debugLog("Now using the TNE economy system.");
+                    break;
+                case MIXED:
+                    core = new Economy_Mixed(this);
+                    Util.debugLog("Now using the Mixed economy system.");
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;
