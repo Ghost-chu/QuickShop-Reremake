@@ -167,7 +167,7 @@
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
       "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
-      "currency": "&eSet or remove the currency setting on shop"
+      "currency": "&eSetze oder entferne die Währungseinstellungen im Shop"
     }
   },
   "signs": {
@@ -203,8 +203,8 @@
     "stack-hover": "&eKlicke um die Anzahl an Items pro Menge zu ändern. Setze es zu 1 für normales Verhalten.",
     "item": "&aShopitem: {0} &e[&d&lÄndern&e]",
     "item-hover": "&eKlicke, um das Shopitem zu ändern",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that shop using"
+    "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
+    "currency-hover": "&eKlicke, um die Währung für den Shop zu setzten oder zu entfernen"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
