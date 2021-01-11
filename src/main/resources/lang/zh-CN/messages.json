@@ -3,7 +3,7 @@
   "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&c无法找到商店，您需要注视着你想要操作的商店。",
   "no-anythings-in-your-hand": "&c你的手里没有任何物品。",
   "no-permission": "&c你没有权限这样做。",
@@ -166,7 +166,8 @@
       "language": "&e切换正在使用的语言",
       "removeall": "&e删除指定玩家的&b所有&r&e商店",
       "transfer": "&e将某人的所有商店转移给其他人",
-      "removeworld": "&e删除指定世界中的所有商店"
+      "removeworld": "&e删除指定世界中的所有商店",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&a每次交易物品数量: &b{0} &e[&d&l修改&e]",
     "stack-hover": "&e点击设置每次交易的物品数量。设置为1以恢复为普通单物品商店。",
     "item": "&a无限模式: {0} &e[&d&l切换&e]",
-    "item-hover": "&e点击以更改商店物品"
+    "item-hover": "&e点击以更改商店物品",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&e核查进度: &b{0}%",
     "qa-issues": "&e质量问题：&b{0}%",
     "help-us": "&a[帮助我们提高翻译质量]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
