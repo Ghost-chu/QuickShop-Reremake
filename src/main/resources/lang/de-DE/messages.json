@@ -2,9 +2,9 @@
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
-  "translation-country": "Language Zone: English (en_US)",
-  "language-version": "46",
-  "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
+  "translation-country": "Sprache: Deutsch (de_DE)",
+  "language-version": "47",
+  "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
   "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
@@ -166,7 +166,8 @@
       "language": "&eÄndert die derzeitig verwendete Sprache",
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt"
+      "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "&aPro Menge: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eKlicke um die Anzahl an Items pro Menge zu ändern. Setze es zu 1 für normales Verhalten.",
     "item": "&aShopitem: {0} &e[&d&lÄndern&e]",
-    "item-hover": "&eKlicke, um das Shopitem zu ändern"
+    "item-hover": "&eKlicke, um das Shopitem zu ändern",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eGenehmigungsfortschritt: &b{0}%",
     "qa-issues": "&eQualitätssicherungs-Probleme: &b{0}%",
     "help-us": "&a[Hilf uns, die Übersetzungsqualität zu verbessern]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
