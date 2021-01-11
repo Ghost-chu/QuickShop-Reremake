@@ -290,5 +290,6 @@
   },
   "currency-not-exists": "&cKann die Währung nicht finden, welche du setzten willst. Möglicherweise ist die Schreibweise falsch oder die Währung ist nicht in dieser Welt verfügbar.",
   "currency-set": "&aShopwährung erfolgreich geändert zu {0}.",
-  "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt."
+  "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt.",
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
 }
