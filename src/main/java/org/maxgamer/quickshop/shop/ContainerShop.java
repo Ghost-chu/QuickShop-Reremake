@@ -1293,6 +1293,17 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Gets ExtraManager to quick access extra data
+     *
+     * @param plugin Plugin instance
+     * @return The Extra data manager
+     */
+    @Override
+    public @NotNull ShopExtraManager getExtraManager(@NotNull Plugin plugin) {
+        return new ShopExtraManager(this, plugin);
+    }
+
+    /**
      * Save the extra data to the shop.
      *
      * @param plugin Plugin instace
