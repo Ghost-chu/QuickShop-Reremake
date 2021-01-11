@@ -291,5 +291,5 @@
   "currency-not-exists": "&cCannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.",
   "currency-set": "&aShop currency successfully set to {0}.",
   "currency-unset": "&aShop currency removed successfully. Using default settings now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support the multi-economy feature."
 }
