@@ -3,7 +3,7 @@
   "translation-version": "Destek Versiyonu: Reremake",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
-  "language-version": "46",
+  "language-version": "47",
   "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
@@ -166,7 +166,8 @@
       "language": "&eGeçerli dili değiştir",
       "removeall": "&eBelirli bir oyuncunun BÜTÜN marketlerini kaldır",
       "transfer": "&eBirinin TÜM marketlerini bir başkasına devret",
-      "removeworld": "&eBelirtilen dünya içindeki TÜM marketleri kaldırır"
+      "removeworld": "&eBelirtilen dünya içindeki TÜM marketleri kaldırır",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +202,9 @@
     "stack": "Yığın başına miktar: &b{0} &e[&d&lDeğiştir&e]",
     "stack-hover": "&eYığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.",
     "item": "&aMarket Öğesi: {0} &e[&d&lDeğiştir&e]",
-    "item-hover": "&eMarket öğesini değiştirmek için tıkla"
+    "item-hover": "&eMarket öğesini değiştirmek için tıkla",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -284,5 +287,8 @@
     "approval-progress": "&eOnaylanan İlerleme: &b{0}%",
     "qa-issues": "&eKalite güven sorunları: &b{0}%",
     "help-us": "&a[Tercüme kalitesini arttırmamıza yardımcı olun]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now."
 }
