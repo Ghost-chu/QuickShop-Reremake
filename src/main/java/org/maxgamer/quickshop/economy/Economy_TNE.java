@@ -30,6 +30,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -107,6 +108,7 @@ public class Economy_TNE implements EconomyCore {
         return this.api.addHoldings(trader.getName(), decimal, getCurrency(currency));
     }
 
+
     /**
      * Formats the given number... E.g. 50.5 becomes $50.5 Dollars, or 50 Dollars 5 Cents
      *
@@ -117,10 +119,27 @@ public class Economy_TNE implements EconomyCore {
     @Override
     public String format(double balance, @Nullable String currency) {
         if (!isValid()) {
-            return null;
+            return "Error";
         }
-        BigDecimal decimal = BigDecimal.valueOf(balance);
-        return this.api.format(decimal, getCurrency(currency), TNE.instance().defaultWorld);
+        try {
+            BigDecimal decimal = BigDecimal.valueOf(balance);
+            String formatedBalance = this.api.format(decimal, getCurrency(currency), TNE.instance().defaultWorld);
+            if (formatedBalance == null) // Stupid Ecosystem
+            {
+                return formatInternal(balance);
+            }
+            return formatedBalance;
+        } catch (Exception e) {
+            return formatInternal(balance);
+        }
+    }
+
+    private String formatInternal(double balance) {
+        if (!isValid()) {
+            return "Error";
+        }
+
+        return Util.format(balance, true, null);
     }
 
     /**

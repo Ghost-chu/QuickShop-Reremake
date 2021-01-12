@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.UUID;
 
@@ -101,7 +102,18 @@ public class Economy_GemsEconomy implements EconomyCore {
      */
     @Override
     public String format(double balance, @Nullable String currency) {
-        return null; //NO IMPL
+        if (!isValid()) {
+            return "Error";
+        }
+        return formatInternal(balance);
+    }
+
+    private String formatInternal(double balance) {
+        if (!isValid()) {
+            return "Error";
+        }
+
+        return Util.format(balance, true, null);
     }
 
     /**
