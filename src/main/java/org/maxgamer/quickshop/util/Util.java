@@ -405,13 +405,12 @@ public class Util {
 
     private static String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
-            Util.debugLog("Currency is null");
+            Util.debugLog("Format: Currency is null");
             MsgUtil.debugStackTrace(new Exception().getStackTrace());
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
         } else {
-            Util.debugLog("Currency not null");
-            MsgUtil.debugStackTrace(new Exception().getStackTrace());
+            Util.debugLog("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = currency2Symbol.getOrDefault(currency, alternateCurrencySymbol);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
@@ -775,7 +774,7 @@ public class Util {
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
 
-        List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
+        List<String> symbols = plugin.getConfig().getStringList("alternate-currency-symbol-list");
 
 
         symbols.forEach(entry -> {
