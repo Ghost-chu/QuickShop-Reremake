@@ -406,13 +406,12 @@ public class Util {
     private static String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
             Util.debugLog("Format: Currency is null");
-            MsgUtil.debugStackTrace(new Exception().getStackTrace());
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
         } else {
             Util.debugLog("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            String symbol = currency2Symbol.getOrDefault(currency, alternateCurrencySymbol);
+            String symbol = currency2Symbol.getOrDefault(currency, currency);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
         }
     }
