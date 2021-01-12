@@ -1187,7 +1187,10 @@ public class Util {
      * @return parsed text
      */
     @NotNull
-    public static String parseColours(@NotNull String text) {
+    public static String parseColours(@Nullable String text) {
+        if (StringUtils.isEmpty(text)) {
+            return "";
+        }
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
     }
