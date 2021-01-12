@@ -126,20 +126,20 @@ public class Economy_TNE implements EconomyCore {
             String formatedBalance = this.api.format(decimal, getCurrency(currency), TNE.instance().defaultWorld);
             if (formatedBalance == null) // Stupid Ecosystem
             {
-                return formatInternal(balance);
+                return formatInternal(balance, currency);
             }
             return formatedBalance;
         } catch (Exception e) {
-            return formatInternal(balance);
+            return formatInternal(balance, currency);
         }
     }
 
-    private String formatInternal(double balance) {
+    private String formatInternal(double balance, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
 
-        return Util.format(balance, true, null);
+        return Util.format(balance, true, currency);
     }
 
     /**

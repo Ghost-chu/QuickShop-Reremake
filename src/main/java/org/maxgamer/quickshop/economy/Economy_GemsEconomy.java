@@ -105,15 +105,15 @@ public class Economy_GemsEconomy implements EconomyCore {
         if (!isValid()) {
             return "Error";
         }
-        return formatInternal(balance);
+        return formatInternal(balance, currency);
     }
 
-    private String formatInternal(double balance) {
+    private String formatInternal(double balance, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
 
-        return Util.format(balance, true, null);
+        return Util.format(balance, true, currency);
     }
 
     /**
