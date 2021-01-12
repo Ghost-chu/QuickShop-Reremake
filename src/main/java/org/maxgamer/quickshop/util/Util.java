@@ -365,12 +365,15 @@ public class Util {
 
     @NotNull
     public static String format(double n, boolean internalFormat, @Nullable Shop shop) {
-        String currency;
-        if (shop == null) {
-            currency = null;
+        if (shop != null) {
+            return format(n, internalFormat, shop.getCurrency());
         } else {
-            currency = shop.getCurrency();
+            return format(n, internalFormat, (Shop) null);
         }
+    }
+
+    @NotNull
+    public static String format(double n, boolean internalFormat, @Nullable String currency) {
         if (internalFormat) {
             return getInternalFormat(n, currency);
         }
@@ -384,8 +387,8 @@ public class Util {
             return getInternalFormat(n, currency);
         }
         try {
-            String formatted = plugin.getEconomy().format(n, shop == null ? null : currency);
-            if (formatted == null || formatted.isEmpty()) {
+            String formatted = plugin.getEconomy().format(n, currency);
+            if (StringUtils.isEmpty(formatted)) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
                 return getInternalFormat(n, currency);
@@ -402,9 +405,13 @@ public class Util {
 
     private static String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
+            Util.debugLog("Currency is null");
+            MsgUtil.debugStackTrace(new Exception().getStackTrace());
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
         } else {
+            Util.debugLog("Currency not null");
+            MsgUtil.debugStackTrace(new Exception().getStackTrace());
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = currency2Symbol.getOrDefault(currency, alternateCurrencySymbol);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;

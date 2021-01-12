@@ -124,7 +124,7 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     private String formatInternal(double balance) {
-        return Util.format(balance, true, null);
+        return Util.format(balance, true, (String) null);
     }
 
     /**
