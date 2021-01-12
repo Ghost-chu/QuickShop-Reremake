@@ -634,13 +634,13 @@ public class QuickShop extends JavaPlugin {
         reloadConfig();
         */
         getConfig().options().copyHeader(false).header(
-                "=================================\n" +
-                        "=    QuickShop  Configuration   =\n" +
                         "=================================\n" +
-                        "\nNotes:" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n" +
-                        "Please read the example.config.yml file to get commented example config file.\n"
+                                "=    QuickShop  Configuration   =\n" +
+                                "=================================\n" +
+                                "\nNotes:" +
+                                "Please read the example.config.yml file to get commented example config file.\n" +
+                                "Please read the example.config.yml file to get commented example config file.\n" +
+                                "Please read the example.config.yml file to get commented example config file.\n"
         );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
