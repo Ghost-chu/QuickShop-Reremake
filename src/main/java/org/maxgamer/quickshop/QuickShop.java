@@ -1661,8 +1661,8 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 115) {
             getConfig().set("integration.griefprevention.enable", false);
             getConfig().set("integration.griefprevention.whitelist-mode", false);
-            getConfig().set("integration.griefprevention.create", new ArrayList<>(0));
-            getConfig().set("integration.griefprevention.trade", new ArrayList<>(0));
+            getConfig().set("integration.griefprevention.create", Collections.emptyList());
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
             getConfig().set("config-version", 116);
             selectedVersion = 116;
         }
@@ -1698,8 +1698,9 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
             getConfig().set("config-version", ++selectedVersion);
         }
-        if (selectedVersion == 121) {
+        if (selectedVersion == 122) {
             getConfig().set("currency", "");
+            getConfig().set("alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
             getConfig().set("config-version", ++selectedVersion);
         }
 

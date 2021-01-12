@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -64,10 +65,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-
     private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
             new EnumMap<>(Material.class);
-
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
@@ -86,6 +85,8 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
     private static boolean useDecimalFormat;
+    @Getter
+    private static final Map<String, String> currency2Symbol = new HashMap<>();
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -353,7 +354,8 @@ public class Util {
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
      *
-     * @param n price
+     * @param n    price
+     * @param shop shop
      * @return The formatted string.
      */
     @NotNull
@@ -363,8 +365,14 @@ public class Util {
 
     @NotNull
     public static String format(double n, boolean internalFormat, @Nullable Shop shop) {
+        String currency;
+        if (shop == null) {
+            currency = null;
+        } else {
+            currency = shop.getCurrency();
+        }
         if (internalFormat) {
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
 
         if (plugin == null) {
@@ -373,14 +381,14 @@ public class Util {
         }
         if (plugin.getEconomy() == null) {
             Util.debugLog("Called format before Economy booted up, using built-in formatter.");
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
         try {
-            String formatted = plugin.getEconomy().format(n, shop == null ? null : shop.getCurrency());
+            String formatted = plugin.getEconomy().format(n, shop == null ? null : currency);
             if (formatted == null || formatted.isEmpty()) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
-                return getInternalFormat(n);
+                return getInternalFormat(n, currency);
             } else {
                 return formatted;
             }
@@ -388,13 +396,19 @@ public class Util {
             Util.debugLog("format", e.getMessage());
             Util.debugLog(
                     "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
     }
 
-    private static String getInternalFormat(double amount) {
-        String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-        return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
+    private static String getInternalFormat(double amount, @Nullable String currency) {
+        if (StringUtils.isEmpty(currency)) {
+            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
+        } else {
+            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            String symbol = currency2Symbol.getOrDefault(currency, alternateCurrencySymbol);
+            return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
+        }
     }
 
 
@@ -680,6 +694,7 @@ public class Util {
         restrictedPrices.clear();
         worldBlacklist.clear();
         customStackSize.clear();
+        currency2Symbol.clear();
         plugin = QuickShop.getInstance();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -752,6 +767,18 @@ public class Util {
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
+
+        List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
+
+
+        symbols.forEach(entry -> {
+            String[] splits = entry.split(";", 2);
+            if (splits.length < 2) {
+                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
+            }
+            currency2Symbol.put(splits[0], splits[1]);
+        });
+
         InteractUtil.init(plugin.getConfig());
     }
 
