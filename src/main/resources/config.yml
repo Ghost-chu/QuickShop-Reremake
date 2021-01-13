@@ -276,7 +276,7 @@ shop:
   alternate-currency-symbol: '$'
 
   #This symbol setting for multi-currency supports
-  #If no any hit in this list, will fallback to alternate-currency-symbol
+  #If no any hit in this list, will fallback to the name of currency it self
   alternate-currency-symbol-list:
     - CNY;¥
     - USD;$
