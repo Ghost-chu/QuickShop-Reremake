@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.builtinlistener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
 import org.maxgamer.quickshop.shop.ShopType;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 
@@ -41,8 +43,21 @@ public class InternalListener implements Listener {
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
 
+
+    public boolean isForbidden(Material shopMaterial, Material itemMaterial) {
+        if (shopMaterial != itemMaterial) {
+            return false;
+        }
+        return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
+        if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
+            event.setCancelled(true);
+            MsgUtil.sendMessage(event.getCreator(), MsgUtil.getMessage("forbidden-vanilla-behavior", null));
+            return;
+        }
         if (loggingAction) {
             Player creator = Bukkit.getPlayer(event.getCreator());
             plugin.log(
@@ -86,6 +101,11 @@ public class InternalListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPrePurchase(ShopPurchaseEvent event) {
+        if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
+            event.setCancelled(true);
+            MsgUtil.sendMessage(event.getPurchaser(), MsgUtil.getMessage("forbidden-vanilla-behavior", null));
+            return;
+        }
         if (loggingBalance) {
             Player creator = Bukkit.getPlayer(event.getPurchaser());
             plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getCurrency()) + " before trading.");
