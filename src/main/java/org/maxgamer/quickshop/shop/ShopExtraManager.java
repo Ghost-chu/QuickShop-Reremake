@@ -30,6 +30,9 @@ import org.maxgamer.quickshop.util.Util;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Quick access Extra API
+ */
 public class ShopExtraManager {
     private final Shop shop;
     private final Plugin namespace;
