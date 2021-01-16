@@ -43,7 +43,7 @@
   "fee-charged-for-price-change": "&aDu betalade &c{0}&a för att ändra priset.",
   "price-is-now": "&aDet nya priset för butiken är &e{0}",
   "thats-not-a-number": "&cOgiltig siffra",
-  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to is not consist with vanilla behavior",
+  "forbidden-vanilla-behavior": "&cOperationen är förbjuden på grund av att den inte är konsekvent med standardbeteendet.",
   "no-price-given": "&cVar god ange ett giltigt pris.",
   "average-price-nearby": "&aNärliggande genomsnittspris: &e{0}",
   "shop-has-changed": "&cButiken du försökte använda har ändrats sedan du klickade på den!",
