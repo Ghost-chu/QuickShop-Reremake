@@ -275,6 +275,12 @@ shop:
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
   alternate-currency-symbol: '$'
 
+  #This symbol setting for multi-currency supports
+  #If no any hit in this list, will fallback to the name of currency it self
+  alternate-currency-symbol-list:
+    - CNY;¥
+    - USD;$
+
   #It should fix Vault or an economy plugin that is not correctly processing the price and returns a "0" result problem.
   #If you turn on this option, plugin will force use "alternate-currency-symbol" option.
   disable-vault-format: false

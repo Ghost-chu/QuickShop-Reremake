@@ -270,7 +270,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         }
 
         if (sendProtectionAlert) {
-            MsgUtil.sendGlobalAlert("[DisplayGuard] Defened a item steal action at" + location);
+            MsgUtil.sendGlobalAlert("[DisplayGuard] Defend a item steal action at" + location);
         }
     }
 
