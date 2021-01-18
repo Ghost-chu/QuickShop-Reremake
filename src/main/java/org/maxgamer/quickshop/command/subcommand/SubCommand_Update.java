@@ -53,7 +53,7 @@ public class SubCommand_Update implements CommandProcesser {
 
                 MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
 
-                final byte[] pluginBin;
+                //final byte[] pluginBin;
 
                 try {
                     plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));

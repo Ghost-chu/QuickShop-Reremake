@@ -75,20 +75,18 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public boolean isLatest(@NotNull VersionType versionType) {
-        InputStream inputStream;
-        try {
-            inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
-                    .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                    .execute()
-                    .expectResponseCode(200)
-                    .getInputStream();
+        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
+                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
+                .execute()
+                .expectResponseCode(200)
+                .getInputStream()) {
+            this.lastRemoteBuildInfo = new BuildInfo(inputStream);
+            return lastRemoteBuildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
         } catch (IOException ioException) {
-            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
+            ioException.printStackTrace();
+            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
             return true;
         }
-        BuildInfo buildInfo = new BuildInfo(inputStream);
-        this.lastRemoteBuildInfo = buildInfo;
-        return buildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
     }
 
     @Override
