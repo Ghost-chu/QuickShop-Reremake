@@ -128,21 +128,27 @@ public class JenkinsUpdater implements QuickUpdater {
         }
         File newJar = new File(pluginFolder, "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
 
-        for (File plugin : plugins) {
+        for (File pluginJar : plugins) {
             try { //Delete all old jar files
-                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(plugin);
+                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(pluginJar);
                 if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
                     continue;
                 }
-                Util.debugLog("Deleting: " + plugin.getPath());
-                plugin.delete();
+                Util.debugLog("Deleting: " + pluginJar.getPath());
+                if (!pluginJar.delete()) {
+                    Util.debugLog("Delete failed, using replacing method");
+                    try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                    }
+                } else {
+                    try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                    }
+                }
             } catch (InvalidDescriptionException ignored) {
             }
-        }
-
-        try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
-            outputStream.write(bytes);
-            outputStream.flush();
         }
     }
 }
