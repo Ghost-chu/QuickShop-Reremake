@@ -48,7 +48,7 @@
   "average-price-nearby": "&aPrix moyen à proximité : &e{0}",
   "shop-has-changed": "&cLa boutique que vous essayez d'utiliser à changée depuis que vous avez cliqué dessus!",
   "shop-not-exist": "&cIl n'y a aucune boutique.",
-  "nearby-shop-this-way": "&aShop is {0} blocks away from you.",
+  "nearby-shop-this-way": "\"&aShop is {0} blocks away from you.",
   "nearby-shop-header": "&aÀ proximité de la boutique correspondante &b{0}&a:",
   "nearby-shop-entry": "&a- Info:{0} &aPrix:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &abloc(s)",
   "no-nearby-shop": "&cAucune boutique à proximité ne correspond à {0}.",
@@ -168,7 +168,7 @@
       "removeall": "&eSupprimer toutes les boutiques d'un joueur spécifié",
       "transfer": "&eTransférer TOUS les shops d'un joueur vers un autre",
       "removeworld": "&eSupprime TOUTES les boutiques dans un monde spécifié",
-      "currency": "&eSet or remove the currency setting on shop"
+      "currency": "aShop is\n"
     }
   },
   "signs": {
@@ -204,8 +204,8 @@
     "stack-hover": "&eCliquez pour définir la quantité d'objets par vrac. Réglez sur 1 pour un comportement normal.",
     "item": "&aIllimité: {0} &e[&d&lChanger&e]",
     "item-hover": "&eCliquez pour changer l'objet de la boutique",
-    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
-    "currency-hover": "&eClick to set or remove the currency that shop using"
+    "currency": "blocks away from you",
+    "currency-hover": "\"&aSuccessfully added {0} as a staff member for your shop.\""
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -289,8 +289,8 @@
     "qa-issues": "&eProblèmes d'assurance qualité : &b{0}%",
     "help-us": "&a[Aidez-nous à améliorer la qualité de la traduction]"
   },
-  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
-  "currency-set": "&aSuccessfully set shop currency to {0}.",
-  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-exists": "&cImpossible de trouver la devise que vous voulez définir, est peut-être une mauvaise orthographe ou cette devise n'est pas disponible dans ce monde.",
+  "currency-set": "&aLa devise de la boutique a été définie avec succès à {0}.",
+  "currency-unset": "&cYou only have room for {0} more.",
+  "currency-not-support": "&cYou only have room for {0} more!"
 }
