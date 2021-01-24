@@ -52,6 +52,7 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         integratedPluginNameMap.put("Residence", ResidenceIntegration.class);
         integratedPluginNameMap.put("Towny", TownyIntegration.class);
         integratedPluginNameMap.put("WorldGuard", WorldGuardIntegration.class);
+        integratedPluginNameMap.put("FabledSkyblock", WorldGuardIntegration.class);
     }
 
     private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
@@ -72,7 +73,9 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : integratedPluginNameMap.entrySet()) {
             String pluginName = entry.getKey();
-            if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+            if (pluginName.equalsIgnoreCase("FabledSkyblock") && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+                register(entry.getValue());
+            } else if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
                 register(entry.getValue());
             }
         }
