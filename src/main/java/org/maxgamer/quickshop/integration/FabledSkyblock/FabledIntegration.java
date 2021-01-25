@@ -5,7 +5,6 @@ import com.songoda.skyblock.island.Island;
 import com.songoda.skyblock.island.IslandRole;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrateStage;
@@ -13,7 +12,7 @@ import org.maxgamer.quickshop.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.QSIntegratedPlugin;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
-public class FabledIntegration extends QSIntegratedPlugin implements Listener {
+public class FabledIntegration extends QSIntegratedPlugin {
 
     private final boolean ignoreDisabledWorlds;
     private final boolean whitelist;
