@@ -282,6 +282,10 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
+        <repository>
+            <id>songoda-repo</id>
+            <url>https://repo.songoda.com/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -715,6 +719,12 @@
             <scope>system</scope>
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
