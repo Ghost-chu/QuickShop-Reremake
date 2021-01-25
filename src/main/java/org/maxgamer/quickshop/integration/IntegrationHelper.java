@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.integration.FabledSkyblock.FabledIntegration;
+import org.maxgamer.quickshop.integration.fabledSkyblock.FabledIntegration;
 import org.maxgamer.quickshop.integration.factionsuuid.FactionsUUIDIntegration;
 import org.maxgamer.quickshop.integration.griefprevention.GriefPreventionIntegration;
 import org.maxgamer.quickshop.integration.lands.LandsIntegration;
