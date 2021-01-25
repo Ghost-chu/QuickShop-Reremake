@@ -1705,7 +1705,8 @@ public class QuickShop extends JavaPlugin {
         }
         if (selectedVersion == 123) {
             getConfig().set("integration.fabledskyblock.enable", false);
-            getConfig().set("integration.fabledskyblock.whitelist-mode", false);   
+            getConfig().set("integration.fabledskyblock.whitelist-mode", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
