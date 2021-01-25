@@ -1703,6 +1703,10 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 123) {
+            getConfig().set("integration.fabledskyblock.enable", false);
+            getConfig().set("integration.fabledskyblock.whitelist-mode", false);   
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
