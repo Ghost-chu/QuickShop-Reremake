@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.integration.fabledskyblock;
+package org.maxgamer.quickshop.integration.Fabledskyblock;
 
 import com.songoda.skyblock.SkyBlock;
 import com.songoda.skyblock.island.Island;
