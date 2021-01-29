@@ -286,6 +286,11 @@
             <id>songoda-repo</id>
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
+        <repository>
+            <id>AuraDevelopmentTeam</id>
+            <url>https://maven.aura-dev.team/repository/auradev-releases/</url>
+            <!--<url>https://maven.aura-dev.team/repository/auradev-snapshots/</url>-->
+        </repository>
     </repositories>
 
     <dependencies>
@@ -725,6 +730,18 @@
             <artifactId>skyblock</artifactId>
             <version>2.2.13</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>
+            <artifactId>slf4j-plugin-spigot</artifactId>
+            <version>1.2.0</version>
+            <classifier>1.7.25</classifier>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.9</version>
         </dependency>
     </dependencies>
 </project>
