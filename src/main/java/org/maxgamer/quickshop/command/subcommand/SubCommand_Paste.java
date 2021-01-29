@@ -53,23 +53,23 @@ public class SubCommand_Paste implements CommandProcesser {
                         sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
                         return;
                     } else {
-                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--ignore-csf"))) {
+                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
                             sender.sendMessage("Warning: ConsoleSpamFix installed! Please disable it before reporting any errors!");
                             return;
                         }
                     }
-
-                    if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("--file"))) {
-                        pasteToLocalFile(sender);
-                        return;
-                    }
-                    MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
-                    if (!pasteToPastebin(sender)) {
-                        MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
-                        pasteToLocalFile(sender);
-                    }
-
                 }
+
+                if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("file"))) {
+                    pasteToLocalFile(sender);
+                    return;
+                }
+                MsgUtil.sendMessage(sender, "§aPlease wait, we're uploading the data to the pastebin...");
+                if (!pasteToPastebin(sender)) {
+                    MsgUtil.sendMessage(sender, "The paste failed, saving the paste at local location...");
+                    pasteToLocalFile(sender);
+                }
+
             }
         }.runTaskAsynchronously(plugin);
     }
