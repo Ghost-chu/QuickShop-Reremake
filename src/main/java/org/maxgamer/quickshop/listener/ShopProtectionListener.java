@@ -60,7 +60,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         super(plugin, cache);
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
-
+        scanAndFixPaperListener();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
