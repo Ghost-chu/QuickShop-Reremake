@@ -1493,6 +1493,10 @@ public class MsgUtil {
             setAndUpdate("currency-not-support", "&cThe economy plugin doesn't support multi-currency feature.");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 47) {
+            setAndUpdate("forbidden-vanilla-behavior", "&cThe operation is forbidden due to is not consist with vanilla behavior");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
