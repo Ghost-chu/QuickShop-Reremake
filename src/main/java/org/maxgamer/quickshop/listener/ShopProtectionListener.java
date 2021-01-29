@@ -69,7 +69,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
     }
 
     public void scanAndFixPaperListener() {
-        if (plugin.getConfig().getBoolean("protect.hopper")) {
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
             return;
         }
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
