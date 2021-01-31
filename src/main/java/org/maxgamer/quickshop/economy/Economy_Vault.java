@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceRegisterEvent;
@@ -107,16 +108,16 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
-        return deposit(Bukkit.getOfflinePlayer(name), amount, currency);
+        return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
 
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
@@ -140,7 +141,7 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public String format(double balance, @Nullable String currency) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
@@ -165,17 +166,17 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return 0.0;
         }
 
-        return getBalance(Bukkit.getOfflinePlayer(name), currency);
+        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
 
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return 0.0;
         }
@@ -198,38 +199,20 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
-        if (this.getBalance(from, currency) >= amount) {
-            if (this.withdraw(from, amount, currency)) {
-                if (this.deposit(to, amount, currency)) {
-                    this.deposit(from, amount, currency);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        return withdraw(Bukkit.getOfflinePlayer(name), amount, currency);
-    }
-
-    @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
         try {
-            if ((!allowLoan) && (getBalance(trader, currency) < amount)) {
+            if ((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
                 return false;
             }
             return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
@@ -257,7 +240,7 @@ public class Economy_Vault implements EconomyCore, Listener {
      * @return exists
      */
     @Override
-    public boolean hasCurrency(@NotNull String currency) {
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
         return false;
     }
 

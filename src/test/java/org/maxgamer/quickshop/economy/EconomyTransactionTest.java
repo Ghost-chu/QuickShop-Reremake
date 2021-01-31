@@ -19,10 +19,7 @@
 
 package org.maxgamer.quickshop.economy;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -208,7 +205,7 @@ public class EconomyTransactionTest {
     });
 
     static {
-        economy.getBalance(taxAccount, null);
+        economy.getBalance(taxAccount, null, null);
     }
 
     private static EconomyTransaction genTransaction(UUID from, UUID to, double amount, double taxModifier, boolean allowLoan) {
@@ -231,14 +228,14 @@ public class EconomyTransactionTest {
                 }
             });
         }
-        assertEquals(20 * 1000 * 0.06D, economy.getBalance(taxAccount, null));
+        assertEquals(20 * 1000 * 0.06D, economy.getBalance(taxAccount, null, null));
 
-        assertEquals(1000 * 0.94D, economy.getBalance(UUIDList.get(0), null));
+        assertEquals(1000 * 0.94D, economy.getBalance(UUIDList.get(0), null, null));
 
         genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
             @Override
             public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null));
+                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
             }
 
             @Override
@@ -250,9 +247,9 @@ public class EconomyTransactionTest {
         genTransaction(UUIDList.get(4), UUIDList.get(5), 1000, 0.06, true).commit(new EconomyTransaction.TransactionCallback() {
             @Override
             public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null));
-                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null));
-                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null));
+                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
+                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null, null));
+                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null, null));
             }
 
             @Override
@@ -285,48 +282,48 @@ public class EconomyTransactionTest {
         }
 
         @Override
-        public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
-            playerBalanceMap.put(name, amount + getBalance(name, null));
+        public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+            playerBalanceMap.put(name, amount + getBalance(name, null, null));
             return true;
         }
 
         @Override
-        public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-            return deposit(trader.getUniqueId(), amount, null);
+        public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+            return deposit(trader.getUniqueId(), amount, null, null);
         }
 
         @Override
-        public String format(double balance, @Nullable String currency) {
+        public String format(double balance, @NotNull World world, @Nullable String currency) {
             return Double.toString(balance);
         }
 
         @Override
-        public double getBalance(@NotNull UUID name, @Nullable String currency) {
+        public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
             return getOrCreateAccount(name);
         }
 
         @Override
-        public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
-            return getBalance(player.getUniqueId(), null);
+        public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+            return getBalance(player.getUniqueId(), null, null);
         }
 
         @Override
-        public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
-            double formBalance = getBalance(from, null);
+        public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
+            double formBalance = getBalance(from, null, null);
             playerBalanceMap.put(from, 0.0);
-            playerBalanceMap.put(to, getBalance(from, null) + formBalance);
+            playerBalanceMap.put(to, getBalance(from, null, null) + formBalance);
             return true;
         }
 
         @Override
-        public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
-            playerBalanceMap.put(name, getBalance(name, null) - amount);
+        public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+            playerBalanceMap.put(name, getBalance(name, null, null) - amount);
             return true;
         }
 
         @Override
-        public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-            return withdraw(trader.getUniqueId(), amount, null);
+        public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+            return withdraw(trader.getUniqueId(), amount, null, null);
         }
 
         /**
@@ -336,7 +333,7 @@ public class EconomyTransactionTest {
          * @return exists
          */
         @Override
-        public boolean hasCurrency(@NotNull String currency) {
+        public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
             return false;
         }
 

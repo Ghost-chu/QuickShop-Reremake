@@ -80,6 +80,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
     }
 
+    /**
+     * Register custom integrated module to QuickShop integration system
+     *
+     * @param integratedPlugin custom integrated module
+     */
     public void register(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
             throw new InvalidIntegratedPluginClassException("Invaild Integration module: " + integratedPlugin.getName());
@@ -91,6 +96,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
     }
 
+    /**
+     * Register custom integrated module to QuickShop integration system from a class
+     *
+     * @param integratedPluginClass custom integrated module class
+     */
     public void register(@NotNull Class<? extends IntegratedPlugin> integratedPluginClass) {
         IntegratedPlugin integratedPlugin;
         try {
@@ -101,6 +111,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         register(integratedPlugin);
     }
 
+    /**
+     * Register custom integrated module to QuickShop integration system from a plugin name
+     *
+     * @param integratedPluginName custom integrated module name
+     */
     public void register(@NotNull String integratedPluginName) {
         Class<? extends IntegratedPlugin> integratedPluginClass = integratedPluginNameMap.get(integratedPluginName);
         if (integratedPluginClass != null) {
@@ -115,6 +130,11 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         return clazz.getDeclaredAnnotation(IntegrationStage.class) != null;
     }
 
+    /**
+     * Unregister integrated plugin from Integration system
+     *
+     * @param integratedPluginName plugin name
+     */
     public void unregister(@NotNull String integratedPluginName) {
         IntegratedPlugin integratedPlugin = integrations.get(integratedPluginName);
         if (integratedPlugin != null) {
@@ -122,12 +142,20 @@ public class IntegrationHelper extends QuickShopInstanceHolder {
         }
     }
 
+    /**
+     * Unregister all integrated plugin from Integration system
+     */
     public void unregisterAll() {
         for (IntegratedPlugin integratedPlugin : new ArrayList<>(integrations.values())) {
             unregister(integratedPlugin);
         }
     }
 
+    /**
+     * Unregister integrated plugin from Integration system
+     *
+     * @param integratedPlugin plugin
+     */
     public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
             throw new InvalidIntegratedPluginClassException();
