@@ -26,6 +26,7 @@ import net.tnemc.core.common.api.TNEAPI;
 import net.tnemc.core.common.currency.TNECurrency;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +46,6 @@ public class Economy_TNE implements EconomyCore {
 
     @Getter
     @Setter
-    @Nullable
     private TNEAPI api;
 
     public Economy_TNE(@NotNull QuickShop plugin) {
@@ -59,14 +59,14 @@ public class Economy_TNE implements EconomyCore {
     }
 
     @Nullable
-    private TNECurrency getCurrency(@Nullable String currency) {
+    private TNECurrency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return null;
         }
         if (currency == null) {
             return null;
         }
-        for (TNECurrency apiCurrency : this.api.getCurrencies()) {
+        for (TNECurrency apiCurrency : this.api.getCurrencies(world.getName())) {
             if (apiCurrency.getIdentifier().equals(currency)) {
                 return apiCurrency;
             }
@@ -83,8 +83,8 @@ public class Economy_TNE implements EconomyCore {
      * @return True if success (Should be almost always)
      */
     @Override
-    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
-        deposit(Bukkit.getOfflinePlayer(name), amount, currency);
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
         return false;
     }
 
@@ -97,7 +97,7 @@ public class Economy_TNE implements EconomyCore {
      * @return True if success (Should be almost always)
      */
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
@@ -105,7 +105,7 @@ public class Economy_TNE implements EconomyCore {
         if (!this.api.canAddHoldings(trader.getName(), decimal)) {
             return false;
         }
-        return this.api.addHoldings(trader.getName(), decimal, getCurrency(currency));
+        return this.api.addHoldings(trader.getName(), decimal, getCurrency(world, currency));
     }
 
 
@@ -117,13 +117,13 @@ public class Economy_TNE implements EconomyCore {
      * @return The balance in human readable text.
      */
     @Override
-    public String format(double balance, @Nullable String currency) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
         try {
             BigDecimal decimal = BigDecimal.valueOf(balance);
-            String formatedBalance = this.api.format(decimal, getCurrency(currency), TNE.instance().defaultWorld);
+            String formatedBalance = this.api.format(decimal, getCurrency(world, currency), world.getName());
             if (formatedBalance == null) // Stupid Ecosystem
             {
                 return formatInternal(balance, currency);
@@ -150,8 +150,8 @@ public class Economy_TNE implements EconomyCore {
      * @return Their current balance.
      */
     @Override
-    public double getBalance(@NotNull UUID name, @Nullable String currency) {
-        return getBalance(Bukkit.getOfflinePlayer(name), currency);
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
+        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
     }
 
     /**
@@ -162,29 +162,15 @@ public class Economy_TNE implements EconomyCore {
      * @return Their current balance.
      */
     @Override
-    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return 0.0;
         }
-        if (getCurrency(currency) != null) {
-            return this.api.getHoldings(player.getName(), getCurrency(currency)).doubleValue();
+        if (getCurrency(world, currency) != null) {
+            return this.api.getHoldings(player.getName(), getCurrency(world, currency)).doubleValue();
         } else {
-            return this.api.getHoldings(player.getName(), TNE.instance().defaultWorld).doubleValue();
+            return this.api.getHoldings(player.getName(), world.getName()).doubleValue();
         }
-    }
-
-    /**
-     * Transfers the given amount of money from Player1 to Player2
-     *
-     * @param from     The player who is paying money
-     * @param to       The player who is receiving money
-     * @param amount   The amount to transfer
-     * @param currency The currency name
-     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
-     */
-    @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
-        return false;
     }
 
     /**
@@ -196,8 +182,8 @@ public class Economy_TNE implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
-        return withdraw(Bukkit.getOfflinePlayer(name), amount, currency);
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
     }
 
     /**
@@ -209,12 +195,12 @@ public class Economy_TNE implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
         BigDecimal decimal = BigDecimal.valueOf(amount);
-        if (!this.api.canRemoveHoldings(trader.getName(), decimal, getCurrency(currency))) {
+        if (!this.api.canRemoveHoldings(trader.getName(), decimal, getCurrency(world, currency))) {
             return false;
         }
         return this.api.removeHoldings(trader.getName(), decimal);
@@ -227,8 +213,8 @@ public class Economy_TNE implements EconomyCore {
      * @return exists
      */
     @Override
-    public boolean hasCurrency(@NotNull String currency) {
-        return getCurrency(currency) != null;
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return getCurrency(world, currency) != null;
     }
 
     /**
