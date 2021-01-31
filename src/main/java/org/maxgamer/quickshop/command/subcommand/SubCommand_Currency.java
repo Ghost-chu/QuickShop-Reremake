@@ -76,7 +76,7 @@ public class SubCommand_Currency implements CommandProcesser {
                         MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-support", sender));
                         return;
                     }
-                    if (!plugin.getEconomy().hasCurrency(cmdArg[0])) {
+                    if (!plugin.getEconomy().hasCurrency(shop.getLocation().getWorld(), cmdArg[0])) {
                         MsgUtil.sendMessage(sender, MsgUtil.getMessage("currency-not-exists", sender));
                         return;
                     }

@@ -59,13 +59,9 @@ public class CollectorAdapter {
                     economy.put("core", "Reserve");
                     economy.put("provider", "No details");
                     break;
-                case MIXED:
-                    economy.put("core", "Mixed");
-                    economy.put("provider", "QuickShop and Vault");
-                case UNKNOWN:
-                    economy.put("core", "Unknown");
-                    economy.put("provider", "Unknown");
-                    break;
+                default:
+                    economy.put("core", economyCore.getName());
+                    economy.put("provider", economyCore.getPlugin().getName());
             }
         } catch (Exception e) {
             economy.put("core", "Unknown");

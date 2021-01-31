@@ -430,9 +430,9 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_TNE(this); //TODO: Unstable
                     Util.debugLog("Now using the TNE economy system.");
                     break;
-                case MIXED:
-                    core = new Economy_Mixed(this);
-                    Util.debugLog("Now using the Mixed economy system.");
+//                case MIXED:
+//                    core = new Economy_Mixed(this);
+//                    Util.debugLog("Now using the Mixed economy system.");
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;

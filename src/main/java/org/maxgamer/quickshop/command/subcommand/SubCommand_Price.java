@@ -145,17 +145,17 @@ public class SubCommand_Price implements CommandProcesser {
                 return;
             }
 
-            if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee, shop.getCurrency())) {
+            if (fee > 0 && !plugin.getEconomy().withdraw(p.getUniqueId(), fee, shop.getLocation().getWorld(), shop.getCurrency())) {
                 MsgUtil.sendMessage(sender,
                         MsgUtil.getMessage(
-                                "you-cant-afford-to-change-price", sender, plugin.getEconomy().format(fee, shop.getCurrency())));
+                                "you-cant-afford-to-change-price", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
                 return;
             }
 
             if (fee > 0) {
                 MsgUtil.sendMessage(sender,
                         MsgUtil.getMessage(
-                                "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee, shop.getCurrency())));
+                                "fee-charged-for-price-change", sender, plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())));
                 try {
                     //noinspection deprecation
                     plugin
@@ -166,7 +166,7 @@ public class SubCommand_Price implements CommandProcesser {
                                             .getOfflinePlayer(
                                                     Objects.requireNonNull(plugin.getConfig().getString("tax-account")))
                                             .getUniqueId(),
-                                    fee, shop.getCurrency());
+                                    fee, shop.getLocation().getWorld(), shop.getCurrency());
                 } catch (Exception e) {
                     e.getMessage();
                     plugin
@@ -181,7 +181,7 @@ public class SubCommand_Price implements CommandProcesser {
             // shop.setSignText();
             shop.update();
             MsgUtil.sendMessage(sender,
-                    MsgUtil.getMessage("price-is-now", sender, plugin.getEconomy().format(shop.getPrice(), shop.getCurrency())));
+                    MsgUtil.getMessage("price-is-now", sender, plugin.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency())));
             // Chest shops can be double shops.
             if (!(shop instanceof ContainerShop)) {
                 return;
