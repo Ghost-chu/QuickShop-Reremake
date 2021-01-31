@@ -113,7 +113,7 @@ public class Economy_GemsEconomy implements EconomyCore {
             return "Error";
         }
 
-        return Util.format(balance, true, currency);
+        return Util.format(balance, true, world, currency);
     }
 
     /**

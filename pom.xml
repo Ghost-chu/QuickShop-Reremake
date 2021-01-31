@@ -298,6 +298,10 @@
             <url>https://maven.aura-dev.team/repository/auradev-releases/</url>
             <!--<url>https://maven.aura-dev.team/repository/auradev-snapshots/</url>-->
         </repository>
+        <repository>
+            <id>MG-Dev Jenkins CI Maven Repository</id>
+            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -756,6 +760,12 @@
             <artifactId>helper</artifactId>
             <version>5.6.5</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>BKCommonLib</artifactId>
+            <version>1.16.5-v2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
