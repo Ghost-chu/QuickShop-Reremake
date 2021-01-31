@@ -35,7 +35,7 @@ public class EnvironmentChecker {
     public EnvironmentChecker(QuickShop plugin) {
         this.plugin = plugin;
         List<ResultContainer> results = new ArrayList<>();
-        this.registerTests(this.getClass()); //自注册
+        this.registerTests(this.getClass()); //register self
     }
 
     /**
@@ -120,7 +120,7 @@ public class EnvironmentChecker {
         return new ResultReport(result, results);
     }
 
-    @EnvCheckEntry(name = "SelfTest")
+    @EnvCheckEntry(name = "SelfTest", priority = 1)
     public ResultContainer selfTest() {
         return new ResultContainer(CheckResult.PASSED, "I'm fine :)");
     }
