@@ -41,10 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.event.*;
-import org.maxgamer.quickshop.util.JsonUtil;
-import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.PriceLimiter;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.*;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -170,7 +167,7 @@ public class ContainerShop implements Shop {
                     break;
                 case VIRTUALITEM:
                     try {
-                        if (!plugin.getEnvironmentChecker().getGameVersion().isVirtualDisplaySupports()) {
+                        if (!GameVersion.get(ReflectFactory.getServerVersion()).isVirtualDisplaySupports()) {
                             throw new IllegalStateException("Version not supports Virtual DisplayItem.");
                         }
                         this.displayItem = new VirtualDisplayItem(this);

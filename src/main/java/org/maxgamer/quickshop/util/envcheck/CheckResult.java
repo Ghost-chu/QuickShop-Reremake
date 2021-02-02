@@ -20,5 +20,14 @@
 package org.maxgamer.quickshop.util.envcheck;
 
 public enum CheckResult {
-    PASSED, WARNING, STOP_WORKING, DISABLE_PLUGIN
+    PASSED("Pass"), WARNING("Warning"), STOP_WORKING("Error"), DISABLE_PLUGIN("Fatal");
+    private final String display;
+
+    CheckResult(String display) {
+        this.display = display;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
 }
