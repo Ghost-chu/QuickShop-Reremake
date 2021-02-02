@@ -673,6 +673,7 @@ public class QuickShop extends JavaPlugin {
         /* Check the running envs is support or not. */
         try {
             environmentChecker = new EnvironmentChecker(this);
+            new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this).run();
         } catch (RuntimeException e) {
             bootError = new BootError(this.getLogger(), e.getMessage());
             //noinspection ConstantConditions

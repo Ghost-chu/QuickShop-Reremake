@@ -125,4 +125,8 @@ public class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "I'm fine :)");
     }
 
+    @EnvCheckEntry(name = "SelfTest", priority = 2)
+    public ResultContainer selfTest2() {
+        return new ResultContainer(CheckResult.PASSED, "I'm fine :) x2");
+    }
 }
