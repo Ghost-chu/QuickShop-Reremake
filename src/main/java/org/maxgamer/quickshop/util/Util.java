@@ -1456,14 +1456,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        String version = QuickShop.getInstance().getDescription().getVersion().toLowerCase();
-        return (version.contains("dev")
-                || version.contains("develop")
-                || version.contains("alpha")
-                || version.contains("beta")
-                || version.contains("test")
-                || version.contains("snapshot")
-                || version.contains("preview"));
+        return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
     }
 
     /**

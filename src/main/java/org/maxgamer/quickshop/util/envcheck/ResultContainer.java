@@ -19,12 +19,28 @@
 
 package org.maxgamer.quickshop.util.envcheck;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@AllArgsConstructor
-@Data
 public class ResultContainer {
     private final CheckResult result;
-    private final String resultMessage;
+    private String resultMessage;
+
+    public ResultContainer(@NotNull CheckResult result, @Nullable String resultMessage) {
+        this.result = result;
+        this.resultMessage = resultMessage;
+        if (StringUtils.isEmpty(this.resultMessage)) {
+            this.resultMessage = "null";
+        }
+    }
+
+    public CheckResult getResult() {
+        return result;
+    }
+
+    public String getResultMessage() {
+        return resultMessage;
+    }
 }
+

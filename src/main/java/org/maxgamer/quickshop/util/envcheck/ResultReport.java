@@ -22,11 +22,11 @@ package org.maxgamer.quickshop.util.envcheck;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Data
 public class ResultReport {
    private final CheckResult finalResult;
-   private final List<ResultContainer> results;
+   private final Map<EnvCheckEntry, ResultContainer> results;
 }
