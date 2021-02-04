@@ -284,6 +284,7 @@ public class EnvironmentChecker {
                     try {
                         clazz = Class.forName("com.github.julyss2019.bukkit.plugins.julysafe.listeners.QuickShopBugFixListener");
                     } catch (ClassNotFoundException ignored) {
+                        return false;
                     }
                     if (registeredListener.getListener().getClass().equals(clazz)
                             || registeredListener.getListener().getClass().getName().contains("julysafe.listeners.QuickShopBugFixListener")) {
@@ -337,6 +338,26 @@ public class EnvironmentChecker {
         }
         if (gameVersion == GameVersion.UNKNOWN) {
             return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support your current version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not working.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7)
+    public ResultContainer virtualDisplaySupportTest() {
+        String nmsVersion = Util.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (!gameVersion.isVirtualDisplaySupports()) {
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems won't working on this Minecraft server, Make sure you have up-to-date QuickShop and server core jar.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PersistentStorageApi Support Test", priority = 8)
+    public ResultContainer persistentStorageApiSupportTest() {
+        String nmsVersion = Util.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (!gameVersion.isPersistentStorageApiSupports()) {
+            return new ResultContainer(CheckResult.WARNING, "PersistentStorageApi seems won't working on this Minecraft server, You may hit exploit risk. Make sure you have up-to-date server at least higher than 1.13.2");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
