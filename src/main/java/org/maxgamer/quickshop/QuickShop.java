@@ -519,6 +519,8 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Reading the configuration...");
+        this.initConfiguration();
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
