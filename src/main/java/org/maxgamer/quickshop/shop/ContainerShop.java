@@ -1154,7 +1154,10 @@ public class ContainerShop implements Shop {
      * @return The enchantments the shop has on its items.
      */
     public @NotNull Map<Enchantment, Integer> getEnchants() {
-        return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
+        if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
+            return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
+        }
+        return new HashMap<>();
     }
 
     /**
