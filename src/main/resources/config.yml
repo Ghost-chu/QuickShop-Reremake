@@ -4,7 +4,7 @@
 
 
 #Do not touch if you not clear know about this
-config-version: 123
+config-version: 124
 
 #Select the language you want to use, (e.g de), use only supported language codes from the list below.
 #If you use a not exist/not support language, plugin will move to use en_US to keep everything working.
@@ -107,7 +107,6 @@ include-offlineplayer-list: false
 #What economy provider you want let QuickShop use?
 #0=Vault
 #1=Reserve
-#2=Vault+Command mixed
 #3=GemsEconomy with Multi-Currency on
 #4=TNE with Multi-Currency on [UNSTABLE]
 #DO NOT TOUCH THIS IF YOU DIDN'T KNOW WHAT WILL HAPPEN. ASK FOR SUPPORT BEFORE TOUCH THIS!
@@ -576,6 +575,12 @@ integration:
     #Should we delete the shop in the land when the shop owner lose the permission
     #in this land?
     delete-on-lose-permission: false
+  fabledskyblock:
+    # If a player want to create a shop, player must have quickshop-create flag
+    # If a player want to trade a shop, player must have quickshop-trade flag
+    enable: false
+    #Should we prevent create a shop or trade with shop outside this plugin area
+    whitelist-mode: false
   griefprevention:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area

@@ -25,6 +25,7 @@ import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +88,7 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Deprecated
     @Override
-    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).addHoldings(name, new BigDecimal(amount));
         } catch (Exception throwable) {
@@ -99,8 +100,8 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return deposit(trader.getUniqueId(), amount, currency);
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return deposit(trader.getUniqueId(), amount, world, currency);
     }
 
     /**
@@ -112,7 +113,7 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Deprecated
     @Override
-    public String format(double balance, @Nullable String currency) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).format(new BigDecimal(balance));
         } catch (Exception throwable) {
@@ -124,7 +125,7 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     private String formatInternal(double balance) {
-        return Util.format(balance, true, (String) null);
+        return Util.format(balance, true, Bukkit.getWorlds().get(0), (String) null);
     }
 
     /**
@@ -136,7 +137,7 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Override
     @Deprecated
-    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name).doubleValue();
         } catch (Exception throwable) {
@@ -148,8 +149,8 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
-        return getBalance(player.getUniqueId(), currency);
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+        return getBalance(player.getUniqueId(), world, currency);
     }
 
     /**
@@ -163,7 +164,7 @@ public class Economy_Reserve implements EconomyCore {
      */
     @Override
     @Deprecated
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, new BigDecimal(amount));
         } catch (Exception throwable) {
@@ -182,9 +183,9 @@ public class Economy_Reserve implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         try {
-            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name, currency) < amount) {
+            if ((!plugin.getConfig().getBoolean("shop.allow-economy-loan")) && getBalance(name, world, currency) < amount) {
                 return false;
             }
             return Objects.requireNonNull(reserve).removeHoldings(name, new BigDecimal(amount));
@@ -197,9 +198,10 @@ public class Economy_Reserve implements EconomyCore {
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return withdraw(trader.getUniqueId(), amount, currency);
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return withdraw(trader.getUniqueId(), amount, world, currency);
     }
+
 
     /**
      * Gets the currency does exists
@@ -208,7 +210,7 @@ public class Economy_Reserve implements EconomyCore {
      * @return exists
      */
     @Override
-    public boolean hasCurrency(@NotNull String currency) {
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
         return false;
     }
 

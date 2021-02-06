@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is EconomyType.java
+ * This file is a part of project QuickShop, the name is ResultContainer.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,44 +17,30 @@
  *
  */
 
-package org.maxgamer.quickshop.economy;
+package org.maxgamer.quickshop.util.envcheck;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public enum EconomyType {
-    /*
-     * UNKNOWN = FALLBACK TO VAULT
-     * VAULT = USE VAULT API
-     * RESERVE = USE RESERVE API
-     * */
-    UNKNOWN(-1),
-    VAULT(0),
-    RESERVE(1),
-    //MIXED(2),
-    GEMS_ECONOMY(3),
-    TNE(4);
+public class ResultContainer {
+    private final CheckResult result;
+    private String resultMessage;
 
-    private final int id;
-
-    EconomyType(int id) {
-        this.id = id;
-    }
-
-    @NotNull
-    public static EconomyType fromID(int id) {
-        for (EconomyType type : EconomyType.values()) {
-            if (type.id == id) {
-                return type;
-            }
+    public ResultContainer(@NotNull CheckResult result, @Nullable String resultMessage) {
+        this.result = result;
+        this.resultMessage = resultMessage;
+        if (StringUtils.isEmpty(this.resultMessage)) {
+            this.resultMessage = "null";
         }
-        return UNKNOWN;
     }
 
-    public static int toID(@NotNull EconomyType economyType) {
-        return economyType.id;
+    public CheckResult getResult() {
+        return result;
     }
 
-    public int toID() {
-        return id;
+    public String getResultMessage() {
+        return resultMessage;
     }
 }
+

@@ -24,6 +24,7 @@ import lombok.Setter;
 import me.xanium.gemseconomy.api.GemsEconomyAPI;
 import me.xanium.gemseconomy.currency.Currency;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +40,6 @@ public class Economy_GemsEconomy implements EconomyCore {
 
     @Getter
     @Setter
-    @Nullable
     private GemsEconomyAPI api;
 
     public Economy_GemsEconomy(@NotNull QuickShop plugin) {
@@ -53,7 +53,7 @@ public class Economy_GemsEconomy implements EconomyCore {
     }
 
     @Nullable
-    private Currency getCurrency(@Nullable String currency) {
+    private Currency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return null;
         }
@@ -72,11 +72,11 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return True if success (Should be almost always)
      */
     @Override
-    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
-        this.api.deposit(name, amount, getCurrency(currency));
+        this.api.deposit(name, amount, getCurrency(world, currency));
         return true;
     }
 
@@ -89,8 +89,8 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return True if success (Should be almost always)
      */
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return deposit(trader.getUniqueId(), amount, currency);
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return deposit(trader.getUniqueId(), amount, world, currency);
     }
 
     /**
@@ -101,19 +101,19 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return The balance in human readable text.
      */
     @Override
-    public String format(double balance, @Nullable String currency) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
-        return formatInternal(balance, currency);
+        return formatInternal(balance, world, currency);
     }
 
-    private String formatInternal(double balance, @Nullable String currency) {
+    private String formatInternal(double balance, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }
 
-        return Util.format(balance, true, currency);
+        return Util.format(balance, true, world, currency);
     }
 
     /**
@@ -124,11 +124,11 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return Their current balance.
      */
     @Override
-    public double getBalance(@NotNull UUID name, @Nullable String currency) {
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return 0.0;
         }
-        return this.api.getBalance(name, getCurrency(currency));
+        return this.api.getBalance(name, getCurrency(world, currency));
     }
 
     /**
@@ -139,36 +139,10 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return Their current balance.
      */
     @Override
-    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
-        return getBalance(player.getUniqueId(), currency);
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+        return getBalance(player.getUniqueId(), world, currency);
     }
 
-    /**
-     * Transfers the given amount of money from Player1 to Player2
-     *
-     * @param from     The player who is paying money
-     * @param to       The player who is receiving money
-     * @param amount   The amount to transfer
-     * @param currency The currency name
-     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
-     */
-    @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
-        if (!isValid()) {
-            return false;
-        }
-        if (this.getBalance(from, currency) >= amount) {
-            if (this.withdraw(from, amount, currency)) {
-                if (this.deposit(to, amount, currency)) {
-                    this.deposit(from, amount, currency);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
@@ -179,16 +153,16 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
         }
         if (!allowLoan) {
-            if (getBalance(name, currency) < amount) {
+            if (getBalance(name, world, currency) < amount) {
                 return false;
             }
         }
-        this.api.withdraw(name, amount, getCurrency(currency));
+        this.api.withdraw(name, amount, getCurrency(world, currency));
         return true;
     }
 
@@ -201,8 +175,8 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return withdraw(trader.getUniqueId(), amount, currency);
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return withdraw(trader.getUniqueId(), amount, world, currency);
     }
 
     /**
@@ -212,8 +186,8 @@ public class Economy_GemsEconomy implements EconomyCore {
      * @return exists
      */
     @Override
-    public boolean hasCurrency(@NotNull String currency) {
-        return getCurrency(currency) != null;
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return getCurrency(world, currency) != null;
     }
 
     /**

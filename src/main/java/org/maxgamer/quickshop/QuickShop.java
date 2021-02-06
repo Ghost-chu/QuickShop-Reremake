@@ -57,14 +57,13 @@ import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
-import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.PermissionChecker;
 import org.maxgamer.quickshop.util.Timer;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
+import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -430,9 +429,9 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_TNE(this); //TODO: Unstable
                     Util.debugLog("Now using the TNE economy system.");
                     break;
-                case MIXED:
-                    core = new Economy_Mixed(this);
-                    Util.debugLog("Now using the Mixed economy system.");
+//                case MIXED:
+//                    core = new Economy_Mixed(this);
+//                    Util.debugLog("Now using the Mixed economy system.");
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;
@@ -520,6 +519,8 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Reading the configuration...");
+        this.initConfiguration();
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
@@ -634,13 +635,13 @@ public class QuickShop extends JavaPlugin {
         reloadConfig();
         */
         getConfig().options().copyHeader(false).header(
+                "=================================\n" +
+                        "=    QuickShop  Configuration   =\n" +
                         "=================================\n" +
-                                "=    QuickShop  Configuration   =\n" +
-                                "=================================\n" +
-                                "\nNotes:" +
-                                "Please read the example.config.yml file to get commented example config file.\n" +
-                                "Please read the example.config.yml file to get commented example config file.\n" +
-                                "Please read the example.config.yml file to get commented example config file.\n"
+                        "\nNotes:" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n" +
+                        "Please read the example.config.yml file to get commented example config file.\n"
         );
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
@@ -671,14 +672,22 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Quickshop " + getFork());
 
         /* Check the running envs is support or not. */
-        try {
-            environmentChecker = new EnvironmentChecker(this);
-        } catch (RuntimeException e) {
-            bootError = new BootError(this.getLogger(), e.getMessage());
+        getLogger().info("Starting plugin self-test, please wait...");
+        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
+        ResultReport resultReport = environmentChecker.run();
+        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
+            StringBuilder builder = new StringBuilder();
+            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
+                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
+                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
+                }
+            }
+            bootError = new BootError(this.getLogger(), builder.toString());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
         }
+
         QuickShopAPI.setupApi(this);
 
         getLogger().info("Reading the configuration...");
@@ -1703,8 +1712,13 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 123) {
+            getConfig().set("integration.fabledskyblock.enable", false);
+            getConfig().set("integration.fabledskyblock.whitelist-mode", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
 
-        if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
+        if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 

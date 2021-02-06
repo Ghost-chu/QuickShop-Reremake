@@ -30,6 +30,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.integration.IntegrationStage;
@@ -105,7 +106,12 @@ public class LandsIntegration extends QSIntegratedPlugin implements Listener {
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
                                 plugin.log("[UNTRUSTED DELETE] Shop " + shop + " has been deleted due the owner no-longer have permission in land " + land.getName());
-                                shop.delete();
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        shop.delete();
+                                    }
+                                }.runTask(plugin);
                             }
                         }
                     }

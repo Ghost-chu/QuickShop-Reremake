@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.economy;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,13 +54,13 @@ public class Economy implements EconomyCore {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount, @Nullable String currency) {
-        return core.deposit(name, amount, currency);
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        return core.deposit(name, amount, world, currency);
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return core.deposit(trader, amount, currency);
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return core.deposit(trader, amount, world, currency);
     }
 
     /**
@@ -69,34 +70,34 @@ public class Economy implements EconomyCore {
      * @return The balance in human readable text.
      */
     @Override
-    public String format(double balance, @Nullable String currency) {
-        return Util.parseColours(core.format(balance, currency));
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
+        return Util.parseColours(core.format(balance, world, currency));
         // Fix color issue from some stupid economy plugin....
     }
 
     @Override
-    public double getBalance(@NotNull UUID name, @Nullable String currency) {
-        return core.getBalance(name, currency);
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
+        return core.getBalance(name, world, currency);
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player, @Nullable String currency) {
-        return core.getBalance(player, currency);
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+        return core.getBalance(player, world, currency);
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @Nullable String currency) {
-        return core.transfer(from, to, amount, currency);
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
+        return core.transfer(from, to, amount, world, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount, @Nullable String currency) {
-        return core.withdraw(name, amount, currency);
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        return core.withdraw(name, amount, world, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @Nullable String currency) {
-        return core.withdraw(trader, amount, currency);
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        return core.withdraw(trader, amount, world, currency);
     }
 
     /**
@@ -106,8 +107,8 @@ public class Economy implements EconomyCore {
      * @return exists
      */
     @Override
-    public boolean hasCurrency(@NotNull String currency) {
-        return this.core.hasCurrency(currency);
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return this.core.hasCurrency(world, currency);
     }
 
     /**

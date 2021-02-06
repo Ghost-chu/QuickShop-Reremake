@@ -108,8 +108,8 @@ public class InternalListener implements Listener {
         }
         if (loggingBalance) {
             Player creator = Bukkit.getPlayer(event.getPurchaser());
-            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getCurrency()) + " before trading.");
-            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getCurrency()) + " before trading.");
+            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " before trading.");
+            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " before trading.");
         }
     }
 
@@ -156,8 +156,8 @@ public class InternalListener implements Listener {
             }
         }
         if (loggingBalance) {
-            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getCurrency()) + " after trading.");
-            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getCurrency()) + " after trading.");
+            plugin.log("Player " + (creator != null ? creator.getName() : event.getPurchaser()) + " had " + plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
+            plugin.log("Shop Owner " + event.getShop().ownerName() + " had " + plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency()) + " after trading.");
         }
     }
 

@@ -137,7 +137,14 @@
                             <pattern>org.apache.commons.compress.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
                         </relocation>
-
+                        <relocation>
+                            <pattern>com.esotericsoftware.reflectasm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.esotericsoftware.reflectasm.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.lucko.helper.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.>me.lucko.helper.</shadedPattern>
+                        </relocation>
                     </relocations>
                     <transformers>
                         <transformer
@@ -282,6 +289,19 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
+        <repository>
+            <id>songoda-repo</id>
+            <url>https://repo.songoda.com/repository/public/</url>
+        </repository>
+        <repository>
+            <id>AuraDevelopmentTeam</id>
+            <url>https://maven.aura-dev.team/repository/auradev-releases/</url>
+            <!--<url>https://maven.aura-dev.team/repository/auradev-snapshots/</url>-->
+        </repository>
+        <repository>
+            <id>MG-Dev Jenkins CI Maven Repository</id>
+            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -309,7 +329,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.17.0</version>
+            <version>16.17.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -383,7 +403,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.18</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
@@ -447,7 +467,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
-            <version>0.21.0</version>
+            <version>0.22.1</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -715,6 +735,37 @@
             <scope>system</scope>
             <version>4.9.2</version>
             <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>skyblock</artifactId>
+            <version>2.2.13</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>team.aura_dev.lib.slf4j-plugin.spigot</groupId>-->
+        <!--            <artifactId>slf4j-plugin-spigot</artifactId>-->
+        <!--            <version>1.2.0</version>-->
+        <!--            <classifier>1.7.25</classifier>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.9</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.lucko</groupId>
+            <artifactId>helper</artifactId>
+            <version>5.6.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>BKCommonLib</artifactId>
+            <version>1.16.5-v2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
