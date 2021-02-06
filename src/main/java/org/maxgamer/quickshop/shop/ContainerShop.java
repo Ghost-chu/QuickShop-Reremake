@@ -1080,7 +1080,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean isValid() {
-        this.checkDisplay();
+        //this.checkDisplay();
         if (this.isDeleted) {
             return false;
         }
