@@ -253,6 +253,9 @@ public class QuickShop extends JavaPlugin {
     @Getter
     @Nullable
     private String currency = null;
+    @Getter
+    private ShopControlPanel shopControlPanelManager;
+
 
     @NotNull
     public static QuickShop getInstance() {
@@ -725,6 +728,7 @@ public class QuickShop extends JavaPlugin {
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+        shopControlPanelManager = new ShopControlPanel(this);
         this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
         if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
             this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
