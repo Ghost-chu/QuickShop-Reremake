@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.chat.QuickComponent;
 
 import java.util.Map;
@@ -32,6 +33,12 @@ import java.util.function.Function;
 
 public class ShopControlPanel {
     private final Map<Plugin, TreeSet<Entry>> panelRegistry = new ConcurrentHashMap<>();
+    private final QuickShop plugin;
+
+    public ShopControlPanel(QuickShop plugin) {
+        this.plugin = plugin;
+    }
+
 
     /**
      * Register the ControlPanel Entry to registry
