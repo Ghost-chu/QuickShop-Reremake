@@ -42,6 +42,10 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable {
     @Override
     public void run() {
         for (Shop shop : plugin.getShopManager().getLoadedShops()) {
+            //Shop may deleted or unloaded when iterating
+            if (shop.isDeleted() || !shop.isLoaded()) {
+                continue;
+            }
             World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
             if (shop.getDisplay() != null) {
                 // Check the range has player?

@@ -306,7 +306,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void checkDisplay() {
-        if (!plugin.isDisplay() || !this.isLoaded) { // FIXME: Reinit scheduler on reloading config
+        if (!plugin.isDisplay() || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
             return;
         }
 
