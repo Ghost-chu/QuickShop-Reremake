@@ -368,7 +368,7 @@ public class VirtualDisplayItem extends DisplayItem {
                 }
             };
         }
-        protocolManager.addPacketListener(packetAdapter);
+        protocolManager.addPacketListener(packetAdapter); //TODO: This may affects performance
         asyncSendingTask = new BukkitRunnable() {
             @Override
             public void run() {
