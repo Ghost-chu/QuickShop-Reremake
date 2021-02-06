@@ -16,8 +16,8 @@
   "no-double-chests": "&cYou cannot create the double chest shop.",
   "not-managed-shop": "&cYou are not the owner or moderator of this Shop",
   "shop-already-owned": "&cThis is already a shop.",
-  "chest-was-removed": "&cThe chest was removed.",
-  "price-too-cheap": "&cPrice must be greater than &e${0}",
+  "chest-was-removed": "&cKisten blev fjernet.",
+  "price-too-cheap": "&cPrisen skal være større end &e${0}",
   "no-price-change": "&cThis wouldn't result in a price change!",
   "you-cant-afford-a-new-shop": "&cIt costs {0} to create a new shop.",
   "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
@@ -270,11 +270,11 @@
   "language-info-panel": {
     "name": "Language: ",
     "code": "Code: ",
-    "progress": "Progress: ",
-    "help": "Help us: ",
-    "translate-on-crowdin": "[Translate on Crowdin]"
+    "progress": "Fremskridt: ",
+    "help": "Hjælp os: ",
+    "translate-on-crowdin": "[Oversæt på Crowdin]"
   },
-  "shop-now-freezed": "&aYou have frozen the shop. Nobody can trade with this shop now!",
+  "shop-now-freezed": "&aDu har frosset butikken. Ingen kan handle med denne butik nu!",
   "shop-nolonger-freezed": "&aYou unfroze the shop. It's back to normal now!",
   "shop-cannot-trade-when-freezing": "&cYou cannot trade with this shop because it is frozen.",
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",

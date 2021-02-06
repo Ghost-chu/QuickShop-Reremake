@@ -28,6 +28,7 @@ softdepend:
   - Lands
   - GriefPrevention
   - JulySafe
+  - FabledSkyblock
 
 api-version: 1.13
 

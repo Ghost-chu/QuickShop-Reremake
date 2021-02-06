@@ -24,7 +24,6 @@ import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -52,13 +51,13 @@ public class BootError {
      *
      * @param sender The sender you want output the errors.
      */
-    public void printErrors(CommandSender sender) {
-        MsgUtil.sendMessage(sender, ChatColor.RED + "#####################################################");
-        MsgUtil.sendMessage(sender, ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
+    public void printErrors(CommandSender sender) { //Do not use any method that not in CraftBukkit
+        sender.sendMessage(ChatColor.RED + "#####################################################");
+        sender.sendMessage(ChatColor.RED + " QuickShop is disabled, Please fix any errors and restart");
         for (String issue : errors) {
-            MsgUtil.sendMessage(sender, ChatColor.YELLOW + " " + issue);
+            sender.sendMessage(ChatColor.YELLOW + " " + issue);
         }
-        MsgUtil.sendMessage(sender, ChatColor.RED + "#####################################################");
+        sender.sendMessage(ChatColor.RED + "#####################################################");
     }
 
     public String[] getErrors() {

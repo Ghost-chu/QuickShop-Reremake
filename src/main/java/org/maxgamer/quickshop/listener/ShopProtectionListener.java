@@ -60,9 +60,7 @@ public class ShopProtectionListener extends ProtectionListenerBase {
         super(plugin, cache);
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
-        if (plugin.getConfig().getBoolean("protect.hopper")) {
-            scanAndFixPaperListener();
-        }
+        scanAndFixPaperListener();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -71,6 +69,9 @@ public class ShopProtectionListener extends ProtectionListenerBase {
     }
 
     public void scanAndFixPaperListener() {
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
+            return;
+        }
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
             return;
         }

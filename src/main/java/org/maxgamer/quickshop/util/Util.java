@@ -360,20 +360,20 @@ public class Util {
      */
     @NotNull
     public static String format(double n, @Nullable Shop shop) {
-        return format(n, disableVaultFormat, shop);
+        return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
     }
 
     @NotNull
-    public static String format(double n, boolean internalFormat, @Nullable Shop shop) {
+    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
         if (shop != null) {
-            return format(n, internalFormat, shop.getCurrency());
+            return format(n, internalFormat, world, shop.getCurrency());
         } else {
-            return format(n, internalFormat, (Shop) null);
+            return format(n, internalFormat, world, (Shop) null);
         }
     }
 
     @NotNull
-    public static String format(double n, boolean internalFormat, @Nullable String currency) {
+    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable String currency) {
         if (internalFormat) {
             return getInternalFormat(n, currency);
         }
@@ -387,7 +387,7 @@ public class Util {
             return getInternalFormat(n, currency);
         }
         try {
-            String formatted = plugin.getEconomy().format(n, currency);
+            String formatted = plugin.getEconomy().format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
@@ -1456,14 +1456,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        String version = QuickShop.getInstance().getDescription().getVersion().toLowerCase();
-        return (version.contains("dev")
-                || version.contains("develop")
-                || version.contains("alpha")
-                || version.contains("beta")
-                || version.contains("test")
-                || version.contains("snapshot")
-                || version.contains("preview"));
+        return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
     }
 
     /**
