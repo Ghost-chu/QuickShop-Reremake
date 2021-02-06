@@ -68,10 +68,9 @@ public class MojangAPI {
         /**
          * Gets the GameAsset file content
          *
-         * @param langCode LanguageCode
          * @return The file content
          */
-        public Optional<String> getGameAssetsFile(@NotNull String langCode) {
+        public Optional<String> getGameAssetsFile() {
             Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
             if (!bean.isPresent())
                 return Optional.empty();
