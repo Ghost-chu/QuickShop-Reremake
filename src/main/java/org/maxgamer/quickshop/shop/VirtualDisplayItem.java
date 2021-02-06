@@ -287,6 +287,9 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        if (shop.isDeleted() || !shop.isLoaded()) {
+            return;
+        }
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
         Bukkit.getPluginManager().callEvent(shopDisplayItemSpawnEvent);
         if (shopDisplayItemSpawnEvent.isCancelled()) {

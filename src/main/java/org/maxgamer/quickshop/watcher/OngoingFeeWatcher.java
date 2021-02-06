@@ -52,7 +52,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if (!shop.isUnlimited() || !ignoreUnlimited) {
+            if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner, shop.getCurrency()) < cost)) {// Disallow loan

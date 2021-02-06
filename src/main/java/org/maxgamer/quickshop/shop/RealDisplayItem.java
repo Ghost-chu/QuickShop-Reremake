@@ -182,6 +182,9 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        if (shop.isDeleted() || !shop.isLoaded()) {
+            return;
+        }
         if (shop.getLocation().getWorld() == null) {
             Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;

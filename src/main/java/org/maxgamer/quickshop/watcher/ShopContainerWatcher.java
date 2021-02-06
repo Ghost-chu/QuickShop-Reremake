@@ -42,7 +42,7 @@ public class ShopContainerWatcher extends BukkitRunnable {
     public void run() {
         long beginTime = System.currentTimeMillis();
         Shop shop = checkQueue.poll();
-        while (shop != null) {
+        while (shop != null && !shop.isDeleted()) {
             if (shop instanceof ContainerShop) {
                 ((ContainerShop) shop).checkContainer();
             }
