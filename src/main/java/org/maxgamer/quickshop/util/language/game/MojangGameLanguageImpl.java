@@ -222,6 +222,9 @@ class GameLanguageLoadThread extends Thread {
             }
             String languageCode1 = languageCode.toLowerCase();
             String serverVersion = ReflectFactory.getServerVersion();
+            if (languageCode1.equalsIgnoreCase("en_us")) {
+                return; //Ignore english language
+            }
             if (!serverVersion.equals(cachingServerVersion)) {
                 cachingServerVersion = serverVersion;
                 needUpdateCache = true;

@@ -1169,11 +1169,10 @@ public class ContainerShop implements Shop {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
-                return openInv
-                        .getSpecialEnderChest(
-                                Objects.requireNonNull(
-                                        openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
-                                Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                return openInv.getSpecialEnderChest(
+                        Objects.requireNonNull(
+                                openInv.loadPlayer(Bukkit.getOfflinePlayer(this.moderator.getOwner()))),
+                        Bukkit.getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
