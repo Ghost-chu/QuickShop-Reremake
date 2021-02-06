@@ -143,7 +143,11 @@
                         </relocation>
                         <relocation>
                             <pattern>me.lucko.helper.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.>me.lucko.helper.</shadedPattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.helper.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.SparklingComet.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
                         </relocation>
                     </relocations>
                     <transformers>
@@ -766,6 +770,11 @@
             <artifactId>BKCommonLib</artifactId>
             <version>1.16.5-v2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.SparklingComet</groupId>
+            <artifactId>com.github.SparklingComet</artifactId>
+            <version>-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
