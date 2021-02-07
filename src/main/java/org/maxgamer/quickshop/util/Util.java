@@ -1527,4 +1527,28 @@ public class Util {
         return tabList;
     }
 
+    /**
+     * Ensure this method is calling from specific thread
+     *
+     * @param async on async thread or main server thread.
+     */
+    public static void ensureThread(boolean async) {
+        boolean isMainThread = Bukkit.isPrimaryThread();
+        if (async) {
+            if (isMainThread)
+                throw new IllegalStateException("This method require runs on async thread.");
+        } else {
+            if (!isMainThread)
+                throw new IllegalStateException("This method require runs on server main thread.");
+        }
+    }
+
+    public static void mainThreadRun(@NotNull Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+        } else {
+            Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
+        }
+    }
+
 }

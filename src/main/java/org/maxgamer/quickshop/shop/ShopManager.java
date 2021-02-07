@@ -79,6 +79,7 @@ public class ShopManager {
                     .build();
 
     public ShopManager(@NotNull QuickShop plugin) {
+        Util.ensureThread(false);
         this.plugin = plugin;
         this.useFastShopSearchAlgorithm =
                 plugin.getConfig().getBoolean("shop.use-fast-shop-search-algorithm", false);
@@ -108,6 +109,7 @@ public class ShopManager {
      * @return True if they're allowed to place a shop there.
      */
     public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
+        Util.ensureThread(false);
         if (plugin.isLimit()) {
             int owned = 0;
             if (useOldCanBuildAlgorithm) {
@@ -156,6 +158,7 @@ public class ShopManager {
      * on plugin disable ONLY.
      */
     public void clear() {
+        Util.ensureThread(false);
         if (plugin.isDisplay()) {
             for (World world : Bukkit.getWorlds()) {
                 for (Chunk chunk : world.getLoadedChunks()) {
@@ -214,6 +217,7 @@ public class ShopManager {
      * @param info The info object
      */
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
+        Util.ensureThread(false);
         Player player = Bukkit.getPlayer(shop.getOwner());
         if (player == null) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
@@ -452,27 +456,25 @@ public class ShopManager {
         final String message = ChatColor.stripColor(msg);
         // Use from the main thread, because Bukkit hates life
         Bukkit.getScheduler()
-                .scheduleSyncDelayedTask(
-                        plugin,
-                        () -> {
-                            Map<UUID, Info> actions = getActions();
-                            // They wanted to do something.
-                            Info info = actions.remove(p.getUniqueId());
-                            if (info == null) {
-                                return; // multithreaded means this can happen
-                            }
-                            if (info.getLocation().getWorld() != p.getLocation().getWorld()
-                                    || info.getLocation().distanceSquared(p.getLocation()) > 25) {
-                                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
-                                return;
-                            }
-                            if (info.getAction() == ShopAction.CREATE) {
-                                actionCreate(p, info, message, bypassProtectionChecks);
-                            }
-                            if (info.getAction() == ShopAction.BUY) {
-                                actionTrade(p, info, message);
-                            }
-                        });
+                .runTask(plugin, () -> {
+                    Map<UUID, Info> actions = getActions();
+                    // They wanted to do something.
+                    Info info = actions.remove(p.getUniqueId());
+                    if (info == null) {
+                        return; // multithreaded means this can happen
+                    }
+                    if (info.getLocation().getWorld() != p.getLocation().getWorld()
+                            || info.getLocation().distanceSquared(p.getLocation()) > 25) {
+                        MsgUtil.sendMessage(p, MsgUtil.getMessage("not-looking-at-shop", p));
+                        return;
+                    }
+                    if (info.getAction() == ShopAction.CREATE) {
+                        actionCreate(p, info, message, bypassProtectionChecks);
+                    }
+                    if (info.getAction() == ShopAction.BUY) {
+                        actionTrade(p, info, message);
+                    }
+                });
     }
 
     /**
@@ -610,6 +612,7 @@ public class ShopManager {
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
+        Util.ensureThread(false);
         if (shopIsNotValid(buyer, info, shop)) {
             return;
         }
@@ -741,8 +744,8 @@ public class ShopManager {
 
 
     @Deprecated
-    public void actionBuy(
-            @NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+    public void actionBuy(@NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+        Util.ensureThread(false);
         actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
     }
 
@@ -752,6 +755,7 @@ public class ShopManager {
     }
 
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
+        Util.ensureThread(false);
         double tax = plugin.getConfig().getDouble("tax");
         Player player = Bukkit.getPlayer(p);
         if (player != null) {
@@ -780,6 +784,7 @@ public class ShopManager {
     }
 
     public void actionCreate(@NotNull Player p, @NotNull Info info, @NotNull String message, boolean bypassProtectionChecks) {
+        Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(p, "Error: Economy system not loaded, type /qs main command to get details.");
             return;
@@ -1002,6 +1007,7 @@ public class ShopManager {
     @Deprecated
     public void actionSell(
             @NotNull Player p, @NotNull Economy eco, @NotNull Info info, @NotNull Shop shop, int amount) {
+        Util.ensureThread(false);
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
     }
 
@@ -1012,6 +1018,7 @@ public class ShopManager {
             @NotNull Info info,
             @NotNull Shop shop,
             int amount) {
+        Util.ensureThread(false);
         if (shopIsNotValid(seller, info, shop)) {
             return;
         }
@@ -1176,6 +1183,7 @@ public class ShopManager {
     }
 
     private void actionTrade(@NotNull Player p, @NotNull Info info, @NotNull String message) {
+        Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
             MsgUtil.sendMessage(
                     p, "Error: Economy system not loaded, type /qs main command to get details.");
@@ -1289,8 +1297,7 @@ public class ShopManager {
             } catch (NumberFormatException e) {
                 if (message.equalsIgnoreCase(
                         plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    int shopHaveItems =
-                            Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
+                    int shopHaveItems = Util.countItems(((ContainerShop) shop).getInventory(), shop.getItem());
                     int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                     if (!shop.isUnlimited()) {
                         amount = Math.min(shopHaveItems, invHaveSpaces);
@@ -1307,18 +1314,13 @@ public class ShopManager {
                         // when typed 'all' but player can't buy any items
                         if (!shop.isUnlimited() && shopHaveItems < 1) {
                             // but also the shop's stock is 0
-                            MsgUtil.sendMessage(
-                                    p,
-                                    MsgUtil.getMessage(
-                                            "shop-stock-too-low",
-                                            p,
-                                            Integer.toString(shop.getRemainingStock()),
-                                            Util.getItemStackName(shop.getItem())));
+                            MsgUtil.sendMessage(p, MsgUtil.getMessage("shop-stock-too-low", p,
+                                    Integer.toString(shop.getRemainingStock()),
+                                    Util.getItemStackName(shop.getItem())));
                         } else {
                             // when if player's inventory is full
                             if (invHaveSpaces <= 0) {
-                                MsgUtil.sendMessage(
-                                        p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
+                                MsgUtil.sendMessage(p, MsgUtil.getMessage("not-enough-space", p, String.valueOf(invHaveSpaces)));
                                 return;
                             }
                             MsgUtil.sendMessage(

@@ -270,6 +270,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void respawn() {
+        Util.ensureThread(false);
         sendPacketToAll(fakeItemDestroyPacket);
         sendFakeItemToAll();
     }
@@ -287,6 +288,7 @@ public class VirtualDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        Util.ensureThread(false);
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -305,6 +307,7 @@ public class VirtualDisplayItem extends DisplayItem {
     //Due to the delay task in ChunkListener
     //We must move load task to first spawn to prevent some bug and make the check lesser
     private void load() {
+        Util.ensureThread(false);
         //some time shop can be loaded when world isn't loaded
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
