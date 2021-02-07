@@ -41,7 +41,6 @@ import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -246,7 +245,7 @@ class GameLanguageLoadThread extends Thread {
             }
 
             try {
-                Files.copy(new ByteArrayInputStream(assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8)), new File(Util.getCacheFolder(), indexSha1Hex).toPath());
+                Files.write(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 plugin.getLogger().warning("Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...");
@@ -277,7 +276,7 @@ class GameLanguageLoadThread extends Thread {
             }
 
             try {
-                Files.copy(new ByteArrayInputStream(langContent.get().getBytes(StandardCharsets.UTF_8)), new File(Util.getCacheFolder(), langHash).toPath());
+                Files.write(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get().getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 plugin.getLogger().warning("Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...");
