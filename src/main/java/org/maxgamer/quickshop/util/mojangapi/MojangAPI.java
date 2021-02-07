@@ -24,7 +24,9 @@ import com.google.common.cache.LoadingCache;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,12 +48,53 @@ public class MojangAPI {
         this.plugin = plugin;
     }
 
+
     @NotNull
     public AssetsAPI getAssetsAPI(@NotNull String serverVersion) {
         return new AssetsAPI(serverVersion);
     }
 
-    static class AssetsAPI {
+    @NotNull
+    public GameInfoAPI getGameInfoAPI(@NotNull String gameVersionJson) {
+        return new GameInfoAPI(gameVersionJson);
+    }
+
+    @NotNull
+    public MetaAPI getMetaAPI(@NotNull String serverVersion) {
+        return new MetaAPI(serverVersion);
+    }
+
+    public ResourcesAPI getResourcesAPI() {
+        return new ResourcesAPI();
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    public static class AssetsFileData {
+        private String content;
+        private String sha1;
+        private String id;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class ResourcesAPI {
+        private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
+                .expireAfterAccess(10, TimeUnit.MINUTES)
+                .build(new HttpCacheLoader());
+
+        public Optional<String> get(@NotNull String hash) {
+            try {
+                return request.get(new URL("https://resources.download.minecraft.net/" + hash.substring(0, 2) + "/" + hash));
+            } catch (ExecutionException | MalformedURLException e) {
+                return Optional.empty();
+            }
+        }
+    }
+
+
+    public static class AssetsAPI {
         private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
                 .expireAfterAccess(10, TimeUnit.MINUTES)
                 .build(new HttpCacheLoader());
@@ -70,7 +113,7 @@ public class MojangAPI {
          *
          * @return The file content
          */
-        public Optional<String> getGameAssetsFile() {
+        public Optional<AssetsFileData> getGameAssetsFile() {
             Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
             if (!bean.isPresent())
                 return Optional.empty();
@@ -79,7 +122,8 @@ public class MojangAPI {
                 return Optional.empty();
 
             try {
-                return request.get(new URL(assetIndexBean.getUrl()));
+                Optional<String> fileContent = request.get(new URL(assetIndexBean.getUrl()));
+                return fileContent.map(s -> new AssetsFileData(s, assetIndexBean.getSha1(), assetIndexBean.getId()));
             } catch (ExecutionException | MalformedURLException e) {
                 return Optional.empty();
             }
@@ -101,11 +145,11 @@ public class MojangAPI {
     }
 
     @Data
-    static class GameInfoAPI {
+    public static class GameInfoAPI {
         private final String json;
         private final Gson gson = new Gson();
 
-        GameInfoAPI(@NotNull String json) {
+        public GameInfoAPI(@NotNull String json) {
             this.json = json;
         }
 
@@ -143,7 +187,7 @@ public class MojangAPI {
 
     }
 
-    static class MetaAPI {
+    public static class MetaAPI {
         //Cache with URL and Content(String)
         private final LoadingCache<URL, Optional<String>> request = CacheBuilder.newBuilder()
                 .expireAfterAccess(10, TimeUnit.MINUTES)

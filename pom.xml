@@ -138,6 +138,10 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.apache.commons.codec.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade. org.apache.commons.codec.</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>com.esotericsoftware.reflectasm.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.esotericsoftware.reflectasm.</shadedPattern>
                         </relocation>
@@ -256,10 +260,6 @@
             <url>https://repo.md-5.net/content/repositories/releases/</url>
         </repository>
         <repository>
-            <id>lang-utils-repo</id>
-            <url>https://ci.nyaacat.com/maven/</url>
-        </repository>
-        <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -296,15 +296,6 @@
         <repository>
             <id>songoda-repo</id>
             <url>https://repo.songoda.com/repository/public/</url>
-        </repository>
-        <repository>
-            <id>AuraDevelopmentTeam</id>
-            <url>https://maven.aura-dev.team/repository/auradev-releases/</url>
-            <!--<url>https://maven.aura-dev.team/repository/auradev-snapshots/</url>-->
-        </repository>
-        <repository>
-            <id>MG-Dev Jenkins CI Maven Repository</id>
-            <url>https://ci.mg-dev.eu/plugin/repository/everything/</url>
         </repository>
     </repositories>
 
@@ -765,16 +756,11 @@
             <version>5.6.5</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
-            <groupId>com.bergerkiller.bukkit</groupId>
-            <artifactId>BKCommonLib</artifactId>
-            <version>1.16.5-v2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.SparklingComet</groupId>
-            <artifactId>com.github.SparklingComet</artifactId>
-            <version>-SNAPSHOT</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
         </dependency>
     </dependencies>
 </project>
