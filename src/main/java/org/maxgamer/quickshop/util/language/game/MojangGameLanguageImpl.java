@@ -204,8 +204,12 @@ class GameLanguageLoadThread extends Thread {
             }
             if (languageCode.equals(cacheCode) && new File(Util.getCacheFolder(), cacheSha1).exists()) {
                 isLatest = true;
-                lang = new JsonParser().parse(new FileReader(new File(Util.getCacheFolder(), cacheSha1))).getAsJsonObject();
-                return; //We doesn't need to update it
+                try (FileReader reader = new FileReader(new File(Util.getCacheFolder(), cacheSha1))) {
+                    lang = new JsonParser().parse(reader).getAsJsonObject();
+                    return; //We doesn't need to update it
+                } catch (Exception e) {
+
+                }
             }
 
             //UPDATE
