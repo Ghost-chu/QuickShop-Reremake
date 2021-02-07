@@ -25,6 +25,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.event.EconomyCommitEvent;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -154,6 +155,11 @@ public class EconomyTransaction {
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
         steps = TransactionSteps.CHECK;
+        if (!callback.onCommit(this)) {
+            this.lastError = "Plugin cancelled this transaction.";
+            return false;
+        }
+
         if (from != null && core.getBalance(from, world, currency) < amount && !allowLoan) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
@@ -236,6 +242,10 @@ public class EconomyTransaction {
     }
 
     interface TransactionCallback {
+        default boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
+            return Util.fireCancellableEvent(new EconomyCommitEvent(economyTransaction));
+        }
+
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
         }
