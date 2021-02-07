@@ -1536,10 +1536,10 @@ public class Util {
         boolean isMainThread = Bukkit.isPrimaryThread();
         if (async) {
             if (isMainThread)
-                throw new IllegalStateException("This method require runs on async thread.");
+                throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
         } else {
             if (!isMainThread)
-                throw new IllegalStateException("This method require runs on server main thread.");
+                throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
         }
     }
 

@@ -202,6 +202,9 @@ public class RollbarErrorReporter {
         if (!checkWasCauseByQS(throwable)) {
             return false;
         }
+        if (throwable.getMessage().startsWith("#")) {
+            return false;
+        }
         StackTraceElement stackTraceElement;
         if (throwable.getStackTrace().length < 3) {
             stackTraceElement = throwable.getStackTrace()[1];
