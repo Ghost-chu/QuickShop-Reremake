@@ -218,6 +218,16 @@ public class EconomyTransactionTest {
         for (UUID account : UUIDList) {
             genTransaction(null, account, 1000, 0.06, false).commit(new EconomyTransaction.TransactionCallback() {
                 @Override
+                public void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
+
+                }
+
+                @Override
+                public boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
+                    return true;
+                }
+
+                @Override
                 public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
 
                 }

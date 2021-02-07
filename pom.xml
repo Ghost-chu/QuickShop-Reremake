@@ -158,6 +158,12 @@
                             <pattern>com.github.SparklingComet.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.offbytwo.jenkins.jenkins-client.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shadecom.offbytwo.jenkins.jenkins-client.
+                            </shadedPattern>
+                        </relocation>
+
                     </relocations>
                     <transformers>
                         <transformer

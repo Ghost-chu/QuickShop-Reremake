@@ -979,6 +979,7 @@ public class QuickShop extends JavaPlugin {
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
         }
+
     }
 
 
