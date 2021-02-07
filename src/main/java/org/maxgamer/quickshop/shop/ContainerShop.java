@@ -82,6 +82,7 @@ public class ContainerShop implements Shop {
 
 
     private ContainerShop(@NotNull ContainerShop s) {
+        Util.ensureThread(false);
         this.shopType = s.shopType;
         this.item = s.item.clone();
         this.location = s.location.clone();
@@ -121,6 +122,7 @@ public class ContainerShop implements Shop {
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull Map<String, Map<String, String>> extra) {
+        Util.ensureThread(false);
         this.location = location;
         this.price = price;
         this.moderator = moderator;
@@ -152,6 +154,7 @@ public class ContainerShop implements Shop {
     }
 
     private void initDisplayItem() {
+        Util.ensureThread(false);
         if (plugin.isDisplay()) {
             switch (DisplayItem.getNowUsing()) {
                 case UNKNOWN:
@@ -203,6 +206,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void add(@NotNull ItemStack item, int amount) {
+        Util.ensureThread(false);
         if (this.unlimited) {
             return;
         }
@@ -221,11 +225,12 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean addStaff(@NotNull UUID player) {
+        Util.ensureThread(false);
         this.lastChangedAt = System.currentTimeMillis();
         boolean result = this.moderator.addStaff(player);
         update();
         if (result) {
-            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -240,6 +245,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int amount) {
+        Util.ensureThread(false);
         amount = amount * item.getAmount();
         if (amount < 0) {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
@@ -303,6 +309,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void checkDisplay() {
+        Util.ensureThread(false);
         if (!plugin.isDisplay() || !this.isLoaded || this.isDeleted()) { // FIXME: Reinit scheduler on reloading config
             return;
         }
@@ -345,17 +352,18 @@ public class ContainerShop implements Shop {
     public void clearStaffs() {
         this.lastChangedAt = System.currentTimeMillis();
         this.moderator.clearStaffs();
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
     @Override
     public boolean delStaff(@NotNull UUID player) {
+        Util.ensureThread(false);
         this.lastChangedAt = System.currentTimeMillis();
         boolean result = this.moderator.delStaff(player);
         update();
         if (result) {
-            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+            Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         }
         return result;
     }
@@ -365,6 +373,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void delete() {
+        Util.ensureThread(false);
         delete(false);
     }
 
@@ -375,6 +384,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void delete(boolean memoryOnly) {
+        Util.ensureThread(false);
         this.lastChangedAt = System.currentTimeMillis();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
@@ -406,6 +416,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean isAttached(@NotNull Block b) {
+        Util.ensureThread(false);
         return this.getLocation().getBlock().equals(Util.getAttached(b));
     }
 
@@ -422,6 +433,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void onClick() {
+        Util.ensureThread(false);
         ShopClickEvent event = new ShopClickEvent(this);
         if (Util.fireCancellableEvent(event)) {
             Util.debugLog("Ignore shop click, because some plugin cancel it.");
@@ -443,6 +455,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void onUnload() {
+        Util.ensureThread(false);
         if (!this.isLoaded) {
             Util.debugLog("Dupe unload request, canceled.");
             return;
@@ -487,6 +500,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void remove(@NotNull ItemStack item, int amount) {
+        Util.ensureThread(false);
         if (this.unlimited) {
             return;
         }
@@ -513,6 +527,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int amount) {
+        Util.ensureThread(false);
         amount = item.getAmount() * amount;
         if (amount < 0) {
             this.buy(seller, sellerInventory, loc2Drop, -amount);
@@ -563,6 +578,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public String[] getSignText() {
+        Util.ensureThread(false);
         String[] lines = new String[4];
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwner());
         lines[0] = MsgUtil.getMessageOfflinePlayer("signs.header", null, this.ownerName(false));
@@ -633,6 +649,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setSignText(@NotNull String[] lines) {
+        Util.ensureThread(false);
         for (Sign sign : this.getSigns()) {
             if (Arrays.equals(sign.getLines(), lines)) {
                 //Util.debugLog("Skipped new sign text setup: Same content");
@@ -655,6 +672,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setSignText() {
+        Util.ensureThread(false);
         if (!Util.isLoaded(this.location)) {
             return;
         }
@@ -665,39 +683,27 @@ public class ContainerShop implements Shop {
      * Upates the shop into the database.
      */
     @Override
-    public void update() {
+    public synchronized void update() {
+        Util.mainThreadRun(this::update0);
+    }
+
+    public synchronized void update0() {
+        Util.ensureThread(false);
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Util.debugLog("The Shop update action was canceled by a plugin.");
             return;
         }
-
         int x = this.getLocation().getBlockX();
         int y = this.getLocation().getBlockY();
         int z = this.getLocation().getBlockZ();
         String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin
-                    .getDatabaseHelper()
-                    .updateShop(
-                            ShopModerator.serialize(this.moderator.clone()),
-                            this.getItem(),
-                            unlimited,
-                            shopType.toID(),
-                            this.getPrice(),
-                            x,
-                            y,
-                            z,
-                            world,
-                            this.saveExtraToJson());
+            plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world, this.saveExtraToJson());
         } catch (Exception e) {
             e.printStackTrace();
-            plugin
-                    .getLogger()
-                    .log(
-                            Level.WARNING,
-                            "Could not update a shop in the database! Changes will revert after a reboot!");
+            plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!");
         }
     }
 
@@ -719,6 +725,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setItem(@NotNull ItemStack item) {
+        Util.ensureThread(false);
         ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
         if (Util.fireCancellableEvent(event)) {
             Util.debugLog("A plugin cancelled the item change event.");
@@ -731,6 +738,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void refresh() {
+        Util.ensureThread(false);
         if (displayItem != null) {
             displayItem.remove();
             initDisplayItem();
@@ -744,6 +752,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void onLoad() {
+        Util.ensureThread(false);
         if (this.isLoaded) {
             Util.debugLog("Dupe load request, canceled.");
             return;
@@ -794,7 +803,7 @@ public class ContainerShop implements Shop {
         this.lastChangedAt = System.currentTimeMillis();
         this.moderator = shopModerator;
         update();
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
     }
 
     /**
@@ -818,13 +827,15 @@ public class ContainerShop implements Shop {
         //then setOwner
         this.moderator.setOwner(owner);
         //then change the sign
-        for (Sign shopSign : signs) {
-            shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
-            //Don't forgot update it
-            shopSign.update(true);
-        }
-        //Event
-        Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        Util.mainThreadRun(() -> {
+            for (Sign shopSign : signs) {
+                shopSign.setLine(0, MsgUtil.getMessageOfflinePlayer("signs.header", offlinePlayer, ownerName(false)));
+                //Don't forgot update it
+                shopSign.update(true);
+            }
+            //Event
+            Bukkit.getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
+        });
         update();
     }
 
@@ -861,6 +872,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public int getRemainingSpace() {
+        Util.ensureThread(false);
         if (this.unlimited) {
             return -1;
         }
@@ -874,6 +886,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public int getRemainingStock() {
+        Util.ensureThread(false);
         if (this.unlimited) {
             return -1;
         }
@@ -892,6 +905,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setShopType(@NotNull ShopType newShopType) {
+        Util.ensureThread(false);
         if (this.shopType == newShopType) {
             return; //Ignore if there actually no changes
         }
@@ -930,6 +944,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull List<Sign> getSigns() {
+        Util.ensureThread(false);
         List<Sign> signs = new ArrayList<>(4);
         if (this.getLocation().getWorld() == null) {
             return Collections.emptyList();
@@ -1080,6 +1095,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean isValid() {
+        Util.ensureThread(false);
         //this.checkDisplay();
         if (this.isDeleted) {
             return false;
@@ -1165,6 +1181,7 @@ public class ContainerShop implements Shop {
      */
 
     public @Nullable Inventory getInventory() {
+        Util.ensureThread(false);
         try {
             if (location.getBlock().getState().getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
@@ -1208,6 +1225,7 @@ public class ContainerShop implements Shop {
      * this is buying/selling.
      */
     public boolean isDoubleShop() {
+        Util.ensureThread(false);
         ContainerShop nextTo = this.getAttachedShop();
         if (nextTo == null) {
             return false;
@@ -1230,6 +1248,7 @@ public class ContainerShop implements Shop {
      * attached to another.
      */
     public @Nullable ContainerShop getAttachedShop() {
+        Util.ensureThread(false);
         Block c = Util.getSecondHalf(this.getLocation().getBlock());
         if (c == null) {
             return null;
@@ -1244,6 +1263,7 @@ public class ContainerShop implements Shop {
      * @return true if create on double chest.
      */
     public boolean isDoubleChestShop() {
+        Util.ensureThread(false);
         return Util.isDoubleChest(this.getLocation().getBlock());
     }
 
@@ -1251,6 +1271,7 @@ public class ContainerShop implements Shop {
      * Check the container still there and we can keep use it.
      */
     public void checkContainer() {
+        Util.ensureThread(false);
         if (!this.isLoaded) {
             return;
         }
@@ -1311,10 +1332,8 @@ public class ContainerShop implements Shop {
     @Override
     public void setExtra(@NotNull Plugin plugin, @NotNull Map<String, String> data) {
         this.extra.put(plugin.getName(), data);
-        synchronized (this) {
-            this.lastChangedAt = System.currentTimeMillis();
-            this.update();
-        }
+        this.lastChangedAt = System.currentTimeMillis();
+        this.update();
     }
 
     /**
