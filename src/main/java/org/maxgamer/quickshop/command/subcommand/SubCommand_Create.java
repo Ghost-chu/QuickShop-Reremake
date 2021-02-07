@@ -23,11 +23,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Info;
@@ -38,6 +40,7 @@ import org.maxgamer.quickshop.util.holder.Result;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SubCommand_Create implements CommandProcesser {
 
@@ -46,6 +49,43 @@ public class SubCommand_Create implements CommandProcesser {
 
     public SubCommand_Create(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+    }
+
+    @Nullable
+    private Material matchMaterial(String itemName) {
+        Material material = Material.matchMaterial(itemName);
+        if (material == null || Util.isAir(material)) {
+            ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
+            for (String itemKey : section.getKeys(false)) {
+                if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
+                    material = Material.matchMaterial(itemKey);
+                    break;
+                }
+            }
+        }
+        if (material == null || Util.isAir(material)) {
+            String uppercaseName = itemName.toUpperCase(Locale.ROOT);
+            for (Material value : Material.values()) {
+                if (value.name().startsWith(uppercaseName)) {
+                    material = value;
+                    break;
+                }
+            }
+        }
+        if (material == null || Util.isAir(material)) {
+            String uppercaseName = itemName.toUpperCase(Locale.ROOT);
+            ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
+            for (String itemKey : section.getKeys(false)) {
+                if (section.getString(itemKey).toUpperCase(Locale.ROOT).startsWith(uppercaseName)) {
+                    material = Material.matchMaterial(itemKey);
+                    break;
+                }
+            }
+        }
+        if (material == null || Util.isAir(material)) {
+            return null;
+        }
+        return material;
     }
 
     @Override
@@ -59,9 +99,18 @@ public class SubCommand_Create implements CommandProcesser {
         final Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
 
-        if (item.getType() == Material.AIR) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
-            return;
+
+        if (Util.isAir(item.getType())) {
+            if (cmdArg.length > 0) {
+                Material material = matchMaterial(cmdArg[0]);
+                if (material == null) {
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                    return;
+                }
+            } else {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                return;
+            }
         }
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
@@ -111,26 +160,17 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             // Send creation menu.
-            plugin
-                    .getShopManager()
-                    .getActions()
-                    .put(
-                            p.getUniqueId(),
-                            new Info(
-                                    b.getLocation(),
-                                    ShopAction.CREATE,
-                                    p.getInventory().getItemInMainHand(),
-                                    b.getRelative(p.getFacing().getOppositeFace())));
+            plugin.getShopManager().getActions().put(p.getUniqueId(),
+                    new Info(b.getLocation(),
+                            ShopAction.CREATE,
+                            p.getInventory().getItemInMainHand(),
+                            b.getRelative(p.getFacing().getOppositeFace())));
 
             if (cmdArg.length >= 1) {
                 plugin.getShopManager().handleChat(p, cmdArg[0]);
-
                 return;
             }
-
-            MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
-
+            MsgUtil.sendMessage(p, MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
             return;
         }
     }
