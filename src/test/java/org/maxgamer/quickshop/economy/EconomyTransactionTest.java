@@ -242,31 +242,32 @@ public class EconomyTransactionTest {
 
         assertEquals(1000 * 0.94D, economy.getBalance(UUIDList.get(0), null, null));
 
-        genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
-            @Override
-            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
-            }
-
-            @Override
-            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
-                throw new RuntimeException("Loan Test Failed");
-            }
-        });
-
-        genTransaction(UUIDList.get(4), UUIDList.get(5), 1000, 0.06, true).commit(new EconomyTransaction.TransactionCallback() {
-            @Override
-            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
-                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null, null));
-                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null, null));
-            }
-
-            @Override
-            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
-                throw new RuntimeException("Transfer Test Failed");
-            }
-        });
+//        genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
+//            @Override
+//            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+//                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
+//            }
+//
+//            @Override
+//            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
+//                throw new RuntimeException("Loan Test Failed");
+//            }
+//        });
+//
+//        genTransaction(UUIDList.get(4), UUIDList.get(5), 1000, 0.06, true).commit(new EconomyTransaction.TransactionCallback() {
+//            @Override
+//            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+//                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
+//                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null, null));
+//                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null, null));
+//            }
+//
+//            @Override
+//            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
+//                throw new RuntimeException("Transfer Test Failed");
+//            }
+//        });
+//    }
     }
 
     @Test
