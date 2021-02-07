@@ -214,7 +214,7 @@ class GameLanguageLoadThread extends Thread {
             plugin.getLogger().info("Loading required files from Mojang API, Please allow up to 20 secs.");
 
             //Download new things from Mojang launcher meta site
-            MojangAPI mojangAPI = new MojangAPI(plugin);
+            MojangAPI mojangAPI = new MojangAPI();
             MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(ReflectFactory.getServerVersion());
             if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
                 Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
