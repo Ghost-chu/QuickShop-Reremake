@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.HttpCacheLoader;
 
 import java.net.MalformedURLException;
@@ -41,11 +40,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MojangAPI {
-    private final QuickShop plugin;
 
+    public MojangAPI() {
 
-    public MojangAPI(QuickShop plugin) {
-        this.plugin = plugin;
     }
 
 
