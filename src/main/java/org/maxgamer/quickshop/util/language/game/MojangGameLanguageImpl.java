@@ -43,6 +43,7 @@ import org.maxgamer.quickshop.util.mojangapi.MojangAPI;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -64,13 +65,15 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         loadThread.setPlugin(plugin); // Transfer instance
         loadThread.start();
         int count = 0;
-        while (count < 7) {
+        while (true) {
             if (loadThread.isAlive()) {
                 count++;
+                //noinspection BusyWait
                 Thread.sleep(1000);
                 if (count >= 20) {
                     Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
                     plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+                    break;
                 }
             } else {
                 break;
@@ -119,11 +122,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getItem(material);
         }
-//        try {
-//            return lang.get("block.minecraft." + material.name().toLowerCase()).getAsString();
-//        } catch (NullPointerException e) {
-//            return super.getItem(material);
-//        }
 
         JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
         if (jsonElement == null) {
@@ -137,11 +135,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getPotion(potionEffectType);
         }
-//        try {
-//            return lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase()).getAsString();
-//        } catch (NullPointerException e) {
-//            return super.getPotion(potionEffectType);
-//        }
         JsonElement jsonElement = lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase());
         if (jsonElement == null) {
             return super.getPotion(potionEffectType);
@@ -167,11 +160,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         if (lang == null) {
             return super.getEntity(entityType);
         }
-//        try {
-//            return lang.get("entity.minecraft." + entityType.name().toLowerCase()).getAsString();
-//        } catch (NullPointerException e) {
-//            return super.getEntity(entityType);
-//        }
         JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
         if (jsonElement == null) {
             return super.getEntity(entityType);
@@ -217,11 +205,14 @@ class GameLanguageLoadThread extends Thread {
             }
             if (languageCode.equals(cacheCode) && new File(Util.getCacheFolder(), cacheSha1).exists()) {
                 isLatest = true;
+                lang = new JsonParser().parse(new FileReader(new File(Util.getCacheFolder(), cacheSha1))).getAsJsonObject();
                 return; //We doesn't need to update it
             }
 
             //UPDATE
             isUpdated = true;
+
+            plugin.getLogger().info("Loading required files from Mojang API, Please allow up to 20 secs.");
 
             //Download new things from Mojang launcher meta site
             MojangAPI mojangAPI = new MojangAPI(plugin);
@@ -292,6 +283,8 @@ class GameLanguageLoadThread extends Thread {
                 plugin.getLogger().warning("Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...");
             }
 
+            //Save the caches
+            lang = new JsonParser().parse(langContent.get()).getAsJsonObject();
             yamlConfiguration.set("ver", ReflectFactory.getServerVersion());
             yamlConfiguration.set("sha1", langHash);
             yamlConfiguration.set("lang", languageCode);
