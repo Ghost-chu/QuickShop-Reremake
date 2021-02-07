@@ -123,12 +123,7 @@ public class Economy_TNE implements EconomyCore {
         }
         try {
             BigDecimal decimal = BigDecimal.valueOf(balance);
-            String formatedBalance = this.api.format(decimal, getCurrency(world, currency), world.getName());
-            if (formatedBalance == null) // Stupid Ecosystem
-            {
-                return formatInternal(balance, world, currency);
-            }
-            return formatedBalance;
+            return this.api.format(decimal, getCurrency(world, currency), world.getName());
         } catch (Exception e) {
             return formatInternal(balance, world, currency);
         }
