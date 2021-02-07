@@ -31,7 +31,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.Util;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -71,7 +70,7 @@ public class Economy_TNE implements EconomyCore {
                 return apiCurrency;
             }
         }
-        return this.api.getCurrencies().iterator().next();
+        return this.api.getCurrencies().iterator().next(); // Want to get some default currency available in thi world
     }
 
     /**
@@ -121,21 +120,10 @@ public class Economy_TNE implements EconomyCore {
         if (!isValid()) {
             return "Error";
         }
-        try {
-            BigDecimal decimal = BigDecimal.valueOf(balance);
-            return this.api.format(decimal, getCurrency(world, currency), world.getName());
-        } catch (Exception e) {
-            return formatInternal(balance, world, currency);
-        }
+        BigDecimal decimal = BigDecimal.valueOf(balance);
+        return this.api.format(decimal, getCurrency(world, currency), world.getName());
     }
 
-    private String formatInternal(double balance, @NotNull World world, @Nullable String currency) {
-        if (!isValid()) {
-            return "Error";
-        }
-
-        return Util.format(balance, true, world, currency);
-    }
 
     /**
      * Fetches the balance of the given account name
