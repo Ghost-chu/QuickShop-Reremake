@@ -101,28 +101,6 @@ public class MsgUtil {
         plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
     }
 
-//    @SneakyThrows
-//    public static void sendItemholochat(
-//            @NotNull Player player,
-//            @NotNull String left,
-//            @NotNull ItemStack itemStack,
-//            @NotNull String right) {
-//        String json = ItemNMS.saveJsonfromNMS(itemStack);
-//        if (json == null) {
-//            return;
-//        }
-//
-////        Util.debugLog(left);
-////        Util.debugLog(json);
-////        Util.debugLog(right);
-//
-//
-//        net.md_5.bungee.api.chat.TextComponent centerItem = new TextComponent(left + Util.getItemStackName(itemStack) + right);
-//        net.md_5.bungee.api.chat.ComponentBuilder cBuilder = new ComponentBuilder(json);
-//        centerItem.setHoverEvent(new net.md_5.bungee.api.chat.HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create())); //FIXME: Update this when drop 1.15 supports
-//        player.spigot().sendMessage(centerItem);
-//    }
-
     /**
      * Empties the queue of messages a player has and sends them to the player.
      *
@@ -328,7 +306,7 @@ public class MsgUtil {
     }
 
     public static void loadEnchi18n() {
-        plugin.getLogger().info("Starting loading enchantments translation...");
+        plugin.getLogger().info("Loading enchantments translations...");
         File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
         if (!enchi18nFile.exists()) {
             plugin.getLogger().info("Creating enchi18n.yml");
@@ -369,7 +347,7 @@ public class MsgUtil {
      * Load Itemi18n fron file
      */
     public static void loadItemi18n() {
-        plugin.getLogger().info("Starting loading items translation...");
+        plugin.getLogger().info("Loading items translations...");
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
         if (!itemi18nFile.exists()) {
             plugin.getLogger().info("Creating itemi18n.yml");
@@ -409,7 +387,7 @@ public class MsgUtil {
     }
 
     public static void loadPotioni18n() {
-        plugin.getLogger().info("Starting loading potions translation...");
+        plugin.getLogger().info("Loading potions translations...");
         File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
         if (!potioni18nFile.exists()) {
             plugin.getLogger().info("Creating potioni18n.yml");
@@ -424,7 +402,6 @@ public class MsgUtil {
         potioni18n.setDefaults(potioni18nYAML);
         Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
-            //noinspection ConstantConditions
             if (potion == null) {
                 continue;
             }
@@ -1014,12 +991,11 @@ public class MsgUtil {
         }
         if (!messagei18n.getString("language-name").get().equals(languageName)) {
             Util.debugLog("Language name " + messagei18n.getString("language-name").get() + " not matched with " + languageName);
-            File pendingDelete = new File(plugin.getDataFolder(), "messages.json");
+            File pending = new File(plugin.getDataFolder(), "messages.json");
             try {
-                Files.copy(pendingDelete.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
+                Files.move(pending.toPath(), new File(plugin.getDataFolder(), "messages-bak-" + UUID.randomUUID().toString() + ".json").toPath());
             } catch (IOException ignored) {
             }
-            pendingDelete.delete();
             try {
                 loadCfgMessages();
             } catch (Exception ignore) {
@@ -1516,11 +1492,6 @@ public class MsgUtil {
         } else {
             messagei18n.set(path, alt);
         }
-//    Object objFromBuiltIn = builtInDefaultLanguage.get(path); / Apply english default
-//    if (objFromBuiltIn == null) {
-//      objFromBuiltIn =
-//          object; // Apply hard-code default, maybe a language file i forgotten update??
-//    }
     }
 
     public static void sendColoredMessage(@NotNull CommandSender sender, @NotNull ChatColor chatColor, @Nullable String... messages) {
