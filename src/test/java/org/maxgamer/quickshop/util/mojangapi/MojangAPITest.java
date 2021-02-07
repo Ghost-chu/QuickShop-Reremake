@@ -22,8 +22,6 @@ package org.maxgamer.quickshop.util.mojangapi;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class MojangAPITest {
     @Test
     public void testMojangMetaApi(){
@@ -41,17 +39,4 @@ public class MojangAPITest {
         Assert.assertFalse(api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getId().isEmpty());
         Assert.assertFalse(api.getAssetsAPI("1.16.5").getGameAssetsFile().get().getSha1().isEmpty());
     }
-
-    @Test
-    public void testMojangGameInfosApi(){
-        MojangAPI api = new MojangAPI();
-        Assert.assertFalse(api.getGameInfoAPI("1.16.5").getJson().isEmpty());
-        Assert.assertNotNull(api.getGameInfoAPI("1.16.5").get().getAssets());
-        MojangAPI.GameInfoAPI.DataBean.AssetIndexBean index = api.getGameInfoAPI("1.16.5").get().getAssetIndex();
-        Assert.assertNotNull(index);
-        Assert.assertNotNull(index.getSha1());
-        Assert.assertNotNull(index.getUrl());
-        Assert.assertNotNull(index.getId());
-    }
-
 }
