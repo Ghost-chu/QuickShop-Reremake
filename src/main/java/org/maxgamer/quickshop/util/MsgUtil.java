@@ -1463,6 +1463,7 @@ public class MsgUtil {
         }
         if (selectedVersion == 48) {
             setAndUpdate("tabcomplete.currency", "[currency name]");
+            setAndUpdate("tabcomplete.item", "[item]");
             setAndUpdate("item-not-exist", "&cThe item &e{0} &cnot exists, please check your spelling.");
             setAndUpdate("language-version", ++selectedVersion);
         }
