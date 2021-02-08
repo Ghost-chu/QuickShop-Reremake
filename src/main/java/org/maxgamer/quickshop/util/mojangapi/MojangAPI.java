@@ -31,6 +31,7 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.util.HttpCacheLoader;
+import org.maxgamer.quickshop.util.JsonUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -144,7 +145,7 @@ public class MojangAPI {
     @Data
     public static class GameInfoAPI {
         private final String json;
-        private final Gson gson = new Gson();
+        private final Gson gson = JsonUtil.getGson();
 
         public GameInfoAPI(@NotNull String json) {
             this.json = json;
