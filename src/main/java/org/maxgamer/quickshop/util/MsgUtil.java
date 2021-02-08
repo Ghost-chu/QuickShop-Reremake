@@ -1469,28 +1469,10 @@ public class MsgUtil {
         }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
 
-        repairLanguageFile();
-
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
     }
 
-    private static void repairLanguageFile() {
-        if (messagei18n.getString("file-test").isPresent()) {
-            return;
-        }
-        plugin.getLogger().warning("Language is broken, new translation file will regenerated.");
-        plugin.getLogger().warning("Backup - Creating backup...");
-        try {
-            Files.move(new File(plugin.getDataFolder(), "messages.json").toPath(), new File(plugin.getDataFolder(), "messages.json." + System.currentTimeMillis()).toPath());
-            loadCfgMessages();
-        } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Failed to create backup, operation cancelled", ioException);
-        } catch (InvalidConfigurationException e) {
-            plugin.getLogger().log(Level.WARNING, "Repair operation failed, the built-in asset file is broken", e);
-        }
-
-    }
 
     private static void setAndUpdate(@NotNull String path, @Nullable Object object) {
         if (object == null) {
