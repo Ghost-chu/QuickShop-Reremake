@@ -19,32 +19,24 @@
 
 package org.maxgamer.quickshop;
 
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.stats.CacheStats;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Location;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.shop.Shop;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 public class Cache {
     private final QuickShop plugin;
-    private final com.github.benmanes.caffeine.cache.Cache<Location, WeakReference<Shop>> accessCaching = Caffeine
-            .newBuilder()
-            .initialCapacity(10000)
-            .expireAfterAccess(120, TimeUnit.MINUTES)
-            .recordStats()
-            .build();
+    private final com.google.common.cache.Cache<Location, CacheContainer> accessCaching = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).initialCapacity(500).build();
 
     public Cache(QuickShop plugin) {
         this.plugin = plugin;
     }
 
-    public @NonNull CacheStats getStats() {
-        return accessCaching.stats();
+    public long getCachingSize() {
+        return accessCaching.size();
     }
 
 
@@ -57,17 +49,16 @@ public class Cache {
      */
     @Nullable
     public Shop getCaching(@NotNull Location location, boolean includeAttached) {
-        WeakReference<Shop> result = accessCaching.get(location, update -> {
+        CacheContainer container;
+        container = accessCaching.getIfPresent(location);
+        if (container == null) {
             if (includeAttached) {
-                return new WeakReference<>(plugin.getShopManager().getShopIncludeAttached(update));
+                return plugin.getShopManager().getShopIncludeAttached(location);
             } else {
-                return new WeakReference<>(plugin.getShopManager().getShop(update));
+                return plugin.getShopManager().getShop(location);
             }
-        });
-        if (result == null) {
-            return null;
         } else {
-            return result.get();
+            return container.getShop();
         }
     }
 
@@ -82,6 +73,38 @@ public class Cache {
             accessCaching.invalidate(location);
             return;
         }
-        accessCaching.put(location, new WeakReference<>(shop));
+        accessCaching.put(location, new CacheContainer(shop, System.currentTimeMillis()));
     }
 }
+
+class CacheContainer {
+    @NotNull
+    private final Shop shop;
+
+    private final long time;
+
+    public CacheContainer(@NotNull Shop shop, long time) {
+        this.shop = shop;
+        this.time = time;
+    }
+
+    /**
+     * Gets container created at.
+     *
+     * @return The timestamp
+     */
+    public long getTime() {
+        return time;
+    }
+
+    /**
+     * Gets container shop
+     *
+     * @return The shop
+     */
+    @NotNull
+    public Shop getShop() {
+        return shop;
+    }
+}
+
