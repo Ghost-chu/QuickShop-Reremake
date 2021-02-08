@@ -294,7 +294,7 @@
   },
   "currency-not-exists": "&cNie można znaleźć waluty, którą chcesz ustawić, może jest to błędna pisownia lub ta waluta nie jest dostępna w tym świecie.",
   "currency-set": "&aPomyślnie ustawiono walutę sklepu na {0}.",
-  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
-  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
+  "currency-unset": "&aPomyślnie usunięto konfigurację waluty sklepu, zostanie użyta domyślna.",
+  "currency-not-support": "&cWtyczka ekonomiczna nie obsługuje funkcji wielowalutowej.",
+  "item-not-exist": "&cElement &e{0} &cnie istnieje, sprawdź swoją pisownię."
 }
