@@ -221,7 +221,8 @@
     "price": "[price]",
     "range": "[range]",
     "amount": "[amount]",
-    "currency": "[currency name]"
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Update Now]",
