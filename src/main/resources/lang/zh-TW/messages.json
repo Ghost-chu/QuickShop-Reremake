@@ -1,4 +1,5 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "翻譯人員：Ghost_chu、Andre_601、Flandre_tw（主翻譯）、Terence#3062（主翻譯）",
   "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
