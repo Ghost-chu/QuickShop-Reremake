@@ -82,13 +82,13 @@ public class SubCommand_Create implements CommandProcesser {
 
         final Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
-
+        String itemName = Util.mergeArgs(cmdArg);
 
         if (Util.isAir(item.getType())) {
             if (cmdArg.length > 0) {
-                Material material = matchMaterial(Util.mergeArgs(cmdArg));
+                Material material = matchMaterial(itemName);
                 if (material == null) {
-                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                    MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, itemName));
                     return;
                 }
             } else {

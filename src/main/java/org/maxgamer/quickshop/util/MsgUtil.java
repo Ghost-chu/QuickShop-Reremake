@@ -1461,6 +1461,11 @@ public class MsgUtil {
             setAndUpdate("forbidden-vanilla-behavior", "&cThe operation is forbidden due to is not consist with vanilla behavior");
             setAndUpdate("language-version", ++selectedVersion);
         }
+        if (selectedVersion == 48) {
+            setAndUpdate("tabcomplete.currency", "[currency name]");
+            setAndUpdate("item-not-exist", "&cThe item &e{0} &cnot exists, please check your spelling.");
+            setAndUpdate("language-version", ++selectedVersion);
+        }
         setAndUpdate("_comment", "Please edit this file after format with json formatter");
         messagei18n.save();
         messagei18n.loadFromString(Util.parseColours(messagei18n.saveToString()));
