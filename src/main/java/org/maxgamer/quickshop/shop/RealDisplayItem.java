@@ -245,7 +245,6 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public boolean isSpawned() {
-        Util.ensureThread(false);
         if (this.item == null) {
             return false;
         }

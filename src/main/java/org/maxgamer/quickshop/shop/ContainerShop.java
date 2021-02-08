@@ -702,8 +702,7 @@ public class ContainerShop implements Shop {
         try {
             plugin.getDatabaseHelper().updateShop(ShopModerator.serialize(this.moderator.clone()), this.getItem(), unlimited, shopType.toID(), this.getPrice(), x, y, z, world, this.saveExtraToJson());
         } catch (Exception e) {
-            e.printStackTrace();
-            plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!");
+            plugin.getLogger().log(Level.WARNING, "Could not update a shop in the database! Changes will revert after a reboot!", e);
         }
     }
 
@@ -1173,7 +1172,7 @@ public class ContainerShop implements Shop {
         if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
             return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
         }
-        return new HashMap<>();
+        return Collections.emptyMap();
     }
 
     /**
