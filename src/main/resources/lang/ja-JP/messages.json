@@ -3,7 +3,7 @@
   "translation-version": "&c&lサポートバージョン: &b&lReremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",
   "translation-country": "&c&l言語圏: &b&l日本語 (ja_JP)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&cQuickShopが見つかりませんでした。確認する必要があります。",
   "no-anythings-in-your-hand": "&cあなたは手に何も持っていません。",
   "no-permission": "&cあなたは権限を持っていないため実行できません。",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[価格]",
     "range": "[範囲]",
-    "amount": "[個数]"
+    "amount": "[個数]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[更新する]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
