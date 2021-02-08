@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.util;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -61,17 +62,16 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
 
 public class Util {
     private static final EnumSet<Material> blacklist = EnumSet.noneOf(Material.class);
-
     private static final EnumMap<Material, Entry<Double, Double>> restrictedPrices =
             new EnumMap<>(Material.class);
-
     private static final EnumMap<Material, Integer> customStackSize = new EnumMap<>(Material.class);
     private static final EnumSet<Material> shoppables = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> verticalFacing = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
-    private static final List<String> debugLogs = new LinkedList<>();
+    private static final List<String> debugLogs = new ArrayList<>();
     private static final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private static int bypassedCustomStackSize = -1;
     private static Yaml yaml = null;
@@ -86,6 +86,8 @@ public class Util {
     private static String alternateCurrencySymbol;
     private static boolean disableVaultFormat;
     private static boolean useDecimalFormat;
+    @Getter
+    private static final Map<String, String> currency2Symbol = new HashMap<>();
 
     /**
      * Convert strArray to String. E.g "Foo, Bar"
@@ -140,8 +142,7 @@ public class Util {
         try {
             Files.copy(sqlfile.toPath(), bksqlfile.toPath());
         } catch (Exception e1) {
-            e1.printStackTrace();
-            plugin.getLogger().warning("Failed to backup the database.");
+            plugin.getLogger().log(Level.WARNING, "Failed to backup the database", e1);
             return false;
         }
         return true;
@@ -353,18 +354,28 @@ public class Util {
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
      *
-     * @param n price
+     * @param n    price
+     * @param shop shop
      * @return The formatted string.
      */
     @NotNull
-    public static String format(double n) {
-        return format(n, disableVaultFormat);
+    public static String format(double n, @Nullable Shop shop) {
+        return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
     }
 
     @NotNull
-    public static String format(double n, boolean internalFormat) {
+    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
+        if (shop != null) {
+            return format(n, internalFormat, world, shop.getCurrency());
+        } else {
+            return format(n, internalFormat, world, (Shop) null);
+        }
+    }
+
+    @NotNull
+    public static String format(double n, boolean internalFormat, @NotNull World world, @Nullable String currency) {
         if (internalFormat) {
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
 
         if (plugin == null) {
@@ -373,14 +384,14 @@ public class Util {
         }
         if (plugin.getEconomy() == null) {
             Util.debugLog("Called format before Economy booted up, using built-in formatter.");
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
         try {
-            String formatted = plugin.getEconomy().format(n);
-            if (formatted == null || formatted.isEmpty()) {
+            String formatted = plugin.getEconomy().format(n, world, currency);
+            if (StringUtils.isEmpty(formatted)) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
-                return getInternalFormat(n);
+                return getInternalFormat(n, currency);
             } else {
                 return formatted;
             }
@@ -388,13 +399,21 @@ public class Util {
             Util.debugLog("format", e.getMessage());
             Util.debugLog(
                     "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
-            return getInternalFormat(n);
+            return getInternalFormat(n, currency);
         }
     }
 
-    private static String getInternalFormat(double amount) {
-        String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-        return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
+    private static String getInternalFormat(double amount, @Nullable String currency) {
+        if (StringUtils.isEmpty(currency)) {
+            Util.debugLog("Format: Currency is null");
+            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            return currencySymbolOnRight ? formatted + alternateCurrencySymbol : alternateCurrencySymbol + formatted;
+        } else {
+            Util.debugLog("Format: Currency is: [" + currency + "]");
+            String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
+            String symbol = currency2Symbol.getOrDefault(currency, currency);
+            return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
+        }
     }
 
 
@@ -680,6 +699,7 @@ public class Util {
         restrictedPrices.clear();
         worldBlacklist.clear();
         customStackSize.clear();
+        currency2Symbol.clear();
         plugin = QuickShop.getInstance();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -752,6 +772,18 @@ public class Util {
         alternateCurrencySymbol = plugin.getConfig().getString("shop.alternate-currency-symbol", "$");
         disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
         useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
+
+        List<String> symbols = plugin.getConfig().getStringList("alternate-currency-symbol-list");
+
+
+        symbols.forEach(entry -> {
+            String[] splits = entry.split(";", 2);
+            if (splits.length < 2) {
+                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
+            }
+            currency2Symbol.put(splits[0], splits[1]);
+        });
+
         InteractUtil.init(plugin.getConfig());
     }
 
@@ -1160,7 +1192,10 @@ public class Util {
      * @return parsed text
      */
     @NotNull
-    public static String parseColours(@NotNull String text) {
+    public static String parseColours(@Nullable String text) {
+        if (StringUtils.isEmpty(text)) {
+            return "";
+        }
         text = ChatColor.translateAlternateColorCodes('&', text);
         return text;
     }
@@ -1275,7 +1310,7 @@ public class Util {
         try (FileInputStream in = new FileInputStream(file)) {
             in.read(filecontent);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Failed to read file: " + file, e);
         }
         return new String(filecontent, StandardCharsets.UTF_8);
     }
@@ -1385,7 +1420,7 @@ public class Util {
                     | IllegalArgumentException
                     | InvocationTargetException
                     | NoSuchMethodException e) {
-                e.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, "Failed to getting server TPS, please report to QuickShop.", e);
                 serverInstance = null;
                 tpsField = null;
                 Util.debugLog("Failed to get TPS " + e.getMessage());
@@ -1421,14 +1456,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        String version = QuickShop.getInstance().getDescription().getVersion().toLowerCase();
-        return (version.contains("dev")
-                || version.contains("develop")
-                || version.contains("alpha")
-                || version.contains("beta")
-                || version.contains("test")
-                || version.contains("snapshot")
-                || version.contains("preview"));
+        return !QuickShop.getInstance().getBuildInfo().getGitBranch().equalsIgnoreCase("release");
     }
 
     /**
@@ -1497,6 +1525,45 @@ public class Util {
             }
         }
         return tabList;
+    }
+
+    /**
+     * Merge args array to a String object with space
+     *
+     * @param args Args
+     * @return String object
+     */
+    @NotNull
+    public static String mergeArgs(@NotNull String[] args) {
+        StringBuilder builder = new StringBuilder();
+        for (String arg : args) {
+            builder.append(arg).append(" ");
+        }
+        return builder.toString().trim();
+    }
+
+    /**
+     * Ensure this method is calling from specific thread
+     *
+     * @param async on async thread or main server thread.
+     */
+    public static void ensureThread(boolean async) {
+        boolean isMainThread = Bukkit.isPrimaryThread();
+        if (async) {
+            if (isMainThread)
+                throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
+        } else {
+            if (!isMainThread)
+                throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
+        }
+    }
+
+    public static void mainThreadRun(@NotNull Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+        } else {
+            Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
+        }
     }
 
 }

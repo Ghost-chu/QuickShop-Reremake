@@ -58,6 +58,7 @@ public class InventoryPreview implements Listener {
      * @param plugin    The plugin instance.
      */
     public InventoryPreview(@NotNull QuickShop plugin, @NotNull ItemStack itemStack, @NotNull Player player) {
+        Util.ensureThread(false);
         this.itemStack = itemStack.clone();
         this.player = player;
 
@@ -98,6 +99,7 @@ public class InventoryPreview implements Listener {
      * Open the preview GUI for player.
      */
     public void show() {
+        Util.ensureThread(false);
         if (itemStack == null || player == null || player.isSleeping()) // Null pointer exception
         {
             return;
@@ -117,6 +119,7 @@ public class InventoryPreview implements Listener {
     }
 
     public void close() {
+        Util.ensureThread(false);
         if (inventory == null) {
             return;
         }

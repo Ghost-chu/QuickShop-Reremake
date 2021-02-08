@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.QuickShop;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 @Getter
 public abstract class ItemNMS {
@@ -54,12 +55,7 @@ public abstract class ItemNMS {
                             .getDeclaredMethod("save", nbtTagCompoundClass);
 
         } catch (Exception t) {
-            QuickShop.getInstance().getLogger().info("A error happend:");
-            t.printStackTrace();
-            QuickShop.getInstance()
-                    .getLogger()
-                    .info(
-                            "Try to update QSRR and leave feedback about the bug on issue tracker if it continues.");
+            QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed to loading up net.minecraft.server support module, usually this caused by NMS changes but QuickShop not support yet, Did you have up-to-date?", t);
         }
     }
 

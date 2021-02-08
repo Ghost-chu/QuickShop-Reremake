@@ -52,19 +52,19 @@ public class OngoingFeeWatcher extends BukkitRunnable {
         boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
         boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            if (!shop.isUnlimited() || !ignoreUnlimited) {
+            if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner) < cost)) {// Disallow loan
+                    if (!allowLoan && (plugin.getEconomy().getBalance(shopOwner, shop.getLocation().getWorld(), shop.getCurrency()) < cost)) {// Disallow loan
                         this.removeShop(shop);
                     }
-                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost);
+                    boolean success = plugin.getEconomy().withdraw(shop.getOwner(), cost, shop.getLocation().getWorld(), shop.getCurrency());
                     if (!success) {
                         this.removeShop(shop);
                     } else {
                         try {
                             //noinspection ConstantConditions,deprecation
-                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost);
+                            plugin.getEconomy().deposit(Bukkit.getOfflinePlayer(plugin.getConfig().getString("tax")).getUniqueId(), cost, shop.getLocation().getWorld(), shop.getCurrency());
                         } catch (Exception ignored) {
                         }
                     }

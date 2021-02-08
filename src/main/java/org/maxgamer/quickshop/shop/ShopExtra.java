@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Storage the extra data that QuickShop needs or from 3rd-addon
+ */
 @AllArgsConstructor
 @Data
 public class ShopExtra {

@@ -1,9 +1,10 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Versão: Reremake",
   "translation-contributors": "Contribuidores: IceZombie13, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
-  "language-version": "46",
+  "language-version": "49",
   "not-looking-at-shop": "Não conseguimos encontrar uma QuickShop. Você precisa estar olhando para uma.",
   "no-anythings-in-your-hand": "&cNão há nada na sua mão.",
   "no-permission": "&cVocê não tem permissão para fazer isso.",
@@ -43,6 +44,7 @@
   "fee-charged-for-price-change": "&aVocê pagou &c{0}&a para mudar o valor.",
   "price-is-now": "&aO novo preço desta loja é &e{0}",
   "thats-not-a-number": "&cNumero inválido",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to is not consist with vanilla behavior",
   "no-price-given": "&cPor favor, insira um preço válido.",
   "average-price-nearby": "&aPreço médio: &e{0}",
   "shop-has-changed": "&cA loja que você tentou usar mudou desde que você clicou nela!",
@@ -166,7 +168,8 @@
       "language": "&eAlterar o idioma atualmente utilizado",
       "removeall": "&eRemover TODAS as lojas de um jogador",
       "transfer": "&eTransfira TODAS as lojas de alguém para outra",
-      "removeworld": "&eRemove ALL shops in a specified world"
+      "removeworld": "&eRemove ALL shops in a specified world",
+      "currency": "&eSet or remove the currency setting on shop"
     }
   },
   "signs": {
@@ -201,7 +204,9 @@
     "stack": "&aQuantiade em pacotes: &b{0} &e[&d&lMudar&e]",
     "stack-hover": "&eClique para definir o valor do pacote. Deixe 1 para comportamento normal.",
     "item": "&aEstoque ilimitado: {0} &e[&d&lMudar&e]",
-    "item-hover": "&eClique para mudar o item da loja"
+    "item-hover": "&eClique para mudar o item da loja",
+    "currency": "&aCurrency: &b{0} &e[&d&lSet&e]",
+    "currency-hover": "&eClick to set or remove the currency that shop using"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -216,7 +221,9 @@
   "tabcomplete": {
     "price": "[preço]",
     "range": "[distância]",
-    "amount": "[quantidade]"
+    "amount": "[quantidade]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Atualizar agora]",
@@ -284,5 +291,10 @@
     "approval-progress": "&eProgresso de aprovação: &b{0}%",
     "qa-issues": "&eProblemas de garantia de qualidade: &b{0}%",
     "help-us": "&a[Ajude-nos a melhorar a qualidade da tradução]"
-  }
+  },
+  "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
+  "currency-set": "&aSuccessfully set shop currency to {0}.",
+  "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }

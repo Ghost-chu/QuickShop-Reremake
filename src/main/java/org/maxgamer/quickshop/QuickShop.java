@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -56,14 +57,13 @@ import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
-import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.PermissionChecker;
 import org.maxgamer.quickshop.util.Timer;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.bukkitwrapper.BukkitAPIWrapper;
 import org.maxgamer.quickshop.util.bukkitwrapper.SpigotWrapper;
 import org.maxgamer.quickshop.util.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
+import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.holder.QuickShopPreviewInventoryHolder;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.ItemMatcher;
@@ -79,10 +79,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
-
 public class QuickShop extends JavaPlugin {
 
     /**
@@ -250,6 +249,12 @@ public class QuickShop extends JavaPlugin {
     private QuickChatType quickChatType = QuickChatType.BUNGEECHAT;
     @Getter
     private QuickChat quickChat = new BungeeQuickChat();
+    @Getter
+    @Nullable
+    private String currency = null;
+    @Getter
+    private ShopControlPanel shopControlPanelManager;
+
 
     @NotNull
     public static QuickShop getInstance() {
@@ -418,6 +423,17 @@ public class QuickShop extends JavaPlugin {
                     core = new Economy_Reserve(this);
                     Util.debugLog("Now using the Reserve economy system.");
                     break;
+                case GEMS_ECONOMY:
+                    core = new Economy_GemsEconomy(this);
+                    Util.debugLog("Now using the GemsEconomy economy system.");
+                    break;
+                case TNE:
+                    core = new Economy_TNE(this); //TODO: Unstable
+                    Util.debugLog("Now using the TNE economy system.");
+                    break;
+//                case MIXED:
+//                    core = new Economy_Mixed(this);
+//                    Util.debugLog("Now using the Mixed economy system.");
                 default:
                     Util.debugLog("No any economy provider selected.");
                     break;
@@ -437,7 +453,7 @@ public class QuickShop extends JavaPlugin {
             }
         } catch (Exception e) {
             this.getSentryErrorReporter().ignoreThrow();
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
             getLogger().severe("QuickShop CANNOT start!");
             bootError = BuiltInSolution.econError();
@@ -483,7 +499,10 @@ public class QuickShop extends JavaPlugin {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.quickChatType = QuickChatType.fromID(this.getConfig().getInt("chat-type"));
         this.quickChat = QuickChatType.createByType(this.quickChatType);
-
+        this.currency = this.getConfig().getString("currency");
+        if (StringUtils.isEmpty(this.currency)) {
+            this.currency = null;
+        }
         language = new Language(this); // Init locale
         if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
@@ -502,6 +521,8 @@ public class QuickShop extends JavaPlugin {
         //BEWARE THESE ONLY RUN ONCE
         instance = this;
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Reading the configuration...");
+        this.initConfiguration();
         QuickShopAPI.setupApi(this);
         //noinspection ResultOfMethodCallIgnored
         getDataFolder().mkdirs();
@@ -653,14 +674,22 @@ public class QuickShop extends JavaPlugin {
         getLogger().info("Quickshop " + getFork());
 
         /* Check the running envs is support or not. */
-        try {
-            environmentChecker = new EnvironmentChecker(this);
-        } catch (RuntimeException e) {
-            bootError = new BootError(this.getLogger(), e.getMessage());
+        getLogger().info("Starting plugin self-test, please wait...");
+        environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
+        ResultReport resultReport = environmentChecker.run();
+        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
+            StringBuilder builder = new StringBuilder();
+            for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
+                if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
+                    builder.append(String.format("- [%s/%s] %s", result.getKey().name(), result.getValue().getResult().getDisplay(), result.getValue().getResultMessage())).append("\n");
+                }
+            }
+            bootError = new BootError(this.getLogger(), builder.toString());
             //noinspection ConstantConditions
             getCommand("qs").setTabCompleter(this); //Disable tab completer
             return;
         }
+
         QuickShopAPI.setupApi(this);
 
         getLogger().info("Reading the configuration...");
@@ -692,12 +721,12 @@ public class QuickShop extends JavaPlugin {
         try {
             MsgUtil.loadCfgMessages();
         } catch (Exception e) {
-            getLogger().warning("An error throws when loading messages");
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
         MsgUtil.loadItemi18n();
         MsgUtil.loadEnchi18n();
         MsgUtil.loadPotioni18n();
+        shopControlPanelManager = new ShopControlPanel(this);
         this.previewProtectionLore = MsgUtil.getMessageOfflinePlayer("quickshop-gui-preview", null);
         if (this.previewProtectionLore == null || this.previewProtectionLore.isEmpty()) {
             this.previewProtectionLore = ChatColor.RED + "FIXME: DON'T SET THIS TO EMPTY STRING";
@@ -880,22 +909,16 @@ public class QuickShop extends JavaPlugin {
             // Make the database up to date
             this.databaseHelper = new DatabaseHelper(this, this.databaseManager);
         } catch (DatabaseManager.ConnectionException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
-                return false;
-            } else {
-                getLogger().severe("Error connecting to the database.");
             }
             return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Error when setup database", e);
             getServer().getPluginManager().disablePlugin(this);
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
-                return false;
-            } else {
-                getLogger().severe("Error setting up the database.");
             }
             return false;
         }
@@ -948,6 +971,7 @@ public class QuickShop extends JavaPlugin {
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
         }
+
     }
 
 
@@ -1643,8 +1667,8 @@ public class QuickShop extends JavaPlugin {
         if (selectedVersion == 115) {
             getConfig().set("integration.griefprevention.enable", false);
             getConfig().set("integration.griefprevention.whitelist-mode", false);
-            getConfig().set("integration.griefprevention.create", new ArrayList<>(0));
-            getConfig().set("integration.griefprevention.trade", new ArrayList<>(0));
+            getConfig().set("integration.griefprevention.create", Collections.emptyList());
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
             getConfig().set("config-version", 116);
             selectedVersion = 116;
         }
@@ -1680,7 +1704,18 @@ public class QuickShop extends JavaPlugin {
             getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
             getConfig().set("config-version", ++selectedVersion);
         }
-        if (getConfig().getInt("matcher.work-type") != 0 && environmentChecker.getGameVersion().name().contains("1_16")) {
+        if (selectedVersion == 122) {
+            getConfig().set("currency", "");
+            getConfig().set("alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 123) {
+            getConfig().set("integration.fabledskyblock.enable", false);
+            getConfig().set("integration.fabledskyblock.whitelist-mode", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+
+        if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 

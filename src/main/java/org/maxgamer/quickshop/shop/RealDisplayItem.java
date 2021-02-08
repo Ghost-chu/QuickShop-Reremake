@@ -49,6 +49,7 @@ public class RealDisplayItem extends DisplayItem {
      * @param shop The shop (See Shop)
      */
     RealDisplayItem(@NotNull Shop shop) {
+
         super(shop);
 
         // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
@@ -56,6 +57,7 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public boolean checkDisplayIsMoved() {
+        Util.ensureThread(false);
         if (this.item == null) {
             return false;
         }
@@ -70,6 +72,7 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public boolean checkDisplayNeedRegen() {
+        Util.ensureThread(false);
         if (this.item == null) {
             return false;
         }
@@ -78,6 +81,7 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public boolean checkIsShopEntity(@NotNull Entity entity) {
+        Util.ensureThread(false);
         if (!(entity instanceof Item)) {
             return false;
         }
@@ -86,6 +90,7 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public void fixDisplayMoved() {
+        Util.ensureThread(false);
         Location location = this.getDisplayLocation();
         if (this.item != null && location != null) {
             this.item.teleport(location);
@@ -95,6 +100,7 @@ public class RealDisplayItem extends DisplayItem {
     }
 
     public void fixDisplayMovedOld() {
+        Util.ensureThread(false);
         for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld()).getEntities()) {
             if (!(entity instanceof Item)) {
                 continue;
@@ -110,11 +116,13 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public void fixDisplayNeedRegen() {
+        Util.ensureThread(false);
         respawn();
     }
 
     @Override
     public void remove() {
+        Util.ensureThread(false);
         if (this.item == null) {
             Util.debugLog("Ignore the Item removing because the Item is already gone.");
             return;
@@ -129,6 +137,7 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public boolean removeDupe() {
+        Util.ensureThread(false);
         if (this.item == null) {
             Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
             return false;
@@ -155,12 +164,14 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public void respawn() {
+        Util.ensureThread(false);
         remove();
         spawn();
     }
 
     @Override
     public void safeGuard(@NotNull Entity entity) {
+        Util.ensureThread(false);
         if (!(entity instanceof Item)) {
             Util.debugLog("Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
@@ -182,6 +193,10 @@ public class RealDisplayItem extends DisplayItem {
 
     @Override
     public void spawn() {
+        Util.ensureThread(false);
+        if (shop.isDeleted() || !shop.isLoaded()) {
+            return;
+        }
         if (shop.getLocation().getWorld() == null) {
             Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
             return;

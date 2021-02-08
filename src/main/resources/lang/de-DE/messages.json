@@ -1,10 +1,11 @@
 {
+  "file-test": "This is file test text, We use this for testing if messages.json is broken. You can fill any easter egg you like in there :)",
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
-  "translation-country": "Language Zone: English (en_US)",
-  "language-version": "46",
-  "not-looking-at-shop": "&cCould not find a QuickShop. You need to look at one.",
+  "translation-country": "Sprache: Deutsch (de_DE)",
+  "language-version": "49",
+  "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
   "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
@@ -43,6 +44,7 @@
   "fee-charged-for-price-change": "&aDu hast &c{0}&a bezahlt, um den Preis zu ändern.",
   "price-is-now": "&aDer neue Preis des Shops ist &e{0}",
   "thats-not-a-number": "&cUngültige Zahl",
+  "forbidden-vanilla-behavior": "&cThe operation is forbidden due to is not consist with vanilla behavior",
   "no-price-given": "&cBitte gebe einen gültigen Preis ein.",
   "average-price-nearby": "&aDurchschnittspreis in der Umgebung: &e{0}",
   "shop-has-changed": "&cDer Shop, den du gerade benutzt wolltest, wurde verändert seit dem du drauf geklickt hast!",
@@ -166,7 +168,8 @@
       "language": "&eÄndert die derzeitig verwendete Sprache",
       "removeall": "&eEntferne ALLE Shops eines bestimmten Spielers",
       "transfer": "&eTransfer someone's ALL shops to other",
-      "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt"
+      "removeworld": "&eEntferne ALLE Shops in einer bestimmten Welt",
+      "currency": "&eSetze oder entferne die Währungseinstellungen im Shop"
     }
   },
   "signs": {
@@ -201,7 +204,9 @@
     "stack": "&aPro Menge: &b{0} &e[&d&lChange&e]",
     "stack-hover": "&eKlicke um die Anzahl an Items pro Menge zu ändern. Setze es zu 1 für normales Verhalten.",
     "item": "&aShopitem: {0} &e[&d&lÄndern&e]",
-    "item-hover": "&eKlicke, um das Shopitem zu ändern"
+    "item-hover": "&eKlicke, um das Shopitem zu ändern",
+    "currency": "&aWährung: &b{0} &e[&d&lÄndern&e]",
+    "currency-hover": "&eKlicke, um die Währung für den Shop zu setzten oder zu entfernen"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -216,7 +221,9 @@
   "tabcomplete": {
     "price": "[Preis]",
     "range": "[Reichweite]",
-    "amount": "[Anzahl]"
+    "amount": "[Anzahl]",
+    "currency": "[currency name]",
+    "item": "[item]"
   },
   "updatenotify": {
     "buttontitle": "[Jetzt Aktualisieren]",
@@ -284,5 +291,10 @@
     "approval-progress": "&eGenehmigungsfortschritt: &b{0}%",
     "qa-issues": "&eQualitätssicherungs-Probleme: &b{0}%",
     "help-us": "&a[Hilf uns, die Übersetzungsqualität zu verbessern]"
-  }
+  },
+  "currency-not-exists": "&cKann die Währung nicht finden, welche du setzten willst. Möglicherweise ist die Schreibweise falsch oder die Währung ist nicht in dieser Welt verfügbar.",
+  "currency-set": "&aShopwährung erfolgreich geändert zu {0}.",
+  "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt.",
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }

@@ -28,6 +28,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.util.logging.Level;
+
 @AllArgsConstructor
 public class SubCommand_Update implements CommandProcesser {
 
@@ -46,21 +48,21 @@ public class SubCommand_Update implements CommandProcesser {
                     return;
                 }
 
-                if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
+                if (plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) {
                     MsgUtil.sendMessage(sender, ChatColor.GREEN + "No updates can update now.");
                     return;
                 }
 
                 MsgUtil.sendMessage(sender, ChatColor.YELLOW + "Downloading update, this may need a while...");
 
-                final byte[] pluginBin;
+                //final byte[] pluginBin;
 
                 try {
                     plugin.getUpdateWatcher().getUpdater().install(plugin.getUpdateWatcher().getUpdater().update(plugin.getUpdateWatcher().getUpdater().getCurrentRunning()));
                 } catch (Exception e) {
                     MsgUtil.sendMessage(sender, ChatColor.RED + "Update failed, get details to look the console.");
                     plugin.getSentryErrorReporter().ignoreThrow();
-                    e.printStackTrace();
+                    plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop cause something going wrong", e);
                     return;
                 }
 

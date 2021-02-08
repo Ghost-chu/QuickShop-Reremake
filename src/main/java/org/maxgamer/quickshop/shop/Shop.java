@@ -402,6 +402,15 @@ public interface Shop {
     Map<String, String> getExtra(@NotNull Plugin plugin);
 
     /**
+     * Gets ExtraManager to quick access extra data
+     *
+     * @param plugin Plugin instance
+     * @return The Extra data manager
+     */
+    @NotNull
+    ShopExtraManager getExtraManager(@NotNull Plugin plugin);
+
+    /**
      * Save the extra data to the shop.
      *
      * @param plugin Plugin instace
@@ -424,5 +433,19 @@ public interface Shop {
      */
     @NotNull UUID getRuntimeRandomUniqueId();
 
+    /**
+     * Gets the currency that shop use
+     *
+     * @return The currency name
+     */
+    @Nullable
+    String getCurrency();
+
+    /**
+     * Sets the currency that shop use
+     *
+     * @param currency The currency name; null to use default currency
+     */
+    void setCurrency(@Nullable String currency);
 
 }

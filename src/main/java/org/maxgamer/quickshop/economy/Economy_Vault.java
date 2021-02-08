@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceRegisterEvent;
@@ -37,6 +38,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class Economy_Vault implements EconomyCore, Listener {
 
@@ -46,6 +48,10 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
+
+    private static final String errorMsg =
+            "QuickShop received an error when processing Economy response, THIS NOT A QUICKSHOP FAULT, you might need ask help with your Economy Provider plugin (%s) author.";
+
 
     public Economy_Vault(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -107,17 +113,17 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     @Override
-    public boolean deposit(@NotNull UUID name, double amount) {
-        if (!checkValid()) {
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
-        return deposit(Bukkit.getOfflinePlayer(name), amount);
+        return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
 
     }
 
     @Override
-    public boolean deposit(@NotNull OfflinePlayer trader, double amount) {
-        if (!checkValid()) {
+    public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
         try {
@@ -128,20 +134,14 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return false;
         }
     }
 
     @Override
-    public String format(double balance) {
-        if (!checkValid()) {
+    public String format(double balance, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return "Error";
         }
         try {
@@ -157,26 +157,26 @@ public class Economy_Vault implements EconomyCore, Listener {
     }
 
     private String formatInternal(double balance) {
-        if (!checkValid()) {
+        if (!isValid()) {
             return "Error";
         }
 
-        return Util.format(balance, true);
+        return Util.format(balance, true, Bukkit.getWorlds().get(0), (String) null);
     }
 
     @Override
-    public double getBalance(@NotNull UUID name) {
-        if (!checkValid()) {
+    public double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return 0.0;
         }
 
-        return getBalance(Bukkit.getOfflinePlayer(name));
+        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
 
     }
 
     @Override
-    public double getBalance(@NotNull OfflinePlayer player) {
-        if (!checkValid()) {
+    public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return 0.0;
         }
         if (player.getName() == null) {
@@ -186,50 +186,26 @@ public class Economy_Vault implements EconomyCore, Listener {
             return Objects.requireNonNull(this.vault).getBalance(player);
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return 0.0;
         }
     }
 
     @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount) {
-        if (!checkValid()) {
+    public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
-        if (this.getBalance(from) >= amount) {
-            if (this.withdraw(from, amount)) {
-                if (this.deposit(to, amount)) {
-                    this.deposit(from, amount);
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
     }
 
     @Override
-    public boolean withdraw(@NotNull UUID name, double amount) {
-        if (!checkValid()) {
-            return false;
-        }
-        return withdraw(Bukkit.getOfflinePlayer(name), amount);
-    }
-
-    @Override
-    public boolean withdraw(@NotNull OfflinePlayer trader, double amount) {
-        if (!checkValid()) {
+    public boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {
+        if (!isValid()) {
             return false;
         }
         try {
-            if ((!allowLoan) && (getBalance(trader) < amount)) {
+            if ((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
                 return false;
             }
             return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
@@ -239,15 +215,30 @@ public class Economy_Vault implements EconomyCore, Listener {
                 plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
-            t.printStackTrace();
-            plugin
-                    .getLogger()
-                    .warning(
-                            "This seems not QuickShop fault, you should contact with your economy plugin author. ("
-                                    + getProviderName()
-                                    + ")");
+            plugin.getLogger().log(Level.WARNING, String.format(errorMsg, getProviderName()), t);
             return false;
         }
+    }
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return false;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return false;
     }
 
     @Override
@@ -263,16 +254,6 @@ public class Economy_Vault implements EconomyCore, Listener {
     @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
-    }
-
-    public boolean checkValid() {
-        if (this.vault == null) {
-            Bukkit.getPluginManager().disablePlugin(plugin);
-            plugin.getLogger().severe("FATAL: Economy system not ready.");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public String getProviderName() {

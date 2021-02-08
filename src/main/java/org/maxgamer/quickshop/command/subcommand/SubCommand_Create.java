@@ -23,11 +23,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Info;
@@ -48,6 +50,28 @@ public class SubCommand_Create implements CommandProcesser {
         this.plugin = plugin;
     }
 
+    @Nullable
+    private Material matchMaterial(String itemName) {
+        Material material = Material.matchMaterial(itemName);
+        if (isValidMaterial(material))
+            return material;
+        ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
+        for (String itemKey : section.getKeys(false)) {
+            if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
+                material = Material.matchMaterial(itemKey);
+                break;
+            }
+        }
+        if (!isValidMaterial(material)) {
+            return null;
+        }
+        return material;
+    }
+
+    private boolean isValidMaterial(@Nullable Material material) {
+        return material != null && !Util.isAir(material);
+    }
+
     @Override
     public void onCommand(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -57,14 +81,29 @@ public class SubCommand_Create implements CommandProcesser {
         }
 
         final Player p = (Player) sender;
-        ItemStack item = p.getInventory().getItemInMainHand();
-
-        if (item.getType() == Material.AIR) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
-            return;
-        }
-
+        ItemStack item;
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+
+        if (cmdArg.length < 1) {
+            MsgUtil.sendMessage(p, MsgUtil.getMessage(p.getUniqueId(), "command.wrong-args"));
+            return;
+        } else if (cmdArg.length == 1) {
+            item = p.getInventory().getItemInMainHand();
+            if (Util.isAir(item.getType())) {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-anythings-in-your-hand", sender));
+                return;
+            }
+        } else {
+            Material material = matchMaterial(cmdArg[1]);
+            if (material == null) {
+                MsgUtil.sendMessage(sender, MsgUtil.getMessage("item-not-exist", sender, cmdArg[1]));
+                return;
+            }
+            item = new ItemStack(material, 1);
+        }
+        Util.debugLog("Pending task for material: " + item.toString());
+
+        String price = cmdArg[0];
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -111,28 +150,12 @@ public class SubCommand_Create implements CommandProcesser {
             }
 
             // Send creation menu.
-            plugin
-                    .getShopManager()
-                    .getActions()
-                    .put(
-                            p.getUniqueId(),
-                            new Info(
-                                    b.getLocation(),
-                                    ShopAction.CREATE,
-                                    p.getInventory().getItemInMainHand(),
-                                    b.getRelative(p.getFacing().getOppositeFace())));
-
-            if (cmdArg.length >= 1) {
-                plugin.getShopManager().handleChat(p, cmdArg[0]);
-
-                return;
-            }
-
-            MsgUtil.sendMessage(p,
-                    MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
-
+            plugin.getShopManager().getActions().put(p.getUniqueId(),
+                    new Info(b.getLocation(), ShopAction.CREATE, item, b.getRelative(p.getFacing().getOppositeFace())));
+            plugin.getShopManager().handleChat(p, price);
             return;
         }
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull
@@ -142,7 +165,9 @@ public class SubCommand_Create implements CommandProcesser {
         if (cmdArg.length == 1) {
             return Collections.singletonList(MsgUtil.getMessage("tabcomplete.price", sender));
         }
-
+        if (cmdArg.length == 2) {
+            return Collections.singletonList(MsgUtil.getMessage("tabcomplete.item", sender));
+        }
         return Collections.emptyList();
     }
 

@@ -23,7 +23,10 @@ import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
+
+import java.util.logging.Level;
 
 @Getter
 public class PermissionManager {
@@ -62,18 +65,13 @@ public class PermissionManager {
 //                    //                    Util.debugLog("Primary Group: " + container.getGroupName());
 //                    //                    Util.debugLog("Other infos: " + container.getOtherInfos());
                 } catch (Exception th) {
-                    th.printStackTrace();
                     Util.debugLog("Exception throwed when getting debug messages.");
+                    MsgUtil.debugStackTrace(th.getStackTrace());
                 }
             }
             return result;
         } catch (Exception th) {
-            plugin.getSentryErrorReporter().ignoreThrow();
-            th.printStackTrace();
-            plugin
-                    .getLogger()
-                    .info(
-                            "A error happend, if you believe this is QuickShop problem, please report to us on Issue Tracker or Discord.");
+            plugin.getLogger().log(Level.WARNING, "Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
             return false;
         }
     }

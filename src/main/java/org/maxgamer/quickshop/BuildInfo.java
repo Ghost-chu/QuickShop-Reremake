@@ -37,6 +37,7 @@ public class BuildInfo {
     private final String gitBranch;
     private final String pomGruopId;
     private final String pomArtifactId;
+    private final String jobName;
 
     public BuildInfo(@Nullable InputStream inputStream) {
         if (inputStream == null) {
@@ -47,6 +48,7 @@ public class BuildInfo {
             gitBranch = "Unknown";
             pomGruopId = "Unknown";
             pomArtifactId = "Unknown";
+            jobName = "Unknown";
             jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
             return;
         }
@@ -59,6 +61,7 @@ public class BuildInfo {
         pomGruopId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
         jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
+        jobName = buildInfo.getString("job-name", "Unknown");
         try {
             inputStream.close();
         } catch (IOException ignored) {

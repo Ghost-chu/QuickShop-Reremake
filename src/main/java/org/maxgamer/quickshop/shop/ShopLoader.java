@@ -42,6 +42,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -351,11 +352,7 @@ public class ShopLoader {
             try {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
-                plugin
-                        .getLogger()
-                        .warning(
-                                "Failed load shop data, because target config can't deserialize the ItemStack.");
+                plugin.getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
                 Util.debugLog("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }

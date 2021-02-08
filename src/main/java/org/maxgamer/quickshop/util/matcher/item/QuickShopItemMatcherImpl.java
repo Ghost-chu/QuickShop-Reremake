@@ -168,7 +168,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher {
 
     private static class ItemMetaMatcher {
 
-        private final List<Matcher> matcherList = new LinkedList<>();
+        private final List<Matcher> matcherList = new ArrayList<>();
 
         public ItemMetaMatcher(@NotNull ConfigurationSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
 

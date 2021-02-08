@@ -75,20 +75,17 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public boolean isLatest(@NotNull VersionType versionType) {
-        InputStream inputStream;
-        try {
-            inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
-                    .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                    .execute()
-                    .expectResponseCode(200)
-                    .getInputStream();
+        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
+                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
+                .execute()
+                .expectResponseCode(200)
+                .getInputStream()) {
+            this.lastRemoteBuildInfo = new BuildInfo(inputStream);
+            return lastRemoteBuildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
         } catch (IOException ioException) {
-            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on SpigotMC.org! It might be an internet issue or the SpigotMC host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often.");
+            MsgUtil.sendMessage(Bukkit.getConsoleSender(), ChatColor.RED + "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage());
             return true;
         }
-        BuildInfo buildInfo = new BuildInfo(inputStream);
-        this.lastRemoteBuildInfo = buildInfo;
-        return buildInfo.getBuildId() >= pluginBuildInfo.getBuildId() || buildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
     }
 
     @Override
@@ -131,21 +128,27 @@ public class JenkinsUpdater implements QuickUpdater {
         }
         File newJar = new File(pluginFolder, "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
 
-        for (File plugin : plugins) {
+        for (File pluginJar : plugins) {
             try { //Delete all old jar files
-                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(plugin);
+                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(pluginJar);
                 if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
                     continue;
                 }
-                Util.debugLog("Deleting: " + plugin.getPath());
-                plugin.delete();
+                Util.debugLog("Deleting: " + pluginJar.getPath());
+                if (!pluginJar.delete()) {
+                    Util.debugLog("Delete failed, using replacing method");
+                    try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                    }
+                } else {
+                    try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                    }
+                }
             } catch (InvalidDescriptionException ignored) {
             }
-        }
-
-        try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
-            outputStream.write(bytes);
-            outputStream.flush();
         }
     }
 }

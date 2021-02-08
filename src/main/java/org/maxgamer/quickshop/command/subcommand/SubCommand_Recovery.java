@@ -30,6 +30,7 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Recovery implements CommandProcesser {
@@ -54,7 +55,7 @@ public class SubCommand_Recovery implements CommandProcesser {
                     Util.backupDatabase();
                     plugin.getShopLoader().recoverFromFile(Util.readToString(file));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    plugin.getLogger().log(Level.WARNING, "Failed to recovery data cause something going wrong", e);
                 }
             }
         }.runTaskAsynchronously(plugin);

@@ -4,11 +4,13 @@
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Reremake)
 ![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon)
 ![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_shield)
 ---
 [![JoinDiscord](https://img.shields.io/badge/join-discord-blue.svg) ![Chatting](https://img.shields.io/discord/471882534712639488)](https://discord.gg/bfefw2E)
 
 ![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%208--15)-orange)
 ![MC](https://img.shields.io/badge/minecraft-java%20edition%201.13.2%2B-blueviolet)
+![Ver](https://img.shields.io/spiget/version/62575?label=version)
 ---
 
 QuickShop is a shop plugin, that allows players to sell items from a chest with no commands. It allows players to
@@ -69,6 +71,22 @@ If you're a developer, you can contribute to the QuickShop code! Just make a for
 </dependency>
 ```
 
+if the repository doesn't work, try this one:
+
+```XML
+<repository>
+    <id>quickshop-repo</id>
+    <url>https://repo.codemc.io/repository/maven-public/</url>
+</repository>
+
+<dependency>
+    <groupId>org.maxgamer</groupId>
+    <artifactId>QuickShop</artifactId>
+    <version>{VERSION}</version>
+    <scope>provided</scope>
+</dependency>
+```
+
 ## Bstats
 
 ![Bstats-Servers](https://img.shields.io/bstats/servers/3320)
@@ -76,3 +94,7 @@ If you're a developer, you can contribute to the QuickShop code! Just make a for
 
 [![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg)](https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_large)

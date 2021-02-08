@@ -38,6 +38,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Debug implements CommandProcesser {
@@ -151,7 +152,7 @@ public class SubCommand_Debug implements CommandProcesser {
             }
         } catch (Exception th) {
             MsgUtil.sendMessage(sender, "ERR " + th.getMessage());
-            th.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Something going wrong when getting HandlerList", th);
         }
     }
 
