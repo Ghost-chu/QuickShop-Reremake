@@ -82,8 +82,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
-
 public class QuickShop extends JavaPlugin {
 
     /**
