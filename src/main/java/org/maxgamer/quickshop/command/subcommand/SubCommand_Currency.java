@@ -50,13 +50,6 @@ public class SubCommand_Currency implements CommandProcesser {
 
         final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
 
-
-        if (!bIt.hasNext()) {
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
-            return;
-        }
-
-
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());

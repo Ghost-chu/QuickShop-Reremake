@@ -155,6 +155,7 @@ public class SubCommand_Create implements CommandProcesser {
             plugin.getShopManager().handleChat(p, price);
             return;
         }
+        MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
     }
 
     @NotNull
