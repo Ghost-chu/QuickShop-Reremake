@@ -62,7 +62,7 @@ public class SubCommand_Create implements CommandProcesser {
                 break;
             }
         }
-        if (isValidMaterial(material)) {
+        if (!isValidMaterial(material)) {
             return null;
         }
         return material;
