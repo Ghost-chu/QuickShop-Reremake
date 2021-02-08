@@ -20,16 +20,11 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.command.CommandProcesser;
-import org.maxgamer.quickshop.shop.Info;
-import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
@@ -55,37 +50,12 @@ public class SubCommand_Amount implements CommandProcesser {
 
         final Player player = (Player) sender;
 
-        Info info = plugin.getShopManager().getActions().get(player.getUniqueId());
-
-
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-
-        if (!bIt.hasNext()) {
-//            if(info == null){
-//                MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
-//                return;
-//            }
-//
-            if (info != null) {
-                plugin.getShopManager().handleChat(player, cmdArg[0]);
-                return;
-            }
-            MsgUtil.sendMessage(sender, MsgUtil.getMessage("not-looking-at-shop", sender));
+        if (!plugin.getShopManager().getActions().containsKey(player.getUniqueId())) {
+            MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
             return;
         }
 
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null) {
-                continue;
-            }
-
-            plugin.getShopManager().getActions().put(player.getUniqueId(), info);
-            plugin.getShopManager().handleChat(player, cmdArg[0]);
-            return;
-        }
-        MsgUtil.sendMessage(sender, MsgUtil.getMessage("no-pending-action", sender));
+        plugin.getShopManager().handleChat(player, cmdArg[0]);
     }
 
     @NotNull
