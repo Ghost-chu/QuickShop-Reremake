@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -147,11 +148,17 @@ public class SubCommand_Create implements CommandProcesser {
             plugin.getShopManager().getActions().put(p.getUniqueId(),
                     new Info(b.getLocation(),
                             ShopAction.CREATE,
-                            p.getInventory().getItemInMainHand(),
+                            item,
                             b.getRelative(p.getFacing().getOppositeFace())));
 
-            if (cmdArg.length >= 1) {
-                plugin.getShopManager().handleChat(p, cmdArg[0]);
+            if (cmdArg.length > 0) {
+                if (StringUtils.isNumeric(cmdArg[0])) {
+                    // /qs create 100
+                    plugin.getShopManager().handleChat(p, cmdArg[0]);
+                } else {
+                    // /qs create item 100
+                    plugin.getShopManager().handleChat(p, cmdArg[1]);
+                }
                 return;
             }
             MsgUtil.sendMessage(p, MsgUtil.getMessage("how-much-to-trade-for", sender, Util.getItemStackName(item), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)));
