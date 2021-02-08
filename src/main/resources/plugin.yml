@@ -1,7 +1,17 @@
 name: ${project.name}
 main: ${package}.${project.name}
 version: ${project.version}
-authors: [PotatoCraft Studio, Netherfoam, Timtower, KaiNoMood, Ghost_chu, Mgazul, TiaraRinne, sandtechnology]
+authors:
+  [
+    PotatoCraft Studio,
+    Netherfoam,
+    Timtower,
+    KaiNoMood,
+    Ghost_chu,
+    Mgazul,
+    TiaraRinne,
+    sandtechnology,
+  ]
 
 description: Economy Shops plugin
 #softdepend: [Herochat, Vault, Essentials, OpenInv] OLD Remove Herochat support.
@@ -36,7 +46,7 @@ commands:
   qs:
     description: QuickShop command
     usage: /qs
-    aliases: [shop,qsshop,qshop,quickshop,chestshop,cshop]
+    aliases: [shop, qsshop, qshop, quickshop, chestshop, cshop]
 
 permissions:
   quickshop.create.sell:

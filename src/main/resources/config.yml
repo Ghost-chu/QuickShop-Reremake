@@ -2,7 +2,6 @@
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 #This is example config, don't direct modify this file, all changes will revert when you reload the plugin.
 
-
 #Do not touch if you not clear know about this
 config-version: 124
 
@@ -272,7 +271,7 @@ shop:
     exclude-out-of-stock: false
 
   #If vault doesn't return a coins symbol, QuickShop will use this symbol to replace it.
-  alternate-currency-symbol: '$'
+  alternate-currency-symbol: "$"
 
   #This symbol setting for multi-currency supports
   #If no any hit in this list, will fallback to the name of currency it self
@@ -534,7 +533,8 @@ integration:
     #Should we prevent create a shop or trade with shop outside this plugin area
     whitelist-mode: false
     #Allow player to create the shop if player is owner in this location ANY region.
-    any-owner: true
+    any-owner:
+      true
       #If a player want to create a shop, player must pass which checks?
       #You can use multi checks in same time.
     #Priority: UP to DOWN
@@ -603,7 +603,7 @@ integration:
     #BUILD = Player must have ability to build at the target claim.
     #CONTAINER_ACCESS = Player must can access container.
     #ACCESS = Player must have ability to access the target claim.
-    trade: [ ]
+    trade: []
   residence:
     enable: false
     #Should we prevent create a shop or trade with shop outside this plugin area
@@ -660,7 +660,7 @@ integration:
         own: false
         warzone: false
         #Player must have flags in the faction:
-      flags: [ ]
+      flags: []
 #the protection that shop should check
 protect:
   explode: true
@@ -674,7 +674,7 @@ protect:
 # - "*:128"
 # - STONE:128
 #
-custom-item-stacksize: [ ]
+custom-item-stacksize: []
 
 debug:
   #Should we disable debug logger?
@@ -685,11 +685,5 @@ debug:
   #Enable adventure debug flag
   adventure: false
 
-
-
-
 #Keep this is false, DO NOT TOUCH IT!
 config-damaged: false
-
-
-
