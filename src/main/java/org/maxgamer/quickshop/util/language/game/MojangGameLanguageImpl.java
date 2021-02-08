@@ -49,36 +49,32 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final QuickShop plugin;
-    private @Nullable
-    final JsonObject lang;
+    @Nullable
+    private final JsonObject lang;
+
+    private final Lock lock = new ReentrantLock();
+    private final Condition downloadCondition = lock.newCondition();
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);
         this.plugin = plugin;
-        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread();
         languageCode = languageCode.replace("-", "_");
-        loadThread.setLanguageCode(languageCode.toLowerCase());
-        loadThread.setPlugin(plugin); // Transfer instance
+        final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, downloadCondition);
+
         loadThread.start();
-        int count = 0;
-        while (true) {
-            if (loadThread.isAlive()) {
-                count++;
-                //noinspection BusyWait
-                Thread.sleep(1000);
-                if (count >= 20) {
-                    Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
-                    plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
-                    break;
-                }
-            } else {
-                break;
-            }
+        boolean timeout = downloadCondition.await(20, TimeUnit.SECONDS);
+        if (timeout) {
+            Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
+            plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
         }
         this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
 
@@ -172,6 +168,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 @Getter
 @Setter
 class GameLanguageLoadThread extends Thread {
+    private final Condition condition;
     private JsonObject lang;
 
     private String languageCode;
@@ -180,9 +177,24 @@ class GameLanguageLoadThread extends Thread {
 
     private boolean isUpdated = false; //Did we tried update assets?
 
-    private QuickShop plugin;
+    private final QuickShop plugin;
+
+    public GameLanguageLoadThread(@NotNull QuickShop plugin, @NotNull String languageCode, @NotNull Condition condition) {
+        this.plugin = plugin;
+        this.languageCode = languageCode;
+        this.condition = condition;
+    }
 
     public void run() {
+        try {
+            execute();
+        } catch (Throwable throwable) {
+            plugin.getLogger().log(Level.WARNING, "Something wrong", throwable);
+        }
+        condition.signal();
+    }
+
+    public void execute() {
         try {
             File cacheFile = new File(Util.getCacheFolder(), "mojanglang.cache"); // Load cache file
             if (!cacheFile.exists()) {
