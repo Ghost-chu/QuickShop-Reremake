@@ -3,7 +3,7 @@
   "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Engelska (en_US)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&cKunde inte hitta en QuickShop. Du måste titta på en.",
   "no-anythings-in-your-hand": "&cDet finns inget i din hand.",
   "no-permission": "&cDu har inte tillåtelse till att göra detta.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[pris]",
     "range": "[intervall]",
-    "amount": "[antal]"
+    "amount": "[antal]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[Uppdatera nu]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cCannot found currency that you want set to, maybe is bad spelling or that currency not available in this world.",
   "currency-set": "&aSuccessfully set shop currency to {0}.",
   "currency-unset": "&aSuccessfully remove shop currency setup, will use default now.",
-  "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen."
+  "currency-not-support": "&cEkonomi-pluginet stöder inte flervaluta-funktionen.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
