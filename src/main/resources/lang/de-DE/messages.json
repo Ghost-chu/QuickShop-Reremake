@@ -3,7 +3,7 @@
   "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
-  "language-version": "48",
+  "language-version": "49",
   "not-looking-at-shop": "&cKonnte keinen QuickShop finden. Du musst auf einen schauen.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -220,7 +220,8 @@
   "tabcomplete": {
     "price": "[Preis]",
     "range": "[Reichweite]",
-    "amount": "[Anzahl]"
+    "amount": "[Anzahl]",
+    "currency": "[currency name]"
   },
   "updatenotify": {
     "buttontitle": "[Jetzt Aktualisieren]",
@@ -292,5 +293,6 @@
   "currency-not-exists": "&cKann die Währung nicht finden, welche du setzten willst. Möglicherweise ist die Schreibweise falsch oder die Währung ist nicht in dieser Welt verfügbar.",
   "currency-set": "&aShopwährung erfolgreich geändert zu {0}.",
   "currency-unset": "&aShopwährung erfolgreich entfernt. Vervende Standarteinstellung jetzt.",
-  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature."
+  "currency-not-support": "&cThe economy plugin doesn't support multi-currency feature.",
+  "item-not-exist": "&cThe item &e{0} &cnot exists, please check your spelling."
 }
